@@ -1,0 +1,9 @@
+---
+title: Understanding Application Deployment
+---
+
+<ul>
+  <% for page in current_page.children.sort_by {|x| x.data.title} %>
+    <li><%= link_to page.data.title, page.url %></li>
+  <% end %>
+</ul>

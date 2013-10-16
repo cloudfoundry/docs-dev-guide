@@ -1,0 +1,427 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <!-- Always force latest IE rendering engine or request Chrome Frame -->
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+
+    <!-- Use title if it's in the page YAML frontmatter -->
+    <title>Key Facts About Application Deployment</title>
+
+    <link href="/stylesheets/master.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+    <link href='/images/favicon.ico' rel='shortcut icon'>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('a#search').click(function () {
+          $('#organization_bar .navbar .nav>li a').css("padding","11px 20px 8px");
+          $('#organization_bar .navbar .nav>li a#docs').css("padding","14px 20px");
+          $('#organization_bar .navbar .nav>li a#search2').css("padding","11px 10px 8px");
+          $('#search-on').show();
+          $('#search-off').hide();
+        });
+        $('.cancel-x').click(function () {
+          $('#organization_bar .navbar .nav>li a').css("padding","11px 63px 8px");
+          $('#organization_bar .navbar .nav>li a#docs').css("padding","14px 20px");
+          $('#organization_bar .navbar .nav>li a#search2, #organization_bar .navbar .nav>li a#search').css("padding","16px 20px 15px");
+          $('#organization_bar .navbar .nav>li a#getinvolved').css("padding","11px 92px 8px");
+          $('#organization_bar .navbar .nav>li#docs-off .docs-list-list a').css("padding","0");
+          $('#search-on').hide();
+          $('#search-off').show();
+        });f
+        $(".togglebutton").click(function () {
+        var divname= this.value;
+          $("#"+divname).show("slow").siblings().hide("slow");
+        });
+      });
+    </script>
+
+    <!--[if lt IE 9]>
+    <style>
+        #content .container-full {background:  #ebf0fa;}
+        .call-to-contribute-box, .column-left, .column-middle, .column-right {background:#e3e8f2}
+        #footer {background:#000;}
+    </style>
+    <![endif]-->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-22181585-1']);
+      _gaq.push(['_setDomainName', 'cloudfoundry.com']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body class="docs docs_deploy docs_deploy_key-facts">
+    <img id="bg" src="/images/bg-plain-x.jpg">
+    <div id='non_footer'>
+      <div id='header'>
+        <div class='container_wide'>
+          <ul class='actions'>
+            <li class='last'>
+              <a href="http://www.cloudfoundry.com/contact">Contact Us</a>
+            </li>
+            <li>
+              <a class='register_link' href='http://login.run.pivotal.io/login'>My Account</a>            
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div id='content'>
+        <div class='logo-main'>
+          <div class='logo'>
+            <a href='http://www.cloudfoundry.com'>
+            <img src='/images/logo-cloudfoundry.png'>
+            </a>
+            <a href='http://www.gopivotal.com' target="_blank">
+            <img id="pivotal-logo" src='/images/logo-pivotal.png'>
+            </a>
+          </div>
+          <div class='cta'>
+            <a href='https://console.run.pivotal.io'>
+            <img src='/images/signup_freetrial.png'>
+            </a>
+          </div>
+        </div><!-- End of logo-main-->
+        <div class='container-full'>
+          <div id='organization_bar'>
+            <div class='navbar'>
+              <ul class='nav'>
+                <li>
+                <a href='http://www.cloudfoundry.com/use' id='use'>Using Cloud Foundry</a>
+                </li>
+                <li>
+                <a href='http://www.cloudfoundry.com/run' id='run'>Running Cloud Foundry</a>
+                </li>
+                <li>
+                <a href='http://www.cloudfoundry.com/getinvolved' id='getinvolved'>Get Involved</a>
+                </li>
+                <li id='docs-off'>
+                  <a href='/' id='docs'>
+                    <div id='icon-docs'></div>
+                  </a>
+                  <div id='docs-list'>
+                    <div class="docs-list-list">
+                      <a class="docs-list-th" href='/docs/using/app-arch/'>Using Cloud Foundry</a>
+                      <br>
+                      <a href="/docs/using/app-arch/">Application Architecture Considerations</a>
+                      <br>
+                      <a href='/docs/using/deploying-apps/'>Deploying Apps</a>
+                      <br>
+                      <a href='/docs/using/managing-apps/'>Managing Apps</a>
+                      <br>
+                      <a href='/docs/using/services.html'>Using Services</a>
+                      <br>
+                      <a class="docs-list-see-all" href="/docs/using/">See all</a>
+                    </div><!-- End of 1st column docs-list-list-->
+                    <div class="hr-vertical"></div>
+                    <div class="docs-list-list">
+                      <a class="docs-list-th" href='/docs/running/'>Running Cloud Foundry</a>
+                      <br>
+                      <a href='/docs/running/architecture/'>Architecture</a>
+                      <br>
+                      <a href='/docs/running/bosh/'>BOSH</a>
+                      <br>
+                      <a href='/docs/running/deploying-cf/'>Deploying with BOSH</a>
+                      <br>
+                      <a href='/docs/running/deploying-cf-with-chef/'>Deploying with Chef</a>
+                      <br>
+                      <a href='/docs/running/micro_cloud_foundry/'>Micro Cloud Foundry</a>
+                      <br>
+                      <a href='/docs/running/managing-cf/index.html'>Managing Cloud Foundry</a>
+                      <br>
+                      <a class="docs-list-see-all" href="/docs/running/">See all</a>
+                    </div><!-- End of column 2 docs-list-list -->
+                    <div class="hr-vertical"></div>
+                    <div class="docs-list-list">
+                      <a class="docs-list-th" href='/docs/reference/'>Reference</a>
+                      <br>
+                      <a href='/docs/reference/cc-api.html'>Cloud Foundry REST API</a>
+                      <br>
+                      <a class="docs-list-th" href='/docs/dotcom/'>CloudFoundry.com</a>
+                      <br>
+                      <a href='/docs/dotcom/integration/'>Technical Integration</a>
+                      <br>
+                      <a class="docs-list-th" href='/docs/community/'>Community</a>
+                    </div><!-- End of column 3 docs-list-list -->
+                  </div><!-- End of docs-list -->
+                </li>
+                <li id='search-off'>
+                  <a id='search'>
+                    <div class='icon-search'></div>
+                  </a>
+                </li>
+                <li id='search-on'>
+                  <a id='search2'>
+                    <form action='http://www.cloudfoundry.com/search' class='search-form' method='get' onsubmit='return submitQuery()'>
+                      <input autocomplete='off' class='search-input' id='search-query' name='q' onfocus="this.placeholder = ''" placeholder='' type='search' value=''>
+                    </form>
+                    <div class="cancel-x"></div>
+                  </a>
+                </li>
+              </ul>
+            </div><!-- End of navbar -->
+          </div><!-- End of organization_bar -->
+          <div class='content_inner'>
+            <a class="forkme" href="http://github.com/cloudfoundry/cf-docs" target="_blank">
+              <img alt="Fork me on GitHub" src="/images/ribbon_forkme.png">
+            </a>
+            <form action='http://www.cloudfoundry.com/search' class='search-docs-form' method='get' onsubmit='return submitQuery()'>
+              <input autocomplete='off' class='search-docs-input' id='search-query' name='q' onfocus="this.placeholder = 'more:docs '" placeholder='' type='search-docs' value='more:docs '>
+            </form>
+            <br clear="left">
+            
+              <div class="breadcrumbs">
+                <ul>
+                  <li>
+                    <a href="/">Home</a>
+                  </li>
+                  <li class=""><a href="/docs/deploy/">Understanding Application Deployment</a></li> <li class="active"><span>Key Facts About Application Deployment</span></li>
+                </ul>
+              </div>
+              <br clear="left">
+
+			
+
+              <div class="quick-links"><ul>
+<li><a href="#push-process">The Cloud Foundry Push Process</a></li>
+<li><a href="#exclude">Ignore Unnecessary Files When Pushing</a></li>
+<li><a href="#instances">Run Multiple Instances to Increase Availability</a></li>
+<li><a href="#buildpacks">Buildpack Support for Runtimes and Frameworks</a></li>
+<li><a href="#deploy-options">Application Deployment Options</a></li>
+<li><a href="#start-command">The Application Start Command</a></li>
+<li><a href="#run-utility">Run a Standalone Utility at Deployment</a>
+
+<ul>
+<li><a href="#custom-start">Specify a Custom Start Command</a></li>
+<li><a href="#revert-start">Revert to Standard Start Command</a></li>
+<li><a href="#single-app">Run a Start Command on One Instance</a></li>
+</ul></li>
+<li><a href="#services">Using Services</a></li>
+</ul>
+</div>
+
+              <h1>Key Facts About Application Deployment</h1>
+
+            
+            <p>This page summarizes key Cloud Foundry features and behaviors related to application deployment.</p>
+
+<h2><a id='push-process'></a>The Cloud Foundry Push Process</h2>
+
+<p>You initiate the deployment of an application using the Cloud Foundry CLI <code>cf push</code> command. In Cloud Foundry documentation, the deployment process is often referred to as “pushing an application”.</p>
+
+<p>When you push an application, Cloud Foundry performs a variety of staging tasks, which at a high level, consist of finding a container to run the application, provisioning the container with the appropriate software and system resources, starting one or more instances of the application, and storing the expected state of the application in the Cloud Controller database.  </p>
+
+<p>The staging process flow is illustrated on <a href="/docs/running/architecture/how-applications-are-staged.html">How Applications Are Staged</a>.</p>
+
+<h2><a id='exclude'></a>Ignore Unnecessary Files When Pushing</h2>
+
+<p>By default, when you push an application, all files in the application’s project directory tree, except version control files with file extensions <code>.svn</code>, <code>.git</code>, and <code>.darcs</code>, are uploaded to your Cloud Foundry instance. If the application directory contains other files (such as temp or log files), or complete subdirectories that are not required to build and run your application, the best practice is to exclude them using a <code>.cfignore</code> file. (<code>.cfignore</code> is similar to git’s <code>.gitignore</code>, which allows you to exclude files and directories from git tracking.)  Especially with a large application, uploading unnecessary files slows down application deployment.</p>
+
+<p>Specify the files or file types you wish to exclude from upload in a text file, named <code>.cfignore</code>, in the root of your application directory structure.  For example, these lines exclude the <code>tmp</code> and <code>log</code> directories. </p>
+
+<pre class="terminal">
+tmp/
+log/
+</pre>
+
+<p>The file types you will want to exclude vary, based on the application frameworks you use. The <code>.gitignore</code> templates for common frameworks, available at <a href="https://github.com/github/gitignore">https://github.com/github/gitignore</a>, are a useful starting point.  </p>
+
+<h2><a id='instances'></a>Run Multiple Instances to Increase Availability</h2>
+
+<p>To avoid the risk of an application being unavailable during Cloud Foundry upgrade processes, you should run more than one instance of an application. When a DEA is upgraded, the applications running on it are <em>evacuated</em>: shut down gracefully on the DEA to be upgraded, and restarted on another DEA. On Pivotal CF Hosted, BOSH is configured to upgrade DEAs one at a time, so for an application whose startup time is less than two minutes, running a second instance should be sufficient. Cloud Foundry recommends running more than two instances of an application that takes longer than two minutes to start. </p>
+
+<h2><a id='buildpacks'></a>Buildpack Support for Runtimes and Frameworks</h2>
+
+<p>Cloud Foundry stages application using framework and and runtime-specific buildpacks. Heroku developed the buildpack approach, and made it available to the open source community.  Cloud Foundry currently provides buildpacks for the several runtimes and frameworks.  See the links below for run-time specific deployment instructions:</p>
+
+<ul>
+<li>Ruby &mdash; <a href="/docs/using/deploying-apps/ruby/index.html">Deploy Rack, Rails, or Sinatra Applications</a></li>
+<li>Javascript &mdash; <a href="/docs/using/deploying-apps/javascript/index.html">Deploy Node.js Applications</a></li>
+<li>Java/JVM &mdash; <a href="/docs/using/deploying-apps/jvm/index.html">Deploy Java, Groovy, or Scala Apps that Use the Spring, Grails, Lift, or Play Frameworks</a></li>
+</ul>
+
+<p>Cloud Foundry also supports custom buildpacks as described on <a href="/docs/using/deploying-apps/buildpacks.html">Custom Buildpacks</a>.  Some <a href="https://devcenter.heroku.com/articles/third-party-buildpacks">Heroku third party buildpacks</a> may work with Cloud Foundry, but your experience may vary. See <a href="https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks">https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks</a> for a list of community-developed buildpacks. To use a buildpack that is not built-in to Cloud Foundry, you specify the URL of the buildpack when you push an application, using the <code>--buildpack</code> qualifier.  </p>
+
+<p>If you do not specify a buildpack when you run <code>cf push</code>, Cloud Foundry determines which built-in buildpack to use, using the <code>bin/detect</code> script of each buildpack.</p>
+
+<h2><a id='deploy-options'></a>Application Deployment Options</h2>
+
+<p>The details of how an application is deployed are governed by a set of required and optional deployment attributes. For example, you specify the name of the application, the number of instances to run, and how much memory to allocate to the application.  You can supply deployment options on the command line when you run <code>cf push</code>, or in an application manifest file. </p>
+
+<ul>
+<li>See the <a href="/docs/using/managing-apps/cf/index.html#push">push</a> section on &ldquo;cf Command Line Interface&rdquo; for information about the <code>push</code> command and supplying qualifiers on the command line.</li>
+<li>See the <a href="/docs/using/deploying-apps/manifest.html#push-and-manifest">cf Push and the Manifest</a> section on &ldquo;Application Manifests&rdquo; for information about using an application manifest to supply deployment options.</li>
+</ul>
+
+<p>For general intructions on how to push an application to the Pivotal CF hosted service, see <a href="/docs/dotcom/getting-started.html">Getting Started</a>.</p>
+
+<h2><a id='start-command'></a>The Application Start Command</h2>
+
+<p>There are three ways that Cloud Foundry can obtain the command to use to start an application; they are listed below in order of precedence.</p>
+
+<ol>
+<li>The value supplied with the <code>--command</code> qualifier (or in the application’s <code>manifest.yml</code> file). For example, <code>cf push --command &#39;.java/bin/java myapp&#39;</code>.</li>
+<li>The value of the <code>web</code> key in the procfile, for the application, if it exists. A procfile is a text file named <code>Procfile</code>, in the root directory of your application, that lists the process types in an application, and associated start commands. For example, <code>web: YourStartCommand</code></li>
+<li>The start command (if specified) for the “web” process type, in <code>default_process_types</code> section of the output from the buildpack&#39;s <code>bin/release</code> script. </li>
+</ol>
+
+<h2><a id='run-utility'></a>Run a Standalone Utility at Deployment</h2>
+
+<p>You can run an application-related utility by invoking it at the time you push the application.
+One use case for this capability is database creation and migration.  If you are going to run a database application to Cloud Foundry, you need to create and populate the database.  Similarly, when the database schema changes you will need to update or migrate the database accordingly.</p>
+
+<h3><a id='custom-start'></a>Specify a Custom Start Command</h3>
+
+<p>The mechanism for invoking a script or utility on Cloud Foundry is to customize the command that Cloud Foundry issues to start the application. There are two ways to use a custom start command:</p>
+
+<ul>
+<li><p>Specify the command at the command line using the <code>--command</code> qualifier when running <code>cf push</code>. </p></li>
+<li><p>Specify the command in the application’s deployment manifest, <code>manifest.yml</code>. </p></li>
+</ul>
+
+<h3><a id='revert-start'></a>Revert to Standard Start Command</h3>
+
+<p>Unless you want to run the custom start command every time you push the application, you must revert to the default or previously defined start command. To do so, after the utility has run and the application is started:</p>
+
+<ul>
+<li><p>If you ran the custom command at the command line, re-push the application using the <code>--reset</code> qualifier, which tells Cloud Foundry to use the deployment attributes in manifest. yml. (Otherwise, the next time you push the application, Cloud Foundry will use the same qualifiers you supplied during the prior push.)  </p></li>
+<li><p>If you specified the command in the manifest, remove the custom command from the manifest and re-push the application. </p></li>
+</ul>
+
+<h3><a id='single-app'></a>Run a Start Command on One Instance</h3>
+
+<p>There is another factor to consider when using a custom start command:  if you start more than a single instance of the application when you push it, the custom command will be used to start each of the instances &mdash;inappropriate in the case of database creation or migration. For examples of using a custom start command to migrate a database, for a single application instance only, see <a href="/docs/using/deploying-apps/migrate-db.html">Migrate a Database on Cloud Foundry</a>.</p>
+
+<h2><a id='services'></a>Using Services</h2>
+
+<p>An application running on a Cloud Foundry instance can use services that the instance is configured to provision. Such built-in services vary for different Cloud Foundry instances.  </p>
+
+<p>The Pivotal CF hosted instance provides a variety of ready-to-provision services, including several databases, email, and Redis, among others.  For information about services available to applications running on the Pivotal CF hosted instance, see <a href="/docs/dotcom/marketplace/services/index.html">Services Marketplace</a>.  </p>
+
+<p>To use a built-in service, you need to create a service instance and bind it to your application.  <a href="/docs/dotcom/adding-a-service.html">Getting Started with Services</a> has information about how to perform these tasks on the  Pivotal CF hosted service. Depending on the type of service, it may be necessary to configure the application to connect to a service instance.</p>
+
+<p>For framework specific service information see:</p>
+
+<ul>
+<li><a href="/docs/using/services/spring-service-bindings.html">Service Bindings for Spring Applications</a></li>
+<li><a href="(/docs/using/services/grails-service-bindings.html">Service Bindings for Grails Applications</a></li>
+<li><a href="/docs/using/services/lift-service-bindings.html">Service Bindings for Lift Applications</a></li>
+<li><a href="/docs/using/services/ruby-service-bindings.html">Service Bindings for Rack, Rails, or Sinatra Applications</a></li>
+<li><a href="/docs/using/services/node-service-bindings.html">Service Bindings for Node.js Applications</a></li>
+</ul>
+
+<p>For information about how external services can work with Cloud Foundry, see <a href="/docs/running/architecture/services/index.html">Services Architecture</a>.</p>
+
+          </div><!-- End of content_inner -->
+        </div><!-- End of container-full -->
+      </div><!-- End of content -->
+    </div><!-- End of non_footer -->
+    <div id='footer'>
+      <div id='container-footer'>
+        <div class='bg_social'>
+          <ul class='social'>
+            <li>
+            <a href='http://twitter.com/cloudfoundry' target='_blank'>
+            <img alt='Twitter' src='/images/twitter_large.png'>
+            </a>
+            </li>
+            <li>
+            <a href='https://plus.google.com/114245065906861739918/posts' target='_blank'>
+            <img alt='Google+' src='/images/g+_large.png'>
+            </a>
+            </li>
+            <li>
+            <a href='http://facebook.com/cloudfoundry' target='_blank'>
+            <img alt='Facebook' src='/images/facebook_large.png'>
+            </a>
+            </li>
+            <li>
+            <a href='http://youtube.com/cloudfoundry' target='_blank'>
+            <img alt='Youtube' src='/images/youtube_large.png'>
+            </a>
+            </li>
+          </ul>
+        </div><!-- End of bg_social -->
+        <ul class='links'>
+          <li>
+          <a href='http://www.cloudfoundry.com/about'>About</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://blog.cloudfoundry.com/'>Blog</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://www.cloudfoundry.com/partners'>Partners</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://docs.cloudfoundry.com'>Docs</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://www.cloudfoundry.com/faq'>FAQ</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://www.cloudfoundry.com/getinvolved'>Get Involved</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://status.cloudfoundry.com/'>Status</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://www.cloudfoundry.com/support'>Support</a>
+          </li>
+        </ul>
+        <div class='copyright'>
+          <div class='hr-horizontal-dark'></div>
+          <br>
+          <p>
+            &copy;
+            <script>
+              //<![CDATA[
+                var d = new Date();
+                document.write(d.getFullYear());
+              //]]>
+            </script>
+            GoPivotal, Inc. All rights reserved.
+            <a href='http://www.cloudfoundry.com/terms'>Terms</a>
+            <a href='http://www.gopivotal.com/privacy-policy' target='_blank'>Privacy</a>
+          </p>
+        </div><!-- End of copyright -->
+      </div><!-- End of container-footer -->
+    </div><!-- End of footer -->
+    <script type="text/javascript">
+      (function() {
+        var didInit = false;
+        function initMunchkin() {
+          if(didInit === false) {
+            didInit = true;
+            Munchkin.init('625-IUJ-009');
+          }
+        }
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = document.location.protocol + '//munchkin.marketo.net/munchkin.js';
+        s.onreadystatechange = function() {
+          if (this.readyState == 'complete' || this.readyState == 'loaded') {
+            initMunchkin();
+          }
+        };
+        s.onload = initMunchkin;
+        document.getElementsByTagName('head')[0].appendChild(s);
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,704 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <!-- Always force latest IE rendering engine or request Chrome Frame -->
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+
+    <!-- Use title if it's in the page YAML frontmatter -->
+    <title>Cloud Foundry Eclipse Plugin</title>
+
+    <link href="/stylesheets/master.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+    <link href='/images/favicon.ico' rel='shortcut icon'>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('a#search').click(function () {
+          $('#organization_bar .navbar .nav>li a').css("padding","11px 20px 8px");
+          $('#organization_bar .navbar .nav>li a#docs').css("padding","14px 20px");
+          $('#organization_bar .navbar .nav>li a#search2').css("padding","11px 10px 8px");
+          $('#search-on').show();
+          $('#search-off').hide();
+        });
+        $('.cancel-x').click(function () {
+          $('#organization_bar .navbar .nav>li a').css("padding","11px 63px 8px");
+          $('#organization_bar .navbar .nav>li a#docs').css("padding","14px 20px");
+          $('#organization_bar .navbar .nav>li a#search2, #organization_bar .navbar .nav>li a#search').css("padding","16px 20px 15px");
+          $('#organization_bar .navbar .nav>li a#getinvolved').css("padding","11px 92px 8px");
+          $('#organization_bar .navbar .nav>li#docs-off .docs-list-list a').css("padding","0");
+          $('#search-on').hide();
+          $('#search-off').show();
+        });f
+        $(".togglebutton").click(function () {
+        var divname= this.value;
+          $("#"+divname).show("slow").siblings().hide("slow");
+        });
+      });
+    </script>
+
+    <!--[if lt IE 9]>
+    <style>
+        #content .container-full {background:  #ebf0fa;}
+        .call-to-contribute-box, .column-left, .column-middle, .column-right {background:#e3e8f2}
+        #footer {background:#000;}
+    </style>
+    <![endif]-->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-22181585-1']);
+      _gaq.push(['_setDomainName', 'cloudfoundry.com']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body class="docs docs_clients docs_clients_sts">
+    <img id="bg" src="/images/bg-plain-x.jpg">
+    <div id='non_footer'>
+      <div id='header'>
+        <div class='container_wide'>
+          <ul class='actions'>
+            <li class='last'>
+              <a href="http://www.cloudfoundry.com/contact">Contact Us</a>
+            </li>
+            <li>
+              <a class='register_link' href='http://login.run.pivotal.io/login'>My Account</a>            
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div id='content'>
+        <div class='logo-main'>
+          <div class='logo'>
+            <a href='http://www.cloudfoundry.com'>
+            <img src='/images/logo-cloudfoundry.png'>
+            </a>
+            <a href='http://www.gopivotal.com' target="_blank">
+            <img id="pivotal-logo" src='/images/logo-pivotal.png'>
+            </a>
+          </div>
+          <div class='cta'>
+            <a href='https://console.run.pivotal.io'>
+            <img src='/images/signup_freetrial.png'>
+            </a>
+          </div>
+        </div><!-- End of logo-main-->
+        <div class='container-full'>
+          <div id='organization_bar'>
+            <div class='navbar'>
+              <ul class='nav'>
+                <li>
+                <a href='http://www.cloudfoundry.com/use' id='use'>Using Cloud Foundry</a>
+                </li>
+                <li>
+                <a href='http://www.cloudfoundry.com/run' id='run'>Running Cloud Foundry</a>
+                </li>
+                <li>
+                <a href='http://www.cloudfoundry.com/getinvolved' id='getinvolved'>Get Involved</a>
+                </li>
+                <li id='docs-off'>
+                  <a href='/' id='docs'>
+                    <div id='icon-docs'></div>
+                  </a>
+                  <div id='docs-list'>
+                    <div class="docs-list-list">
+                      <a class="docs-list-th" href='/docs/using/app-arch/'>Using Cloud Foundry</a>
+                      <br>
+                      <a href="/docs/using/app-arch/">Application Architecture Considerations</a>
+                      <br>
+                      <a href='/docs/using/deploying-apps/'>Deploying Apps</a>
+                      <br>
+                      <a href='/docs/using/managing-apps/'>Managing Apps</a>
+                      <br>
+                      <a href='/docs/using/services.html'>Using Services</a>
+                      <br>
+                      <a class="docs-list-see-all" href="/docs/using/">See all</a>
+                    </div><!-- End of 1st column docs-list-list-->
+                    <div class="hr-vertical"></div>
+                    <div class="docs-list-list">
+                      <a class="docs-list-th" href='/docs/running/'>Running Cloud Foundry</a>
+                      <br>
+                      <a href='/docs/running/architecture/'>Architecture</a>
+                      <br>
+                      <a href='/docs/running/bosh/'>BOSH</a>
+                      <br>
+                      <a href='/docs/running/deploying-cf/'>Deploying with BOSH</a>
+                      <br>
+                      <a href='/docs/running/deploying-cf-with-chef/'>Deploying with Chef</a>
+                      <br>
+                      <a href='/docs/running/micro_cloud_foundry/'>Micro Cloud Foundry</a>
+                      <br>
+                      <a href='/docs/running/managing-cf/index.html'>Managing Cloud Foundry</a>
+                      <br>
+                      <a class="docs-list-see-all" href="/docs/running/">See all</a>
+                    </div><!-- End of column 2 docs-list-list -->
+                    <div class="hr-vertical"></div>
+                    <div class="docs-list-list">
+                      <a class="docs-list-th" href='/docs/reference/'>Reference</a>
+                      <br>
+                      <a href='/docs/reference/cc-api.html'>Cloud Foundry REST API</a>
+                      <br>
+                      <a class="docs-list-th" href='/docs/dotcom/'>CloudFoundry.com</a>
+                      <br>
+                      <a href='/docs/dotcom/integration/'>Technical Integration</a>
+                      <br>
+                      <a class="docs-list-th" href='/docs/community/'>Community</a>
+                    </div><!-- End of column 3 docs-list-list -->
+                  </div><!-- End of docs-list -->
+                </li>
+                <li id='search-off'>
+                  <a id='search'>
+                    <div class='icon-search'></div>
+                  </a>
+                </li>
+                <li id='search-on'>
+                  <a id='search2'>
+                    <form action='http://www.cloudfoundry.com/search' class='search-form' method='get' onsubmit='return submitQuery()'>
+                      <input autocomplete='off' class='search-input' id='search-query' name='q' onfocus="this.placeholder = ''" placeholder='' type='search' value=''>
+                    </form>
+                    <div class="cancel-x"></div>
+                  </a>
+                </li>
+              </ul>
+            </div><!-- End of navbar -->
+          </div><!-- End of organization_bar -->
+          <div class='content_inner'>
+            <a class="forkme" href="http://github.com/cloudfoundry/cf-docs" target="_blank">
+              <img alt="Fork me on GitHub" src="/images/ribbon_forkme.png">
+            </a>
+            <form action='http://www.cloudfoundry.com/search' class='search-docs-form' method='get' onsubmit='return submitQuery()'>
+              <input autocomplete='off' class='search-docs-input' id='search-query' name='q' onfocus="this.placeholder = 'more:docs '" placeholder='' type='search-docs' value='more:docs '>
+            </form>
+            <br clear="left">
+            
+              <div class="breadcrumbs">
+                <ul>
+                  <li>
+                    <a href="/">Home</a>
+                  </li>
+                  <li class=""><a href="/docs/">Deploy Applications</a></li> <li class=""><a href="/docs/clients/">Deployment Clients</a></li> <li class="active"><span>Cloud Foundry Eclipse Plugin</span></li>
+                </ul>
+              </div>
+              <br clear="left">
+
+			
+
+              <div class="quick-links"><ul>
+<li><a href="#install">Install Cloud Foundry Eclipse Plugin</a>
+
+<ul>
+<li><a href="#install-to-eclipse">Install to Eclipse from Marketplace</a></li>
+<li><a href="#install-to-sts">Install to STS from Extensions Tab</a></li>
+<li><a href="#install-local">Install from a Local Repository</a></li>
+</ul></li>
+<li><a href="#cloud-foundry-server">Create a Cloud Foundry Server</a></li>
+<li><a href="#plugin-ui">About the Plugin User Interface</a>
+
+<ul>
+<li><a href="#overview-tab">Overview Tab</a></li>
+<li><a href="#apps-services-tab">Applications and Services Tab</a></li>
+</ul></li>
+<li><a href="#deploy-an-application">Deploy an Application</a></li>
+<li><a href="#create-service">Create a Service</a></li>
+<li><a href="#bind-service">Bind and Unbind Services</a></li>
+<li><a href="#view-file">View an Application File</a></li>
+<li><a href="#undeploy">Undeploy an Application</a></li>
+<li><a href="#scale-application">Scale an Application</a></li>
+<li><a href="#push-changes">Push Application Changes</a></li>
+<li><a href="#manage-app-urls">Manage Application URLs</a></li>
+<li><a href="#console-view">Information in the Console View</a></li>
+<li><a href="#clone">Clone a Cloud Foundry Server Instance</a></li>
+<li><a href="#add-URL">Add a Cloud Foundry Instance URL</a></li>
+</ul>
+</div>
+
+              <h1>Cloud Foundry Eclipse Plugin</h1>
+
+            
+            <p>The Cloud Foundry Eclipse Plugin is an extension that enables Cloud Foundry users to deploy and manage Java and Spring applications on a Cloud Foundry instance from Eclipse or Spring Tools Suite (STS).</p>
+
+<p>The plugin supports Eclipse v3.8 and v4.3 (a Java EE version is recommended), and STS 3.0.0 and later.</p>
+
+<p>This page has instructions for installing and using v1.5.1 of the plugin, which is compatible with Cloud Foundry v2.</p>
+
+<p>You can use the plugin to:</p>
+
+<ul>
+<li>Deploy applications from an Eclipse or STS workspace to a running Cloud Foundry instance. The plugin supports Java/JVM applications and frameworks, such as:
+
+<ul>
+<li>Spring</li>
+<li>Java Web</li>
+<li>Java standalone</li>
+<li>Grails</li>
+<li>Lift</li>
+</ul></li>
+<li>Create, bind, and unbind services.</li>
+<li>View and manage deployed applications and services.</li>
+<li>Start and stop applications.</li>
+</ul>
+
+<p>v1.5.1 of the plugin provides several new features:</p>
+
+<ul>
+<li>Custom buildpack support &mdash; When you deploy an application using the plugin, you can supply the URL of a custom buildpack.</li>
+<li>Separately defined host and domain &mdash; In this version of the plugin, you specify the components (host and domain) of an application URL separately, rather than as a complete URL.</li>
+<li>Cloud Foundry server cloning &mdash; v1.5.1 of the plugin makes it easier to work with multiple Cloud Foundry spaces. After configuring a first Cloud Foundry server instance using the plugin, you can use the new <strong>Clone Server</strong> command to create additional server instances that target other Cloud Foundry spaces.</li>
+</ul>
+
+<h2><a id='install'></a>Install Cloud Foundry Eclipse Plugin</h2>
+
+<p>If you have a previous version of the Cloud Foundry Eclipse Plugin installed, uninstall it before installing the new version. To uninstall the plugin:</p>
+
+<ol>
+<li>Choose <strong>About Eclipse</strong> (or <strong>About Spring Tools Suite</strong>) from the Eclipse (or <strong>Spring Tools Suite</strong>) menu and click <strong>Installation Details</strong>.</li>
+<li>On the <strong>Installation Details</strong>, select the previous version of the plugin and click <strong>Uninstall</strong>.</li>
+</ol>
+
+<p>Follow the installation instructions appropriate for your environment:</p>
+
+<ul>
+<li><a href="#install-to-eclipse">Install to Eclipse from Marketplace</a></li>
+<li><a href="#install-to-sts">Install to STS from Extensions Tab</a></li>
+<li><a href="#install-local">Install from a Local Repository</a></li>
+</ul>
+
+<h3><a id='install-to-eclipse'></a>Install to Eclipse from Marketplace</h3>
+
+<p>Follow these instructions to install the Cloud Foundry Eclipse Plugin to Eclipse from the Eclipse Marketplace.</p>
+
+<ol>
+<li>Start Eclipse.</li>
+<li>Select <strong>Eclipse Marketplace</strong> from the Eclipse <strong>Help</strong> menu.</li>
+<li>On the marketplace window, enter &ldquo;Cloud Foundry&rdquo; in the <strong>Find</strong> field, and click <strong>Go</strong>.</li>
+<li><p>In the search results, click the <strong>Install</strong> control next to the listing for Cloud Foundry Integration.</p>
+
+<p><img src="../../images/sts/eclipse-marketplace.png" /></p></li>
+<li><p>The <strong>Confirm Selected Features</strong> window lists the plugin &mdash; &ldquo;Cloud Foundry Integration for Eclipse&rdquo; &mdash; and the optional &ldquo;SpringSource UAA Integration&rdquo; component, which reports tool usage data, anonymously. If you do not want your plugin usage statistics to be reported, de-select the UAA component before clicking <strong>Confirm</strong>.</p>
+
+<p><img src="../../images/sts/confirm-selected-features.png" /></p></li>
+<li><p>The <strong>Review Licenses</strong> window appears. Click “I accept the terms of the license agreement” and click <strong>Finish</strong>.</p></li>
+<li><p>The <strong>Software Updates</strong> window appears. Click <strong>Yes</strong> to restart Eclipse.</p>
+
+<p><img src="../../images/sts/software-updates.png" /></p></li>
+</ol>
+
+<h3><a id='install-to-sts'></a>Install to STS from Extensions Tab</h3>
+
+<p>Follow these instructions to install the Cloud Foundry Eclipse Plugin to STS from the <strong>Extensions</strong> tab.</p>
+
+<ol>
+<li>Start STS.</li>
+<li>Select the <strong>Extensions</strong> tab from the STS Dashboard.</li>
+<li>Enter &ldquo;Cloud Foundry&rdquo; in the <strong>Find</strong> field.</li>
+<li><p>Select <strong>Cloud Foundry Integration for Eclipse</strong> and click <strong>Install</strong>.</p>
+
+<p><img src="../../images/sts/extensions.png" /></p></li>
+<li><p>The <strong>Install</strong> window lists the plugin &mdash; &ldquo;Cloud Foundry Integration for Eclipse&rdquo; &mdash; and the optional &ldquo;Spring UAA Integration&rdquo; component, which reports tool usage data, anonymously. If you prefer that your plugin usage statistics not be reported, de-select the UAA component beform clicking  <strong>Next</strong>.</p>
+
+<p><img src="../../images/sts/install.png" /></p></li>
+<li><p>On the <strong>Install Details</strong> window, click <strong>Next</strong>.</p>
+
+<p><img src="../../images/sts/install-details.png" /></p></li>
+<li><p>The <strong>Review Licenses</strong> window appears. Click “I accept the terms of the license agreement” and click <strong>Finish</strong> to perform the installation.</p></li>
+<li><p>The <strong>Software Updates</strong> window appears. Click <strong>Yes</strong> to restart STS.</p>
+
+<p><img src="../../images/sts/restart-sts.png" /></p></li>
+<li><p>After STS restarts, you can see new panes in the Editor portion of the screen. See <a href="#plugin-ui">About the Plugin User Interface</a> below for a description of the plugin tabs and the information in each.</p></li>
+<li><p>Proceed to <a href="#cloud-foundry-server">Create a Cloud Foundry Server</a>.</p></li>
+</ol>
+
+<h3><a id='install-local'></a>Install from a Local Repository</h3>
+
+<p>If you need to install the Cloud Foundry Eclipse Plugin locally, rather than via the Internet, you can download the source and create a repository that you can copy to the target machine and then install from it.</p>
+
+<p><em>Step 1:  Obtain the plugin source from GitHub.</em></p>
+
+<ul>
+<li>You can download archived source code for released versions of the plugin from <a href="https://github.com/SpringSource/eclipse-integration-cloudfoundry/releases">https://github.com/SpringSource/eclipse-integration-cloudfoundry/releases</a>.</li>
+<li><p>If you want the very latest source code for the plugin, clone the project repository:</p>
+<pre class="highlight text">git clone https://github.com/SpringSource/eclipse-integration-cloudfoundry
+</pre>
+<p><br></p></li>
+</ul>
+
+<p><em>Step 2: Build repository.</em></p>
+
+<p>Unzip the downloaded archive, change directory to the root directory and run this command in the shell:</p>
+
+<p><code>mvn -Pe37 package</code></p>
+
+<p>Transfer <code>org.cloudfoundry.ide.eclipse.server.site/target/site</code> to the machine where you want to install the plugin. If you zip it up, be sure to unzip prior to installation.</p>
+
+<p><em>Step 3: Install from local repository.</em></p>
+
+<p>On the machine running Eclipse or Spring Tools Suite:</p>
+
+<ol>
+<li>In Eclipse (or STS), select <strong>Install New Software</strong> from the <strong>Help</strong> menu.</li>
+<li>On the <strong>Available Software</strong> window, click <strong>Add</strong> to the right of the <strong>Work with</strong> field.</li>
+<li>On the <strong>Add Repository</strong> window, enter a name for the repository, for example “Cloud Foundry Integration”, and click <strong>Local</strong>.</li>
+<li>On the <strong>Open</strong> window, browse to <code>org.cloudfoundry.ide.eclipse.server.site/target/site</code> and click <strong>Open</strong>.</li>
+<li>On the <strong>Add Repository</strong> window, click <strong>OK</strong>.</li>
+<li>On the <strong>Available Software</strong> window, checkmark: “Core/Cloud Foundry Integration” and “Resources/Cloud Foundry Integration” and click <strong>Next</strong>.</li>
+<li>On the <strong>Review Licenses</strong> window, click “I accept the terms of the license agreement” and click <strong>Finish</strong>.</li>
+</ol>
+
+<h2><a id='cloud-foundry-server'></a>Create a Cloud Foundry Server</h2>
+
+<p>This section has instructions for configuring a server resource that will represent a target Cloud Foundry space. You will create a server for each space in Cloud Foundry to which you will deploy applications. Once you create your first Cloud Foundry service instances using the instructions below, you can create additional instances using the <a href="#clone">Clone Server</a> feature.</p>
+
+<ol>
+<li>Right-click the <strong>Servers</strong> view and select <strong>New &gt; Server</strong>.</li>
+<li><p>In the <strong>Define a New Server</strong> window, expand the <strong>Pivotal</strong> folder, select <strong>Cloud Foundry</strong>, and click <strong>Next</strong>.</p>
+
+<p><strong>Note:</strong> Do not enter values for <strong>Server host name</strong> or <strong>Server Runtime Environment</strong>. These fields are unused and will be removed in a future version of the plugin.</p>
+
+<p><img src="../../images/sts/define-new-server.png" /></p></li>
+<li><p>On the <strong>Cloud Foundry Account</strong> window, if you already have a Cloud Foundry account, enter the email account and password you use to log on to Cloud Foundry and click <strong>Validate Account</strong>.</p>
+
+<p>If you do not have a Cloud Foundry account, you can click <strong>Pivotal CF Signup</strong> to get one and complete this procedure after your account is established.</p>
+
+<p><strong>Note:</strong> The <strong>Register Account</strong> function is not supported by public instances of Cloud Foundry v2. You can register accounts for Pivotal CF Hosted using the Pivotal CF portal at <a href="https://console.run.pivotal.io">run.pivotal.io</a>.</p>
+
+<p><img src="../../images/sts/cloud-foundry-account.png" /></p></li>
+<li><p>The <strong>Cloud Foundry Account</strong> window is refreshed and displays a message indicating whether or not your credentials were valid &mdash; if they were, click <strong>Next</strong>.</p>
+
+<p><img src="../../images/sts/new-server.png" /></p></li>
+<li><p>On the <strong>Organizations and Spaces</strong> window, select the space you want to target, and click <strong>Finish</strong>.</p>
+
+<p><strong>Note:</strong> If you do not select a space, the server will be configured to connect to the default space, which is the first encountered in a list of your spaces.</p>
+
+<p><img src="../../images/sts/orgs-and-spaces.png" /></p></li>
+<li><p>Once you have successfully configured the Pivotal Cloud Foundry server, it will appear in the <strong>Servers</strong> view of the Eclipse or STS user interface. To familiarize yourself with the plugin user interface, see <a href="#plugin-ui">About the Plugin User Interface</a>. When you are ready, proceed to <a href="#deploy-an-application">Deploy an Application</a>.</p></li>
+</ol>
+
+<h2><a id='plugin-ui'></a>About the Plugin User Interface</h2>
+
+<p>The paragraphs below describe the Cloud Foundry Eclipse plugin user interface. If you do not see the tabs described below, select the Pivotal Cloud Foundry server in the <strong>Servers</strong> view. To expose the Servers view, ensure that you are using the Java perspective, then select <strong>Window &gt; Show View &gt; Other &gt; Server &gt; Servers</strong>.</p>
+
+<p>The Cloud Foundry editor, outlined in red in the screenshot below, is the primary plugin user interface.
+Some workflows involve interacting with standard elements of the Eclipse user interface, such as the <strong>Project Explorer</strong> and the <strong>Console</strong> and <strong>Servers</strong> views.</p>
+
+<p>Note that the Cloud Foundry editor allows you to work with a single Cloud Foundry space; each space is represented by a distinct server instance in the <strong>Servers</strong> view (B). Multiple editors, each targeting a different space, can be open simultaneously. However, only one editor targeting a particular Cloud Foundry server instance can be open at a time.</p>
+
+<h3><a id='overview-tab'></a>Overview Tab</h3>
+
+<p>The follow panes and views are present when the <strong>Overview</strong> tab is selected:</p>
+
+<ul>
+<li>A &mdash; The <strong>Package Explorer</strong> view lists the projects in the current workspace.</li>
+<li>B &ndash; The <strong>Servers</strong> view lists server instances configured in the current workspace. A server of type &ldquo;Pivotal Cloud Foundry&rdquo; represents a targeted space in a Cloud Foundry instance.</li>
+<li>C &ndash; The <strong>General Information</strong> pane.</li>
+<li>D &ndash; The <strong>Account Information</strong> pane lists your Cloud Foundry credentials and the target organization and space. The pane includes these controls:
+
+<ul>
+<li><strong>Clone Server</strong> &mdash; Use to create additional Pivotal Cloud Foundry server instances. You must configure a server instance for each Cloud Foundry space you wish to target. For more information, see <a href="#clone">Create Additional Server Instances</a>.</li>
+<li><strong>Change Password</strong> &mdash; Use to change your Cloud Foundry password.</li>
+<li><strong>Validate Account</strong> &mdash; Use to verify your currently configured Cloud Foundry credentials.</li>
+<li><strong>Pivotal CF Signup</strong> &mdash; Use to sign up for a Cloud Foundry account.</li>
+</ul></li>
+<li>E &ndash; The <strong>Server Status</strong> pane shows whether or not you are connected to the target Cloud Foundry space, and the <strong>Disconnect</strong> and <strong>Connect</strong> controls.</li>
+<li>F &ndash; The <strong>Console</strong> view displays status messages when you perform an action such as deploying an application.</li>
+<li><p>G &ndash; The <strong>Remote Systems</strong> view allows you to view the contents of a file that is part of a deployed application. For more information, see <a href="#view-file">View an Application File</a>.</p>
+
+<p><img width="1150" src="../../images/sts/ui-overview-tab.png" /></p></li>
+</ul>
+
+<h3><a id='apps-services-tab'></a>Applications and Services Tab</h3>
+
+<p>The follow panes are present when the <strong>Applications and Services</strong> tab is selected:</p>
+
+<ul>
+<li>H &mdash; The <strong>Applications</strong> pane lists the applications deployed to the target space.</li>
+<li>I &mdash;  The <strong>Services</strong> pane lists the services provisioned in the targeted space.</li>
+<li><p>J &mdash;  The <strong>General</strong> pane displays the following information for the application currently selected in the <strong>Applications</strong> pane:</p>
+
+<ul>
+<li><strong>Name</strong></li>
+<li><strong>Mapped URLs</strong> &ndash; Lists URLs mapped to the application. You can click a URL to open a browser to the application within Eclipse (or STS); and click the pencil icon to add or remove mapped URLs. See <a href="#manage-urls">Manage Application URLs</a>.</li>
+<li><strong>Memory Limit</strong> &ndash; The amount of memory allocated to the application. You can use the pull-down to change the memory limit.</li>
+<li><strong>Instances</strong> &ndash; The number of instances of the application that are deployed. You can use the pull-down to change number of instances.</li>
+<li><strong>Start</strong>, <strong>Stop</strong>, <strong>Restart</strong>, <strong>Update and Restart</strong> &mdash; The controls that appear depend on the current state of the application. The <strong>Update and Restart</strong> command will attempt an incremental push of only those application resources that have changed. It will not perform a full application push. See <a href="#push-changes">Push Application Changes</a> below.</li>
+</ul></li>
+<li><p>K &mdash; The <strong>Services</strong> pane lists services that are bound to the application currently selected in the <strong>Applications</strong> pane. Note the icon in the upper right corner of the pane &mdash; it allows you to create a service, as described in <a href="#create-service">Create a Service</a>.</p>
+
+<p><img width="1150" src="../../images/sts/ui-apps-services-tab.png" /></p></li>
+</ul>
+
+<h2><a id='deploy-an-application'></a>Deploy an Application</h2>
+
+<p>To deploy an application to Cloud Foundry using the plugin:</p>
+
+<ol>
+<li><p>To initiate deployment either:</p>
+
+<ul>
+<li>Drag the application from the <strong>Package Explorer</strong> view onto the Pivotal Cloud Foundry server in the <strong>Servers</strong> view, or</li>
+<li>Right-click the Pivotal Cloud Foundry server in the <strong>Servers</strong> view, select <strong>Add and Remove</strong> from the server context menu, and move the application from the <strong>Available</strong> to the <strong>Configured</strong> column.</li>
+</ul></li>
+<li><p>On the <strong>Application Details</strong> window:</p></li>
+</ol>
+
+<ul>
+<li><p>By default, the <em>Name</em> field is populated with the application project name. You can enter a different name if desired &mdash; the name will be assigned to the deployed application, but will not rename the project.</p></li>
+<li><p>If you want to use an external buildpack to stage the application, enter the URL of the buildpack.</p>
+
+<p>You can deploy the application without further configuration by clicking <strong>Finish</strong>. Note that becuase the application default values may take a second or two to load, the <strong>Finish</strong> button might not be enabled immediately. A progress indicator will indicate when the application default values have been loaded, and the &ldquo;Finish&rdquo; button will be enabled.</p>
+
+<p>Click <strong>Next</strong> to continue.</p>
+
+<p><img src="../../images/sts/application-details.png" /></p></li>
+</ul>
+
+<ol>
+<li><p>On the <strong>Launch Deployment</strong> window:</p>
+
+<p><strong>Host</strong> &mdash; By default, contains the name of the application. You can enter a different value if desired. Note that if you push the same application to multiple spaces in the same organization, you must assign a unique <strong>Host</strong> to each.</p>
+
+<p><strong>Domain</strong> &mdash; Contains the default domain. If you have mapped custom domains to the target space, they appear in the pull-down list.  <strong>Note</strong>:  This version of the Cloud Foundry Eclipse plugin does not provide a mechanism for mapping a custom domain to a space. You must use the <code>cf map domain</code> command to do so. For more information, see <a href="/docs/using/managing-apps/cf/index.html#map-domain">map-domain</a>.</p>
+
+<p><strong>Deployed URL</strong> &mdash; By default, contains the value of the <strong>Host</strong> and <strong>Domain</strong> fields, separated by a period (.) character.</p>
+
+<p><strong>Memory Reservation</strong> &mdash; Select the amount of memory to allocate to the application from the pull-down list.</p>
+
+<p><strong>Start application on deployment</strong> &mdash; If you do not want the application to be started upon deployment, uncheck the box.</p>
+
+<p><img src="../../images/sts/launch-deployment.png" /></p></li>
+<li><p>The <strong>Services Selection</strong> window lists services provisioned in the target space. Checkmark the services, if any, that you want to bind to the application, and click <strong>Finish</strong>. Note that you can bind services to the application after deployment, as described in <a href="#bind-service">Bind and Unbind Services</a>.</p>
+
+<p><img src="../../images/sts/services-selection.png" /></p>
+
+<p>As the deployment proceeds, progress messages appear in the <strong>Console</strong> view. When deployment is complete, the application is listed in the <strong>Applications</strong> pane.</p></li>
+</ol>
+
+<h2><a id='create-service'></a>Create a Service</h2>
+
+<p>Before you can bind a service to an application you must create it. To do so:</p>
+
+<ol>
+<li>Select the <strong>Applications and Services</strong> tab.</li>
+<li>Click the icon in the upper right corner of the &ldquo;Services&rdquo; pane.</li>
+<li>In the <strong>Service Configuration</strong> window:</li>
+</ol>
+
+<ul>
+<li><strong>Name</strong> &mdash; Enter a name for the service.</li>
+<li><p><strong>Type</strong> &mdash; Select the service type from the pull-down list.</p>
+
+<p><img src="../../images/sts/service-configuration.png" /></p></li>
+</ul>
+
+<p>The new service appears in the <strong>Services</strong> pane.</p>
+
+<h2><a id='bind-service'></a>Bind and Unbind Services</h2>
+
+<p>You can bind a service to an application when you deploy it. To bind a service to an application that is already deployed, drag the service from the <strong>Services</strong> pane to the <strong>Application Services</strong> pane.  (See the area labelled &ldquo;G&rdquo; in the screenshot in the <a href="#apps-services-tab">Applications and Services</a> above.)</p>
+
+<p>To unbind a service, right-click the service in the <strong>Application Services</strong> pane, and select <strong>Unbind from Application</strong>.</p>
+
+<h2><a id='view-file'></a>View an Application File</h2>
+
+<p>You can view the contents of a file in a deployed application by selecting it the <strong>Remote Systems View</strong>. (See the areas labelled &ldquo;I&rdquo; and &ldquo;J&rdquo; in the screenshot in the <a href="#overview-tab">Applications and Services Tab</a> above.)</p>
+
+<ol>
+<li><p>If the <strong>Remote Systems View</strong> is not visible:</p>
+
+<ul>
+<li>Select the <strong>Applications and Services</strong> tab.</li>
+<li>Select the application of interest from the <strong>Applications</strong> pane.</li>
+<li>In the <strong>Instances</strong> pane, click the <strong>Remote Systems View</strong> link.</li>
+</ul></li>
+<li><p>On the <strong>Remote Systems View</strong>, browse to the application and application file of interest, and double-click the file. A new tab appears in the editor area with the contents of the selected file.</p>
+
+<p><img src="../../images/sts/file-contents.png" /></p></li>
+</ol>
+
+<h2><a id='undeploy'></a>Undeploy an Application</h2>
+
+<p>To undeploy an application, right click the appliation in either the <strong>Servers</strong> or the <strong>Applications</strong> pane and clicke <strong>Remove</strong>.</p>
+
+<h2><a id='scale-application'></a>Scale an Application</h2>
+
+<p>You can change the memory allocation for an application and the number of instances deployed in the <strong>General</strong> pane when the <strong>Applications and Services</strong> tab is selected.  Use the <strong>Memory Limit</strong> and <strong>Instances</strong> selector lists.</p>
+
+<p>Although the scaling can be performed while the application is running, if the scaling has not taken effect, restart the application. If necessary, the application statistics can be manually refreshed by clicking the <strong>Refresh</strong> button in the top, right corner of the &ldquo;Applications&rdquo; pane, labelled &ldquo;H&rdquo; in the screenshot in <a href="#apps-services-tab">Applications and Services Tab</a>.</p>
+
+<h2><a id='push-changes'></a>Push Application Changes</h2>
+
+<p>The Cloud Foundry editor supports these application operations:</p>
+
+<ol>
+<li><p><strong>Start</strong> and <strong>Stop</strong> &mdash; When you <strong>Start</strong> an application, the plugin pushes all application files to the Cloud Foundry instance before starting the application, regardless of whether there are changes to the files or not.</p></li>
+<li><p><strong>Restart</strong> &mdash; When you <strong>Restart</strong> a deployed application, the plugin does not push any resources to the Cloud Foundry instance.</p></li>
+<li><p><strong>Update and Restart</strong> &mdash; When you run this command, the plugin pushes only the changes that were made to the application since last update, not the entire application. This is useful for performing incremental updates to large applications.</p></li>
+</ol>
+
+<h2><a id='manage-app-urls'></a>Manage Application URLs</h2>
+
+<p>You add, edit, and remove URLs mapped to the currently selected application in the <strong>General</strong> pane when the <strong>Applications and Services</strong> tab is selected.  Click the pencil icon to display the <strong>Mapped URIs Configuration</strong> window.</p>
+
+<p><img src="../../images/sts/manage-uris-configuration.png" /></p>
+
+<h2><a id='console-view'></a>Information in the Console View</h2>
+
+<p>When you start, restart, or update and restart an application, application output will generally be streamed to the <strong>Console</strong> view (labelled &ldquo;F&rdquo; in the screenshot in <a href="#overview-tab">Overview Tab</a>). The information shown in the <strong>Console</strong> view for a running application instance includes staging information, and the application&#39;s  <code>std.out</code> and <code>std.error</code> logs.</p>
+
+<p>If multiple instances of the application are running, only the output of the first instance appears in the <strong>Console</strong> view. To view the output of another running instance, or to refresh the output that is currently displayed:</p>
+
+<ol>
+<li><p>In the <strong>Applications and Services</strong> tab, select the deployed application in the <em>Applications</em> pane.</p></li>
+<li><p>Click the <strong>Refresh</strong> button on the top right corner of the <strong>Applications</strong> pane.</p></li>
+<li><p>In the <strong>Instances</strong> pane, wait for the application instances to be updated.</p></li>
+<li><p>Once non-zero health is shown for an application instance, right-click on that instance to open the context menu and select <strong>Show Console</strong>.</p></li>
+</ol>
+
+<h2><a id='clone'></a>Clone a Cloud Foundry Server Instance</h2>
+
+<p>Each space in Cloud Foundry to which you want to deploy applications must be represented by a Cloud Foundry server instance in the <strong>Servers</strong> view. After you have created a Cloud Foundry server instance, as decribed in <a href="#cloud-foundry-instance">Create a Cloud Foundry Server</a>, you can clone it to create another.</p>
+
+<p>To clone a server:</p>
+
+<ol>
+<li><p>Either:</p>
+
+<ul>
+<li> In the Cloud Foundry server instance editor &ldquo;Overview&rdquo; tab, click on the &ldquo;Clone Server&rdquo; button, or</li>
+<li>Right-click a Cloud Foundry server instance in the <strong>Servers</strong> view, and select <strong>Clone Server</strong> from the context menu,</li>
+</ul></li>
+<li><p>On the <strong>Organizations and Spaces</strong> window, select the space you want to target.</p></li>
+<li><p>The name field will be filled with the name of the space you selected. If desired, edit the server name before clicking finish <strong>Finish</strong>.</p></li>
+</ol>
+
+<h2><a id='add-URL'></a>Add a Cloud Foundry Instance URL</h2>
+
+<p>By default, the Cloud Foundry Eclipse plugin is configured to connect with Pivotal CF Hosted instance. You can configure the plugin to work with other Cloud Foundry instances to which you have access.  To do so:</p>
+
+<ol>
+<li>Perform steps 1 and 2 of <a href="#cloud-foundry-server">Create a Cloud Foundry Server</a>.</li>
+<li><p>On the <strong>Cloud Foundry Account</strong> window, enter the email account and password you use to log on to the target instance, and then click <strong>Manage Cloud URLs</strong></p>
+
+<p><img src="../../images/sts/cloud-foundry-account.png" /></p></li>
+<li><p>On the <strong>Manage Cloud URLs</strong> window, click <strong>Add</strong>.</p>
+
+<p><img src="../../images/sts/manage-cloud-urls.png" /></p></li>
+<li><p>On the <strong>Add a Cloud URL</strong> window, enter the name and URL of the target cloud instance and click <strong>Finish</strong>.</p>
+
+<p><img src="../../images/sts/add-cloud-url.png" /></p></li>
+<li><p>The new cloud instance should appear in the list on the <strong>Manage Cloud URLs</strong> window. Click <strong>OK</strong> to proceed.</p></li>
+<li><p>On the <strong>Cloud Foundry Account</strong> window, click <strong>Validate Account</strong>.</p></li>
+<li><p>Complete steps 4 through 6 of <a href="#cloud-foundry-server">Create a Cloud Foundry Server</a>.</p></li>
+</ol>
+
+          </div><!-- End of content_inner -->
+        </div><!-- End of container-full -->
+      </div><!-- End of content -->
+    </div><!-- End of non_footer -->
+    <div id='footer'>
+      <div id='container-footer'>
+        <div class='bg_social'>
+          <ul class='social'>
+            <li>
+            <a href='http://twitter.com/cloudfoundry' target='_blank'>
+            <img alt='Twitter' src='/images/twitter_large.png'>
+            </a>
+            </li>
+            <li>
+            <a href='https://plus.google.com/114245065906861739918/posts' target='_blank'>
+            <img alt='Google+' src='/images/g+_large.png'>
+            </a>
+            </li>
+            <li>
+            <a href='http://facebook.com/cloudfoundry' target='_blank'>
+            <img alt='Facebook' src='/images/facebook_large.png'>
+            </a>
+            </li>
+            <li>
+            <a href='http://youtube.com/cloudfoundry' target='_blank'>
+            <img alt='Youtube' src='/images/youtube_large.png'>
+            </a>
+            </li>
+          </ul>
+        </div><!-- End of bg_social -->
+        <ul class='links'>
+          <li>
+          <a href='http://www.cloudfoundry.com/about'>About</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://blog.cloudfoundry.com/'>Blog</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://www.cloudfoundry.com/partners'>Partners</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://docs.cloudfoundry.com'>Docs</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://www.cloudfoundry.com/faq'>FAQ</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://www.cloudfoundry.com/getinvolved'>Get Involved</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://status.cloudfoundry.com/'>Status</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://www.cloudfoundry.com/support'>Support</a>
+          </li>
+        </ul>
+        <div class='copyright'>
+          <div class='hr-horizontal-dark'></div>
+          <br>
+          <p>
+            &copy;
+            <script>
+              //<![CDATA[
+                var d = new Date();
+                document.write(d.getFullYear());
+              //]]>
+            </script>
+            GoPivotal, Inc. All rights reserved.
+            <a href='http://www.cloudfoundry.com/terms'>Terms</a>
+            <a href='http://www.gopivotal.com/privacy-policy' target='_blank'>Privacy</a>
+          </p>
+        </div><!-- End of copyright -->
+      </div><!-- End of container-footer -->
+    </div><!-- End of footer -->
+    <script type="text/javascript">
+      (function() {
+        var didInit = false;
+        function initMunchkin() {
+          if(didInit === false) {
+            didInit = true;
+            Munchkin.init('625-IUJ-009');
+          }
+        }
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = document.location.protocol + '//munchkin.marketo.net/munchkin.js';
+        s.onreadystatechange = function() {
+          if (this.readyState == 'complete' || this.readyState == 'loaded') {
+            initMunchkin();
+          }
+        };
+        s.onload = initMunchkin;
+        document.getElementsByTagName('head')[0].appendChild(s);
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,671 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <!-- Always force latest IE rendering engine or request Chrome Frame -->
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+
+    <!-- Use title if it's in the page YAML frontmatter -->
+    <title>Application Manifests</title>
+
+    <link href="/stylesheets/master.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+    <link href='/images/favicon.ico' rel='shortcut icon'>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('a#search').click(function () {
+          $('#organization_bar .navbar .nav>li a').css("padding","11px 20px 8px");
+          $('#organization_bar .navbar .nav>li a#docs').css("padding","14px 20px");
+          $('#organization_bar .navbar .nav>li a#search2').css("padding","11px 10px 8px");
+          $('#search-on').show();
+          $('#search-off').hide();
+        });
+        $('.cancel-x').click(function () {
+          $('#organization_bar .navbar .nav>li a').css("padding","11px 63px 8px");
+          $('#organization_bar .navbar .nav>li a#docs').css("padding","14px 20px");
+          $('#organization_bar .navbar .nav>li a#search2, #organization_bar .navbar .nav>li a#search').css("padding","16px 20px 15px");
+          $('#organization_bar .navbar .nav>li a#getinvolved').css("padding","11px 92px 8px");
+          $('#organization_bar .navbar .nav>li#docs-off .docs-list-list a').css("padding","0");
+          $('#search-on').hide();
+          $('#search-off').show();
+        });f
+        $(".togglebutton").click(function () {
+        var divname= this.value;
+          $("#"+divname).show("slow").siblings().hide("slow");
+        });
+      });
+    </script>
+
+    <!--[if lt IE 9]>
+    <style>
+        #content .container-full {background:  #ebf0fa;}
+        .call-to-contribute-box, .column-left, .column-middle, .column-right {background:#e3e8f2}
+        #footer {background:#000;}
+    </style>
+    <![endif]-->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-22181585-1']);
+      _gaq.push(['_setDomainName', 'cloudfoundry.com']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body class="docs docs_understanding docs_understanding_manifest">
+    <img id="bg" src="/images/bg-plain-x.jpg">
+    <div id='non_footer'>
+      <div id='header'>
+        <div class='container_wide'>
+          <ul class='actions'>
+            <li class='last'>
+              <a href="http://www.cloudfoundry.com/contact">Contact Us</a>
+            </li>
+            <li>
+              <a class='register_link' href='http://login.run.pivotal.io/login'>My Account</a>            
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div id='content'>
+        <div class='logo-main'>
+          <div class='logo'>
+            <a href='http://www.cloudfoundry.com'>
+            <img src='/images/logo-cloudfoundry.png'>
+            </a>
+            <a href='http://www.gopivotal.com' target="_blank">
+            <img id="pivotal-logo" src='/images/logo-pivotal.png'>
+            </a>
+          </div>
+          <div class='cta'>
+            <a href='https://console.run.pivotal.io'>
+            <img src='/images/signup_freetrial.png'>
+            </a>
+          </div>
+        </div><!-- End of logo-main-->
+        <div class='container-full'>
+          <div id='organization_bar'>
+            <div class='navbar'>
+              <ul class='nav'>
+                <li>
+                <a href='http://www.cloudfoundry.com/use' id='use'>Using Cloud Foundry</a>
+                </li>
+                <li>
+                <a href='http://www.cloudfoundry.com/run' id='run'>Running Cloud Foundry</a>
+                </li>
+                <li>
+                <a href='http://www.cloudfoundry.com/getinvolved' id='getinvolved'>Get Involved</a>
+                </li>
+                <li id='docs-off'>
+                  <a href='/' id='docs'>
+                    <div id='icon-docs'></div>
+                  </a>
+                  <div id='docs-list'>
+                    <div class="docs-list-list">
+                      <a class="docs-list-th" href='/docs/using/app-arch/'>Using Cloud Foundry</a>
+                      <br>
+                      <a href="/docs/using/app-arch/">Application Architecture Considerations</a>
+                      <br>
+                      <a href='/docs/using/deploying-apps/'>Deploying Apps</a>
+                      <br>
+                      <a href='/docs/using/managing-apps/'>Managing Apps</a>
+                      <br>
+                      <a href='/docs/using/services.html'>Using Services</a>
+                      <br>
+                      <a class="docs-list-see-all" href="/docs/using/">See all</a>
+                    </div><!-- End of 1st column docs-list-list-->
+                    <div class="hr-vertical"></div>
+                    <div class="docs-list-list">
+                      <a class="docs-list-th" href='/docs/running/'>Running Cloud Foundry</a>
+                      <br>
+                      <a href='/docs/running/architecture/'>Architecture</a>
+                      <br>
+                      <a href='/docs/running/bosh/'>BOSH</a>
+                      <br>
+                      <a href='/docs/running/deploying-cf/'>Deploying with BOSH</a>
+                      <br>
+                      <a href='/docs/running/deploying-cf-with-chef/'>Deploying with Chef</a>
+                      <br>
+                      <a href='/docs/running/micro_cloud_foundry/'>Micro Cloud Foundry</a>
+                      <br>
+                      <a href='/docs/running/managing-cf/index.html'>Managing Cloud Foundry</a>
+                      <br>
+                      <a class="docs-list-see-all" href="/docs/running/">See all</a>
+                    </div><!-- End of column 2 docs-list-list -->
+                    <div class="hr-vertical"></div>
+                    <div class="docs-list-list">
+                      <a class="docs-list-th" href='/docs/reference/'>Reference</a>
+                      <br>
+                      <a href='/docs/reference/cc-api.html'>Cloud Foundry REST API</a>
+                      <br>
+                      <a class="docs-list-th" href='/docs/dotcom/'>CloudFoundry.com</a>
+                      <br>
+                      <a href='/docs/dotcom/integration/'>Technical Integration</a>
+                      <br>
+                      <a class="docs-list-th" href='/docs/community/'>Community</a>
+                    </div><!-- End of column 3 docs-list-list -->
+                  </div><!-- End of docs-list -->
+                </li>
+                <li id='search-off'>
+                  <a id='search'>
+                    <div class='icon-search'></div>
+                  </a>
+                </li>
+                <li id='search-on'>
+                  <a id='search2'>
+                    <form action='http://www.cloudfoundry.com/search' class='search-form' method='get' onsubmit='return submitQuery()'>
+                      <input autocomplete='off' class='search-input' id='search-query' name='q' onfocus="this.placeholder = ''" placeholder='' type='search' value=''>
+                    </form>
+                    <div class="cancel-x"></div>
+                  </a>
+                </li>
+              </ul>
+            </div><!-- End of navbar -->
+          </div><!-- End of organization_bar -->
+          <div class='content_inner'>
+            <a class="forkme" href="http://github.com/cloudfoundry/cf-docs" target="_blank">
+              <img alt="Fork me on GitHub" src="/images/ribbon_forkme.png">
+            </a>
+            <form action='http://www.cloudfoundry.com/search' class='search-docs-form' method='get' onsubmit='return submitQuery()'>
+              <input autocomplete='off' class='search-docs-input' id='search-query' name='q' onfocus="this.placeholder = 'more:docs '" placeholder='' type='search-docs' value='more:docs '>
+            </form>
+            <br clear="left">
+            
+              <div class="breadcrumbs">
+                <ul>
+                  <li>
+                    <a href="/">Home</a>
+                  </li>
+                  <li class=""><a href="/docs/">Deploy Applications</a></li> <li class=""><a href="/docs/understanding/">Understanding Application Deployment</a></li> <li class="active"><span>Application Manifests</span></li>
+                </ul>
+              </div>
+              <br clear="left">
+
+			
+
+              <div class="quick-links"><ul>
+<li><a href="#purpose">Purpose of Manifest File</a></li>
+<li><a href="#sample">A Simple Sample Manifest</a></li>
+<li><a href="#push-and-manifest">cf Push and the Manifest</a></li>
+<li><a href="#create">How to Create a Manifest</a></li>
+<li><a href="#manual">What Must be Manually Defined in a Manifest</a></li>
+<li><a href="#specify-service">Specify Services in a Manifest</a></li>
+<li><a href="#var">Set Environment Variable in a Manifest</a></li>
+<li><a href="#symbols">Use Symbols in a Manifest</a></li>
+<li><a href="#inheritance">Multiple Manifests and Inheritance</a></li>
+<li><a href="#multi-app">Define a Multi-App Manifest with Dependencies</a></li>
+<li><a href="#not-simple">Not-So-Simple Sample Manifests</a></li>
+<li><a href="#attributes">Supported Manifest Attributes</a></li>
+</ul>
+</div>
+
+              <h1>Application Manifests</h1>
+
+            
+            <p>An application manifest defines a set of application deployment settings, such as the name of an application, the number of instances to deploy, the maximum memory available to an instance, the services it uses, and so on. The default name for a manifest is <code>manifest.yml</code>.</p>
+
+<h2><a id='purpose'></a>Purpose of Manifest File</h2>
+
+<p>The purpose of a manifest is to automate application deployment &mdash; it allows you to provide deployment settings in a file rather than at the command line.  Any deployment option that you can supply at the command line when you run <code>cf push</code> can be specified in a manifest. Some deployment options (those for which <code>cf push</code> does not prompt) can <em>only</em> be specified in the manifest.   </p>
+
+<h2><a id='sample'></a>A Simple Sample Manifest</h2>
+
+<p>The sample manifest shown below specifies deployment setting for a Node.js application named “nodetestdh01”.  When the application is pushed using this manifest, two instances will be created.  The application URL will be <code>crn.csapps.io</code>.</p>
+<pre class="highlight text">applications:
+- name: nodetestdh01
+  memory: 64M
+  instances: 2
+  host: crn
+  domain: csapps.io 
+  path: .
+</pre>
+<p>Manifests are written in YAML. For information about YAML, see <a href="http://www.yaml.org">www.yaml.org</a>.</p>
+
+<h2><a id='push-and-manifest'></a>cf Push and the Manifest</h2>
+
+<p>When you push an application, cf looks for a file named <code>manifest.yml</code>. The push command looks for the manifest in the current working directory, and if it is not found there, in directories above the application root in the directory structure. If the manifest file name is not <code>manifest.yml</code> you should specify its name with the <code>--manifest</code> (<code>-m)</code> option, for example:</p>
+
+<pre class="terminal">
+cf push -m prod-manifest.yml 
+</pre>  
+
+<p><strong>Note:</strong>  cf does not look for a manifest under these circumstances:</p>
+
+<ul>
+<li>If you use the <code>--interactive</code> option with <code>cf push</code>, cf does not look for a manifest, instead, it prompts you for deployment options.</li>
+<li>If you use the <code>--no-manifest</code> option with <code>cf push</code>, if a manifest exists, it is ignored.</li>
+</ul>
+
+<p>The first time you push an application, assuming a manifest is found, cf uses the deployment settings the file contains.</p>
+
+<p>If cf does <em>not</em> find a manifest, it prompts you interactively for required deployment options. Once you have supplied the required inputs, cf asks if you want to save the deployment settings to a manifest, as described in the following section.</p>
+
+<p>When you <em>re-deploy</em> an application, <code>cf push</code> does <em>not</em> apply the settings in an existing manifest. Instead, the most recently configured deployment options are applied. For example, if, after initially pushing an application with a manifest that specified “instances: 1”, you use <code>cf scale</code> to increase the number of instances to 2, the next time you push the application, 2 instances will be created. You must use the <code>--reset</code> option to cause the settings in the manifest to be applied. </p>
+
+<h2><a id='create'></a>How to Create a Manifest</h2>
+
+<p>There are two ways to create a manifest:</p>
+
+<ul>
+<li><p>Automatically &ndash;  When you push an application for the first time (without a manifest) you can supply deployment options as command arguments, or in response to interactive prompts.  cf asks if you want to save the deployment settings to a manifest. If you respond “yes”, the deployment options you selected are saved in the root directory of the application director <code>manifest.yml</code>. </p></li>
+<li><p>Manually &ndash; You can create a text file with desired deployment options. Save the manifest in the root of your project directory structure, or in a directory above the root in the directory structure. </p></li>
+</ul>
+
+<h2><a id='manual'></a>What Must be Manually Defined in a Manifest</h2>
+
+<p>There are some deployment options that can only be defined in the manifest. For example:</p>
+
+<ul>
+<li><p>Ruby symbols &ndash; If you want to use Ruby symbols in a manifest you must manually define them in the the manifest.  See <a href="#symbols">Use Symbols in a Manifest</a>.</p></li>
+<li><p>Environment variables &ndash; If you want to define an environment variable, you must edit the manifest file. See <a href="#vars">Set Environment Variable in a Manifest</a>.  </p></li>
+<li><p>Multi-application manifests &ndash; If you want to deploy multiple applications with a single push command, you must manually edit the manifest file to define the deployment options for each of the applications. In a multi-application manifest, you can define the dependency relationships among the applications.  See <a href="#multi-app">Define a Multi-App Manifest with Dependencies</a>.</p></li>
+<li><p>Inheritance &ndash; If you want the settings in one manifest to be included in another, you must specify that in its manifest, as described in <a href="#inheritance">Multiple Manifests and Inheritance</a>.</p></li>
+<li><p>Application stack &mdash; If you want to specify a particular stack, you must add the <code>stack</code> attribute to the manifest.</p></li>
+</ul>
+
+<h2><a id='specify-service'></a>Specify Services in a Manifest</h2>
+
+<p>To specify service instances to be created and bound to an application at deployment, add lines like these to the manifest:</p>
+
+<p><tt>
+services:<br>
+&nbsp;&nbsp;&nbsp;<i>service-instance-name:</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: <i>service-type</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;provider: <i>service-provider</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;plan: <i>service-plan</i><br>
+</tt></p>
+
+<p>The following sample manifest specifies two services.</p>
+<pre class="highlight text">applications:
+- name: mysample
+  memory: 256M
+  instances: 1
+  host: tapp
+  domain: ctapps.io
+  path: .
+  services:
+    rediscloud-8cccc:
+      type: rediscloud
+      provider: garantiadata
+      plan: 20mb
+    mongolab-6d208:
+      type: mongolab
+      provider: mongolab
+      plan: sandbox
+</pre>
+<h2><a id='var'></a>Set Environment Variable in a Manifest</h2>
+
+<p>To define an environment variable that your application uses, add lines like these to the manifest:</p>
+
+<p><tt>
+env:<br>
+&nbsp;&nbsp;&nbsp;<i>var<em>name: var</em>value</i><br>
+</tt> </p>
+
+<p>For example:</p>
+
+<p><tt>
+env:<br>
+&nbsp;&nbsp;&nbsp;greeting: hello<br>
+</tt></p>
+
+<p>See the example &ldquo;base-manifest&rdquo; in <a href="#not-simple">Not-So-Simple Sample Manifests</a>.</p>
+
+<h2><a id='symbols'></a>Use Symbols in a Manifest</h2>
+
+<p><code>manifest.yml</code> supports the following symbols. (A symbol is a Ruby object, the name of an object that is reolved later.)</p>
+
+<ul>
+<li><p><code>target-base</code> &ndash; The base URL of your target. For example, if your target is “api.mycloud.com”, the value of target-base is “mycloud.com”. <code>target-base</code> is useful if you want to create a manifest for an application that can be pushed to multiple Cloud Foundry instances.   </p></li>
+<li><p><code>random-word</code> &ndash; A random string of characters, useful for ensuring uniqueness of a URL.</p></li>
+</ul>
+
+<p>Otherwise, symbol resolution simulates lexical scoping &mdash; you can define arbitrary properties, which can be overridden by child manifests (described above in <a href="#multi-app">Multiple Manifests and Inheritance</a>) or in a nested hash.</p>
+
+<h2><a id='inheritance'></a>Multiple Manifests and Inheritance</h2>
+
+<p>A manifest document can inherit properties from a parent manifest by including this line: </p>
+<pre class="highlight text">inherit: path/to/parent.yml
+</pre>
+<p>This pulls the content of the parent manifest into the child manifest, deep-merging the properties defined in the child manifest with those defined in the parent. Symbols (discussed above in <a href="#symbols">Use Symbols in a Manifest</a>) are resolved after the merge has taken place, so properties defined in the child manifest can be used in properties set in the parent manifest. This allows you to provide basic information, such as service binding information, in a “base” manifest, which can be extended by a child manifest. For example:</p>
+
+<ul>
+<li><p>You can create various child manifests for different deployment modes (for example, debug, local, and public) that extend the settings in a base parent manifest.</p></li>
+<li><p>You can package a basic configuration with an application, and a user can extend the configuration with a child manifest with additional properties, or with property settings that override those in the parent. </p></li>
+</ul>
+
+<h2><a id='multi-app'></a>Define a Multi-App Manifest with Dependencies</h2>
+
+<p>Manifests enable deployment of multiple applications through a single push command. For example, consider two independent but related applications, a publisher and a subscriber. The subscriber should start before the publisher, so it is available to receive messages as soon as the publisher starts.  If you define these two applications within the same project, you can create a multi-application manifest document, in which you can then specify the dependency.  For example, you can structure the project like this:</p>
+<pre class="highlight text">./big-app
+./big-app/publisher
+./big-app/subscriber
+</pre>
+<p>The manifest below defines two applications, “publisher” and “subscriber”, that use a single Redis service.  Because  the “publisher” application depends on the “subscriber” application, when you do <code>cf push</code> from the &ldquo;big-app&rdquo; directory, “subscriber” will be started before “publisher”.</p>
+<pre class="highlight text">applications: 
+- name: publisher
+  memory: 64M
+  path: ./publisher
+  domain: cfapps.io
+  host: publisher
+  instances: 1
+  services: 
+    work-queue: 
+      type: rediscloud
+      provider: garantiadata
+      plan: 20mb
+  depends-on: ./subscriber
+- name: subscriber
+  memory: 64M
+  path: ./subscriber
+  domain: cfapps.io
+  host: subscriber
+  instances: 1
+  services: 
+    work-queue: 
+      type: rediscloud
+      provider: garantiadata
+      plan: 20mb
+</pre>
+<h2><a id='not-simple'></a>Not-So-Simple Sample Manifests</h2>
+
+<p>This section contains two manifests that illustrate a variety of manifest features.  </p>
+
+<p><strong>Notes:</strong></p>
+
+<ul>
+<li><p>The first line of a manifest contains three dashes (<code>---</code>).</p></li>
+<li><p>Settings that apply to all applications in a manifest are declared before the first application block. Examples of such cross-application settings include the environment variables and the services defined in &ldquo;base-manifest.yml&rdquo;.</p></li>
+<li><p>Both manifests are multi-application manifests. </p></li>
+<li><p>The first attribute for an application, <code>name</code>, is preceded by a dash (“-”).</p></li>
+<li><p>&ldquo;production-manifest.yml&rdquo; inherits the setting in &ldquo;base-manifest.yml&rdquo;; all of the settings in &ldquo;base-manifest.yml&rdquo; will be applied to the applications defined in &ldquo;production-manifest.yml&rdquo;. For example, the environment variables defined in &ldquo;base-manifest.yml&rdquo; are available to the applications defined in &ldquo;production-manifest.yml&rdquo;.</p></li>
+<li><p>Comment lines begin with “#”.</p></li>
+</ul>
+
+<h3>production-manifest.yml</h3>
+<pre class="highlight text">---
+inherit: base-manifest.yml
+
+properties:
+  rails-env: production
+  app-host: app1-host
+
+applications:
+  - name: app1-web
+    host: ${app-host}
+    domain: ${target-base}
+    instances: 8
+    command: bundle exec rake server:start_command
+  - name: app1-worker1
+    instances: 4
+    command: bundle exec rake VERBOSE=true QUEUE=* 
+  - name: app1-worker2
+    command: bundle exec rake VERBOSE=true 
+</pre>
+<h3>base-manifest.yml</h3>
+<pre class="highlight text">---
+properties:
+  app-host: ${name}
+
+path: .
+env:
+  RAILS_ENV: ${rails-env}
+  RACK_ENV: ${rails-env}
+  BUNDLE_WITHOUT: test:development
+services:
+  frontend-db:
+    type: cleardb
+    provider: cleardb
+    plan: shock
+mem: 512M
+disk: 1G
+instances: 1
+host: none
+domain: none
+
+# app-specific configuration
+applications:
+- name: frontend
+  host: ${app-host}
+  domain: ${target-base}
+  instances: 2
+  command: bundle exec rake server:start_command
+- name: app2-worker1
+  instances: 2
+  command: bundle exec rake VERBOSE=true QUEUE=* 
+- name: app2-worker2
+  command: bundle exec rake VERBOSE=true 
+
+</pre>
+<h2><a id='attributes'></a>Supported Manifest Attributes</h2>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+<th>Required?</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>inherit</td>
+<td>Use to specify another manifest that the current manifest extends.</td>
+<td>n</td>
+<td>inherit: base-manifest.yml</td>
+</tr>
+<tr>
+<td>properties</td>
+<td>Use to specify one or more property: value pairs.</td>
+<td>n</td>
+<td>properties: <br>&nbsp;&nbsp;app-host: ${name}</td>
+</tr>
+<tr>
+<td>env</td>
+<td>Use to define one or more environment variables used by the application.</td>
+<td>n</td>
+<td>env:  <br>&nbsp;&nbsp;RAILS_ENV: ${rails-env}</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Name of application.</td>
+<td>y</td>
+<td>See the examples in <a href="#not-simple">Not-So-Simple Sample Manifests</a>.</td>
+</tr>
+<tr>
+<td>buildpack</td>
+<td>Use to specify the URL of an external or custom buildpack</td>
+<td>n</td>
+<td></td>
+</tr>
+<tr>
+<td>command</td>
+<td>Command to use to start the application</td>
+<td>n</td>
+<td>command: bundle exec rake server:start_command</td>
+</tr>
+<tr>
+<td>domain</td>
+<td>Domain for the application.</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>host</td>
+<td>Host for the application.</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>instances</td>
+<td>Number of instances of application to run. <br><br>For related information, see <a href="/docs/using/deploying-apps/index.html#instances">Run Multiple Instances to Increase Availability</a> on <a href="/docs/using/deploying-apps/index.html">Key Facts About Application Deployment</a>.</td>
+<td>y, defaults to 1<br> if not specified.</td>
+<td>instances: 2</td>
+</tr>
+<tr>
+<td>mem</td>
+<td>Maximum memory application can use.</td>
+<td>y, defaults to 256M<br> if not specified.</td>
+<td>mem: 64M</td>
+</tr>
+<tr>
+<td>disk</td>
+<td>Maxium disk space application can use.</td>
+<td></td>
+<td>disk:1G</td>
+</tr>
+<tr>
+<td>path</td>
+<td>Path, relative to current working directory, to the application to push.</td>
+<td>y</td>
+<td>path: .</td>
+</tr>
+<tr>
+<td>stack</td>
+<td></td>
+<td>n</td>
+<td></td>
+</tr>
+<tr>
+<td>depends-on</td>
+<td>Path, relative to current working directory, of another application upon which the application depends.</td>
+<td>n</td>
+<td></td>
+</tr>
+<tr>
+<td><em>Service_Name</em></td>
+<td>Name of a service instance to be created and bound to the application</td>
+<td>y</td>
+<td>See &ldquo;base-manifest.xml&rdquo; for example.</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Service type.</td>
+<td>y</td>
+<td>See &ldquo;base-manifest.xml&rdquo; for example.</td>
+</tr>
+<tr>
+<td>provider</td>
+<td>Service provider</td>
+<td>y</td>
+<td>See &ldquo;base-manifest.xml&rdquo; for example.</td>
+</tr>
+<tr>
+<td>plan</td>
+<td>Plan under which the service is obtained.</td>
+<td>y</td>
+<td>See &ldquo;base-manifest.xml&rdquo; for example.</td>
+</tr>
+</tbody></table>
+
+          </div><!-- End of content_inner -->
+        </div><!-- End of container-full -->
+      </div><!-- End of content -->
+    </div><!-- End of non_footer -->
+    <div id='footer'>
+      <div id='container-footer'>
+        <div class='bg_social'>
+          <ul class='social'>
+            <li>
+            <a href='http://twitter.com/cloudfoundry' target='_blank'>
+            <img alt='Twitter' src='/images/twitter_large.png'>
+            </a>
+            </li>
+            <li>
+            <a href='https://plus.google.com/114245065906861739918/posts' target='_blank'>
+            <img alt='Google+' src='/images/g+_large.png'>
+            </a>
+            </li>
+            <li>
+            <a href='http://facebook.com/cloudfoundry' target='_blank'>
+            <img alt='Facebook' src='/images/facebook_large.png'>
+            </a>
+            </li>
+            <li>
+            <a href='http://youtube.com/cloudfoundry' target='_blank'>
+            <img alt='Youtube' src='/images/youtube_large.png'>
+            </a>
+            </li>
+          </ul>
+        </div><!-- End of bg_social -->
+        <ul class='links'>
+          <li>
+          <a href='http://www.cloudfoundry.com/about'>About</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://blog.cloudfoundry.com/'>Blog</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://www.cloudfoundry.com/partners'>Partners</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://docs.cloudfoundry.com'>Docs</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://www.cloudfoundry.com/faq'>FAQ</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://www.cloudfoundry.com/getinvolved'>Get Involved</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://status.cloudfoundry.com/'>Status</a>
+          </li>
+          <li class='disc'>•</li>
+          <li>
+          <a href='http://www.cloudfoundry.com/support'>Support</a>
+          </li>
+        </ul>
+        <div class='copyright'>
+          <div class='hr-horizontal-dark'></div>
+          <br>
+          <p>
+            &copy;
+            <script>
+              //<![CDATA[
+                var d = new Date();
+                document.write(d.getFullYear());
+              //]]>
+            </script>
+            GoPivotal, Inc. All rights reserved.
+            <a href='http://www.cloudfoundry.com/terms'>Terms</a>
+            <a href='http://www.gopivotal.com/privacy-policy' target='_blank'>Privacy</a>
+          </p>
+        </div><!-- End of copyright -->
+      </div><!-- End of container-footer -->
+    </div><!-- End of footer -->
+    <script type="text/javascript">
+      (function() {
+        var didInit = false;
+        function initMunchkin() {
+          if(didInit === false) {
+            didInit = true;
+            Munchkin.init('625-IUJ-009');
+          }
+        }
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = document.location.protocol + '//munchkin.marketo.net/munchkin.js';
+        s.onreadystatechange = function() {
+          if (this.readyState == 'complete' || this.readyState == 'loaded') {
+            initMunchkin();
+          }
+        };
+        s.onload = initMunchkin;
+        document.getElementsByTagName('head')[0].appendChild(s);
+      })();
+    </script>
+  </body>
+</html>

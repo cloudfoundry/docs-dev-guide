@@ -5,14 +5,14 @@
 # git config --global core.excludesfile ~/.gitignore_global
 
 # Ignore bundler config
-/.bundle
+.bundle
 
 # Ignore the build directory
-/build
+build
 
 # Ignore Sass' cache
-/.sass-cache
+.sass-cache
 
 .idea
-/vendor
+vendor
 .DS_Store

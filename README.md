@@ -3,7 +3,7 @@ Developer Guide
 
 This guide explains how to use the cf command line tool to:
 
-*  Push your application to Cloud Foundry
+*  Deploy your application to Cloud Foundry
 *  Provision and bind services
 *  Scale your application
 *  Troubleshoot problems with your application

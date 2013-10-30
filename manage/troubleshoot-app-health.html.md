@@ -69,7 +69,7 @@ If your application fails to upload when you push it to Cloud Foundry, it may be
 
 ### <a id='slow-start'></a>Slow Starting Java or Grails Apps ###
 
- It is not uncommon for a Java or Grails application to take a while to start.  This, in conjunction with the current Java buildpack implementation, can pose a problem. The Java buildpack sets the Tomcat `bindOnInit` property to "false", which causes Tomcat to not listen for HTTP requests until the application is deployed.  If your application takes a long to time to start, the DEA's health check may fail by checking application health before it will accept requests. To workaround is to fork the Java buildpack and change `bindOnInit` to "false".
+ It is not uncommon for a Java or Grails application to take a while to start.  This, in conjunction with the current Java buildpack implementation, can pose a problem. The Java buildpack sets the Tomcat `bindOnInit` property to "false", which causes Tomcat to not listen for HTTP requests until the application is deployed.  If your application takes a long to time to start, the DEA's health check may fail by checking application health before it will accept requests. A workaround is to fork the Java buildpack and change `bindOnInit` to "false" in `resources/tomcat/conf/server.xml`, although this has the downside that the application may appear to be running (as far as Cloud Foundry is concerned) before it is ready to serve requests.
 
 ## <a id='node-apps'></a>Node Best Practices ##
 

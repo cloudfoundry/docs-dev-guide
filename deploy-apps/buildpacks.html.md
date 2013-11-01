@@ -2,14 +2,14 @@
 title: Buildpacks
 ---
 
-Cloud Foundry stages application using framework and and runtime-specific buildpacks. Heroku developed the buildpack approach, and made it available to the open source community. 
+Cloud Foundry stages application using framework and and runtime-specific buildpacks. Heroku developed the buildpack approach, and made it available to the open source community.
 
 
-* **Cloud Foundry Buildpacks** ---  When you push an application the runs in a runtime and framwork supported by a Cloud Foundry buildpack, the appropriate buildpack is automatically applied to the application.  For information about the software resources each buildpack provides see:   
+* **Cloud Foundry Buildpacks** ---  When you push an application the runs in a runtime and framwork supported by a Cloud Foundry buildpack, the appropriate buildpack is automatically applied to the application.  For information about the software resources each buildpack provides see:
 
      * [Java Buildpack](/docs/using/deploying-apps/java-buildpack.html)
-     * [Ruby Buildpack](/docs/using/deploying-apps/ruby-buildpack.html)
-     * [Node.js Buildpack](/docs/using/deploying-apps/node-buildpack.html) 
+     * [Ruby Buildpack](/ruby-buildpack.html)
+     * [Node.js Buildpack](/docs/using/deploying-apps/node-buildpack.html)
 
 <br>
 
@@ -21,7 +21,7 @@ Cloud Foundry stages application using framework and and runtime-specific buildp
     * [Custom Buildpacks](/docs/using/deploying-apps/custom-buildpacks.html) --- See this page for information about writing a custom buildpack.
 
 
-      To use a buildpack that is not built-in to Cloud Foundry, you specify the URL of the buildpack when you push an application, using the `--buildpack` qualifier. 
+      To use a buildpack that is not built-in to Cloud Foundry, you specify the URL of the buildpack when you push an application, using the `--buildpack` qualifier.
 
 
 

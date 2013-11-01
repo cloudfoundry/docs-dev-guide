@@ -8,7 +8,7 @@ Cloud Foundry stages application using framework and and runtime-specific buildp
 * **Cloud Foundry Buildpacks** ---  When you push an application the runs in a runtime and framwork supported by a Cloud Foundry buildpack, the appropriate buildpack is automatically applied to the application.  For information about the software resources each buildpack provides see:
 
      * [Java Buildpack](/docs/using/deploying-apps/java-buildpack.html)
-     * [Ruby Buildpack](/ruby-buildpack.html)
+     * [Ruby Buildpack](ruby-buildpack.html)
      * [Node.js Buildpack](/docs/using/deploying-apps/node-buildpack.html)
 
 <br>

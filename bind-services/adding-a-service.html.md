@@ -4,11 +4,11 @@ title: Add a Service
 
 Cloud Foundry allows you to deploy applications without worrying about configuration headaches, making it faster and easier to build, test, deploy and scale your app.
 
-This guide walks you through binding and using services at run.pivotal.io. It assumes you have pushed an application to run.pivotal.io. If you haven't done, that, you might consider going through our guide, [Getting Started](getting-started.html). 
+This guide walks you through binding and using services at run.pivotal.io. It assumes you have pushed an application to run.pivotal.io. If you haven't done, that, you might consider going through our guide, [Getting Started](getting-started.html).
 
 ## <a id='intro'></a>Intro to Services ##
 
-Cloud Foundry Services are add-ons that can be provisioned alongside your application. Learn all about Services at [Using Services](../using/services/index.html).
+Cloud Foundry Services are add-ons that can be provisioned alongside your application. Learn all about Services at [Using Services](./services-intro.html.html).
 
 In order to use services with your application you will need to:
 
@@ -17,7 +17,7 @@ In order to use services with your application you will need to:
 1. [Update your application to use the service](#using)
 
 ### Services vs. Service Instances
-Services provision services instances. As an example, ClearDB is a service which provisions MySQL databases. Depending on the plan you select, you might get a database in a multi-tenant server, or a dedicated server. But not all services provide databases; a service may simply provision an account on their system for you. Whatever is provisioned for you we refer to as a service instance.  
+Services provision services instances. As an example, ClearDB is a service which provisions MySQL databases. Depending on the plan you select, you might get a database in a multi-tenant server, or a dedicated server. But not all services provide databases; a service may simply provision an account on their system for you. Whatever is provisioned for you we refer to as a service instance.
 
 ## <a id='create'></a>Creating Service Instances ##
 
@@ -47,7 +47,7 @@ Next you will be asked to select a plan. Service plans are a way for providers t
 2: boost: Best for light production or staging your applications
 3: shock: Designed for apps where you need real MySQL reliability, power and throughput.
 4: spark: Great for getting started and developing your apps.
-Which plan?> 
+Which plan?>
 </pre>
 
 Following this step, your service instance will be provisioned.
@@ -60,7 +60,7 @@ Creating service cleardb-e2006... OK
 
 Not all services provide bindable service instances. Binding requires an additional level of integration with a provider, and it doesn't make sense in all cases for the provider to return any credentials for an application's use.
 
-For services that offer bindable service instances, the binding operation puts credentials for the service instance in the environment variable VCAP_SERVICES, where your application can consume them. For more information, see [VCAP_SERVICES Environment Variable](../using/deploying-apps/environment-variable.html).
+For services that offer bindable service instances, the binding operation puts credentials for the service instance in the environment variable VCAP_SERVICES, where your application can consume them. For more information, see [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html).
 
 You can bind a service to an application with the command `cf bind-service`. You will first be asked for the application to bind the service to.
 
@@ -93,14 +93,14 @@ There are three ways of consuming service instance credentials within your appli
 | :------------------- | :--------------------                                                                                                                  |
 | Auto-configuration | Cloud Foundry creates a service connection for you.                                                                |
 | cfruntime            | Creates an object with the location and settings of your services. Set your service connections based on the values in that object.    |
-| Manual               | Parse the JSON credentials object yourself from the [VCAP_SERVICES Environment Variable](../using/deploying-apps/environment-variable.html). |
- 
+| Manual               | Parse the JSON credentials object yourself from the [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html). |
+
 ## <a id='configuring'></a>Configuring Connections for Different Frameworks ##
- 
-The procedure for configuring an application to connect to a service varies by framework. Note that auto-configuration is not supported for all frameworks. The table below has links to instructions for configuring service connections in different environments.  
+
+The procedure for configuring an application to connect to a service varies by framework. Note that auto-configuration is not supported for all frameworks. The table below has links to instructions for configuring service connections in different environments.
 
 | Runtime               | Framework                   |Auto-Configuration Support|
 | :-------------        |:-------------               |:-------------            |
-| Java / JVM        | <li>[Spring](../using/services/spring-service-bindings.html) <li>[Grails](../using/services/grails-service-bindings.html) <li>[Lift](../using/services/lift-service-bindings.html) | Supported. |
-| Ruby            | <li>[Rack, Rails, or Sinatra](../using/services/ruby-service-bindings.html) |  Supported only for Rails, with some limitations. For more information, <br> see [Options for Configuring Ruby Apps for Services](../using/services/ruby-service-bindings.html#options). | 
-| Javascript          | <li>[Node.js](../using/services/node-service-bindings.html) |Not yet available in Cloud Foundry v2. |
+| Java / JVM        | <li>[Spring](spring-service-bindings.html) <li>[Grails](grails-service-bindings.html) <li>[Lift](../using/services/lift-service-bindings.html) | Supported. |
+| Ruby            | <li>[Rack, Rails, or Sinatra](ruby-service-bindings.html) |  Supported only for Rails, with some limitations. For more information, <br> see [Options for Configuring Ruby Apps for Services](ruby-service-bindings.html#options). |
+| Javascript          | <li>[Node.js](node-service-bindings.html) |Not yet available in Cloud Foundry v2. |

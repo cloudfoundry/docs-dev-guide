@@ -16,13 +16,13 @@ This command displays a list of services that can be bound to your applications.
 $ cf services --marketplace
 Getting services... OK
 
-service      version   provider        plans                        description                     
+service      version   provider        plans                        description
 mongodb      n/a       mongolab-dev    free, large, medium, small   Cloud hosted and managed MongoDB
-mongodb      2.2       core            200                          MongoDB NoSQL database          
-mysql        5.5       core            100, 200, cfinternal         MySQL database                  
-postgresql   9.2       core            200                          PostgreSQL database (vFabric)   
-rabbitmq     3.0       core            200                          RabbitMQ message queue          
-redis        2.6       core            200                          Redis key-value store            
+mongodb      2.2       core            200                          MongoDB NoSQL database
+mysql        5.5       core            100, 200, cfinternal         MySQL database
+postgresql   9.2       core            200                          PostgreSQL database (vFabric)
+rabbitmq     3.0       core            200                          RabbitMQ message queue
+redis        2.6       core            200                          Redis key-value store
 </pre>
 
 <i>Note: This is an example. These services may not be available on the Cloud Foundry service you target.</i>
@@ -54,15 +54,15 @@ Creating service mysql-a0a77... OK
 
 ## <a id='user-provided'></a>Create a User-Provided Service Instance ##
 
-User-provided service instances are service instances which have been provisioned outside of Cloud Foundry. For example, a DBA may provide a developer with credentials to an Oracle database managed outside of, and unknown to Cloud Foundry. Rather than hard coding credentials for these instances into your applications, you can create a mock service instance in Cloud Foundry to represent an external resource using the familiar `create-service` command, and provide whatever credentials your application requires. 
+User-provided service instances are service instances which have been provisioned outside of Cloud Foundry. For example, a DBA may provide a developer with credentials to an Oracle database managed outside of, and unknown to Cloud Foundry. Rather than hard coding credentials for these instances into your applications, you can create a mock service instance in Cloud Foundry to represent an external resource using the familiar `create-service` command, and provide whatever credentials your application requires.
 
 * [User Provided Service Instances](user-provided.html)
 
 ## <a id='bind'></a>Bind a Service Instance ##
 
-Binding a service to your application adds credentials for the service instance to the [VCAP_SERVICES](../deploying-apps/environment-variable.html) environment variable. In most cases these credentials are unique to the binding; another app bound to the same service instance would receive different credentials. You may need to restart your application for it to recognize the change. 
+Binding a service to your application adds credentials for the service instance to the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. In most cases these credentials are unique to the binding; another app bound to the same service instance would receive different credentials. You may need to restart your application for it to recognize the change.
 
-How your app leverages the contents of environment variables may depend on the framework you employ. Refer to the [Deploying Apps](/docs/using/deploying-apps/index.html) section for more information.
+How your app leverages the contents of environment variables may depend on the framework you employ. Refer to the [Deploying Apps](../deploy-apps/) section for more information.
 
 You can bind an existing service to an existing application as follows:
 
@@ -79,7 +79,7 @@ Binding mysql-a0a77 to my-app... OK
 
 ## <a id='unbind'></a>Unbind a Service Instance ##
 
-Unbinding a service removes the credentials created for your application from the [VCAP_SERVICES](../deploying-apps/environment-variable.html) environment variable. You may need to restart your application for it to recognize the change. 
+Unbinding a service removes the credentials created for your application from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. You may need to restart your application for it to recognize the change.
 
 <pre class="terminal">
 $ cf unbind-service
@@ -94,7 +94,7 @@ Unbinding mysql-a0a77 from my-app... OK
 
 ## <a id='delete'></a>Delete a Service Instance ##
 
-Deleting a service unprovisions the service instance and deletes *all data* along with the service instance. 
+Deleting a service unprovisions the service instance and deletes *all data* along with the service instance.
 
 <pre class="terminal">
 $ cf delete-service

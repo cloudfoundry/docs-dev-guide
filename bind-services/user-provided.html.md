@@ -4,7 +4,7 @@ title: User Provided Service Instances
 
 User-provided service instances are service instances which have been provisioned outside of Cloud Foundry. For example, a DBA may provide a developer with credentials to an Oracle database managed outside of, and unknown to Cloud Foundry. Rather than hard coding credentials for these instances into your applications, you can create a mock service instance in Cloud Foundry to represent an external resource using the familiar `create-service` command, and provide whatever credentials your application requires. Once created, user-provided service instances behave just like other service instances.
 
-When creating a user-provided instance, Cloud Foundry will ask you to provide a name for the service instance and the parameters for your credentials. Credential parameters are a comma-delimated list. You'll then be prompted to enter a value for each parameter. 
+When creating a user-provided instance, Cloud Foundry will ask you to provide a name for the service instance and the parameters for your credentials. Credential parameters are a comma-delimited list. You'll then be prompted to enter a value for each parameter. 
 
 <pre class="terminal">
 $ cf create-service user-provided
@@ -36,7 +36,7 @@ blazemeter-78fb4   blazemeter      blazemeter   n/a       free-tier   none
 mydb               user-provided   n/a          n/a       n/a         none
 </pre> 
 
-After [binding](managing-services#bind) a user-provided service instance and restarting your app, you'll find that the [VCAP_SERVICES](../deploying-apps/environment-variable.html) will be updated with your credentials.
+After binding a user-provided service instance and restarting your app, you'll find that the [VCAP_SERVICES](../deploy-apps/environment-variable.html) will be updated with your credentials.
 
 ~~~
 {

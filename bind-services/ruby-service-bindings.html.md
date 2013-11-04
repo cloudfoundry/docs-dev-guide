@@ -1,13 +1,13 @@
 ---
-title: Configure Service Connections for Ruby 
+title: Configure Service Connections for Ruby
 ---
 
-After you create a service instance and bind it to an application you must configure the application to connect to the service. 
+After you create a service instance and bind it to an application you must configure the application to connect to the service.
 
 
 ## <a id='config-file'></a>Define Connection in Configuration File ##
 
-For a Ruby database application, you configure the database connection information in the application's `database.yml` file. When you bind a service to an application, the service connection details are written to the applications's `VCAP_SERVICES` environment variable. `VCAP_SERVICES` lists, in JSON format, the services bound to your application and the credentials required to connect to each. 
+For a Ruby database application, you configure the database connection information in the application's `database.yml` file. When you bind a service to an application, the service connection details are written to the applications's `VCAP_SERVICES` environment variable. `VCAP_SERVICES` lists, in JSON format, the services bound to your application and the credentials required to connect to each.
 
 In Ruby, you can read the contents of `VCAP_SERVICES` with `ENV`. For example:
 
@@ -27,7 +27,7 @@ You use the hash key for the service to obtain the the connection credentials fr
 
 </pre>
 
-The hash key is formed from the service provider and version --- *provider-version*. For the service listed above, the provider is "elephantsql" and the version is "n/a", resulting in a hash key of "elephantsql-n/a". 
+The hash key is formed from the service provider and version --- *provider-version*. For the service listed above, the provider is "elephantsql" and the version is "n/a", resulting in a hash key of "elephantsql-n/a".
 
 You can obtain the credentials for the example service with these Ruby statements:
 
@@ -86,7 +86,7 @@ Your code may vary from the example above, depending on the hash key for the ser
 
 ## <a id='migrate'></a>Seed or Migrate Database ##
 
-Before you can use your database the first time, you must create and populate or migrate it. For more information, see [Migrate a Database on Cloud Foundry](/docs/using/deploying-apps/migrate-db.html).
+Before you can use your database the first time, you must create and populate or migrate it. For more information, see [Migrate a Database on Cloud Foundry](./migrate-db.html).
 
 ## <a id='troubleshooting'></a>Troubleshooting ##
 

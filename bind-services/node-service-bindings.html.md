@@ -2,19 +2,10 @@
 title: Binding a service
 ---
 
-**Note:** The auto-configuration functionality described on this page is not yet supported in Cloud Foundry v2.
 
 ## <a id='intro'></a>Introduction ##
 
 This guide is for developers who wish to bind a data source to a Node.js application deployed and running on Cloud Foundry.
-
-## <a id='prerequisites'></a>Prerequisites ##
-
-* A Cloud Foundry account, you can sign up [here](https://my.cloudfoundry.com/signup)
-* The [CF](../../managing-apps/index.html) command line tool
-* [Node.js](http://www.nodejs.org) installed using the matching version of Node.js on your Cloud Foundry instance
-* [NPM](http://npmjs.org/) - Node Package Manager, to manage dependencies on your application
-* A sample application such as the one created in [this](./index.html) tutorial
 
 ### <a id='creating'></a> Creating a service ##
 

@@ -17,21 +17,21 @@ It is recommended that you download the zone file for the domain from your DNS p
 
 Go to https://www.cloudflare.com/, and click **Sign up** in the upper right of the page. On the registration page, enter your email address, username, and password. Accept CloudFlare's terms of use, and click **Create account now**.
 
- <%= image_tag("../images/cloudflare-register.png") %>
+ <%= image_tag("../images/cloudflare/cloudflare-register.png") %>
 
 
 ## <a id='add-site'></a>Step 2 - Add Domain to CloudFlare ##
 
 On the CloudFlare "Add a website" page, enter the name of your custom domain and click **Add website**. CloudFlare will query authoritative DNS servers for the DNS records registered for the domain.
 
- <%= image_tag("add-website.png") %>
+ <%= image_tag("../images/cloudflare/add-website.png") %>
 
 
 ## <a id='scan'></a>Step 3 - Wait for Scan to Complete ##
 
 When the scan is complete, a **Domain records scanned** callout appears. Click **Continue Setup**.
 
- <%= image_tag("scan-complete.png") %>
+ <%= image_tag("../images/cloudflare/scan-complete.png") %>
 
 ## <a id='configure'></a>Step 4 - Configure DNS Records ##
 
@@ -43,7 +43,7 @@ If you prefer, you can click **Add** to define additional records, if necessary.
 
 When done, click **I've added all missing records, continue**.
 
-<%= image_tag("config-dns.png") %>
+<%= image_tag("../images/cloudflare/config-dns.png") %>
 
 ## <a id='settings'></a>Step 5 - Choose Settings ##
 
@@ -67,7 +67,7 @@ On the "Settings for \<YourDomain\>" page:
 
 Click **Continue**.
 
-<%= image_tag("settings.png") %>
+<%= image_tag("../images/cloudflare/settings.png") %>
 
 ## <a id='ssl'></a>Step 6 - Confirm SSL ##
 
@@ -77,7 +77,7 @@ On the "Confirm SSL" page, you can select:
 * **Custom SSL Configuration** --- This option only appears if you selected a "Business" plan in the previous step. When you select this option, you can upload your own private key and certificate files.
 * **Manual SSL Configuration**
 
-<%= image_tag("confirm-ssl.png") %>
+<%= image_tag("../images/cloudflare/confirm-ssl.png") %>
 
 ## <a id='settings'></a>Step 7 - Update Name Servers ##
 
@@ -93,7 +93,7 @@ When you have provided all necessary information, the "My Websites" page appears
 
 Check your DNS registrar's site to verify that the name server changes made in the previous step are complete
 
-<%= image_tag("complete.png") %>
+<%= image_tag("../images/cloudflare/complete.png") %>
 
 
 ## <a id='review'></a>Review CloudFlare Configuration Options ##
@@ -102,7 +102,7 @@ After your initial domain setup is complete, you may want to review CloudFlare c
 
 Click the gear icon in the row for your domain, and choose **CloudFlare settings** from the menu. The **CloudFlare settings** page has several tabs that describe CloudFlare configuration options. In particular, see the **Security** and **Performance** tabs to understand more about the options you configured, and alternative settings.
 
-<%= image_tag("my-websites.png") %>
+<%= image_tag("../images/cloudflare/my-websites.png") %>
 
 
 

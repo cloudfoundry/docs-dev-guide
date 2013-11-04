@@ -11,7 +11,7 @@ You initiate the deployment of an application using the Cloud Foundry CLI `cf pu
 
 When you push an application, Cloud Foundry performs a variety of staging tasks, which at a high level, consist of finding a container to run the application, provisioning the container with the appropriate software and system resources, starting one or more instances of the application, and storing the expected state of the application in the Cloud Controller database.
 
-The staging process flow is illustrated on [How Applications Are Staged](/docs/running/architecture/how-applications-are-staged.html).
+The staging process flow is illustrated on [How Applications Are Staged](./how-applications-are-staged.html).
 
 ## <a id='exclude'></a>Ignore Unnecessary Files When Pushing ##
 
@@ -33,13 +33,13 @@ To avoid the risk of an application being unavailable during Cloud Foundry upgra
 
 ##<a id='buildpacks'></a>Buildpack Support for Runtimes and Frameworks ##
 
-Cloud Foundry stages application using framework and and runtime-specific buildpacks. Heroku developed the buildpack approach, and made it available to the open source community.  Cloud Foundry currently provides buildpacks for the several runtimes and frameworks.  See the links below for run-time specific deployment instructions:
+Cloud Foundry stages application using framework and and runtime-specific buildpacks. Heroku developed the buildpack approach, and made it available to the open source community. Cloud Foundry currently provides buildpacks for the several runtimes and frameworks.  See the links below for run-time specific deployment instructions:
 
-* Ruby --- [Deploy Rack, Rails, or Sinatra Applications](/docs/using/deploying-apps/ruby/index.html)
-* Javascript --- [Deploy Node.js Applications](/docs/using/deploying-apps/javascript/index.html)
-* Java/JVM --- [Deploy Java, Groovy, or Scala Apps that Use the Spring, Grails, Lift, or Play Frameworks](/docs/using/deploying-apps/jvm/index.html)
+* Ruby --- [Deploy Rack, Rails, or Sinatra Applications](./deploy-ruby.html)
+* Javascript --- [Deploy Node.js Applications](./deploy-node.html)
+* Java/JVM --- [Deploy Java, Groovy, or Scala Apps](./deploy-java.html)
 
-Cloud Foundry also supports custom buildpacks as described on [Custom Buildpacks](/docs/using/deploying-apps/buildpacks.html).  Some <a href="https://devcenter.heroku.com/articles/third-party-buildpacks">Heroku third party buildpacks</a> may work with Cloud Foundry, but your experience may vary. See https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks for a list of community-developed buildpacks. To use a buildpack that is not built-in to Cloud Foundry, you specify the URL of the buildpack when you push an application, using the `--buildpack` qualifier.
+Cloud Foundry also supports custom buildpacks as described on the "Custom Buildpacks" page in _Extending Elastic Runtime_ .  Some <a href="https://devcenter.heroku.com/articles/third-party-buildpacks">Heroku third party buildpacks</a> may work with Cloud Foundry, but your experience may vary. See https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks for a list of community-developed buildpacks. To use a buildpack that is not built-in to Cloud Foundry, you specify the URL of the buildpack when you push an application, using the `--buildpack` qualifier.
 
 If you do not specify a buildpack when you run `cf push`, Cloud Foundry determines which built-in buildpack to use, using the `bin/detect` script of each buildpack.
 
@@ -47,11 +47,10 @@ If you do not specify a buildpack when you run `cf push`, Cloud Foundry determin
 
 The details of how an application is deployed are governed by a set of required and optional deployment attributes. For example, you specify the name of the application, the number of instances to run, and how much memory to allocate to the application.  You can supply deployment options on the command line when you run `cf push`, or in an application manifest file.
 
-* See the [push](/docs/using/managing-apps/cf/index.html#push) section on "cf Command Line Interface" for information about the `push` command and supplying qualifiers on the command line.
+* See the [push](../manage/cf.html#push) section on "cf Command Line Interface" for information about the `push` command and supplying qualifiers on the command line.
 * See the [cf Push and the Manifest](manifest.html#push-and-manifest) section on "Application Manifests" for information about using an application manifest to supply deployment options.
 
 
-For general intructions on how to push an application to the Pivotal CF hosted service, see [Getting Started](/docs/dotcom/getting-started.html).
 
 ##<a id='start-command'></a>The Application Start Command ##
 
@@ -78,31 +77,29 @@ The mechanism for invoking a script or utility on Cloud Foundry is to customize 
 
 Unless you want to run the custom start command every time you push the application, you must revert to the default or previously defined start command. To do so, after the utility has run and the application is started:
 
-* If you ran the custom command at the command line, re-push the application using the `--reset` qualifier, which tells Cloud Foundry to use the deployment attributes in manifest. yml. (Otherwise, the next time you push the application, Cloud Foundry will use the same qualifiers you supplied during the prior push.)
+* If you ran the custom command at the command line, re-push the application using the `--reset` qualifier, which tells Cloud Foundry to use the deployment attributes in `manifest.yml`. (Otherwise, the next time you push the application, Cloud Foundry will use the same qualifiers you supplied during the prior push.)
 
 * If you specified the command in the manifest, remove the custom command from the manifest and re-push the application.
 
 ###<a id='single-app'></a>Run a Start Command on One Instance ###
 
-There is another factor to consider when using a custom start command:  if you start more than a single instance of the application when you push it, the custom command will be used to start each of the instances ---inappropriate in the case of database creation or migration. For examples of using a custom start command to migrate a database, for a single application instance only, see [Migrate a Database on Cloud Foundry](/docs/using/deploying-apps/migrate-db.html).
+There is another factor to consider when using a custom start command:  if you start more than a single instance of the application when you push it, the custom command will be used to start each of the instances ---inappropriate in the case of database creation or migration. For examples of using a custom start command to migrate a database, for a single application instance only, see [Migrate a Database on Cloud Foundry](../bind-services/migrate-db.html).
 
 ## <a id='services'></a>Using Services ##
 
 An application running on a Cloud Foundry instance can use services that the instance is configured to provision. Such built-in services vary for different Cloud Foundry instances.
 
-The Pivotal CF hosted instance provides a variety of ready-to-provision services, including several databases, email, and Redis, among others.  For information about services available to applications running on the Pivotal CF hosted instance, see [Services Marketplace](/docs/dotcom/marketplace/services/index.html).
-
-To use a built-in service, you need to create a service instance and bind it to your application.  [Getting Started with Services](/docs/dotcom/adding-a-service.html) has information about how to perform these tasks on the  Pivotal CF hosted service. Depending on the type of service, it may be necessary to configure the application to connect to a service instance.
+To use a built-in service, you need to create a service instance and bind it to your application. Depending on the type of service, it may be necessary to configure the application to connect to a service instance.
 
 For framework specific service information see:
 
-* [Service Bindings for Spring Applications](/docs/using/services/spring-service-bindings.html)
-* [Service Bindings for Grails Applications]((/docs/using/services/grails-service-bindings.html)
-* [Service Bindings for Lift Applications](/docs/using/services/lift-service-bindings.html)
-* [Service Bindings for Rack, Rails, or Sinatra Applications](/docs/using/services/ruby-service-bindings.html)
-* [Service Bindings for Node.js Applications](/docs/using/services/node-service-bindings.html)
+* [Service Bindings for Spring Applications](../bind-services/spring-service-bindings.html)
+* [Service Bindings for Grails Applications](../bind-services/grails-service-bindings.html)
+* [Service Bindings for Lift Applications](../bind-services/lift-service-bindings.html)
+* [Service Bindings for Rack, Rails, or Sinatra Applications](../bind-services/ruby-service-bindings.html)
+* [Service Bindings for Node.js Applications](../bind-services/node-service-bindings.html)
 
-For information about how external services can work with Cloud Foundry, see [Services Architecture](/docs/running/architecture/services/index.html).
+For information about how external services can work with Cloud Foundry, see "Writing a v2 Cloud Foundry Service" in _Extending Elastic Runtime_.
 
 
 

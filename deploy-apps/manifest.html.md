@@ -6,7 +6,7 @@ An application manifest defines a set of application deployment settings, such a
 ## <a id='purpose'></a>Purpose of Manifest File ##
 
 
-The purpose of a manifest is to automate application deployment --- it allows you to provide deployment settings in a file rather than at the command line.  Any deployment option that you can supply at the command line when you run `cf push` can be specified in a manifest. Some deployment options (those for which `cf push` does not prompt) can *only* be specified in the manifest.   
+The purpose of a manifest is to automate application deployment --- it allows you to provide deployment settings in a file rather than at the command line.  Any deployment option that you can supply at the command line when you run `cf push` can be specified in a manifest. Some deployment options (those for which `cf push` does not prompt) can *only* be specified in the manifest.
 
 
 ## <a id='sample'></a>A Simple Sample Manifest ##
@@ -19,7 +19,7 @@ applications:
   memory: 64M
   instances: 2
   host: crn
-  domain: csapps.io 
+  domain: csapps.io
   path: .
 ~~~
 
@@ -30,8 +30,8 @@ Manifests are written in YAML. For information about YAML, see www.yaml.org.
 When you push an application, cf looks for a file named `manifest.yml`. The push command looks for the manifest in the current working directory, and if it is not found there, in directories above the application root in the directory structure. If the manifest file name is not `manifest.yml` you should specify its name with the `--manifest` (`-m)` option, for example:
 
 <pre class="terminal">
-cf push -m prod-manifest.yml 
-</pre>  
+cf push -m prod-manifest.yml
+</pre>
 
 **Note:**  cf does not look for a manifest under these circumstances:
 
@@ -42,16 +42,16 @@ The first time you push an application, assuming a manifest is found, cf uses th
 
 If cf does *not* find a manifest, it prompts you interactively for required deployment options. Once you have supplied the required inputs, cf asks if you want to save the deployment settings to a manifest, as described in the following section.
 
-When you *re-deploy* an application, `cf push` does *not* apply the settings in an existing manifest. Instead, the most recently configured deployment options are applied. For example, if, after initially pushing an application with a manifest that specified “instances: 1”, you use `cf scale` to increase the number of instances to 2, the next time you push the application, 2 instances will be created. You must use the `--reset` option to cause the settings in the manifest to be applied. 
+When you *re-deploy* an application, `cf push` does *not* apply the settings in an existing manifest. Instead, the most recently configured deployment options are applied. For example, if, after initially pushing an application with a manifest that specified “instances: 1”, you use `cf scale` to increase the number of instances to 2, the next time you push the application, 2 instances will be created. You must use the `--reset` option to cause the settings in the manifest to be applied.
 
 
 ## <a id='create'></a>How to Create a Manifest ##
 
 There are two ways to create a manifest:
 
-* Automatically --  When you push an application for the first time (without a manifest) you can supply deployment options as command arguments, or in response to interactive prompts.  cf asks if you want to save the deployment settings to a manifest. If you respond “yes”, the deployment options you selected are saved in the root directory of the application director `manifest.yml`. 
+* Automatically --  When you push an application for the first time (without a manifest) you can supply deployment options as command arguments, or in response to interactive prompts.  cf asks if you want to save the deployment settings to a manifest. If you respond “yes”, the deployment options you selected are saved in the root directory of the application director `manifest.yml`.
 
-* Manually -- You can create a text file with desired deployment options. Save the manifest in the root of your project directory structure, or in a directory above the root in the directory structure. 
+* Manually -- You can create a text file with desired deployment options. Save the manifest in the root of your project directory structure, or in a directory above the root in the directory structure.
 
 
 ## <a id='manual'></a>What Must be Manually Defined in a Manifest ##
@@ -60,7 +60,7 @@ There are some deployment options that can only be defined in the manifest. For 
 
 * Ruby symbols -- If you want to use Ruby symbols in a manifest you must manually define them in the the manifest.  See [Use Symbols in a Manifest](#symbols).
 
-* Environment variables -- If you want to define an environment variable, you must edit the manifest file. See [Set Environment Variable in a Manifest](#vars).  
+* Environment variables -- If you want to define an environment variable, you must edit the manifest file. See [Set Environment Variable in a Manifest](#vars).
 
 * Multi-application manifests -- If you want to deploy multiple applications with a single push command, you must manually edit the manifest file to define the deployment options for each of the applications. In a multi-application manifest, you can define the dependency relationships among the applications.  See [Define a Multi-App Manifest with Dependencies](#multi-app).
 
@@ -108,7 +108,7 @@ To define an environment variable that your application uses, add lines like the
 <tt>
 env:<br>
 &nbsp;&nbsp;&nbsp;<i>var_name: var_value</i><br>
-</tt> 
+</tt>
 
 For example:
 
@@ -124,7 +124,7 @@ See the example "base-manifest" in [Not-So-Simple Sample Manifests](#not-simple)
 
 `manifest.yml` supports the following symbols. (A symbol is a Ruby object, the name of an object that is reolved later.)
 
-* `target-base` -- The base URL of your target. For example, if your target is “api.mycloud.com”, the value of target-base is “mycloud.com”. `target-base` is useful if you want to create a manifest for an application that can be pushed to multiple Cloud Foundry instances.   
+* `target-base` -- The base URL of your target. For example, if your target is “api.mycloud.com”, the value of target-base is “mycloud.com”. `target-base` is useful if you want to create a manifest for an application that can be pushed to multiple Cloud Foundry instances.
 
 * `random-word` -- A random string of characters, useful for ensuring uniqueness of a URL.
 
@@ -132,7 +132,7 @@ Otherwise, symbol resolution simulates lexical scoping --- you can define arbitr
 
 ## <a id='inheritance'></a>Multiple Manifests and Inheritance ##
 
-A manifest document can inherit properties from a parent manifest by including this line: 
+A manifest document can inherit properties from a parent manifest by including this line:
 
 ~~~
 inherit: path/to/parent.yml
@@ -142,7 +142,7 @@ This pulls the content of the parent manifest into the child manifest, deep-merg
 
 * You can create various child manifests for different deployment modes (for example, debug, local, and public) that extend the settings in a base parent manifest.
 
-* You can package a basic configuration with an application, and a user can extend the configuration with a child manifest with additional properties, or with property settings that override those in the parent. 
+* You can package a basic configuration with an application, and a user can extend the configuration with a child manifest with additional properties, or with property settings that override those in the parent.
 
 ## <a id='multi-app'></a>Define a Multi-App Manifest with Dependencies ##
 
@@ -157,15 +157,15 @@ Manifests enable deployment of multiple applications through a single push comma
 The manifest below defines two applications, “publisher” and “subscriber”, that use a single Redis service.  Because  the “publisher” application depends on the “subscriber” application, when you do `cf push` from the "big-app" directory, “subscriber” will be started before “publisher”.
 
 ~~~
-applications: 
+applications:
 - name: publisher
   memory: 64M
   path: ./publisher
   domain: cfapps.io
   host: publisher
   instances: 1
-  services: 
-    work-queue: 
+  services:
+    work-queue:
       type: rediscloud
       provider: garantiadata
       plan: 20mb
@@ -176,8 +176,8 @@ applications:
   domain: cfapps.io
   host: subscriber
   instances: 1
-  services: 
-    work-queue: 
+  services:
+    work-queue:
       type: rediscloud
       provider: garantiadata
       plan: 20mb
@@ -186,7 +186,7 @@ applications:
 
 
 ## <a id='not-simple'></a>Not-So-Simple Sample Manifests ##
-This section contains two manifests that illustrate a variety of manifest features.  
+This section contains two manifests that illustrate a variety of manifest features.
 
 **Notes:**
 
@@ -194,7 +194,7 @@ This section contains two manifests that illustrate a variety of manifest featur
 
 * Settings that apply to all applications in a manifest are declared before the first application block. Examples of such cross-application settings include the environment variables and the services defined in "base-manifest.yml".
 
-* Both manifests are multi-application manifests. 
+* Both manifests are multi-application manifests.
 
 * The first attribute for an application, `name`, is preceded by a dash (“-”).
 
@@ -221,9 +221,9 @@ applications:
     command: bundle exec rake server:start_command
   - name: app1-worker1
     instances: 4
-    command: bundle exec rake VERBOSE=true QUEUE=* 
+    command: bundle exec rake VERBOSE=true QUEUE=*
   - name: app1-worker2
-    command: bundle exec rake VERBOSE=true 
+    command: bundle exec rake VERBOSE=true
 ~~~
 
 ### base-manifest.yml ###
@@ -258,9 +258,9 @@ applications:
   command: bundle exec rake server:start_command
 - name: app2-worker1
   instances: 2
-  command: bundle exec rake VERBOSE=true QUEUE=* 
+  command: bundle exec rake VERBOSE=true QUEUE=*
 - name: app2-worker2
-  command: bundle exec rake VERBOSE=true 
+  command: bundle exec rake VERBOSE=true
 
 ~~~
 
@@ -277,9 +277,9 @@ applications:
 |command  |Command to use to start the application  |n  |command: bundle exec rake server:start_command  |
 |domain  |Domain for the application. |  |  |
 |host  | Host for the application. |  |  |
-|instances  |Number of instances of application to run. <br><br>For related information, see [Run Multiple Instances to Increase Availability](/docs/using/deploying-apps/index.html#instances) on [Key Facts About Application Deployment](/docs/using/deploying-apps/index.html).|y, defaults to 1<br> if not specified.  |instances: 2  |
+|instances  |Number of instances of application to run. <br><br>For related information, see [Run Multiple Instances to Increase Availability](./about-deploy.html#instances) on [Key Facts About Application Deployment](./about-deploy.html).|y, defaults to 1<br> if not specified.  |instances: 2  |
 |mem  |Maximum memory application can use.  |y, defaults to 256M<br> if not specified. |mem: 64M |
-|disk  |Maxium disk space application can use.  |  |disk:1G  |
+|disk  |Maximum disk space application can use.  |  |disk:1G  |
 |path  |Path, relative to current working directory, to the application to push.  | y  | path: . |
 |stack  |  |n  |  |
 |depends-on  |Path, relative to current working directory, of another application upon which the application depends.    |n  |  |

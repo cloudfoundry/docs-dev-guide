@@ -3,14 +3,14 @@ title: Cloud Foundry Environment Variables
 ---
 Environment variables are the means by which the Cloud Foundry runtime communicates with a deployed application about its environment. This page describes the environment variables that Droplet Execution Agents (DEAs) and buildpacks set for applications.
 
-For information about setting your own application-specific environment variables, see [Set Environment Variable in a Manifest](/docs/using/deploying-apps/manifest.html#var) on the [Application Manifests](/docs/using/deploying-apps/manifest.html) page.
+For information about setting your own application-specific environment variables, see [Set Environment Variable in a Manifest](manifest.html#var) on the [Application Manifests](manifest.html) page.
 
 ## <a id='view'></a>View Environment Variable Values ##
 The sections below describe methods of viewing the values of Cloud Foundry environment variables.
 
 ### <a id='cli'></a>View Environment Variables using CLI ###
 
-The cf command line interface provides two commands that can return environment variables. For more information see [logs](/docs/using/managing-apps/cf/index.html#logs) and [files](/docs/using/managing-apps/cf/index.html#files) on [cf Command Line Interface](/docs/using/managing-apps/cf/index.html).
+The cf command line interface provides two commands that can return environment variables. For more information see [logs](../manage/cf.html#logs) and [files](../manage/cf.html#files) on [cf Command Line Interface](../manage/cf.html).
 
 <pre class="terminal">
 $ cf files APP_NAME_HERE logs/env.log
@@ -43,19 +43,19 @@ process.env.VCAP_SERVICES
 The subsections that follow describe the environment variables set by a DEA for an application at staging time.
 
 ### <a id='HOME'></a>HOME ###
-Root folder for the deployed application.  
+Root folder for the deployed application.
 
 `HOME=/home/vcap/app`
 
 ### <a id='HOME'></a>MEMORY_LIMIT ###
-The maximum amount of memory that each instance of the application can consume. This value is set as a result of the value you specify in an application manifest, or at the command line when pushing an application.   
+The maximum amount of memory that each instance of the application can consume. This value is set as a result of the value you specify in an application manifest, or at the command line when pushing an application.
 
-If an instance goes over the maximum limit, it will be restarted. If it has to be restarted too often, it will be terminated. 
+If an instance goes over the maximum limit, it will be restarted. If it has to be restarted too often, it will be terminated.
 
 `MEMORY_LIMIT=512m`
 
 ### <a id='PORT'></a>PORT ###
-The port on the DEA for communication with the application. The DEA allocates a port to the application during staging. For this reason, code that obtains or uses the application port should reference it using `PORT`. 
+The port on the DEA for communication with the application. The DEA allocates a port to the application during staging. For this reason, code that obtains or uses the application port should reference it using `PORT`.
 
 `PORT=61857`
 
@@ -86,19 +86,19 @@ This variable contains useful information about a deployed application. Results 
 
 
 |Attribute|Description |
-| --------- | --------- | 
+| --------- | --------- |
 |application_users, users | |
 |instance_id  |GUID that identifies the application. |
-|instance_index |Index number, relative to the DEA, of the instance. | 
-|application_version, version |GUID that identifies a version of the application that was pushed. Each time an application is pushed, this value is updated. | 
-|application_name, name |The name assigned to the application when it was pushed. | 
-|application_uris |The URI(s) assigned to the application.   | 
-|started_at, start |The last time the application was started. | 
-|started\_at\_timestamp |Timestamp for the last time the applicaton was started. | 
-|host |IP address of the application instance. | 
-|port |Port of the application instance. | 
-|limits  |The memory, disk, and number of files permitted to the instance. Memory and disk limits are supplied when the application is deployed, either on the command line or in the application manifest. The number of files allowed is operator-defined. | 
-|state_timestamp |The timestamp for the time at which the application achieved its current state.| 
+|instance_index |Index number, relative to the DEA, of the instance. |
+|application_version, version |GUID that identifies a version of the application that was pushed. Each time an application is pushed, this value is updated. |
+|application_name, name |The name assigned to the application when it was pushed. |
+|application_uris |The URI(s) assigned to the application.   |
+|started_at, start |The last time the application was started. |
+|started\_at\_timestamp |Timestamp for the last time the applicaton was started. |
+|host |IP address of the application instance. |
+|port |Port of the application instance. |
+|limits  |The memory, disk, and number of files permitted to the instance. Memory and disk limits are supplied when the application is deployed, either on the command line or in the application manifest. The number of files allowed is operator-defined. |
+|state_timestamp |The timestamp for the time at which the application achieved its current state.|
 
 ~~~
 
@@ -123,17 +123,17 @@ This is not yet implemented in V2.
 
 The port (on the network interface specified by `VCAP_CONSOLE_IP`) upon which application users can access the Rails console.
 
-`VCAP_CONSOLE_PORT=61858` 
+`VCAP_CONSOLE_PORT=61858`
 
 ### <a id='VCAP_SERVICES'></a>VCAP\_SERVICES ###
 
 For most service types, Cloud Foundry will add connection details to the `VCAP_SERVICES` environment variable when you bind the service to the application.
 
-The results are returned as a JSON document that contains an object for each service type of which one or more instances are bound to the application. The service type object contains a child object for each service instance of that type that is bound to the application. The attributes for a service instance vary somewhat by service type. The attributes that describe a bound service are defined in the table below.  Note that not all attributes apply to all service types.  
+The results are returned as a JSON document that contains an object for each service type of which one or more instances are bound to the application. The service type object contains a child object for each service instance of that type that is bound to the application. The attributes for a service instance vary somewhat by service type. The attributes that describe a bound service are defined in the table below.  Note that not all attributes apply to all service types.
 
 
 |Attribute|Description |
-| --------- | --------- | 
+| --------- | --------- |
 |service name-version|A service type is identified by the service name and service version (if there is no version attribute, the string "n/a" is used), separated by a dash character, for example "cleardb-n/a". |
 |name|The name assigned to the service instance when it was created. |
 |label|Takes the same value as service name-version. |
@@ -147,7 +147,7 @@ The results are returned as a JSON document that contains an object for each ser
 |jdbcUrl|The JDBC URL for the database connection; appears in the "credentials" object for a cleardb instance. |
 
 
-The example below contains the parsed JSON for the VCAP_SERVICE variable for a bound instance of each service type available in the Cloud Foundry Services Marketplace. 
+The example below contains the parsed JSON for the VCAP_SERVICE variable for a bound instance of each service type available in the Cloud Foundry Services Marketplace.
 
 ~~~
 VCAP_SERVICES=
@@ -263,7 +263,7 @@ The Java options to use when running the application. All values are used withou
 ### <a id='JAVA_TOOL_OPTIONS'></a>JAVA\_TOOL\_OPTIONS ###
 
 This environment variable defines Java options that are required to enable the Java buildpack to auto-configure services for a Java application that uses the Lift framework.
- 
+
 `JAVA_TOOL_OPTIONS=-Drun.mode=production`
 
 ## <a id='ruby-buildpack'></a>Variables Defined by Ruby Buildpack ##
@@ -278,8 +278,8 @@ Location where Bundler installs binaries.
 
 ### <a id='BUNDLE_GEMFILE'></a>BUNDLE_GEMFILE ###
 
-Path to application’s gemfile. 
- 
+Path to application’s gemfile.
+
 `BUNDLE_GEMFILE:/home/vcap/app/Gemfile`
 
 ### <a id='BUNDLE_WITHOUT'></a>BUNDLE_WITHOUT ###
@@ -312,11 +312,11 @@ Location where gems can be found.
 
 ### <a id='RACK_ENV'></a>RACK_ENV ###
 This variable specifies the Rack deployment environment --- development, deployment, or none. This governs what middleware is loaded to run the application.
- 
+
 `RACK_ENV=production`
 
 ### <a id='RAILS_ENV'></a>RAILS_ENV ###
-This variable specifies the Rails deployment environment ---  development, test, or production.  This controls which of the environment-specific configuration files will govern how the application will be executed.  
+This variable specifies the Rails deployment environment ---  development, test, or production.  This controls which of the environment-specific configuration files will govern how the application will be executed.
 
 `RAILS_ENV=production`
 
@@ -328,7 +328,7 @@ This Ruby environment variable defines command-line options passed to Ruby inter
 ## <a id='node-buildpack'></a>Variables Defined by Node Buildpack ##
 
 ### <a id='BUILD_DIR'></a>BUILD_DIR ###
-Directory into which Node.js is copied each time a Node.js application is run. 
+Directory into which Node.js is copied each time a Node.js application is run.
 
 ### <a id='CACHE_DIR'></a>CACHE_DIR ###
 

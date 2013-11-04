@@ -11,14 +11,12 @@ Cloud Foundry stages application using framework and and runtime-specific buildp
      * [Ruby Buildpack](ruby-buildpack.html)
      * [Node.js Buildpack](node-buildpack.html)
 
-<br>
-
 * **External Buildpacks** --- If you have an application that uses a language or framework that Cloud Foundry buildpacks do not support, there may be a third-party or community-developed buildpack that you can use. You can also customize an existing buildpack, or write your own.
 
     * [Cloud Foundry Commmunity Buildpacks](https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks) --- This page has links to buildpacks contributed by members of the Cloud Foundry Community.
 
     * [Heroku Third-Party Buildpacks](https://devcenter.heroku.com/articles/third-party-buildpacks) for a list of community-developed buildpacks. --- This page has links to buildpacks developed for Heroku, which may (but have not been verified to) work with Cloud Foundry.
-    * [Custom Buildpacks](custom-buildpacks.html) --- See this page for information about writing a custom buildpack.
+    * Custom Buildpacks --- See "Custom Buildpacks" in _Extending Elastic Runtime_.
 
 
       To use a buildpack that is not built-in to Cloud Foundry, you specify the URL of the buildpack when you push an application, using the `--buildpack` qualifier.

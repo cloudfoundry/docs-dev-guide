@@ -2,7 +2,7 @@
 title: Deploy Rack, Rails, or Sinatra Applications
 ---
 
-This page has information specific to deploying  Rack, Rails, or Sinatra applications.  It supplements the information in the [Getting Started](../../../dotcom/getting-started.html).
+This page has information specific to deploying  Rack, Rails, or Sinatra applications.  It supplements the information in the [Getting Started](getting-started.html).
 
 ## <a id='bundler'></a> Application Bundling ##
 
@@ -19,7 +19,7 @@ run HelloWorld.new
 
 ## <a id='precompile'></a> Asset Precompilation ##
 
-Cloud Foundry supports the Rails asset pipeline. If you do not precompile assets before deploying your application, Cloud Foundry will precompile them when staging the application. Precompiling before deploying reduces the time it takes to stage an application. 
+Cloud Foundry supports the Rails asset pipeline. If you do not precompile assets before deploying your application, Cloud Foundry will precompile them when staging the application. Precompiling before deploying reduces the time it takes to stage an application.
 
 Use this command to precompile assets before deployment:
 
@@ -50,18 +50,18 @@ Cloud Foundry v2 does not yet support Rails Console.
 
 ## <a id='services'></a> Binding to Services ##
 
-Refer to the [instructions for Ruby service bindings](../../services/ruby-service-bindings.html).
+Refer to the [instructions for Ruby service bindings](../bind-services/ruby-service-bindings.html).
 
 ## <a id='rake'></a> Running Rake Tasks ##
 
 Cloud Foundry does not provide a mechanism for running a Rake task on a deployed application.
-If you need to run a Rake task that must be performed in the Cloud Foundry environment (rather than locally before deploying or redeploying), you can configure the command that Cloud Foundry uses to start the application to invoke the Rake task.  
+If you need to run a Rake task that must be performed in the Cloud Foundry environment (rather than locally before deploying or redeploying), you can configure the command that Cloud Foundry uses to start the application to invoke the Rake task.
 
-An application's start command is configured in the application's manifest file, `manifest.yml`, with the `command` attribute. 
+An application's start command is configured in the application's manifest file, `manifest.yml`, with the `command` attribute.
 
-If you have previously deployed the application, the application manifest should already exist. There are two ways to create a manifest. You can manually create the file and save it in the application's root directory before you deploy the application for the first time. If you do not manually create the manifest file, cf will prompt you to supply deployment settings when you first push the application, and will create and save the manifest file for you, with the settings  you specified interactively. For more information about application manifests, and supported attributes, see [Application Manifests](/docs/using/deploying-apps/manifest.html).
+If you have previously deployed the application, the application manifest should already exist. There are two ways to create a manifest. You can manually create the file and save it in the application's root directory before you deploy the application for the first time. If you do not manually create the manifest file, cf will prompt you to supply deployment settings when you first push the application, and will create and save the manifest file for you, with the settings  you specified interactively. For more information about application manifests, and supported attributes, see [Application Manifests](manifest.html).
 
-For an example of invoking a Rake database migration task at application startup, see [Migrate a Database for a Ruby App](/docs/using/deploying-apps/migrate-db.html#migrate-ruby-db).
+For an example of invoking a Rake database migration task at application startup, see [Migrate a Database for a Rails App](../bind-services/migrate-db.html#migrate-ruby-db).
 
 
 

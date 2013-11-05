@@ -15,7 +15,7 @@ This table below lists all cf commands. Click a command in the table below infor
 
 ## <a id='installing'></a>Installing cf ##
 
-cf requires Ruby and RubyGems. Ruby 1.9.3 or later is required. Ruby 1.9.3 is recommended. For information about installing Ruby and RubyGems, see [Installing Ruby](/docs/common/install_ruby.html).
+cf requires Ruby and RubyGems. Ruby 1.9.3 or later is required. Ruby 1.9.3 is recommended. For information about installing Ruby and RubyGems, see [Installing Ruby](install_ruby.html).
 
 After installing Ruby and RubyGems, use this command to install the latest released version of cf:
 
@@ -31,7 +31,7 @@ $ gem install cf --pre
 
 ## <a id='troubleshooting'></a>Troubleshooting cf Installation ##
 
-* OS X includes Ruby v1.8.7, which cf does not support. On OS X you must upgrade Ruby to 1.9.3 or later to run cf. 
+* OS X includes Ruby v1.8.7, which cf does not support. On OS X you must upgrade Ruby to 1.9.3 or later to run cf.
 
 * If you are running Ruby 1.9.3 with a pre-1.9.x gemset, cf installation will fail with a message like this:
 
@@ -79,7 +79,7 @@ The following qualifiers apply to all cf commands.
 
 ## <a id='proxy'></a>Connecting Through a Proxy Server ##
 
-This functionality requires cf v5.2 or later. 
+This functionality requires cf v5.2 or later.
 
 If you run cf behind a proxy server, you must specify the proxy server address when you run a cf command. Use the `--http-proxy` and `--https-proxy` global command qualifiers, described above in [Command Usage and Qualifiers](#usage). (You can specify the proxy settings to be used when you push an application as environment variables in the application manifest; note however that proxy settings defined in an application manifest will only be used when you push that application using that manifest.)
 
@@ -129,7 +129,7 @@ The following data is returned for each application:
 * usage -- memory allocated to the application, and the number of instances.
 * url -- URL of the application
 
-The table below lists supported command qualifiers.  
+The table below lists supported command qualifiers.
 
 | Qualifier | Required | Description |
 | :-------- | :------- | :---------- |
@@ -142,7 +142,7 @@ The table below lists supported command qualifiers.
 
 Bind a service to an application. Some service types are bindable, some are not. If a service supports binding, binding it to an application adds credentials for the service instance to the `VCAP_SERVICES` environment variable. You may need to restart the application for the binding to take effect.
 
-Note that you can bind a service to an application at the time you create the service, as described in [create-service](#create-service). For more information about creating and binding service instances, see [Getting Started - Adding a Service](/docs/dotcom/adding-a-service.html).
+Note that you can bind a service to an application at the time you create the service, as described in [create-service](#create-service). For more information about creating and binding service instances, see [Getting Started - Adding a Service](../bind-services/adding-a-service.html).
 
 
 
@@ -156,20 +156,6 @@ Note that you can bind a service to an application at the time you create the se
 | :-------- | :------- | :---------- |
 | --app     |   y       | The name of the application to which the service should be bound.            |
 | --service     |  y        |  The service to bind to the application.           |
-
-
-#### <a id='console'></a> console ####
-
-Open a Rails console and connect to an application. For information about using the Rails console, see [Rails 3, Using the Console](/docs/using/deploying-apps/ruby/rails-using-the-console.html)  in "Deploying Rails Apps". **
-
-<div class="command-doc">
-  <pre class="terminal">$ cf console  [application name] [port}</pre>
-  <div class="break"></div>
-</div>
-| Qualifier | Required | Description |
-| :-------- | :------- | :---------- |
-| --app     |   y       | The name of the application.            |
-| --port     |  y        | The port where the application is running.           |
 
 
 
@@ -187,7 +173,7 @@ Display the staging, stdout and stderr logs for an application's unresponsive in
 Create an organization.
 
 <div class="command-doc">
-  <pre class="terminal">$ cf create-org [organisation name]</pre>
+  <pre class="terminal">$ cf create-org [organization name]</pre>
   <div class="break"></div>
 </div>
 
@@ -199,7 +185,7 @@ Create an organization.
 
 #### <a id='create-service'></a> create-service ####
 
-Create a new service instance, and optionally, bind it to an application. If you do not bind a service to an application when you create, you can do it later with the [bind-service](#bind-service) command. For more information about creating and binding service instances, see [Getting Started - Adding a Service](/docs/dotcom/adding-a-service.html).
+Create a new service instance, and optionally, bind it to an application. If you do not bind a service to an application when you create, you can do it later with the [bind-service](#bind-service) command. For more information about creating and binding service instances, see [Getting Started - Adding a Service](../bind-services/adding-a-service.html).
 
 To list service instances that already exist, use the [services](#services) command.
 
@@ -211,7 +197,7 @@ To list service instances that already exist, use the [services](#services) comm
 
 
 
-The table below lists supported command qualifiers. cf prompts for required qualifiers not provided on the command line. 
+The table below lists supported command qualifiers. cf prompts for required qualifiers not provided on the command line.
 
 | Qualifier | Required | Description |
 | :-------- | :------- | :---------- |
@@ -224,7 +210,7 @@ The table below lists supported command qualifiers. cf prompts for required qual
 
 #### <a id='create-service-auth-token'></a> create-service-auth-token ####
 
-Create a service authorization token. 
+Create a service authorization token.
 
 <div class="command-doc">
   <pre class="terminal">$ cf create-service-auth-token [label] [provider]</pre>
@@ -259,7 +245,7 @@ Create a space in an organization.
 
 #### <a id='create-user'></a> create-user ####
 
-Create a user account. If you do not supply required options on the command line, cf will prompt for them. 
+Create a user account. If you do not supply required options on the command line, cf will prompt for them.
 
 
 <div class="command-doc">
@@ -322,7 +308,7 @@ Delete a route.
 
 #### <a id='delete-service-auth-token'></a> delete-service-auth-token ####
 
-Delete a service authorization token. 
+Delete a service authorization token.
 
 <div class="command-doc">
   <pre class="terminal">$ cf delete-service-auth-token [service auth token]</pre>
@@ -363,7 +349,7 @@ Delete a space and its contents.
 
 #### <a id='delete-user'></a> delete-user ####
 
-Delete a user account. 
+Delete a user account.
 
 <div class="command-doc">
   <pre class="terminal">$ cf delete-user [email]</pre>
@@ -392,8 +378,8 @@ Show all environment variables set for an application. Environment variables are
 
 You can set environment variables for an application:
 
-* in the application manifest when deploying the application, as described in [Set Environment Variable in a Manifest](/docs/using/deploying-apps/manifest.html#var) on the "Application Manifests" page, or 
-* after pushing the application, with the [set-env](#set-env) command. 
+* in the application manifest when deploying the application, as described in [Set Environment Variable in a Manifest](../deploy-apps/manifest.html#var) on the "Application Manifests" page, or
+* after pushing the application, with the [set-env](#set-env) command.
 
 <div class="command-doc">
   <pre class="terminal">$ cf env [application name]</pre>
@@ -401,7 +387,7 @@ You can set environment variables for an application:
 
 #### <a id='events'></a> events ####
 
-Show events for an application. 
+Show events for an application.
 
 <div class="command-doc">
   <pre class="terminal">$ cf events [application name]</pre>
@@ -468,7 +454,7 @@ tmp/                                         -
 
 #### <a id='guid'></a> guid ####
 
-Get the GUID for the object with the type (for instance, app, organization, space, domain, and so on) and name specified. 
+Get the GUID for the object with the type (for instance, app, organization, space, domain, and so on) and name specified.
 
 <div class="command-doc">
   <pre class="terminal">$ cf guid type [name]</pre>
@@ -508,7 +494,7 @@ For an instance that is running, the following data is returned:
 
 #### <a id='login'></a> login ####
 
-Authenticate with the target. If you do not supply required options on the command line, cf will prompt for them. 
+Authenticate with the target. If you do not supply required options on the command line, cf will prompt for them.
 
 <div class="command-doc">
   <pre class="terminal">$ cf login [email]</pre>
@@ -598,7 +584,7 @@ Reading logs/staging_task.log... OK
        npm http 200 https://registry.npmjs.org/sanitizer/-/sanitizer-0.0.15.tgz
        npm http 200 https://registry.npmjs.org/amqp/-/amqp-0.1.7.tgz
        sanitizer@0.0.15 node_modules/sanitizer
-       
+
        amqp@0.1.7 node_modules/amqp
        npm WARN package.json rabbitmq-node@0.0.2 No repository field.
        amqp@0.1.7 /tmp/staged/app/node_modules/amqp
@@ -695,7 +681,7 @@ The following data is returned:
 |--full |n |Return information about spaces in each organization. |
 #### <a id='passwd'></a> passwd ####
 
-Set a user's password. 
+Set a user's password.
 <div class="command-doc">
   <pre class="terminal">$ cf passwd [email]</pre>
   <div class="break"></div>
@@ -705,12 +691,12 @@ Set a user's password.
 
 Deploy a new application, or, if the application already exists, upload any changes made since the last push.
 
-You can define deployment options on the command line, interactively, or in a manifest file. The first time you run `cf push` for an application, unless you provide deployment options on the command line, cf will look for `manifest.yml` in the current working directory. If the manifest file does not exist, cf will prompt you to supply the deployment settings interactively. After you supply the qualifiers required to push an application, cf will offer you the option to save the configuration. If you accept, the settings you chose will be saved in the current working directory in `manifest.yml`. 
+You can define deployment options on the command line, interactively, or in a manifest file. The first time you run `cf push` for an application, unless you provide deployment options on the command line, cf will look for `manifest.yml` in the current working directory. If the manifest file does not exist, cf will prompt you to supply the deployment settings interactively. After you supply the qualifiers required to push an application, cf will offer you the option to save the configuration. If you accept, the settings you chose will be saved in the current working directory in `manifest.yml`.
 
-Note that when you redeploy an application, cf does _not_ refer to `manifest.yml` for deployment settings. Instead, cf will deploy the application with the currently active deployment settings. You must use the `--reset` option to cause the settings in the manifest to be applied on subsequent pushes. For more information see [cf push and the Manifest](../../deploying-apps/manifest.html#push-and-manifest) on the [Application Manifests](../../deploying-apps/manifest.html) page.
+Note that when you redeploy an application, cf does _not_ refer to `manifest.yml` for deployment settings. Instead, cf will deploy the application with the currently active deployment settings. You must use the `--reset` option to cause the settings in the manifest to be applied on subsequent pushes. For more information see [cf push and the Manifest](../deploy-apps/manifest.html#push-and-manifest) on the [Application Manifests](../deploy-apps/manifest.html) page.
 
 
-cf will upload all application files with the exception of version control files with file extensions `.svn`, `.git`, and `.darcs`. If there are other files you wish to exclude from upload, you can specify them in a `.cfignore` file in the directory where you run the push command. `.cfignore` behaves similarly to `.gitignore`. For more information see [Exclude Unnecessary Files with cfignore](/docs/using/deploying-apps/index.html#exclude) on [Key Facts About Application Deployment](/docs/using/deploying-apps/index.html).
+cf will upload all application files with the exception of version control files with file extensions `.svn`, `.git`, and `.darcs`. If there are other files you wish to exclude from upload, you can specify them in a `.cfignore` file in the directory where you run the push command. `.cfignore` behaves similarly to `.gitignore`. For more information see [Exclude Unnecessary Files with cfignore](../deploy-apps/app-design.html#exclude) on [Key Facts About Application Deployment](../deploy-apps/app-design.html).
 
 
 <div class="command-doc">
@@ -755,7 +741,7 @@ Create a user and login.
 
 Rename an application.  If you do not provide the required input on the command line, cf will prompt for it.
 
-Note that after you change an application's name, cf will not recognize the application's previous name if you use it in commands that act upon an application.  
+Note that after you change an application's name, cf will not recognize the application's previous name if you use it in commands that act upon an application.
 
 <div class="command-doc">
   <pre class="terminal">$ cf rename [current application name] [new application name]</pre>
@@ -833,7 +819,7 @@ Set the number of instances for a application and the amount of memory assigned 
 
 #### <a id='service-auth-token'></a> service-auth-token ####
 
-List service authorization tokens. 
+List service authorization tokens.
 
 <div class="command-doc">
   <pre class="terminal">$ cf service-auth-token</pre>
@@ -883,7 +869,7 @@ If the `--marketplace` qualifier is supplied, the following data is returned for
 * version -- The version of the service.
 * provider -- The service vendor or supplier.
 * plan -- The provider plans under which the service is available.
-* description -- A description of the service.   
+* description -- A description of the service.
 
 When qualifiers other than `--marketplace` are supplied, the following data is returned for each service instance:
 
@@ -912,7 +898,7 @@ Set an environment variable. For information about removing an environment varia
 
 #### <a id='set-quota'></a> set-quota ####
 
-Define the quota for an organization. 
+Define the quota for an organization.
 
 <div class="command-doc">
   <pre class="terminal">$ cf set-quota [QUOTA_DEFINITION] [ORGANIZATION]</pre>
@@ -1028,7 +1014,7 @@ Watch the file for the specified application and the specified path, and display
 
 #### <a id='target'></a> target ####
 
-Set or display the target cloud, organization, and space. When you run a cf command that reads or writes information about applications or service instances, by default the command will  access objects in the currently selected target cloud, organization, and space. 
+Set or display the target cloud, organization, and space. When you run a cf command that reads or writes information about applications or service instances, by default the command will  access objects in the currently selected target cloud, organization, and space.
 
 <div class="command-doc">
   <pre class="terminal">$ cf target [URL]</pre>
@@ -1059,22 +1045,6 @@ List known targets.
 
 The URL for each known Cloud Foundry instance will be returned.
 
-
-#### <a id='tunnel'></a> tunnel ####
-
-Tunnel to a service instance. You can keep the tunnel open or automatically open a client and connect to the service. For more information on tunneling to a service see [Tunneling to Services](../../services/tunnelling-with-services.html). 
-
-<div class="command-doc">
-  <pre class="terminal">$ cf tunnel [instance name] [application name]</pre>
-  <div class="break"></div>
-</div>
-
-
-| Qualifier | Required | Description |
-| :-------- | :------- | :---------- |
-| --client CLIENT | |Client to automatically launch. |
-|--instance INSTANCE | |Service instance to tunnel to. |
-|--port PORT             | |Port to bind the tunnel to. |
 
 #### <a id='unbind-service'></a> unbind-service ####
 

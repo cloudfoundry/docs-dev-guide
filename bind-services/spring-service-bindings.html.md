@@ -4,11 +4,11 @@ title: Spring - Service Bindings
 
 ## <a id='intro'></a>Introduction ##
 
-Cloud Foundry provides extensive support for connecting a Spring application to services such as MySQL, Postgres, MongoDB, Redis, and RabbitMQ. In many cases, Cloud Foundry can automatically configure a Spring application without any code changes. For more advanced cases, you can control service connection parameters yourself. 
+Cloud Foundry provides extensive support for connecting a Spring application to services such as MySQL, Postgres, MongoDB, Redis, and RabbitMQ. In many cases, Cloud Foundry can automatically configure a Spring application without any code changes. For more advanced cases, you can control service connection parameters yourself.
 
 ## <a id='auto'></a>Auto-Configuration ##
 
-If your Spring application requires services (such as a database or messaging system), you might be able to deploy your application to Cloud Foundry without changing any code. In this case, Cloud Foundry automatically re-configures the relevant bean definitions to bind them to cloud services. 
+If your Spring application requires services (such as a database or messaging system), you might be able to deploy your application to Cloud Foundry without changing any code. In this case, Cloud Foundry automatically re-configures the relevant bean definitions to bind them to cloud services.
 
 Cloud Foundry auto-configures applications only if the following items are true for your application:
 
@@ -21,11 +21,11 @@ For more information on auto-configuration of specific services types, see the [
 
 ### <a id='optout'></a>Opting out of Auto-Configuration ###
 
-Sometimes you may not want Cloud Foundry to auto-configure your Spring application. To opt out of auto-configuration, use the [`<cloud:>` namespace](#namespace) elements in your Spring application context file to explicitly create a bean that represents a service. This makes auto-configuration unnecessary. 
+Sometimes you may not want Cloud Foundry to auto-configure your Spring application. To opt out of auto-configuration, use the [`<cloud:>` namespace](#namespace) elements in your Spring application context file to explicitly create a bean that represents a service. This makes auto-configuration unnecessary.
 
 ## <a id='manual'></a>Manual Configuration ##
 
-If your Spring application cannot take advantage of Cloud Foundry’s auto-configuration feature, or you want more control over the configuration, the additional steps you must take are very simple. 
+If your Spring application cannot take advantage of Cloud Foundry’s auto-configuration feature, or you want more control over the configuration, the additional steps you must take are very simple.
 
 To use any of the manual configuration techniques, you need to include the `cloudfoundry-runtime` library in your list of application dependencies. Update your application build file (e.g. Maven `pom.xml` file or Gradle `build.gradle` file) to include a dependency on the `org.cloudfoundry.cloudfoundry-runtime` artifact. For example, if you use Maven to build your application, the following `pom.xml` snippet shows how to add this dependency. **For Cloud Foundry v2 support, the version of this library must be at least `0.8.4`**:
 
@@ -39,7 +39,7 @@ To use any of the manual configuration techniques, you need to include the `clou
 
     <!-- additional dependency declarations -->
 </dependencies>
-~~~ 
+~~~
 
 You will also need to update your application build file to include the Spring Framework Milestone repository. The following `pom.xml` snippet shows how to do this for Maven:
 
@@ -85,7 +85,7 @@ The basic steps to update your Spring application to use any of the Cloud Foundr
 </beans>
 ~~~
 
-You can configure Cloud Foundry services in a Spring XML application context file by using the `<cloud:>` namespace along with the name of specific elements. 
+You can configure Cloud Foundry services in a Spring XML application context file by using the `<cloud:>` namespace along with the name of specific elements.
 
 Cloud Foundry provides elements for each of the supported services: database (MySQL and Postgres), Redis, MongoDB, and RabbitMQ. See the [Service-specific Details](#services) section for details on the namespace elements for each of these services. The following namespace elements apply to all service types.
 
@@ -95,7 +95,7 @@ The `<cloud:properties>` element exposes basic information about the application
 
 Note that if you are using Spring Framework 3.1 (or later), these properties are automatically available without having to include `<cloud:properties>` in your application context file.
 
-The `<cloud:properties>` element has just a single attribute (`id`) which specifies the name of the `Properties` bean. Use this ID as a reference to `<context:property-placeholder>` which you can use to hold all the properties exposed by Cloud Foundry. You can then use these properties in other bean defintions.
+The `<cloud:properties>` element has just a single attribute (`id`) which specifies the name of the `Properties` bean. Use this ID as a reference to `<context:property-placeholder>` which you can use to hold all the properties exposed by Cloud Foundry. You can then use these properties in other bean definitions.
 
 The following example shows how to use this element in a Spring application context file:
 
@@ -136,7 +136,7 @@ For example, assume that you created a Postgres service called `my-postgres` and
     cloud.services.my-postgres.type
 ~~~
 
-If the service exposed the credentials as a single `uri` field, then the following properties would be set up: 
+If the service exposed the credentials as a single `uri` field, then the following properties would be set up:
 
 ~~~
     cloud.services.my-postgres.connection.uri
@@ -152,7 +152,7 @@ For convenience, if you have bound just one service of a given type to your appl
 * `redis`
 * `rabbitmq`
 
-A Spring application can take advantage of these Cloud Foundry properties using the property placeholder mechanism. For example, assume that you have bound a MySQL service called `spring-mysql` to your application. Your application requires a c3p0 connection pool instead of the connection pool provided by Cloud Foundry, but you want to use the same connection properties defined by Cloud Foundry for the MySQL service - in particular the username, password and JDBC URL. 
+A Spring application can take advantage of these Cloud Foundry properties using the property placeholder mechanism. For example, assume that you have bound a MySQL service called `spring-mysql` to your application. Your application requires a c3p0 connection pool instead of the connection pool provided by Cloud Foundry, but you want to use the same connection properties defined by Cloud Foundry for the MySQL service - in particular the username, password and JDBC URL.
 
 The following Spring XML application context snippet shows how you might implement this:
 
@@ -168,26 +168,26 @@ The following Spring XML application context snippet shows how you might impleme
 </beans>
 ~~~
 
-The following table lists all the application properties that Cloud Foundry exposes to deployed applications. 
+The following table lists all the application properties that Cloud Foundry exposes to deployed applications.
 
 | Property               | Description                                                               |
 |------------------------|---------------------------------------------------------------------------|
 | cloud.application.name | The name provided when the application was pushed to CloudFoundry.        |
 | cloud.provider.url     | The URL of the cloud hosting the application, such as `cloudfoundry.com`. |
 
-The service properties that are exposed for each type of service are listed in the [Service-specific Details](#services) section. 
+The service properties that are exposed for each type of service are listed in the [Service-specific Details](#services) section.
 
 ### <a id='profiles'></a>Profiles ###
 
-Spring Framework versions 3.1 and above support bean definition profiles as a way to conditionalize the application configuration so that only specific bean definitions are activated when a certain condition is true. Setting up such profiles makes your application portable to many different environments so that you do not have to manually change the configuration when you deploy it to, for example, your local environment and then to Cloud Foundry. 
+Spring Framework versions 3.1 and above support bean definition profiles as a way to conditionalize the application configuration so that only specific bean definitions are activated when a certain condition is true. Setting up such profiles makes your application portable to many different environments so that you do not have to manually change the configuration when you deploy it to, for example, your local environment and then to Cloud Foundry.
 
-See the [Spring Framework documentation](http://static.springsource.org/spring/docs/current/spring-framework-reference/html/new-in-3.1.html#new-in-3.1-bean-definition-profiles) for additional information about using Spring bean definition profiles.
+See the Spring Framework documentation for additional information about using Spring bean definition profiles.
 
 When you deploy a Spring application to Cloud Foundry, Cloud Foundry automatically enables the `cloud` profile.
 
 #### Profiles in Java Configration ####
 
-The `@Profile` annotation can be placed on `@Configuration` classes in a Spring application to set conditions under which configuration classes are invoked. By using the `default` and `cloud` profiles to determine whether the application is running on CloudFoundry or not, your Java configuration can support both local and cloud deployments using Java configuration classes like these: 
+The `@Profile` annotation can be placed on `@Configuration` classes in a Spring application to set conditions under which configuration classes are invoked. By using the `default` and `cloud` profiles to determine whether the application is running on CloudFoundry or not, your Java configuration can support both local and cloud deployments using Java configuration classes like these:
 
 ~~~java
 @Configuration
@@ -248,7 +248,7 @@ You should group all usages of the `<cloud:>` namespace within the `cloud` profi
   <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
      <constructor-arg ref="mongoDbFactory" />
   </bean>
-  
+
   <beans profile="default">
     <mongo:db-factory id="mongoDbFactory" dbname="pwdtest" host="127.0.0.1" port="27017" username="test_user" password="efgh" />
   </beans>
@@ -264,7 +264,7 @@ Note that the `<beans profile="value">` element is nested inside the standard ro
 
 ## <a id='services'></a>Service-specific Details ##
 
-The following sections describe Spring auto-configuration and manual configuration for the services supported by Cloud Foundry. 
+The following sections describe Spring auto-configuration and manual configuration for the services supported by Cloud Foundry.
 
 ### <a id='rdbms'></a>MySQL and Postgres ###
 
@@ -279,7 +279,7 @@ Auto-configuration occurs if Cloud Foundry detects a `javax.sql.DataSource` bean
     <property name="username" value="sa" />
     <property name="password" value="" />
 </bean>
-~~~ 
+~~~
 
 The relational database that Cloud Foundry actually uses depends on the service instance you explicitly bind to your application when you deploy it: MySQL or Postgres. Cloud Foundry creates either a commons DBCP or Tomcat datasource depending on which datasource implementation it finds on the classpath.
 
@@ -287,7 +287,7 @@ Cloud Foundry will internally generate values for the following properties: `dri
 
 #### Manual Configuration in Java ####
 
-To configure a database service in Java configuration, simply create a `@Configuration` class with a `@Bean` method to return a `javax.sql.DataSource` bean. The bean can be created by helper classes in the `cloudfoundry-runtime` library, as shown here: 
+To configure a database service in Java configuration, simply create a `@Configuration` class with a `@Bean` method to return a `javax.sql.DataSource` bean. The bean can be created by helper classes in the `cloudfoundry-runtime` library, as shown here:
 
 ~~~java
 @Configuration
@@ -327,7 +327,7 @@ The following table lists the attributes of the `<cloud:data-source>` element:
 | id | The ID of this data source. The JdbcTemplate bean uses this ID when it references the data source. Default value is the name of the bound service instance. | String |
 | service-name | The name of the data source service. You specify this attribute only if you are binding multiple database services to your application and you want to specify which particular service instance binds to a particular Spring bean. The default value is the name of the bound service instance. | String |
 
-With this configuration, Cloud Foundry uses the most common configuration options when it creates the data source at runtime. The next section describes how to override the defaults for these options. 
+With this configuration, Cloud Foundry uses the most common configuration options when it creates the data source at runtime. The next section describes how to override the defaults for these options.
 
 ##### Advanced Manual Configuration #####
 
@@ -357,7 +357,7 @@ In the preceding example, the JDBC driver is passed the property that specifies 
 
 #### Auto-Configuration ####
 
-You must use [Spring Data MongoDB](http://www.springsource.org/spring-data/mongodb) 1.0 M4 or later for auto-configuration to work.
+You must use Spring Data MongoDB 1.0 M4 or later for auto-configuration to work.
 
 Auto-configuration occurs if Cloud Foundry detects a `org.springframework.data.document.mongodb.MongoDbFactory` bean in the Spring application context. The following snippet of a Spring XML application context file shows an example of defining this type of bean which Cloud Foundry will detect and potentially auto-configure:
 
@@ -369,13 +369,13 @@ Auto-configuration occurs if Cloud Foundry detects a `org.springframework.data.d
     port="1234"
     username="test_user"
     password="test_pass"  />
-~~~ 
+~~~
 
 Cloud Foundry will create a `SimpleMongoDbFactory` with its own values for the following properties: `host`, `port`, `username`, `password`, `dbname`.
 
 #### Manual Configuration in Java ####
 
-To configure a MongoDB service in Java configuration, simply create a `@Configuration` class with a `@Bean` method to return a `org.springframework.data.mongodb.MongoDbFactory` bean (from Spring Data MongoDB). The bean can be created by helper classes in the `cloudfoundry-runtime` library, as shown here: 
+To configure a MongoDB service in Java configuration, simply create a `@Configuration` class with a `@Bean` method to return a `org.springframework.data.mongodb.MongoDbFactory` bean (from Spring Data MongoDB). The bean can be created by helper classes in the `cloudfoundry-runtime` library, as shown here:
 
 ~~~java
 @Configuration
@@ -447,7 +447,7 @@ The following table lists the attributes of the `<cloud:mongo-db-factory>` eleme
 </tbody>
 </table>
 
-This configuration creates a simple MongoDB connection factory using default values for the options. The following section describes how to override the defaults for these options. 
+This configuration creates a simple MongoDB connection factory using default values for the options. The following section describes how to override the defaults for these options.
 
 ##### Advanced Manual Configuration #####
 
@@ -465,14 +465,14 @@ The `<cloud:mongo-options>` child element takes the following attributes:
 
 | Attribute | Description | Type | Default |
 |-----------|-------------|------|---------|
-| connections-per-host | Specifies the maximum number of connections allowed per host for the MongoDB instance. Those connections will be kept in a pool when idle. Once the pool is exhausted, any operation requiring a connection will block while waiting for an available connection. | int | 10 | 
+| connections-per-host | Specifies the maximum number of connections allowed per host for the MongoDB instance. Those connections will be kept in a pool when idle. Once the pool is exhausted, any operation requiring a connection will block while waiting for an available connection. | int | 10 |
 | max-wait-time | Specifies the maximum wait time (in milliseconds) that a thread waits for a connection to become available. | int | 120,000 (2 minutes) |
 
 ### <a id='redis'></a>Redis ###
 
 #### Auto-Configuration ####
 
-You must be using [Spring Data Redis](http://www.springsource.org/spring-data/redis) 1.0 M4 or later for auto-configuration to work.
+You must be using Spring Data Redis 1.0 M4 or later for auto-configuration to work.
 
 Auto-configuration occurs if Cloud Foundry detects a `org.springframework.data.redis.connection.RedisConnectionFactory` bean in the Spring application context. The following snippet of a Spring XML application context file shows an example of defining this type of bean which Cloud Foundry will detect and potentially auto-configure:
 
@@ -486,7 +486,7 @@ Cloud Foundry will create a `JedisConnectionFactory` with its own values for the
 
 #### Manual Configuration in Java ####
 
-To configure a Redis service in Java configuration, simply create a `@Configuration` class with a `@Bean` method to return a `org.springframework.data.redis.connection.RedisConnectionFactory` bean (from Spring Data Redis). The bean can be created by helper classes in the `cloudfoundry-runtime` library, as shown here: 
+To configure a Redis service in Java configuration, simply create a `@Configuration` class with a `@Bean` method to return a `org.springframework.data.redis.connection.RedisConnectionFactory` bean (from Spring Data Redis). The bean can be created by helper classes in the `cloudfoundry-runtime` library, as shown here:
 
 ~~~java
 @Configuration
@@ -533,7 +533,7 @@ The following table lists the attributes of the `<cloud:redis-connection-factory
 </tr>
 <tr>
   <td>id</td>
-  <td>The ID of this Redis connection factory.  The RedisTemplate bean uses this ID when it references the connection factory. <br>Default value is the name of the bound service instance.</td>
+  <td>The ID of this Redis connection factory. The RedisTemplate bean uses this ID when it references the connection factory. <br>Default value is the name of the bound service instance.</td>
   <td>String</td>
 </tr>
 <tr>
@@ -541,14 +541,14 @@ The following table lists the attributes of the `<cloud:redis-connection-factory
   <td>The name of the Redis service. <br>You specify this attribute only if you are binding multiple Redis services to your application and you want to specify which particular service instance binds to a particular Spring bean.  The default value is the name of the bound service instance.</td>
   <td>String</td>
 </tr>
-</tbody> 
+</tbody>
 </table>
 
 With this configuration, Cloud Foundry uses the most common configuration options when it creates the factory at runtime. The following section describes how to override the defaults for these options.
 
 ##### Advanced Manual Configuration #####
 
-The connection factory created by the `<cloud:redis-connection-factory>` namespace can be customized by specifying the optional `<cloud:pool>` child element. 
+The connection factory created by the `<cloud:redis-connection-factory>` namespace can be customized by specifying the optional `<cloud:pool>` child element.
 
 The following example shows how to use these advanced Redis configuration options:
 
@@ -582,14 +582,14 @@ The `<cloud:pool>` child element takes the following attributes:
   <td>int</td>
   <td>Default value is `-1` (forever).</td>
  </tr>
-</tbody> 
+</tbody>
 </table>
 
 ### <a id='rabbitmq'></a>RabbitMQ ###
 
 #### Auto-Configuration ####
 
-You must be using [Spring AMQP](http://www.springsource.org/spring-amqp) 1.0 or later for auto-configuration to work. Spring AMQP provides publishing, multi-threaded consumer generation, and message conversion. It also facilitates management of AMQP resources while promoting dependency injection and declarative configuration.
+You must be using Spring AMQP 1.0 or later for auto-configuration to work. Spring AMQP provides publishing, multi-threaded consumer generation, and message conversion. It also facilitates management of AMQP resources while promoting dependency injection and declarative configuration.
 
 Auto-configuration occurs if Cloud Foundry detects a `org.springframework.amqp.rabbit.connection.ConnectionFactory` bean in the Spring application context. The following snippet of a Spring application context file shows an example of defining this type of bean which Cloud Foundry will detect and potentially auto-configure:
 
@@ -607,7 +607,7 @@ Cloud Foundry will create a `org.springframework.amqp.rabbit.connection.CachingC
 
 #### Manual Configuration in Java ####
 
-To configure a RabbitMQ service in Java configuration, simply create a `@Configuration` class with a `@Bean` method to return a `org.springframework.amqp.rabbit.connection.ConnectionFactory` bean (from the Spring AMQP library). The bean can be created by helper classes in the `cloudfoundry-runtime` library, as shown here: 
+To configure a RabbitMQ service in Java configuration, simply create a `@Configuration` class with a `@Bean` method to return a `org.springframework.amqp.rabbit.connection.ConnectionFactory` bean (from the Spring AMQP library). The bean can be created by helper classes in the `cloudfoundry-runtime` library, as shown here:
 
 ~~~java
 @Configuration
@@ -672,11 +672,11 @@ The following table lists the attributes of the `<cloud:rabbit-connection-factor
 </tbody>
 </table>
 
-This configuration creates a simple RabbitMQ connection factory using default values for the options. The following section describes how to override the defaults for these options. 
+This configuration creates a simple RabbitMQ connection factory using default values for the options. The following section describes how to override the defaults for these options.
 
 ##### Advanced Manual Configuration #####
 
-The connection factory created by the `<cloud:rabbit-connection-factory>` namespace can be customized by specifying the optional `<cloud:rabbit-options>` child element. 
+The connection factory created by the `<cloud:rabbit-connection-factory>` namespace can be customized by specifying the optional `<cloud:rabbit-options>` child element.
 
 The following example shows how to use these advanced RabbitMQ configuration options:
 

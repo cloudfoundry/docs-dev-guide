@@ -2,7 +2,7 @@
 title: Deploy Node.js Applications
 ---
 
-This page will prepare you to deploy Node.js apps via the [getting started guide](../../../dotcom/getting-started.html).
+This page will prepare you to deploy Node.js apps via the [getting started guide](getting-started.html).
 
 ## <a id='packagejson'></a> Application package file ##
 
@@ -54,4 +54,4 @@ $ cf push --buildpack https://github.com/cloudfoundry/heroku-buildpack-nodejs.gi
 
 ## <a id='services'></a> How do I bind services? ##
 
-Refer to the [instructions for node.js service bindings](../../services/node-service-bindings.html).
+Refer to the [instructions for node.js service bindings](../bind-services/node-service-bindings.html).

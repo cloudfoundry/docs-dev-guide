@@ -4,16 +4,15 @@ title: Using Services
 
 Cloud Foundry Services are any type of add-on that can be provisioned alongside your application; for example, a database or an account on a third-party SaaS provider.
 
-A service may support the concept of "binding" with an application. When a service instance is bound to an application, connection information and credentials specific to that service instance are placed in a `VCAP_SERVICES` environment variable in JSON format that are visible to the application process. 
+A service may support the concept of "binding" with an application. When a service instance is bound to an application, connection information and credentials specific to that service instance are placed in a `VCAP_SERVICES` environment variable in JSON format that are visible to the application process.
 
-* [Getting Started - Adding a Service](../../dotcom/adding-a-service.html)
+* [Getting Started - Adding a Service](./adding-a-service.html)
 * [Managing Services from the Command Line](managing-services.html)
 * [User-provided Service Instances](user-provided.html)
-* [VCAP_SERVICES Environment Variable](../deploying-apps/environment-variable.html)
-* [Tunnelling to Services Instances](tunnelling-with-services.html)
+* [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html)
 
 ## <a id='configuring'></a>Configuring Services with Application Frameworks ##
- 
+
 Some application frameworks support Cloud Foundry Services directly. This means that they are able to read the `VCAP_SERVICES` environment variable and automate aspects of using the service. The procedure for configuring an application to connect to a service varies by application framework. Note that auto-configuration is not supported for all frameworks. The table below has links to instructions for configuring service connections in different environments.
 
 | Runtime               | Framework                   |

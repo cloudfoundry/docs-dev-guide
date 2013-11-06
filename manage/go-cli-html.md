@@ -2,9 +2,6 @@
 title: Getting Started with cf v6
 ---
 
-cf is Cloud Foundry's command line interface. You can use cf to deploy and manage applications running on most Cloud Foundry based environments, including CloudFoundry.com.
-
-
 ## <a id='beta'></a>Beta Notice ##
 
 cf v6 beta is a complete rewrite of the Cloud Foundry command-line interface. v6 is written in Go, and is more performant that the previous, Ruby-based version.
@@ -18,6 +15,9 @@ cf v6 is currently in beta testing. Limitations of the beta version are:
 During the beta period, the executable will be named gcf instead of cf. cf v6 commands begin with "gcf". If you would prefer to completely switch to gcf now, you can use an alias to cf.
 
 cf v6 is intended to replace cf v5. During the v6 beta period, cf v5 and v6 can co-exist on the same machine; you invoke v6 commands with the `gcf` command prefix. Upon general availability of cf v6, cf v5  will be deprecated, and the gcf executable will be renamed cf. At that point, cf v6 commands will be updated to replace the use of the `gcf` command prefix with `cf`.
+
+cf v6 is available for download at https://github.com/cloudfoundry/cli/releases/tag/v6.0.0-beta. See https://github.com/cloudfoundry/cli/blob/master/INSTALL.md for installation instructions.
+
 
 
 ## <a id='new'></a>New and Improved Features ##
@@ -119,7 +119,7 @@ The cf v6 commands for managing domains and routes are:
 
 To use a domain in a route:
 
-1.  Use `gcf create-domain` to create a domain in the desired organization, unless the domain already exists in (or has been shared with) the organization.
+1. Use `gcf create-domain` to create a domain in the desired organization, unless the domain already exists in (or has been shared with) the organization.
 1. Use `gcf map-domain` to map the domain to the desired space.
 1. Use `gcf map-route` to map the domain to the desired application. You can map the domain to other applications in the same space, as long as each resulting route in the space is unique. Routes will be unique if you use the `-n HOSTNAME`option to specify a unique hostname for each route that uses the same domain.
 
@@ -138,11 +138,11 @@ cf v6 provides new commands for managing users and roles.
 
 ## <a id='aliases'></a> New Aliases ##
 
-cf v6 introduces single-letter aliases for commonly used commands.  For example, you can enter `gcf p` for `gcg push`, and `gcf t` for `gcf target`. You can see the alias for a command, if there is one, by running command line help, described below.
+cf v6 introduces single-letter aliases for commonly used commands.  For example, you can enter `gcf p` for `gcf push`, and `gcf t` for `gcf target`. You can see the alias for a command, if there is one, by running command line help, described below.
 
 ## <a id='help'></a> Command Line Help ##
 
-Run `gcf help` to view a list all gcf commands and a brief description of each. To view detailed help for a command, add `-h` to the command line.  For example:
+Run `gcf help` to view a list all gcf commands and a brief description of each. To view detailed help for a command, add `-h` to the command line. For example:
 
 <pre class="terminal">
 gcf push -h

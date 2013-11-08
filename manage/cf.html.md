@@ -13,37 +13,6 @@ This table below lists all cf commands. Click a command in the table below infor
 | **Basics** <br>[login EMAIL](#login) <br>[logout](#logout) <br>[targets](#targets) <br>[target URL](#target)  <br> <br> **Manage Users** <br>  [create-user EMAIL](#create-user)  <br>   [passwd](#passwd) <br> [register EMAIL](#register) <br> [users](#users)<br><br> **Manage Apps** <br>[app APP](#app) <br> [apps](#apps) <br>[bind-service SVC APP](#bind-service)<br> [console APP](#console) <br>[delete APP](#delete) <br>[map APP HOST DOMAIN](#map) <br>[push NAME](#push) <br>[rename APP APP](#rename) <br>[restart APP](#restart) <br> [scale APP](#scale) <br> [set-env APP NAME VALUE](#set-env)<br>[start APPS](#start) <br>[stop APPS](#stop) <br>[unbind-service SVC APP](#unbind-service)   <br> [unmap URL APP](#unmap) <br> [unset-env APP NAME](#unset-env)    <br> <br> | **Get Information About Apps**  <br>[crashlogs APP](#crashlogs)  <br> [env APP](#env)  <br> [events APP](#events)  <br>[file APP PATH](#file)  <br> [files APP PATH](#file) <br> [guid TYPE NAME](#guid) <br>[health APP](#health) <br>[instances APP](#instances) <br>[logs APP](#logs) <br>[stats APP](#stats) <br>[tail APP PATH](#tail)        <br> <br>  **Manage Services** <br>[bind-service SVC APP](#bind-service) <br>[create-service-auth-token LABEL PROVIDER](#create-service-auth-token)<br>[create-service OFFERING NAME](#create-service) <br>[delete-service-auth-token TOKEN](#delete-service-auth-token)<br>[delete-service SVC](#delete-service) <br>[rename-service SVC SVC](#rename-service) <br>[unbind-service SVC APP](#unbind-service)  <br>[update-service-auth-token TOKEN](#update-service-auth-token)   <br> <br>**Get Information about Services** <br> [service-auth-tokens](#service-auth-tokens) <br>[service SERVICE](#service) <br>[services](#services)   |**Manage Organizations and Spaces** <br>[create-org ORG](#create-org) <br>[create-space NAME ORG](#create-space)  <br>  [delete-org ORG](#delete-org) <br>[delete-space SPACE](#delete-space)   <br>[rename-org ORG ORG](#rename-org)   <br>[rename-space SPACE SPACE](#rename-space) <br> [set-quota QUOTA ORG](#set-quota) <br>[switch-space SPACE](#switch-space) <br> <br> **Get Information About Organizations and Spaces** <br> [guid TYPE NAME](#guid) <br>[org ORG](#org)  <br>[orgs](#orgs)  <br>[space SPACE](#space)  <br> [spaces ORG](#spaces)  <br> <br>**Manage Domains and Routes** <br>[delete-route SPACE](#delete-route) <br> [domains SPACE](#domains) <br> [guid TYPE NAME](#guid)<br>[map-domain DOMAIN](#map-domain)<br>[routes](#routes) <br>[unmap-domain DOMAIN](#unmap-domain )  <br>
 |  | |
 
-## <a id='installing'></a>Installing cf ##
-
-cf requires Ruby and RubyGems. Ruby 1.9.3 or later is required. Ruby 1.9.3 is recommended. For information about installing Ruby and RubyGems, see [Installing Ruby](install_ruby.html).
-
-After installing Ruby and RubyGems, use this command to install the latest released version of cf:
-
-<pre class="terminal">
-$ gem install cf
-</pre>
-
-To install a pre-release version of cf:
-
-<pre class="terminal">
-$ gem install cf --pre
-</pre>
-
-## <a id='troubleshooting'></a>Troubleshooting cf Installation ##
-
-* OS X includes Ruby v1.8.7, which cf does not support. On OS X you must upgrade Ruby to 1.9.3 or later to run cf.
-
-* If you are running Ruby 1.9.3 with a pre-1.9.x gemset, cf installation will fail with a message like this:
-
-<pre class="terminal">
-$ gem install cf
-...
-...
-ERROR: Error installing cf:
-activesupport requires Ruby version >= 1.9.3.
-</pre>
-
-
 ## <a id='usage'></a>Command Usage and Qualifiers ##
 
 cf commands allow you to view, and in some cases create and modify, information related to Cloud Foundry applications, services, organisations, spaces, domains, and so on. Preface each command with `cf`, for example:

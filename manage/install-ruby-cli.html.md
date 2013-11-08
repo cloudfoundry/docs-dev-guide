@@ -2,13 +2,13 @@
 title: Install Ruby CLI
 ---
 
-This page has instructions for installing cf, the Cloud Foundry Ruby-based command line interface. For information about installing gcf, the Go-based command line interface, see [Install Ruby CLI](install-ruby-cli.html).
+This page has instructions for installing cf, the Cloud Foundry Ruby-based command line interface. For information about installing gcf, the Go-based command line interface, see [Install Go CLI](install-go-cli.html).
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
 cf requires Ruby and RubyGems. Ruby 1.9.3 or later is required. Ruby 1.9.3 is recommended.
 
-## <a id="prerequisits"></a>Install Ruby ##
+## <a id="ruby"></a>Install Ruby ##
 
 This section has instructions for installing Ruby on Linux, Mac OS X, and Windows.
 
@@ -67,4 +67,4 @@ activesupport requires Ruby version >= 1.9.3.
 
 ## <a id="about"></a>Get Started with the Ruby CLI ##
 
-See [Getting Started with cf v6](ruby-cli.html).
+See [cf Command Line Interface](cf.html).

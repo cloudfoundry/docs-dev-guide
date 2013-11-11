@@ -665,7 +665,7 @@ You can define deployment options on the command line, interactively, or in a ma
 Note that when you redeploy an application, cf does _not_ refer to `manifest.yml` for deployment settings. Instead, cf will deploy the application with the currently active deployment settings. You must use the `--reset` option to cause the settings in the manifest to be applied on subsequent pushes. For more information see [cf push and the Manifest](../deploy-apps/manifest.html#push-and-manifest) on the [Application Manifests](../deploy-apps/manifest.html) page.
 
 
-cf will upload all application files with the exception of version control files with file extensions `.svn`, `.git`, and `.darcs`. If there are other files you wish to exclude from upload, you can specify them in a `.cfignore` file in the directory where you run the push command. `.cfignore` behaves similarly to `.gitignore`. For more information see [Exclude Unnecessary Files with cfignore](../deploy-apps/app-design.html#exclude) on [Key Facts About Application Deployment](../deploy-apps/app-design.html).
+cf will upload all application files with the exception of version control files with file extensions `.svn`, `.git`, and `.darcs`. If there are other files you wish to exclude from upload, you can specify them in a `.cfignore` file in the directory where you run the push command. `.cfignore` behaves similarly to `.gitignore`. For more information see [Exclude Unnecessary Files with cfignore](../deploy-apps/prepare-to-deploy.html#exclude) on [Key Facts About Application Deployment](../deploy-apps/app-design.html).
 
 
 <div class="command-doc">

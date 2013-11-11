@@ -30,7 +30,7 @@ Applications running on Cloud Foundry receive requests using only the URLs confi
 
 Unlike the Cloud Foundry v1 hosted service, the Cloud Foundry v2 hosted service data services (MySQL, Postgres, MongoDB, Redis, RabbitMQ) used with Cloud Foundry can now be directly accessed by clients not running on Cloud Foundry since these services are offered by Cloud Foundry partners. You can retrieve the connection metadata and credentials of a bound service by retrieving the env.log from an application or via the Cloud Foundry API response for services.
 
-## <a id="cfignore"></a>Ignore Unnecessary Files When Pushing ##
+## <a id="exclude"></a>Ignore Unnecessary Files When Pushing ##
 
 By default, when you push an application, all files in the application’s project directory tree, except version control files with file extensions `.svn` `.git`, and `.darcs`, are uploaded to your Cloud Foundry instance. If the application directory contains other files (such as `temp` or `log` files), or complete subdirectories that are not required to build and run your application, the best practice is to exclude them using a `.cfignore` file. (`.cfignore` is similar to git’s `.gitignore`, which allows you to exclude files and directories from git tracking.) Especially with a large application, uploading unnecessary files slows down application deployment.
 

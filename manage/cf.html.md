@@ -665,7 +665,7 @@ You can define deployment options on the command line, interactively, or in a ma
 Note that when you redeploy an application, cf does _not_ refer to `manifest.yml` for deployment settings. Instead, cf will deploy the application with the currently active deployment settings. You must use the `--reset` option to cause the settings in the manifest to be applied on subsequent pushes. For more information see [cf push and the Manifest](../deploy-apps/manifest.html#push-and-manifest) on the [Application Manifests](../deploy-apps/manifest.html) page.
 
 
-cf will upload all application files with the exception of version control files with file extensions `.svn`, `.git`, and `.darcs`. If there are other files you wish to exclude from upload, you can specify them in a `.cfignore` file in the directory where you run the push command. `.cfignore` behaves similarly to `.gitignore`. For more information see [Exclude Unnecessary Files with cfignore](../deploy-apps/prepare-to-deploy.html#exclude) on [Key Facts About Application Deployment](../deploy-apps/app-design.html).
+cf will upload all application files with the exception of version control files with file extensions `.svn`, `.git`, and `.darcs`. If there are other files you wish to exclude from upload, you can specify them in a `.cfignore` file in the directory where you run the push command. `.cfignore` behaves similarly to `.gitignore`. For more information see [Exclude Unnecessary Files with cfignore](../deploy-apps/prepare-to-deploy.html#exclude) on [Prepare to Deploy an Application](../deploy-apps/prepare-to-deploy.html).
 
 
 <div class="command-doc">
@@ -679,7 +679,7 @@ cf will upload all application files with the exception of version control files
 | --[no-]restart              |  | Restart app after updating? |
 | --[no-]start      |          |Use this qualifier to to indicate that you do (or do not) want the application to be started upon <br>deployment. |
 | --buildpack BUILDPACK         |          | Specify the URL of a buildpack to be used to stage the application. |
-| --command COMMAND        |         |The command to use to start the application. <br><br>If you use this option to specify a script that contains the start command, be sure to include the relative path to the script. For example, if your start script, `start.sh`, is in the `\bin` directory of your application's root directory, specify `--command './bin.start.sh'`.<br><br>For information about how Cloud Foundry starts an application if you do not specify a start command when you push the application, see [The Application Start Command](../deploy-apps/app-design.html#start-command), on [Key Facts About Application Deployment](../deploy-apps/prepare-to-deploy.html). |
+| --command COMMAND        |         |The command to use to start the application. <br><br>If you use this option to specify a script that contains the start command, be sure to include the relative path to the script. For example, if your start script, `start.sh`, is in the `\bin` directory of your application's root directory, specify `--command './bin.start.sh'`. |
 | --domain DOMAIN              |          | The top level internet domain for the application. |
 | --host HOST    |        |The subdomain, leave blank if specifying custom domain.            |
 | --instances INSTANCES       |          | The  number of instances of the application to start.|

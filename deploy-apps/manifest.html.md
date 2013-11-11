@@ -277,7 +277,7 @@ applications:
 |command  |Command to use to start the application  |n  |command: bundle exec rake server:start_command  |
 |domain  |Domain for the application. |  |  |
 |host  | Host for the application. |  |  |
-|instances  |Number of instances of application to run. <br><br>For related information, see [Run Multiple Instances to Increase Availability](./about-deploy.html#instances) on [Key Facts About Application Deployment](./about-deploy.html).|y, defaults to 1<br> if not specified.  |instances: 2  |
+|instances  |Number of instances of application to run.|y, defaults to 1<br> if not specified.  |instances: 2  |
 |mem  |Maximum memory application can use.  |y, defaults to 256M<br> if not specified. |mem: 64M |
 |disk  |Maximum disk space application can use.  |  |disk:1G  |
 |path  |Path, relative to current working directory, to the application to push.  | y  | path: . |

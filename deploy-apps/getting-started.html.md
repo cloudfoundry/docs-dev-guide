@@ -19,7 +19,7 @@ Preparing to deploy an application involves:
 
 * Understanding language and framework-specific options and requirements. You will want to verify that your Cloud Foundry instance supports the type of application you are going to deploy, or know the URL of an externally available buildpack that can stage the application. Any buildpack has a mechanism for detecting an application's type --- for instance, whether it is a Java or a Node.js application --- so it is a good idea to understand how the buildback that a will stage your application performs that discovery.  
 
-For more information on these and other topics that will help you prepare for deploying your application, see [Prepare to Deploy](./prepare-to-deplay).
+For more information on these and other topics that will help you prepare for deploying your application, see [Prepare to Deploy](./prepare-to-deploy).
 
 ## <a id='push-app'></a>Push Your Application to the Cloud ##
 

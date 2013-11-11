@@ -1,30 +1,6 @@
 ---
-title: Key Facts About Application Deployment
+title: About Starting Applications 
 ---
-
-
-This page summarizes key Cloud Foundry features and behaviors related to application deployment.
-
-## <a id='push-process'></a>The Cloud Foundry Push Process ##
-
-You initiate the deployment of an application using the Cloud Foundry CLI `cf push` command. In Cloud Foundry documentation, the deployment process is often referred to as “pushing an application”.
-
-When you push an application, Cloud Foundry performs a variety of staging tasks, which at a high level, consist of finding a container to run the application, provisioning the container with the appropriate software and system resources, starting one or more instances of the application, and storing the expected state of the application in the Cloud Controller database.
-
-The staging process flow is illustrated on [How Applications Are Staged](./how-applications-are-staged.html).
-
-
-##<a id='instances'></a>Run Multiple Instances to Increase Availability ##
-
-To avoid the risk of an application being unavailable during Cloud Foundry upgrade processes, you should run more than one instance of an application. When a DEA is upgraded, the applications running on it are _evacuated_: shut down gracefully on the DEA to be upgraded, and restarted on another DEA. On Pivotal CF Hosted, BOSH is configured to upgrade DEAs one at a time, so for an application whose startup time is less than two minutes, running a second instance should be sufficient. Cloud Foundry recommends running more than two instances of an application that takes longer than two minutes to start.
-
-
-##<a id='deploy-options'></a>Application Deployment Options ##
-
-The details of how an application is deployed are governed by a set of required and optional deployment attributes. For example, you specify the name of the application, the number of instances to run, and how much memory to allocate to the application.  You can supply deployment options on the command line when you run `cf push`, or in an application manifest file.
-
-* See the [push](../manage/cf.html#push) section on "cf Command Line Interface" for information about the `push` command and supplying qualifiers on the command line.
-* See the [cf Push and the Manifest](manifest.html#push-and-manifest) section on "Application Manifests" for information about using an application manifest to supply deployment options.
 
 ##<a id='start-command'></a>The Application Start Command ##
 
@@ -36,7 +12,7 @@ There are three ways that Cloud Foundry can obtain the command to use to start a
 
 ##<a id='run-utility'></a>Run a Standalone Utility at Deployment ##
 You can run an application-related utility by invoking it at the time you push the application.
-One use case for this capability is database creation and migration.  If you are going to run a database application to Cloud Foundry, you need to create and populate the database.  Similarly, when the database schema changes you will need to update or migrate the database accordingly.
+One use case for this capability is database creation and migration.If you are going to run a database application to Cloud Foundry, you need to create and populate the database. Similarly, when the database schema changes you will need to update or migrate the database accordingly.
 
 ###<a id='custom-start'></a>Specify a Custom Start Command ###
 

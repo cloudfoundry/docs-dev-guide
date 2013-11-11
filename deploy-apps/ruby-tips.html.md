@@ -223,7 +223,7 @@ $ cf push -m worker-manifest.yml
 
 CF will likely ask for a URL for the worker application, select option 2 - "none".
 
-### <a id='test'></a>Test the Qpplication ###
+### <a id='test'></a>Test the Application ###
 
 Test the application by visiting the new action on the thing controller at the assigned url, in this example, the URL would have been http://sidekiq.cloudfoundry.com/thing/new
 

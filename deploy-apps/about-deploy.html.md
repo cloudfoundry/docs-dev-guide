@@ -13,35 +13,11 @@ When you push an application, Cloud Foundry performs a variety of staging tasks,
 
 The staging process flow is illustrated on [How Applications Are Staged](./how-applications-are-staged.html).
 
-## <a id='exclude'></a>Ignore Unnecessary Files When Pushing ##
-
-By default, when you push an application, all files in the application’s project directory tree, except version control files with file extensions `.svn`, `.git`, and `.darcs`, are uploaded to your Cloud Foundry instance. If the application directory contains other files (such as temp or log files), or complete subdirectories that are not required to build and run your application, the best practice is to exclude them using a `.cfignore` file. (`.cfignore` is similar to git’s `.gitignore`, which allows you to exclude files and directories from git tracking.)  Especially with a large application, uploading unnecessary files slows down application deployment.
-
-Specify the files or file types you wish to exclude from upload in a text file, named `.cfignore`, in the root of your application directory structure.  For example, these lines exclude the `tmp` and `log` directories.
-
-<pre class="terminal">
-tmp/
-log/
-</pre>
-
-The file types you will want to exclude vary, based on the application frameworks you use. The `.gitignore` templates for common frameworks, available at https://github.com/github/gitignore, are a useful starting point.
 
 ##<a id='instances'></a>Run Multiple Instances to Increase Availability ##
 
 To avoid the risk of an application being unavailable during Cloud Foundry upgrade processes, you should run more than one instance of an application. When a DEA is upgraded, the applications running on it are _evacuated_: shut down gracefully on the DEA to be upgraded, and restarted on another DEA. On Pivotal CF Hosted, BOSH is configured to upgrade DEAs one at a time, so for an application whose startup time is less than two minutes, running a second instance should be sufficient. Cloud Foundry recommends running more than two instances of an application that takes longer than two minutes to start.
 
-
-##<a id='buildpacks'></a>Buildpack Support for Runtimes and Frameworks ##
-
-Cloud Foundry stages application using framework and and runtime-specific buildpacks. Heroku developed the buildpack approach, and made it available to the open source community. Cloud Foundry currently provides buildpacks for the several runtimes and frameworks.  See the links below for run-time specific deployment instructions:
-
-* Ruby --- [Deploy Rack, Rails, or Sinatra Applications](./deploy-ruby.html)
-* Javascript --- [Deploy Node.js Applications](./deploy-node.html)
-* Java/JVM --- [Deploy Java, Groovy, or Scala Apps](./deploy-java.html)
-
-Cloud Foundry also supports custom buildpacks as described on the "Custom Buildpacks" page in _Extending Elastic Runtime_ .  Some <a href="https://devcenter.heroku.com/articles/third-party-buildpacks">Heroku third party buildpacks</a> may work with Cloud Foundry, but your experience may vary. See https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks for a list of community-developed buildpacks. To use a buildpack that is not built-in to Cloud Foundry, you specify the URL of the buildpack when you push an application, using the `--buildpack` qualifier.
-
-If you do not specify a buildpack when you run `cf push`, Cloud Foundry determines which built-in buildpack to use, using the `bin/detect` script of each buildpack.
 
 ##<a id='deploy-options'></a>Application Deployment Options ##
 
@@ -49,8 +25,6 @@ The details of how an application is deployed are governed by a set of required 
 
 * See the [push](../manage/cf.html#push) section on "cf Command Line Interface" for information about the `push` command and supplying qualifiers on the command line.
 * See the [cf Push and the Manifest](manifest.html#push-and-manifest) section on "Application Manifests" for information about using an application manifest to supply deployment options.
-
-
 
 ##<a id='start-command'></a>The Application Start Command ##
 
@@ -85,21 +59,7 @@ Unless you want to run the custom start command every time you push the applicat
 
 There is another factor to consider when using a custom start command:  if you start more than a single instance of the application when you push it, the custom command will be used to start each of the instances ---inappropriate in the case of database creation or migration. For examples of using a custom start command to migrate a database, for a single application instance only, see [Migrate a Database on Cloud Foundry](../bind-services/migrate-db.html).
 
-## <a id='services'></a>Using Services ##
 
-An application running on a Cloud Foundry instance can use services that the instance is configured to provision. Such built-in services vary for different Cloud Foundry instances.
-
-To use a built-in service, you need to create a service instance and bind it to your application. Depending on the type of service, it may be necessary to configure the application to connect to a service instance.
-
-For framework specific service information see:
-
-* [Service Bindings for Spring Applications](../bind-services/spring-service-bindings.html)
-* [Service Bindings for Grails Applications](../bind-services/grails-service-bindings.html)
-* [Service Bindings for Lift Applications](../bind-services/lift-service-bindings.html)
-* [Service Bindings for Rack, Rails, or Sinatra Applications](../bind-services/ruby-service-bindings.html)
-* [Service Bindings for Node.js Applications](../bind-services/node-service-bindings.html)
-
-For information about how external services can work with Cloud Foundry, see "Writing a v2 Cloud Foundry Service" in _Extending Elastic Runtime_.
 
 
 

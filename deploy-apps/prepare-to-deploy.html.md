@@ -2,7 +2,7 @@
 title: Prepare to Deploy an Application
 ---
 
-## <a id="app-design">Application Design for the Cloud ##
+## <a id="app-design"></a>Application Design for the Cloud ##
 
 Applications written using the runtimes and frameworks supported by Cloud Foundry often run unmodified on Cloud Foundry, if the application design follows a few simple guidelines. Following these guidelines makes an application cloud-friendly, and facilitates deployment to Cloud Foundry and other cloud platforms.
 

@@ -1,5 +1,5 @@
 ---
-title: Deploy Node.js Applications
+title: Tips for Node.js Applications
 ---
 
 This page will prepare you to deploy Node.js apps via the [getting started guide](getting-started.html).
@@ -32,7 +32,7 @@ $ cf push --command "node my-app.js"
 
 You do not need to run `npm install` before deploying your application. Cloud Foundry will run it for you when your application is pushed. If you would prefer to run `npm install` and create a `node_modules` folder inside of your application, this is also supported.
 
-## <a id='buildpack'></a> Node.js buildpack ##
+## <a id='discovery'></a> Solving Discovery Problems ##
 
 If Cloud Foundry does not automatically detect that your application is a Node.js application, you can override the auto-detection by specifying the Node.js buildpack.
 
@@ -56,8 +56,7 @@ $ cf push --buildpack https://github.com/cloudfoundry/heroku-buildpack-nodejs.gi
 
 Refer to the [instructions for node.js service bindings](../bind-services/node-service-bindings.html).
 
-## <a id='buildpack'></a> About the Node.js Buildpack   ##
----
+## <a id='buildpack'></a> About the Node.js Buildpack ##
 
 For information about using and extending the Node.js buildpack in Cloud Foundry, see https://github.com/cloudfoundry/heroku-buildpack-nodejs.
 
@@ -65,7 +64,7 @@ The table below lists:
 
 * **Resource** --- The software installed by the buildpack.
 * **Available Versions** --- The versions of each software resource that are available from the buildpack.
-* **Installed by Default** --- The version of each software resource that is installed by default. 
+* **Installed by Default** --- The version of each software resource that is installed by default.
 * **To Install a Different Version** --- How to change the buildpack to install a different version of a software resource.
 
  **This page was last updated on August 2, 2013.**

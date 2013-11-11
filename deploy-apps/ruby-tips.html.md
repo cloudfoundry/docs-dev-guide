@@ -1,5 +1,5 @@
 ---
-title: Prepare to Deploy Rack, Rails, or Sinatra Applications
+title: Tips for Ruby Developers
 ---
 
 This page has information specific to deploying  Rack, Rails, or Sinatra applications.

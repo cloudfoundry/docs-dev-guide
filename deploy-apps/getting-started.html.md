@@ -1,5 +1,5 @@
 ---
-title: Getting Started with Application Deployment 
+title: Getting Started with Application Deployment
 ---
 
 ## <a id='intro'></a>Overview of Deployment Process ##
@@ -14,12 +14,12 @@ An application that uses services, such as a database, messaging, or email serve
 Preparing to deploy an application involves:
 
 * Making sure that your application architecture is *cloud-ready*. There are several Cloud Foundry behaviors, related to file storage, HTTP sessions, and port usage that might indicate simple modifications to your application.
- 
+
 * Ensuring that all required application resources will be uploaded and extraneous files and artifacts are excluded. For example, you might need to include a database driver, and especially for a large application, you will want to explicitly exclude extraneous files that exist within your application directory structure.
 
-* Understanding language and framework-specific options and requirements. You will want to verify that your Cloud Foundry instance supports the type of application you are going to deploy, or know the URL of an externally available buildpack that can stage the application. Any buildpack has a mechanism for detecting an application's type --- for instance, whether it is a Java or a Node.js application --- so it is a good idea to understand how the buildback that a will stage your application performs that discovery.  
+* Understanding language and framework-specific options and requirements. You will want to verify that your Cloud Foundry instance supports the type of application you are going to deploy, or know the URL of an externally available buildpack that can stage the application. Any buildpack has a mechanism for detecting an application's type --- for instance, whether it is a Java or a Node.js application --- so it is a good idea to understand how the buildback that a will stage your application performs that discovery.
 
-For more information on these and other topics that will help you prepare for deploying your application, see [Prepare to Deploy](./prepare-to-deploy).
+For more information on these and other topics that will help you prepare for deploying your application, see [Prepare to Deploy](./prepare-to-deploy.html).
 
 ## <a id='push-app'></a>Push Your Application to the Cloud ##
 

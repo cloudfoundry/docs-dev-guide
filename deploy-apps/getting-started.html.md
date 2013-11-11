@@ -1,62 +1,25 @@
 ---
-title: Getting Started
+title: Getting Started with Application Deployment 
 ---
 
-Cloud Foundry allows you to deploy applications without worrying about configuration headaches, making it faster and easier to build, test, deploy and scale your app.
+## <a id='intro'></a>Overview of Deployment Process ##
 
-This guide walks you through pushing an application to Cloud Foundry.
+You deploy an application to Cloud Foundry by running a `push` command from a Cloud Foundry command line interface (CLI). Between the time you run `push` and the time that the application is available, Cloud Foundry does a bunch of work. It uploads and stores application files, examines and stores application metadata, creates a droplet (the Cloud Foundry unit of execution) for the application, selects an appropriate droplet execution agent (DEA) to run the droplet, and starts the application.
 
-## <a id='intro'></a>Steps to Get Started ##
+An application that uses services, such as a database, messaging, or email server, will not be fully functional until you *provision* the service and, if required, *bind* it to the application. Provisioning typically means creating a cloud-resident instance of the service. Binding is required for some types of services; if the application needs to connect to and authenticate with the service, the service instance must be bound to the application. You can provision and bind a service as part of the push process, or as a subsequent, separate step, using the `create-service` and `bind-service` CLI commands. Depending on the type of service, you may need to configure your application with the bound service’s connection information. For data services, you will typically need to seed or migrate the datastore.
 
-## <a id='install-cf'></a>Install cf Command Line Tool ##
 
-You'll use the `cf` [command line tool](../manage/cf.html) to deploy your application. You can also use it to check on the health of your application, change settings, and stop and restart your app.
+## <a id='prepare'></a>Prepare to Deploy  ##
 
-Because `cf` is a Ruby gem, you will need to have Ruby and RubyGems installed. See [Installing Ruby](../manage/install_ruby.html) page for help installing Ruby and RubyGems.
+Preparing to deploy an application involves:
 
-To install `cf`, simply type the following at your command line:
+* Making sure that your application architecture is *cloud-ready*. There are several Cloud Foundry behaviors, related to file storage, HTTP sessions, and port usage that might indicate simple modifications to your application.
+ 
+* Ensuring that all required application resources will be uploaded and extraneous files and artifacts are excluded. For example, you might need to include a database driver, and especially for a large application, you will want to explicitly exclude extraneous files that exist within your application directory structure.
 
-<pre class="terminal">
-$ gem install cf
-</pre>
+* Understanding language and framework-specific options and requirements. You will want to verify that your Cloud Foundry instance supports the type of application you are going to deploy, or know the URL of an externally available buildpack that can stage the application. Any buildpack has a mechanism for detecting an application's type --- for instance, whether it is a Java or a Node.js application --- so it is a good idea to understand how the buildback that a will stage your application performs that discovery.  
 
-When the gem has completed installing you should see a message that says, "Successfully installed." You can now target your Cloud Foundry instance. From the command shell, run the `cf target` command. In the command below, substitute the URL of your Cloud Foundry instance:
-
-<pre class="terminal">
-$ cf target api.my.cf.io
-Setting target to https://api.my.cf.io... OK
-</pre>
-
-Then log in:
-
-<pre class="terminal">
-$ cf login
-email>
-password>
-</pre>
-
-When you log in, `cf` will prompt you to choose a space. In v2 Cloud Foundry, a space is a container for an application and all its associated processes. By default, your account has three spaces:
-
-<pre class="terminal">
-1: development
-2: production
-3: staging
-Space>
-</pre>
-
-You can choose any of these spaces to deploy your application.
-
-## <a id='prepare-app'></a>Prepare Your Application for Deployment ##
-
-Cloud Foundry supports many frameworks and runtimes. Learn about the preparations for each below:
-
-| Runtime        | Framework                                                                             |
-| :------------- | :-------------                                                                        |
-| Javascript     | [Node.js](deploy-node.html)                           |
-| Java / JVM     | [Java Spring, Grails, Scala Lift, and Play](deploy-java.html)|
-| Ruby           | [Rack, Rails, or Sinatra](deploy-ruby.html)                 |
-
-Cloud Foundry supports these frameworks and runtimes using a buildpack model. Some of the <a href="https://devcenter.heroku.com/articles/third-party-buildpacks">Heroku third party buildpacks</a> will work, but your experience may vary. To push an application using one of these buildpacks use `cf push [appname] --buildpack=[git url]`
+For more information on these and other topics that will help you prepare for deploying your application, see [Prepare to Deploy](./prepare-to-deplay).
 
 ## <a id='push-app'></a>Push Your Application to the Cloud ##
 

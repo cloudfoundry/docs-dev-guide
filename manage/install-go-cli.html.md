@@ -6,7 +6,7 @@ This page has instructions for installing gcf, the Cloud Foundry Go-based comman
 
 Download gcf from https://github.com/cloudfoundry/cli/releases, and then follow the instructions for your operating system.
 
-## <a id="windows"></a>Install gcf on Windows
+## <a id="windows"></a>Install gcf on Windows ##
 
 1. Unpack the zip file.
 1. Move the `gcf` executable to `C:\Program Files\Cloud Foundry\`
@@ -22,7 +22,7 @@ Download gcf from https://github.com/cloudfoundry/cli/releases, and then follow 
 5. Open a terminal window and enter `gcf`.
 6. If your installation was successful, the gcf help listing appears.
 
-## <a id="nix-like"></a>Install gcf on Mac OSX and Linux
+## <a id="nix-like"></a>Install gcf on Mac OSX and Linux ##
 
 1. Unpack the the tgz file.
 1. Move the `gcf` executable to `/usr/local/bin`.

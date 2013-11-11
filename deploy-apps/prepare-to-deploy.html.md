@@ -45,7 +45,7 @@ The file types you will want to exclude vary, based on the application framework
 
 ## <a id="Buildpack"></a>Buildpacks and Language-Specific Considerations ##
 
-Cloud Foundry stages application using framework and and runtime-specific buildpacks. Heroku developed the buildpack approach, and made it available to the open source community. Cloud Foundry currently provides buildpacks for the several runtimes and frameworks. 
+Cloud Foundry stages application using framework and and runtime-specific buildpacks. Heroku developed the buildpack approach, and made it available to the open source community. Cloud Foundry currently provides buildpacks for the several runtimes and frameworks.
 
 ### <a id="system-buildpacks"></a>Cloud Foundry Buildpacks ###
 
@@ -53,7 +53,7 @@ See the links below for language and framework-specific information, including i
 
 * [Tips for Ruby Developers](ruby-tips.html)
 * [Tips for Node.js Developers](./node-tips.html)
-* [Tips for Java Developers](./java.tips)
+* [Tips for Java Developers](./java-tips.html)
 * Cloud Foundry also supports custom buildpacks as described on the “Custom Buildpacks” page in Extending Elastic Runtime . Some Heroku third party buildpacks may work with Cloud Foundry, but your experience may vary. See https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks for a list of community-developed buildpacks. To use a buildpack that is not built-in to Cloud Foundry, you specify the URL of the buildpack when you push an application, using the `--buildpack` qualifier.
 
 If you do not specify a buildpack when you deploy it, Cloud Foundry determines which built-in buildpack to use, using the `bin/detect` script of each buildpack.

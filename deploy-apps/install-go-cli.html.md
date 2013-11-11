@@ -32,4 +32,4 @@ Download gcf from https://github.com/cloudfoundry/cli/releases, and then follow 
 
 ## <a id="about"></a>Get Started with the Go CLI ##
 
-See [Getting Started with cf v6](go-cli.html).
+See [Getting Started with cf v6](../manage/go-cli.html).

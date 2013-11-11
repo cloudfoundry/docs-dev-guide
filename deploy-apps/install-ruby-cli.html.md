@@ -67,4 +67,4 @@ activesupport requires Ruby version >= 1.9.3.
 
 ## <a id="about"></a>Get Started with the Ruby CLI ##
 
-See [cf Command Line Interface](cf.html).
+See [cf Command Line Interface](../manage/cf.html).

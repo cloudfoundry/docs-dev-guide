@@ -9,7 +9,7 @@ You deploy an application to Cloud Foundry by running a `push` command from a Cl
 An application that uses services, such as a database, messaging, or email server, will not be fully functional until you *provision* the service and, if required, *bind* it to the application. Provisioning typically means creating a cloud-resident instance of the service. Binding is required for some types of services; if the application needs to connect to and authenticate with the service, the service instance must be bound to the application. You can provision and bind a service as part of the push process, or as a subsequent, separate step, using the `create-service` and `bind-service` CLI commands. Depending on the type of service, you may need to configure your application with the bound service’s connection information. For data services, you will typically need to seed or migrate the datastore.
 
 
-## <a id='prepare'></a>Prepare to Deploy  ##
+## <a id='prepare'></a>Step 1 --- Prepare to Deploy  ##
 
 Preparing to deploy an application involves:
 
@@ -21,7 +21,25 @@ Preparing to deploy an application involves:
 
 For more information on these and other topics that will help you prepare for deploying your application, see [Prepare to Deploy](./prepare-to-deploy.html).
 
-## <a id='push-app'></a>Push Your Application to the Cloud ##
+## <a id='prepare'></a>Step 2 --- Install or Update Your CLI ##
+
+There are two Cloud Foundry CLIs:  the original, Ruby-based cf CLI, and the newer, Go-based gcf CLI.  The two CLIs provide similar functionality, but vary in terms of specific commands and usage patterns.  For installation and usage information, see:
+
+* Ruby cf CLI --- [Install Ruby CLI](install-ruby-cli.html)
+* Go cf CLI --- [Install Go CLI](install-go-cli.html)
+
+## <a id='logon-target'></a>Step 3 --- Know Your Credentials and Target ##
+
+Before you can use a CLI to push an application you need to know:
+
+* Your username and password for your Cloud Foundry instance.
+* What is your target? A Cloud Foundry target identifies a particular workspace within a Cloud Foundry instance where you can run applications. A target is identified by:
+	* The API endpoint, or URL, where your Cloud Foundry instance listens for user and API connections, and
+	* The Cloud Foundry organizations  and spaces you can target.  A Cloud Foundry workspace is organized into organizations, and within them, spaces. A Cloud Foundry user is granted access to one or more organizations and spaces within those organizations.
+
+## <a id='domain'></a>Step 4 --- (Optional) Configure Domains ##
+
+## <a id='options'></a>Step 5 --- Determine Deployment Options ##
 
 Before you deploy, you need to decide on the answers to some questions:
 
@@ -38,7 +56,7 @@ You can define a variety of deployment options on the command line when you run 
 * See the [push](../manage/cf.html#push) section on "cf Command Line Interface" for information about the `push` command and supplying qualifiers on the command line.
 * See the [cf Push and the Manifest](manifest.html#push-and-manifest) section on "Application Manifests" for information about using an application manifest to supply deployment options.
 
-## <a id='example-push-app'></a>An Example Transcript ##
+## <a id='push'></a>Step 6 --- Push the Application ##
 
 Here is an example transcript from deploying a Ruby on Rails application.
 Note that in this example, we already provisioned an ElephantSQL instance and named it "elephantpg":
@@ -127,7 +145,7 @@ Note that in this example, we already provisioned an ElephantSQL instance and na
   OK
 </pre>
 
-## <a id='troublshooting'></a>Troubleshooting ##
+## <a id='troubleshoot-push'></a>Step 7 --- Troubleshoot Deployment Problems ##
 
 If your application does not start on Cloud Foundry, it's a good idea to double-check that your application can run locally.
 
@@ -163,6 +181,5 @@ If your application has crashed and you cannot retrieve the logs with `cf logs`,
   cf crashlogs appname
 </pre>
 
-## <a id='binding-a-service'></a>Next Step - Binding a service ##
+## <a id='bind-a-service'></a>Step 8 --- Post-Push Service Setup ##
 
-Binding and using a service is covered in our guide, [Adding a Service](../bind-services/adding-a-service.html).

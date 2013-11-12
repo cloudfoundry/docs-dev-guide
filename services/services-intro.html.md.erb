@@ -1,18 +1,20 @@
 ---
-title: Using Services
+title: Understanding Services 
 ---
-
 Cloud Foundry Services are any type of add-on that can be provisioned alongside your application; for example, a database or an account on a third-party SaaS provider.
 
-A service may support the concept of "binding" with an application. When a service instance is bound to an application, connection information and credentials specific to that service instance are placed in a `VCAP_SERVICES` environment variable in JSON format that are visible to the application process.
+## <a id='managed-services'></a>Managed Services ##
 
-* [Getting Started - Adding a Service](adding-a-service.html)
-* [Managing Services from the Command Line](managing-services.html)
-* [User-provided Service Instances](user-provided.html)
-* [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html)
+A Managed Service integrates with Cloud Foundry via a service broker that implements the Service Broker API.
 
-## <a id='configuring'></a>Configuring Services with Application Frameworks ##
+A service broker advertises a catalog of service offerings and service plans to Cloud Foundry, and receive calls from Cloud Foundry for four functions: create, delete, bind, and unbind. The broker then passes these calls onto the service itself.
 
-Some application frameworks support Cloud Foundry Services directly. This means that they are able to read the `VCAP_SERVICES` environment variable and automate aspects of using the service. The procedure for configuring an application to connect to a service varies by application framework. Note that auto-configuration is not supported for all frameworks. The table below has links to instructions for configuring service connections in different environments.
 
-|
+## <a id='user-provided-services'></a>User-Provided Services  ##
+
+User-provided service Instances are a mechanism to deliver credentials to applications for service instances which have been pre-provisioned outside of Cloud Foundry.
+
+Both operators and developers frequently ask how applications pushed to their Cloud Foundry instances can bind with external services, such as Oracle, which they operate themselves or are outside of Cloud Foundry's control'. User-provided Service Instances enable developers to use external services with their applications using familiar workflows.
+
+## <a id='binding-services'></a>About Service Binding ##
+ 

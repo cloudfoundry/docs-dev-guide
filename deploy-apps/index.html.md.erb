@@ -2,8 +2,15 @@
 title: Deploy Applications
 ---
 
-<ul>
-  <% for page in current_page.children.sort_by {|x| x.data.title} %>
-    <li><%= link_to page.data.title, page.url %></li>
-  <% end %>
-</ul>
+* Install a Command Line Interface
+	* [Install cf](install-ruby-cli.html)
+	* [Install gcf](install-go-cli.html)
+* [Prepare to Deploy an Application](prepare-to-deploy.html)
+	* [Tips for Ruby Developers](ruby-tips.html)
+	* [Tips for Node.js Developers](node-tips.html)
+	* [Tips for Java Developers](java-tips.html)
+* [Deploy an Application](getting-started.html)
+	* [Application Manifests](manifest.html)
+	* [Cloud Foundry Environment Variables](environment-variable.html)
+	* [How Applications Are Staged](how-applications-are-staged.html)
+	* [About Starting Applications](app-startup.html)

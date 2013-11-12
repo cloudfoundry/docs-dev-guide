@@ -54,7 +54,7 @@ $ cf push --buildpack https://github.com/cloudfoundry/heroku-buildpack-nodejs.gi
 
 ## <a id='services'></a> How do I bind services? ##
 
-Refer to the [instructions for node.js service bindings](../bind-services/node-service-bindings.html).
+Refer to the [instructions for node.js service bindings](../services/node-service-bindings.html).
 
 ## <a id='buildpack'></a> About the Node.js Buildpack ##
 

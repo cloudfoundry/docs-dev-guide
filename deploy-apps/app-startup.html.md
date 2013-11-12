@@ -33,7 +33,7 @@ Unless you want to run the custom start command every time you push the applicat
 
 ###<a id='single-app'></a>Run a Start Command on One Instance ###
 
-There is another factor to consider when using a custom start command:  if you start more than a single instance of the application when you push it, the custom command will be used to start each of the instances ---inappropriate in the case of database creation or migration. For examples of using a custom start command to migrate a database, for a single application instance only, see [Migrate a Database on Cloud Foundry](../bind-services/migrate-db.html).
+There is another factor to consider when using a custom start command:  if you start more than a single instance of the application when you push it, the custom command will be used to start each of the instances ---inappropriate in the case of database creation or migration. For examples of using a custom start command to migrate a database, for a single application instance only, see [Migrate a Database on Cloud Foundry](../services/migrate-db.html).
 
 
 

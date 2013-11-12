@@ -111,7 +111,7 @@ The table below lists supported command qualifiers.
 
 Bind a service to an application. Some service types are bindable, some are not. If a service supports binding, binding it to an application adds credentials for the service instance to the `VCAP_SERVICES` environment variable. You may need to restart the application for the binding to take effect.
 
-Note that you can bind a service to an application at the time you create the service, as described in [create-service](#create-service). For more information about creating and binding service instances, see [Getting Started - Adding a Service](../bind-services/adding-a-service.html).
+Note that you can bind a service to an application at the time you create the service, as described in [create-service](#create-service). For more information about creating and binding service instances, see [Getting Started - Adding a Service](../services/adding-a-service.html).
 
 
 
@@ -154,7 +154,7 @@ Create an organization.
 
 #### <a id='create-service'></a> create-service ####
 
-Create a new service instance, and optionally, bind it to an application. If you do not bind a service to an application when you create, you can do it later with the [bind-service](#bind-service) command. For more information about creating and binding service instances, see [Getting Started - Adding a Service](../bind-services/adding-a-service.html).
+Create a new service instance, and optionally, bind it to an application. If you do not bind a service to an application when you create, you can do it later with the [bind-service](#bind-service) command. For more information about creating and binding service instances, see [Getting Started - Adding a Service](../services/adding-a-service.html).
 
 To list service instances that already exist, use the [services](#services) command.
 

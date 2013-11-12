@@ -50,7 +50,7 @@ An application's start command is configured in the application's manifest file,
 
 If you have previously deployed the application, the application manifest should already exist. There are two ways to create a manifest. You can manually create the file and save it in the application's root directory before you deploy the application for the first time. If you do not manually create the manifest file, cf will prompt you to supply deployment settings when you first push the application, and will create and save the manifest file for you, with the settings  you specified interactively. For more information about application manifests, and supported attributes, see [Application Manifests](manifest.html).
 
-For an example of invoking a Rake database migration task at application startup, see [Migrate a Database for a Rails App](../bind-services/migrate-db.html#migrate-ruby-db).
+For an example of invoking a Rake database migration task at application startup, see [Migrate a Database for a Rails App](../services/migrate-db.html#migrate-ruby-db).
 
 
 ## <a id='workers'></a> Running Rails 3 Worker Tasks ##
@@ -240,14 +240,14 @@ $ cf scale sidekiq-worker --instances 2
 </pre>
 
 ## <a id='buildpack'></a>About the Ruby Buildpack ##
-  
+
 For information about using and extending the Ruby buildpack in Cloud Foundry, see https://github.com/cloudfoundry/heroku-buildpack-ruby.
 
 The table below below lists:
 
 * **Resource** --- The software installed by the Cloud Foundry Ruby buildpack, when appropriate.
 * **Available Versions** --- The versions of each software resource that are available from the buildpack.
-* **Installed by Default** --- The version of each software resource that is installed by default. 
+* **Installed by Default** --- The version of each software resource that is installed by default.
 * **To Install a Different Version** --- How to change the buildpack to install a different version of a software resource.
 
 **This table was last updated on August 14, 2013.**

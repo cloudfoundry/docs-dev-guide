@@ -1,5 +1,5 @@
 ---
-title: Spring - Service Bindings
+title: Configure Service Connections for Spring
 ---
 
 ## <a id='intro'></a>Introduction ##

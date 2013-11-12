@@ -1,9 +1,13 @@
 ---
-title: Bind and Manage Services
+title: Using Services
 ---
 
-<ul>
-  <% for page in current_page.children.sort_by {|x| x.data.title} %>
-    <li><%= link_to page.data.title, page.url %></li>
-  <% end %>
-</ul>
+* Understanding Services in Cloud Foundry
+
+* Configure Service Connections
+** [Configure Service Connections for Ruby](ruby-service-bindings.html)
+** [Configure Service Connections for Node.js](node-service-bindings.html)
+** [Configure Service Connections for Spring](spring-service-bindings.html)
+** [Configure Service Connections for Lift](lift-service-bindings.html)
+** [Configure Service Connections for Grails](grails-service-bindings.html)
+

@@ -1,5 +1,5 @@
 ---
-title: Lift - Service Bindings
+title: Configure Service Connections for Lift
 ---
 
 ## <a id='intro'></a>Introduction ##

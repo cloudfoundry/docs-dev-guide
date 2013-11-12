@@ -1,5 +1,5 @@
 ---
-title: Grails - Service Bindings
+title: Configure Service Connections for Grails
 ---
 
 Cloud Foundry provides extensive support for connecting a Grails application to services such as MySQL, Postgres, MongoDB, Redis, and RabbitMQ. In many cases, a Grails application running on Cloud Foundry can automatically detect and configure connections to services. For more advanced cases, you can control service connection parameters yourself. 

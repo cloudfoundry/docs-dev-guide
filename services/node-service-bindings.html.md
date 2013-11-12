@@ -1,5 +1,5 @@
 ---
-title: Binding a service
+title: Configure Service Connections for Node.js
 ---
 
 

@@ -153,11 +153,11 @@ Note that in this example, we already provisioned an ElephantSQL instance and na
 
 If you bound a service to the application you deployed, it may be necessary to configure your application with the service URL and credentials. For more information, see:
 
-* [Configure Service Connections for Ruby Apps](../bind-services/ruby-service-bindings.html)
-* [Configure Service Connections for Node.js Apps](../bind-services/node-service-bindings.html)
-* [Configure Service Connections for Spring Apps](../bind-services/spring-service-bindings.html)
-* [Configure Service Connections for Grails Apps](../bind-services/grails-service-bindings.html)
-* [Configure Service Connections for lift Apps](../bind-services/lift-service-bindings.html)
+* [Configure Service Connections for Ruby Apps](../services/ruby-service-bindings.html)
+* [Configure Service Connections for Node.js Apps](../services/node-service-bindings.html)
+* [Configure Service Connections for Spring Apps](../services/spring-service-bindings.html)
+* [Configure Service Connections for Grails Apps](../services/grails-service-bindings.html)
+* [Configure Service Connections for lift Apps](../services/lift-service-bindings.html)
 
 ## <a id='troubleshoot-push'></a>Step 8 --- Troubleshoot Deployment Problems ##
 

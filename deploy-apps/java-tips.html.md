@@ -47,9 +47,9 @@ $ cf push --path target/my-app-1.0.0.war
 
 Information about binding apps to services can be found on the following pages:
 
-* [Spring](../bind-services/spring-service-bindings.html)
-* [Grails](../bind-services/grails-service-bindings.html)
-* [Lift](../bind-services/lift-service-bindings.html)
+* [Spring](../services/spring-service-bindings.html)
+* [Grails](../services/grails-service-bindings.html)
+* [Lift](../services/lift-service-bindings.html)
 
 ## <a id='buildpack'></a>About the Java Buildpack ##
 

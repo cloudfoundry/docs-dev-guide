@@ -96,11 +96,3 @@ There are three ways of consuming service instance credentials within your appli
 | Manual               | Parse the JSON credentials object yourself from the [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html). |
 
 ## <a id='configuring'></a>Configuring Connections for Different Frameworks ##
-
-The procedure for configuring an application to connect to a service varies by framework. Note that auto-configuration is not supported for all frameworks. The table below has links to instructions for configuring service connections in different environments.
-
-| Runtime               | Framework                   |Auto-Configuration Support|
-| :-------------        |:-------------               |:-------------            |
-| Java / JVM        | <li>[Spring](spring-service-bindings.html) <li>[Grails](grails-service-bindings.html) <li>[Lift](lift-service-bindings.html) | Supported. |
-| Ruby            | <li>[Rack, Rails, or Sinatra](ruby-service-bindings.html) |  Supported only for Rails, with some limitations. For more information, <br> see [Options for Configuring Ruby Apps for Services](ruby-service-bindings.html#options). |
-| Javascript          | <li>[Node.js](node-service-bindings.html) |Not available. |

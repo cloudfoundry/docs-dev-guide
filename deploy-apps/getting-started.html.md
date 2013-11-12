@@ -39,18 +39,22 @@ Before you can use a CLI to push an application you need to know:
 
 ## <a id='domain'></a>Step 4 --- (Optional) Configure Domains ##
 
+When you deploy an application, specify the route (or URL) that Cloud Foundry uses to direct requests to an application. A route is made up of a subdomain and a domain that you can specify when you push an application. You can use the default domain defined for your Cloud Foundry instance, or specify a different registered domain that has been mapped to the Cloud Foundry organization space to which you are deploying the applications. For more information, see:
+
+* [About Domains, Subdomains and Routes](../manage/domains-routes.html) --- See this topic for information about working with domains.
+* [Configure SSL-Enabled Custom Domain](../manage/cloudflare.html) --- See this topic for instructions on how to configure an SSL-enabled domain.
+
 ## <a id='options'></a>Step 5 --- Determine Deployment Options ##
 
 Before you deploy, you need to decide on the answers to some questions:
 
 * **Name**: You can use any series of alpha-numeric characters without spaces as the name of your application.
-* **Instances**: The number of instances you want running. To avoid the risk of an application being unavailable during Cloud Foundry upgrade processes, you should run more than one instance of an application. When a DEA is upgraded, the applications running on it are _evacuated_: shut down gracefully on the DEA to be upgraded, and restarted on another DEA. On Pivotal CF Hosted, BOSH is configured to upgrade DEAs one at a time, so for an application whose startup time is less than two minutes, running a second instance should be sufficient. Cloud Foundry recommends running more than two instances of an application that takes longer than two minutes to start.v
+* **Instances**: The number of instances you want running. To avoid the risk of an application being unavailable during Cloud Foundry upgrade processes, you should run more than one instance of an application. When a DEA is upgraded, the applications running on it are _evacuated_: shut down gracefully on the DEA to be upgraded, and restarted on another DEA. On Pivotal CF Hosted, BOSH is configured to upgrade DEAs one at a time, so for an application whose startup time is less than two minutes, running a second instance should be sufficient. Cloud Foundry recommends running more than two instances of an application that takes longer than two minutes to start.
 * **Memory Limit**: The maximum amount of memory that each instance of your application is allowed to consume. If an instance goes over the maximum limit, it will be restarted. If it has to be restarted too often, it will be terminated. So make sure you are generous in your memory limit.
 * **Start Command**: This is the command that Cloud Foundry will use to start each instance of your application. The start command is specific to your framework.
       * If you do not specify a start command when you push the application, Cloud Foundry will use the value of the `web` key in the `procfile` for the application, if it exists; failing that, Cloud Foundry will start the application using the  value of the buildpack's web attribute of `default_process_types`.
 * **URL and Domain**: `cf` will prompt you for both a URL and a domain. The URL is the subdomain for your application and it will be hosted at the primary domain you choose. The combination of the URL and domain must be globally unique.
-* **Services**: `cf` will ask you if you want to create and bind one or more services such as MySQL or Redis to your application. For the purposes of this guide, you can answer no when prompted to add a service. Services are addressed in the next guide, [Adding a Service](../bind-services/adding-a-service.html).
-
+* **Services**: `cf` will ask you if you want to create and bind one or more services such as MySQL or Redis to your application. You can respond "yes" to  create and bind services during the push process, or if you prefer, do it after you have deployed the application.
 You can define a variety of deployment options on the command line when you run `cf push`, or in a manifest file. For more information:
 
 * See the [push](../manage/cf.html#push) section on "cf Command Line Interface" for information about the `push` command and supplying qualifiers on the command line.
@@ -145,7 +149,17 @@ Note that in this example, we already provisioned an ElephantSQL instance and na
   OK
 </pre>
 
-## <a id='troubleshoot-push'></a>Step 7 --- Troubleshoot Deployment Problems ##
+## <a id='service-connection'></a>Step 7 --- (Optional) Configure Service Connections ##
+
+If you bound a service to the application you deployed, it may be necessary to configure your application with the service URL and credentials. For more information, see:
+
+* [Configure Service Connections for Ruby Apps](../bind-services/ruby-service-bindings.html)
+* [Configure Service Connections for Node.js Apps](../bind-services/node-service-bindings.html)
+* [Configure Service Connections for Spring Apps](../bind-services/spring-service-bindings.html)
+* [Configure Service Connections for Grails Apps](../bind-services/grails-service-bindings.html)
+* [Configure Service Connections for lift Apps](../bind-services/lift-service-bindings.html)
+
+## <a id='troubleshoot-push'></a>Step 8 --- Troubleshoot Deployment Problems ##
 
 If your application does not start on Cloud Foundry, it's a good idea to double-check that your application can run locally.
 
@@ -181,5 +195,4 @@ If your application has crashed and you cannot retrieve the logs with `cf logs`,
   cf crashlogs appname
 </pre>
 
-## <a id='bind-a-service'></a>Step 8 --- Post-Push Service Setup ##
 

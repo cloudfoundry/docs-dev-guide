@@ -41,8 +41,8 @@ Before you can use a CLI to push an application you need to know:
 
 When you deploy an application, specify the route (or URL) that Cloud Foundry uses to direct requests to an application. A route is made up of a subdomain and a domain that you can specify when you push an application. You can use the default domain defined for your Cloud Foundry instance, or specify a different registered domain that has been mapped to the Cloud Foundry organization space to which you are deploying the applications. For more information, see:
 
-* [About Domains, Subdomains and Routes](../manage/domains-routes.html) --- See this topic for information about working with domains.
-* [Configure SSL-Enabled Custom Domain](../manage/cloudflare.html) --- See this topic for instructions on how to configure an SSL-enabled domain.
+* [About Domains, Subdomains and Routes](./domains-routes.html) --- See this topic for information about working with domains.
+* [Configure SSL-Enabled Custom Domain](./cloudflare.html) --- See this topic for instructions on how to configure an SSL-enabled domain.
 
 ## <a id='options'></a>Step 5 --- Determine Deployment Options ##
 

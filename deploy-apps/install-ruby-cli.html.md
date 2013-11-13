@@ -1,8 +1,8 @@
 ---
-title: Install Ruby CLI
+title: Install cf v5
 ---
 
-This page has instructions for installing cf, the Cloud Foundry Ruby-based command line interface. For information about installing gcf, the Go-based command line interface, see [Install Go CLI](install-go-cli.html).
+This page has instructions for installing cf v5. For information about installing cf v6, see [Install cf v6](install-go-cli.html).
 
 ## <a id="prerequisites"></a>Prerequisites ##
 

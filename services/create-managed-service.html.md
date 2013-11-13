@@ -4,7 +4,7 @@ title: Create a Managed Service Instance
 
 This page has information about creating a managed service with cf.
 
-## <a id='cf-create-service'></a>Create a Managed Service with cf ##
+## <a id='cf-create-service'></a>Create a Managed Service with cf v5 ##
 
 1. Use this command to create a service instance.
 <pre class="terminal">
@@ -44,9 +44,9 @@ Name?> cleardb-5dc45
 The service instance is created.
 
 
-## <a id='gcf-create-service'></a>Create a Managed Service with gcf ##
+## <a id='gcf-create-service'></a>Create a Managed Service with cf v6 ##
 
-The gcf command to create a service instance is:
+The cf v6 command to create a service instance is:
 
 <pre class="terminal">
 cf create-service SERVICE PLAN SERVICE_INSTANCE`

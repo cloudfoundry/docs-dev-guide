@@ -2,24 +2,35 @@
 title: Deploying Applications to Elastic Runtime
 ---
 
-This guide has instructions for pushing an application to Cloud Foundry and making the application work with any available cloud-based services it uses, such as databases, email, or message servers.
-
-The core of this guide is a “Getting Started” guide, which provides end-to-end instructions for running applications on Cloud Foundry, including tips for troubleshooting deployment and application health issues.
-
-In addition, this guide covers:
-
-* Application design considerations: facts about the Cloud Foundry environment that relate to file system usage and HTTP ports and sessions.
-
-* How to install and use the command-line interface that you will use to deploy and manage applications Cloud Foundry
-
-* Information about the logical structure of your Cloud Foundry workspace. A Cloud Foundry user is granted access to organizations, and within them, spaces. Logically speaking, your applications run in a space, and the roles associated with your user account govern your access to particular spaces.
+This guide has instructions for pushing an application to Cloud Foundry and making the application work with any available cloud-based services it uses, such as databases, email, or message servers. The core of this guide is the [Deploy an Application](./deploy-apps/getting-started.html) process guide, which provides end-to-end instructions for running applications on Cloud Foundry, including tips for troubleshooting deployment and application health issues.
 
 Before you can use the instructions in this document, you will need an account on your Cloud Foundry instance.
 
 * [Deploy Applications](./deploy-apps/)
-
-* [Bind Services] (./services/)
-
+	* Install a Command Line Interface
+		* [Install cf](./deploy-apps/install-ruby-cli.html)
+		* [Install gcf](./deploy-apps/install-go-cli.html)
+	* [Prepare to Deploy an Application](./deploy-apps/prepare-to-deploy.html)
+		* [Tips for Ruby Developers](./deploy-apps/ruby-tips.html)
+		* [Tips for Node.js Developers](./deploy-apps/node-tips.html)
+		* [Tips for Java Developers](./deploy-apps/java-tips.html)
+	* [Deploy an Application](./deploy-apps/getting-started.html)
+		* [Application Manifests](./deploy-apps/manifest.html)
+		* [Cloud Foundry Environment Variables](./deploy-apps/environment-variable.html)
+		* [How Applications Are Staged](./deploy-apps/how-applications-are-staged.html)
+		* [About Starting Applications](./deploy-apps/app-startup.html)
+* [Using Services](./services/)
+	* [Understanding Services in Cloud Foundry](./services/services-intro.html)
+	* [Create a Managed Service Instance](./services/create-managed-service.html)
+	* [Create a User-Provided Service Instance](./services/user-provided.html)
+	* [Bind a Service Instance](./services/bind-service.html)
+	* Configure Service Connections
+		* [Configure Service Connections for Ruby](./services/ruby-service-bindings.html)
+		* [Configure Service Connections for Node.js](./services/node-service-bindings.html)
+ 		* [Configure Service Connections for Spring](./services/spring-service-bindings.html)
+		* [Configure Service Connections for Lift](./services/lift-service-bindings.html)
+		* [Configure Service Connections for Grails](./services/grails-service-bindings.html)
+		* [Migrate a Database on Cloud Foundry](./services/migrate-db.html)
 * [Manage Applications](./manage/)
 
 

@@ -1,6 +1,9 @@
 ---
 title: Application Manifests
 ---
+
+_This page assumes that you are using cf v5._
+
 An application manifest defines a set of application deployment settings, such as the name of an application, the number of instances to deploy, the maximum memory available to an instance, the services it uses, and so on. The default name for a manifest is `manifest.yml`.
 
 ## <a id='purpose'></a>Purpose of Manifest File ##

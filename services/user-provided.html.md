@@ -2,16 +2,18 @@
 title: User Provided Service Instances
 ---
 
+_This page assumes that you are using cf v5._
+
 User-provided service instances are service instances which have been provisioned outside of Cloud Foundry. For example, a DBA may provide a developer with credentials to an Oracle database managed outside of, and unknown to Cloud Foundry. Rather than hard coding credentials for these instances into your applications, you can create a mock service instance in Cloud Foundry to represent an external resource using the familiar `create-service` command, and provide whatever credentials your application requires. Once created, user-provided service instances behave just like other service instances.
 
-When creating a user-provided instance, Cloud Foundry will ask you to provide a name for the service instance and the parameters for your credentials. Credential parameters are a comma-delimited list. You'll then be prompted to enter a value for each parameter. 
+When creating a user-provided instance, Cloud Foundry will ask you to provide a name for the service instance and the parameters for your credentials. Credential parameters are a comma-delimited list. You'll then be prompted to enter a value for each parameter.
 
 <pre class="terminal">
 $ cf create-service user-provided
 Name?> mydb
 
 What credential parameters should applications use to connect to this service instance?
-(e.g. hostname, port, password)> hostname, port, username, password, name     
+(e.g. hostname, port, password)> hostname, port, username, password, name
 
 hostname> db.example.com
 
@@ -30,11 +32,11 @@ Creating service mydb... OK
 $ cf services
 Getting services in test... OK
 
-name               service         provider     version   plan        bound apps     
-cleardb-28472      cleardb         cleardb      n/a       spark       none           
-blazemeter-78fb4   blazemeter      blazemeter   n/a       free-tier   none           
+name               service         provider     version   plan        bound apps
+cleardb-28472      cleardb         cleardb      n/a       spark       none
+blazemeter-78fb4   blazemeter      blazemeter   n/a       free-tier   none
 mydb               user-provided   n/a          n/a       n/a         none
-</pre> 
+</pre>
 
 After binding a user-provided service instance and restarting your app, you'll find that the [VCAP_SERVICES](../deploy-apps/environment-variable.html) will be updated with your credentials.
 
@@ -75,7 +77,7 @@ Create services for application?> y
 7: rediscloud n/a, via garantiadata
 8: sendgrid n/a, via sendgrid
 9: treasuredata n/a, via treasuredata
-10: user-provided , via 
+10: user-provided , via
 What kind?> 10
 
 Name?> user-provided-b702e

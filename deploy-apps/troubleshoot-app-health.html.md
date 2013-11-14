@@ -2,6 +2,8 @@
 title: Troubleshoot Application Deployment and Health
 ---
 
+_This page assumes that you are using cf v5._
+
 ## <a id='cf-commands'></a>cf Troubleshooting Commands ##
 
 Cloud Foundry's cf command line interface provides several commands you can use to investigate application deployment and health.

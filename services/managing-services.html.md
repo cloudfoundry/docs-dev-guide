@@ -1,6 +1,7 @@
 ---
 title: Managing Services
 ---
+_This page assumes that you are using cf v5._
 
 ## <a id='viewing-services'></a> View Available Services ##
 

@@ -1,6 +1,7 @@
 ---
 title: Tips for Ruby Developers
 ---
+_This page assumes that you are using cf v5._
 
 This page has information specific to deploying  Rack, Rails, or Sinatra applications.
 

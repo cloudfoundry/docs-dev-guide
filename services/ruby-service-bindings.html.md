@@ -2,6 +2,8 @@
 title: Configure Service Connections for Ruby
 ---
 
+_This page assumes that you are using cf v5._
+
 After you create a service instance and bind it to an application you must configure the application to connect to the service.
 
 

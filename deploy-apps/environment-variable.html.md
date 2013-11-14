@@ -1,6 +1,9 @@
 ---
 title: Cloud Foundry Environment Variables
 ---
+
+_This page assumes that you are using cf v5._
+
 Environment variables are the means by which the Cloud Foundry runtime communicates with a deployed application about its environment. This page describes the environment variables that Droplet Execution Agents (DEAs) and buildpacks set for applications.
 
 For information about setting your own application-specific environment variables, see [Set Environment Variable in a Manifest](manifest.html#var) on the [Application Manifests](manifest.html) page.

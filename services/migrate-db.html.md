@@ -2,6 +2,8 @@
 title: Migrate a Database on Cloud Foundry
 ---
 
+_This page assumes that you are using cf v5._
+
 The technique you use to migrate a database on Cloud Foundry depends on the application framework. This page has specific recommendations for migrating a database for a Rails application, and general guidelines for migrating databases in other environments.
 
 

@@ -1,7 +1,7 @@
 ---
 title: Configure Service Connections for Node.js
 ---
-
+_This page assumes that you are using cf v5._
 
 ## <a id='intro'></a>Introduction ##
 

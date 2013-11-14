@@ -1,6 +1,7 @@
 ---
 title: Getting Started with Application Deployment
 ---
+_This page assumes that you are using cf v5._
 
 ## <a id='intro'></a>Overview of Deployment Process ##
 
@@ -44,7 +45,7 @@ Before you can use a CLI to push an application you need to know:
 
 ## <a id='domain'></a>Step 4 --- (Optional) Configure Domains ##
 
-When you deploy an application, specify the route (or URL) that Cloud Foundry uses to direct requests to an application. A route is made up of a subdomain and a domain that you can specify when you push an application. You can use the default domain defined for your Cloud Foundry instance, or specify a different registered domain that has been mapped to the Cloud Foundry organization space to which you are deploying the applications. 
+When you deploy an application, specify the route (or URL) that Cloud Foundry uses to direct requests to an application. A route is made up of a subdomain and a domain that you can specify when you push an application. You can use the default domain defined for your Cloud Foundry instance, or specify a different registered domain that has been mapped to the Cloud Foundry organization space to which you are deploying the applications.
 
 For more information, see [About Domains, Subdomains and Routes](./domains-routes.html)
 

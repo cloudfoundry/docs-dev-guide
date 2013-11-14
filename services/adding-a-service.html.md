@@ -2,11 +2,11 @@
 title: Add a Service
 ---
 
-This guide walks you through binding and using services. It assumes you have pushed an application to your Cloud Foundry instance. 
+This guide walks you through binding and using services. It assumes you have pushed an application to your Cloud Foundry instance.
 
 ## <a id='intro'></a>Intro to Services ##
 
-Cloud Foundry Services are add-ons that can be provisioned alongside your application. 
+Cloud Foundry Services are add-ons that can be provisioned alongside your application.
 
 In order to use services with your application you will need to:
 
@@ -18,6 +18,8 @@ In order to use services with your application you will need to:
 Services provision services instances. As an example, ClearDB is a service which provisions MySQL databases. Depending on the plan you select, you might get a database in a multi-tenant server, or a dedicated server. But not all services provide databases; a service may simply provision an account on their system for you. Whatever is provisioned for you we refer to as a service instance.
 
 ## <a id='create'></a>Creating Service Instances ##
+
+_This page assumes that you are using cf v5._
 
 You can create a service instance with the command, `cf create-service`.
 

@@ -1,6 +1,7 @@
 ---
 title: Tips for Java Developers
 ---
+_This page assumes that you are using cf v5._
 
 This page will prepare you to deploy applications written in Java, Groovy, or Scala, using the Spring, Grails, Lift, or Play frameworks, via the [getting started guide](getting-started.html).
 

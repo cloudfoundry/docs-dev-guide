@@ -10,7 +10,7 @@ The sections below describe methods of viewing the values of Cloud Foundry envir
 
 ### <a id='cli'></a>View Environment Variables using CLI ###
 
-The cf command line interface provides two commands that can return environment variables. For more information see [logs](../installcf/cf.html#logs) and [files](../installcf/cf.html#files) on [cf Command Line Interface](../installcf/cf.html).
+The cf command line interface provides two commands that can return environment variables. For more information see [logs](../installcf/cf.html#logs) and [files](../installcf/cf.html#files) on [cf Command Line Interface](../installcf/index.html).
 
 <pre class="terminal">
 $ cf files APP_NAME_HERE logs/env.log

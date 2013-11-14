@@ -30,8 +30,8 @@ For more information on these and other topics that will help you prepare to dep
 
 There are two versions of the cf CLI: v5 and v6  The two CLIs provide similar functionality, but vary in terms of specific commands and usage patterns.  For installation and usage information, see:
 
-* Ruby cf CLI --- [Install cf v5](install-ruby-cli.html)
-* Go cf CLI --- [Install cf v6](install-go-cli.html)
+* Ruby cf CLI --- [Install cf v5](../installcf/install-ruby-cli.html)
+* Go cf CLI --- [Install cf v6](../installcf/install-go-cli.html)
 
 ## <a id='logon-target'></a>Step 3 --- Know Your Credentials and Target ##
 

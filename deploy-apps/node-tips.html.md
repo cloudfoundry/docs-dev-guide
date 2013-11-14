@@ -8,6 +8,17 @@ This page will prepare you to deploy Node.js apps via the [getting started guide
 
 Cloud Foundry expects a `package.json` in your Node.js application. You can specify the version of Node.js you want to use in the `engine` node of your `package.json` file. As of July, 2013, Cloud Foundry uses 0.10.x as the default.
 
+## <a id='port'></a> Application Port ##
+
+You need to use the VCAP_APP_PORT environment variable to determine which port your application should listen on.
+In order to also run your application locally, you may want to make port 3000 the default:
+
+~~~javascript
+
+app.listen(process.env.VCAP_APP_PORT || 3000);
+
+~~~
+
 ## <a id='start'></a> Application start command ##
 
 Node.js applications require a start command, which is saved with other configurations in `manifest.yml`.

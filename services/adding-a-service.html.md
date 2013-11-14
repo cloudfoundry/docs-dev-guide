@@ -2,13 +2,11 @@
 title: Add a Service
 ---
 
-Cloud Foundry allows you to deploy applications without worrying about configuration headaches, making it faster and easier to build, test, deploy and scale your app.
-
 This guide walks you through binding and using services. It assumes you have pushed an application to your Cloud Foundry instance. 
 
 ## <a id='intro'></a>Intro to Services ##
 
-Cloud Foundry Services are add-ons that can be provisioned alongside your application. Learn all about Services at [Using Services](services-intro.html).
+Cloud Foundry Services are add-ons that can be provisioned alongside your application. 
 
 In order to use services with your application you will need to:
 

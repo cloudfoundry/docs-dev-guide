@@ -2,21 +2,39 @@
 title: Using Services
 ---
 
+Cloud Foundry Services are any type of add-on that can be provisioned alongside your application; for example, a database or an account on a third-party SaaS provider.
+
+## <a id='managed-services'></a>Managed Services ##
+
+A Managed Service integrates with Cloud Foundry via a service broker that implements the Service Broker API.
+
+A service broker advertises a catalog of service offerings and service plans to Cloud Foundry, and receive calls from Cloud Foundry for four functions: create, delete, bind, and unbind. The broker then passes these calls onto the service itself.
+
+For more information on creating managed services see [Create a Managed Service Instance](create-managed-service.html).
+
+## <a id='user-provided-services'></a>User-Provided Services  ##
+
+User-provided service Instances are a mechanism to deliver credentials to applications for service instances which have been pre-provisioned outside of Cloud Foundry.
+
+Both operators and developers frequently ask how applications pushed to their Cloud Foundry instances can bind with external services, such as Oracle, which they operate themselves or are outside of Cloud Foundry's control'. User-provided Service Instances enable developers to use external services with their applications using familiar workflows.
+
+For more information on using User-Provided Services, see [Create a User-Provided Service Instance](user-provided.html)
+
+## <a id='binding-services'></a>About Service Binding ##
+
+A service in Cloud Foundry is a 
 The following topics describe the different types of services in Cloud Foundry, and have instructions for creating a service, and as necessary, binding it to an application and configuring the application to connect to it.
 
-* [Understanding Services in Cloud Foundry](services-intro.html)
+For more information on binding services, see [Bind a Service Instance](bind-service.html)
 
-* [Create a Managed Service Instance](create-managed-service.html)
+For information on using services with specific application development frameworks, see:
 
-* [Create a User-Provided Service Instance](user-provided.html)
+* [Configure Service Connections for Ruby](ruby-service-bindings.html)
+* [Configure Service Connections for Node.js](node-service-bindings.html)
+* [Configure Service Connections for Spring](spring-service-bindings.html)
+* [Configure Service Connections for Lift](lift-service-bindings.html)
+* [Configure Service Connections for Grails](grails-service-bindings.html)
 
-* [Bind a Service Instance](bind-service.html)
+## <a id='migrating'></a>Database Migrations ##
 
-* Configure Service Connections
-	* [Configure Service Connections for Ruby](ruby-service-bindings.html)
-	* [Configure Service Connections for Node.js](node-service-bindings.html)
- 	* [Configure Service Connections for Spring](spring-service-bindings.html)
-	* [Configure Service Connections for Lift](lift-service-bindings.html)
-	* [Configure Service Connections for Grails](grails-service-bindings.html)
-
-* [Migrate a Database on Cloud Foundry](migrate-db.html)
+If your application relies on a relational database, you will need to apply schema changes periodically. For guidance on how to do database migrations on Cloud Foundry-managed services, see [Migrate a Database on Cloud Foundry](migrate-db.html)

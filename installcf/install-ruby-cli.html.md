@@ -65,6 +65,6 @@ ERROR: Error installing cf:
 activesupport requires Ruby version >= 1.9.3.
 </pre>
 
-## <a id="about"></a>Get Started with the Ruby CLI ##
+## <a id="about"></a>Get Started with cf ##
 
-See [cf Command Line Interface](../manage/cf.html).
+See [cf Command Line Interface](../installcf/cf.html).

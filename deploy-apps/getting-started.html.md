@@ -61,7 +61,7 @@ Before you deploy, you need to decide on the answers to some questions:
 * **Services**: `cf` will ask you if you want to create and bind one or more services such as MySQL or Redis to your application. You can respond "yes" to  create and bind services during the push process, or if you prefer, do it after you have deployed the application.
 You can define a variety of deployment options on the command line when you run `cf push`, or in a manifest file. For more information:
 
-* See the [push](../manage/cf.html#push) section on "cf Command Line Interface" for information about the `push` command and supplying qualifiers on the command line.
+* See the [push](../installcf/cf.html#push) section on "cf Command Line Interface" for information about the `push` command and supplying qualifiers on the command line.
 * See the [cf Push and the Manifest](manifest.html#push-and-manifest) section on "Application Manifests" for information about using an application manifest to supply deployment options.
 
 ## <a id='push'></a>Step 6 --- Push the Application ##

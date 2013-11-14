@@ -4,7 +4,7 @@ title: Managing Services
 
 ## <a id='viewing-services'></a> View Available Services ##
 
-After targeting and logging into Cloud Foundry using [cf](../manage/cf.html), you can view what services are available:
+After targeting and logging into Cloud Foundry using [cf](../installcf/cf.html), you can view what services are available:
 
 <pre class="terminal">
 $ cf services

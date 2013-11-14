@@ -7,9 +7,9 @@ title: Troubleshoot Application Deployment and Health
 Cloud Foundry's cf command line interface provides several commands you can use to investigate application deployment and health.
 
 
-* `cf apps` --- Lists applications that are deployed to the current space, deployment options, including the number of instances, memory and disk allocations, and the current state of each application. For command usage, see the [apps](../manage/cf.html#apps) section on the [cf Command Line Interface](../manage/cf.html) page.
+* `cf apps` --- Lists applications that are deployed to the current space, deployment options, including the number of instances, memory and disk allocations, and the current state of each application. For command usage, see the [apps](../installcf/cf.html#apps) section on the [cf Command Line Interface](../installcf/cf.html) page.
 
-* `cf app` --- Returns the health and status of each instance of an application, including current status, how long it has been running, and how much CPU, memory, and disk it consumes. For command usage, see [app](../manage/cf.html#app).
+* `cf app` --- Returns the health and status of each instance of an application, including current status, how long it has been running, and how much CPU, memory, and disk it consumes. For command usage, see [app](../installcf/cf.html#app).
 
 * `cf logs` --- You can use this command to view environment variables, the staging log, and recent output to STDOUT and STDERR for an application. The `VCAP_SERVICES` variable lists services have been bound to the application and the credentials for connecting to each service.
 
@@ -17,15 +17,15 @@ Cloud Foundry's cf command line interface provides several commands you can use 
 
   **Note:**  Because `cf logs` returns connection credentials, be sure not to post command output to a public forum without removing this sensitive information first.
 
-  For command usage, see [logs](../manage/cf.html#logs).
+  For command usage, see [logs](../installcf/cf.html#logs).
 
-* `cf events` --- This command returns information about application crashes, including error codes. See https://github.com/cloudfoundry/errors for a list of Cloud Foundry errors. For command usage, see [events](../manage/cf.html#events).
+* `cf events` --- This command returns information about application crashes, including error codes. See [https://github.com/cloudfoundry/errors](https://github.com/cloudfoundry/errors) for a list of Cloud Foundry errors. For command usage, see [events](../installcf/cf.html#events).
 
-* `cf files` and `cf file`--- You can use these command to view a list of files in an application directory, or the contents of a particular file, respectively. For command usage, see [files](../manage/cf.html#files) and [file](../manage/cf.html#file).
+* `cf files` and `cf file`--- You can use these command to view a list of files in an application directory, or the contents of a particular file, respectively. For command usage, see [files](../installcf/cf.html#files) and [file](../installcf/cf.html#file).
 
-* `cf guid` --- You can use this command to return the guid of an application. For usage information, see [guid](../manage/cf.html#guid).
+* `cf guid` --- You can use this command to return the guid of an application. For usage information, see [guid](../installcf/cf.html#guid).
 
-* `cf stats` --- Lists resource statistics for each instance of an application, including CPU, memory, and disk usage. For usage information, see [stats](../manage/cf.html#stats).
+* `cf stats` --- Lists resource statistics for each instance of an application, including CPU, memory, and disk usage. For usage information, see [stats](../installcf/cf.html#stats).
 
 ## <a id='java-apps'></a>Java and Grails Best Practices ##
 

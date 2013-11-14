@@ -2,6 +2,8 @@
 title: About Starting Applications 
 ---
 
+_This page assumes that you are using cf v5_
+
 ##<a id='start-command'></a>The Application Start Command ##
 
 There are three ways that Cloud Foundry can obtain the command to use to start an application; they are listed below in order of precedence.

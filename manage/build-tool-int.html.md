@@ -1,3 +1,4 @@
+---
 title: Build Tool Integration
 ---
 
@@ -7,7 +8,7 @@ It is possible to deploy application using a couple of different JVM build tools
 
 Gradle is a build tool that automates the building, testing, publishing, and deployment of software packages, generated static websites, generated documentation, and more.
 
-The `cf-gradle-plugin` adds Cloud Foundry-oriented tasks to a Gradle project. 
+The `cf-gradle-plugin` adds Cloud Foundry-oriented tasks to a Gradle project.
 
 ### <a id="gradle-install"></a> Install the plugin ###
 
@@ -38,7 +39,7 @@ cloudfoundry {
 }
 ~~~
 
-After adding and configuring the plugin you can build and push the application to Cloud Foundry with the following command: 
+After adding and configuring the plugin you can build and push the application to Cloud Foundry with the following command:
 
 <pre class="terminal">
 $ gradle clean assemble cf-push

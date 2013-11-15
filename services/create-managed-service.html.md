@@ -12,38 +12,12 @@ _This page assumes that you are using cf v5_
 <pre class="terminal">
 cf create-service
 </pre>
-2. Select a service type from the list presented.
+The service types available to applications in your Cloud Foundry instance are listed, and you are prompted to select a service type from the list presented.
 <pre class="terminal">
-: blazemeter n/a, via blazemeter
-2: cleardb n/a, via cleardb
-3: cloudamqp n/a, via cloudamqp
-4: elephantsql n/a, via elephantsql
-5: loadimpact n/a, via loadimpact
-6: mongolab n/a, via mongolab
-7: newrelic n/a, via newrelic
-8: rediscloud n/a, via garantiadata
-9: searchify n/a, via searchify
-10: searchly n/a, via searchly
-11: sendgrid n/a, via sendgrid
-12: treasuredata n/a, via treasuredata
-13: urbanairship n/a, via urbanairship
-14: user-provided , via
-What kind?>2
-</pre>
-3. Enter a name for the service instance.
-<pre class="terminal">
-Name?> cleardb-5dc45
-</pre>
-4. Select a service plan.
-<pre class="terminal">
-	1: amp: For apps with moderate data requirements
-	2: boost: Best for light production or staging your applications
-	3: shock: Designed for apps where you need real MySQL reliability, power and throughput
-	4: spark: Great for getting started and developing your apps
-	Which plan?> 2
-</pre>
+1. After selecting a service type, you are prompted to enter a new for the new service instance.  
+1. Enter a name for the service instance.
+1. Depending on your environment, you may be prompted to select additional service options, for example, a service plan.
 
-The service instance is created.
 
 
 ## <a id='gcf-create-service'></a>Create a Managed Service with cf v6 ##

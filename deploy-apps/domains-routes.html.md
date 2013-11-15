@@ -12,7 +12,7 @@ In the following route, the subdomain is `myapp` and the domain is `example.com`
 
 In Cloud Foundry, domains are associated with spaces.
 
-A Cloud Foundry instance defines a default domain that is available to all spaces. For example, in the Pivotal-hosted instance of Cloud Foundry, the `cfapps.io` domain is automatically mapped to all spaces in all organizations.
+A Cloud Foundry instance defines a default domain that is available to all spaces. 
 
 Cloud Foundry also supports _custom domains_ --- you can map a registered domain of your own to a space in Cloud Foundry, as described below.
 

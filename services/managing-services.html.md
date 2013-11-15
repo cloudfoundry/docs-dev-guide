@@ -5,22 +5,13 @@ _This page assumes that you are using cf v5._
 
 ## <a id='viewing-services'></a> View Available Services ##
 
-After targeting and logging into Cloud Foundry using [cf](../installcf/cf.html), you can view what services are available:
+After targeting and logging into Cloud Foundry using [cf](../installcf/cf.html), you can view what services are available to applications running on your Cloud Foundry instance by running this command.
 
 <pre class="terminal">
 $ cf services
-Getting services... OK
-
-service      version   provider        plans                        description
-mongodb      n/a       mongolab-dev    free, large, medium, small   Cloud hosted and managed MongoDB
-mongodb      2.2       core            200                          MongoDB NoSQL database
-mysql        5.5       core            100, 200, cfinternal         MySQL database
-postgresql   9.2       core            200                          PostgreSQL database (vFabric)
-rabbitmq     3.0       core            200                          RabbitMQ message queue
-redis        2.6       core            200                          Redis key-value store
 </pre>
 
-<i>Note: This is an example. These services may not be available on the Cloud Foundry service you target.</i>
+The command above returns service metadata, including the service type (for example mySQL or Rabbit MQ), service version, provider, a description, and so on. 
 
 ## <a id='create'></a>Create a Service Instance ##
 

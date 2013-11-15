@@ -4,7 +4,9 @@ title: Create a Managed Service Instance
 
 This page has information about creating a managed service with cf.
 
-## <a id='cf-create-service'></a>Create a Managed Service with cf v5 ##
+_This page assumes that you are using cf v5_
+
+## <a id='cf-create-service'></a>Create a Managed Service ##
 
 1. Use this command to create a service instance.
 <pre class="terminal">

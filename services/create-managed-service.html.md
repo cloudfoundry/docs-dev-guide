@@ -12,9 +12,8 @@ _This page assumes that you are using cf v5_
 <pre class="terminal">
 cf create-service
 </pre>
-The service types available to applications in your Cloud Foundry instance are listed, and you are prompted to select a service type from the list presented.
-<pre class="terminal">
-1. After selecting a service type, you are prompted to enter a new for the new service instance.  
+The service types available to applications in your Cloud Foundry instance are listed, and you are prompted to select a service type.
+1. After selecting a service type, you are prompted to enter a new for the new service instance.
 1. Enter a name for the service instance.
 1. Depending on your environment, you may be prompted to select additional service options, for example, a service plan.
 

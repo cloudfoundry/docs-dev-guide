@@ -5,20 +5,27 @@ _This page assumes that you are using cf v5._
 
 ## <a id='intro'></a>Overview of Deployment Process ##
 
-You deploy an application to Cloud Foundry by running a `push` command from a Cloud Foundry command line interface (CLI). Between the time you run `push` and the time that the application is available, Cloud Foundry does a bunch of work. It uploads and stores application files, examines and stores application metadata, creates a droplet (the Cloud Foundry unit of execution) for the application, selects an appropriate droplet execution agent (DEA) to run the droplet, and starts the application.
+You deploy an application to Cloud Foundry by running a `push` command from a Cloud Foundry command line interface (CLI). Between the time you run `push` and the time that the application is available, Cloud Foundry:
 
-An application that uses services, such as a database, messaging, or email server, will not be fully functional until you *provision* the service and, if required, *bind* it to the application. Provisioning typically means creating a cloud-resident instance of the service. Binding is required for some types of services; if the application needs to connect to and authenticate with the service, the service instance must be bound to the application. You can provision and bind a service as part of the push process, or as a subsequent, separate step, using the `create-service` and `bind-service` CLI commands. Depending on the type of service, you may need to configure your application with the bound service’s connection information. For data services, you will typically need to seed or migrate the datastore.
+* Uploads and stores application files
+* Examines and stores application metadata
+* Creates a &lquot;droplet&rquot; (the Cloud Foundry unit of execution) for the application
+* Selects an appropriate droplet execution agent (DEA) to run the droplet
+* Starts the application
+
+An application that uses services, such as a database, messaging, or email server, will not be fully functional until you *provision* the service and, if required, *bind* it to the application.
+You can provision and bind services when you push your application for the first time.
 
 
 ## <a id='prepare'></a>Step 1 --- Prepare to Deploy  ##
 
-Preparing to deploy an application involves:
+Before you deploy your application to Cloud Foundry, make sure that:
 
-* Making sure that your application architecture is *cloud-ready*. There are several Cloud Foundry behaviors, related to file storage, HTTP sessions, and port usage that might indicate simple modifications to your application.
+* Your application is *cloud-ready*. There are several Cloud Foundry behaviors, related to file storage, HTTP sessions, and port usage that might indicate simple modifications to your application.
 
-* Ensuring that all required application resources will be uploaded and extraneous files and artifacts are excluded. For example, you might need to include a database driver, and especially for a large application, you will want to explicitly exclude extraneous files that exist within your application directory structure.
+* All required application resources will be uploaded, and extraneous files and artifacts will be excluded. For example, you might need to include a database driver, and especially for a large application, you will want to explicitly exclude extraneous files that exist within your application directory structure.
 
-* Understanding language and framework-specific options and requirements. You will want to verify that your Cloud Foundry instance supports the type of application you are going to deploy, or know the URL of an externally available buildpack that can stage the application. Any buildpack has a mechanism for detecting an application's type --- for instance, whether it is a Java or a Node.js application --- so it is a good idea to understand how the buildback that a will stage your application performs that discovery.
+* Your Cloud Foundry instance supports the type of application you are going to deploy, or you have the URL of an externally available buildpack that can stage the application.
 
 For more information on these and other topics that will help you prepare to deploy your application, see
 
@@ -31,17 +38,18 @@ For more information on these and other topics that will help you prepare to dep
 
 There are two versions of the cf CLI: v5 and v6  The two CLIs provide similar functionality, but vary in terms of specific commands and usage patterns.  For installation and usage information, see:
 
-* Ruby cf CLI --- [Install cf v5](../installcf/install-ruby-cli.html)
-* Go cf CLI --- [Install cf v6](../installcf/install-go-cli.html)
+* cf v5 (currently in production) --- [Install cf v5](../installcf/install-ruby-cli.html)
+* cf v6 (currently in beta) --- [Install cf v6](../installcf/install-go-cli.html)
+
+This page assumes that you are using cf v5.
 
 ## <a id='logon-target'></a>Step 3 --- Know Your Credentials and Target ##
 
-Before you can use a CLI to push an application you need to know:
+Before you can push your application to Cloud Foundry you need to know:
 
+* The url to target for your Cloud Foundry instance. Typically this is a url that begins with "api." Consult your cloud operator if you are unsure of your target url.
 * Your username and password for your Cloud Foundry instance.
-* What is your target? A Cloud Foundry target identifies a particular workspace within a Cloud Foundry instance where you can run applications. A target is identified by:
-	* The API endpoint, or URL, where your Cloud Foundry instance listens for user and API connections, and
-	* The Cloud Foundry organizations  and spaces you can target.  A Cloud Foundry workspace is organized into organizations, and within them, spaces. A Cloud Foundry user is granted access to one or more organizations and spaces within those organizations.
+* The organization and space where you want to deploy your application.  A Cloud Foundry workspace is organized into organizations, and within them, spaces. As a Cloud Foundry user, you have access to one or more organizations and spaces.
 
 ## <a id='domain'></a>Step 4 --- (Optional) Configure Domains ##
 
@@ -54,12 +62,12 @@ For more information, see [About Domains, Subdomains and Routes](./domains-route
 Before you deploy, you need to decide on the answers to some questions:
 
 * **Name**: You can use any series of alpha-numeric characters without spaces as the name of your application.
-* **Instances**: The number of instances you want running. To avoid the risk of an application being unavailable during Cloud Foundry upgrade processes, you should run more than one instance of an application. When a DEA is upgraded, the applications running on it are _evacuated_: shut down gracefully on the DEA to be upgraded, and restarted on another DEA. When a DEA is upgraded, the applications running on it are _evacuated_: shut down gracefully on the DEA to be upgraded, and restarted on another DEA. When you deploy an application that takes a long time to start up, say more than two minutes, it is a good idea to run more than two instances of the application. 
+* **Instances**: Generally speaking, the more instances you run, the less likely your application will be to have downtime. If your application is still in development, running a single instance makes it easier to troubleshoot. For any production application, you should run a minimum of two instances.
 * **Memory Limit**: The maximum amount of memory that each instance of your application is allowed to consume. If an instance goes over the maximum limit, it will be restarted. If it has to be restarted too often, it will be terminated. So make sure you are generous in your memory limit.
-* **Start Command**: This is the command that Cloud Foundry will use to start each instance of your application. The start command is specific to your framework.
-      * If you do not specify a start command when you push the application, Cloud Foundry will use the value of the `web` key in the `procfile` for the application, if it exists; failing that, Cloud Foundry will start the application using the  value of the buildpack's web attribute of `default_process_types`.
+* **Start Command**: This is the command that Cloud Foundry will use to start each instance of your application. The start command is specific to your framework. The start command varies by application framework.
 * **URL and Domain**: `cf` will prompt you for both a URL and a domain. The URL is the subdomain for your application and it will be hosted at the primary domain you choose. The combination of the URL and domain must be globally unique.
 * **Services**: `cf` will ask you if you want to create and bind one or more services such as MySQL or Redis to your application. You can respond "yes" to  create and bind services during the push process, or if you prefer, do it after you have deployed the application.
+
 You can define a variety of deployment options on the command line when you run `cf push`, or in a manifest file. For more information:
 
 * See the [push](../installcf/cf.html#push) section on "cf Command Line Interface" for information about the `push` command and supplying qualifiers on the command line.
@@ -90,12 +98,12 @@ Note that in this example, we already provisioned an ElephantSQL instance and na
   2: none
   Subdomain> whiteboard
 
-  1: cfapps.io
+  1: example.com
   2: none
-  Domain> cfapps.io
+  Domain> example.com
 
-  Creating route whiteboard.cfapps.io... OK
-  Binding whiteboard.cfapps.io to whiteboard... OK
+  Creating route whiteboard.example.com... OK
+  Binding whiteboard.example.com to whiteboard... OK
 
   Create services for application?> n
 
@@ -129,25 +137,6 @@ Note that in this example, we already provisioned an ElephantSQL instance and na
   Checking whiteboard...
   Staging in progress...
   Staging in progress...
-  Staging in progress...
-  Staging in progress...
-  Staging in progress...
-  Staging in progress...
-  Staging in progress...
-  Staging in progress...
-  Staging in progress...
-    0/1 instances: 1 starting
-    0/1 instances: 1 starting
-    0/1 instances: 1 starting
-    0/1 instances: 1 starting
-    0/1 instances: 1 starting
-    0/1 instances: 1 starting
-    0/1 instances: 1 starting
-    0/1 instances: 1 starting
-    0/1 instances: 1 starting
-    0/1 instances: 1 starting
-    0/1 instances: 1 starting
-    0/1 instances: 1 starting
     0/1 instances: 1 starting
     0/1 instances: 1 starting
     1/1 instances: 1 running
@@ -156,13 +145,13 @@ Note that in this example, we already provisioned an ElephantSQL instance and na
 
 ## <a id='service-connection'></a>Step 7 --- (Optional) Configure Service Connections ##
 
-If you bound a service to the application you deployed, it may be necessary to configure your application with the service URL and credentials. For more information, see:
+If you bound a service to the application you deployed, it may be necessary to configure your application with the service URL and credentials. For more information, see the specific documentation for your application framework:
 
-* [Configure Service Connections for Ruby Apps](../services/ruby-service-bindings.html)
-* [Configure Service Connections for Node.js Apps](../services/node-service-bindings.html)
-* [Configure Service Connections for Spring Apps](../services/spring-service-bindings.html)
-* [Configure Service Connections for Grails Apps](../services/grails-service-bindings.html)
-* [Configure Service Connections for lift Apps](../services/lift-service-bindings.html)
+* [Ruby](../services/ruby-service-bindings.html)
+* [Node.js](../services/node-service-bindings.html)
+* [Spring](../services/spring-service-bindings.html)
+* [Grails](../services/grails-service-bindings.html)
+* [Lift](../services/lift-service-bindings.html)
 
 ## <a id='troubleshoot-push'></a>Step 8 --- Troubleshoot Deployment Problems ##
 

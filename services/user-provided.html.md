@@ -28,17 +28,17 @@ name> mydb
 Creating service mydb... OK
 </pre>
 
+Now when you list the available services, you will see the new service you created.
+
 <pre class="terminal">
 $ cf services
 Getting services in test... OK
 
 name               service         provider     version   plan        bound apps
-cleardb-28472      cleardb         cleardb      n/a       spark       none
-blazemeter-78fb4   blazemeter      blazemeter   n/a       free-tier   none
 mydb               user-provided   n/a          n/a       n/a         none
 </pre>
 
-After binding a user-provided service instance and restarting your app, you'll find that the [VCAP_SERVICES](../deploy-apps/environment-variable.html) will be updated with your credentials.
+After binding a user-provided service instance and restarting your app, you'll find that  [VCAP_SERVICES](../deploy-apps/environment-variable.html) will be updated with your credentials.
 
 ~~~
 {
@@ -68,17 +68,8 @@ $ cf push spring-music --path build/libs/spring-music.war
 
 Create services for application?> y
 
-1: blazemeter n/a, via blazemeter
-2: cleardb n/a, via cleardb
-3: cloudamqp n/a, via cloudamqp
-4: elephantsql n/a, via elephantsql
-5: mongolab n/a, via mongolab
-6: newrelic n/a, via newrelic
-7: rediscloud n/a, via garantiadata
-8: sendgrid n/a, via sendgrid
-9: treasuredata n/a, via treasuredata
-10: user-provided , via
-What kind?> 10
+1: user-provided , via
+What kind?> 1
 
 Name?> user-provided-b702e
 
@@ -99,8 +90,10 @@ Saving to manifest.yml... OK
 
 ...skipping ahead...
 
-Push successful! App 'spring-music' available at http://spring-music.cfapps.io
+Push successful!
 </pre>
+
+If you look at the saved manifest you will see the services section includes your user-provided service and credentials.
 
 <pre class="terminal">
 $ cat manifest.yml
@@ -110,7 +103,7 @@ applications:
   memory: 512M
   instances: 1
   host: spring-music
-  domain: cfapps.io
+  domain: example.com
   path: build/libs/spring-music.war
   services:
     user-provided-b702e:

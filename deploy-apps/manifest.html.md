@@ -164,7 +164,7 @@ applications:
 - name: publisher
   memory: 64M
   path: ./publisher
-  domain: cfapps.io
+  domain: example.com
   host: publisher
   instances: 1
   services:
@@ -176,7 +176,7 @@ applications:
 - name: subscriber
   memory: 64M
   path: ./subscriber
-  domain: cfapps.io
+  domain: example.com
   host: subscriber
   instances: 1
   services:

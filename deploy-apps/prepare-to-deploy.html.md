@@ -6,7 +6,7 @@ _This page assumes that you are using cf v5._
 
 ## <a id="app-design"></a>Application Design for the Cloud ##
 
-Applications written using the runtimes and frameworks supported by Cloud Foundry often run unmodified on Cloud Foundry, if the application design follows a few simple guidelines. Following these guidelines makes an application cloud-friendly, and facilitates deployment to Cloud Foundry and other cloud platforms.
+Applications written in supported application frameworks often run unmodified on Cloud Foundry, if the application design follows a few simple guidelines. Following these guidelines makes an application cloud-friendly, and facilitates deployment to Cloud Foundry and other cloud platforms.
 
 ### <a id="filesystem"></a>Avoid Writing to the Local File System ###
 
@@ -45,7 +45,7 @@ The file types you will want to exclude vary, based on the application framework
 
 ## <a id="Buildpack"></a>Buildpacks and Language-Specific Considerations ##
 
-Cloud Foundry stages application using framework and and runtime-specific buildpacks. Heroku developed the buildpack approach, and made it available to the open source community. Cloud Foundry currently provides buildpacks for the several runtimes and frameworks.
+Cloud Foundry stages application using buildpacks. Heroku developed the buildpack approach, and made it available to the open source community. Cloud Foundry currently provides buildpacks for the several runtimes and frameworks.
 
 ### <a id="system-buildpacks"></a>Cloud Foundry Buildpacks ###
 
@@ -66,7 +66,7 @@ If you have an application that uses a language or framework that Cloud Foundry 
 
 * [Heroku Third-Party Buildpacks](https://devcenter.heroku.com/articles/third-party-buildpacks) for a list of community-developed buildpacks. --- This page has links to buildpacks developed for Heroku, which may (but have not been verified to) work with Cloud Foundry.
 
-* Custom Buildpacks --- See "Custom Buildpacks" in _Extending Elastic Runtime_.
+* [Custom Buildpacks](../../extending/custom-buildpacks.html) for information on creating your own custom buildpacks.
 
-To use a buildpack that is not built-in to Cloud Foundry, you specify the URL of the buildpack when you push an application, using the `--buildpack` qualifier.
+To use a buildpack that is not built-in to Cloud Foundry, you specify the URL of the buildpack when you push an application, using the `--buildpack` flag.
 

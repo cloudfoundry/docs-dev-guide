@@ -54,7 +54,7 @@ applications:
 ### <a id='create_custom_task'></a> Create and Use a Custom Rake Task ###
 Cloud Foundry provides metadata for each instance of a deployed application in the form of an environment variable, `VCAP_APPLICATION`. This environment variable contains a unique number for each instance, the `instance_index` key. The first instance of an application has an `instance_index` value of “0”.
 
-1\. Using the above information, create a Rake task that parses the `instance_index` value from the `VCAP_APPLICATION` environment variable then limits execution to instance_index == 0 – that is, to the first instance. If the `instance_index` is non-zero or unset, the tasks exits Rake and skips any subsequent tasks.
+1\. Using the above information, create a Rake task that parses the `instance_index` value from the `VCAP_APPLICATION` environment variable then limits execution to `instance_index` == 0 – that is, to the first instance. If the `instance_index` is non-zero or unset, the tasks exits Rake and skips any subsequent tasks.
 
 ~~~
 namespace :cf do

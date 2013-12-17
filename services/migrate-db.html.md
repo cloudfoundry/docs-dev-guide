@@ -4,7 +4,7 @@ title: Migrate a Database on Cloud Foundry
 
 _This page assumes that you are using cf v5._
 
-Migrations are a convenient way to change your database schema in a structured and organized manner. This page provides general guidelines for migrating databases, with detailed  recommendations for migrating a database for a Rails application.
+Use migrations to change your database schema in a structured and organized manner. This page provides general guidelines for migrating databases, with detailed recommendations for migrating a database for a Rails application.
 
 ## <a id='general_guidelines'></a>General Database Migration Guidelines ##
 
@@ -31,50 +31,50 @@ applications:
 
 Note, however, that this will run the `db:migrate` command on every instance of your application, not just once. You can limit performing the migration to the first instance of your application by migrating in a single instance then scaling, or by creating and using a custom Rake task.
 
-### <a id='single_and_scale'></a> Migrate in a Single Instance then Scale ###
+### <a id='single_and_scale'></a>Migrate in a Single Instance then Scale ###
 Start a single instance when running the migration, then re-push the application with the desired number of instances. To do this:
 
-1\. Edit your application's `manifest.yml` file, setting the instances attribute to “1” and adding the custom start command: `command: "bundle exec rake db:migrate && bundle exec rails -p $PORT"`
+1.  Edit your application's `manifest.yml` file, setting the instances attribute to “1” and adding the custom start command: `command: "bundle exec rake db:migrate && bundle exec rails -p $PORT"`
 
-~~~
----
-applications:
-- name: my-application
-  instances: 1
-  command: "bundle exec rake db:migrate && bundle exec rails -p $PORT"
-  ... the rest of your settings ...
-~~~
+ ~~~
+ ---
+ applications:
+ - name: my-application
+   instances: 1
+   command: "bundle exec rake db:migrate && bundle exec rails -p $PORT"
+   ... the rest of your settings ...
+ ~~~
 
-2\. Run `cf push` to deploy your application.
+2. Run `cf push` to deploy your application.
 
-3\. Re-edit your `manifest.yml`, setting the instances attribute to the desired number of instances and removing the custom start command.
+3. Re-edit your `manifest.yml`, setting the instances attribute to the desired number of instances and removing the custom start command.
 
-4\. Run `cf push --reset` to deploy your application using the newly modified `manifest.yml`.
+4. Run `cf push --reset` to deploy your application using the newly modified `manifest.yml`.
 
-### <a id='create_custom_task'></a> Create and Use a Custom Rake Task ###
+### <a id='create_custom_task'></a>Create and Use a Custom Rake Task ###
 Cloud Foundry provides metadata for each instance of a deployed application in the form of an environment variable, `VCAP_APPLICATION`. This environment variable contains a unique number for each instance, the `instance_index` key. The first instance of an application has an `instance_index` value of “0”.
 
-1\. Using the above information, create a Rake task that parses the `instance_index` value from the `VCAP_APPLICATION` environment variable then limits execution to `instance_index` == 0 – that is, to the first instance. If the `instance_index` is non-zero or unset, the tasks exits Rake and skips any subsequent tasks.
+1. Using the above information, create a Rake task that parses the `instance_index` value from the `VCAP_APPLICATION` environment variable then limits execution to `instance_index` == 0 – that is, to the first instance. If the `instance_index` is non-zero or unset, the tasks exits Rake and skips any subsequent tasks.
 
-~~~
-namespace :cf do
-  desc "Only run on the first application instance"
-  task :on_first_instance do
-    instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"] rescue nil
-    exit(0) unless instance_index == 0
-  end
-end
-~~~
+ ~~~
+ namespace :cf do
+   desc "Only run on the first application instance"
+   task :on_first_instance do
+     instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"] rescue nil
+     exit(0) unless instance_index == 0
+   end
+ end
+ ~~~
 
-2\. Edit your application's `manifest.yml` file, adding a custom start command the reference this new task:
+2. Edit your application's `manifest.yml` file, adding a custom start command the reference this new task:
 
-~~~
----
-applications:
-- name: my-rails-app
-  instances: 5
-  command: bundle exec rake cf:on_first_instance db:migrate && bundle exec rails -p $PORT"
+ ~~~
+ ---
+ applications:
+ - name: my-rails-app
+   instances: 5
+   command: bundle exec rake cf:on_first_instance db:migrate && bundle exec rails -p $PORT"
   ... the rest of your settings ...
-~~~
+ ~~~
 
-3\. Run `cf push` to deploy your application.
+3. Run `cf push` to deploy your application.

@@ -46,7 +46,9 @@ applications:
 ~~~
 
 2\. Run `cf push` to deploy your application.
+
 3\. Re-edit your `manifest.yml`, setting the instances attribute to the desired number of instances and removing the custom start command.
+
 4\. Run `cf push --reset` to deploy your application using the newly modified `manifest.yml`.
 
 ### <a id='create_custom_task'></a> Create and Use a Custom Rake Task ###

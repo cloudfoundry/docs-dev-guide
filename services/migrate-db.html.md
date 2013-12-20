@@ -1,80 +1,79 @@
 ---
-title: Migrate a Database on Cloud Foundry
+title: Migrating a Database on Cloud Foundry
 ---
 
 _This page assumes that you are using cf v5._
 
-Use migrations to change your database schema in a structured and organized manner. This page provides general guidelines for migrating databases, with detailed recommendations for migrating a database for a Rails application.
+Application development and maintenance often requires changing a database schema, known as migrating the database. This topic describes three ways to migrate a database on Cloud Foundry.
+## <a id='single_migration'></a>Migrate Once ##
 
-## <a id='general_guidelines'></a>General Database Migration Guidelines ##
+This method executes SQL commands directly on the database, bypassing Cloud Foundry. This is the fastest option for a single migration. However, this method is less efficient for multiple migrations because it requires manually accessing the database every time.
 
-The technique used to migrate a specific database on Cloud Foundry depends on the application framework. Although Cloud Foundry does not provide a direct mechanism for running shell-commands or Rake tasks on a deployed application, you can use one of the following approaches:
+1. Obtain your database credentials by searching for the `VCAP_SERVICES` environment variable in the application environment log:  
 
-- Migrate your database by running the appropriate SQL statements or a script in an interactive SQL shell, for example, `psql` for Postgres. You can use `grep` to search your application’s env.log for `DATABASE_URL` (your database’s connection details), connect to and migrate the schema, then use `cf push` to update the application.
+ `cf files my-app logs/env.log | grep VCAP_SERVICES`
 
-- Migrate your database by specifying a custom start command in your application’s Cloud Foundry `manifest.yml` file that invokes shell-commands or Rake tasks on a deployed application. Note that if you simply add the custom command to the `manifest.yml` file, the migration will be run on every instance of your application. To limit performing the migration to the first instance of your app, you can:
-    - Use that code in a single instance then scale, OR
-    - Limit the number of instances that run the code by using the `VCAP_APPLICATION` environment variable.
+2. Connect to the database using your database credentials.
 
-The following technique using the Rails `rake db:migrate task` is a specific instance of this more general case.
+3. Migrate the database using SQL commands.
 
-## <a id='migrate_rails'></a>Migrating a Database for a Rails Application ##
-In Rails, you typically run the Rake task `rake db:migrate` to migrate a database. You can perform the same task on a deployed instance by adding a start command that includes the Rake task to the application's `manifest.yml` file as follows:
+4. Update the application using `cf push`.
 
-~~~
----
-applications:
-- name: my-application
-  command: "bundle exec rake db:migrate && bundle exec rails -p $PORT"
-  ... the rest of your settings ...
-~~~
+## <a id='occasional_migration'></a>Migrate Occasionally ##
+This method leverages a reusable schema migration command or script. Each migration requires first running the migration command when deploying a single instance of the application, then re-deploying the application with the original start command and number of instances.
 
-Note, however, that this will run the `db:migrate` command on every instance of your application, not just once. You can limit performing the migration to the first instance of your application by migrating in a single instance then scaling, or by creating and using a custom Rake task.
+1. Create a schema migration command or SQL script to migrate the database.
 
-### <a id='single_and_scale'></a>Migrate in a Single Instance then Scale ###
-Start a single instance when running the migration, then re-push the application with the desired number of instances. To do this:
+2. Deploy your application with the `command` option referencing the script. Use the `instances 1` option to limit the deployment to a single instance: `cf push --command ‘your_schema_migration_command’ --instances 1`
 
-1.  Edit your application's `manifest.yml` file, setting the instances attribute to “1” and adding the custom start command: `command: "bundle exec rake db:migrate && bundle exec rails -p $PORT"`
+ Example: `cf push --command ‘rake db:migrate’ --instances 1`
 
- ~~~
- ---
- applications:
- - name: my-application
-   instances: 1
-   command: "bundle exec rake db:migrate && bundle exec rails -p $PORT"
-   ... the rest of your settings ...
- ~~~
+3. Revert to the original deployment settings by using one of the following:
+    - The original start command and number of instance.
+    - The start command specified in the manifest file using `cf push --reset`. If the manifest does not specify a start command, the reset option uses the default.
 
-2. Run `cf push` to deploy your application.
+## <a id='frequent_migration'></a>Migrate Frequently ##
+This method partially automates migrations by using an idempotent script limited to the first instance of a deployed application. This option takes the most effort to implement, but becomes more efficient with frequent migrations.
 
-3. Re-edit your `manifest.yml`, setting the instances attribute to the desired number of instances and removing the custom start command.
+1. Create a script that:
+    - Examines the `instance_index` of the `VCAP_APPLICATION` environment variable. The `instance_index` has a value of “0” in the first deployed instance of an application. 
+        For example, this code uses Ruby to extract the `instance_index` from `VCAP_APPLICATION`:
 
-4. Run `cf push --reset` to deploy your application using the newly modified `manifest.yml`.
+        `instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"]`
+    - If and only if the instance_index is “0”, runs an idempotent script or uses an existing idempotent command to migrate the database.
 
-### <a id='create_custom_task'></a>Create and Use a Custom Rake Task ###
-Cloud Foundry provides metadata for each instance of a deployed application in the form of an environment variable, `VCAP_APPLICATION`. This environment variable contains a unique number for each instance, the `instance_index` key. The first instance of an application has an `instance_index` value of “0”.
+2. Add the schema migration script chained with a start command to the `manifest.yml` file using the `command` attribute.
 
-1. Using the above information, create a Rake task that parses the `instance_index` value from the `VCAP_APPLICATION` environment variable then limits execution to `instance_index` == 0 – that is, to the first instance. If the `instance_index` is non-zero or unset, the tasks exits Rake and skips any subsequent tasks.
+ Example partial manifest:
 
- ~~~
- namespace :cf do
-   desc "Only run on the first application instance"
-   task :on_first_instance do
-     instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"] rescue nil
-     exit(0) unless instance_index == 0
-   end
- end
- ~~~
+  ~~~
+    - name: my-rails-app
+    command: bundle exec rake db:migrate && rails s
+  ~~~
 
-2. Edit your application's `manifest.yml` file, adding a custom start command the reference this new task:
+3. Update the application using `cf push --reset`.
 
- ~~~
- ---
- applications:
- - name: my-rails-app
-   instances: 5
-   command: bundle exec rake cf:on_first_instance db:migrate && bundle exec rails -p $PORT"
-  ... the rest of your settings ...
- ~~~
+### <a id='frequent_migration'></a> Migrate Frequently Example using Rails ###
 
-3. Run `cf push` to deploy your application.
+1. Create a Rake task to limit an idempotent command to the first instance of a deployed application:
+
+  ~~~
+    namespace :cf do
+      desc "Only run on the first application instance"
+      task :on_first_instance do
+        instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"] rescue nil
+        exit(0) unless instance_index == 0
+      end
+    end
+  ~~~
+
+2. Add the task to the `manifest.yml` file, referencing the idempotent command `rake db:migrate` with the the `command` attribute. 
+
+  ~~~
+   ---
+    applications:
+    - name: my-rails-app
+      command: bundle exec rake cf:on_primary_instance db:migrate && rails s  
+  ~~~
+
+3. Update the application using `cf push --reset`.

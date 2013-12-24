@@ -19,7 +19,7 @@ The service types available to applications in your Cloud Foundry instance are l
 The cf v6 command to create a service instance is:
 
 <pre class="terminal">
-cf create-service SERVICE PLAN SERVICE_INSTANCE
+gcf create-service SERVICE PLAN SERVICE_INSTANCE
 </pre>
 
 where:
@@ -30,5 +30,5 @@ where:
 
 For example:
 <pre class="terminal">
-cf create-service rabbitmq cloudamqp rabbitmq1
+gcf create-service rabbitmq cloudamqp rabbitmq1
 </pre>

@@ -2,42 +2,184 @@
 title: Build Tool Integration
 ---
 
-It is possible to deploy application using a couple of different JVM build tools - Maven and Gradle.
+_This page assumes you are using cf v5 and version 1.0.1 of either the Cloud Foundry Maven plugin or the Cloud Foundry Gradle plugin._
 
-## <a id='gradle'></a>Gradle ##
+## <a id='maven'></a>Maven Plugin ##
+The Cloud Foundry Maven plugin allows you to deploy and manage applications with Maven goals. This plugin provides Maven users with access to the core functionality of the Cloud Foundry cf command-line tool.
 
-Gradle is a build tool that automates the building, testing, publishing, and deployment of software packages, generated static websites, generated documentation, and more.
+### <a id='maven-basic'></a>Basic Configuration ###
+To install the Cloud Foundry Maven plugin, add the `cf-maven-plugin` to the `<plugins>` section of the `pom.xml` file:
 
-The `cf-gradle-plugin` adds Cloud Foundry-oriented tasks to a Gradle project.
+  ~~~
+  <plugins>
+      <plugin>
+          <groupId>org.cloudfoundry</groupId>
+          <artifactId>cf-maven-plugin</artifactId>
+          <version>1.0.1</version>
+      </plugin>
+  </plugins>
+  ~~~
 
-### <a id="gradle-install"></a> Install the plugin ###
+This minimal configuration is sufficient to execute many of the Maven goals provided by the plugin, as long as you provide all other necessary configuration information through command-line parameters.
 
-An example Gradle project with the Cloud Foundry plugin installed looks something like this (build.gradle):
+### <a id='maven-additional'></a>Additional Configuration ###
+Instead of relying on command-line parameters, you can include additional configuration information in the `pom.xml` by nesting a `<configuration>` section within the cf-maven-plugin section.
 
-~~~
-buildscript {
-  repositories {
-    mavenCentral()
+Example:
+
+  ~~~
+  <plugins>
+      <plugin>
+          <groupId>org.cloudfoundry</groupId>
+          <artifactId>cf-maven-plugin</artifactId>
+          <version>1.0.1</version>
+          <configuration>
+              <target>http://api.run.pivotal.io</target>
+              <org>mycloudfoundry-org</org>
+              <space>development</space>
+              <appname>my-app</appname>
+              <url>my-app.cfapps.io</url>
+              <memory>512</memory>
+              <instances>2</instances>
+              <env>
+                  <ENV-VAR-NAME>env-var-value</ENV-VAR-NAME>
+              </env>
+              <services>
+                  <service>
+                      <name>my-service-name</name>
+                      <label>cloudamqp</label>
+                      <provider>cloudamqp</provider>
+                      <version>n/a</version>
+                      <plan>lemur</plan>
+                  </service>
+              </services>
+          </configuration>
+      </plugin>
+  </plugins>
+  ~~~
+
+After adding and configuring the plugin you can build and push the application to Cloud Foundry with the following command:
+
+<pre class="terminal">
+$ mvn clean package cf:push
+</pre>
+
+### <a id='maven-security'></a>Security Credentials ###
+While you can include Cloud Foundry security credentials in the `pom.xml` file, a more secure method is to store the credentials in the Maven `settings.xml` file, using the server XML configuration element [(http://maven.apache.org/settings.html#Servers)](http://maven.apache.org/settings.html#Servers). The default location for this configuration file is `~/.m2/settings.xml`.
+
+To implement this:
+
+1. Add a server to the servers section of the `settings.xml` file. Include the Cloud Foundry security credentials (username and password) and an `ID` tag. The `pom.xml` references this ID to access the security credentials.
+
+  ~~~
+  <settings>
+      . . .
+      <servers>
+          . . .
+          <server>
+              <id>cloud-foundry-credentials</id>
+              <username>my-name@email.com</username>
+              <password>s3cr3t</password>
+          </server>
+          . . .
+      </servers>
+      . . .
+  </settings>
+  ~~~
+
+2. Add a server configuration element referencing the ID to the `pom.xml` file:
+
+  ~~~
+  <plugins>
+      <plugin>
+          <groupId>org.cloudfoundry</groupId>
+          <artifactId>cf-maven-plugin</artifactId>
+          <version>1.0.1</version>
+          <configuration>
+              <server>cloud-foundry-credentials</server>
+              . . .
+          </configuration>
+      </plugin>
+  </plugins>
+  ~~~
+
+### <a id='maven-command-line'></a>Command-Line Usage ###
+Key functionality available with the Cloud Foundry Maven plugin:
+
+<style type="text/css">
+.table {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}
+.table th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:center;}
+.table tr {background-color:#d4e3e5;}
+.table td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;}
+.table tr:hover {background-color:#ffffff;}
+</style>
+
+<table border="1" class="table" >
+<tr><th><strong>Maven Goal</strong></th><th><strong>Cloud Foundry Command</strong></th><th><strong>Syntax</strong></th></tr>
+<tr><td>cf:login</td><td>login [EMAIL]</td><td>$ mvn cf:login</td>
+<tr><td>cf:logout</td><td>logout</td><td>$ mvn cf:logout</td>
+<tr><td>cf:app</td><td>app APPNAME</td><td>$ mvn cf:app [-Dcf.appname=APPNAME]</td>
+<tr><td>cf:apps</td><td>apps</td><td>$ mvn cf:apps</td>
+<tr><td>cf:target</td><td>target</td><td>$ mvn cf:target</td>
+<tr><td>cf:push</td><td>push</td><td>$ mvn cf:push [-Dcf.appname=APPNAME] [-Dcf.path=PATH] [-Dcf.url=URL] [-Dcf.no-start=BOOLEAN]</td>
+<tr><td>cf:start</td><td>start APPNAME</td><td>$ mvn cf:start [-Dcf.appname=APPNAME]</td>
+<tr><td>cf:stop</td><td>stop APPNAME</td><td>$ mvn cf:stop [-Dcf.appname=APPNAME]</td>
+<tr><td>cf:restart</td><td>restart APPNAME</td><td>$ mvn cf:stop [-Dcf.appname=APPNAME]</td>
+<tr><td>cf:delete</td><td>delete APPNAME</td><td>$ mvn cf:delete [-Dcf.appname=APPNAME]</td>
+<tr><td>cf:scale</td><td>scale APPNAME</td><td>$ mvn cf:scale [-Dcf.appname=APPNAME] [-Dcf.instances=INTEGER]</td>
+<tr><td>cf:env</td><td>env APPNAME</td><td>$ mvn cf:env [-Dcf.appname=APPNAME]</td>
+<tr><td>cf:services</td><td>services</td><td>$ mvn cf:services</td>
+<tr><td>cf:create-services</td><td>create-service OFFERING NAME</td><td>$ mvn cf:create-services</td>
+<tr><td>cf:delete-services</td><td>create-service SERVICE</td><td>$ mvn cf:delete-service</td>
+<tr><td>cf:bind-services</td><td>bind-service [SERVICE] [APPNAME]</td><td>$ mvn cf:bind-services</td>
+<tr><td>cf:unbind-services</td><td>unbind-service [SERVICE] [APPNAME]</td><td>$ mvn cf:unbind-services</td>
+</table>
+
+## <a id='gradle'></a>Gradle Plugin ##
+The Cloud Foundry Gradle plugin allows you to deploy and manage applications with Gradle tasks. This plugin provides Gradle users with access to the core functionality of the Cloud Found cf command-line tool.
+
+### <a id='gradle-basic'></a>Basic Configuration ###
+To install the Cloud Foundry Gradle plugin, add the `cf-gradle-plugin` as a dependency in the `buildscript` section of the `build.gradle` file:
+
+  ~~~
+  buildscript {
+      repositories {
+          mavenCentral()
+      }
+      dependencies {
+          classpath 'org.cloudfoundry:cf-gradle-plugin:1.0.1'
+          . . .
+      }
   }
-  dependencies {
-    classpath group: 'org.cloudfoundry', name: 'cf-gradle-plugin', version: '1.0.0'
+
+  apply plugin: 'cloudfoundry'
+  ~~~
+
+This minimal configuration is sufficient to execute many of the Gradle tasks provided by the plugin, as long as you provide all other necessary configuration information through command-line parameters
+
+### <a id='gradle-additional'></a>Additional Configuration
+Instead of relying on command-line parameters, you can add additional configuration information to `build.gradle` in a `cloudfoundry` configuration section:
+
+  ~~~
+  cloudfoundry {
+      target = "https://api.run.pivotal.io"
+      space = "deployment"
+      file = file("path/to/my/file.war")
+      uri = "my-app.cfapps.io"
+      memory = 512
+      instances = 1
+      env = [ "key": "value ]
+      serviceInfos {
+          "cloudamqp" {
+              label = "cloudamqp"
+              provider = "cloudamqp"
+              version = "n/a"
+              plan = "lemur"
+              bind = true
+          }
+      }
   }
-}
-
-apply plugin: 'cloudfoundry'
-
-cloudfoundry {
-    target = 'https://api.run.pivotal.io'
-    space = 'development'
-    username = 'user@example.com'
-    password = 's3cr3t'
-    file = new File('build/libs/my-app.war')
-    uri = 'http://my-app.run.pivotal.io'
-    env = [
-        "key": "value"
-    ]
-}
-~~~
+  ~~~
 
 After adding and configuring the plugin you can build and push the application to Cloud Foundry with the following command:
 
@@ -45,55 +187,45 @@ After adding and configuring the plugin you can build and push the application t
 $ gradle clean assemble cf-push
 </pre>
 
-For more information on configuration options within Gradle, take a look at the [cf-gradle-plugin project](https://github.com/cloudfoundry/cf-java-client/tree/master/cloudfoundry-gradle-plugin) on Github.
+### <a id='gradle-security'></a>Security Credentials ###
+While you can include Cloud Foundry security credentials in the `build.gradle` file, a more secure method is to store the credentials in a `gradle.properties` file. This file can be placed in either the project directory or in the `~/.gradle` directory.
 
-## <a id='maven'></a>Maven ##
+To implement this, add `cf.username` and `cf.password` with the Cloud Foundry security credentials parameters to the `gradle.properties` file as follows:
 
-Using the `cf-maven-plugin` Maven plugin, you can deploy an application directly from Maven. This is useful as it means being able to store the Cloud Foundry application manifest in `pom.xml`.
+  ~~~
+  cf.username=user@example.com
+  cf.password=examplePassword
+  ~~~
 
-### <a id='maven-install'></a>Install the Plugin ###
+(Note there are no quotes around either the username or password.)
 
-Add the following to the `plugins` node of your `pom.xml`:
+### <a id='gradle-command-line'></a>Command-Line Usage ###
+Key functionality available with the Cloud Foundry Gradle plugin:
+<style type="text/css">
+.table {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}
+.table th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:center;}
+.table tr {background-color:#d4e3e5;}
+.table td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;}
+.table tr:hover {background-color:#ffffff;}
+</style>
 
-~~~xml
-<plugin>
-  <groupId>org.cloudfoundry</groupId>
-  <artifactId>cf-maven-plugin</artifactId>
-  <version>1.0.0</version>
-  <configuration>
-      <server>mycloudfoundry-instance</server>
-      <target>http://api.run.pivotal.io</target>
-      <url>hello-java-maven.cfapps.io</url>
-      <memory>256</memory>
-  </configuration>
-</plugin>
-~~~
-
-Set the server name, the target address of the Cloud Foundry server, the intended URL of the application and memory allocation.
-
-Create a file in ~/.m2/settings.xml or if the file exists, edit and add:
-
-~~~xml
-
-<settings>
-    ...
-    <servers>
-        ...
-        <server>
-          <id>mycloudfoundry-instance</id>
-          <username>user@example.com</username>
-          <password>mypassword</password>
-        </server>
-    </servers>
-    ...
-</settings>
-~~~
-
-Set the `server/id` node to correspond to the server name set in the `pom.xml` file and also set the username and password for the desired account.
-
-Then you can use Maven to package and deploy:
-
-<pre class="terminal">
-$ mvn clean package cf:push
-</pre>
-
+<table border="1" class="table" >
+<tr><th><strong>Gradle Task</strong></th><th><strong>Cloud Foundry Command</strong></th><th><strong>Syntax</strong></th></tr>
+<tr><td>cf-login</td><td>login [EMAIL]</td><td>$ gradle cf-login</td>
+<tr><td>cf-logout</td><td>logout</td><td>$ gradle cf-logout</td>
+<tr><td>cf-app</td><td>app APPNAME</td><td>$ gradle cf-app [-Pcf.application=APPNAME]</td>
+<tr><td>cf-apps</td><td>apps</td><td>$ gradle cf-apps</td>
+<tr><td>cf-target</td><td>target</td><td>$ gradle cf-target</td>
+<tr><td>cf-push</td><td>push</td><td>$ gradle cf-push [-Pcf.application=APPNAME] [-Pcf.uri=URL] [-Pcf.startApp=BOOLEAN]</td>
+<tr><td>cf-start</td><td>start APPNAME</td><td>$ gradle cf-start [-Pcf.application=APPNAME]</td>
+<tr><td>cf-stop</td><td>stop APPNAME</td><td>$ gradle cf-stop [-Pcf.application=APPNAME]</td>
+<tr><td>cf-restart</td><td>restart APPNAME</td><td>$ gradle cf-stop [-Pcf.application=APPNAME]</td>
+<tr><td>cf-delete</td><td>delete APPNAME</td><td>$ gradle cf-delete [-Pcf.application=APPNAME]</td>
+<tr><td>cf-scale</td><td>scale APPNAME</td><td>$ gradle cf-scale [-Pcf.application=APPNAME] [-Pcf.instances=INTEGER]</td>
+<tr><td>cf-env</td><td>env APPNAME</td><td>$ gradle cf-env [-Pcf.application=APPNAME]</td>
+<tr><td>cf-services</td><td>services</td><td>$ gradle cf-services</td>
+<tr><td>cf-create-service</td><td>create-service OFFERING NAME</td><td>$ gradle cf-create-services</td>
+<tr><td>cf-delete-services</td><td>create-service SERVICE</td><td>$ gradle cf-delete-service</td>
+<tr><td>cf-bind</td><td>bind-service [SERVICE] [APPNAME]</td><td>$ gradle cf-bind-services</td>
+<tr><td>cf-unbind</td><td>unbind-service [SERVICE] [APPNAME]</td><td>$ gradle cf-unbind</td>
+</table>

@@ -46,11 +46,11 @@ Example:
               </env>
               <services>
                   <service>
-                      <name>my-service-name</name>
-                      <label>cloudamqp</label>
-                      <provider>cloudamqp</provider>
+                      <name>my-rabbitmq</name>
+                      <label>rabbitmq</label>
+                      <provider>rabbitmq</provider>
                       <version>n/a</version>
-                      <plan>lemur</plan>
+                      <plan>small_plan</plan>
                   </service>
               </services>
           </configuration>
@@ -170,11 +170,11 @@ Instead of relying on command-line parameters, you can add additional configurat
       instances = 1
       env = [ "key": "value ]
       serviceInfos {
-          "cloudamqp" {
-              label = "cloudamqp"
-              provider = "cloudamqp"
+          "my_rabbitmq" {
+              label = "rabbitmq"
+              provider = "rabbitmq"
               version = "n/a"
-              plan = "lemur"
+              plan = "small_plan"
               bind = true
           }
       }

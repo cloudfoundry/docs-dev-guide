@@ -38,7 +38,7 @@ Example:
               <org>mycloudfoundry-org</org>
               <space>development</space>
               <appname>my-app</appname>
-              <url>my-app.cfapps.io</url>
+              <url>my-app.<%=vars.app_domain%></url>
               <memory>512</memory>
               <instances>2</instances>
               <env>
@@ -165,7 +165,7 @@ Instead of relying on command-line parameters, you can add additional configurat
       target = "https://api.run.pivotal.io"
       space = "deployment"
       file = file("path/to/my/file.war")
-      uri = "my-app.cfapps.io"
+      uri = "my-app.<%=vars.app_domain%>"
       memory = 512
       instances = 1
       env = [ "key": "value ]

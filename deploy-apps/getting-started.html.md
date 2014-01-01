@@ -9,7 +9,7 @@ You deploy an application to Cloud Foundry by running a `push` command from a Cl
 
 * Uploads and stores application files
 * Examines and stores application metadata
-* Creates a &lquot;droplet&rquot; (the Cloud Foundry unit of execution) for the application
+* Creates a "droplet" (the Cloud Foundry unit of execution) for the application
 * Selects an appropriate droplet execution agent (DEA) to run the droplet
 * Starts the application
 

@@ -124,19 +124,19 @@ env:
   RACK_ENV: ${rails-env}
 ~~~
 
+While the application is running, you can view, set, and unset environment variables using `cf`:
+
+~~~
+cf env <app> <name>
+cf set-env <app> <name>
+cf unset-env <app> <name>
+~~~
+
 Environment variables live by somewhat complicated rules:
 
 * When you deploy an application for the first time, `cf` reads the variables described in the environment block of the manifest, and adds them to the environment of the container where the application is deployed.
 
 * When you redeploy, even with the `--reset` option, `cf` ignores the environment block in the manifest.
-
-* While the application is running, you can view, set, and unset environment variables using `cf`:
-
-	~~~
-	cf env <app> <name>
-	cf set-env <app> <name>
-	cf unset-env <app> <name>
-	~~~
 
 * When you stop and then restart an application, its environment variables persist.
 

@@ -58,15 +58,10 @@ This path correctly directs `cf` to the application when you run `cf` from the `
 
 This section explains how to describe optional application attributes in manifests. Among the optional attributes, you should notice the differences between symbols, environment variables, and properties.
 
-### <a id='start-commands'></a>Commands for starting applications ###
+### <a id='start-commands'></a>The command attribute ###
 
-By default, `cf push` starts an application as if you were running the application at the command line:
-
-~~~
-./some_app.rb
-~~~
-
-This is not appropriate for all applications. For example, some applications require a `bundle exec` command to start properly. When that is the case, use the `command` attribute.
+Depending on your application framework, `cf push` may start your application with a default command.
+You can use the `command` attribute to set a custom start command.
 
 For example:
 
@@ -76,9 +71,9 @@ command: bundle exec rake VERBOSE=true
 
 ### <a id='symbol-objects'></a>The ${random-word} and ${target-base} symbols ###
 
-Though they look like environment variables, `${random-word}` and ``${target-base}`` are actually symbols—objects that `cf` knows how to handle.
+Though they look like environment variables, `${random-word}` and ``${target-base}`` are actually symbols that `cf` knows how to handle.
 
-You can use a random word for all or part of the host portion of the application URL to make the hostname unique. For example, consider the lines
+You can use a random word for all or part of the host portion of the application URL to make the hostname unique. For example, consider the lines:
 
 ~~~
 host: ${random-word}
@@ -114,7 +109,7 @@ domain: ${target-base}
 
 ### <a id='env-block'></a>Environment variables ###
 
-The `env` (environment) block consists of a heading, then one or more variable/value pairs. The variables belong to the environment of the container to which the application is deployed on the server.
+The `env` block consists of a heading, then one or more environment variable/value pairs. The variables belong to the environment of the container to which the application is deployed on the server.
 
 For example:
 
@@ -132,7 +127,7 @@ cf set-env <app> <name>
 cf unset-env <app> <name>
 ~~~
 
-Environment variables live by somewhat complicated rules:
+Environment variables interact with manifests by somewhat complicated rules:
 
 * When you deploy an application for the first time, `cf` reads the variables described in the environment block of the manifest, and adds them to the environment of the container where the application is deployed.
 
@@ -142,14 +137,18 @@ Environment variables live by somewhat complicated rules:
 
 ### <a id='properties-block'></a>Properties ###
 
-The `properties` block consists of a heading, then one or more property/value pairs. Properties are evaluated and set at the moment that you run `cf push`. Unlike environment variables, properties do not persist from push to push.
+The `properties` block consists of a heading, then one or more property/value pairs. The `cf` command line tool evaluates the value of properties at the moment that you run `cf push`.
+You can use the properties feature to set values in your manifest that you then use later.
 
 For example:
 
 ~~~
 properties:
- myprop1:frisbee
- myprop2:boomerang
+  mode:staging
+
+env:
+  EXEC_MODE: ${mode}
+  ASSETS_SERVER: server-assets-${mode}
 ~~~
 
 Properties can be combined with symbols. For example, if you define `myprop1` with the value "frisbee" in the properties block, you could specify a value of ``${myprop1}-${random-word}`` for the host attribute.
@@ -175,9 +174,9 @@ For example:
 
 You can deploy multiple applications with one `cf push` command by describing them in a single manifest. In doing so, you need to pay extra attention to directory structure and path lines in the manifest.
 
-Suppose you want to deploy two applications, `spark` and `flame`, and you want `cf` to create and start `spark` before `flame`. You accomplish this by listing `spark` first in the manifest.
+Suppose you want to deploy two applications called respectively spark and flame, and you want `cf` to create and start spark before flame. You accomplish this by listing spark first in the manifest.
 
-In this situation there are two sets of bits you want to push. Let’s say that they are `spark.rb` in the `spark` directory and `flame.rb` in the `flame` directory. One level up, the `fireplace` directory contains the `spark` and the `flame` directories along with the `manifest.yml` file. Your plan is to run `cf` from `fireplace`, where you know it can find the manifest.
+In this situation there are two sets of bits you want to push. Let’s say that they are `spark.rb` in the spark directory and `flame.rb` in the flame directory. One level up, the fireplace directory contains the spark and the flame directories along with the `manifest.yml` file. Your plan is to run `cf` from `fireplace`, where you know it can find the manifest.
 
 Now that you have changed the directory structure and manifest location, the standard path line of `path: . ` no longer works. How can you ensure that `cf` finds the bits you want to push?
 
@@ -212,8 +211,8 @@ applications:
   path: ./spark/
   services:
     petclinic-mysql:
-      label: cleardb
-      provider: cleardb
+      label: mysql
+      provider: mysql
       version: n/a
       plan: dev-sandbox
 - name: flame
@@ -223,9 +222,9 @@ applications:
   domain: <%=vars.app_domain%>
   path: ./flame/
   services:
-    rediscloud-ad278:
-      label: rediscloud
-      provider: garantiadata
+    redis:
+      label: redis
+      provider: redis
       version: n/a
       plan: dev-sandbox
 ~~~
@@ -247,8 +246,8 @@ memory: 1G
 instances: 1
 services:
   springtime-mysql:
-    label: cleardb
-    provider: cleardb
+    label: mysql
+    provider: mysql
     version: n/a
     plan: dev-sandbox
 # specifics of each application
@@ -296,8 +295,8 @@ memory: 256M
 instances: 1
 services:
  singular-mysql:
-  label: cleardb
-  provider: cleardb
+  label: mysql
+  provider: mysql
   version: n/a
   plan: dev-sandbox
 

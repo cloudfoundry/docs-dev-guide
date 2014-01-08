@@ -94,5 +94,3 @@ There are three ways of consuming service instance credentials within your appli
 | Auto-configuration | Cloud Foundry creates a service connection for you.                                                                |
 | cfruntime            | Creates an object with the location and settings of your services. Set your service connections based on the values in that object.    |
 | Manual               | Parse the JSON credentials object yourself from the [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html). |
-
-## <a id='configuring'></a>Configuring Connections for Different Frameworks ##

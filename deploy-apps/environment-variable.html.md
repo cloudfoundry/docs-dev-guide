@@ -13,7 +13,7 @@ The sections below describe methods of viewing the values of Cloud Foundry envir
 
 ### <a id='cli'></a>View Environment Variables using CLI ###
 
-The cf command line interface provides two commands that can return environment variables. For more information see [logs](../installcf/cf.html#logs) and [files](../installcf/cf.html#files) on [cf Command Line Interface](../installcf/index.html).
+The cf command line interface provides two commands that can return environment variables. For more information see [logs](../installcf/cf.html#logs) and [files](../installcf/cf.html#files) on [cf Command Line Interface](../installcf/cf.html).
 
 <pre class="terminal">
 $ cf files APP_NAME_HERE logs/env.log
@@ -85,7 +85,7 @@ The IP address of the DEA host.
 
 ### <a id='VCAP_APPLICATION'></a>VCAP_APPLICATION ###
 
-This variable contains useful information about a deployed application. Results are retured in JSON format. The table below lists the attributes that are returned.
+This variable contains useful information about a deployed application. Results are returned in JSON format. The table below lists the attributes that are returned.
 
 
 |Attribute|Description |
@@ -97,7 +97,7 @@ This variable contains useful information about a deployed application. Results 
 |application_name, name |The name assigned to the application when it was pushed. |
 |application_uris |The URI(s) assigned to the application.   |
 |started_at, start |The last time the application was started. |
-|started\_at\_timestamp |Timestamp for the last time the applicaton was started. |
+|started\_at\_timestamp |Timestamp for the last time the application was started. |
 |host |IP address of the application instance. |
 |port |Port of the application instance. |
 |limits  |The memory, disk, and number of files permitted to the instance. Memory and disk limits are supplied when the application is deployed, either on the command line or in the application manifest. The number of files allowed is operator-defined. |
@@ -130,117 +130,45 @@ The port (on the network interface specified by `VCAP_CONSOLE_IP`) upon which ap
 
 ### <a id='VCAP_SERVICES'></a>VCAP\_SERVICES ###
 
-For most service types, Cloud Foundry will add connection details to the `VCAP_SERVICES` environment variable when you bind the service to the application.
+For [bindable services](../services/) Cloud Foundry will add connection details to the `VCAP_SERVICES` environment variable when you restart your application, after binding a service instance to your application.
 
-The results are returned as a JSON document that contains an object for each service type of which one or more instances are bound to the application. The service type object contains a child object for each service instance of that type that is bound to the application. The attributes for a service instance vary somewhat by service type. The attributes that describe a bound service are defined in the table below.  Note that not all attributes apply to all service types.
+The results are returned as a JSON document that contains an object for each service for which one or more instances are bound to the application. The service object contains a child object for each service instance of that service that is bound to the application. The attributes that describe a bound service are defined in the table below.
 
+The key for each service in the JSON document is the same as the value of the "label" attribute.
 
 |Attribute|Description |
 | --------- | --------- |
-|service name-version|A service type is identified by the service name and service version (if there is no version attribute, the string "n/a" is used), separated by a dash character, for example "cleardb-n/a". |
-|name|The name assigned to the service instance when it was created. |
-|label|Takes the same value as service name-version. |
-|plan|The provider plan selected when the service was created. |
-|name|The name of the database running on the service provider's server; appears in the "credentials" object for a cleardb instance.  |
-|host |The host  for connecting to the service; appears in the "credentials" object for a cleardb, rediscloud, or sendgrid instance.|
-|port |Port for connecting to the service; appears in the "credentials" object for a cleardb or rediscloud instance.  |
-|username |Username for connecting to the service; appears in the "credentials" object for a cleardb or sendgrid instance.  |
-|password |Password for connecting to the service; appears in the "credentials" object for a cleardb, cloudamp, or sendgrid instance.  |
-|uri  |URI of the service, appears in the "credentials" object for a cleardb, rediscloud, elephantsql, or mongolab instance.  |
-|jdbcUrl|The JDBC URL for the database connection; appears in the "credentials" object for a cleardb instance. |
+|name|The name assigned to the service instance by the user when it was created |
+|label (v1 API)|The service name and service version (if there is no version attribute, the string "n/a" is used), separated by a dash character, for example "cleardb-n/a"|
+|label (v2 API)|The service name |
+|plan|The service plan selected when the service was created |
+|credentials|A JSON object containing the service-specific set of credentials needed to access the service instance. For example, for the cleardb service, this will include name, hostname, port, username, password, uri, and jdbcUrl|
 
 
-The example below contains the parsed JSON for the VCAP_SERVICE variable for a bound instance of each service type available in the Cloud Foundry Services Marketplace.
+The example below contains the JSON for the VCAP_SERVICES environment variable for bound instances of several services available in the Cloud Foundry Services Marketplace.
 
 ~~~
 VCAP_SERVICES=
 {
-  cleardb-n/a: [
+  "elephantsql-dev": [
     {
-      name: "cleardb-1",
-      label: "cleardb-n/a",
-      plan: "spark",
-      credentials: {
-        name: "ad_c6f4446532610ab",
-        hostname: "us-cdbr-east-03.cleardb.com",
-        port: "3306",
-        username: "b5d435f40dd2b2",
-        password: "ebfc00ac",
-        uri: "mysql://b5d435f40dd2b2:ebfc00ac@us-cdbr-east-03.cleardb.com:3306/ad_c6f4446532610ab",
-        jdbcUrl: "jdbc:mysql://b5d435f40dd2b2:ebfc00ac@us-cdbr-east-03.cleardb.com:3306/ad_c6f4446532610ab"
+      "name": "elephantsql-dev-c6c60",
+      "label": "elephantsql-dev",
+      "plan": "turtle",
+      "credentials": {
+        "uri": "postgres://seilbmbd:PHxTPJSbkcDakfK4cYwXHiIX9Q8p5Bxn@babar.elephantsql.com:5432/seilbmbd"
       }
     }
   ],
-  cloudamqp-n/a: [
+  "sendgrid": [
     {
-      name: "cloudamqp-6",
-      label: "cloudamqp-n/a",
-      plan: "lemur",
-      credentials: {
-        uri: "amqp://ksvyjmiv:IwN6dCdZmeQD4O0ZPKpu1YOaLx1he8wo@lemur.cloudamqp.com/ksvyjmiv"
-      }
-    }
-  ],
-  rediscloud-n/a: [
-    {
-      name: "rediscloud-1",
-      label: "rediscloud-n/a",
-      plan: "20mb",
-      credentials: {
-        port: "17546",
-        hostname: "pub-redis-17546.MatanCluster.ec2.garantiadata.com",
-        password: "1M5zd3QfWi9nUyya"
-      }
-    },
-  ],
-{
-  elephantsql-dev-n/a: [
-  {
-    name: "elephantsql-dev-c6c60",
-    label: "elephantsql-dev-n/a",
-    plan: "turtle",
-    credentials: {
-      uri: "postgres://seilbmbd:PHxTPJSbkcDakfK4cYwXHiIX9Q8p5Bxn@babar.elephantsql.com:5432/seilbmbd"
-    }
-  }
-  ]
-}
-
-
- mongolab-dev-n/a: [
-  {
-    name: "mongolab-dev-2cea8",
-    label: "mongolab-dev-n/a",
-    plan: "sandbox",
-    credentials: {
-      uri: "mongodb://cloudfoundry-test_2p6otl8c_841b7q4b_tmtlqeaa:eb5d00ac-2a4f-4beb-80ad-9da11cff5a70@ds027908.mongolab.com:27908/cloudfoundry-test_2p6otl8c_841b7q4b"
-    }
-  }
-  ]
-}
-{
-  "newrelic-n/a":[
-    {
-      "name":"newrelic-14e9d",
-      "label":"newrelic-n/a",
-      "plan":"standard",
-      "credentials":
-        {
-          "licenseKey":"2865f6f3nsig8f813af7989fccb24a699cb22a4beb"
-        }
-    }
-  ]
-}
-{
-  sendgrid-n/a: [
-    {
-      name: "mysendgrid",
-      label: "sendgrid-n/a",
-      plan: "free",
-      credentials: {
-        hostname: "smtp.sendgrid.net",
-        username: "QvsXMbJ3rK",
-        password: "HCHMOYluTv"
+      "name": "mysendgrid",
+      "label": "sendgrid",
+      "plan": "free",
+      "credentials": {
+        "hostname": "smtp.sendgrid.net",
+        "username": "QvsXMbJ3rK",
+        "password": "HCHMOYluTv"
       }
     }
   ]
@@ -319,7 +247,7 @@ This variable specifies the Rack deployment environment --- development, deploym
 `RACK_ENV=production`
 
 ### <a id='RAILS_ENV'></a>RAILS_ENV ###
-This variable specifies the Rails deployment environment ---  development, test, or production.  This controls which of the environment-specific configuration files will govern how the application will be executed.
+This variable specifies the Rails deployment environment ---  development, test, or production. This controls which of the environment-specific configuration files will govern how the application will be executed.
 
 `RAILS_ENV=production`
 

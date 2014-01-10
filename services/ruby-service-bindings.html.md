@@ -4,8 +4,17 @@ title: Configure Service Connections for Ruby
 
 _This page assumes that you are using cf v5._
 
-After you create a service instance and bind it to an application you must configure the application to connect to the service.
+After you create a service instance and bind it to an application, you must configure the application to connect to the service.
 
+## <a id='cf-app-utils'></a>Query VCAP_SERVICES with cf-app-utils ##
+
+`cf-apps-utils` is a gem that allows your application to search for credentials from VCAP_SERVICES by name, tag, or label.
+
+* [cf-app-utils-ruby](https://github.com/cloudfoundry/cf-app-utils-ruby)
+
+## <a id='auto-config'></a>Auto-configuration for Rails ##
+
+Ruby on Rails applications often expect to find the connection string for a relational database stored in the environment variable `DATABASE_URL`. If the Ruby buildpack detects a Rails app, it looks in the `VCAP_SERVICES` environment variable for a service instance having the key `uri` in the `credentials` JSON object, whose value has a scheme matching `mysql` or `postgres`. If the buildpack finds a match, it updates DATABASE_URL with the value of `uri`. If multiple bound instances contain a `uri` key with matching scheme, the buildpack will use the first one found.
 
 ## <a id='config-file'></a>Define Connection in Configuration File ##
 
@@ -14,7 +23,6 @@ For a Ruby database application, you configure the database connection informati
 In Ruby, you can read the contents of `VCAP_SERVICES` with `ENV`. For example:
 
 ~~~ruby
-
 my_services = JSON.parse(ENV['VCAP_SERVICES'])
 ~~~
 
@@ -43,8 +51,7 @@ You can obtain the credentials for the example service with these Ruby statement
   port = credentials["port"]
 ~~~
 
-To configure a Rails application, you would change your `database.yml` to use
-erb syntax to set the connection values using the credentials obtained from `VCAP_SERVICES`. If you are using the ElephantSQL Postgres service, your `database.yml` file might look like:
+To configure a Rails application, you would change your `database.yml` to use erb syntax to set the connection values using the credentials obtained from `VCAP_SERVICES`. If you are using the ElephantSQL Postgres service, your `database.yml` file might look like:
 
 ~~~
 
@@ -92,7 +99,7 @@ Before you can use your database the first time, you must create and populate or
 
 ## <a id='troubleshooting'></a>Troubleshooting ##
 
-If you have trouble connecting to your service, run the `cf logs` command to view log messages and see the values of the environment variables available to your application. `cf logs` command results include the value of the `VCAP_SERVICES` environment variable, for example:
+If you have trouble connecting to your service, run the `cf logs` command to view log messages and see the values of the environment variables available to your application. The `cf logs` command results include the value of the `VCAP_SERVICES` environment variable, for example:
 
 <pre class="terminal">
   $ cf logs myapp
@@ -124,5 +131,3 @@ If you encounter the error "a fatal error has occurred. Please see the Bundler t
   $ gem update --system
   $ bundle install
 </pre>
-
-

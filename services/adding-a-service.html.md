@@ -83,14 +83,15 @@ If the service supports binding, your service instance will then be bound to you
 Binding cleardb-e2006 to myapp... OK
 </pre>
 
-## <a id='using'></a>Using Service Instances with your Application ##
+## <a id='using'></a>Using Bound Service Instances with your Application ##
 
-Once you have a service instance created and bound to your app, you will need to configure your application to use the correct credentials for your service.
+Once you have a service instance created and bound to your app, you will need to configure your application to dynamically fetch the credentials for your service. These credentials are stored in the [VCAP_SERVICES environment variable](../deploy-apps/environment-variable.html#VCAP_SERVICES) and there are generally two methods for consuming credentials from there.
 
-There are three ways of consuming service instance credentials within your application.
+* **Auto-configuration**: Some buildpacks create a service connection for you by creating additional environment variables, updating config files, or passing system parameters to the jvm.
+* **Manual**: [Parse the JSON yourself](../deploy-apps/environment-variable.html#app); helper libraries are available for some frameworks.
 
-| Binding Strategy     | Description                                                                                                                            |
-| :------------------- | :--------------------                                                                                                                  |
-| Auto-configuration | Cloud Foundry creates a service connection for you.                                                                |
-| cfruntime            | Creates an object with the location and settings of your services. Set your service connections based on the values in that object.    |
-| Manual               | Parse the JSON credentials object yourself from the [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html). |
+| Runtime               | Framework                   | Binding Strategy         |
+| :-------------        |:-------------               |:-------------            |
+| Java / JVM        | <li>[Spring](./spring-service-bindings.html) <li>[Grails](./grails-service-bindings.html) <li>[Lift](./lift-service-bindings.html) | Auto-configuration<br/>Manual |
+| Ruby            | <li>[Rack, Rails, or Sinatra](./ruby-service-bindings.html) |  [Limited auto-configuration support for Rails only](./ruby-service-bindings.html#auto-config)<br/>Manual |
+| Javascript          | <li>[Node.js](./node-service-bindings.html) | Manual |

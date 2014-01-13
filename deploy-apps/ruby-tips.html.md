@@ -3,7 +3,7 @@ title: Tips for Ruby Developers
 ---
 _This page assumes that you are using cf v5._
 
-This page has information specific to deploying  Rack, Rails, or Sinatra applications.
+This page has information specific to deploying Rack, Rails, or Sinatra applications.
 
 ## <a id='bundler'></a> Application Bundling ##
 
@@ -29,7 +29,7 @@ rake assets:precompile
 </pre>
 
 
-Note that the Rake precompile task reinitializes the Rails application. This could pose a problem if initialization requires service connections or environment checks that are unavailable during staging. To prevent reinitialiation during precompilation, add this line to `application.rb`:
+Note that the Rake precompile task reinitializes the Rails application. This could pose a problem if initialization requires service connections or environment checks that are unavailable during staging. To prevent reinitialization during precompilation, add this line to `application.rb`:
 
 ~~~ruby
 config.assets.initialize_on_precompile = false
@@ -49,7 +49,7 @@ If you need to run a Rake task that must be performed in the Cloud Foundry envir
 
 An application's start command is configured in the application's manifest file, `manifest.yml`, with the `command` attribute.
 
-If you have previously deployed the application, the application manifest should already exist. There are two ways to create a manifest. You can manually create the file and save it in the application's root directory before you deploy the application for the first time. If you do not manually create the manifest file, cf will prompt you to supply deployment settings when you first push the application, and will create and save the manifest file for you, with the settings  you specified interactively. For more information about application manifests, and supported attributes, see [Application Manifests](manifest.html).
+If you have previously deployed the application, the application manifest should already exist. There are two ways to create a manifest. You can manually create the file and save it in the application's root directory before you deploy the application for the first time. If you do not manually create the manifest file, cf will prompt you to supply deployment settings when you first push the application, and will create and save the manifest file for you, with the settings you specified interactively. For more information about application manifests, and supported attributes, see [Application Manifests](manifest.html).
 
 For an example of invoking a Rake database migration task at application startup, see [Migrate a Database for a Rails App](../services/migrate-db.html#migrate-ruby-db).
 
@@ -60,7 +60,7 @@ Often when developing a Rails 3 application, you may want delay certain tasks so
 
 ### <a id='worker-libs'></a> Choosing a Worker Task Library ###
 
-The first task is to decide which worker task library to use. Here is a summary of the three main libraries available for Ruby / Rails;
+The first task is to decide which worker task library to use. Here is a summary of the three main libraries available for Ruby / Rails:
 
 
 | Library          | Description |
@@ -69,13 +69,13 @@ The first task is to decide which worker task library to use. Here is a summary 
 |[Resque](https://github.com/defunkt/resque) |A Redis-backed library for creating background jobs, placing those jobs on multiple queues, and processing them later. |
 |[Sidekiq](https://github.com/mperham/sidekiq)|Uses threads to handle many messages at the same time in the same process. It does not require Rails but will integrate tightly with Rails 3 to make background message processing dead simple." This library is also Redis-backed and is actually somewhat compatible with Resque messaging. |
 
-For other alternatives, see  https://www.ruby-toolbox.com/categories/Background_Jobs for more!
+For other alternatives, see [https://www.ruby-toolbox.com/categories/Background_Jobs](https://www.ruby-toolbox.com/categories/Background_Jobs)
 
 ### <a id='example-app'></a> Creating an Example Application ###
 
-For the purposes of the example application, we will use Sidekiq, setup is pretty straight forward and it's a very performant solution.
+For the purposes of the example application, we will use Sidekiq.
 
-First, create a Rails application with an arbitrary model called things;
+First, create a Rails application with an arbitrary model called "Things":
 
 <pre class="terminal">
 $ rails create rails-sidekiq
@@ -83,8 +83,7 @@ $ cd rails-sidekiq
 $ rails g model Thing title:string description:string
 </pre>
 
-Add sidekiq and uuidtools to the Gemfile, it's going to end up looking like this
-;
+Add `sidekiq` and `uuidtools` to the Gemfile:
 
 ~~~ruby
 source 'https://rubygems.org'
@@ -109,7 +108,7 @@ Install the bundle.
 $ bundle install
 </pre>
 
-Create a worker (in app/workers) for sidekiq to carry out it's tasks;
+Create a worker (in app/workers) for Sidekiq to carry out its tasks:
 
 <pre class="terminal">
 $ touch app/workers/thing_worker.rb
@@ -125,7 +124,7 @@ class ThingWorker
     count.times do
 
       thing_uuid = UUIDTools::UUID.random_create.to_s
-      Thing.create :title => "New Thing (#{thing_uuid})", :description => "This is the description for thing #{thing_uuid}"
+      Thing.create :title => "New Thing (#{thing_uuid})", :description => "Description for thing #{thing_uuid}"
     end
 
   end
@@ -135,7 +134,7 @@ end
 
 This worker will create n number of things, where n is the value passed to the worker.
 
-Create a controller for 'things';
+Create a controller for "Things":
 
 <pre class="terminal">
 $ rails g controller Thing
@@ -156,7 +155,7 @@ class ThingController < ApplicationController
 end
 ~~~
 
-Add a view to inspect our collection of things;
+Add a view to inspect our collection of "Things":
 
 <pre class="terminal">
 $ mkdir app/views/things
@@ -169,9 +168,9 @@ $ touch app/views/things/index.html.erb
 
 #### <a id='deploy'></a>Deploying Once, Deploying Twice ####
 
-This application needs to be deployed twice for it to work, once as a Rails web application and once as a standalone Ruby application. The easiest way to do this is to keep separate CF manifests for each application type;
+This application needs to be deployed twice for it to work, once as a Rails web application and once as a standalone Ruby application. The easiest way to do this is to keep separate CF manifests for each application type:
 
-Web Manifest (save this as web-manifest.yml)
+Web Manifest: Save this as `web-manifest.yml`:
 
 ~~~yaml
 ---
@@ -193,7 +192,7 @@ applications:
       tier: free
 ~~~
 
-Worker Manifest (save this as `worker-manifest.yml`)
+Worker Manifest: Save this as `worker-manifest.yml`:
 
 ~~~yaml
 ---
@@ -214,27 +213,26 @@ applications:
       tier: free
 ~~~
 
-The url 'sidekiq.cloudfoundry.com' will probably be taken, change it in `web-manifest.yml` first.
-Push the application with both manifest files;
+Since the url "sidekiq.cloudfoundry.com" is probably already taken, change it in `web-manifest.yml` first, then push the application with both manifest files:
 
 <pre class="terminal">
 $ cf push -m web-manifest.yml
 $ cf push -m worker-manifest.yml
 </pre>
 
-CF will likely ask for a URL for the worker application, select option 2 - "none".
+If `CF` asks for a URL for the worker application, select "none".
 
 ### <a id='test'></a>Test the Application ###
 
-Test the application by visiting the new action on the thing controller at the assigned url, in this example, the URL would have been http://sidekiq.cloudfoundry.com/thing/new
+Test the application by visiting the new action on the "Thing" controller at the assigned url. In this example, the URL would be `http://sidekiq.cloudfoundry.com/thing/new`.
 
-This will create a new sidekiq job which will be queued in Redis and then picked up by the worker application, the browser is then redirected to /thing which will show the collection of 'things'. The likelihood is that the task will be completed by Sidekiq before the browser has even redirected!
+This will create a new Sidekiq job which will be queued in Redis, then picked up by the worker application. The browser is then redirected to `/thing` which will show the collection of "Things".
 
 ### <a id='test'></a>Scale Workers ###
 
-The nice thing about this approach is it makes scaling your Sidekiq workers trivial, pending available resource.
+Use the `cf scale` command to change the number of Sidekiq workers. 
 
-Change the number of workers to two;
+Example:
 
 <pre class="terminal">
 $ cf scale sidekiq-worker --instances 2
@@ -251,12 +249,12 @@ The table below below lists:
 * **Installed by Default** --- The version of each software resource that is installed by default.
 * **To Install a Different Version** --- How to change the buildpack to install a different version of a software resource.
 
-**This table was last updated on August 14, 2013.**
-
 |Resource |Available Versions |Installed by Default| To Install a Different Version |
 | --------- | --------- | --------- |--------- |
 |Ruby |1.8.7  patchlevel 374, Rubygems 1.8.24 <br><br>1.9.2  patchlevel 320, Rubygems 1.3.7.1 <br><br>1.9.3  patchlevel 448, Rubygems 1.8.24 <br><br>2.0.0  patchlevel 247, Rubygems 2.0.3   | The latest security patch release of 1.9.3|Specify desired version in application gem file. |
 |Bundler |1.2.1 <br><br>1.3.0.pre.5<br><br>1.3.2 |1.3.2 |Not supported. |
+
+**This table was last updated on August 14, 2013.**
 
 
 

@@ -31,7 +31,7 @@ To use any of the manual configuration techniques, you need to include the `clou
 
 ~~~xml
 <dependencies>
-    <dependency>
+  <dependency>
         <groupId>org.cloudfoundry</groupId>
         <artifactId>cloudfoundry-runtime</artifactId>
         <version>0.8.4</version>
@@ -160,8 +160,7 @@ The following Spring XML application context snippet shows how you might impleme
 <beans profile="cloud">
   <bean id="c3p0DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
     <property name="driverClass" value="com.mysql.jdbc.Driver" />
-    <property name="jdbcUrl"
-              value="jdbc:mysql://${cloud.services.spring-mysql.connection.host}:${cloud.services.spring-mysql.connection.port}/${cloud.services.spring-mysql.connection.name}" />
+    <property name="jdbcUrl" value="jdbc:mysql://${cloud.services.spring-mysql.connection.host}:${cloud.services.spring-mysql.connection.port}/${cloud.services.spring-mysql.connection.name}" />
     <property name="user" value="${cloud.services.spring-mysql.connection.username}" />
     <property name="password" value="${cloud.services.spring-mysql.connection.password}" />
   </bean>
@@ -185,7 +184,7 @@ See the Spring Framework documentation for additional information about using Sp
 
 When you deploy a Spring application to Cloud Foundry, Cloud Foundry automatically enables the `cloud` profile.
 
-#### Profiles in Java Configration ####
+#### Profiles in Java Configuration ####
 
 The `@Profile` annotation can be placed on `@Configuration` classes in a Spring application to set conditions under which configuration classes are invoked. By using the `default` and `cloud` profiles to determine whether the application is running on CloudFoundry or not, your Java configuration can support both local and cloud deployments using Java configuration classes like these:
 
@@ -220,7 +219,7 @@ public class LocalDataSourceConfig {
 ~~~
 
 
-#### Profiles in XML Configration ####
+#### Profiles in XML Configuration ####
 
 In XML configuration files, you group the configuration for a specific environment using the profile attribute of a nested `<beans>` element in the appropriate Spring application context file. You can create your own custom profiles, but the ones that are most relevant in the context of Cloud Foundry are the `default` and `cloud` profiles.
 
@@ -368,7 +367,7 @@ Auto-configuration occurs if Cloud Foundry detects a `org.springframework.data.d
     host="127.0.0.1"
     port="1234"
     username="test_user"
-    password="test_pass"  />
+    password="test_pass" />
 ~~~
 
 Cloud Foundry will create a `SimpleMongoDbFactory` with its own values for the following properties: `host`, `port`, `username`, `password`, `dbname`.
@@ -401,7 +400,7 @@ The `<cloud:mongo-db-factory>` namespace provides a simple way for you to manual
 
 ##### Basic Manual Configuration #####
 
-The following snippet of a Spring XML appication context file shows a `MongoDbFactory` configuration that will be injected into a `org.springframework.data.mongodb.core.MongoTemplate` bean:
+The following snippet of a Spring XML application context file shows a `MongoDbFactory` configuration that will be injected into a `org.springframework.data.mongodb.core.MongoTemplate` bean:
 
 ~~~xml
 <cloud:mongo-db-factory id="mongoDbFactory" />
@@ -422,24 +421,24 @@ The following table lists the attributes of the `<cloud:mongo-db-factory>` eleme
   </tr>
   <tr>
     <td>id</td>
-    <td>The ID of this MongoDB connection factory.  The MongoTemplate bean uses this ID when it references the connection factory. <br>Default value is the name of the bound service instance.</td>
+    <td>The ID of this MongoDB connection factory. The MongoTemplate bean uses this ID when it references the connection factory. <br>Default value is the name of the bound service instance.</td>
     <td>String</td>
   </tr>
   <tr>
   <td>service-name</td>
-    <td>The name of the MongoDB service. <br>You specify this attribute only if you are binding multiple MongoDB services to your application and you want to specify which particular service instance binds to a particular Spring bean.  The default value is the name of the bound service instance.</td>
+    <td>The name of the MongoDB service. <br>You specify this attribute only if you are binding multiple MongoDB services to your application and you want to specify which particular service instance binds to a particular Spring bean. The default value is the name of the bound service instance.</td>
     <td>String</td>
   </tr>
   <tr>
     <td>write-concern</td>
-    <td>Controls the behavior of writes to the data store.  The values of this attribute correspond to the values of the `com.mongodb.WriteConcern` class.
-       <p>If you do not specify this attribute, then no `WriteConcern` is set for the database connections and all writes default to NORMAL.  </p>
+    <td>Controls the behavior of writes to the data store. The values of this attribute correspond to the values of the `com.mongodb.WriteConcern` class.
+       <p>If you do not specify this attribute, then no `WriteConcern` is set for the database connections and all writes default to NORMAL.</p>
        <p>The possible values for this attribute are as follows:</p>
        <ul>
          <li><b>NONE</b>: No exceptions are raised, even for network issues.</li>
          <li><b>NORMAL</b>: Exceptions are raised for network issues, but not server errors.</li>
-         <li><b>SAFE</b>: MongoDB service waits on a server before performing a write operation.  Exceptions are raised for both network and server errors.</li>
-         <li><b>FSYNC_SAVE</b>: MongoDB service waits for the server to flush the data to disk before performing a write operation.  Exceptions are raised for both network and server errors.</li>
+         <li><b>SAFE</b>: MongoDB service waits on a server before performing a write operation. Exceptions are raised for both network and server errors.</li>
+         <li><b>FSYNC_SAVE</b>: MongoDB service waits for the server to flush the data to disk before performing a write operation. Exceptions are raised for both network and server errors.</li>
        </ul>
      </td>
      <td>String</td>
@@ -479,7 +478,7 @@ Auto-configuration occurs if Cloud Foundry detects a `org.springframework.data.r
 ~~~xml
 <bean id="redis"
       class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
-      p:hostName="localhost" p:port="6379"  />
+      p:hostName="localhost" p:port="6379" />
 ~~~
 
 Cloud Foundry will create a `JedisConnectionFactory` with its own values for the following properties: `host`, `port`, `password`. This means that you must package the Jedis JAR in your application. Cloud Foundry does not currently support the JRedis and RJC implementations.
@@ -538,7 +537,7 @@ The following table lists the attributes of the `<cloud:redis-connection-factory
 </tr>
 <tr>
   <td>service-name</td>
-  <td>The name of the Redis service. <br>You specify this attribute only if you are binding multiple Redis services to your application and you want to specify which particular service instance binds to a particular Spring bean.  The default value is the name of the bound service instance.</td>
+  <td>The name of the Redis service. <br>You specify this attribute only if you are binding multiple Redis services to your application and you want to specify which particular service instance binds to a particular Spring bean. The default value is the name of the bound service instance.</td>
   <td>String</td>
 </tr>
 </tbody>
@@ -572,9 +571,9 @@ The `<cloud:pool>` child element takes the following attributes:
 </tr>
 <tr>
   <td>pool-size</td>
-  <td>Specifies the size of the connection pool.  Set the value to either the maximum number of connections in the pool, or a range of the minimum and maximum number of connections separated by a dash.</td>
+  <td>Specifies the size of the connection pool. Set the value to either the maximum number of connections in the pool, or a range of the minimum and maximum number of connections separated by a dash.</td>
   <td>int</td>
-  <td>Default minimum is 0.  Default maximum is 8. These are the same defaults as the Apache Commons Pool.</td>
+  <td>Default minimum is 0. Default maximum is 8. These are the same defaults as the Apache Commons Pool.</td>
 </tr>
 <tr>
   <td>max-wait-time</td>
@@ -686,5 +685,5 @@ The following example shows how to use these advanced RabbitMQ configuration opt
 </cloud:rabbit-connection-factory>
 ~~~
 
-The `<cloud:rabbit-options>` child element defines one attribute called `channel-cache-size` which you can set to specify the size of the channel cache size. The default value is `1`.  In the preceding example, the channel cache size of the RabbitMQ connection factory is set to 10.
+The `<cloud:rabbit-options>` child element defines one attribute called `channel-cache-size` which you can set to specify the size of the channel cache size. The default value is `1`. In the preceding example, the channel cache size of the RabbitMQ connection factory is set to 10.
 

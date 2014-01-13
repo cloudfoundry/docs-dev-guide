@@ -19,7 +19,7 @@ To install gcf on Windows:
   * Right-click **My Computer > Properties**.
   * Click **Advanced system settings**.
   * Click **Environment Variables**.
-  * Click ** "Path" in the **System Variables** list.
+  * Click **Path** in the **System Variables** list.
   * Click **Edit**
   * Append "C:\Program Files\Cloud Foundry\" to the variable value; use a semicolon (;) to delimit your entry from the previous path component.
   * Click **OK**.

@@ -29,7 +29,7 @@ cf push -m <path-to-manifest>
 With the `-m` option, the path to the manifest must include the manifest filename, whether that is `manifest.yml` or anything else.
 
 
-## <a id='minimal-manifest'></a>A Minimal Manifest  ##
+## <a id='minimal-manifest'></a>A Minimal Manifest ##
 
 You can deploy some (but not all) applications without ever using a manifest, and `cf` allows you to create a manifest on the fly while deploying. On the other hand, creating the manifest before you deploy offers greater consistency and reproducibility than other methods.
 
@@ -211,7 +211,7 @@ applications:
   path: ./spark/
   services:
     petclinic-mysql:
-      label: mysql
+    label: mysql
       provider: mysql
       version: n/a
       plan: dev-sandbox

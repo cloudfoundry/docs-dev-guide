@@ -17,7 +17,7 @@ An application that uses services, such as a database, messaging, or email serve
 You can provision and bind services when you push your application for the first time.
 
 
-## <a id='prepare'></a>Step 1 --- Prepare to Deploy  ##
+## <a id='prepare'></a>Step 1 --- Prepare to Deploy ##
 
 Before you deploy your application to Cloud Foundry, make sure that:
 
@@ -27,7 +27,7 @@ Before you deploy your application to Cloud Foundry, make sure that:
 
 * Your Cloud Foundry instance supports the type of application you are going to deploy, or you have the URL of an externally available buildpack that can stage the application.
 
-For more information on these and other topics that will help you prepare to deploy your application, see
+For more information on these and other topics that will help you prepare to deploy your application, see:
 
 * [Prepare to Deploy](prepare-to-deploy.html)
 * [Tips for Ruby Developers](ruby-tips.html)
@@ -36,7 +36,7 @@ For more information on these and other topics that will help you prepare to dep
 
 ## <a id='prepare'></a>Step 2 --- Install or Update Your CLI ##
 
-There are two versions of the cf CLI: v5 and v6  The two CLIs provide similar functionality, but vary in terms of specific commands and usage patterns.  For installation and usage information, see:
+There are two versions of the cf CLI: v5 and v6 The two CLIs provide similar functionality, but vary in terms of specific commands and usage patterns. For installation and usage information, see:
 
 * cf v5 (currently in production) --- [Install cf v5](../installcf/install-ruby-cli.html)
 * cf v6 (currently in beta) --- [Install cf v6](../installcf/install-go-cli.html)
@@ -49,7 +49,7 @@ Before you can push your application to Cloud Foundry you need to know:
 
 * The url to target for your Cloud Foundry instance. Typically this is a url that begins with "api." Consult your cloud operator if you are unsure of your target url.
 * Your username and password for your Cloud Foundry instance.
-* The organization and space where you want to deploy your application.  A Cloud Foundry workspace is organized into organizations, and within them, spaces. As a Cloud Foundry user, you have access to one or more organizations and spaces.
+* The organization and space where you want to deploy your application. A Cloud Foundry workspace is organized into organizations, and within them, spaces. As a Cloud Foundry user, you have access to one or more organizations and spaces.
 
 ## <a id='domain'></a>Step 4 --- (Optional) Configure Domains ##
 
@@ -66,7 +66,7 @@ Before you deploy, you need to decide on the answers to some questions:
 * **Memory Limit**: The maximum amount of memory that each instance of your application is allowed to consume. If an instance goes over the maximum limit, it will be restarted. If it has to be restarted too often, it will be terminated. So make sure you are generous in your memory limit.
 * **Start Command**: This is the command that Cloud Foundry will use to start each instance of your application. The start command is specific to your framework. The start command varies by application framework.
 * **URL and Domain**: `cf` will prompt you for both a URL and a domain. The URL is the subdomain for your application and it will be hosted at the primary domain you choose. The combination of the URL and domain must be globally unique.
-* **Services**: `cf` will ask you if you want to create and bind one or more services such as MySQL or Redis to your application. You can respond "yes" to  create and bind services during the push process, or if you prefer, do it after you have deployed the application.
+* **Services**: `cf` will ask you if you want to create and bind one or more services such as MySQL or Redis to your application. You can respond "yes" to create and bind services during the push process, or if you prefer, do it after you have deployed the application.
 
 You can define a variety of deployment options on the command line when you run `cf push`, or in a manifest file. For more information:
 
@@ -162,7 +162,7 @@ You can troubleshoot your application in the cloud using `cf`.
 To check the health of your application, use
 
 <pre class="terminal">
-  cf health appname
+cf health appname
 </pre>
 
 To check how much memory your application is using:

@@ -14,7 +14,7 @@ cf v6 is currently in beta testing. Limitations of the beta version are:
 
 During the beta period, the executable will be named gcf instead of cf. cf v6 commands begin with "gcf". If you would prefer to completely switch to gcf now, you can use an alias to cf.
 
-cf v6 is intended to replace cf v5. During the v6 beta period, cf v5 and v6 can co-exist on the same machine; you invoke v6 commands with the `gcf` command prefix. Upon general availability of cf v6, cf v5  will be deprecated, and the gcf executable will be renamed cf. At that point, cf v6 commands will be updated to replace the use of the `gcf` command prefix with `cf`.
+cf v6 is intended to replace cf v5. During the v6 beta period, cf v5 and v6 can co-exist on the same machine; you invoke v6 commands with the `gcf` command prefix. Upon general availability of cf v6, cf v5 will be deprecated, and the gcf executable will be renamed cf. At that point, cf v6 commands will be updated to replace the use of the `gcf` command prefix with `cf`.
 
 cf v6 is available for download at https://github.com/cloudfoundry/cli/releases/tag/v6.0.0-beta. See https://github.com/cloudfoundry/cli/blob/master/INSTALL.md for installation instructions.
 
@@ -24,7 +24,7 @@ cf v6 is available for download at https://github.com/cloudfoundry/cli/releases/
 
 ## <a id='login'></a>login ##
 
-The `login` command in cf v6 has expanded functionality. In addition to supplying your username and password, you can  optionally specify (any or all of) the target API endpoint, organization, and space. cf will prompt for values you do not specify on the command line.
+The `login` command in cf v6 has expanded functionality. In addition to supplying your username and password, you can optionally specify (any or all of) the target API endpoint, organization, and space. cf will prompt for values you do not specify on the command line.
 
 Usage:
 
@@ -34,7 +34,7 @@ gcf login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE]
 
 If you have only one organization and one space, they will be automatically targeted when you log in; you need not specify them.
 
-Upon successful login, cf v6 saves your API endpoint, organization, space values, and access token in a `config.json` file  in your `~/.cf` directory. If you change your target API endpoint, organization, or space, the `config.json` file will be updated accordingly.
+Upon successful login, cf v6 saves your API endpoint, organization, space values, and access token in a `config.json` file in your `~/.cf` directory. If you change your target API endpoint, organization, or space, the `config.json` file will be updated accordingly.
 
 cf v6 will always use any flags passed in the cf login command first. In a script that logs you in and sets your target, use the non-interactive `gcf api`, `gcf auth`, and `gcf target` commands.
 
@@ -106,7 +106,7 @@ gcf update-user-provided-service SERVICE_INSTANCE -p '{"username":"USERNAME","pa
 
 The cf v6 commands for managing domains and routes are:
 
-* `gcf create-domain` ---  Create a domain in an organization for later use.
+* `gcf create-domain` --- Create a domain in an organization for later use.
 * `gcf share-domain` --- Share a domain with all organizations.
 * `gcf map-domain` --- Map a domain to a space.
 * `gcf unmap-domain` --- Unmap a domain from a space.
@@ -138,7 +138,7 @@ cf v6 provides new commands for managing users and roles.
 
 ## <a id='aliases'></a> New Aliases ##
 
-cf v6 introduces single-letter aliases for commonly used commands.  For example, you can enter `gcf p` for `gcf push`, and `gcf t` for `gcf target`. You can see the alias for a command, if there is one, by running command line help, described below.
+cf v6 introduces single-letter aliases for commonly used commands. For example, you can enter `gcf p` for `gcf push`, and `gcf t` for `gcf target`. You can see the alias for a command, if there is one, by running command line help, described below.
 
 ## <a id='help'></a> Command Line Help ##
 
@@ -173,6 +173,6 @@ OPTIONS:
 
 Note that:
 
-* User input is capitalized, as in  `gcf push APP`
+* User input is capitalized, as in `gcf push APP`
 * Optional user input is designated with a flag and brackets, as in `gcf create-route SPACE DOMAIN [-n HOSTNAME]`.
 

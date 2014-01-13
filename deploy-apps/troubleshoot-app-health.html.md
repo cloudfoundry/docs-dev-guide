@@ -17,7 +17,7 @@ Cloud Foundry's cf command line interface provides several commands you can use 
 
   You may need to configure your application to issue messages to STDOUT and STDERR. If your application uses a log4j facility that is configured to send log messages to STDOUT, such messages will also be returned by the `logs` command. (If your application environment logs errors of interest to a file, rather than STDOUT or STDERR, use the `cf file` command to view the messages.)
 
-  **Note:**  Because `cf logs` returns connection credentials, be sure not to post command output to a public forum without removing this sensitive information first.
+  **Note:** Because `cf logs` returns connection credentials, be sure not to post command output to a public forum without removing this sensitive information first.
 
   For command usage, see [logs](../installcf/cf.html#logs).
 
@@ -45,7 +45,7 @@ If your application fails to upload when you push it to Cloud Foundry, it may be
 
 * WAR is too large --- Upload may fail due to the size of the WAR file. Cloud Foundry testing indicates WAR files as large as 250 MB upload successfully. If a WAR file larger than that fails to upload, it may be a result of the file size.
 
-* Connection issues --- Application upload can fail if you have a slow internet connection, or if you upload from a location that is very remote from the target Cloud Foundry instance. If application upload takes a long time, your authorization token can expire before the upload completes. A workaruond is to copy the WAR to a server that is closer to the Cloud Foundry instance, and push it from there.
+* Connection issues --- Application upload can fail if you have a slow internet connection, or if you upload from a location that is very remote from the target Cloud Foundry instance. If application upload takes a long time, your authorization token can expire before the upload completes. A workaround is to copy the WAR to a server that is closer to the Cloud Foundry instance, and push it from there.
 
 * Out-of-date cf client --- Upload of a large WAR large is faster and hence less likely to fail if you are using a recent version of cf. If you are using an older version of the cf client to upload a large, and having problems, try updating to the latest version of cf:
 
@@ -71,7 +71,7 @@ If your application fails to upload when you push it to Cloud Foundry, it may be
 
 ### <a id='slow-start'></a>Slow Starting Java or Grails Apps ###
 
- It is not uncommon for a Java or Grails application to take a while to start.  This, in conjunction with the current Java buildpack implementation, can pose a problem. The Java buildpack sets the Tomcat `bindOnInit` property to "false", which causes Tomcat to not listen for HTTP requests until the application is deployed.  If your application takes a long to time to start, the DEA's health check may fail by checking application health before it will accept requests. A workaround is to fork the Java buildpack and change `bindOnInit` to "false" in `resources/tomcat/conf/server.xml`, although this has the downside that the application may appear to be running (as far as Cloud Foundry is concerned) before it is ready to serve requests.
+ It is not uncommon for a Java or Grails application to take a while to start. This, in conjunction with the current Java buildpack implementation, can pose a problem. The Java buildpack sets the Tomcat `bindOnInit` property to "false", which causes Tomcat to not listen for HTTP requests until the application is deployed. If your application takes a long to time to start, the DEA's health check may fail by checking application health before it will accept requests. A workaround is to fork the Java buildpack and change `bindOnInit` to "false" in `resources/tomcat/conf/server.xml`, although this has the downside that the application may appear to be running (as far as Cloud Foundry is concerned) before it is ready to serve requests.
 
 ## <a id='node-apps'></a>Node Best Practices ##
 
@@ -81,4 +81,4 @@ If your application fails to upload when you push it to Cloud Foundry, it may be
 
 * Precompile assets --- Recommended to reduce staging time.
 
-* Use `rails_serv_static_assets` on Rails 4 --- By default Rails 4 will return a 404 if an asset is not handled via an external proxy such as Nginx. The `rails_serve_static_assets` gem enables your Rails server to deliver static assets directly, instead of returning a 404. You can use this capability to populate an edge cache CDN or serve files directly from your web application.  The `rails_serv_static_assets` gem enables this behavior by setting the `config.serve_static_assets` option to "true", so you do not need to configure it manually.
+* Use `rails_serv_static_assets` on Rails 4 --- By default Rails 4 will return a 404 if an asset is not handled via an external proxy such as Nginx. The `rails_serve_static_assets` gem enables your Rails server to deliver static assets directly, instead of returning a 404. You can use this capability to populate an edge cache CDN or serve files directly from your web application. The `rails_serv_static_assets` gem enables this behavior by setting the `config.serve_static_assets` option to "true", so you do not need to configure it manually.

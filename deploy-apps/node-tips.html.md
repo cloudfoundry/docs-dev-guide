@@ -6,13 +6,13 @@ _This page assumes that you are using cf v5._
 
 This page will prepare you to deploy Node.js apps via the [getting started guide](getting-started.html).
 
-## <a id='packagejson'></a> Application package file ##
+## <a id='packagejson'></a> Application Package File ##
 
 Cloud Foundry expects a `package.json` in your Node.js application. You can specify the version of Node.js you want to use in the `engine` node of your `package.json` file. As of July, 2013, Cloud Foundry uses 0.10.x as the default.
 
 ## <a id='port'></a> Application Port ##
 
-You need to use the VCAP_APP_PORT environment variable to determine which port your application should listen on.
+You need to use the VCAP_\APP_PORT environment variable to determine which port your application should listen on.
 In order to also run your application locally, you may want to make port 3000 the default:
 
 ~~~javascript
@@ -21,7 +21,7 @@ app.listen(process.env.VCAP_APP_PORT || 3000);
 
 ~~~
 
-## <a id='start'></a> Application start command ##
+## <a id='start'></a> Application Start Command ##
 
 Node.js applications require a start command, which is saved with other configurations in `manifest.yml`.
 
@@ -32,7 +32,7 @@ You will be asked if you want to save your configuration the first time you depl
 applications:
 - name: my-app
   command: node my-app.js
-... the rest of your settings  ...
+... the rest of your settings ...
 ~~~
 
 Alternately, specify the `cf push --command` flag.
@@ -41,7 +41,7 @@ Alternately, specify the `cf push --command` flag.
 $ cf push --command "node my-app.js"
 </pre>
 
-## <a id='nodemodules'></a> Application bundling ##
+## <a id='nodemodules'></a> Application Bundling ##
 
 You do not need to run `npm install` before deploying your application. Cloud Foundry will run it for you when your application is pushed. If you would prefer to run `npm install` and create a `node_modules` folder inside of your application, this is also supported.
 
@@ -49,23 +49,23 @@ You do not need to run `npm install` before deploying your application. Cloud Fo
 
 If Cloud Foundry does not automatically detect that your application is a Node.js application, you can override the auto-detection by specifying the Node.js buildpack.
 
-Either, add the buildpack into your `manifest.yml` and re-run `cf push --reset`
+Either, add the buildpack into your `manifest.yml` and re-run `cf push --reset`:
 
 ~~~yaml
 ---
 applications:
 - name: my-app
   buildpack: https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
-... the rest of your settings  ...
+... the rest of your settings ...
 ~~~
 
-Or, specify the `cf push --buildpack` flag.
+Or, specify the `cf push --buildpack` flag:
 
 <pre class="termainl">
 $ cf push --buildpack https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
 </pre>
 
-## <a id='services'></a> How do I bind services? ##
+## <a id='services'></a> Binding Services ##
 
 Refer to the [instructions for node.js service bindings](../services/node-service-bindings.html).
 

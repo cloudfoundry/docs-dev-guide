@@ -26,7 +26,7 @@ Ruby can also be installed using the package manager available for each Linux di
 
 ### <a id="osx"></a>Install Ruby on Mac OS X ###
 
-If you are going to run cf on OS X, you must obtain a cf-supported version of Ruby.  Since v10.5, OS X includes Ruby, but not a current version.
+If you are going to run cf on OS X, you must obtain a cf-supported version of Ruby. Since v10.5, OS X includes Ruby, but not a current version.
 
 `rvm` and `rbenv`, the environment managers described in [Ruby on Linux](#linux) above, also run on OS X. You can use the [Homebrew](http://mxcl.github.com/homebrew/) OS X package manager to install either `rvm` or `rbenv`, or if desired, to directly install Ruby and RubyGems.
 

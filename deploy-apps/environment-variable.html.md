@@ -91,7 +91,7 @@ This variable contains useful information about a deployed application. Results 
 |Attribute|Description |
 | --------- | --------- |
 |application_users, users | |
-|instance_id  |GUID that identifies the application. |
+|instance_id|GUID that identifies the application. |
 |instance_index |Index number, relative to the DEA, of the instance. |
 |application_version, version |GUID that identifies a version of the application that was pushed. Each time an application is pushed, this value is updated. |
 |application_name, name |The name assigned to the application when it was pushed. |
@@ -247,7 +247,7 @@ This variable specifies the Rack deployment environment --- development, deploym
 `RACK_ENV=production`
 
 ### <a id='RAILS_ENV'></a>RAILS_ENV ###
-This variable specifies the Rails deployment environment ---  development, test, or production. This controls which of the environment-specific configuration files will govern how the application will be executed.
+This variable specifies the Rails deployment environment --- development, test, or production. This controls which of the environment-specific configuration files will govern how the application will be executed.
 
 `RAILS_ENV=production`
 

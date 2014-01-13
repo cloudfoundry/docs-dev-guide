@@ -59,7 +59,7 @@ For information about using, configuring, and extending the Cloud Foundry Java b
 The table below lists:
 
 * **Name** --- The name of the software installed by the Cloud Foundry Java buildpack, when appropriate.
-* **Available Versions** --- The versions of the software that are available from the buildpack.  Note that the available versions may be dependent on the platform that the buildpack is run on.
+* **Available Versions** --- The versions of the software that are available from the buildpack. Note that the available versions may be dependent on the platform that the buildpack is run on.
 * **Installed by Default** --- The version of the software that is installed by default. See https://github.com/cloudfoundry/java-buildpack/blob/master/docs/util-repositories.md#version-wildcards for an explanation of the format used to indicate the version in the "Installed by Default" column.
 
  This page was last updated on 19 September, 2013

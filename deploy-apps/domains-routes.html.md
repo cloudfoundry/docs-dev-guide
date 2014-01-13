@@ -21,7 +21,7 @@ Cloud Foundry also supports _custom domains_ --- you can map a registered domain
 
 If you want use a registered domain of your own, you must define it in Cloud Foundry and map it the application’s space with the `cf map-domain` command.
 
-The command below maps the custom domain `example.org`  to the “development” space.
+The command below maps the custom domain `example.org` to the "development" space.
 
 `cf map-domain --space development example.org`
 
@@ -29,7 +29,7 @@ If you do not want the application to be available via a URL, do not assign a do
 
 ## <a id='view-domains'></a>View Domains for a Space ##
 
-You can see domains that are mapped to a space using the `cf domains` command. In this example, two domains are mapped to the “development” space:  a system-wide default `example.com` domain and the custom `example.org` domain:
+You can see domains that are mapped to a space using the `cf domains` command. In this example, two domains are mapped to the "development" space: a system-wide default `example.com` domain and the custom `example.org` domain:
 
 <pre class="terminal">
 cf push my-new-app
@@ -41,10 +41,8 @@ example.com    none
 example.org    jdoe
 </pre>
 
-
-
 ## <a id='unmap-domain'></a>Unmap a Domain ##
-You can unmap a domain with the `cf unmap-domain` command.  In this example, the `example.org` domain is unmapped from the “development” space:
+You can unmap a domain with the `cf unmap-domain` command. In this example, the `example.org` domain is unmapped from the "development" space:
 
 <pre class="terminal">
 cf unmap-domain --space development example.org
@@ -64,8 +62,8 @@ You might choose not to assign a subdomain to an application that will not accep
 
 When you run `cf push` interactively, it prompts you to supply a subdomain and domain for the application. In the example dialog below, note that:
 
-- The options for subdomain are “myapp,” the value supplied earlier in the dialog for application name, and “none”. You can also enter a string at the prompt.
-- The options for domain are (1) `example.com`, the default domain for this example Cloud Foundry instance, (2) `example.org`, a custom domain previously mapped to the space, and (3) “none”.
+- The options for subdomain are "myapp," the value supplied earlier in the dialog for application name, and "none". You can also enter a string at the prompt.
+- The options for domain are (1) `example.com`, the default domain for this example Cloud Foundry instance, (2) `example.org`, a custom domain previously mapped to the space, and (3) "none".
 
 The route created for the application as a result of the selections made below is:
 
@@ -106,7 +104,7 @@ If you create or edit the manifest for an application, you can use the `host` (f
 
 ## <a id='list-routes'></a>List Routes ##
 
-You can list routes for the current space with `cf routes` command.  Note that the subdomain is shown as “host”, separate from the domain segment. For example:
+You can list routes for the current space with `cf routes` command. Note that the subdomain is shown as "host", separate from the domain segment. For example:
 <pre class="terminal">
 cf routes
 Getting routes... OK
@@ -119,7 +117,7 @@ sinatra-to-do            example.com
 </pre>
 
 ## <a id='define-route'></a>Define or Change a Route from Command Line
-You can assign or change the route for an application with the `cf map` command. For example, this command maps the route  `myapp.example.org` to the application named “myapp”:
+You can assign or change the route for an application with the `cf map` command. For example, this command maps the route `myapp.example.org` to the application named "myapp":
 <pre class="terminal">
 
 cf map --app myapp --host myapp --domain example.org

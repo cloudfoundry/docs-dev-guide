@@ -9,7 +9,7 @@ Application development and maintenance often requires changing a database schem
 
 This method executes SQL commands directly on the database, bypassing Cloud Foundry. This is the fastest option for a single migration. However, this method is less efficient for multiple migrations because it requires manually accessing the database every time.
 
-1. Obtain your database credentials by searching for the `VCAP_SERVICES` environment variable in the application environment log:  
+1. Obtain your database credentials by searching for the `VCAP_SERVICES` environment variable in the application environment log:
 
  `cf files my-app logs/env.log | grep VCAP_SERVICES`
 
@@ -36,7 +36,7 @@ This method leverages a reusable schema migration command or script. Each migrat
 This method partially automates migrations by using an idempotent script limited to the first instance of a deployed application. This option takes the most effort to implement, but becomes more efficient with frequent migrations.
 
 1. Create a script that:
-    - Examines the `instance_index` of the `VCAP_APPLICATION` environment variable. The `instance_index` has a value of “0” in the first deployed instance of an application. 
+    - Examines the `instance_index` of the `VCAP_APPLICATION` environment variable. The `instance_index` has a value of “0” in the first deployed instance of an application.
         For example, this code uses Ruby to extract the `instance_index` from `VCAP_APPLICATION`:
 
         `instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"]`
@@ -67,13 +67,13 @@ This method partially automates migrations by using an idempotent script limited
     end
   ~~~
 
-2. Add the task to the `manifest.yml` file, referencing the idempotent command `rake db:migrate` with the the `command` attribute. 
+2. Add the task to the `manifest.yml` file, referencing the idempotent command `rake db:migrate` with the the `command` attribute.
 
   ~~~
    ---
     applications:
     - name: my-rails-app
-      command: bundle exec rake cf:on_primary_instance db:migrate && rails s  
+      command: bundle exec rake cf:on_primary_instance db:migrate && rails s
   ~~~
 
 3. Update the application using `cf push --reset`.

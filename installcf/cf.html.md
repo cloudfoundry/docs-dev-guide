@@ -22,13 +22,13 @@ $ cf push my-new-app
 </pre>
 
 
-Most commands have qualifiers that you can use to tailor command behavior or supply required argument values. If you do not supply a required argument value at the command line, cf presents a dialog that prompts for required data. If you use cf commands in a non-interactive script, you must specify required arguments as part of the command. Command qualifiers can be specifed in any order.
+Most commands have qualifiers that you can use to tailor command behavior or supply required argument values. If you do not supply a required argument value at the command line, cf presents a dialog that prompts for required data. If you use cf commands in a non-interactive script, you must specify required arguments as part of the command. Command qualifiers can be specified in any order.
 
-This page documents the optional and required qualfiers for each cf command. You can display similar information in the console by entering `cf help [command]`, or by appending `-h` or `--help` to the end of a command.
+This page documents the optional and required qualifiers for each cf command. You can display similar information in the console by entering `cf help [command]`, or by appending `-h` or `--help` to the end of a command.
 
 **Global Command Qualifiers**
 
-The following qualifiers apply to all cf commands.
+The following qualifiers apply to all cf commands:
 
 | Qualifier | Description |
 | :------------------------ | :---------- |
@@ -113,9 +113,6 @@ Bind a service to an application. Some service types are bindable, some are not.
 
 Note that you can bind a service to an application at the time you create the service, as described in [create-service](#create-service). For more information about creating and binding service instances, see [Getting Started - Adding a Service](../services/adding-a-service.html).
 
-
-
-
 <div class="command-doc">
   <pre class="terminal">$ cf bind-service [instance name] [application name]</pre>
   <div class="break"></div>
@@ -125,8 +122,6 @@ Note that you can bind a service to an application at the time you create the se
 | :-------- | :------- | :---------- |
 | --app     |   y       | The name of the application to which the service should be bound.            |
 | --service     |  y        |  The service to bind to the application.           |
-
-
 
 #### <a id='crashlogs'></a> crashlogs ####
 
@@ -165,7 +160,6 @@ To list service instances that already exist, use the [services](#services) comm
 </div>
 
 
-
 The table below lists supported command qualifiers. cf prompts for required qualifiers not provided on the command line.
 
 | Qualifier | Required | Description |
@@ -188,9 +182,9 @@ Create a service authorization token.
 
 | Qualifier | Required | Description |
 | :-------- | :------- | :---------- |
-|--label | |Token lable.|
-|--provider | |Token provider. |
-|--token TOKEN | |Token value. |
+|--label | |Token label |
+|--provider | |Token provider |
+|--token TOKEN | |Token value |
 
 
 #### <a id='create-space'></a> create-space ###
@@ -252,7 +246,7 @@ Delete an application. cf will ask you to confirm that you wish to delete the ap
 Delete an organization.
 
 <div class="command-doc">
-  <pre class="terminal">$ cf delete-org [organisation name]</pre>
+  <pre class="terminal">$ cf delete-org [organization name]</pre>
   <div class="break"></div>
 </div>
 
@@ -423,7 +417,7 @@ tmp/                                         -
 
 #### <a id='guid'></a> guid ####
 
-Get the GUID for the object with the type (for instance, app, organization, space, domain, and so on) and name specified.
+Get the GUID for the object with the type (app, organization, space, domain, etc.) and name specified.
 
 <div class="command-doc">
   <pre class="terminal">$ cf guid type [name]</pre>
@@ -609,7 +603,7 @@ Add a domain and assign it to a space.
 Show organization information.
 
 <div class="command-doc">
-  <pre class="terminal">$ cf org [organisation name]</pre>
+  <pre class="terminal">$ cf org [organization name]</pre>
   <div class="break"></div>
 </div>
 
@@ -708,7 +702,7 @@ Create a user and login.
  | | |
 #### <a id='rename'></a> rename ####
 
-Rename an application.  If you do not provide the required input on the command line, cf will prompt for it.
+Rename an application. If you do not provide the required input on the command line, cf will prompt for it.
 
 Note that after you change an application's name, cf will not recognize the application's previous name if you use it in commands that act upon an application.
 
@@ -780,7 +774,7 @@ Set the number of instances for a application and the amount of memory assigned 
 | :-------- | :------- | :---------- |
 |--[no-]restart | |Use this option to indicate that you do (or do not) want to restart the application after updating it. |
 |--app APP | |Application to update. |
-|--disk DISK | |Amound of disk space to allocate to the application. |
+|--disk DISK | |Amount of disk space to allocate to the application. |
 |--instances INSTANCES | |Number of instances to run. |
 |--memory MEMORY | |Amount of memory to allocate to the application. |
 |--plan PLAN | |Application plan. |
@@ -891,7 +885,7 @@ Show space information.
 | Qualifier | Required | Description |
 | :-------- | :------- | :---------- |
 |--full | |Include information about applications in the space. |
-|--space SPACE | |The space for which you want to see information.  If not specified, information about the current <br>space is returned. |
+|--space SPACE | |The space for which you want to see information. If not specified, information about the current <br>space is returned. |
 |--org ORGANIZATION | |The organization for which to display data. If not specified, results for the current organization <br>are returned.  |
 
 The following data is returned:
@@ -899,7 +893,7 @@ The following data is returned:
 * organization -- Organization that contains the space.
 * apps -- Applications that have been deployed to the space.
 * services -- Services in the space.
-* domains -- çomains in the space.
+* domains -- domains in the space.
 * If the `full` option is used, the following information is returned for applications in the space:
      * status -- the current status of the application, for example "stopped", running", "flapping", and so on.
 
@@ -915,7 +909,7 @@ List spaces in an organization.
 | Qualifier | Required | Description |
 | :-------- | :------- | :---------- |
 |--full | |Include information about applications and services in each space. |
-|--name NAME | |Filter by name.  If not specified, information about all spaces in the current or selected organization is returned. |
+|--name NAME | |Filter by name. If not specified, information about all spaces in the current or selected organization is returned. |
 |--org ORGANIZATION | |The organization for which to list spaces. If not specified, spaces in the current organization are returned.  |
 #### <a id='start'></a> start ####
 
@@ -969,7 +963,7 @@ Switch to a different space.
 </div>
 #### <a id='tail'></a> tail ####
 
-Watch the file for the specified application and the specified path, and display changes as they occur. (Similar to the \*nix  'tail' command.)
+Watch the file for the specified application and the specified path, and display changes as they occur. (Similar to the \*nix 'tail' command.)
 
 <div class="command-doc">
   <pre class="terminal">$ cf tail [application name] [path]</pre>
@@ -983,7 +977,7 @@ Watch the file for the specified application and the specified path, and display
 
 #### <a id='target'></a> target ####
 
-Set or display the target cloud, organization, and space. When you run a cf command that reads or writes information about applications or service instances, by default the command will  access objects in the currently selected target cloud, organization, and space.
+Set or display the target cloud, organization, and space. When you run a cf command that reads or writes information about applications or service instances, by default the command will access objects in the currently selected target cloud, organization, and space.
 
 <div class="command-doc">
   <pre class="terminal">$ cf target [URL]</pre>
@@ -1039,7 +1033,7 @@ Unmap a domain from the current space, and optionally delete it.
 |--delete | | | Use this qualifier to delete as well as unmap the domain.
 |--domain DOMAIN | |Domain to unmap |
 | --space SPACE| | Space from which to unmap the domain. |
-| --org ORGANIZATION| |Oranization from which to unmap the domain. |
+| --org ORGANIZATION| |Organization from which to unmap the domain. |
 
 #### <a id='unmap'></a> unmap ####
 
@@ -1087,8 +1081,3 @@ List all users.
 <div class="command-doc">
   <pre class="terminal">$ cf users</pre>
 </div>
-
-
-
-
-

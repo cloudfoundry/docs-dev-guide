@@ -52,12 +52,12 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to Eclipse
 
 1. The **Confirm Selected Features** window lists the plugin --- "Cloud Foundry Integration for Eclipse" --- and the optional "SpringSource UAA Integration" component, which reports tool usage data, anonymously. If you do not want your plugin usage statistics to be reported, de-select the UAA component before clicking **Confirm**.
 
-    <%= image_tag("sts/confirm-selected-features.png") %>
+  <%= image_tag("sts/confirm-selected-features.png") %>
 
-1. The **Review Licenses** window appears. Click “I accept the terms of the license agreement” and click **Finish**.
+1. The **Review Licenses** window appears. Click "I accept the terms of the license agreement" and click **Finish**.
 1. The **Software Updates** window appears. Click **Yes** to restart Eclipse.
 
-     <%= image_tag("sts/software-updates.png") %>
+  <%= image_tag("sts/software-updates.png") %>
 
 ### <a id='install-to-sts'></a>Install to STS from Extensions Tab ###
 
@@ -70,7 +70,7 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to STS fro
 
   <%= image_tag("sts/extensions.png") %>
 
-1. The **Install** window lists the plugin --- "Cloud Foundry Integration for Eclipse" --- and the optional "Spring UAA Integration" component, which reports tool usage data, anonymously. If you prefer that your plugin usage statistics not be reported, de-select the UAA component beform clicking  **Next**.
+1. The **Install** window lists the plugin --- "Cloud Foundry Integration for Eclipse" --- and the optional "Spring UAA Integration" component, which reports tool usage data, anonymously. If you prefer that your plugin usage statistics not be reported, de-select the UAA component beform clicking **Next**.
 
   <%= image_tag("sts/install.png") %>
 
@@ -78,11 +78,11 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to STS fro
 
   <%= image_tag("sts/install-details.png") %>
 
-1. The **Review Licenses** window appears. Click “I accept the terms of the license agreement” and click **Finish** to perform the installation.
+1. The **Review Licenses** window appears. Click "I accept the terms of the license agreement" and click **Finish** to perform the installation.
 
 1. The **Software Updates** window appears. Click **Yes** to restart STS.
 
-     <%= image_tag("sts/restart-sts.png") %>
+  <%= image_tag("sts/restart-sts.png") %>
 
 1. After STS restarts, you can see new panes in the Editor portion of the screen. See [About the Plugin User Interface](#plugin-ui) below for a description of the plugin tabs and the information in each.
 1. Proceed to [Create a Cloud Foundry Server](#cloud-foundry-server).
@@ -91,7 +91,7 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to STS fro
 
 If you need to install the Cloud Foundry Eclipse Plugin locally, rather than via the Internet, you can download the source and create a repository that you can copy to the target machine and then install from it.
 
-*Step 1:  Obtain the plugin source from GitHub.*
+*Step 1: Obtain the plugin source from GitHub.*
 
 * You can download archived source code for released versions of the plugin from https://github.com/SpringSource/eclipse-integration-cloudfoundry/releases.
 * If you want the very latest source code for the plugin, clone the project repository:
@@ -99,7 +99,6 @@ If you need to install the Cloud Foundry Eclipse Plugin locally, rather than via
     ```
     git clone https://github.com/SpringSource/eclipse-integration-cloudfoundry
     ```
-<br>
 
 *Step 2: Build repository.*
 
@@ -115,11 +114,11 @@ On the machine running Eclipse or Spring Tools Suite:
 
 1. In Eclipse (or STS), select **Install New Software** from the **Help** menu.
 1. On the **Available Software** window, click **Add** to the right of the **Work with** field.
-1. On the **Add Repository** window, enter a name for the repository, for example “Cloud Foundry Integration”, and click **Local**.
+1. On the **Add Repository** window, enter a name for the repository, for example "Cloud Foundry Integration", and click **Local**.
 1. On the **Open** window, browse to `org.cloudfoundry.ide.eclipse.server.site/target/site` and click **Open**.
 1. On the **Add Repository** window, click **OK**.
-1. On the **Available Software** window, checkmark: “Core/Cloud Foundry Integration” and “Resources/Cloud Foundry Integration” and click **Next**.
-1. On the **Review Licenses** window, click “I accept the terms of the license agreement” and click **Finish**.
+1. On the **Available Software** window, checkmark: "Core/Cloud Foundry Integration" and "Resources/Cloud Foundry Integration" and click **Next**.
+1. On the **Review Licenses** window, click "I accept the terms of the license agreement" and click **Finish**.
 
 
 
@@ -186,8 +185,8 @@ The follow panes and views are present when the **Overview** tab is selected:
 The follow panes are present when the **Applications and Services** tab is selected:
 
 * H --- The **Applications** pane lists the applications deployed to the target space.
-* I ---  The **Services** pane lists the services provisioned in the targeted space.
-* J ---  The **General** pane displays the following information for the application currently selected in the **Applications** pane:
+* I --- The **Services** pane lists the services provisioned in the targeted space.
+* J --- The **General** pane displays the following information for the application currently selected in the **Applications** pane:
       * **Name**
       * **Mapped URLs** -- Lists URLs mapped to the application. You can click a URL to open a browser to the application within Eclipse (or STS); and click the pencil icon to add or remove mapped URLs. See [Manage Application URLs](#manage-urls).
       * **Memory Limit** -- The amount of memory allocated to the application. You can use the pull-down to change the memory limit.
@@ -274,7 +273,7 @@ You can view the contents of a file in a deployed application by selecting it th
 
 ## <a id='undeploy'></a>Undeploy an Application ##
 
-To undeploy an application, right click the appliation in either the **Servers** or the **Applications** pane and clicke **Remove**.
+To undeploy an application, right click the appliation in either the **Servers** or the **Applications** pane and click **Remove**.
 
 ## <a id='scale-application'></a>Scale an Application ##
 
@@ -316,7 +315,7 @@ If multiple instances of the application are running, only the output of the fir
 
 ## <a id='clone'></a>Clone a Cloud Foundry Server Instance ##
 
-Each space in Cloud Foundry to which you want to deploy applications must be represented by a Cloud Foundry server instance in the **Servers** view. After you have created a Cloud Foundry server instance, as decribed in [Create a Cloud Foundry Server](#cloud-foundry-instance), you can clone it to create another.
+Each space in Cloud Foundry to which you want to deploy applications must be represented by a Cloud Foundry server instance in the **Servers** view. After you have created a Cloud Foundry server instance, as described in [Create a Cloud Foundry Server](#cloud-foundry-instance), you can clone it to create another.
 
 To clone a server:
 
@@ -347,8 +346,3 @@ To clone a server:
 1. The new cloud instance should appear in the list on the **Manage Cloud URLs** window. Click **OK** to proceed.
 1. On the **Cloud Foundry Account** window, click **Validate Account**.
 1. Complete steps 4 through 6 of [Create a Cloud Foundry Server](#cloud-foundry-server).
-
-
-
-
-

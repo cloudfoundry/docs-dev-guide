@@ -18,7 +18,7 @@ Applications running on Cloud Foundry should not write files to the local file s
 
 For example, rather than using the local file system, you can use a Cloud Foundry service such as the MongoDB document database or a relational database (MySQL or Postgres). Another option is to use cloud storage providers such as [Amazon S3](http://aws.amazon.com/s3/), [Google Cloud Storage](https://cloud.google.com/products/cloud-storage), [Dropbox](https://www.dropbox.com/developers), or [Box](http://developers.box.com/). If your application needs to communicate across different instances of itself (for example to share state), consider a cache like Redis or a messaging-based architecture with RabbitMQ.
 
-### <a id="sessions"></a>HTTP Sessions Not Persisted or Replicated  ###
+### <a id="sessions"></a>HTTP Sessions Not Persisted or Replicated ###
 
 Cloud Foundry supports session affinity or sticky sessions for incoming HTTP requests to applications if a jsessionid cookie is used. If multiple instances of an application are running on Cloud Foundry, all requests from a given client will be routed to the same application instance. This allows application containers and frameworks to store session data specific to each user session.
 

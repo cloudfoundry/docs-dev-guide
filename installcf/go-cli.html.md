@@ -16,7 +16,7 @@ During the beta period, the executable will be named gcf instead of cf. cf v6 co
 
 cf v6 is intended to replace cf v5. During the v6 beta period, cf v5 and v6 can co-exist on the same machine; you invoke v6 commands with the `gcf` command prefix. Upon general availability of cf v6, cf v5 will be deprecated, and the gcf executable will be renamed cf. At that point, cf v6 commands will be updated to replace the use of the `gcf` command prefix with `cf`.
 
-cf v6 is available for download at https://github.com/cloudfoundry/cli/releases/tag/v6.0.0-beta. See https://github.com/cloudfoundry/cli/blob/master/INSTALL.md for installation instructions.
+cf v6 is available for download at https://github.com/cloudfoundry/cli/releases/tag/v6.0.0-beta2. See https://github.com/cloudfoundry/cli/blob/master/INSTALL.md for installation instructions.
 
 
 

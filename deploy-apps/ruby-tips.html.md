@@ -3,11 +3,14 @@ title: Tips for Ruby Developers
 ---
 _This page assumes that you are using cf v5._
 
-This page has information specific to deploying Rack, Rails, or Sinatra applications.
+This page has information specific to deploying Rack, Rails, or Sinatra
+applications.
 
 ## <a id='bundler'></a> Application Bundling ##
 
-You need to run <a href="http://gembundler.com/">Bundler</a> to create a `Gemfile` and a `Gemfile.lock`. These files must be in your application before you push to Cloud Foundry.
+You need to run <a href="http://gembundler.com/">Bundler</a> to create a
+`Gemfile` and a `Gemfile.lock`.
+These files must be in your application before you push to Cloud Foundry.
 
 ## <a id='config'></a> Rack Config File ##
 
@@ -20,7 +23,11 @@ run HelloWorld.new
 
 ## <a id='precompile'></a> Asset Precompilation ##
 
-Cloud Foundry supports the Rails asset pipeline. If you do not precompile assets before deploying your application, Cloud Foundry will precompile them when staging the application. Precompiling before deploying reduces the time it takes to stage an application.
+Cloud Foundry supports the Rails asset pipeline.
+If you do not precompile assets before deploying your application, Cloud
+Foundry will precompile them when staging the application.
+Precompiling before deploying reduces the time it takes to stage an
+application.
 
 Use this command to precompile assets before deployment:
 
@@ -28,48 +35,85 @@ Use this command to precompile assets before deployment:
 rake assets:precompile
 </pre>
 
-
-Note that the Rake precompile task reinitializes the Rails application. This could pose a problem if initialization requires service connections or environment checks that are unavailable during staging. To prevent reinitialization during precompilation, add this line to `application.rb`:
+Note that the Rake precompile task reinitializes the Rails application.
+This could pose a problem if initialization requires service connections or
+environment checks that are unavailable during staging.
+To prevent reinitialization during precompilation, add this line to
+`application.rb`:
 
 ~~~ruby
 config.assets.initialize_on_precompile = false
 ~~~
 
-If the `assets:precompile` task fails, Cloud Foundry uses live compilation mode, the alternative to asset precompilation. In this mode, assets are compiled when they are loaded for the first time. You can force live compilation by adding this line to `application.rb`.
+If the `assets:precompile` task fails, Cloud Foundry uses live compilation
+mode, the alternative to asset precompilation.
+In this mode, assets are compiled when they are loaded for the first time.
+You can force live compilation by adding this line to `application.rb`.
 
 ~~~ruby
 Rails.application.config.assets.compile = true
 ~~~
 
-
 ## <a id='rake'></a> Running Rake Tasks ##
 
-Cloud Foundry does not provide a mechanism for running a Rake task on a deployed application.
-If you need to run a Rake task that must be performed in the Cloud Foundry environment (rather than locally before deploying or redeploying), you can configure the command that Cloud Foundry uses to start the application to invoke the Rake task.
+Cloud Foundry does not provide a mechanism for running a Rake task on a
+deployed application.
+If you need to run a Rake task that must be performed in the Cloud Foundry
+environment (rather than locally before deploying or redeploying), you can
+configure the command that Cloud Foundry uses to start the application to
+invoke the Rake task.
 
-An application's start command is configured in the application's manifest file, `manifest.yml`, with the `command` attribute.
+An application's start command is configured in the application's manifest
+file, `manifest.yml`, with the `command` attribute.
 
-If you have previously deployed the application, the application manifest should already exist. There are two ways to create a manifest. You can manually create the file and save it in the application's root directory before you deploy the application for the first time. If you do not manually create the manifest file, cf will prompt you to supply deployment settings when you first push the application, and will create and save the manifest file for you, with the settings you specified interactively. For more information about application manifests, and supported attributes, see [Application Manifests](manifest.html).
+If you have previously deployed the application, the application manifest
+should already exist.
+There are two ways to create a manifest.
+You can manually create the file and save it in the application's root
+directory before you deploy the application for the first time.
+If you do not manually create the manifest file, cf will prompt you to supply
+deployment settings when you first push the application, and will create and
+save the manifest file for you, with the settings you specified interactively.
+For more information about application manifests, and supported attributes, see
+[Application Manifests](manifest.html).
 
-For an example of invoking a Rake database migration task at application startup, see [Migrate a Database for a Rails App](../services/migrate-db.html#migrate-ruby-db).
-
+For an example of invoking a Rake database migration task at application
+startup, see [Migrate a Database for a Rails
+App](../services/migrate-db.html#migrate-ruby-db).
 
 ## <a id='workers'></a> Running Rails 3 Worker Tasks ##
 
-Often when developing a Rails 3 application, you may want delay certain tasks so as not to consume resource that could be used for servicing requests from your user. This section shows you how to create and deploy an example Rails application that will make use of a worker library to defer a task, this task will then be executed by a separate application. The guide also shows how you can scale the resource available to the worker application.
+Often when developing a Rails 3 application, you may want delay certain tasks
+so as not to consume resource that could be used for servicing requests from
+your user.
+This section shows you how to create and deploy an example Rails application
+that will make use of a worker library to defer a task, this task will then be
+executed by a separate application.
+The guide also shows how you can scale the resource available to the worker
+application.
 
 ### <a id='worker-libs'></a> Choosing a Worker Task Library ###
 
-The first task is to decide which worker task library to use. Here is a summary of the three main libraries available for Ruby / Rails:
-
+The first task is to decide which worker task library to use.
+Here is a summary of the three main libraries available for Ruby / Rails:
 
 | Library          | Description |
 | :------------------ | :------- |
-|[Delayed::Job](https://github.com/collectiveidea/delayed_job) |A direct extraction from [Shopify](http://www.shopify.com/) where the job table is responsible for a multitude of core tasks. |
-|[Resque](https://github.com/defunkt/resque) |A Redis-backed library for creating background jobs, placing those jobs on multiple queues, and processing them later. |
-|[Sidekiq](https://github.com/mperham/sidekiq)|Uses threads to handle many messages at the same time in the same process. It does not require Rails but will integrate tightly with Rails 3 to make background message processing dead simple." This library is also Redis-backed and is actually somewhat compatible with Resque messaging. |
+|[Delayed::Job](https://github.com/collectiveidea/delayed_job) |A direct
+extraction from [Shopify](http://www.shopify.com/) where the job table is
+responsible for a multitude of core tasks. |
+|[Resque](https://github.com/defunkt/resque) |A Redis-backed library for
+creating background jobs, placing those jobs on multiple queues, and processing
+them later. |
+|[Sidekiq](https://github.com/mperham/sidekiq)|Uses threads to handle many
+messages at the same time in the same process. It does not require Rails but
+will integrate tightly with Rails 3 to make background message processing dead
+simple." This library is also Redis-backed and is actually somewhat compatible
+with Resque messaging. |
 
-For other alternatives, see [https://www.ruby-toolbox.com/categories/Background_Jobs](https://www.ruby-toolbox.com/categories/Background_Jobs)
+For other alternatives, see
+[https://www.ruby-toolbox.com/categories/Background_Jobs](https://www.ruby-tool
+box.com/categories/Background_Jobs)
 
 ### <a id='example-app'></a> Creating an Example Application ###
 
@@ -124,7 +168,8 @@ class ThingWorker
     count.times do
 
       thing_uuid = UUIDTools::UUID.random_create.to_s
-      Thing.create :title => "New Thing (#{thing_uuid})", :description => "Description for thing #{thing_uuid}"
+      Thing.create :title => "New Thing (#{thing_uuid})", :description =>
+"Description for thing #{thing_uuid}"
     end
 
   end
@@ -132,7 +177,8 @@ class ThingWorker
 end
 ~~~
 
-This worker will create n number of things, where n is the value passed to the worker.
+This worker will create n number of things, where n is the value passed to the
+worker.
 
 Create a controller for "Things":
 
@@ -168,7 +214,10 @@ $ touch app/views/things/index.html.erb
 
 #### <a id='deploy'></a>Deploying Once, Deploying Twice ####
 
-This application needs to be deployed twice for it to work, once as a Rails web application and once as a standalone Ruby application. The easiest way to do this is to keep separate CF manifests for each application type:
+This application needs to be deployed twice for it to work, once as a Rails web
+application and once as a standalone Ruby application.
+The easiest way to do this is to keep separate CF manifests for each
+application type:
 
 Web Manifest: Save this as `web-manifest.yml`:
 
@@ -213,7 +262,9 @@ applications:
       tier: free
 ~~~
 
-Since the url "sidekiq.cloudfoundry.com" is probably already taken, change it in `web-manifest.yml` first, then push the application with both manifest files:
+Since the url "sidekiq.cloudfoundry.com" is probably already taken, change it
+in `web-manifest.yml` first, then push the application with both manifest
+files:
 
 <pre class="terminal">
 $ cf push -m web-manifest.yml
@@ -224,13 +275,18 @@ If `CF` asks for a URL for the worker application, select "none".
 
 ### <a id='test'></a>Test the Application ###
 
-Test the application by visiting the new action on the "Thing" controller at the assigned url. In this example, the URL would be `http://sidekiq.cloudfoundry.com/thing/new`.
+Test the application by visiting the new action on the "Thing" controller at
+the assigned url.
+In this example, the URL would be `http://sidekiq.cloudfoundry.com/thing/new`.
 
-This will create a new Sidekiq job which will be queued in Redis, then picked up by the worker application. The browser is then redirected to `/thing` which will show the collection of "Things".
+This will create a new Sidekiq job which will be queued in Redis, then picked
+up by the worker application.
+The browser is then redirected to `/thing` which will show the collection of
+"Things".
 
 ### <a id='test'></a>Scale Workers ###
 
-Use the `cf scale` command to change the number of Sidekiq workers. 
+Use the `cf scale` command to change the number of Sidekiq workers.
 
 Example:
 
@@ -240,22 +296,27 @@ $ cf scale sidekiq-worker --instances 2
 
 ## <a id='buildpack'></a>About the Ruby Buildpack ##
 
-For information about using and extending the Ruby buildpack in Cloud Foundry, see https://github.com/cloudfoundry/heroku-buildpack-ruby.
+For information about using and extending the Ruby buildpack in Cloud Foundry,
+see https://github.com/cloudfoundry/heroku-buildpack-ruby.
 
 The table below below lists:
 
-* **Resource** --- The software installed by the Cloud Foundry Ruby buildpack, when appropriate.
-* **Available Versions** --- The versions of each software resource that are available from the buildpack.
-* **Installed by Default** --- The version of each software resource that is installed by default.
-* **To Install a Different Version** --- How to change the buildpack to install a different version of a software resource.
+* **Resource** --- The software installed by the Cloud Foundry Ruby buildpack,
+when appropriate.
+* **Available Versions** --- The versions of each software resource that are
+available from the buildpack.
+* **Installed by Default** --- The version of each software resource that is
+installed by default.
+* **To Install a Different Version** --- How to change the buildpack to install
+a different version of a software resource.
 
-|Resource |Available Versions |Installed by Default| To Install a Different Version |
+|Resource |Available Versions |Installed by Default| To Install a Different
+Version |
 | --------- | --------- | --------- |--------- |
-|Ruby |1.8.7  patchlevel 374, Rubygems 1.8.24 <br><br>1.9.2  patchlevel 320, Rubygems 1.3.7.1 <br><br>1.9.3  patchlevel 448, Rubygems 1.8.24 <br><br>2.0.0  patchlevel 247, Rubygems 2.0.3   | The latest security patch release of 1.9.3|Specify desired version in application gem file. |
+|Ruby |1.8.7  patchlevel 374, Rubygems 1.8.24 <br><br>1.9.2  patchlevel 320,
+Rubygems 1.3.7.1 <br><br>1.9.3  patchlevel 448, Rubygems 1.8.24 <br><br>2.0.0
+patchlevel 247, Rubygems 2.0.3   | The latest security patch release of
+1.9.3|Specify desired version in application gem file. |
 |Bundler |1.2.1 <br><br>1.3.0.pre.5<br><br>1.3.2 |1.3.2 |Not supported. |
 
 **This table was last updated on August 14, 2013.**
-
-
-
-

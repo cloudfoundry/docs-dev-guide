@@ -16,8 +16,8 @@ As of July, 2013, Cloud Foundry uses 0.10.x as the default.
 
 ## <a id='port'></a> Application Port ##
 
-You need to use the VCAP\_APP\_PORT environment variable to determine which port
-your application should listen on.
+You need to use the VCAP\_APP\_PORT environment variable to determine which
+port your application should listen on.
 In order to also run your application locally, you may want to make port 3000
 the default:
 
@@ -65,7 +65,8 @@ If Cloud Foundry does not automatically detect that your application is a
 Node.js application, you can override the auto-detection by specifying the
 Node.js buildpack.
 
-Either, add the buildpack into your `manifest.yml` and re-run `cf push --reset`:
+Either, add the buildpack into your `manifest.yml` and re-run `cf push
+--reset`:
 
 ~~~yaml
 ---

@@ -8,7 +8,7 @@ This guide is for developers who wish to bind a service to a Grails application 
 
 Cloud Foundry provides extensive support for connecting a Grails application to services such as MySQL, Postgres, MongoDB, Redis, and RabbitMQ. You can configure these connections manually, but in many cases the Cloud Foundry Grails plugin can detect and configure connections to services automatically.
 
-## <a id="cf-library"y></a>The cloudfoundry-runtime Library ##
+## <a id="cf-library"></a>The cloudfoundry-runtime Library ##
 
 The `cloudfoundry-runtime` Java library provides methods for obtaining pre-configured clients and connection properties from Cloud Foundry services. To use `cloudfoundry-runtime`, add it to the `dependencies` section in your `BuildConfig.groovy` file. Note: The version of this library must be at least `0.8.4` for Cloud Foundry v2 support.
 

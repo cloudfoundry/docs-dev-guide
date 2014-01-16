@@ -2,11 +2,18 @@
 title: cf Command Line Interface
 ---
 
-cf is Cloud Foundry's command line interface. You can use cf to deploy and manage applications running on most Cloud Foundry based environments. This page documents cf v5. For information about cf v6, see [Getting Started with cf v6](go-cli.html).
+cf is Cloud Foundry's command line interface.
+You can use cf to deploy and manage applications running on most Cloud Foundry
+based environments.
+This page documents cf v5.
+For information about cf v6, see [Getting Started with cf v6](go-cli.html).
 
 ## <a id='commands'></a>Commands by Functional Category ##
 
-This table below lists all cf commands. Click a command in the table below information about command options and functionality. For options that apply to all cf commands, see [Command Usage and Qualifiers](#usage).
+This table below lists all cf commands.
+Click a command in the table below for information about the command options
+and functionality.
+For options that apply to all cf commands, see [Command Usage and Qualifiers](#usage).
 
 |   |  | |
 | :-------- | :---------- |:---------- |
@@ -15,16 +22,26 @@ This table below lists all cf commands. Click a command in the table below infor
 
 ## <a id='usage'></a>Command Usage and Qualifiers ##
 
-cf commands allow you to view, and in some cases create and modify, information related to Cloud Foundry applications, services, organisations, spaces, domains, and so on. Preface each command with `cf`, for example:
+cf commands allow you to view, and in some cases create and modify, information
+related to Cloud Foundry applications, services, organizations, spaces,
+domains, etc.
+Preface each command with `cf`. For example, for the `push` command, use:
 
 <pre class="terminal">
 $ cf push my-new-app
 </pre>
 
+Most commands have qualifiers you can use to tailor command behavior or supply
+required argument values.
+If you do not supply a required argument value at the command line, cf presents
+a dialog that prompts for the required data.
+If you use cf commands in a non-interactive script, you must specify required
+arguments as part of the command.
+Command qualifiers can be specified in any order.
 
-Most commands have qualifiers that you can use to tailor command behavior or supply required argument values. If you do not supply a required argument value at the command line, cf presents a dialog that prompts for required data. If you use cf commands in a non-interactive script, you must specify required arguments as part of the command. Command qualifiers can be specified in any order.
-
-This page documents the optional and required qualifiers for each cf command. You can display similar information in the console by entering `cf help [command]`, or by appending `-h` or `--help` to the end of a command.
+This page documents the optional and required qualifiers for each cf command.
+You can display similar information in the console by entering `cf help
+[command]`, or by appending `-h` or `--help` to the end of a command.
 
 **Global Command Qualifiers**
 
@@ -50,23 +67,34 @@ The following qualifiers apply to all cf commands:
 
 This functionality requires cf v5.2 or later.
 
-If you run cf behind a proxy server, you must specify the proxy server address when you run a cf command. Use the `--http-proxy` and `--https-proxy` global command qualifiers, described above in [Command Usage and Qualifiers](#usage). (You can specify the proxy settings to be used when you push an application as environment variables in the application manifest; note however that proxy settings defined in an application manifest will only be used when you push that application using that manifest.)
+If you run cf behind a proxy server, you must specify the proxy server address
+when you run a cf command.
+Use the `--http-proxy` and `--https-proxy` global command qualifiers, described
+above in [Command Usage and Qualifiers](#usage).
+You can specify the proxy settings to be used when you push an application as
+environment variables in the application manifest; note, however, that proxy
+settings defined in an application manifest will only be used when you push
+that application using that manifest.
 
-Specify both `--http-proxy` and `--https-proxy` to ensure that all communication associated with a cf command can be completed via the proxy server. For example, to run the `cf apps` command behind a proxy server, enter this command, substituting the appropriate URLs:
+Specify both `--http-proxy` and `--https-proxy` to ensure that all
+communication associated with a cf command can be completed via the proxy
+server.
+For example, to run the `cf apps` command behind a proxy server, enter this
+command, substituting the appropriate URLs:
 
 <div class="command-doc">
  <pre class="terminal">
 cf apps --http-proxy myproxy.myproxydomain:8080 --https-proxy myproxy.myproxydomain:443
 </div>
 
-If your proxy server requires a username and password, to run the `cf apps` command behind a proxy server, enter this command, substituting the appropriate URLs, your username, and your password:
+If your proxy server requires a username and password to run the `cf apps`
+command behind a proxy server, enter this command, substituting the appropriate
+URLs, your username, and your password:
 
 <div class="command-doc">
  <pre class="terminal">
 cf apps --http-proxy myusername:mypassword@myproxy.myproxydomain:8080 --https-proxy myusername:mypassword@myproxy.myproxydomain:443
 </div>
-
-
 
 ## <a id='details'></a>Detailed Command Documentation ##
 
@@ -109,9 +137,15 @@ The table below lists supported command qualifiers.
 
 #### <a id='bind-service'></a> bind-service ####
 
-Bind a service to an application. Some service types are bindable, some are not. If a service supports binding, binding it to an application adds credentials for the service instance to the `VCAP_SERVICES` environment variable. You may need to restart the application for the binding to take effect.
+Bind a service to an application.
+Some service types are bindable, while others are not.
+If a service supports binding, binding it to an application adds credentials
+for the service instance to the `VCAP_SERVICES` environment variable.
+You may need to restart the application for the binding to take effect.
 
-Note that you can bind a service to an application at the time you create the service, as described in [create-service](#create-service). For more information about creating and binding service instances, see [Getting Started - Adding a Service](../services/adding-a-service.html).
+Note that you can bind a service to an application at the time you create the
+service, as described in [create-service](#create-service).
+For more information about creating and binding service instances, see [Getting Started - Adding a Service](../services/adding-a-service.html).
 
 <div class="command-doc">
   <pre class="terminal">$ cf bind-service [instance name] [application name]</pre>
@@ -125,7 +159,8 @@ Note that you can bind a service to an application at the time you create the se
 
 #### <a id='crashlogs'></a> crashlogs ####
 
-Display the staging, stdout and stderr logs for an application's unresponsive instances.
+Display the staging, stdout and stderr logs for an application's unresponsive
+instances.
 
 <div class="command-doc">
   <pre class="terminal">$ cf crashlogs [application name]</pre>
@@ -149,24 +184,26 @@ Create an organization.
 
 #### <a id='create-service'></a> create-service ####
 
-Create a new service instance, and optionally, bind it to an application. If you do not bind a service to an application when you create, you can do it later with the [bind-service](#bind-service) command. For more information about creating and binding service instances, see [Getting Started - Adding a Service](../services/adding-a-service.html).
+Create a new service instance, and optionally, bind it to an application.
+If you do not bind a service to an application when you create, you can do it
+later with the [bind-service](#bind-service) command.
+For more information about creating and binding service instances, see [Getting Started - Adding a Service](../services/adding-a-service.html).
 
 To list service instances that already exist, use the [services](#services) command.
-
 
 <div class="command-doc">
   <pre class="terminal">$ cf create-service [service type] [instance name]</pre>
   <div class="break"></div>
 </div>
 
-
-The table below lists supported command qualifiers. cf prompts for required qualifiers not provided on the command line.
+The table below lists supported command qualifiers. cf prompts for required
+qualifiers not provided on the command line.
 
 | Qualifier | Required | Description |
 | :-------- | :------- | :---------- |
 | --app, --bind APP   |  n       | Use this option to specify an application to which to bind the service.         |
 | --name     |   y       | The name you assign to the service. When you run `create-service` interactively, cf will supply a default instance name at the prompt, which you can override with another value. The name can can contain alpha-numeric characters ([a-z], [A-Z], [0-9]), hyphens (-), and underscores (_).            |
-|--offering | y| The type of the service to create, for example, "rediscloud", "mongolab", and so on. If you run `create-service` interactively, cf will present a list of available service types, along with the service version and provider. |
+|--offering | y| The type of the service to create, for example, "rediscloud", "mongolab", etc. If you run `create-service` interactively, cf will present a list of available service types, along with the service version and provider. |
 |--plan | y |The service plan. A service plan defines a set of service features and resource levels. If you run `create-service` interactively, cf will present a list of the plans that the service provider offers. |
 |--provider | n|The service provider. |
 |--version |n |The service version. |
@@ -208,8 +245,9 @@ Create a space in an organization.
 
 #### <a id='create-user'></a> create-user ####
 
-Create a user account. If you do not supply required options on the command line, cf will prompt for them.
-
+Create a user account.
+If you do not supply required options on the command line, cf will prompt for
+them.
 
 <div class="command-doc">
   <pre class="terminal">$ cf create-user [email]</pre>
@@ -227,7 +265,9 @@ Create a user account. If you do not supply required options on the command line
 
 #### <a id='delete'></a> delete ####
 
-Delete an application. cf will ask you to confirm that you wish to delete the application and whether you want to also delete the services bound to the application.
+Delete an application.
+cf will ask you to confirm that you wish to delete the application and whether
+you want to also delete the services bound to the application.
 
 <div class="command-doc">
   <pre class="terminal">$ cf delete [list of application names]</pre>
@@ -319,8 +359,6 @@ Delete a user account.
   <div class="break"></div>
 </div>
 
-
-
 #### <a id='domain'></a> domains ####
 
 List domains.
@@ -332,12 +370,14 @@ List domains.
 
 The following data is returned for each domain:
 
-* name -- The name of the domain.
-* owner -- The owner of the domain.
+* name -- The name of the domain
+* owner -- The owner of the domain
 
 #### <a id='env'></a> env ####
 
-Show all environment variables set for an application. Environment variables are a good way to store sensitive data, such as API keys for Amazon S3, outside of an application's source code.
+Show all environment variables set for an application.
+Environment variables are a good way to store sensitive data, such as API keys
+for Amazon S3, outside of an application's source code.
 
 You can set environment variables for an application:
 
@@ -369,7 +409,8 @@ time                        instance index   description                 exit st
 
 #### <a id='file'></a> file ####
 
-Display the contents for a file at a given path, belonging to the specified application.
+Display the contents for a file at a given path, belonging to the specified
+application.
 
 <div class="command-doc">
   <pre class="terminal">$ cf file [application name] [path]</pre>
@@ -417,7 +458,8 @@ tmp/                                         -
 
 #### <a id='guid'></a> guid ####
 
-Get the GUID for the object with the type (app, organization, space, domain, etc.) and name specified.
+Get the GUID for the object with the type (app, organization, space, domain,
+etc.) and name specified.
 
 <div class="command-doc">
   <pre class="terminal">$ cf guid type [name]</pre>
@@ -440,9 +482,13 @@ Display the health of the specified applications.
   <div class="break"></div>
 </div>
 
-The current status of the application, for example "running", "flapping", "stopped", is returned. If only a subset of application instances are running, the percentage of instances that are running is shown.
+The current status of the application is returned. Examples: "running",
+"flapping", or "stopped".
+If only a subset of application instances are running, the percentage of
+instances that are running is shown.
 
 #### <a id='instances'></a> instances ####
+
 List the instances of the specified application.
 
 <div class="command-doc">
@@ -452,12 +498,14 @@ List the instances of the specified application.
 
 For an instance that is running, the following data is returned:
 
-* started -- The time that the instance was started.
-* console -- The port and IP address where the instance is running.
+* started -- The time that the instance was started
+* console -- The port and IP address where the instance is running
 
 #### <a id='login'></a> login ####
 
-Authenticate with the target. If you do not supply required options on the command line, cf will prompt for them.
+Authenticate with the target.
+If you do not supply required options on the command line, cf will prompt for
+them.
 
 <div class="command-doc">
   <pre class="terminal">$ cf login [email]</pre>
@@ -482,9 +530,11 @@ Log out from the target.
 
 #### <a id='logs'></a> logs ####
 
-Display log files, such as staging, stdout, and stderr, for an application. The log files available for an application vary by type.
+Display log files, such as staging, stdout, and stderr, for an application.
+The log files available for an application vary by type.
 
-To view the contents of a specific file in the application directory structure, use 'cf file'.
+To view the contents of a specific file in the application directory structure,
+use 'cf file'.
 
 <div class="command-doc">
   <pre class="terminal">$ cf logs [application name]</pre>
@@ -556,7 +606,6 @@ Reading logs/staging_task.log... OK
 -----> Building runtime environment
 
 
-
 Reading logs/stderr.log... OK
 
 
@@ -585,6 +634,7 @@ Associate a URL, external or otherwise, to an application.
 #### <a id='map-domain'></a> map-domain ####
 
 Add a domain and assign it to a space.
+
 <div class="command-doc">
   <pre class="terminal">$ cf map-domain [domain]</pre>
   <div class="break"></div>
@@ -615,11 +665,11 @@ Show organization information.
 
 The following data is returned:
 
-* domains -- Domains mapped to the organization.
+* domains -- Domains mapped to the organization
 * spaces -- The spaces in the organization
 * If the `--full` option is used, the following data is returned for each space in the organization:
-     * apps -- Applications that have been deployed to the space.
-     * services -- Services in the space.
+     * apps -- Applications that have been deployed to the space
+     * services -- Services in the space
 
 #### <a id='orgs'></a> orgs ####
 
@@ -632,11 +682,11 @@ List available organizations.
 
 The following data is returned:
 
-* domains -- Domains mapped to the organization.
+* domains -- Domains mapped to the organization
 * spaces -- The spaces in the organization
 * If the `--full` option is used, the following data is returned for each space in the organization:
-     * apps -- Applications that have been deployed to the space.
-     * services -- Services in the space.
+     * apps -- Applications that have been deployed to the space
+     * services -- Services in the space
 
 
 | Qualifier | Required | Description |
@@ -652,15 +702,8 @@ Set a user's password.
 
 #### <a id='push'></a> push ####
 
-Deploy a new application, or, if the application already exists, upload any changes made since the last push.
-
-You can define deployment options on the command line, interactively, or in a manifest file. The first time you run `cf push` for an application, unless you provide deployment options on the command line, cf looks for `manifest.yml` in the current working directory. If the manifest file does not exist, cf prompts you to supply the deployment settings interactively. After you supply the qualifiers required to push an application, cf offers to save the configuration. If you accept, the settings you chose are saved in the current working directory in `manifest.yml`.
-
-When you redeploy an application, cf does _not_ refer to `manifest.yml` for deployment settings. Instead, cf deploys the application with the currently active deployment settings. If you want to apply the settings in the manifest on a subsequent push, use the `--reset` option. For more information, see [Application Manifests](../deploy-apps/manifest.html).
-
-When you deploy an application while it is running, cf stops all instances of that application and then deploys. Users who try to run the application get a "404 not found" message while cf push is running. Stopping all instances is necessary to prevent two versions of your code running at the same time. A worst-case example would be deploying an update that involved a database schema migration, because instances running the old code would not work and users could lose data.
-
-cf uploads all application files except version control files with file extensions `.svn`, `.git`, and `.darcs`. To exclude other files from upload, specify them in a `.cfignore` file in the directory where you run the push command. This technique is similar to using a `.gitignore` file. For more information, see [Prepare to Deploy an Application](../deploy-apps/prepare-to-deploy.html#exclude).
+Deploy a new application, or, if the application already exists, upload any
+changes made since the last push.
 
 <div class="command-doc">
   <pre class="terminal">$ cf push [APP]</pre>
@@ -702,9 +745,13 @@ Create a user and login.
  | | |
 #### <a id='rename'></a> rename ####
 
-Rename an application. If you do not provide the required input on the command line, cf will prompt for it.
+Rename an application.
+If you do not provide the required input on the command line, cf will prompt
+for it.
 
-Note that after you change an application's name, cf will not recognize the application's previous name if you use it in commands that act upon an application.
+Note that after you change an application's name, cf will not recognize the
+application's previous name if you use it in commands that act upon an
+application.
 
 <div class="command-doc">
   <pre class="terminal">$ cf rename [current application name] [new application name]</pre>
@@ -712,7 +759,8 @@ Note that after you change an application's name, cf will not recognize the appl
 
 #### <a id='rename-org'></a> rename-org ####
 
-Rename an organization
+Rename an organization.
+
 <div class="command-doc">
   <pre class="terminal">$ cf rename-org [organization name] [new organization name]</pre>
   <div class="break"></div>
@@ -721,6 +769,7 @@ Rename an organization
 #### <a id='rename-service'></a> rename-service ####
 
 Rename a service.
+
 <div class="command-doc">
   <pre class="terminal">$ cf rename-service [instance name] [new instance name]</pre>
   <div class="break"></div>
@@ -762,7 +811,8 @@ List routes in a space.
 
 #### <a id='scale'></a> scale ####
 
-Set the number of instances for a application and the amount of memory assigned to each instance.
+Set the number of instances for a application and the amount of memory assigned
+to each instance.
 
 <div class="command-doc">
   <pre class="terminal">$ cf scale [application name]</pre>
@@ -791,8 +841,8 @@ List service authorization tokens.
 
 The following data is returned for each token:
 
-* guid -- The GUID for the service type.
-* provider -- The vendor or supplier of the service.
+* guid -- The GUID for the service type
+* provider -- The vendor or supplier of the service
 
 #### <a id='service'></a> service ####
 
@@ -826,27 +876,31 @@ The table below defines command qualifiers.
 | --space SPACE |  |List only service instances in the specified space.  |
 | --version VERSION |  |List only services instances whose version matches the specified string.  |
 
-If the `--marketplace` qualifier is supplied, the following data is returned for each service available from the Services Marketplace:
+If the `--marketplace` qualifier is supplied, the following data is returned
+for each service available from the Services Marketplace:
 
-* service -- The type of service, for example, "cleardb" or "rediscloud".
-* version -- The version of the service.
-* provider -- The service vendor or supplier.
-* plan -- The provider plans under which the service is available.
-* description -- A description of the service.
+* service -- The type of service, for example, "cleardb" or "rediscloud"
+* version -- The version of the service
+* provider -- The service vendor or supplier
+* plan -- The provider plans under which the service is available
+* description -- A description of the service
 
-When qualifiers other than `--marketplace` are supplied, the following data is returned for each service instance:
+When qualifiers other than `--marketplace` are supplied, the following data is
+returned for each service instance:
 
-* name -- The name assigned to the service instance when it was created.
-* service -- The type of service, for example, "cleardb" or "rediscloud".
-* provider -- The service vendor or supplier.
-* version -- The version of the service.
-* plan -- The provider plan under which the service was obtained.
-* description -- This attribute, a description of the plan, is returned if you run the command with the `--full` option.
-* bound apps -- The applications to which the service is bound.
+* name -- The name assigned to the service instance when it was created
+* service -- The type of service, for example, "cleardb" or "rediscloud"
+* provider -- The service vendor or supplier
+* version -- The version of the service
+* plan -- The provider plan under which the service was obtained
+* description -- This attribute, a description of the plan, is returned if you run the command with the `--full` option
+* bound apps -- The applications to which the service is bound
 
 #### <a id='set-env'></a> set-env ####
 
-Set an environment variable. For information about removing an environment variable see [unset-env](#unset-env).
+Set an environment variable.
+For information about removing an environment variable see
+[unset-env](#unset-env).
 
 <div class="command-doc">
   <pre class="terminal">$ cf set-env [App] [Variable] [Value]</pre>
@@ -890,12 +944,13 @@ Show space information.
 
 The following data is returned:
 
-* organization -- Organization that contains the space.
-* apps -- Applications that have been deployed to the space.
-* services -- Services in the space.
-* domains -- domains in the space.
-* If the `full` option is used, the following information is returned for applications in the space:
-     * status -- the current status of the application, for example "stopped", running", "flapping", and so on.
+* organization -- Organization that contains the space
+* apps -- Applications that have been deployed to the space
+* services -- Services in the space
+* domains -- domains in the space
+* If the `full` option is used, the following information is returned for
+applications in the space:
+     * status -- the current status of the application, for example "stopped", running", "flapping", etc.
 
 #### <a id='spaces'></a> spaces ####
 
@@ -927,7 +982,8 @@ Start a stopped application.
 
 #### <a id='stats'></a> stats ####
 
-Display resource statistics for each instance of an application, including CPU, memory, and disk usage.
+Display resource statistics for each instance of an application, including CPU,
+memory, and disk usage.
 
 <div class="command-doc">
   <pre class="terminal">$ cf stats [application name]</pre>
@@ -963,7 +1019,8 @@ Switch to a different space.
 </div>
 #### <a id='tail'></a> tail ####
 
-Watch the file for the specified application and the specified path, and display changes as they occur. (Similar to the \*nix 'tail' command.)
+Watch the file for the specified application and the specified path, and
+display changes as they occur. (Similar to the \*nix 'tail' command.)
 
 <div class="command-doc">
   <pre class="terminal">$ cf tail [application name] [path]</pre>
@@ -977,7 +1034,10 @@ Watch the file for the specified application and the specified path, and display
 
 #### <a id='target'></a> target ####
 
-Set or display the target cloud, organization, and space. When you run a cf command that reads or writes information about applications or service instances, by default the command will access objects in the currently selected target cloud, organization, and space.
+Set or display the target cloud, organization, and space.
+When you run a cf command that reads or writes information about applications
+or service instances, by default the command will access objects in the
+currently selected target cloud, organization, and space.
 
 <div class="command-doc">
   <pre class="terminal">$ cf target [URL]</pre>
@@ -993,9 +1053,9 @@ Set or display the target cloud, organization, and space. When you run a cf comm
 
 If no qualifiers are specified on the command line, the following data is returned:
 
-* target -- The target Cloud Foundry instance.
-* organization -- The currently selected organization.
-* space -- The currently selected space.
+* target -- The target Cloud Foundry instance
+* organization -- The currently selected organization
+* space -- The currently selected space
 
 #### <a id='targets'></a> targets ####
 
@@ -1008,10 +1068,10 @@ List known targets.
 
 The URL for each known Cloud Foundry instance will be returned.
 
-
 #### <a id='unbind-service'></a> unbind-service ####
 
-Remove a service binding from an application. cf will prompt for required qualifiers not supplied on the command line.
+Remove a service binding from an application.
+cf will prompt for required qualifiers not supplied on the command line.
 
 <div class="command-doc">
   <pre class="terminal">$ cf unbind-service [instance name] [application name]</pre>
@@ -1026,7 +1086,6 @@ Unmap a domain from the current space, and optionally delete it.
   <pre class="terminal">$ cf unmap-domain [domain] [--delete]</pre>
   <div class="break"></div>
 </div>
-
 
 | Qualifier | Required | Description |
 | :-------- | :------- | :---------- |
@@ -1044,21 +1103,21 @@ Disassociate a URL from an application.
   <div class="break"></div>
 </div>
 
-
 | Qualifier | Required | Description |
 | :-------- | :------- | :---------- |
 |--all | |Act on all routes |
 | --app APP| |Application from which to remove the URL.|
 |--url URL | |URL to unmap. |
 | | | |
+
 #### <a id='unset-env'></a> unset-env ####
 
-Remove an environment variable. For information about defining an environment variable see [set-env](#set-env).
+Remove an environment variable.
+For information about defining an environment variable see [set-env](#set-env).
 
 <div class="command-doc">
   <pre class="terminal">$ cf unset-env [application name] [variable name]</pre>
 </div>
-
 
 | Qualifier | Required | Description |
 | :-------- | :------- | :---------- |
@@ -1073,6 +1132,7 @@ Update a service authorization token.
 <div class="command-doc">
   <pre class="terminal">$ cf update-service-auth-token [SERVICE_AUTH_TOKEN]</pre>
 </div>
+
 
 #### <a id='users'></a> users ##
 

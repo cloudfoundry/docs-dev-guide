@@ -1,0 +1,106 @@
+---
+title: Streaming Logs
+---
+
+_This page assumes you are using cf v6._
+
+The logging capability in Cloud Foundry allows you to:
+
+1. Tail application logs.
+2. Dump a recent set of application logs.
+3. Continually drain application logs to 3rd party log archive and analysis
+services using syslog.
+
+## <a id="tail-log"></a>Tailing Application Logs ##
+
+Use `cf logs APP_NAME` for a real-time stream of the application STDOUT and
+STDERR.
+Example:
+
+<pre class="terminal">
+$ cf logs myapp
+2013-12-03T20:52:36.64-0800 [App/0]   ERR 108.216.154.88, 10.10.66.252 - - [04/Dec/2013 04:52:36] "GET / HTTP/1.1" 200 1358 0.0020
+2013-12-03T20:52:36.66-0800 [App/0]   ERR 108.216.154.88, 10.10.66.252 - - [04/Dec/2013 04:52:36] "GET / HTTP/1.1" 200 1358 0.0288
+2013-12-03T20:52:36.66-0800 [RTR]     OUT env-test.cfapps.io - [04/12/2013:04:52:36 +0000] "GET / HTTP/1.1" 200 1358 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36" 10.10.66.252:48779 response_time:0.067069415 app_id:c66ecb53-5aff-4f7d-b7a4-b0143c4b6ade
+...
+</pre>
+
+Use **Ctrl-C** (^C) to exit the real-time stream.
+
+## <a id="dump-log"></a>Dumping Recent Application Logs ##
+
+If an application crashes, you may want to examine the log files.
+Use `cf logs` with the `--recent` flag to dump recent log files:
+
+<pre class="terminal">
+cf logs APP_NAME --recent
+</pre>
+
+## <a id="drain-log"></a>Draining Application Logs ##
+
+The Cloud Foundry logging system supports the syslog format as described in [RFC 5424](http://tools.ietf.org/html/rfc5424) with octet encoding as described in
+[RFC 6587](http://tools.ietf.org/html/rfc6587).
+Optionally, you can use syslog TLS support as described in [RFC 5425](http://tools.ietf.org/html/rfc5425).
+
+To drain application logs to a 3rd party syslog drain service, bind a
+syslog drain URL to the application.
+Do this by adding a 3rd party log service to the application, or by adding a
+user-provided service with a custom syslog drain URL to the application via
+the command line.
+
+To create a user provided syslog service:
+
+<pre class="terminal">
+cf create-user-provided-service SERVICE_NAME -l SYSLOG-DRAIN-URL
+</pre>
+
+The SYSLOG-DRAIN-URL should be in the format 'scheme://host:port' where allowed
+schemes are 'syslog' or 'syslog-tls'.
+For example:
+
+~~~
+    syslog scheme:      'syslog://my.unencrypted.syslogservice.example.com:1234'
+    syslog tls scheme: 'syslog-tls://my.encrypted.syslogservice.example.com:5467'
+~~~
+
+After creating the custom service, bind the application to it:
+
+<pre class="terminal">
+cf bind-service APP_NAME SERVICE_NAME
+</pre>
+
+You can repeat this for all applications you wish to drain to your syslog
+service.
+Note that applications must be restarted to pick up this new service.
+
+# <a id="notes"></a>Notes #
+- Cloud Foundry gathers and stores logs in a best-effort manner.
+If clients are unable to consume log lines quickly enough, the buffer of log
+lines may become too large.
+If this occurs, the system may drop some log messages.
+Clients such as a CLI tail or a syslog drain should be able to keep up with the
+application log volume.
+
+- Cloud Foundry’s logging capability reports only on the STDOUT and STDERR of
+an application, along with other relevant system messages.
+An application must write to STDOUT or STDERR instead of a custom log file to
+use Cloud Foundry’s logging capabilities. Sending application logs that are
+not part of STDOUT or STDERR is not supported.
+
+- Logging output is delivered with an internal timestamp.
+This timestamp is assigned when the logging service receives the log line.
+Any timestamp already present in a log line is passed as part of the opaque
+'message data' and is not processed by the logging system.
+
+- To prevent logging issues, your application should *not* buffer output to
+STDOUT or STDERR:
+
+    - For Sinatra, make sure to have this in your configure block:
+      <pre class="code">
+      $stderr.sync = true
+      $stdout.sync = true
+      </pre>
+
+    - For Log4J ConsoleAppender, there is no buffering with the default settings. The default setting of the [immediateFlush](http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/WriterAppender.html#immediateFlush) option is **true**. If this option is set to **false**, there will likely be some buffering.
+
+    - Logback's [ConsoleAppender](http://logback.qos.ch/manual/appenders.html#ConsoleAppender) buffers by default using an OutputStreamWriter.

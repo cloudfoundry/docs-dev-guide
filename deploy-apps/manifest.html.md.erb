@@ -11,9 +11,9 @@ Whether or not you need a manifest depends on what you want to accomplish. For e
 ## <a id='find-manifest'></a>How cf push Finds the Manifest ##
 
 
-The `cf push` command looks for the `manifest.yml` file in the current working directory unless you give `cf` a non-standard manifest location and/or filename with the ``-f`` option.
+The `cf push` command looks for the `manifest.yml` file in the current working directory unless you use the ``-f`` option to provide a non-standard manifest location and/or filename.
 
-A plain `cf push` command find the manifest when it is named manifest.yml and located in the current working directory.
+A plain `cf push` command finds the manifest when it is named manifest.yml and located in the current working directory.
 
 ~~~
 $ cf push
@@ -24,18 +24,20 @@ Using manifest file manifest.yml
 With the `-f` option, a path with no filename means that the filename must be `manifest.yml`.
 
 ~~~
-cf push -f ./some_directory/some_other_directory/
+$ cf push -f ./some_directory/some_other_directory/
+Using manifest file manifest.yml
 ~~~
 
-Finally, with the `-f` option, supply the path _and_ the filename if the manifest is named something other than  `manifest.yml`.
+If the manifest is named something other than `manifest.yml`, use the `-f` option with both path _and_ filename.
 
 ~~~
-cf push -f ./some_directory/some_other_directory/alternative_manifest.yml
+$ cf push -f ./some_directory/some_other_directory/alternative_manifest.yml
+Using manifest file alternative_manifest.yml
 ~~~
 
 ## <a id='minimal-manifest'></a>A Minimal Manifest ##
 
-You can deploy some (but not all) applications without ever using a manifest. On the other hand, creating the manifest before you deploy offers greater consistency and reproducibility than other methods.
+You can deploy some (but not all) applications without ever using a manifest. On the other hand, creating the manifest before you deploy offers consistency and reproducibility.
 
 Manifests are written in YAML. The illustration below shows a typical manifest for a minimal application.
 
@@ -55,8 +57,18 @@ Consider a node app called `nifty-gui`. The `nifty-gui` directory contains a `ma
 path: .
 ~~~
 
-This path correctly directs `cf` to the application when you run `cf` from the `nifty-gui` directory. All is well as long as `manifest.yml` is located there. If you move `manifest.yml` but fail to edit the path line to reflect the change, `cf` can no longer find the application, even if `cf` can still find the manifest.
+This path correctly directs `cf` to the application when you run `cf` from the `nifty-gui` directory. All is well as long as `manifest.yml` is located there. If you move `manifest.yml` but fail to edit the path line to reflect the change, `cf` can find neither the manifest nor the application.
 
+## <a id='precedence'></a>Precedence between Manifests, Command-line Options, and Leftover Values ##
+
+Application attributes can be set by a manifest or by use of `cf push` command-line options. If not set in either of these ways, attributes are set to reasonable values when you push an application for the first time. On subsequent pushes, you can use either command-line options, manifests, both, or neither. Values that are untouched by command-line options or manifests persist from push to push—we can call these leftover values.
+
+Whenever you push an application, `cf` applies rules of precedence when determining which attributes are set by command-line attributes, which by manifest, and which by leftover values:
+
+* Manifests override leftover values
+* Command-line options override manifests
+
+Think of manifests as just another input to `cf push`, to be combined with command-line options and leftover values.
 
 ## <a id='optional-attributes'></a>Optional Attributes ##
 
@@ -80,12 +92,12 @@ Applications are always pushed to a particular Cloud Foundry instance, and each 
 When the domain line is omitted, `cf` assigns your application to the default domain. Use the domain line when you want your application to be served from a domain other than the default.
 
 ~~~
-domain: ${target-base}
+domain: unique9876.example.com
 ~~~
 
 ### <a id='env-block'></a>Environment variables ###
 
-The `env` block consists of a heading, then one or more environment variable/value pairs. The variables belong to the environment of the container to which the application is deployed on the server.
+The `env` block consists of a heading, then one or more environment variable/value pairs. An application is deployed to a container on the server. The variables belong to the environment of the container.
 
 For example:
 
@@ -95,13 +107,17 @@ env:
   RACK_ENV: ${rails-env}
 ~~~
 
-While the application is running, you can view, set, and unset environment variables using `cf`:
+While the application is running, `cf` allows you to operate on environment variables.
 
-~~~
-cf env <app>
-cf set-env <variable_name> <variable_value>
-cf unset-env <variable_name> <variable_value>
-~~~
+* View all variables:
+
+ `cf env <app>`
+* Set an individual variable:
+
+ `cf set-env <variable_name> <variable_value>`
+* Unset an individual variable:
+
+ `cf unset-env <variable_name> <variable_value>`
 
 Environment variables interact with manifests by somewhat complicated rules:
 
@@ -116,7 +132,8 @@ Applications can bind to services such as databases, messaging, and key-value st
 Applications are deployed into App Spaces. An application can only bind to services that exist in the target App Space before the application is deployed.
 
 The `services` block consists of a heading, then one or more service instance names.
-For example:
+
+Service instance names are chosen by whoever creates the service. These names can convey logical information, as in `backend_queue`, describe the nature of the service, as in `mysql_5.x`, or do neither, as in the example below.
 
 ~~~
   services:
@@ -124,15 +141,13 @@ For example:
     instance_XYZ
 ~~~
 
-Service instance names are up to the creators of the service. They can convey logical information, as in `backend_queue`, or the nature of the service, as in `mysql_5.x`, or neither.
-
 ## <a id='multi-apps'></a>Describing Multiple Applications with One Manifest ##
 
 You can deploy multiple applications with one `cf push` command by describing them in a single manifest. In doing so, you need to pay extra attention to directory structure and path lines in the manifest.
 
 Suppose you want to deploy two applications called respectively spark and flame, and you want `cf` to create and start spark before flame. You accomplish this by listing spark first in the manifest.
 
-In this situation there are two sets of bits you want to push. Let’s say that they are `spark.rb` in the spark directory and `flame.rb` in the flame directory. One level up, the fireplace directory contains the spark and the flame directories along with the `manifest.yml` file. Your plan is to run `cf` from `fireplace`, where you know it can find the manifest.
+In this situation there are two sets of bits you want to push. Let’s say that they are `spark.rb` in the spark directory and `flame.rb` in the flame directory. One level up, the fireplace directory contains the spark and the flame directories along with the `manifest.yml` file. Your plan is to run `cf` from fireplace, where you know it can find the manifest.
 
 Now that you have changed the directory structure and manifest location, the standard path line of `path: . ` no longer works. How can you ensure that `cf` finds the bits you want to push?
 
@@ -162,29 +177,20 @@ applications:
 - name: spark
   memory: 1G
   instances: 1
-  host: flint-${random-word}
+  host: flint-99
   domain: <%=vars.app_domain%>
   path: ./spark/
   services:
-    petclinic-mysql:
-    label: mysql
-      provider: mysql
-      version: n/a
-      plan: dev-sandbox
+    mysql-flint-99
 - name: flame
   memory: 1G
   instances: 1
-  host: burnin1234
+  host: burnin-77
   domain: <%=vars.app_domain%>
   path: ./flame/
   services:
-    redis:
-      label: redis
-      provider: redis
-      version: n/a
-      plan: dev-sandbox
+    redis-burnin-77
 ~~~
-
 
 ## <a id='minimize-duplication'></a>Minimizing Duplication ##
 
@@ -203,26 +209,23 @@ domain: <%=vars.app_domain%>
 memory: 1G
 instances: 1
 services:
-  springtime-mysql:
-    label: mysql
-    provider: mysql
-    version: n/a
-    plan: dev-sandbox
-# specifics of each application
+  clockwork-mysql
 applications:
 - name: springtock
-  host: tock9876
+  host: tock09876
   path: ./spring-music/build/libs/spring-music.war
 - name: springtick
-  subdomain: tick-${random-word}
+  subdomain: tick09875
   path: ./spring-music/build/libs/spring-music.war
 ~~~
 
-In the next example we carry this principle further as we distribute content across multiple manifests.
+In the next section we carry this principle further by distributing content across multiple manifests.
 
 ## <a id='multi-manifests'></a>Multiple Manifests with Inheritance ##
 
 A single manifest can describe multiple applications. Another powerful technique is to create multiple manifests with inheritance. Here, manifests have parent-child relationships such that children inherit descriptions from a parent. Children can use inherited descriptions as-is, extend them, or override them.
+
+Content in the child manifest overrides content in the parent manifest, if the two conflict.
 
 This technique helps in these and other scenarios:
 
@@ -241,8 +244,6 @@ inherit: base-manifest.yml
 
 You do not need to add anything to the parent manifest.
 
-Content in the child manifest overrides content in the parent manifest, if the two conflict.
-
 In the simple example below, a parent manifest gives each application minimal resources, while a production child manifest scales them up.
 
 **simple-base-manifest.yml**
@@ -254,20 +255,16 @@ domain: <%=vars.app_domain%>
 memory: 256M
 instances: 1
 services:
- singular-mysql:
-  label: mysql
-  provider: mysql
-  version: n/a
-  plan: dev-sandbox
+ singular-backend
 
 # app-specific configuration
 applications:
  - name: springtock
-   host: springtock333
-   path: ./spring-music/build/libs/spring-music.war
- - name: petclinic
-   subdomain: petclinic-${random-word}
-   path: ./grails-petclinic/target/pets4u-0.1.war
+   host: 765shower
+   path: ./april/build/libs/april-weather.war
+ - name: wintertick
+   subdomain: 321flurry
+   path: ./december/target/december-weather.war
 ~~~
 
 **simple-prod-manifest.yml**
@@ -276,16 +273,16 @@ applications:
 ---
 inherit: simple-base-manifest.yml
 applications:
- - name: not-springtock
+ - name:springstorm
    memory: 512M
    instances: 1
-   host: dontlookatme-${random-word}
-   path: ./spring-music/build/libs/spring-music.war
- - name: not-petclinic
+   host: 765deluge
+   path: ./april/build/libs/april-weather.war
+ - name: winterblast
    memory: 1G
    instances: 2
-   host: meneither-${random-word}
-   path: ./grails-petclinic/target/pets4u-0.1.war
+   host: 321blizzard
+   path: ./december/target/december-weather.war
 ~~~
 
 Powerful as it is, inheritance can increase the potential for confusion. It’s a good idea to add comments which explain precisely how the child manifest extends or overrides the descriptions in the parent manifest.

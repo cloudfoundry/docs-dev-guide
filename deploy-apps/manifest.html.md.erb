@@ -61,7 +61,7 @@ This path correctly directs `cf` to the application when you run `cf` from the `
 
 ## <a id='precedence'></a>Precedence between Manifests, Command-line Options, and Leftover Values ##
 
-Application attributes can be set by a manifest or by use of `cf push` command-line options. If not set in either of these ways, attributes are set to reasonable values when you push an application for the first time. On subsequent pushes, you can use either command-line options, manifests, both, or neither. Values that are untouched by command-line options or manifests persist from push to push—we can call these leftover values.
+You can set application attributes using either a manifest or `cf push` command-line options. If not set in either of these ways, attributes are set to reasonable values when you push an application for the first time. On subsequent pushes, you can use either command-line options, manifests, both, or neither. Values that are untouched by command-line options or manifests persist from push to push—we can call these leftover values.
 
 Whenever you push an application, `cf` applies rules of precedence when determining which attributes are set by command-line attributes, which by manifest, and which by leftover values:
 

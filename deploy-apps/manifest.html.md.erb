@@ -6,18 +6,18 @@ _This page assumes that you are using cf v6._
 
 Application manifests tell `cf` what to do with applications. This includes everything from how many instances to create and how much memory to allocate to what services applications should use.
 
-Whether or not you need a manifest depends on what you want to accomplish. For example, you must have a manifest in order to automate deployment. In simpler scenarios, a manifest may be helpful but not required.
+Whether a manifest is useful depends on what you want to accomplish. For example, a manifest can be very helpful in automating deployment, especially in multi-app scenarios. Even in simpler scenarios, a manifest allows you avoid typing the same command-line options over and over.
 
 ## <a id='find-manifest'></a>How cf push Finds the Manifest ##
 
 
-The `cf push` command looks for the `manifest.yml` file in the current working directory unless you use the ``-f`` option to provide a non-standard manifest location and/or filename.
+The `cf push` command looks for the `manifest.yml` file in the current working directory unless you use the `-f` option to provide a non-standard manifest location or filename.
 
 A plain `cf push` command finds the manifest when it is named manifest.yml and located in the current working directory.
 
 ~~~
 $ cf push
-Using manifest file manifest.yml
+Using manifest file <path to working directory>/manifest.yml
 ~~~
 
 
@@ -25,19 +25,19 @@ With the `-f` option, a path with no filename means that the filename must be `m
 
 ~~~
 $ cf push -f ./some_directory/some_other_directory/
-Using manifest file manifest.yml
+Using manifest file <path to working directory>/some_directory/some_other_directory/manifest.yml
 ~~~
 
 If the manifest is named something other than `manifest.yml`, use the `-f` option with both path _and_ filename.
 
 ~~~
 $ cf push -f ./some_directory/some_other_directory/alternative_manifest.yml
-Using manifest file alternative_manifest.yml
+Using manifest file <path to working directory>/some_directory/some_other_directory/alternative_manifest.yml
 ~~~
 
 ## <a id='minimal-manifest'></a>A Minimal Manifest ##
 
-You can deploy some (but not all) applications without ever using a manifest. On the other hand, creating the manifest before you deploy offers consistency and reproducibility.
+You can deploy applications without ever using a manifest. But, creating a manifest offers consistency and reproducibility.
 
 Manifests are written in YAML. The illustration below shows a typical manifest for a minimal application.
 

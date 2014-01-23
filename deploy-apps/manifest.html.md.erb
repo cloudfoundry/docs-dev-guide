@@ -6,7 +6,7 @@ _This page assumes that you are using cf v6._
 
 Application manifests tell `cf` what to do with applications. This includes everything from how many instances to create and how much memory to allocate to what services applications should use.
 
-Whether a manifest is useful depends on what you want to accomplish. For example, a manifest can be very helpful in automating deployment, especially in multi-app scenarios. Even in simpler scenarios, a manifest allows you avoid typing the same command-line options over and over.
+Whether a manifest is useful depends on what you want to accomplish. For example, a manifest can help you automate deployment, especially of multiple applications at once. In any scenario, a manifest can spare you from typing the same command-line options over and over.
 
 ## <a id='find-manifest'></a>How cf push Finds the Manifest ##
 
@@ -47,32 +47,34 @@ The directory that contains the bits you want to push is a good place to put you
 
 ## <a id='find-app'></a>How cf push Finds the Application ##
 
-The manifest tells `cf` where to find the application—that is, the bits you want to push.
+By default, `cf push` pushes the contents of the current working directory, except for files excluded in a `.cfignore` file. Alternatively, you can provide a path using either a manifest or a command-line option. If the path is to a directory, use a `.cfignore` file to exclude files that should not be pushed. If the path comes complete with the filename of the application, `cf` pushes only the application file and you do not need a `.cfignore` file.  
 
-Consider a node app called `nifty-gui`. The `nifty-gui` directory contains a `manifest.yml` file and the bits you want to push—in this case, a file named `nifty-gui.js`.
+## <a id='precedence'></a>Precedence Between Manifests, Command-line Options, and Existing Values ##
 
-`manifest.yml` includes a “path” line:
+You can set application attributes using either a manifest or `cf push` command-line options. When you push an application for the first time, `cf` applies default values to attributes that you do not set with command-line options or a manifest. On subsequent pushes, you can use either command-line options, manifests, both, or neither. 
 
-~~~
-path: .
-~~~
+Between one push and another, attribute values can change in other ways. For example, the `cf scale` command changes the number of instances. The attribute values right before you push represents the cumulative result of defaults, command-line options, and manifest settings applied up to that point. You can think of them as the values that exist at that moment, or existing values for short.
 
-This path correctly directs `cf` to the application when you run `cf` from the `nifty-gui` directory. All is well as long as `manifest.yml` is located there. If you move `manifest.yml` but fail to edit the path line to reflect the change, `cf` can find neither the manifest nor the application.
+Whenever you push an application, `cf` applies rules of precedence to determine which attributes are set by command-line attributes, which by manifest, and which by existing values:
 
-## <a id='precedence'></a>Precedence between Manifests, Command-line Options, and Leftover Values ##
-
-You can set application attributes using either a manifest or `cf push` command-line options. When you push an application for the first time, `cf` sets its attributes to reasonable values if you have not set them with command-line options or a manifest. On subsequent pushes, you can use either command-line options, manifests, both, or neither. Values that are untouched by command-line options or manifests persist from push to push; you can think of these as leftover values.
-
-Whenever you push an application, `cf` applies rules of precedence to determine which attributes are set by command-line attributes, which by manifest, and which by leftover values:
-
-* Manifests override leftover values.
+* Manifests override existing values.
 * Command-line options override manifests.
 
-Think of manifests as just another input to `cf push`, to be combined with command-line options and leftover values.
+Think of manifests as just another input to `cf push`, to be combined with command-line options and existing values. 
 
 ## <a id='optional-attributes'></a>Optional Attributes ##
 
-This section explains how to describe optional application attributes in manifests.
+This section explains how to describe optional application attributes in manifests. Each of these attributes can also be specified by a command-line option. Command-line options override the manifest, except in the case of the `path` attribute, as explained [above](#find-app).  
+
+### <a id='buildpack'></a>The buildpack attribute
+
+If your application requires a custom buildpack, you can use the `buildpack` attribute to specify its URL: 
+
+~~~
+buildpack: <buildpack_URL>
+~~~
+
+The command-line option that overrides this attribute is `-p`.
 
 ### <a id='start-commands'></a>The command attribute ###
 
@@ -85,28 +87,47 @@ For example:
 command: bundle exec rake VERBOSE=true
 ~~~
 
-For some types of application, you must provide a start command, either in a manifest or using the `-c` command-line option. This is true of node.js applications, for example.
+For some types of application, you must provide a custom start command, either from the command line or from the manifest. This is true of node.js applications, for example.
+
+The command-line option that overrides this attribute is `-c`.
 
 ### <a id='domain'></a>The domain attribute ###
 
-Applications are always pushed to a particular Cloud Foundry instance, and each Cloud Foundry instance has a default domain.
+Every `cf push` deploys applications to one particular Cloud Foundry instance. Every Cloud Foundry instance has its own default domain. When you do not specify a domain line using either a command-line option or a manifest, `cf` assigns your application to the default domain. 
 
-When you omit the domain line, `cf` assigns your application to the default domain. Use the domain line when you want your application to be served from a domain other than the default.
+You can use the `domain` attribute when you want your application to be served from a domain other than the default.
 
 ~~~
-domain: unique9876.example.com
+domain: unique-example.com
 ~~~
+
+The command-line option that overrides this attribute is `-d`.
 
 ### <a id='no-route'></a>The no-route attribute ###
 
-By default, Pivotal CF assigns a route to every application. This is inappropriate for workers, which are applications that provide services to other applications while running in the background. Workers _must not_ be given routes. In the applications block, the description of a worker is just like the description of any other application, except that it must include the `no-route` line. Specify the `no-route` attribute with a value of `true`:
+By default, `cf push` assigns a route to every application. Sometimes this is inappropriate. For instance, applications which process data while running in the background, bound only to services, should not be assigned routes. 
+
+You can use the `no-route` attribute with a value of `true` to prevent a route from being created for your application.
 
 ~~~
 no-route: true
 ~~~
 
-For more about workers, see [Describing Multiple Applications with One Manifest] (#multi-apps) below.
+The command-line option that corresponds to this attribute is ``--no-route``.
 
+For more about these situations, see [Describing Multiple Applications with One Manifest] (#multi-apps) below.
+
+### <a id = 'path'></a>The path attribute
+
+You can use the `path` attribute to tell `cf` where to find your application. This is necessary when the application bits are in a location other than the current working directory where you run `cf push`.
+
+~~~
+path: <path_to_application_bits>
+~~~
+
+If you provide a path, it is a good idea to do so either in a command-line option alone or in a manifest alone. Using both together is technically possible but inevitably complex. 
+
+The command-line option that you can use instead of this attribute is `-p`.
 
 ### <a id='env-block'></a>Environment variables ###
 
@@ -208,7 +229,7 @@ applications:
 ~~~
 
 
-When you want to deploy workers to provide background services to your regular applications, use a multiple-application manifest with a `no-route` line in each worker description.
+When you want to deploy applications that provide background services to other applications, you use a multiple-application manifest with a `no-route` line in each background application description.
 
 Anytime you have a multiple-application manifest, describe your applications completely in the manifest rather than using any command-line options with `cf push`. Otherwise, questions of precedence between the manifest and command-line options tend to become prohibitively complex.
 

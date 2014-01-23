@@ -61,12 +61,12 @@ This path correctly directs `cf` to the application when you run `cf` from the `
 
 ## <a id='precedence'></a>Precedence between Manifests, Command-line Options, and Leftover Values ##
 
-You can set application attributes using either a manifest or `cf push` command-line options. If not set in either of these ways, attributes are set to reasonable values when you push an application for the first time. On subsequent pushes, you can use either command-line options, manifests, both, or neither. Values that are untouched by command-line options or manifests persist from push to push—we can call these leftover values.
+You can set application attributes using either a manifest or `cf push` command-line options. When you push an application for the first time, `cf` sets its attributes to reasonable values if you have not set them with command-line options or a manifest. On subsequent pushes, you can use either command-line options, manifests, both, or neither. Values that are untouched by command-line options or manifests persist from push to push; you can think of these as leftover values.
 
-Whenever you push an application, `cf` applies rules of precedence when determining which attributes are set by command-line attributes, which by manifest, and which by leftover values:
+Whenever you push an application, `cf` applies rules of precedence to determine which attributes are set by command-line attributes, which by manifest, and which by leftover values:
 
-* Manifests override leftover values
-* Command-line options override manifests
+* Manifests override leftover values.
+* Command-line options override manifests.
 
 Think of manifests as just another input to `cf push`, to be combined with command-line options and leftover values.
 
@@ -85,19 +85,32 @@ For example:
 command: bundle exec rake VERBOSE=true
 ~~~
 
+For some types of application, you must provide a start command, either in a manifest or using the `-c` command-line option. This is true of node.js applications, for example.
+
 ### <a id='domain'></a>The domain attribute ###
 
 Applications are always pushed to a particular Cloud Foundry instance, and each Cloud Foundry instance has a default domain.
 
-When the domain line is omitted, `cf` assigns your application to the default domain. Use the domain line when you want your application to be served from a domain other than the default.
+When you omit the domain line, `cf` assigns your application to the default domain. Use the domain line when you want your application to be served from a domain other than the default.
 
 ~~~
 domain: unique9876.example.com
 ~~~
 
+### <a id='no-route'></a>The no-route attribute ###
+
+By default, Pivotal CF assigns a route to every application. This is inappropriate for workers, which applications that run in the background, providing services to other applications. In your manifests, always include the `no-route` line in the description of a worker application. The `no-route` attribute always appears with a value of `true`:
+
+~~~
+no-route: true
+~~~
+
+For more about workers, see [Describing Multiple Applications with One Manifest] (#multi-apps) below.
+
+
 ### <a id='env-block'></a>Environment variables ###
 
-The `env` block consists of a heading, then one or more environment variable/value pairs. An application is deployed to a container on the server. The variables belong to the environment of the container.
+The `env` block consists of a heading, then one or more environment variable/value pairs.
 
 For example:
 
@@ -106,6 +119,8 @@ env:
   RAILS_ENV: ${rails-env}
   RACK_ENV: ${rails-env}
 ~~~
+
+`cf push` deploys the application to a container on the server. The variables belong to the container environment.
 
 While the application is running, `cf` allows you to operate on environment variables.
 
@@ -133,7 +148,7 @@ Applications are deployed into App Spaces. An application can only bind to servi
 
 The `services` block consists of a heading, then one or more service instance names.
 
-Service instance names are chosen by whoever creates the service. These names can convey logical information, as in `backend_queue`, describe the nature of the service, as in `mysql_5.x`, or do neither, as in the example below.
+Whoever creates the service chooses the service instance names. These names can convey logical information, as in `backend_queue`, describe the nature of the service, as in `mysql_5.x`, or do neither, as in the example below.
 
 ~~~
   services:
@@ -191,6 +206,12 @@ applications:
   services:
     redis-burnin-77
 ~~~
+
+
+When you want to deploy workers to provide background services to your regular applications, use a multiple-application manifest with a `no-route` line in each worker description.
+
+Anytime you have a multiple-application manifest, describe your applications completely in the manifest rather than using any command-line options with `cf push`. Otherwise, questions of precedence between the manifest and command-line options tend to become prohibitively complex.
+
 
 ## <a id='minimize-duplication'></a>Minimizing Duplication ##
 

@@ -99,7 +99,7 @@ domain: unique9876.example.com
 
 ### <a id='no-route'></a>The no-route attribute ###
 
-By default, Pivotal CF assigns a route to every application. This is inappropriate for workers, which are applications that run in the background, providing services to other applications. In your manifests, always include the `no-route` line in the description of a worker application. The `no-route` attribute always appears with a value of `true`:
+By default, Pivotal CF assigns a route to every application. This is inappropriate for workers, which are applications that provide services to other applications while running in the background. Workers _must not_ be given routes. In the applications block, the description of a worker is just like the description of any other application, except that it must include the `no-route` line. Specify the `no-route` attribute with a value of `true`:
 
 ~~~
 no-route: true

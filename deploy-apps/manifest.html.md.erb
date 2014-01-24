@@ -125,13 +125,13 @@ For more about these situations, see [Describing Multiple Applications with One 
 
 ### <a id = 'path'></a>The path attribute
 
-You can use the `path` attribute to tell `cf` where to find your application. This is generally not necessary when you the application is located in the current working directory in which you run `cf push.`
+You can use the `path` attribute to tell `cf` where to find your application. This is generally not necessary when you run `cf push` from the directory where an application is located.
 
 ~~~
 path: <path_to_application_bits>
 ~~~
 
-If you provide a path, it is a good idea to do so either in a command-line option alone or in a manifest alone. Using both together is technically possible but inevitably complex.
+If you provide a path, it is a good idea to use either a command-line option or a manifest. Using both together is technically possible but makes it difficult to ascertain what the resulting path will be.
 
 The command-line option that you can use instead of this attribute is `-p`.
 

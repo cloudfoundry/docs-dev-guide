@@ -58,7 +58,7 @@ By default, `cf` recursively pushes the contents of the current working director
 
 You can set application attributes using either a manifest or `cf push` command-line options. When you push an application for the first time, `cf` applies default values to attributes that you do not set. On subsequent pushes, you can use command-line options, or manifests, or both.
 
-Between one push and another, attribute values can change in other ways. For example, the `cf scale` command changes the number of instances. The attribute values right before you push represent the cumulative result of defaults, manifest settings, and command-line options, applied up to that point. You can think of them as the values that exist at that moment, or existing values for short.
+Between one push and another, attribute values can change in other ways. For example, the `cf scale` command changes the number of instances. The attribute values right before you push represent the cumulative result of defaults, manifest settings, and command-line options, applied up to that point. You can think of them as the values that exist at that moment, or just existing values.
 
 Whenever you push an application, `cf` follows rules of precedence when setting attribute values:
 

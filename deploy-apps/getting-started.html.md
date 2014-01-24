@@ -93,28 +93,18 @@ To prevent this we recommend being generous with your memory limit.
 * **Start Command**: This is the command that Cloud Foundry uses to start
 each instance of your application.
 This start command varies by application framework.
-* **URL and Domain**: `cf` prompts you for both a URL and a domain.
-The URL is the subdomain for your application. It is hosted at the
+* **URL and Domain**: The URL is the subdomain for your application. It is hosted at the
 primary domain you choose.
 The combination of the URL and domain must be globally unique.
-* **Services**: `cf` asks whether you want to create and bind one or more
-services (such as MySQL) to your application.
-You can respond "yes" to create and bind services during the push process, or,
-if you prefer, create and bind services after deployment.
+* **Services**: Applications can bind to services such as databases, messaging, and key-value stores.
+Applications are deployed into App Spaces.
+An application can only bind to services that exist in the target App Space before the application is deployed.
 
 ### <a id='defining-options'></a>Defining Deployment Options ###
 
-You can define deployment options on the command line or in a
-manifest file.
-The first time you run `cf push` for an application, unless you provide
-deployment options on the command line, cf looks for `manifest.yml` in the
-current working directory.
-
-When you redeploy an application, cf does _not_ refer to `manifest.yml` for
-deployment settings.
-Instead, cf deploys the application with the currently active deployment
-settings.
-For more information, see [Application Manifests](./manifest.html).
+You can define deployment options on the command line, in a
+manifest file, or both together.
+See [Application Manifests](./manifest.html) to learn how applications settings change from push to push, and how command-line options, manifests, and commands like `cf scale` interact.
 
 When you deploy an application while it is running, `cf` stops all instances of
 that application and then deploys.

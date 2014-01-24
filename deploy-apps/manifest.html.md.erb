@@ -37,13 +37,27 @@ Using manifest file <path to working directory>/some_directory/some_other_direct
 
 ## <a id='minimal-manifest'></a>A Minimal Manifest ##
 
-You can deploy applications without ever using a manifest. But, creating a manifest offers consistency and reproducibility.
+You can deploy applications without ever using a manifest. The benefits manifests may provide include consistency and reproducibility. When you want applications to be portable between different clouds, manifests may prove especially useful.
 
-Manifests are written in YAML. The illustration below shows a typical manifest for a minimal application.
+Manifests are written in YAML. The minimal manifest illustrated below introduces some YAML indentation conventions that your manifests should follow.
 
  <%= image_tag("minimal_manifest_v6_edit1.png") %>
 
 The directory that contains the bits you want to push is a good place to put your manifest and to run `cf push`, because `cf` looks for a manifest in the current working directory.
+
+## <a id='name'></a>Always Provide an Application Name to cf push ##
+
+`cf push` requires an application name, which you provide either in a manifest or at the command line.
+
+This means that if you do _not_ use a manifest, the minimal `cf push` command looks like this:
+
+~~~
+cf push <application_name>
+~~~
+
+Contrast this to the scenarios described in [How cf push Finds the Manifest](#find-manifest) above.
+
+**Note:** When you provide an application name at the command line, that is the application name that `cf push` uses. This is true whether or not there is an application name in the manifest. You can take advantage of this behavior of `cf` when testing, but it only applies when pushing a single application.
 
 ## <a id='find-app'></a>How cf push Finds the Application ##
 
@@ -131,7 +145,7 @@ You can use the `path` attribute to tell `cf` where to find your application. Th
 path: <path_to_application_bits>
 ~~~
 
-If you provide a path, it is a good idea to use either a command-line option or a manifest. Using both together is technically possible but makes it difficult to predict the resulting path.
+If you provide a path, it is a good idea to use either a command-line option or a manifest. Using both together is technically possible, but the resulting path may not be what you expect.
 
 The command-line option that you can use instead of this attribute is `-p`.
 
@@ -234,10 +248,13 @@ applications:
   - redis-burnin-77
 ~~~
 
-To deploy applications that provide background services to other applications, use a multiple-application manifest with a `no-route` line in each background application description.
+When using a multiple-application manifest:
 
-Anytime you have a multiple-application manifest, describe your applications completely in the manifest rather than using any command-line options with `cf push`. Otherwise, questions of precedence between the manifest and command-line options tend to become prohibitively complex.
+* Name every application in the manifest. `cf push` fails if you provide any application names at the command line.
 
+* It's a good idea to describe your applications completely in the manifest rather than using any command-line options with `cf push`. This allows you to avoid tricky questions of precedence between attributes in the manifest and command-line options.
+
+* Use a `no-route` line in the description of any application that provides background services to another application.
 
 ## <a id='minimize-duplication'></a>Minimizing Duplication ##
 
@@ -333,6 +350,12 @@ applications:
 ~~~
 
 Powerful as it is, inheritance can increase the potential for confusion. It’s a good idea to add comments which explain precisely how the child manifest extends or overrides the descriptions in the parent manifest.
+
+
+
+
+
+
 
 
 

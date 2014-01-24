@@ -1,12 +1,12 @@
 ---
 title: Getting Started with Application Deployment
 ---
-_This page assumes that you are using cf v5_
+_This page assumes that you are using cf v6_
 
 ## <a id='intro'></a>Overview of Deployment Process ##
 
 You deploy an application to Cloud Foundry by running a `push` command from a
-Cloud Foundry command line interface (CLI).
+Cloud Foundry command line interface (CLI). Refer to the [Install cf v6](../installcf/install-go-cli.html) topic for more information.
 Between the time you run `push` and the time that the application is available,
 Cloud Foundry:
 
@@ -17,7 +17,7 @@ Cloud Foundry:
 * Starts the application
 
 An application that uses services, such as a database, messaging, or email
-server, will not be fully functional until you *provision* the service and, if
+server, is not fully functional until you *provision* the service and, if
 required, *bind* the service to the application.
 You can provision and bind services when you push your application for the first
 time.
@@ -30,17 +30,17 @@ Before you deploy your application to Cloud Foundry, make sure that:
 There are several Cloud Foundry behaviors related to file storage, HTTP
 sessions, and port usage that might require modifications to your application.
 
-* All required application resources will be uploaded, and extraneous files and
-artifacts will be excluded.
-For example, you might need to include a database driver, and especially for a
-large application, you will want to explicitly exclude extraneous files that
+* All required application resources are uploaded. Extraneous files and
+artifacts are excluded.
+For example, you might need to include a database driver. In that case, particularly for a
+large application, you should explicitly exclude extraneous files that
 exist within your application directory structure.
 
 * Your Cloud Foundry instance supports the type of application you are going to
 deploy, or you have the URL of an externally available buildpack that can stage
 the application.
 
-For more information on these and other topics that will help you prepare to
+For help preparing to
 deploy your application, see:
 
 * [Prepare to Deploy](prepare-to-deploy.html)
@@ -48,25 +48,13 @@ deploy your application, see:
 * [Tips for Node.js Developers](node-tips.html)
 * [Tips for Java Developers](java-tips.html)
 
-## <a id='prepare'></a>Step 2: Install or Update Your CLI ##
-
-There are two versions of the cf CLI: v5 and v6.
-The two CLIs provide similar functionality, but vary in terms of specific
-commands and usage syntax.
-For installation and usage information, see:
-
-* cf v5 (currently in production): [Install cf v5](../installcf/install-ruby-cli.html)
-* cf v6 (currently in beta): [Install cf v6](../installcf/install-go-cli.html)
-
-This page assumes that you are using cf v5.
-
-## <a id='logon-target'></a>Step 3: Know Your Credentials and Target ##
+## <a id='logon-target'></a>Step 2: Know Your Credentials and Target ##
 
 Before you can push your application to Cloud Foundry you need to know:
 
-* The url to target for your Cloud Foundry instance.
-Typically this is a url that begins with "api".
-Consult your cloud operator if you are unsure of your target url.
+* The URL to target for your Cloud Foundry instance.
+Typically this is a URL that begins with "api."
+Consult your cloud operator if you are unsure of your target URL.
 * Your username and password for your Cloud Foundry instance.
 * The organization and space where you want to deploy your application.
 A Cloud Foundry workspace is organized into organizations, and within them,
@@ -74,7 +62,7 @@ spaces.
 As a Cloud Foundry user, you have access to one or more organizations and
 spaces.
 
-## <a id='domain'></a>Step 4: (Optional) Configure Domains ##
+## <a id='domain'></a>Step 3: (Optional) Configure Domains ##
 
 When you deploy an application, you can specify the route (or URL) that Cloud
 Foundry uses to direct requests to an application.
@@ -86,54 +74,46 @@ organization space to which you are deploying the applications.
 
 For more information, see [About Domains, Subdomains and Routes](./domains-routes.html)
 
-## <a id='options'></a>Step 5: Determine Deployment Options ##
+## <a id='options'></a>Step 4: Determine Deployment Options ##
 
 Before you deploy, you need to decide on the following:
 
 * **Name**: You can use any series of alpha-numeric characters, without spaces,
 as the name of your application.
-* **Instances**: Generally speaking, the more instances you run, the less likely
-your application will be to have downtime.
+* **Instances**: Generally speaking, the more instances you run, the less downtime
+your application is likely to have.
 If your application is still in development, running a single instance makes it
 easier to troubleshoot.
 For any production application, you should run a minimum of two instances.
 * **Memory Limit**: The maximum amount of memory that each instance of your
 application is allowed to consume.
-If an instance exceeds this limit, the instance will be restarted.
-If the instance has to be restarted too often, it will be terminated.
+If an instance exceeds this limit, the instance is restarted.
+If the instance has to be restarted too often, it is terminated.
 To prevent this we recommend being generous with your memory limit.
-* **Start Command**: This is the command that Cloud Foundry will use to start
+* **Start Command**: This is the command that Cloud Foundry uses to start
 each instance of your application.
 This start command varies by application framework.
-* **URL and Domain**: `cf` will prompt you for both a URL and a domain.
-The URL is the subdomain for your application and it will be hosted at the
+* **URL and Domain**: `cf` prompts you for both a URL and a domain.
+The URL is the subdomain for your application. It is hosted at the
 primary domain you choose.
 The combination of the URL and domain must be globally unique.
-* **Services**: `cf` will ask you if you want to create and bind one or more
+* **Services**: `cf` asks whether you want to create and bind one or more
 services (such as MySQL) to your application.
 You can respond "yes" to create and bind services during the push process, or,
 if you prefer, create and bind services after deployment.
 
 ### <a id='defining-options'></a>Defining Deployment Options ###
 
-You can define deployment options on the command line, interactively, or in a
+You can define deployment options on the command line or in a
 manifest file.
 The first time you run `cf push` for an application, unless you provide
 deployment options on the command line, cf looks for `manifest.yml` in the
 current working directory.
-If the manifest file does not exist, cf prompts you to supply the deployment
-settings interactively.
-After you supply the qualifiers required to push an application, cf offers to
-save the configuration.
-If you accept, the settings you chose are saved in the current working directory
-in `manifest.yml`.
 
 When you redeploy an application, cf does _not_ refer to `manifest.yml` for
 deployment settings.
 Instead, cf deploys the application with the currently active deployment
 settings.
-If you want to apply the settings in the manifest on a subsequent push, use the
-`--reset` option.
 For more information, see [Application Manifests](./manifest.html).
 
 When you deploy an application while it is running, `cf` stops all instances of
@@ -155,7 +135,7 @@ For more information, see [Prepare to Deploy an Application](./prepare-to-deploy
 
 For more information about the manifest file, see the [Deploying with Application Manifests](./manifest.html).
 
-## <a id='push'></a>Step 6: Push the Application ##
+## <a id='push'></a>Step 5: Push the Application ##
 
 The following is an example transcript from deploying a Ruby on Rails
 application.
@@ -227,7 +207,7 @@ named it "elephantpg":
   OK
 </pre>
 
-## <a id='service-connection'></a>Step 7: (Optional) Configure Service Connections ##
+## <a id='service-connection'></a>Step 6: (Optional) Configure Service Connections ##
 
 If you bound a service to the application you deployed, it may be necessary to
 configure your application with the service URL and credentials.
@@ -240,7 +220,7 @@ framework:
 * [Grails](../services/grails-service-bindings.html)
 * [Lift](../services/lift-service-bindings.html)
 
-## <a id='troubleshoot-push'></a>Step 8: Troubleshoot Deployment Problems ##
+## <a id='troubleshoot-push'></a>Step 7: Troubleshoot Deployment Problems ##
 
 If your application does not start on Cloud Foundry, first check that your
 application can run locally.

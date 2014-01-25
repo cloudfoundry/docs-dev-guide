@@ -131,55 +131,55 @@ The following transcript was generated when a Sinatra application called my-app 
 :
 
 
-	$ cf push my-app
-	Creating app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
-	OK
+$ cf push my-app
+Creating app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+OK
 
-	Creating route my-app.<%=vars.app_domain%>...
-	OK
+Creating route my-app.<%=vars.app_domain%>...
+OK
 
-	Binding my-app.<%=vars.app_domain%> to my-app...
-	OK
+Binding my-app.<%=vars.app_domain%> to my-app...
+OK
 
-	Uploading my-app...
-	Uploading app: 560.1K, 9 files
-	OK
+Uploading my-app...
+Uploading app: 560.1K, 9 files
+OK
 
-	Starting app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
-	-----> Downloaded app package (552K)
-	OK
-	-----> Using Ruby version: ruby-1.9.3
-	-----> Installing dependencies using Bundler version 1.3.2
-	       Running: bundle install --without development:test --path vendor/bundle --binstubs vendor/bundle/bin --deployment
-	       Installing rack (1.5.1)
-	       Installing rack-protection (1.3.2)
-	       Installing tilt (1.3.3)
-	       Installing sinatra (1.3.4)
-	       Using bundler (1.3.2)
-	       Updating files in vendor/cache
-	       Your bundle is complete! It was installed into ./vendor/bundle
-	       Cleaning up the bundler cache.
-	-----> WARNINGS:
-	       You have not declared a Ruby version in your Gemfile.
-	       To set your Ruby version add this line to your Gemfile:"
-	       ruby '1.9.3'"
-	       # See https://devcenter.heroku.com/articles/ruby-versions for more information."
-	-----> Uploading droplet (23M)
+Starting app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+-----> Downloaded app package (552K)
+OK
+-----> Using Ruby version: ruby-1.9.3
+-----> Installing dependencies using Bundler version 1.3.2
+       Running: bundle install --without development:test --path vendor/bundle --binstubs vendor/bundle/bin --deployment
+       Installing rack (1.5.1)
+       Installing rack-protection (1.3.2)
+       Installing tilt (1.3.3)
+       Installing sinatra (1.3.4)
+       Using bundler (1.3.2)
+       Updating files in vendor/cache
+       Your bundle is complete! It was installed into ./vendor/bundle
+       Cleaning up the bundler cache.
+-----> WARNINGS:
+       You have not declared a Ruby version in your Gemfile.
+       To set your Ruby version add this line to your Gemfile:"
+       ruby '1.9.3'"
+       # See https://devcenter.heroku.com/articles/ruby-versions for more information."
+-----> Uploading droplet (23M)
 
-	1 of 1 instances running
+1 of 1 instances running
 
-	App started
+App started
 
-	Showing health and status for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
-	OK
+Showing health and status for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+OK
 
-	requested state: started
-	instances: 1/1
-	usage: 1G x 1 instances
-	urls: my-app.<%=vars.app_domain%>
+requested state: started
+instances: 1/1
+usage: 1G x 1 instances
+urls: my-app.<%=vars.app_domain%>
 
-	     state     since                    cpu    memory        disk
-	#0   running   2014-01-24 05:07:18 PM   0.0%   18.5M of 1G   52.5M of 1G
+     state     since                    cpu    memory        disk
+#0   running   2014-01-24 05:07:18 PM   0.0%   18.5M of 1G   52.5M of 1G
 
 
 ## <a id='service-connection'></a>Step 6: (Optional) Configure Service Connections ##

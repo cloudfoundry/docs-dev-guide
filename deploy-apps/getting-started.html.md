@@ -130,7 +130,7 @@ For more information about the manifest file, see the [Deploying with Applicatio
 The following transcript was generated when a Sinatra application called my-app was deployed by joeclouduser.
 :
 
-~~~
+
 	$ cf push my-app
 	Creating app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
 	OK
@@ -180,7 +180,7 @@ The following transcript was generated when a Sinatra application called my-app 
 
 	     state     since                    cpu    memory        disk
 	#0   running   2014-01-24 05:07:18 PM   0.0%   18.5M of 1G   52.5M of 1G
-~~~
+
 
 ## <a id='service-connection'></a>Step 6: (Optional) Configure Service Connections ##
 

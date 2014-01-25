@@ -127,74 +127,59 @@ For more information about the manifest file, see the [Deploying with Applicatio
 
 ## <a id='push'></a>Step 5: Push the Application ##
 
-The following is an example transcript from deploying a Ruby on Rails
-application.
-Note that in this example, we already provisioned an ElephantSQL instance and
-named it "elephantpg":
+The following transcript was generated when a Sinatra application called my-app was deployed by joeclouduser.
+:
 
 <pre class="terminal">
-  $ cf push
-  Name> whiteboard
+	$ cf push my-app
+	Creating app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+	OK
 
-  Instances> 1
+	Creating route my-app.<%=vars.app_domain%>...
+	OK
 
-  1: 64M
-  2: 128M
-  3: 256M
-  4: 512M
-  5: 1G
-  6: 2G
-  Memory Limit> 256M
+	Binding my-app.<%=vars.app_domain%> to my-app...
+	OK
 
-  Creating whiteboard... OK
+	Uploading my-app...
+	Uploading app: 560.1K, 9 files
+	OK
 
-  1: whiteboard
-  2: none
-  Subdomain> whiteboard
+	Starting app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+	-----> Downloaded app package (552K)
+	OK
+	-----> Using Ruby version: ruby-1.9.3
+	-----> Installing dependencies using Bundler version 1.3.2
+	       Running: bundle install --without development:test --path vendor/bundle --binstubs vendor/bundle/bin --deployment
+	       Installing rack (1.5.1)
+	       Installing rack-protection (1.3.2)
+	       Installing tilt (1.3.3)
+	       Installing sinatra (1.3.4)
+	       Using bundler (1.3.2)
+	       Updating files in vendor/cache
+	       Your bundle is complete! It was installed into ./vendor/bundle
+	       Cleaning up the bundler cache.
+	-----> WARNINGS:
+	       You have not declared a Ruby version in your Gemfile.
+	       To set your Ruby version add this line to your Gemfile:"
+	       ruby '1.9.3'"
+	       # See https://devcenter.heroku.com/articles/ruby-versions for more information."
+	-----> Uploading droplet (23M)
 
-  1: example.com
-  2: none
-  Domain> example.com
+	1 of 1 instances running
 
-  Creating route whiteboard.example.com... OK
-  Binding whiteboard.example.com to whiteboard... OK
+	App started
 
-  Create services for application?> n
+	Showing health and status for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+	OK
 
-  Bind other services to application?> y
+	requested state: started
+	instances: 1/1
+	usage: 1G x 1 instances
+	urls: my-app.<%=vars.app_domain%>
 
-  1: elephantpg
-  Which service?> 1
-
-  Binding elephantpg to whiteboard... OK
-  Save configuration?> n
-
-  Uploading whiteboard... OK
-  Starting whiteboard... OK
-  -----> Downloaded app package (224K)
-  Installing ruby.
-  -----> Using Ruby version: ruby-1.9.2
-  -----> Installing dependencies using Bundler version 1.3.2
-         Running: bundle install --without development:test --path vendor/bundle --binstubs vendor/bundle/bin --deployment
-         ...
-         Your bundle is complete! It was installed into ./vendor/bundle
-         Cleaning up the bundler cache.
-  -----> Writing config/database.yml to read from DATABASE_URL
-  -----> Preparing app for Rails asset pipeline
-         Running: rake assets:precompile
-         Asset precompilation completed (41.70s)
-  -----> Rails plugin injection
-         Injecting rails_log_stdout
-         Injecting rails3_serve_static_assets
-  -----> Uploading staged droplet (41M)
-  -----> Uploaded droplet
-  Checking whiteboard...
-  Staging in progress...
-  Staging in progress...
-    0/1 instances: 1 starting
-    0/1 instances: 1 starting
-    1/1 instances: 1 running
-  OK
+	     state     since                    cpu    memory        disk
+	#0   running   2014-01-24 05:07:18 PM   0.0%   18.5M of 1G   52.5M of 1G
 </pre>
 
 ## <a id='service-connection'></a>Step 6: (Optional) Configure Service Connections ##

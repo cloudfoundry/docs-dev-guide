@@ -34,7 +34,7 @@ For example, you might need to include a database driver. In that case, particul
 large application, you should explicitly exclude extraneous files that
 exist within your application directory structure.
 
-* All services that your application needs are provisioned.
+* An instance of every service that your application needs has been created.
 
 * Your Cloud Foundry instance supports the type of application you are going to
 deploy, or you have the URL of an externally available buildpack that can stage
@@ -100,7 +100,7 @@ The route, which is the combination of subdomain and domain, must be globally un
 This is true whether you specify a portion of the route or allow Cloud Foundry to use defaults.
 * **Services**: Applications can bind to services such as databases, messaging, and key-value stores.
 Applications are deployed into application spaces.
-An application can only bind to services that exist in the target application space before the application is deployed.
+An application can only bind to a service that has an existing instance in the target application space.
 
 ### <a id='defining-options'></a>Defining Deployment Options ###
 
@@ -204,33 +204,87 @@ application can run locally.
 
 You can troubleshoot your application in the cloud using `cf`.
 
-To check the health of your application, use:
+### <a id='health'></a>Health and status ###
+
+To check the health and status of your application, use:
 
 <pre class="terminal">
-cf health appname
+cf app appname
 </pre>
 
-To check how much memory your application is using:
+For example:
 
 <pre class="terminal">
-  cf stats appname
+→ cf app my-app
+Showing health and status for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+OK
+
+requested state: started
+instances: 1/1
+usage: 256M x 1 instances
+urls: my-app999.<%=vars.app_domain%>
+
+     state     since                    cpu    memory          disk
+#0   running   2014-01-27 11:59:30 AM   0.0%   18.5M of 256M   52.5M of 1G
 </pre>
 
-To see the environment variables and recent log entries:
+### <a id='env'></a>Environment variables ###
+
+`cf push` deploys the application to a container on the server.
+The environment variables that reside in the container are the environment variables of your application.
+
+You can set environment variables in a manifest created before you deploy.
+See [Deploying with Application Manifests](../manifest.html).
+
+You can also set an environment variable with a `cf set-env` command followed by a `cf push` command:
+
+* Once you run `cf env`, you can see the variable locally.
+* However, you must run `cf push` again for the the variable to take effect in the container environment.
+
+To see the environment variables that you have set using the `cf set-env` command:
+
+<pre class="terminal">
+  cf env appname
+</pre>
+
+To see the variables in the container environment:
+
+<pre class="terminal">
+  cf files appname logs/env.log
+</pre>
+
+### <a id='logs'></a>Logs ###
+
+To see recent log entries:
+
+<pre class="terminal">
+  cf logs appname --recent
+</pre>
+
+To see log entries in real time:
 
 <pre class="terminal">
   cf logs appname
 </pre>
 
-To tail your logs:
+To explore all logs available in the container, first view the log filenames, then view the log that interests you:
 
 <pre class="terminal">
-  cf tail appname
-</pre>
+	cf files my-app logs/
+	Getting files for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+	OK
 
-If your application has crashed and you cannot retrieve the logs with `cf logs`,
-you can retrieve the last log entries with:
+	env.log                                   932B
+	staging_task.log                          844B
+	stderr.log                                182B
+	stdout.log                                  0B
 
-<pre class="terminal">
-  cf crashlogs appname
+	joeshost in ~/workspace/vcap-test-assets/sinatra/dora
+	$ cf files my-app logs/stderr.log
+	Getting files for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+	OK
+
+	[2014-01-27 20:21:58] INFO  WEBrick 1.3.1
+	[2014-01-27 20:21:58] INFO  ruby 1.9.3 (2013-11-22) [x86_64-linux]
+	[2014-01-27 20:21:58] INFO  WEBrick::HTTPServer#start: pid=31 port=64391
 </pre>

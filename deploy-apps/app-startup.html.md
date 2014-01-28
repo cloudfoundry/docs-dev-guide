@@ -27,7 +27,16 @@ When you provide start commands _both_ at the command line and in the manifest, 
 
 ##<a id='revert'></a>Forcing cf push to use the Buildpack Start Command ##
 
-To force `cf` to use the buildpack start command, specify a start command of `null`, using either the command line or the manifest.
+To force `cf` to use the buildpack start command, specify a start command of `null`.
+
+You can specify a null start command in one of two ways.
+
+1. Using the `-c` command-line option:
+
+ ``$ cf push my-app -c "null"``
+1. Using the `command` attribute in the application manifest:
+
+ `command: null`
 
 This can be helpful after you have deployed while providing a start command at the command line or the manifest.
 At this point, a command that you provided, rather than the buildpack start command, has become the default start command.

@@ -2,6 +2,8 @@
 title: Blue-Green Deployment
 ---
 
+_This page assumes you are using cf v6._
+
 Blue-green deployment is a release technique that reduces downtime and risk by
 running two identical production environments called Blue and Green.
 
@@ -27,18 +29,20 @@ For this example, we’ll start with a simple Spring application: "demo-time."
 This app is a web page that displays the words "Blue time" and the date/time on
 the server.
 
+**Note**: The example below uses a java app, which makes the `-p` option necessary. For Ruby or Node.js apps, this option is typically unnecessary as long as the app is located in your current working directory.
+
 ### <a id='push-an-app'></a>Step 1: Push an App ###
 Use the `cf` command-line interface to push the application.
 Name the application "Blue" with the subdomain "demo-time."
 
 <pre class="terminal">
-cf push --path target/demo-time.war --name Blue --host demo-time
+cf push Blue -p target/demo-time.war -n demo-time
 </pre>
 
 As shown in the graphic below:
 
 * Blue is now running on Cloud Foundry.
-* The CF Router sends all traffic for demo-time.example.com traffic to Blue.
+* The CF Router sends all traffic for `demo-time.example.com` traffic to Blue.
 
 <%= image_tag("../images/blue-green/blue.png") %>
 
@@ -47,20 +51,20 @@ As shown in the graphic below:
 Now make a change to the application.
 First, replace the word "Blue" on the web page with "Green," then build a new
 WAR file for the application.
-Run `cf push` again, but use a different name for the application and provide a
-different, temporary route:
+Run `cf push` again, but use the name "Green" for the application and provide a
+different subdomain to create a temporary route:
 
 <pre class="terminal">
-cf push --path target/demo-time.war --name Green --host demo-time-temp
+cf push Green -p target/demo-time.war -n demo-time-temp
 </pre>
 
 After this cf push:
 
 * Two instances of our application are now running on Cloud Foundry: the
 original Blue and the updated Green.
-* The CF Router still sends all traffic for demo-time.example.com traffic to
+* The CF Router still sends all traffic for `demo-time.example.com` traffic to
 Blue.
-The router now also sends any traffic for demo-time-temp.example.com to Green.
+The router now also sends any traffic for `demo-time-temp.example.com` to Green.
 
 <%= image_tag("../images/blue-green/blue-green.png") %>
 
@@ -68,19 +72,19 @@ The router now also sends any traffic for demo-time-temp.example.com to Green.
 
 Now that both apps are up and running, switch the router so all incoming
 requests go to the Green app *and* the Blue app.
-Do this by mapping the original URL route (demo-time.example.com) to the Green
+Do this by mapping the original URL route (`demo-time.example.com`) to the Green
 application.
 
 <pre class="terminal">
-cf map --app Green --host demo-time --domain example.com
+cf map-route Green example.com -n demo-time
 Binding demo-time.example.com to Green... OK
 </pre>
 
 After the cf map:
 
-* The CF Router continues to send traffic for demo-time-temp.com to Green.
+* The CF Router continues to send traffic for `demo-time-temp.com` to Green.
 * The CF Router immediately begins to load balance traffic for
-demo-time.example.com between Blue and Green.
+`demo-time.example.com` between Blue and Green.
 
 <%= image_tag("../images/blue-green/map.png") %>
 
@@ -90,20 +94,20 @@ Once you verify Green is running as expected, stop routing requests to Blue
 using the `cf unmap` command:
 
 <pre class="terminal">
-cf unmap --app blue --url demo-time.example.com
+cf unmap-route Blue example.com -n demo-time-temp
 Unbinding demo-time.example.com from blue... OK
 </pre>
 
 After cf unmap:
 
 * The CF Router stops sending traffic to Blue.
-Instead, it routes all traffic to demo-time.example.com to Green:
+Instead, it routes all traffic to `demo-time.example.com` to Green:
 
 <%= image_tag("../images/blue-green/unmap.png") %>
 
 ### <a id='remove-temp-route'></a>Step 4: Remove Temporary Route to Green ###
 
-You can now use `cf unmap` to remove the route to demo-time-temp.example.com.
+You can now use `cf unmap` to remove the route to `demo-time-temp.example.com`.
 You can also decommission Blue, or keep it in case you need to roll back your
 changes.
 

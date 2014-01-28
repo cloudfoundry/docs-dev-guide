@@ -2,36 +2,37 @@
 title: About Starting Applications
 ---
 
-_This page assumes that you are using cf v5_
+_This page assumes that you are using cf v6_.
 
-##<a id='start-command'></a>The Application Start Command ##
+`cf push` starts your application with a command from one of three sources:
 
-There are three ways that Cloud Foundry can obtain the command to use to start an application. In order of precedence, these are:
+1. The `-c` command-line option, for example:
 
-1. The value supplied with the `--command` qualifier (or in the application’s `manifest.yml` file). For example, `cf push --command '.java/bin/java myapp'`.
-1. The value of the `web` key in the procfile for the application, if it exists. A procfile is a text file named `Procfile`, found in the root directory of your application, that lists the process types and associated start commands in an application. For example, `web: YourStartCommand`
-1. The start command for the “web” process type in the `default_process_types` section of the output from the buildpack's `bin/release` script, if specified.
+ ``$ cf push my-app -c "node my-app.js"``
+1. The `command` attribute in the application manifest, for example:
 
-##<a id='run-utility'></a>Run a Standalone Utility at Deployment ##
-You can run an application-related utility by invoking it at the time you push the application.
-One use case for this capability is database creation and migration. If you are going to run a database application to Cloud Foundry, you need to create and populate the database. Similarly, when the database schema changes you will need to update or migrate the database accordingly.
+ `command: node my-app.js`
 
-###<a id='custom-start'></a>Specify a Custom Start Command ###
+1. The buildpack, which provides a start command appropriate for a particular type of application.
 
-The mechanism for invoking a script or utility on Cloud Foundry is to customize the command that Cloud Foundry issues to start the application. There are two ways to use a custom start command:
+The source `cf` uses depends on factors explained below.
 
-* Specify the command at the command line using the `--command` qualifier when running `cf push`.
+##<a id='first-time'></a>How cf push Determines its Default Start Command ##
 
-* Specify the command in the application’s deployment manifest, `manifest.yml`.
+The first time you deploy an application, `cf push` uses the buildpack start command by default.
+After that, `cf push` defaults to whatever start command was used for the previous push.
 
-###<a id='revert-start'></a>Revert to Standard Start Command ###
+To override these defaults, provide the `-c` option, or the command attribute in the manifest.
+When you provide start commands _both_ at the command line and in the manifest, `cf push` ignores the command in the manifest.
 
-Unless you want to run the custom start command every time you push the application, you must revert to the default or previously defined start command. To do so, after the utility has run and the application is started:
+##<a id='revert'></a>Forcing cf push to use the Buildpack Start Command ##
 
-* If you ran the custom command at the command line, re-push the application using the `--reset` qualifier, which tells Cloud Foundry to use the deployment attributes in `manifest.yml`. (Otherwise, the next time you push the application, Cloud Foundry will use the same qualifiers you supplied during the prior push.)
+To force `cf` to use the buildpack start command, specify a start command of `null`, using either the command line or the manifest.
 
-* If you specified the command in the manifest, remove the custom command from the manifest and re-push the application.
+This can be helpful after you have deployed while providing a start command at the command line or the manifest.
+At this point, a command that you provided, rather than the buildpack start command, has become the default start command.
+In this situation, if you decide to deploy using the buildpack start command, the `null` command makes that easy.
 
-###<a id='single-app'></a>Run a Start Command on One Instance ###
+##<a id='databases'></a>Start commands for Deploying while Migrating a Database ##
 
-There is another factor to consider when using a custom start command: if you start more than a single instance of the application when you push it, the custom command will be used to start each of the instances ---inappropriate in the case of database creation or migration. For examples of using a custom start command to migrate a database, for a single application instance only, see [Migrate a Database on Cloud Foundry](../services/migrate-db.html).
+Start commands are used in special ways when you migrate a database as part of an application deployment. See [Migrating a Database on Cloud Foundry](../services/migrate-db.html).

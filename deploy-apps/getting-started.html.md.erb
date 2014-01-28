@@ -25,14 +25,13 @@ required, *bind* the service to the application.
 Before you deploy your application to Cloud Foundry, make sure that:
 
 * Your application is *cloud-ready*.
-There are several Cloud Foundry behaviors related to file storage, HTTP
-sessions, and port usage that might require modifications to your application.
+Cloud Foundry behaviors related to file storage, HTTP
+sessions, and port usage may require modifications to your application.
 
-* All required application resources are uploaded. Extraneous files and
-artifacts are excluded.
-For example, you might need to include a database driver. In that case, particularly for a
-large application, you should explicitly exclude extraneous files that
-exist within your application directory structure.
+* All required application resources are uploaded. For example, you may need to include a database driver.
+
+* Extraneous files and artifacts are excluded from upload. You should explicitly exclude extraneous files that
+reside within your application directory structure, particularly if your application is large.
 
 * An instance of every service that your application needs has been created.
 
@@ -129,7 +128,22 @@ For more information about the manifest file, see the [Deploying with Applicatio
 
 ## <a id='push'></a>Step 5: Push the Application ##
 
-The following transcript was generated when joeclouduser deployed a Sinatra application called `my-app`:
+The minimal command for deploying an application without a manifest is:
+
+<pre class="terminal">
+cf push <appname>
+</pre>
+
+If you provide the application name in a manifest, you can reduce the command even further, to `cf push`.
+See [Deploying with Application Manifests](./manifest.html).
+
+Since all you have provided is the name of your application, `cf push` sets number of instances, amount of memory,
+and other attributes of your application to reasonable defaults.
+The transcript below, generated when joeclouduser deployed a Sinatra application called `my-app`, shows how `cf` assigns
+default values to application when given a minimal push command.
+
+**Note**: For your own apps, avoid generic names like `my-app`, because and a route containing a generic host like `my-app` is
+unlikely to be unique. Deployment fails unless the application has a globally unique route.
 
 <pre class="terminal">
 	$ cf push my-app
@@ -209,13 +223,13 @@ You can troubleshoot your application in the cloud using `cf`.
 To check the health and status of your application, use:
 
 <pre class="terminal">
-cf app appname
+cf app <appname>
 </pre>
 
 For example:
 
 <pre class="terminal">
-→ cf app my-app
+$ cf app my-app
 Showing health and status for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
 OK
 
@@ -244,13 +258,13 @@ You can also set an environment variable with a `cf set-env` command followed by
 To see the environment variables that you have set using the `cf set-env` command:
 
 <pre class="terminal">
-  cf env appname
+  cf env <appname>
 </pre>
 
 To see the variables in the container environment:
 
 <pre class="terminal">
-  cf files appname logs/env.log
+  cf files <appname> logs/env.log
 </pre>
 
 ### <a id='logs'></a>Logs ###
@@ -258,13 +272,13 @@ To see the variables in the container environment:
 To see recent log entries:
 
 <pre class="terminal">
-  cf logs appname --recent
+  cf logs <appname> --recent
 </pre>
 
 To see log entries in real time:
 
 <pre class="terminal">
-  cf logs appname
+  cf logs <appname>
 </pre>
 
 To explore all logs available in the container, first view the log filenames, then view the log that interests you:

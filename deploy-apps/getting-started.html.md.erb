@@ -130,19 +130,18 @@ For more information about the manifest file, see the [Deploying with Applicatio
 
 The minimal command for deploying an application without a manifest is:
 
-<pre class="terminal">
-cf push <appname>
-</pre>
+ `cf push <appname>`
 
 If you provide the application name in a manifest, you can reduce the command even further, to `cf push`.
 See [Deploying with Application Manifests](./manifest.html).
 
 Since all you have provided is the name of your application, `cf push` sets number of instances, amount of memory,
 and other attributes of your application to reasonable defaults.
+You can also use command-line options to specify these and additional attributes.
 The transcript below, generated when joeclouduser deployed a Sinatra application called `my-app`, shows how `cf` assigns
 default values to application when given a minimal push command.
 
-**Note**: For your own apps, avoid generic names like `my-app`, because and a route containing a generic host like `my-app` is
+**Note**: For your own apps, avoid generic names like `my-app`, because a route containing a generic host like `my-app` is
 unlikely to be unique. Deployment fails unless the application has a globally unique route.
 
 <pre class="terminal">
@@ -222,10 +221,7 @@ You can troubleshoot your application in the cloud using `cf`.
 
 To check the health and status of your application, use:
 
-<pre class="terminal">
-cf app <appname>
-</pre>
-
+  `cf app <appname>`
 For example:
 
 <pre class="terminal">
@@ -257,30 +253,18 @@ You can also set an environment variable with a `cf set-env` command followed by
 
 To see the environment variables that you have set using the `cf set-env` command:
 
-<pre class="terminal">
-  cf env <appname>
-</pre>
-
+  `cf env <appname>`
 To see the variables in the container environment:
 
-<pre class="terminal">
-  cf files <appname> logs/env.log
-</pre>
-
+  `cf files <appname> logs/env.log`
 ### <a id='logs'></a>Logs ###
 
 To see recent log entries:
 
-<pre class="terminal">
-  cf logs <appname> --recent
-</pre>
-
+  `cf logs <appname> --recent`
 To see log entries in real time:
 
-<pre class="terminal">
-  cf logs <appname>
-</pre>
-
+  `cf logs <appname>`
 To explore all logs available in the container, first view the log filenames, then view the log that interests you:
 
 <pre class="terminal">

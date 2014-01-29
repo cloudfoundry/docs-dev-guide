@@ -2,66 +2,104 @@
 title: Deploying with Application Manifests
 ---
 
-_This page assumes that you are using cf v5._
+_This page assumes that you are using cf v6._
 
-Application manifests tell `cf` what to do with applications. This includes everything from how many instances to create and how much memory to allocate to what services applications should use.
+Application manifests tell `cf push` what to do with applications. This includes everything from how many instances to create and how much memory to allocate to what services applications should use.
 
-Whether or not you need a manifest depends on what you want to accomplish. For example, you must have a manifest in order to automate deployment. In simpler scenarios, a manifest may be helpful but not required.
+Whether a manifest is useful depends on what you want to accomplish. For example, a manifest can help you automate deployment, especially of multiple applications at once. In any scenario, a manifest can spare you from typing the same command-line options over and over.
 
-## <a id='find-manifest'></a>How cf push finds the manifest ##
+## <a id='find-manifest'></a>How cf push Finds the Manifest ##
 
 
-The `cf push` command looks for the `manifest.yml` file in the current working directory first. If `cf` finds no manifest there, it looks one directory higher, and continues in this way until it finds a manifest, or reaches the root of the filesystem, or is stopped from looking higher because of permissions.
+The `cf push` command looks for the `manifest.yml` file in the current working directory unless you use the `-f` option to provide a non-standard manifest location or filename.
 
-Unless your setup is unusual, a plain `cf push` command should find the manifest.
+A plain `cf push` command finds the manifest when it is named manifest.yml and located in the current working directory.
 
 ~~~
 $ cf push
-Using manifest file manifest.yml
+Using manifest file <path to working directory>/manifest.yml
 ~~~
 
-You can give `cf` a non-standard manifest location and/or filename with the ``-m`` option.
+
+With the `-f` option, a path with no filename means that the filename must be `manifest.yml`.
 
 ~~~
-cf push -m <path-to-manifest>
+$ cf push -f ./some_directory/some_other_directory/
+Using manifest file <path to working directory>/some_directory/some_other_directory/manifest.yml
 ~~~
 
-With the `-m` option, the path to the manifest must include the manifest filename, whether that is `manifest.yml` or anything else.
+If the manifest is named something other than `manifest.yml`, use the `-f` option with both path _and_ filename.
 
+~~~
+$ cf push -f ./some_directory/some_other_directory/alternative_manifest.yml
+Using manifest file <path to working directory>/some_directory/some_other_directory/alternative_manifest.yml
+~~~
 
 ## <a id='minimal-manifest'></a>A Minimal Manifest ##
 
-You can deploy some (but not all) applications without ever using a manifest, and `cf` allows you to create a manifest on the fly while deploying. On the other hand, creating the manifest before you deploy offers greater consistency and reproducibility than other methods.
+You can deploy applications without ever using a manifest. The benefits manifests may provide include consistency and reproducibility. When you want applications to be portable between different clouds, manifests may prove especially useful.
 
-Manifests are written in YAML. A typical manifest for a minimal application contains exactly the same information that would be produced by the interactive prompt method.
+Manifests are written in YAML. The minimal manifest illustrated below introduces some YAML indentation conventions that your manifests should follow.
 
- <%= image_tag("minimal_manifest.png") %>
+ <%= image_tag("minimal_manifest_v6_edit1.png") %>
 
 The directory that contains the bits you want to push is a good place to put your manifest and to run `cf push`, because `cf` looks for a manifest in the current working directory.
 
-## <a id='find-app'></a>How cf push finds the application ##
+## <a id='name'></a>Always Provide an Application Name to cf push ##
 
-The manifest tells `cf` where to find the application—that is, the bits you want to push.
+`cf push` requires an application name, which you provide either in a manifest or at the command line.
 
-Consider a node app called `nifty-gui`. The `nifty-gui` directory contains a `manifest.yml` file and the bits you want to push—in this case, a file named `nifty-gui.js`.
-
-`manifest.yml` includes a “path” line:
+This means that if you do _not_ use a manifest, the minimal `cf push` command looks like this:
 
 ~~~
-path: .
+cf push <application_name>
 ~~~
 
-This path correctly directs `cf` to the application when you run `cf` from the `nifty-gui` directory. All is well as long as `manifest.yml` is located there. If you move `manifest.yml` but fail to edit the path line to reflect the change, `cf` can no longer find the application, even if `cf` can still find the manifest.
+Contrast this to the scenarios described in [How cf push Finds the Manifest](#find-manifest) above.
 
+**Note:** When you provide an application name at the command line, that is the application name that `cf push` uses. This is true whether or not there is an application name in the manifest. You can take advantage of this behavior of `cf` when testing, but only when pushing a single application.
+
+## <a id='find-app'></a>How cf push Finds the Application ##
+
+By default, `cf` recursively pushes the contents of the current working directory. Alternatively, you can provide a path using either a manifest or a command-line option.
+
+- If the path is to a directory, `cf` recursively pushes the contents of that directory instead of the current working directory.
+- If the path is to a file, `cf` pushes only that file.
+
+**Note:** If you want to push more than a single file, but not the entire contents of a directory, consider using a `.cfignore` file to tell `cf push` what to exclude.
+
+## <a id='precedence'></a>Precedence Between Manifests, Command-line Options, and Existing Values ##
+
+You can set application attributes using either a manifest or `cf push` command-line options. When you push an application for the first time, `cf` applies default values to attributes that you do not set. On subsequent pushes, you can use command-line options, or manifests, or both.
+
+Between one push and another, attribute values can change in other ways. For example, the `cf scale` command changes the number of instances. The attribute values right before you push represent the cumulative result of defaults, manifest settings, and command-line options, applied up to that point. You can think of them as the values that exist at that moment, or just existing values.
+
+Whenever you push an application, `cf` follows rules of precedence when setting attribute values:
+
+* Manifests override existing values.
+* Command-line options override manifests.
+
+Think of manifests as just another input to `cf push`, to be combined with command-line options and existing values.
 
 ## <a id='optional-attributes'></a>Optional Attributes ##
 
-This section explains how to describe optional application attributes in manifests. Among the optional attributes, you should notice the differences between symbols, environment variables, and properties.
+This section explains how to describe optional application attributes in manifests. Each of these attributes can also be specified by a command-line option. Command-line options override the manifest, except in the case of the `path` attribute, as explained [below](#path).
+
+### <a id='buildpack'></a>The buildpack attribute
+
+If your application requires a custom buildpack, you can use the `buildpack` attribute to specify its URL or name:
+
+~~~
+buildpack: <buildpack_URL>
+~~~
+
+**Note:** The `cf buildpacks` command lists the buildpacks that you can refer to by name in a manifest or a command-line option.
+
+The command-line option that overrides this attribute is `-p`.
 
 ### <a id='start-commands'></a>The command attribute ###
 
-Depending on your application framework, `cf push` may start your application with a default command.
-You can use the `command` attribute to set a custom start command.
+You can use the `command` attribute to set a custom start command for your application.
 
 For example:
 
@@ -69,105 +107,94 @@ For example:
 command: bundle exec rake VERBOSE=true
 ~~~
 
-### <a id='symbol-objects'></a>The ${random-word} and ${target-base} symbols ###
+For some types of application, you must provide a custom start command, either from the command line or from the manifest. This is true of node.js applications, for example.
 
-Though they look like environment variables, `${random-word}` and ``${target-base}`` are actually symbols that `cf` knows how to handle.
+The command-line option that overrides this attribute is `-c`.
 
-You can use a random word for all or part of the host portion of the application URL to make the hostname unique. For example, consider the lines:
+### <a id='domain'></a>The domain attribute ###
 
-~~~
-host: ${random-word}
-domain: someapp.com
-~~~
+Every `cf push` deploys applications to one particular Cloud Foundry instance. Every Cloud Foundry instance has its own default domain. When you do not specify a domain, `cf` incorporates the default domain in the route to your application.
 
-These generate a URL where the hostname is a random five-character word, similar to:
+You can use the `domain` attribute when you want your application to be served from a domain other than the default.
 
 ~~~
-zx09e.someapp.com
+domain: unique-example.com
 ~~~
 
-The hostname can also combine a ``${random-word}`` symbol with words that do not change. For example, consider the lines
+The command-line option that overrides this attribute is `-d`.
+
+### <a id='no-route'></a>The no-route attribute ###
+
+By default, `cf push` assigns a route to every application. Sometimes this is inappropriate. For instance, applications which process data while running in the background, bound only to services, should not be assigned routes.
+
+You can use the `no-route` attribute with a value of `true` to prevent a route from being created for your application.
 
 ~~~
-host: thingtwo-${random-word}
-domain: someapp.com
+no-route: true
 ~~~
 
-These generate a URL similar to:
+The command-line option that corresponds to this attribute is ``--no-route``.
+
+For more about these situations, see [Describing Multiple Applications with One Manifest] (#multi-apps) below.
+
+### <a id = 'path'></a>The path attribute
+
+You can use the `path` attribute to tell `cf` where to find your application. This is generally not necessary when you run `cf push` from the directory where an application is located.
 
 ~~~
-thingtwo-f8xg3.someapp.com
+path: <path_to_application_bits>
 ~~~
 
-Finally, the ``${target-base}`` symbol is useful when you push a single app to multiple Cloud Foundry instances. By definition, each Cloud Foundry instance has its own domain. To spare yourself from having to create a separate manifest for each instance, use the ``${target-base}`` symbol for the domain part of the URL in a single manifest. When you deploy applications to a given Cloud Foundry instance, `cf` replaces the symbol with the correct domain for that instance.
+If you provide a path, it is a good idea to use either a command-line option or a manifest. Using both together is technically possible, but the resulting path may not be what you expect.
 
-The domain line always looks the same with the ``${target-base}`` symbol:
-
-~~~
-domain: ${target-base}
-~~~
+The command-line option that you can use instead of this attribute is `-p`.
 
 ### <a id='env-block'></a>Environment variables ###
 
-The `env` block consists of a heading, then one or more environment variable/value pairs. The variables belong to the environment of the container to which the application is deployed on the server.
+The `env` block consists of a heading, then one or more environment variable/value pairs.
 
 For example:
 
 ~~~
 env:
-  RAILS_ENV: ${rails-env}
-  RACK_ENV: ${rails-env}
+  RAILS_ENV: production
+  RACK_ENV: production
 ~~~
 
-While the application is running, you can view, set, and unset environment variables using `cf`:
+`cf push` deploys the application to a container on the server. The variables belong to the container environment.
 
-~~~
-cf env <app> <name>
-cf set-env <app> <name>
-cf unset-env <app> <name>
-~~~
+While the application is running, `cf` allows you to operate on environment variables.
+
+* View all variables:
+
+ `cf env <app>`
+* Set an individual variable:
+
+ `cf set-env <variable_name> <variable_value>`
+* Unset an individual variable:
+
+ `cf unset-env <variable_name> <variable_value>`
 
 Environment variables interact with manifests by somewhat complicated rules:
 
 * When you deploy an application for the first time, `cf` reads the variables described in the environment block of the manifest, and adds them to the environment of the container where the application is deployed.
 
-* When you redeploy, even with the `--reset` option, `cf` ignores the environment block in the manifest.
-
 * When you stop and then restart an application, its environment variables persist.
-
-### <a id='properties-block'></a>Properties ###
-
-The `properties` block consists of a heading, then one or more property/value pairs. The `cf` command line tool evaluates the value of properties at the moment that you run `cf push`.
-You can use the properties feature to set values in your manifest that you then use later.
-
-For example:
-
-~~~
-properties:
-  mode:staging
-
-env:
-  EXEC_MODE: ${mode}
-  ASSETS_SERVER: server-assets-${mode}
-~~~
-
-Properties can be combined with symbols. For example, if you define `myprop1` with the value "frisbee" in the properties block, you could specify a value of ``${myprop1}-${random-word}`` for the host attribute.
 
 ### <a id='services-block'></a>Services ###
 
-Applications can use services such as databases, messaging, and key-value stores. Applications deployed into App Spaces where services already exist can bind to those services. If the services defined in a manifest do not yet exist, `cf` creates them and then binds applications to them.
+Applications can bind to services such as databases, messaging, and key-value stores.
 
-The `services` block consists of a heading, then one or more service descriptions. A service description is a service name, then four key/value pairs. The keys are: `service label`, `provider`, `version`, and `plan`.
+Applications are deployed into App Spaces. An application can only bind to services that exist in the target App Space before the application is deployed.
 
-For example:
+The `services` block consists of a heading, then one or more service instance names.
+
+Whoever creates the service chooses the service instance names. These names can convey logical information, as in `backend_queue`, describe the nature of the service, as in `mysql_5.x`, or do neither, as in the example below.
 
 ~~~
-  services:
-    mysql999:
-      label: cleardb
-      provider: cleardb
-      version: n/a
-      plan: dev-sandbox
+ services:
+ - instance_ABC
+ - instance_XYZ
 ~~~
 
 ## <a id='multi-apps'></a>Describing Multiple Applications with One Manifest ##
@@ -176,11 +203,11 @@ You can deploy multiple applications with one `cf push` command by describing th
 
 Suppose you want to deploy two applications called respectively spark and flame, and you want `cf` to create and start spark before flame. You accomplish this by listing spark first in the manifest.
 
-In this situation there are two sets of bits you want to push. Let’s say that they are `spark.rb` in the spark directory and `flame.rb` in the flame directory. One level up, the fireplace directory contains the spark and the flame directories along with the `manifest.yml` file. Your plan is to run `cf` from `fireplace`, where you know it can find the manifest.
+In this situation there are two sets of bits you want to push. Let’s say that they are `spark.rb` in the spark directory and `flame.rb` in the flame directory. One level up, the fireplace directory contains the spark and the flame directories along with the `manifest.yml` file. Your plan is to run `cf` from fireplace, where you know it can find the manifest.
 
-Now that you have changed the directory structure and manifest location, the standard path line of `path: . ` no longer works. How can you ensure that `cf` finds the bits you want to push?
+Now that you have changed the directory structure and manifest location, `cf push` can no longer find your applications by its default behavior of looking in the current working directory. How can you ensure that `cf` finds the bits you want to push?
 
-The answer is to edit each path line to lead `cf` to the correct bits for an application. Assume that `cf` is run from the `fireplace` directory.
+The answer is to add a path line to each application description to lead `cf` to the correct bits. Assume that `cf` is run from the `fireplace` directory.
 
 For `spark`:
 
@@ -205,36 +232,37 @@ The manifest now consists of two applications blocks.
 applications:
 - name: spark
   memory: 1G
-  instances: 1
-  host: flint-${random-word}
+  instances: 2
+  host: flint-99
   domain: <%=vars.app_domain%>
   path: ./spark/
   services:
-    petclinic-mysql:
-    label: mysql
-      provider: mysql
-      version: n/a
-      plan: dev-sandbox
+  - mysql-flint-99
 - name: flame
   memory: 1G
-  instances: 1
-  host: burnin1234
+  instances: 2
+  host: burnin-77
   domain: <%=vars.app_domain%>
   path: ./flame/
   services:
-    redis:
-      label: redis
-      provider: redis
-      version: n/a
-      plan: dev-sandbox
+  - redis-burnin-77
 ~~~
 
+When using a multiple-application manifest:
+
+* Name every application in the manifest. `cf push` fails if you provide any application names at the command line.
+
+* It's a good idea to describe your applications completely in the manifest rather than using any command-line options with `cf push`. This allows you to avoid tricky questions of precedence between attributes in the manifest and command-line options.
+
+* Use a `no-route` line in the description of any application that provides background services to another application.
 
 ## <a id='minimize-duplication'></a>Minimizing Duplication ##
 
 In manifests where multiple applications share settings or services, you begin to see content duplicated. While the manifests still work, duplication increases the risk of typographical errors which cause deployment to fail.
 
-The cure for this problem is to “promote” the duplicate content—that is, to move it up above the applications block, where it need appear only once. The promoted content applies to all applications described in the manifest. The manifest becomes shorter, more readable, and more maintainable.
+The cure for this problem is to “promote” the duplicate content—that is, to move it up above the applications block, where it need appear only once. The promoted content applies to all applications described in the manifest. Note that content _in_ the applications block overrides content _above_ the applications block, if the two conflict.
+
+The manifest becomes shorter, more readable, and more maintainable.
 
 Notice how much content in the manifest below has been promoted in this way.
 
@@ -245,26 +273,23 @@ domain: <%=vars.app_domain%>
 memory: 1G
 instances: 1
 services:
-  springtime-mysql:
-    label: mysql
-    provider: mysql
-    version: n/a
-    plan: dev-sandbox
-# specifics of each application
+- clockwork-mysql
 applications:
 - name: springtock
-  host: tock9876
+  host: tock09876
   path: ./spring-music/build/libs/spring-music.war
 - name: springtick
-  subdomain: tick-${random-word}
+  subdomain: tick09875
   path: ./spring-music/build/libs/spring-music.war
 ~~~
 
-In the next example we carry this principle further as we distribute content across multiple manifests.
+In the next section we carry this principle further by distributing content across multiple manifests.
 
 ## <a id='multi-manifests'></a>Multiple Manifests with Inheritance ##
 
 A single manifest can describe multiple applications. Another powerful technique is to create multiple manifests with inheritance. Here, manifests have parent-child relationships such that children inherit descriptions from a parent. Children can use inherited descriptions as-is, extend them, or override them.
+
+Content in the child manifest overrides content in the parent manifest, if the two conflict.
 
 This technique helps in these and other scenarios:
 
@@ -294,20 +319,16 @@ domain: <%=vars.app_domain%>
 memory: 256M
 instances: 1
 services:
- singular-mysql:
-  label: mysql
-  provider: mysql
-  version: n/a
-  plan: dev-sandbox
+- singular-backend
 
 # app-specific configuration
 applications:
  - name: springtock
-   host: springtock333
-   path: ./spring-music/build/libs/spring-music.war
- - name: petclinic
-   subdomain: petclinic-${random-word}
-   path: ./grails-petclinic/target/pets4u-0.1.war
+   host: 765shower
+   path: ./april/build/libs/april-weather.war
+ - name: wintertick
+   subdomain: 321flurry
+   path: ./december/target/december-weather.war
 ~~~
 
 **simple-prod-manifest.yml**
@@ -316,19 +337,25 @@ applications:
 ---
 inherit: simple-base-manifest.yml
 applications:
- - name: not-springtock
+ - name:springstorm
    memory: 512M
    instances: 1
-   host: dontlookatme-${random-word}
-   path: ./spring-music/build/libs/spring-music.war
- - name: not-petclinic
+   host: 765deluge
+   path: ./april/build/libs/april-weather.war
+ - name: winterblast
    memory: 1G
    instances: 2
-   host: meneither-${random-word}
-   path: ./grails-petclinic/target/pets4u-0.1.war
+   host: 321blizzard
+   path: ./december/target/december-weather.war
 ~~~
 
 Powerful as it is, inheritance can increase the potential for confusion. It’s a good idea to add comments which explain precisely how the child manifest extends or overrides the descriptions in the parent manifest.
+
+
+
+
+
+
 
 
 

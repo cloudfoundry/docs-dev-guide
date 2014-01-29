@@ -5,13 +5,13 @@ _This page assumes that you are using cf v5._
 
 ## <a id='intro'></a>Introduction ##
 
-This guide is for developers who wish to bind a data source to a Node.js
+This guide is for developers who wish to bind a data source t0o a Node.js
 application deployed and running on Cloud Foundry.
 
 ### <a id='creating'></a> Creating a Service ##
 
 To create a service issue the following command with cf and answer the
-interactive prompts;
+interactive prompts:
 
 ~~~bash
 $ cf create-service
@@ -19,7 +19,7 @@ $ cf create-service
 
 ### <a id='binding'></a> Binding a Service ##
 
-To bind the service to the application, use the following cf command;
+To bind the service to the application, use the following cf command:
 
 ~~~bash
 $ cf bind-service --app [application name] --service [service name]

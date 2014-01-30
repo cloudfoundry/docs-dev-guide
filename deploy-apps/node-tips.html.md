@@ -45,10 +45,10 @@ applications:
 ... the rest of your settings ...
 ~~~
 
-Alternately, specify the start command with the `cf push -c` flag.
+Alternately, specify the start command with `cf push -c`.
 
 <pre class="termainl">
-$ cf push -c "node my-app.js"
+$ cf push my-app -c "node my-app.js"
 </pre>
 
 ## <a id='nodemodules'></a> Application Bundling ##
@@ -75,8 +75,7 @@ applications:
 ... the rest of your settings ...
 ~~~
 
-Alternately, specify the buildpack on the command line with the `cf push -b`
-flag:
+Alternately, specify the buildpack on the command line with `cf push -b`:
 
 <pre class="termainl">
 $ cf push my-app -b https://github.com/cloudfoundry/heroku-buildpack-nodejs.git

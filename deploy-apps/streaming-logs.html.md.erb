@@ -18,7 +18,7 @@ STDERR.
 Example:
 
 <pre class="terminal">
-$ cf logs myapp
+$ cf logs my_app
 2013-12-03T20:52:36.64-0800 [App/0]   ERR 108.216.154.88, 10.10.66.252 - - [04/Dec/2013 04:52:36] "GET / HTTP/1.1" 200 1358 0.0020
 2013-12-03T20:52:36.66-0800 [App/0]   ERR 108.216.154.88, 10.10.66.252 - - [04/Dec/2013 04:52:36] "GET / HTTP/1.1" 200 1358 0.0288
 2013-12-03T20:52:36.66-0800 [RTR]     OUT env-test.cfapps.io - [04/12/2013:04:52:36 +0000] "GET / HTTP/1.1" 200 1358 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36" 10.10.66.252:48779 response_time:0.067069415 app_id:c66ecb53-5aff-4f7d-b7a4-b0143c4b6ade
@@ -33,7 +33,7 @@ If an application crashes, you may want to examine the log files.
 Use `cf logs` with the `--recent` flag to dump recent log files:
 
 <pre class="terminal">
-cf logs APP_NAME --recent
+cf logs my_app --recent
 </pre>
 
 ## <a id="drain-log"></a>Draining Application Logs ##
@@ -48,14 +48,14 @@ Do this by adding a 3rd party log service to the application, or by adding a
 user-provided service with a custom syslog drain URL to the application via
 the command line.
 
-To create a user provided syslog service:
+To create a user provided syslog service, use `cf create-user-provided-service SERVICE_NAME -l SYSLOG_DRAIN_URL`. Example:
 
 <pre class="terminal">
-cf create-user-provided-service SERVICE_NAME -l SYSLOG-DRAIN-URL
+cf create-user-provided-service my_service_name -l syslog://my.syslog.example.com:1234
 </pre>
 
-The SYSLOG-DRAIN-URL should be in the format 'scheme://host:port' where allowed
-schemes are 'syslog' or 'syslog-tls'.
+The `SYSLOG_DRAIN_URL` should be in the format 'scheme://host:port' where
+allowed schemes are 'syslog' or 'syslog-tls'.
 For example:
 
 ~~~
@@ -63,10 +63,10 @@ For example:
     syslog tls scheme: 'syslog-tls://my.encrypted.syslogservice.example.com:5467'
 ~~~
 
-After creating the custom service, bind the application to it:
+After creating the custom service, bind the application to it using `cf bind-service APP_NAME SERVICE_NAME`. Example:
 
 <pre class="terminal">
-cf bind-service APP_NAME SERVICE_NAME
+cf bind-service my_app my_service_name
 </pre>
 
 You can repeat this for all applications you wish to drain to your syslog

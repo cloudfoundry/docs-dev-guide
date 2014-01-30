@@ -214,7 +214,7 @@ Run `cf help` to view a list of all cf commands and a brief description of each.
 Run `cf <command-name> -h` to view detailed help (including alias) for any command. For example:
 
 <pre class="terminal">
-	$ cf push -h
+	$ cf p -h
 	NAME:
 	   push - Push a new app or sync changes to an existing app
 
@@ -222,25 +222,29 @@ Run `cf <command-name> -h` to view detailed help (including alias) for any comma
 	   p
 
 	USAGE:
-	   cf push APP [-b URL] [-c COMMAND] [-d DOMAIN] [-i NUM_INSTANCES]
-	               [-m MEMORY] [-n HOST] [-p PATH] [-s STACK]
-	               [--no-hostname] [--no-route] [--no-start]
+	   Push a single app (with or without a manifest):
+	   cf push APP [-b BUILDPACK_NAME] [-c COMMAND] [-d DOMAIN] [-f MANIFEST_PATH]
+	   [-i NUM_INSTANCES] [-m MEMORY] [-n HOST] [-p PATH] [-s STACK] [-t TIMEOUT]
+	   [--no-hostname] [--no-manifest] [--no-route] [--no-start]
+
+	   Push multiple apps with a manifest:
+	   cf push [-f MANIFEST_PATH]
 
 	OPTIONS:
-	   -b 			Custom buildpack URL (e.g. https://github.com/heroku/heroku-buildpack-play.git)
-	   -c 			Startup command, set to null to reset to default start command
-	   -d 			Domain (e.g. example.com)
-	   -i 			Number of instances
-	   -m 			Memory limit (e.g. 256M, 1024M, 1G)
-	   -n 			Hostname (e.g. my-subdomain)
-	   -p 			Path of app directory or zip file
-	   -s 			Stack to use
-	   -t 			Start timeout in seconds
-	   -f 			Path to manifest
-	   --no-manifest	Ignore manifest file
-	   --no-hostname	Map the root domain to this app
-	   --no-route		Do not map a route to this app
-	   --no-start		Do not start an app after pushing
+	   -b             Custom buildpack by name (e.g. my-buildpack) or GIT URL (e.g. https://github.com/heroku/heroku-buildpack-play.git)
+	   -c             Startup command, set to null to reset to default start command
+	   -d             Domain (e.g. example.com)
+	   -f             Path to manifest
+	   -i             Number of instances
+	   -m             Memory limit (e.g. 256M, 1024M, 1G)
+	   -n             Hostname (e.g. my-subdomain)
+	   -p             Path of app directory or zip file
+	   -s             Stack to use
+	   -t             Start timeout in seconds
+	   --no-hostname    Map the root domain to this app
+	   --no-manifest    Ignore manifest file
+	   --no-route        Do not map a route to this app
+	   --no-start        Do not start an app after pushing
 
 </pre>
 

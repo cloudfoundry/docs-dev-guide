@@ -1,7 +1,7 @@
 ---
 title: Tips for Ruby Developers
 ---
-_This page assumes that you are using cf v5._
+_This page assumes that you are using cf v6._
 
 This page has information specific to deploying Rack, Rails, or Sinatra
 applications.
@@ -75,11 +75,10 @@ If you do not manually create the manifest file, cf will prompt you to supply
 deployment settings when you first push the application, and will create and
 save the manifest file for you, with the settings you specified interactively.
 For more information about application manifests, and supported attributes, see
-[Application Manifests](manifest.html).
+[Deploying with Application Manifests](manifest.html).
 
 For an example of invoking a Rake database migration task at application
-startup, see [Migrate a Database for a Rails
-App](../services/migrate-db.html#migrate-ruby-db).
+startup, see [Migrating a Database on Cloud Foundry](../services/migrate-db.html#migrate-ruby-db).
 
 ## <a id='workers'></a> Running Rails 3 Worker Tasks ##
 
@@ -97,23 +96,14 @@ application.
 The first task is to decide which worker task library to use.
 Here is a summary of the three main libraries available for Ruby / Rails:
 
-| Library          | Description |
-| :------------------ | :------- |
-|[Delayed::Job](https://github.com/collectiveidea/delayed_job) |A direct
-extraction from [Shopify](http://www.shopify.com/) where the job table is
-responsible for a multitude of core tasks. |
-|[Resque](https://github.com/defunkt/resque) |A Redis-backed library for
-creating background jobs, placing those jobs on multiple queues, and processing
-them later. |
-|[Sidekiq](https://github.com/mperham/sidekiq)|Uses threads to handle many
-messages at the same time in the same process. It does not require Rails but
-will integrate tightly with Rails 3 to make background message processing dead
-simple." This library is also Redis-backed and is actually somewhat compatible
-with Resque messaging. |
+| Library | Description
+| :------------------ | :-------
+| [Delayed::Job](https://github.com/collectiveidea/delayed_job) | A direct extraction from [Shopify](http://www.shopify.com/) where the job table is responsible for a multitude of core tasks.
+| [Resque](https://github.com/defunkt/resque) | A Redis-backed library for creating background jobs, placing those jobs on multiple queues, and processing them later.
+| [Sidekiq](https://github.com/mperham/sidekiq) | Uses threads to handle many messages at the same time in the same process. It does not require Rails but will integrate tightly with Rails 3 to make background message processing dead simple. This library is also Redis-backed and is actually somewhat compatible with Resque messaging.
 
 For other alternatives, see
-[https://www.ruby-toolbox.com/categories/Background_Jobs](https://www.ruby-tool
-box.com/categories/Background_Jobs)
+[https://www.ruby-toolbox.com/categories/Background_Jobs](https://www.ruby-toolbox.com/categories/Background_Jobs)
 
 ### <a id='example-app'></a> Creating an Example Application ###
 
@@ -212,11 +202,12 @@ $ touch app/views/things/index.html.erb
 <%= @things.inspect %>
 ~~~
 
+
 #### <a id='deploy'></a>Deploying Once, Deploying Twice ####
 
 This application needs to be deployed twice for it to work, once as a Rails web
 application and once as a standalone Ruby application.
-The easiest way to do this is to keep separate CF manifests for each
+The easiest way to do this is to keep separate cf manifests for each
 application type:
 
 Web Manifest: Save this as `web-manifest.yml`:
@@ -231,14 +222,8 @@ applications:
   domain: ${target-base}
   path: .
   services:
-    sidekiq-mysql:
-      vendor: mysql
-      version: "5.1"
-      tier: free
-    sidekiq-redis:
-      vendor: redis
-      version: "2.6"
-      tier: free
+  - sidekiq-mysql:
+  - sidekiq-redis:
 ~~~
 
 Worker Manifest: Save this as `worker-manifest.yml`:
@@ -252,14 +237,8 @@ applications:
   path: .
   command: bundle exec sidekiq
   services:
-    sidekiq-redis:
-      vendor: redis
-      version: "2.6"
-      tier: free
-    sidekiq-mysql:
-      vendor: mysql
-      version: "5.1"
-      tier: free
+  - sidekiq-redis:
+  - sidekiq-mysql:
 ~~~
 
 Since the url "sidekiq.cloudfoundry.com" is probably already taken, change it
@@ -267,11 +246,11 @@ in `web-manifest.yml` first, then push the application with both manifest
 files:
 
 <pre class="terminal">
-$ cf push -m web-manifest.yml
-$ cf push -m worker-manifest.yml
+$ cf push -f web-manifest.yml
+$ cf push -f worker-manifest.yml
 </pre>
 
-If `CF` asks for a URL for the worker application, select "none".
+If `cf` asks for a URL for the worker application, select "none".
 
 ### <a id='test'></a>Test the Application ###
 
@@ -291,7 +270,7 @@ Use the `cf scale` command to change the number of Sidekiq workers.
 Example:
 
 <pre class="terminal">
-$ cf scale sidekiq-worker --instances 2
+$ cf scale sidekiq-worker -i 2
 </pre>
 
 ## <a id='buildpack'></a>About the Ruby Buildpack ##

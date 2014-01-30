@@ -75,11 +75,11 @@ applications:
 ... the rest of your settings ...
 ~~~
 
-Alternately, specify the buildpack on the command line with the `cf push -p`
+Alternately, specify the buildpack on the command line with the `cf push -b`
 flag:
 
 <pre class="termainl">
-$ cf push -p https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
+$ cf push -b https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
 </pre>
 
 ## <a id='services'></a> Binding Services ##

@@ -2,10 +2,9 @@
 title: Tips for Node.js Applications
 ---
 
-_This page assumes that you are using cf v5._
+_This page assumes that you are using cf v6._
 
-This page will prepare you to deploy Node.js apps via the [getting started
-guide](getting-started.html).
+This page will prepare you to deploy Node.js apps via the [Getting Started Guide](getting-started.html).
 
 ## <a id='packagejson'></a> Application Package File ##
 
@@ -46,10 +45,10 @@ applications:
 ... the rest of your settings ...
 ~~~
 
-Alternately, specify the `cf push --command` flag.
+Alternately, specify the start command with the `cf push -c` flag.
 
 <pre class="termainl">
-$ cf push --command "node my-app.js"
+$ cf push -c "node my-app.js"
 </pre>
 
 ## <a id='nodemodules'></a> Application Bundling ##
@@ -65,8 +64,8 @@ If Cloud Foundry does not automatically detect that your application is a
 Node.js application, you can override the auto-detection by specifying the
 Node.js buildpack.
 
-Either, add the buildpack into your `manifest.yml` and re-run `cf push
---reset`:
+Add the buildpack into your `manifest.yml` and re-run `cf push` with your
+manifest:
 
 ~~~yaml
 ---
@@ -76,17 +75,16 @@ applications:
 ... the rest of your settings ...
 ~~~
 
-Or, specify the `cf push --buildpack` flag:
+Alternately, specify the buildpack on the command line with the `cf push -p`
+flag:
 
 <pre class="termainl">
-$ cf push --buildpack
-https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
+$ cf push -p https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
 </pre>
 
 ## <a id='services'></a> Binding Services ##
 
-Refer to the [instructions for node.js service
-bindings](../services/node-service-bindings.html).
+Refer to [Configure Service Connections for Node.js](../services/node-service-bindings.html).
 
 ## <a id='buildpack'></a> About the Node.js Buildpack ##
 
@@ -96,29 +94,15 @@ Foundry, see https://github.com/cloudfoundry/heroku-buildpack-nodejs.
 The table below lists:
 
 * **Resource** --- The software installed by the buildpack.
-* **Available Versions** --- The versions of each software resource that are
-available from the buildpack.
-* **Installed by Default** --- The version of each software resource that is
+* **Available Versions** --- The versions of each software resource that are available from the buildpack.
+* **Installed by Default** --- The version of each software resource that is installed by default.
+* **To Install a Different Version** --- How to change the buildpack to install a different version of a software resource.
 
-installed by default.
-* **To Install a Different Version** --- How to change the buildpack to install
-a  different version of a software resource.
+----------------------------
 
  **This page was last updated on August 2, 2013.**
 
-|Resource |Available Versions |Installed by Default| To Install a Different
-Version |
-| --------- | --------- | --------- |--------- |
-|Node.js |0.10.0 - 0.10.6 <br> 0.10.8  - 0.10.12<br>0.8.0 - 0.8.8<br>0.8.10 -
-0.8.14<br>0.8.19<br>0.8.21 -  0.8.25<br>0.6.3<br>0.6.5 - 0.6.8<br>0.6.10 -
-0.6.18<br>0.6.20<br>0.4.10<br>0.4.7  |latest version of 0.10.x  |To change the
-default version installed by the buildpack, see <br>“hacking” on
-https://github.com/cloudfoundry/heroku-buildpack-nodejs. <br><br>To specify the
-versions of Node.js and npm an application <br>requires, edit the application’s
-`package.json`, as described in “node.js and npm <br>versions” on
-https://github.com/cloudfoundry/heroku-buildpack-nodejs.|
-|npm |1.3.2<br>1.2.30<br>1.2.21 - 1.2.28<br>1.2.18<br>1.2.14 -
-1.2.15<br>1.2.12<br>1.2.10<br>1.1.65<br>1.1.49<br>1.1.40 -
-1.1.41<br>1.1.39<br>1.1.35 -
-1.1.36<br>1.1.32<br>1.1.9<br>1.1.4<br>1.1.1<br>1.0.10 |latest version of 1.2.x
-|as above|
+| Resource | Available Versions | Installed by Default| To Install a Different Version
+| --------- | --------- | --------- |---------
+| Node.js | 0.10.0 - 0.10.6 <br> 0.10.8  - 0.10.12<br>0.8.0 - 0.8.8<br>0.8.10 - 0.8.14<br>0.8.19<br>0.8.21 -  0.8.25<br>0.6.3<br>0.6.5 - 0.6.8<br>0.6.10 - 0.6.18<br>0.6.20<br>0.4.10<br>0.4.7 | latest version of 0.10.x | To change the default version installed by the buildpack, see <br>“hacking” on https://github.com/cloudfoundry/heroku-buildpack-nodejs. <br><br>To specify the versions of Node.js and npm an application <br>requires, edit the application’s `package.json`, as described in “node.js and npm <br>versions” on https://github.com/cloudfoundry/heroku-buildpack-nodejs.
+| npm | 1.3.2<br>1.2.30<br>1.2.21 - 1.2.28<br>1.2.18<br>1.2.14 - 1.2.15<br>1.2.12<br>1.2.10<br>1.1.65<br>1.1.49<br>1.1.40 - 1.1.41<br>1.1.39<br>1.1.35 - 1.1.36<br>1.1.32<br>1.1.9<br>1.1.4<br>1.1.1<br>1.0.10 | latest version of 1.2.x | as above

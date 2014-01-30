@@ -310,13 +310,9 @@ installed by default.
 * **To Install a Different Version** --- How to change the buildpack to install
 a different version of a software resource.
 
-|Resource |Available Versions |Installed by Default| To Install a Different
-Version |
-| --------- | --------- | --------- |--------- |
-|Ruby |1.8.7  patchlevel 374, Rubygems 1.8.24 <br><br>1.9.2  patchlevel 320,
-Rubygems 1.3.7.1 <br><br>1.9.3  patchlevel 448, Rubygems 1.8.24 <br><br>2.0.0
-patchlevel 247, Rubygems 2.0.3   | The latest security patch release of
-1.9.3|Specify desired version in application gem file. |
-|Bundler |1.2.1 <br><br>1.3.0.pre.5<br><br>1.3.2 |1.3.2 |Not supported. |
+| Resource | Available Versions | Installed by Default | To Install a Different Version
+| --------- | --------- | --------- |---------
+| Ruby | 1.8.7  patchlevel 374, Rubygems 1.8.24 <br><br>1.9.2  patchlevel 320, Rubygems 1.3.7.1 <br><br>1.9.3  patchlevel 448, Rubygems 1.8.24 <br><br>2.0.0 patchlevel 247, Rubygems 2.0.3 | The latest security patch release of 1.9.3 | Specify desired version in application gem file.
+| Bundler | 1.2.1 <br><br>1.3.0.pre.5<br><br>1.3.2 | 1.3.2 | Not supported.
 
 **This table was last updated on August 14, 2013.**

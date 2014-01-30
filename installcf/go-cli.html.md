@@ -2,177 +2,221 @@
 title: Getting Started with cf v6
 ---
 
-## <a id='beta'></a>Beta Notice ##
+_This page assumes that you have used cf v5 in the past, and are now using cf v6._
 
-cf v6 beta is a complete rewrite of the Cloud Foundry command-line interface. v6 is written in Go, and is more performant that the previous, Ruby-based version.
+cf v6 is simpler, faster and more powerful than v5.
 
-cf v6 is currently in beta testing. Limitations of the beta version are:
-
-* Application manifests are not yet supported. Deployment options must be supplied on the command line, and will not be saved in a `manifest.yml` file.
-* The display of staging and buildpack logs that results from using `gcf push` is still being optimized to work with Loggregator. Log message listings may be incomplete; the workaround is to run `gcf logs --recent` to display all staging log messages.
-* For some commands, only the first 50 results are shown.
-
-During the beta period, the executable will be named gcf instead of cf. cf v6 commands begin with "gcf". If you would prefer to completely switch to gcf now, you can use an alias to cf.
-
-cf v6 is intended to replace cf v5. During the v6 beta period, cf v5 and v6 can co-exist on the same machine; you invoke v6 commands with the `gcf` command prefix. Upon general availability of cf v6, cf v5 will be deprecated, and the gcf executable will be renamed cf. At that point, cf v6 commands will be updated to replace the use of the `gcf` command prefix with `cf`.
-
-cf v6 is available for download at https://github.com/cloudfoundry/cli/releases/tag/v6.0.0-beta2. See https://github.com/cloudfoundry/cli/blob/master/INSTALL.md for installation instructions.
+* For v6, cf has been completely re-written in Go, and is more performant than previous versions, which were written in Ruby.
+* For v6, there are native installers for all major operating systems.
+* Commands behave consistently and logically: required arguments never have flags; optional arguments always have flags.
+* Command names are shorter and more readable, and most have single-letter aliases.
+* While cf v5 used interactive prompts widely, cf v6 uses interactive prompts only for login and for creating user-provided services.
+* While many cf v5 commands read manifests, only the push command in cf v6 reads manifests.
 
 
+## <a id='install'></a>Installation ##
 
-## <a id='new'></a>New and Improved Features ##
+Installation of cf now consists of a simple point-and-click, and no longer requires you to install Ruby on your system first (or ever).
+You can install on any major operating system using new binaries or new native installers.
+We recommend that you watch our [tools page](https://console.run.pivotal.io/download_cli) to learn when updates are released, and download a new binary or a new installer when you want to update.
+See [Install cf Version 6](./install-go-cli.html) for instructions.
 
-## <a id='login'></a>login ##
+## <a id='login'></a>Improvements to login ##
 
-The `login` command in cf v6 has expanded functionality. In addition to supplying your username and password, you can optionally specify (any or all of) the target API endpoint, organization, and space. cf will prompt for values you do not specify on the command line.
+The `login` command in cf v6 has expanded functionality. In addition to your username and password, you can provide a target API endpoint, organization, and space. cf prompts for any values that you do not specify on the command line. If you have only one organization and one space, you can omit them because `cf login` targets them automatically.
+
+Alternatively, you can write a script to log in and set your target, using the non-interactive `cf api`, `cf auth`, and `cf target` commands.
+Usage:
+
+<pre class="terminal">
+cf login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE]
+</pre>
+
+Upon successful login, cf v6 saves a `config.json` file containing your API endpoint, organization, space values, and access token. If you change these settings, the `config.json` file is updated accordingly.
+
+By default, `config.json` is located in your `~/.cf` directory. The new `CF_HOME` environment variable allows you to locate the `config.json` file wherever you like.
+
+## <a id='push'></a>Improvements to push and curl ##
+
+In cf v6, `push` is simpler to use and faster.
+
+* `APP`, the name of the application to push, is the only required argument, and the only argument that has no flag. Even `APP` can be omitted when you provide the application name in a manifest.
+* Many command line options are now one character long. For example, `-n` is now the flag for hostname or subdomain, replacing ``--host``.
+* There is no longer an interactive mode.
+* You no longer create manifests interactively.
+* You no longer create services with push at the command line, interactively, or in a manifest. See [User-Provided Services](#user-provided) to learn about new commands for creating services.
+* The `-m` (memory limit) option now requires a unit of measurement: `M`,`MB`,`G`,`or GB`, in upper case or lower case.
+
+cf v6 has expanded capabilities in the form of four new options.
+
+* `-t` (timeout) allows you to give your application more time to start, up to 180 seconds.
+* `--no-manifest` forces cf to ignore any existing manifest.
+* `--no-hostname` makes it possible to specify a route with a domain but no hostname.
+* `--no-route` is suitable for applications which process data while running in the background. These applications, sometimes called "workers" are bound only to services and should not have routes.
 
 Usage:
 
 <pre class="terminal">
-gcf login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE]
+cf push APP [-b URL] [-c COMMAND] [-d DOMAIN] [-i NUM_INSTANCES] [-m MEMORY] [-n HOST] [-p PATH] [-s STACK] [--no-hostname] [--no-route] [--no-start]`
 </pre>
 
-If you have only one organization and one space, they will be automatically targeted when you log in; you need not specify them.
-
-Upon successful login, cf v6 saves your API endpoint, organization, space values, and access token in a `config.json` file in your `~/.cf` directory. If you change your target API endpoint, organization, or space, the `config.json` file will be updated accordingly.
-
-cf v6 will always use any flags passed in the cf login command first. In a script that logs you in and sets your target, use the non-interactive `gcf api`, `gcf auth`, and `gcf target` commands.
-
-## <a id='push'></a>push ##
-
-`push` command options are changed: most are introduced with a shorter, one-character length flag, and two new options are added, as noted in the argument list below.
-
-Usage:
-
-<pre class="terminal">
-gcf push APP [-b URL] [-c COMMAND] [-d DOMAIN] [-i NUM_INSTANCES] [-m MEMORY] [-n HOST] [-p PATH] [-s STACK] [--no-hostname] [--no-route] [--no-start]`
-</pre>
-
-The only argument you must supply is `APP`. Optional arguments include:
+Optional arguments include:
 
 * `-b` --- Custom buildpack URL, for example, https://github.com/heroku/heroku-buildpack-play.git.
 * `-c` --- Start command for the application.
 * `-d` --- Domain, for example, example.com.
+* `-f` --- replaces `--manifest`
 * `-i` --- Number of instances of the application to run.
 * `-m` --- Memory limit, for example, 256, 1G, 1024M, and so on.
 * `-n` --- Hostname, for example, `my-subdomain`.
 * `-p` --- Path to application directory or archive.
 * `-s` --- Stack to use.
+* `-t` --- Timeout [elaborate...]
 * `--no-hostname` --- Map the root domain to this application (NEW).
+* `--no-manifest` --- Ignore manifests if they exist.
 * `--no-route` --- Do not map a route to this application (NEW).
 * `--no-start` --- Do not start the application after pushing.
 
+curl is also improved in cf v6:
+
+* `curl` automatically uses the identity with which you are logged in.
+* `curl` usage has been simplified to closely resemble the familiar UNIX pattern.
 
 ## <a id='user-provided'></a> User-Provided Services ##
 
-cf v6 has new commands for creating and updating user-provided services, described in the subsections below.
+cf v6 has new commands for creating and updating user-provided services. You have the choice of three ways to use these commands: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
 
-Note that when you create or update a user-provided service, you can use the `-l SYSLOG_DRAIN_URL` option to send data formatted according to RFC 5424 to a third-party log management software as described in RFC 6587.
+Once created, user-provided services can be bound to an application with with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
 
-Once created, user-provided services can be bound to an application with with `gcf bind-service`, unbound with `gcf unbind-service`, renamed with `gcf rename-service`, and deleted with `gcf delete-service`.
+### <a id='user-cups'></a>The cf create-user-provided-service Command ###
 
-### <a id='user-cups'></a>gcf create-user-provided-service, gcf cups ###
+The alias for `create-user-provided-service` is `cups`.
+Use the `-p` option with a comma-separated list of parameter names to enable interactive mode.
+cf then prompts you for each parameter in turn.
 
-Interactive Usage:
+  `cf cups <service-instance> -p "host, port, dbname, username, password"`
 
-<pre class="terminal">
-gcf create-user-provided-service SERVICE_INSTANCE -p "HOST, PORT, DATABASE, USERNAME, PASSWORD" -l SYSLOG-DRAIN-URL
-</pre>
+Use the `-p` option with a JSON hash of parameter keys and values to create a service non-interactively.
 
-Non-interactive Usage:
+  `cf cups <service-instance> -p '{"username":"admin","password":"pa55woRD"}'`
 
-<pre class="terminal">
-gcf create-user-provided-service SERVICE_INSTANCE -p '{"username":"USERNAME","password":"PASSWORD"}' -l SYSLOG-DRAIN-URL
-</pre>
+Use the `-l SYSLOG_DRAIN_URL` option to .
 
-### <a id='user-uups'></a>gcf update-user-provided-service`, gcf uups ###
+  `cf cups <service-instance> -l syslog://example.com`
 
-You can use `gcf update-user-provided-service` to update one or more of the attributes for a user-provided service. Attributes that you do not supply will not be updated.
+### <a id='user-uups'></a> The cf update-user-provided-service Command ###
 
-Interactive Usage:
+The alias for `update-user-provided-service` is `uups`.
+You can use `cf update-user-provided-service` to update one or more of the attributes for a user-provided service.
+Attributes that you do not supply are not updated.
 
-<pre class="terminal">
-gcf update-user-provided-service SERVICE_INSTANCE -p "HOST, PORT, DATABASE, USERNAME, PASSWORD" -l SYSLOG-DRAIN-URL
-</pre>
+Use the `-p` option with a comma-separated list of parameter names to enable interactive mode. cf then prompts you for each parameter in turn.
 
-Non-interactive Usage:
+  `cf uups <service-instance> -p "HOST, PORT, DATABASE, USERNAME, PASSWORD"`
 
-<pre class="terminal">
-gcf update-user-provided-service SERVICE_INSTANCE -p '{"username":"USERNAME","password":"PASSWORD"}' -l SYSLOG-DRAIN-URL
-</pre>
+Use the `-p` option with a JSON hash of parameter keys and values to update a service non-interactively.
 
+  `cf uups <service-instance> -p '{"username":"USERNAME","password":"PASSWORD"}'`
 
-## <a id='user-provided'></a> Domains and Routes ##
+Use the `-l SYSLOG_DRAIN_URL` option to update a service that drains information to third-party log management software.
 
-The cf v6 commands for managing domains and routes are:
+  `cf uups <service-instance> -l syslog://example.com`
 
-* `gcf create-domain` --- Create a domain in an organization for later use.
-* `gcf share-domain` --- Share a domain with all organizations.
-* `gcf map-domain` --- Map a domain to a space.
-* `gcf unmap-domain` --- Unmap a domain from a space.
-* `gcf delete-domain` --- Delete a domain.
-* `gcf create-route` --- Create a URL route in a space for later use.
-* `gcf map-route` --- Add a URL route to an appLICATION (mapping a route also creates it).
-* `gcf unmap-route` --- Remove a URL route from an application.
-* `gcf delete-route` --- Delete a route.
+## <a id='domains-etc'></a> Domains, Routes, Organizations and Spaces ##
 
+The relationships between domains, routes, organizations, and spaces have been simplified in cf v6.
+
+* All domains are now mapped to an org.
+* Routes are (still) scoped to spaces and apps.
+
+cf v6 has improved separation between management of private domains and management of shared domains.
+In terms of domains, cf v6 is designed to work with new and older versions of `cf_release`.
+
+cf v6 provides these commands for managing domains and routes.
+
+* `cf create-domain` --- Create a domain in an organization for later use.
+* `cf share-domain` --- Share a domain with all organizations.
+* `cf delete-domain` --- Delete a domain.
+* `cf create-route` --- Create a URL route in a space for later use.
+* `cf map-route` --- Add a URL route to an appLICATION (mapping a route also creates it).
+* `cf unmap-route` --- Remove a URL route from an application.
+* `cf delete-route` --- Delete a route.
 
 To use a domain in a route:
 
-1. Use `gcf create-domain` to create a domain in the desired organization, unless the domain already exists in (or has been shared with) the organization.
-1. Use `gcf map-domain` to map the domain to the desired space.
-1. Use `gcf map-route` to map the domain to the desired application. You can map the domain to other applications in the same space, as long as each resulting route in the space is unique. Routes will be unique if you use the `-n HOSTNAME`option to specify a unique hostname for each route that uses the same domain.
+1. Use `cf create-domain` to create a domain in the desired organization, unless the domain already exists in (or has been shared with) the organization.
+1. Use `cf map-domain` to map the domain to the desired space.
+1. Use `cf map-route` to map the domain to the desired application. You can map the domain to other applications in the same space, as long as each resulting route in the space is unique. Use the `-n HOSTNAME`option to specify a unique hostname for each route that uses the same domain.
 
-## <a id='domains-routes'></a> Management of Roles for Organizations and Spaces ##
+**Note**: The `map-domain` and `unmap-domain` commands no longer exist.
 
+cf v6 provides these commands for managing users and roles. <Ask Scott which are new>
 
-cf v6 provides new commands for managing users and roles.
+* `cf org-users` --- List users in the organization by role.
+* `cf set-org-role` --- Assign an organization role to a user. The available roles are "OrgManager", "BillingManager", and "OrgAuditor".
+* `cf unset-org-role` --- Remove an organization role from a user.
+* `cf space-users` --- List users in the space by role.
+* `cf set-space-role` --- Assign a space role to a user. The available roles are "SpaceManager", "SpaceDeveloper", and "SpaceAuditor".
+* `cf unset-space-role` --- Remove a space role from a user.
 
-* `gcf org-users` --- List users in the organization by role.
-* `gcf set-org-role` --- Assign an organization role to a user. The available roles are "OrgManager", "BillingManager", and "OrgAuditor".
-* `gcf unset-org-role` --- Remove an organization role from a user.
-* `gcf space-users` --- List users in the space by role.
-* `gcf set-space-role` --- Assign a space role to a user. The available roles are "SpaceManager", "SpaceDeveloper", and "SpaceAuditor".
-* `gcf unset-space-role` --- Remove a space role from a user.
+## <a id='easy'></a> Consistent Behavior to Help You Work Efficiently  ##
 
+We have focused on building clear principles into cf v6 to help operators and developers work efficiently and comfortably.
 
-## <a id='aliases'></a> New Aliases ##
+cf v6 commands behave consistently and logically:
 
-cf v6 introduces single-letter aliases for commonly used commands. For example, you can enter `gcf p` for `gcf push`, and `gcf t` for `gcf target`. You can see the alias for a command, if there is one, by running command line help, described below.
+* Required arguments never have flags.
+* Optional arguments always have flags.
+* If there is more than one required argument, the order of required arguments matters.
+* Optional arguments can be provided in any order.
 
-## <a id='help'></a> Command Line Help ##
+For example, consider `cf create-service`, which has three required arguments that must be provided in order: `SERVICE`, `PLAN`, and `SERVICE_INSTANCE`.
+On the other hand, `cf push` has one required argument and several optional arguments. You can provide the optional arguments in any order.
 
-Run `gcf help` to view a list all gcf commands and a brief description of each. To view detailed help for a command, add `-h` to the command line. For example:
+### <a id='aliases'></a> New Aliases ###
+
+cf v6 introduces single-letter aliases for commonly used commands. For example, you can enter `cf p` for `cf push`, and `cf t` for `cf target`. You can see the alias for a command, if there is one, by running command line help.
+
+### <a id='help'></a> Command Line Help ###
+
+Along with the streamlined command set and command nomenclature, cf v6 has more consistent command line help.
+The help follows these style conventions, which may differ from other forms of documentation:
+
+* Optional user input is designated with a flag and brackets, as in `cf create-route SPACE DOMAIN [-n HOSTNAME]`.
+* User input is capitalized, as in `cf push APP`.
+
+Run `cf help` to view a list all cf commands and a brief description of each. To view detailed help for a command, add `-h` to the command line. For example:
 
 <pre class="terminal">
-gcf push -h
-NAME:
-   push - Push a new app or sync changes to an existing app
+	$ cf push -h
+	NAME:
+	   push - Push a new app or sync changes to an existing app
 
-ALIAS:
-   p
+	ALIAS:
+	   p
 
-USAGE:
-   gcf push APP [-b URL] [-c COMMAND] [-d DOMAIN] [-i NUM_INSTANCES]
-               [-m MEMORY] [-n HOST] [-p PATH] [-s STACK]
-               [--no-hostname] [--no-route] [--no-start]
+	USAGE:
+	   cf push APP [-b URL] [-c COMMAND] [-d DOMAIN] [-i NUM_INSTANCES]
+	               [-m MEMORY] [-n HOST] [-p PATH] [-s STACK]
+	               [--no-hostname] [--no-route] [--no-start]
 
-OPTIONS:
-   -b ''		Custom buildpack URL (for example: https://github.com/heroku/heroku-buildpack-play.git)
-   -c ''		Startup command
-   -d ''		Domain (for example: example.com)
-   -i '1'		Number of instances
-   -m '128'		Memory limit (for example: 256, 1G, 1024M)
-   -n ''		Hostname (for example: my-subdomain)
-   -p ''		Path of app directory or zip file
-   -s ''		Stack to use
-   --no-hostname	Map the root domain to this app
-   --no-route		Do not map a route to this app
-   --no-start		Do not start an app after pushing
+	OPTIONS:
+	   -b 			Custom buildpack URL (e.g. https://github.com/heroku/heroku-buildpack-play.git)
+	   -c 			Startup command, set to null to reset to default start command
+	   -d 			Domain (e.g. example.com)
+	   -i 			Number of instances
+	   -m 			Memory limit (e.g. 256M, 1024M, 1G)
+	   -n 			Hostname (e.g. my-subdomain)
+	   -p 			Path of app directory or zip file
+	   -s 			Stack to use
+	   -t 			Start timeout in seconds
+	   -f 			Path to manifest
+	   --no-manifest	Ignore manifest file
+	   --no-hostname	Map the root domain to this app
+	   --no-route		Do not map a route to this app
+	   --no-start		Do not start an app after pushing
+
 </pre>
 
-Note that:
 
-* User input is capitalized, as in `gcf push APP`
-* Optional user input is designated with a flag and brackets, as in `gcf create-route SPACE DOMAIN [-n HOSTNAME]`.
 

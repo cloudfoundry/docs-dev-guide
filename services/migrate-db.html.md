@@ -2,7 +2,7 @@
 title: Migrating a Database on Cloud Foundry
 ---
 
-_This page assumes that you are using cf v5._
+_This page assumes that you are using cf v6._
 
 Application development and maintenance often requires changing a database schema, known as migrating the database. This topic describes three ways to migrate a database on Cloud Foundry.
 ## <a id='single_migration'></a>Migrate Once ##
@@ -20,17 +20,30 @@ This method executes SQL commands directly on the database, bypassing Cloud Foun
 4. Update the application using `cf push`.
 
 ## <a id='occasional_migration'></a>Migrate Occasionally ##
-This method leverages a reusable schema migration command or script. Each migration requires first running the migration command when deploying a single instance of the application, then re-deploying the application with the original start command and number of instances.
 
-1. Create a schema migration command or SQL script to migrate the database.
+This method requires:
 
-2. Deploy your application with the `command` option referencing the script. Use the `instances 1` option to limit the deployment to a single instance: `cf push --command ‘your_schema_migration_command’ --instances 1`
+* Creating a schema migration command or script.
+* Running the migration command when deploying a single instance of the application.
+* Re-deploying the application with the original start command and number of instances.
 
- Example: `cf push --command ‘rake db:migrate’ --instances 1`
+this method efficient for occasional use because you can re-use the schema migration command or script.
 
-3. Revert to the original deployment settings by using one of the following:
-    - The original start command and number of instance.
-    - The start command specified in the manifest file using `cf push --reset`. If the manifest does not specify a start command, the reset option uses the default.
+1. Create a schema migration command or SQL script to migrate the database. For example:
+
+  `rake db:migrate`
+
+2. Deploy a single instance of your application with the database migration command as the start command. For example:
+
+  `cf push APP -c ‘rake db:migrate’ -i 1`
+
+**Note**: Because the normal start command is not used, after this step the application has not actually started.
+
+3. Deploy your application again with the normal start command and desired number of instances. For example:
+
+	`cf push APP -c 'null' -i 4`
+
+**Note**: This example assumes that the normal start command for your application is the one provided by the buildpack, which the `-c 'null'` option forces cf to use.
 
 ## <a id='frequent_migration'></a>Migrate Frequently ##
 This method partially automates migrations by using an idempotent script limited to the first instance of a deployed application. This option takes the most effort to implement, but becomes more efficient with frequent migrations.
@@ -51,9 +64,11 @@ This method partially automates migrations by using an idempotent script limited
     command: bundle exec rake db:migrate && rails s
   ~~~
 
-3. Update the application using `cf push --reset`.
+3. Update the application using `cf push`.
 
-### <a id='frequent_migration'></a> Migrate Frequently Example using Rails ###
+**Note**: This application assumes that you are using a manifest and providing the application name there.
+
+### <a id='frequent_migration'></a> Example: Using the Migrate Frequently Method with Rails ###
 
 1. Create a Rake task to limit an idempotent command to the first instance of a deployed application:
 
@@ -76,4 +91,4 @@ This method partially automates migrations by using an idempotent script limited
       command: bundle exec rake cf:on_primary_instance db:migrate && rails s
   ~~~
 
-3. Update the application using `cf push --reset`.
+3. Update the application using `cf push`.

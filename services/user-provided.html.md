@@ -71,14 +71,13 @@ services:
 This excerpt from the cf push command and response shows that cf reads the manifest and binds the service instance to the app, which is called `test-msg-app`.
 
 <pre class="terminal">
-	$ cf push
-	Using manifest file /Users/janclouduser/test-apps/test-msg-app/manifest.yml
+$ cf push
+Using manifest file /Users/janclouduser/test-apps/test-msg-app/manifest.yml
 
-	...
+...
 
-	Binding service test-mysql-01 to test-msg-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>
-	OK
-
+Binding service test-mysql-01 to test-msg-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>
+OK
 </pre>
 
 For more information about manifests, see [Deploying with Application Manifests](../deploy-apps/manifest.html#services-block).
@@ -88,41 +87,41 @@ For an example of the `cf bind-service` command, see the next section.
 ## <a id='cups-example'></a> Example: Creating a Service and Binding it to an Application ##
 
 Suppose we want to create and bind an instance of a publish-subscribe messaging service to an app called test-msg-app.
-Our Cloud Foundry username is `janclouduser`, and the service is called `pubsub.rb`.
+Our Cloud Foundry username is `janclouduser`, and we know the URL and port for the service.
 
-1. We begin with the `cf create-user-provided-service command`, using its alias, `cups`.
+1. We begin with the `cf create-user-provided-service command` in interactive mode, using its alias, `cups`.
 
 	<pre class="terminal">
-		$ cf cups test-pubsub-01 -p "host, port, binary, username, password"
+	$ cf cups test-pubsub-01 -p "host, port, binary, username, password"
 
-		host> pubsub01.<%=vars.app_domain%>
+	host> pubsub01.<%=vars.app_domain%>
 
-		port> 1234
+	port> 1234
 
-		binary> pubsub.rb
+	url> pubsub-example.com
 
-		username> pubsubuser
+	username> pubsubuser
 
-		password> p@$$w0rd
-		Creating user provided service test-pubsub-01 in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
-		OK
+	password> p@$$w0rd
+	Creating user provided service test-pubsub-01 in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	OK
 	</pre>
 
-1. When we list available services, we see the new service.
+1. When we list available services, we see that the new service is not yet bound to any apps.
 
 	<pre class="terminal">
-		$ cf services
-		Getting services in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
-		OK
+	$ cf services
+	Getting services in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	OK
 
-		name               service         plan    bound apps
-		test-pubsub-01     user-provided
+	name               service         plan    bound apps
+	test-pubsub-01     user-provided
 	</pre>
 
 1. Now we bind the service to our app.
 
 	<pre class="terminal">
-	cf bind-service test-msg-app test-pubsub-01
+	$ cf bind-service test-msg-app test-pubsub-01
 	Binding service test-pubsub-01 to app test-msg-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
 	OK
 	TIP: Use 'cf push' to ensure your env variable changes take effect
@@ -130,7 +129,7 @@ Our Cloud Foundry username is `janclouduser`, and the service is called `pubsub.
 
 	At this point `VCAP_SERVICES`, the environment variable which controls binding, has been set locally but not yet pushed to the environment of the container where our app is running.
 
-1. We push our app again to update the container environment and cause the binding to take effect.
+1. We push our app a second time to update the container environment and cause the binding to take effect.
 
 	<pre class="terminal">
 	$ cf push test-msg-app
@@ -139,10 +138,10 @@ Our Cloud Foundry username is `janclouduser`, and the service is called `pubsub.
 	...
 	</pre>
 
-1. To verify that [VCAP_SERVICES](../deploy-apps/environment-variable.html) has been updated with our credentials, we search the environment log.
+1. To verify that the service instance is now recorded in [VCAP_SERVICES](../deploy-apps/environment-variable.html), we search the environment log.
 
 	<pre class="terminal">
-	cf files test-msg-app logs/env.log | grep VCAP_SERVICES
+	$ cf files test-msg-app logs/env.log | grep VCAP_SERVICES
 	VCAP_SERVICES={"user-provided":[{"name":"test-pubsub-01","label":"user-provided","tags":[],"credentials":{"binary":"pubsub.rb","host":"pubsub01.<%=vars.app_domain%>","password":"p@29w0rd","port":"1234","username":"pubsubuser"},"syslog_drain_url":""}]}
 	</pre>
 

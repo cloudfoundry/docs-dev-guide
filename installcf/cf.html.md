@@ -6,7 +6,7 @@ cf is Cloud Foundry's command line interface.
 You can use cf to deploy and manage applications running on most Cloud Foundry
 based environments.
 This page documents cf v5.
-For information about cf v6, see [Getting Started with cf v6](go-cli.html).
+For information about cf v6, see [Getting Started with cf v6](whats-new-v6.html).
 
 ## <a id='commands'></a>Commands by Functional Category ##
 

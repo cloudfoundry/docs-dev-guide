@@ -82,7 +82,7 @@ Optional arguments include:
 
 cf v6 has new commands for creating and updating user-provided services. You have the choice of three ways to use these commands: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
 
-Once created, user-provided services can be bound to an application with with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
+Once created, user-provided services can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
 
 ### <a id='user-cups'></a>The cf create-user-provided-service Command ###
 

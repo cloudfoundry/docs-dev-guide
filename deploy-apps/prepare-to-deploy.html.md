@@ -123,4 +123,4 @@ You can also customize an existing buildpack or write your own.
 
 * [Heroku Third-Party Buildpacks](https://devcenter.heroku.com/articles/third-party-buildpacks) has links to community-developed buildpacks developed for Heroku, which may (but have not been verified to) work with Cloud Foundry.
 
-* [Custom Buildpacks](../../extending/custom-buildpacks.html) for information on creating your own custom buildpacks.
+* [Custom Buildpacks](/buildpacks/) for information on creating your own custom buildpacks.

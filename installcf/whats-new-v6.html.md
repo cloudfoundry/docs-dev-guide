@@ -19,9 +19,9 @@ In the guided tour of cf v6 which follows, we highlight new and improved feature
 ## <a id='install'></a>Installation ##
 
 cf v6 installs with a simple point-and-click, and you no longer need to install Ruby on your system first (or ever).
-You can use new binaries or new native installers.
+You can use new binaries or new native installers. See [Install cf Version 6](./install-go-cli.html).
+
 We recommend that you watch our [tools page](https://console.run.pivotal.io/download_cli) to learn when updates are released, and download a new binary or a new installer when you want to update.
-See [Install cf Version 6](./install-go-cli.html) for instructions.
 
 ## <a id='login'></a>login ##
 

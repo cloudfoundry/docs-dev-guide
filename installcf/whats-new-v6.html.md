@@ -2,25 +2,28 @@
 title: Getting Started with cf v6
 ---
 
-_This page assumes that you have used cf v5 in the past, and are now using cf v6._
+_This guide introduces cf v5 users to what is new in cf v6._
 
 cf v6 is simpler, faster and more powerful than v5.
+Consider these key differences:
 
-* For v6, cf has been completely re-written in Go, and is more performant than previous versions, which were written in Ruby.
-* For v6, there are native installers for all major operating systems.
+* cf has been completely re-written in Go, and is more performant than previous versions, which were written in Ruby.
+* There are now native installers for all major operating systems.
 * Commands behave consistently and logically: required arguments never have flags; optional arguments always have flags.
 * Command names are shorter, yet more communicative, and most have single-letter aliases.
 * While many cf v5 commands read manifests, only the push command in cf v6 reads manifests.
 * While cf v5 used interactive prompts widely, cf v6 uses interactive prompts only for login and optionally for creating user-provided services (you can also create user-provided services non-interactively).
 
+In the guided tour of cf v6 which follows, we highlight new and improved features and how to use them.
+
 ## <a id='install'></a>Installation ##
 
-Installation of cf now consists of a simple point-and-click, and no longer requires you to install Ruby on your system first (or ever).
-You can install on any major operating system using new binaries or new native installers.
+cf v6 installs with a simple point-and-click, and you no longer need to install Ruby on your system first (or ever).
+You can use new binaries or new native installers.
 We recommend that you watch our [tools page](https://console.run.pivotal.io/download_cli) to learn when updates are released, and download a new binary or a new installer when you want to update.
 See [Install cf Version 6](./install-go-cli.html) for instructions.
 
-## <a id='login'></a>Improvements to login ##
+## <a id='login'></a>login ##
 
 The `login` command in cf v6 has expanded functionality. In addition to your username and password, you can provide a target API endpoint, organization, and space. cf prompts for any values that you do not specify on the command line. If you have only one organization and one space, you can omit them because `cf login` targets them automatically. Usage:
 
@@ -34,7 +37,7 @@ Upon successful login, cf v6 saves a `config.json` file containing your API endp
 
 By default, `config.json` is located in your `~/.cf` directory. The new `CF_HOME` environment variable allows you to locate the `config.json` file wherever you like.
 
-## <a id='push'></a>Improvements to push ##
+## <a id='push'></a>push ##
 
 In cf v6, `push` is simpler to use and faster.
 

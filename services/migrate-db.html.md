@@ -8,7 +8,11 @@ Application development and maintenance often requires changing a database schem
 
 ## <a id='single_migration'></a>Migrate Once ##
 
-This method executes SQL commands directly on the database, bypassing Cloud Foundry. This is the fastest option for a single migration. However, this method is less efficient for multiple migrations because it requires manually accessing the database every time.
+This method executes SQL commands directly on the database, bypassing Cloud Foundry.
+This is the fastest option for a single migration.
+However, this method is less efficient for multiple migrations because it requires manually accessing the database every time.
+**Note**: Use this method if you expect your database migration to take longer than the timeout that cf push applies to your application.
+The timeout defaults to 60 seconds, but you can extend it up to 180 seconds with the `-t` command line option.
 
 1. Obtain your database credentials by searching for the `VCAP_SERVICES` environment variable in the application environment log:
 

@@ -5,6 +5,7 @@ title: Migrating a Database on Cloud Foundry
 _This page assumes that you are using cf v6._
 
 Application development and maintenance often requires changing a database schema, known as migrating the database. This topic describes three ways to migrate a database on Cloud Foundry.
+
 ## <a id='single_migration'></a>Migrate Once ##
 
 This method executes SQL commands directly on the database, bypassing Cloud Foundry. This is the fastest option for a single migration. However, this method is less efficient for multiple migrations because it requires manually accessing the database every time.
@@ -21,13 +22,13 @@ This method executes SQL commands directly on the database, bypassing Cloud Foun
 
 ## <a id='occasional_migration'></a>Migrate Occasionally ##
 
-This method requires:
+This method requires you to:
 
-* Creating a schema migration command or script.
-* Running the migration command when deploying a single instance of the application.
-* Re-deploying the application with the original start command and number of instances.
+* Create a schema migration command or script.
+* Run the migration command when deploying a single instance of the application.
+* Re-deploy the application with the original start command and number of instances.
 
-this method efficient for occasional use because you can re-use the schema migration command or script.
+This method is efficient for occasional use because you can re-use the schema migration command or script.
 
 1. Create a schema migration command or SQL script to migrate the database. For example:
 
@@ -37,36 +38,41 @@ this method efficient for occasional use because you can re-use the schema migra
 
   `cf push APP -c ‘rake db:migrate’ -i 1`
 
-**Note**: Because the normal start command is not used, after this step the application has not actually started.
+   **Note**: After this step the database has been migrated but the application itself has not started, because the normal start command is not used.
 
 3. Deploy your application again with the normal start command and desired number of instances. For example:
 
 	`cf push APP -c 'null' -i 4`
 
-**Note**: This example assumes that the normal start command for your application is the one provided by the buildpack, which the `-c 'null'` option forces cf to use.
+    **Note**: This example assumes that the normal start command for your application is the one provided by the buildpack, which the `-c 'null'` option forces cf to use.
 
 ## <a id='frequent_migration'></a>Migrate Frequently ##
-This method partially automates migrations by using an idempotent script limited to the first instance of a deployed application. This option takes the most effort to implement, but becomes more efficient with frequent migrations.
+This method uses an idempotent script to partially automate migrations. The script runs on the first application instance only.
+
+This option takes the most effort to implement, but becomes more efficient with frequent migrations.
 
 1. Create a script that:
-    - Examines the `instance_index` of the `VCAP_APPLICATION` environment variable. The `instance_index` has a value of “0” in the first deployed instance of an application.
+    - Examines the `instance_index` of the `VCAP_APPLICATION` environment variable. The first deployed instance of an application always has an `instance_index` of “0”.
         For example, this code uses Ruby to extract the `instance_index` from `VCAP_APPLICATION`:
 
         `instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"]`
-    - If and only if the instance_index is “0”, runs an idempotent script or uses an existing idempotent command to migrate the database.
+    - Determines whether or not the `instance_index` is “0”.
+    - If and only if the `instance_index` is “0”, runs a script or uses an existing command to migrate the database. The script or command must be idempotent.
 
-2. Add the schema migration script chained with a start command to the `manifest.yml` file using the `command` attribute.
+2. Create a manifest that provides:
+   - The application name
+   - The `command` attribute with a value of the schema migration script chained with a start command.
 
- Example partial manifest:
+   Example partial manifest:
 
-  ~~~
-    - name: my-rails-app
-    command: bundle exec rake db:migrate && rails s
-  ~~~
+   ~~~
+     ---
+      applications:
+      - name: my-rails-app
+      command: bundle exec rake db:migrate && rails s
+   ~~~
 
 3. Update the application using `cf push`.
-
-**Note**: This application assumes that you are using a manifest and providing the application name there.
 
 ### <a id='frequent_migration'></a> Example: Using the Migrate Frequently Method with Rails ###
 

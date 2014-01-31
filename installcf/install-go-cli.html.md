@@ -36,4 +36,4 @@ To install gcf on Windows:
 To verify your installation, open a terminal window and type `gcf`.
 If your installation was successful, the gcf help listing appears.
 
-For information on how to use cf version 6, see [Getting Started with cf v6](../installcf/go-cli.html).
+For information on how to use cf version 6, see [Getting Started with cf v6](../installcf/whats-new-v6.html).

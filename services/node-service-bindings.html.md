@@ -1,28 +1,56 @@
 ---
 title: Configure Service Connections for Node.js
 ---
-_This page assumes that you are using cf v5._
+_This page assumes that you are using cf v6._
 
 ## <a id='intro'></a>Introduction ##
 
-This guide is for developers who wish to bind a data source t0o a Node.js
+This guide is for developers who wish to bind a data source to a Node.js
 application deployed and running on Cloud Foundry.
 
-### <a id='creating'></a> Creating a Service ##
+### <a id='creating'></a>Creating a Service ##
 
-To create a service issue the following command with cf and answer the
-interactive prompts:
+#### Managed Services ####
+Use the following cf command to create a managed service:
 
-~~~bash
-$ cf create-service
-~~~
+<pre class="terminal">
+cf create-service SERVICE PLAN SERVICE_INSTANCE
+</pre>
+
+where:
+
+* `SERVICE` --- is the type of service.
+* `PLAN` --- is the service plan.
+* `SERVICE_INSTANCE` --- is the name you assign to the service instance.
+
+For example:
+<pre class="terminal">
+cf create-service rabbitmq small-plan my_rabbitmq
+</pre>
+
+#### User-Provided Services ####
+
+To create a user-provided service in interactive mode, use the -p option with a
+comma-separated list of parameter names.
+cf will prompt you for each parameter.
+
+<pre class="terminal">
+cf create-user-provided-service SERVICE_INSTANCE -p "host, port, dbname, username, password"
+</pre>
+
+To create a user-provided service non-interactively, use the -p option with a JSON hash of parameter keys and values.
+
+<pre class="terminal">
+cf create-user-provided-service SERVICE_INSTANCE -p '{"username":"admin","password":"pa55woRD"}'
+</pre>
+
 
 ### <a id='binding'></a> Binding a Service ##
 
-To bind the service to the application, use the following cf command:
+Use the following cf command to bind the service to an application:
 
 ~~~bash
-$ cf bind-service --app [application name] --service [service name]
+$ cf bind-service APPLICATION SERVICE_INSTANCE
 ~~~
 
 ## <a id='Connecting'></a> Connecting to a Service ##
@@ -65,13 +93,13 @@ add all of them:
 You will also need to run `npm shrinkwrap` to regenerate your
 `npm-shrinkwrap.json` file after you edit `package.json`.
 
-## <a id='creds'></a>Parse VCAP\_SERVICES for Credentials  ##
+## <a id='creds'></a>Parse VCAP_SERVICES for Credentials  ##
 
-You will need to parse the VCAP\_SERVICES environment variable in your code to
+You will need to parse the VCAP_SERVICES environment variable in your code to
 get the required connection details such as host address, port, user name, and
 password.
 
-For example, if you are using PostgreSQL, your VCAP\_SERVICES environment
+For example, if you are using PostgreSQL, your VCAP_SERVICES environment
 variable might look something like this:
 
 ~~~json
@@ -87,7 +115,8 @@ variable might look something like this:
 
 This example JSON is simplified; yours may contain additional properties.
 
-First, parse the VCAP_SERVICES environment variable. For example:
+First, parse the VCAP_SERVICES environment variable.
+For example:
 
 ~~~
 var vcap_services = JSON.parse(process.env.VCAP_SERVICES)

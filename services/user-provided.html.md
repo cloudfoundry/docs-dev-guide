@@ -1,5 +1,5 @@
 ---
-title: User Provided Service Instances
+title: User-Provided Service Instances
 ---
 
 _This page assumes that you are using cf v6._

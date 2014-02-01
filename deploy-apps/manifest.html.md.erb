@@ -95,7 +95,7 @@ buildpack: <buildpack_URL>
 
 **Note:** The `cf buildpacks` command lists the buildpacks that you can refer to by name in a manifest or a command-line option.
 
-The command-line option that overrides this attribute is `-p`.
+The command-line option that overrides this attribute is `-b`.
 
 ### <a id='start-commands'></a>The command attribute ###
 
@@ -111,6 +111,8 @@ For some types of application, you must provide a custom start command, either f
 
 The command-line option that overrides this attribute is `-c`.
 
+**Note**: The `-c` option with a value of 'null' forces `cf push` to use the buildpack start command. See [About Starting Applications](../app-startup.html).
+
 ### <a id='domain'></a>The domain attribute ###
 
 Every `cf push` deploys applications to one particular Cloud Foundry instance. Every Cloud Foundry instance has its own default domain. When you do not specify a domain, `cf` incorporates the default domain in the route to your application.
@@ -125,7 +127,7 @@ The command-line option that overrides this attribute is `-d`.
 
 ### <a id='no-route'></a>The no-route attribute ###
 
-By default, `cf push` assigns a route to every application. Sometimes this is inappropriate. For instance, applications which process data while running in the background, bound only to services, should not be assigned routes.
+By default, `cf push` assigns a route to every application. But some applications process data while running in the background, and should not be assigned routes.
 
 You can use the `no-route` attribute with a value of `true` to prevent a route from being created for your application.
 

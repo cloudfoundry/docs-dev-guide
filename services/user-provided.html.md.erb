@@ -4,10 +4,10 @@ title: User-Provided Service Instances
 
 _This page assumes that you are using cf v6._
 
-User-provided services allow you to represent external assets like databases and messaging service in Cloud Foundry.
+User-provided service instances allow you to represent external assets like databases, messaging services, and key-value stores in Cloud Foundry.
 
 For example, suppose a developer obtains credentials, a URL, and a port number for communicating with an Oracle database that is managed outside of Cloud Foundry.
-Then the developer creates a user-provided service to represent this external resource and provisions the service instance with all the parameters required for communicating with the real Oracle database.
+Then the developer creates a user-provided service instance to represent this external resource and provisions the service instance with all the parameters required for communicating with the real Oracle database.
 Finally, she binds the user-provided service instance to her application.
 
 The user-provided service instance allows the developer to:
@@ -16,15 +16,18 @@ The user-provided service instance allows the developer to:
 * Treat the user-provide service instance exactly like any other service instance.
 
 Although the external asset in this example was a real Oracle database, the external asset could have been a fictional service with whatever parameters the developer wanted.
-This allows you to create placeholder services to use in testing and development.
+This allows you to create placeholder service instances for testing and development.
+Whether the service in question is real or fictional, it is outside of Cloud Foundry, so you never create or otherwise manage the service itself—you only create and manage service instances.
 
-The `cf services` command lists all the services (both user-provided and others) in your target space.
+The `cf services` command lists all the service instances (both user-provided and managed) in your target space.
 
-## <a id='user-cups'></a>cf Commands for Working with User-Provided Services ##
+In contrast to the user-provided kind, a managed service is one that a service broker advertises in a catalog. See [Create a Managed Service Instance] (./create-managed-service.html).
 
-cf commands for creating and updating user-provided services can be used in three ways: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
+## <a id='user-cups'></a>cf Commands for Working with User-Provided Service Instances ##
 
-Once created, user-provided services can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
+cf commands for creating and updating user-provided service instances can be used in three ways: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
+
+Once created, user-provided service instances can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
 
 Finally, you can list service auth tokens with `cf service-auth-tokens`, create them with `cf create-service-auth-token`, and update them with `cf update-service-auth-token`.
 
@@ -32,41 +35,41 @@ Finally, you can list service auth tokens with `cf service-auth-tokens`, create 
 
 The alias for `create-user-provided-service` is `cups`.
 
-To create a service in interactive mode, use the `-p` option with a comma-separated list of parameter names.
+To create a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names.
 cf then prompts you for each parameter in turn.
 
   `cf cups SERVICE_INSTANCE -p "host, port, dbname, username, password"`
 
-To create a service non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
+To create a service instance non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
 
   `cf cups SERVICE_INSTANCE -p '{"username":"admin","password":"pa55woRD"}'`
 
-To create a service that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
+To create a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
 
   `cf cups SERVICE_INSTANCE -l syslog://<%=vars.app_domain%>`
 
 ### <a id='user-uups'></a> The cf update-user-provided-service Command ###
 
 The alias for `update-user-provided-service` is `uups`.
-You can use `cf update-user-provided-service` to update one or more of the attributes for a user-provided service.
+You can use `cf update-user-provided-service` to update one or more of the attributes for a user-provided service instance.
 Attributes that you do not supply are not updated.
 
-To update a service in interactive mode, use the `-p` option with a comma-separated list of parameter names.
+To update a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names.
 cf then prompts you for each parameter in turn.
 
   `cf uups SERVICE_INSTANCE -p "HOST, PORT, DATABASE, USERNAME, PASSWORD"`
 
-To update a service non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
+To update a service instance non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
 
   `cf uups SERVICE_INSTANCE -p '{"username":"USERNAME","password":"PASSWORD"}'`
 
-To update a service that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
+To update a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
 
   `cf uups SERVICE_INSTANCE -l syslog://<%=vars.app_domain%>`
 
-## <a id='cups-example'></a> Binding User-Provided Services to Applications  ##
+## <a id='cups-example'></a> Binding User-Provided Service Instances to Applications  ##
 
-There are two ways to bind user-provided services to applications:
+There are two ways to bind user-provided service instances to applications:
 
 * With a manifest, _when_ you push the application.
 * With the `cf bind-service` command, _after_ you push the application.
@@ -96,7 +99,7 @@ For more information about manifests, see [Deploying with Application Manifests]
 
 For an example of the `cf bind-service` command, see the next section.
 
-## <a id='cups-example'></a> Example: Creating a Service and Binding it to an Application ##
+## <a id='cups-example'></a> Example: Creating a Service Instance and Binding it to an Application ##
 
 Suppose we want to create and bind an instance of a publish-subscribe messaging service to an app called test-msg-app.
 Our Cloud Foundry username is `janclouduser`, and we know the URL and port for the service.

@@ -4,7 +4,15 @@ title: User-Provided Service Instances
 
 _This page assumes that you are using cf v6._
 
-User-provided service instances are service instances which have been provisioned outside of Cloud Foundry. For example, a DBA may provide a developer with credentials to an Oracle database managed outside of and unknown to Cloud Foundry. Rather than hard-coding credentials for these instances into your applications, you can create a mock service instance in Cloud Foundry to represent an external resource, and provide whatever credentials your application requires. Once created, user-provided service instances behave just like other service instances.
+User-provided services provide a way of representing external assets like databases in Cloud Foundry.
+For example, suppose a developer obtains credentials, a URL, and a port number for communicating with an Oracle database that is managed outside of Cloud Foundry.
+Then the developer creates a user-provided service to represent this external resource.
+The developer provisions the user-provided service instance with all the parameters required for communicating with the real Oracle database.
+Then she binds the user-provided service instance to her application.
+The user-provided service instance allows the developer to:
+
+* Avoid hard-coding credentials for a service instance into her application.
+* Treat the user-provide service instance exactly like any other service instance.
 
 The `cf services` command lists all the services (both user-provided and others) in your target space.
 

@@ -12,10 +12,9 @@ doesn't make sense in all cases for the provider to return any credentials for
 an application's use.
 
 For services that offer bindable service instances, the binding operation puts
-credentials for the service instance in the environment variable VCAP\_SERVICES,
+credentials for the service instance in the environment variable VCAP_SERVICES,
 where your application can consume them.
-For more information, see [VCAP\_SERVICES Environment
-Variable](../deploy-apps/environment-variable.html).
+For more information, see [VCAP\_SERVICES Environment Variable](../deploy-apps/environment-variable.html).
 
 You can bind a service to an application with the command `cf bind-service APP SERVICE_INSTANCE`.
 Example:

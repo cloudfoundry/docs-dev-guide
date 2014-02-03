@@ -74,19 +74,20 @@ By default, `cf` recursively pushes the contents of the current working director
 
 When you push an application for the first time, `cf` applies default values to any attributes that you do not set in a manifest or `cf push` command-line options.
 
-* For example, `cf push <application_name>` with no manifest might deploy one instance of the app, drawing on default values to allocate one gigabyte of memory and one gigabyte of disk.
+* For example, `cf push <application_name>` with no manifest might deploy one instance of the app with one gigabyte of memory.
+In this case the default values for instances and memory are "1" and "1G", respectively.
 
 Between one push and another, attribute values can change in other ways.
 
 * For example, the `cf scale` command changes the number of instances.
 
-The attribute values on the server at any one time represent the cumulative result of defaults, manifest settings, `cf push` command-line options, and commands like `cf scale` applied up to that point.
+The attribute values on the server at any one time represent the cumulative result of all settings applied up to that point: defaults, attributes in the manifest, `cf push` command-line options, and commands like `cf scale`.
 There is no special name for this resulting set of values on the server.
 You can think of them as the most recent values.
 
-On pushes after the first one, `cf` follows rules of precedence when setting attribute values:
+`cf push` follows rules of precedence when setting attribute values:
 
-* Manifests override most recent values.
+* Manifests override most recent values, including defaults.
 * Command-line options override manifests.
 
 In general, you can think of manifests as just another input to `cf push`, to be combined with command-line options and most recent values.

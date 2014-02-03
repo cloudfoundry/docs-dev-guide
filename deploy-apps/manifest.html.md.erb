@@ -59,7 +59,7 @@ cf push <application_name>
 
 **Note:** When you provide an application name at the command line, `cf push` uses that application name whether or not there is a different application name in the manifest.
 If the manifest describes multiple applications, you can push a single application by providing its name at the command line; `cf` does not push the others.
-These behaviors can be useful in testing.
+These behaviors are useful for testing.
 
 ## <a id='find-app'></a>How cf push Finds the Application ##
 
@@ -70,22 +70,30 @@ By default, `cf` recursively pushes the contents of the current working director
 
 **Note:** If you want to push more than a single file, but not the entire contents of a directory, consider using a `.cfignore` file to tell `cf push` what to exclude.
 
-## <a id='precedence'></a>Precedence Between Manifests, Command-line Options, and Existing Values ##
+## <a id='precedence'></a>Precedence Between Manifests, Command-line Options, and Most Recent Values ##
 
-You can set application attributes using either a manifest or `cf push` command-line options. When you push an application for the first time, `cf` applies default values to attributes that you do not set. On subsequent pushes, you can use command-line options, or manifests, or both.
+When you push an application for the first time, `cf` applies default values to any attributes that you do not set in a manifest or `cf push` command-line options.
 
-Between one push and another, attribute values can change in other ways. For example, the `cf scale` command changes the number of instances. The attribute values right before you push represent the cumulative result of defaults, manifest settings, and command-line options, applied up to that point. You can think of them as the values that exist at that moment, or just existing values.
+* For example, `cf push <application_name>` with no manifest might deploy one instance of the app, drawing on default values to allocate one gigabyte of memory and one gigabyte of disk.
 
-Whenever you push an application, `cf` follows rules of precedence when setting attribute values:
+Between one push and another, attribute values can change in other ways.
 
-* Manifests override existing values.
+* For example, the `cf scale` command changes the number of instances.
+
+The attribute values on the server at any one time represent the cumulative result of defaults, manifest settings, `cf push` command-line options, and commands like `cf scale` applied up to that point.
+There is no special name for this resulting set of values on the server.
+You can think of them as the most recent values.
+
+On pushes after the first one, `cf` follows rules of precedence when setting attribute values:
+
+* Manifests override most recent values.
 * Command-line options override manifests.
 
-Think of manifests as just another input to `cf push`, to be combined with command-line options and existing values.
+In general, you can think of manifests as just another input to `cf push`, to be combined with command-line options and most recent values.
 
 ## <a id='optional-attributes'></a>Optional Attributes ##
 
-This section explains how to describe optional application attributes in manifests. Each of these attributes can also be specified by a command-line option. Command-line options override the manifest, except in the case of the `path` attribute, as explained [below](#path).
+This section explains how to describe optional application attributes in manifests. Each of these attributes can also be specified by a command-line option. Command-line options override the manifest.
 
 ### <a id='buildpack'></a>The buildpack attribute
 
@@ -117,9 +125,11 @@ The command-line option that overrides this attribute is `-c`.
 
 ### <a id='domain'></a>The domain attribute ###
 
-Every `cf push` deploys applications to one particular Cloud Foundry instance. Every Cloud Foundry instance has its own default domain. When you do not specify a domain, `cf` incorporates the default domain in the route to your application.
+Every `cf push` deploys applications to one particular Cloud Foundry instance.
+Every Cloud Foundry instance may have a shared domain set by an admin.
+Unless you specify a domain, `cf` incorporates that shared domain in the route to your application.
 
-You can use the `domain` attribute when you want your application to be served from a domain other than the default.
+You can use the `domain` attribute when you want your application to be served from a domain other than the default shared domain.
 
 ~~~
 domain: unique-example.com
@@ -139,6 +149,11 @@ no-route: true
 
 The command-line option that corresponds to this attribute is ``--no-route``.
 
+If you find that an application which should not have a route _does_ have one:
+
+1. Remove the route using the `cf unmap-route` command.
+1. Push the app again with the `no-route: true` attribute in the manifest or the `--no-route` command line option.
+
 For more about these situations, see [Describing Multiple Applications with One Manifest] (#multi-apps) below.
 
 ### <a id = 'path'></a>The path attribute
@@ -149,9 +164,7 @@ You can use the `path` attribute to tell `cf` where to find your application. Th
 path: <path_to_application_bits>
 ~~~
 
-If you provide a path, it is a good idea to use either a command-line option or a manifest. Using both together is technically possible, but the resulting path may not be what you expect.
-
-The command-line option that you can use instead of this attribute is `-p`.
+The command-line option that overrides this attribute is `-p`.
 
 ### <a id='env-block'></a>Environment variables ###
 
@@ -189,7 +202,7 @@ Environment variables interact with manifests by somewhat complicated rules:
 
 Applications can bind to services such as databases, messaging, and key-value stores.
 
-Applications are deployed into App Spaces. An application can only bind to services that exist in the target App Space before the application is deployed.
+Applications are deployed into App Spaces. An application can only bind to services instances that exist in the target App Space before the application is deployed.
 
 The `services` block consists of a heading, then one or more service instance names.
 
@@ -200,6 +213,8 @@ Whoever creates the service chooses the service instance names. These names can 
  - instance_ABC
  - instance_XYZ
 ~~~
+
+Binding to a service instance is a special case of setting an environment variable, namely `VCAP_SERVICES`. See [Bind a Service](../services/bind-service.html).
 
 ## <a id='multi-apps'></a>Describing Multiple Applications with One Manifest ##
 
@@ -252,13 +267,21 @@ applications:
   - redis-burnin-77
 ~~~
 
-When using a multiple-application manifest:
+Follow these general rules when using a multiple-application manifest:
 
-* Name every application in the manifest. `cf push` fails if you provide any application names at the command line.
-
-* It's a good idea to describe your applications completely in the manifest rather than using any command-line options with `cf push`. This allows you to avoid tricky questions of precedence between attributes in the manifest and command-line options.
+* Name and completely describe your applications in the manifest.
 
 * Use a `no-route` line in the description of any application that provides background services to another application.
+
+* Do not provide an application name with `cf push`.
+
+* Do not use any command-line options with `cf push`.
+
+There are only two narrow exceptions:
+
+* If your manifest is not named `manifest.yml` or not in the current working directory, use the `-f` command line option.
+
+* If you want to push a single application rather than all of the applications described in the manifest, provide the desired application name by running `cf push <application_name>`.
 
 ## <a id='minimize-duplication'></a>Minimizing Duplication ##
 

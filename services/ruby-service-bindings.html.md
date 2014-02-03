@@ -119,14 +119,14 @@ For more information, see [Migrate a Database on Cloud Foundry](./migrate-db.htm
 
 ## <a id='troubleshooting'></a>Troubleshooting ##
 
-If you have trouble connecting to your service, run the `cf files my_app logs/env.log` command to see the values of the environment variables available
-to your application.
-The `cf files my_app logs/env.log` command results include the value of the
-`VCAP_SERVICES` environment variable. Example:
+If you have trouble connecting to your service, run the `cf files my_app logs/env.log` command.
+The results of the `cf files my_app logs/env.log` command include the value of
+the `VCAP_SERVICES` environment variable.
+Example:
 
 <pre class="terminal">
   $ cf files my_app logs/env.log
-  Getting files for app my_app in or my_org / space my_space as a.user@example.com...
+  Getting files for app my_app in or my_org / space my_space as a.user@<%=vars.app_domain%>...
 OK
 
 TMPDIR=/home/vcap/tmp

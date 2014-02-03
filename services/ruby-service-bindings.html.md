@@ -126,7 +126,7 @@ Example:
 
 <pre class="terminal">
   $ cf files my_app logs/env.log
-  Getting files for app my_app in or my_org / space my_space as a.user@<%=vars.app_domain%>...
+  Getting files for app my_app in or my_org / space my_space as a.user@example.com...
 OK
 
 TMPDIR=/home/vcap/tmp

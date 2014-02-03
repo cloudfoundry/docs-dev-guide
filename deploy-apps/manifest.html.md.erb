@@ -49,15 +49,17 @@ The directory that contains the bits you want to push is a good place to put you
 
 `cf push` requires an application name, which you provide either in a manifest or at the command line.
 
-This means that if you do _not_ use a manifest, the minimal `cf push` command looks like this:
+As described in [How cf push Finds the Manifest](#find-manifest) above, the simple command `cf push` works when the `manifest.yml` file is in the current working directory.
+
+If you do _not_ use a manifest, the minimal push command looks like this:
 
 ~~~
 cf push <application_name>
 ~~~
 
-Contrast this to the scenarios described in [How cf push Finds the Manifest](#find-manifest) above.
-
-**Note:** When you provide an application name at the command line, that is the application name that `cf push` uses. This is true whether or not there is an application name in the manifest. You can take advantage of this behavior of `cf` when testing, but only when pushing a single application.
+**Note:** When you provide an application name at the command line, `cf push` uses that application name whether or not there is a different application name in the manifest.
+If the manifest describes multiple applications, you can push a single application by providing its name at the command line; `cf` does not push the others.
+These behaviors can be useful in testing.
 
 ## <a id='find-app'></a>How cf push Finds the Application ##
 

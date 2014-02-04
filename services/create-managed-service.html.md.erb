@@ -1,35 +1,42 @@
 ---
-title: Create a Managed Service Instance
+title: Managed Service Instances
 ---
 
 _This page assumes that you are using cf v6._
 
-Service brokers advertise catalogs of services and plans to Cloud Foundry. These are managed services, and they may be databases, messaging services, key-value stores, or other kinds of services.
+Service brokers advertise catalogs of _managed services_ to Cloud Foundry.
+These may be databases, key-value stores, messaging, or other types of
+services.
 
-The `cf services` command lists all the service instances (both managed and user-provided) in your target space.
+The `cf services` command lists all the service instances (both managed and
+user-provided) in your target space.
 
-In contrast to the managed kind, a user-provided service is managed outside of Cloud Foundry and is not advertised by a service broker. See [Create a User-Provided Service Instance](./user-provided.html).
+In contrast to the managed kind, a user-provided service is managed outside of
+Cloud Foundry and is not advertised by a service broker. See [User-Provided
+Service Instances](./user-provided.html).
 
 
-## <a id='managed'></a>cf Commands for Working with Managed Service Instances ##
+## <a id='managed'></a>cf Commands for Working with Managed Service Instances
+##
 
-You can create an instance of a managed service with the `cf create-service` command.
+You can create an instance of a managed service with the `cf create-service`
+command.
 
 <pre class="terminal">
 cf create-service SERVICE PLAN SERVICE_INSTANCE
 </pre>
 
-The values of the first two arguments must match those of an offering from a service broker catalog.
-The third is the name you assign to the service instance.
+You can obtain values for the first two arguments from a service broker
+catalog. The third argument is name of the service instance, and that is up to you.
 
 For example:
 <pre class="terminal">
-$ cf create-service rabbitmq small-plan my_rabbitmq
+$ cf create-service example-db basic-plan my_ex-db
 </pre>
 
-Once created, managed service instances can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
-
-Finally, you can list service auth tokens with `cf service-auth-tokens`, create them with `cf create-service-auth-token`, and update them with `cf update-service-auth-token`.
+Once you have created a managed service instance, you can bind it to an
+application with `cf bind-service`, unbind it with `cf unbind-service`, rename
+it with `cf rename-service`, and delete it with `cf delete-service`.
 
 
 ## <a id='bind-managed'></a> Binding Managed Service Instances to Applications  ##
@@ -39,16 +46,19 @@ There are two ways to bind managed service instances to applications:
 * With a manifest, _when_ you push the application.
 * With the `cf bind-service` command, _after_ you push the application.
 
-In either case, you must push your app to a space where the desired managed service instances already exist.
+In either case, you must push your app to a space where the desired managed
+service instances already exist.
 
-For example, if you want to bind a service instance called `test-mysql-01` to an app, the services block in the manifest should look like this:
+For example, if you want to bind a service instance called `test-mysql-01` to
+an app, the services block in the manifest should look like this:
 
 ~~~
 services:
  - test-mysql-01
 ~~~
 
-This excerpt from the cf push command and response shows that cf reads the manifest and binds the service instance to the app, which is called `test-msg-app`.
+This excerpt from the `cf push` command and response shows that cf reads the
+manifest and binds the service instance to an app called `test-msg-app`.
 
 <pre class="terminal">
 $ cf push
@@ -60,21 +70,29 @@ Binding service test-mysql-01 to test-msg-app in org janclouduser-org / space de
 OK
 </pre>
 
+Once the binding has taken effect, it is described in the
+[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP_SERVICES) environment variable.
+
 ## <a id='create-service'></a>Example: Create a Managed Service Instance and Bind it to an App ##
 
-Suppose we want to create and bind an instance of a cleardb service to an app called test-db-app.
-Our Cloud Foundry username is `janclouduser`.
+Suppose we want to create an instance of a service called `example-db` and bind
+it to an app called `test-db-app`.
+A service broker catalog informs us that `example-db` offers a plan called
+"basic."
+Our Cloud Foundry username is `janclouduser` and we plan to name the service
+instance `test-ex-777`.
 
-1. We begin with the `cf create-user-provided-service command` in interactive mode, using its alias, `cups`.
+1. We begin with the `cf create-service` command.
 
 	<pre class="terminal">
-	$ cf create-service cleardb spark test-clear-777
-	Creating service test-clear-777 in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	$ cf create-service example-db basic test-ex-777
+	Creating service test-ex-777 in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
 	OK
 	</pre>
 
 
-1. When we list available services, we see that the new service is not yet bound to any apps.
+1. When we list available services, we see that the new service is not yet
+bound to any apps.
 
 	<pre class="terminal">
 	$ cf services
@@ -82,19 +100,19 @@ Our Cloud Foundry username is `janclouduser`.
 	OK
 
 	name               service         plan    bound apps
-	test-clear-777     cleardb         spark
+	test-ex-777     example-db         basic
 	</pre>
 
 1. Now we bind the service to our app.
 
 	<pre class="terminal">
-	$ cf bind-service test-db test-clear-777
-	Binding service test-clear-777 to app test-db-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	$ cf bind-service test-db-app test-ex-777
+	Binding service test-ex-777 to app test-db-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
 	OK
 	TIP: Use 'cf push' to ensure your env variable changes take effect
 	</pre>
 
-1. We push our app a second time to update the container environment and cause the binding to take effect.
+1. For the binding to take effect, we must push our app a second time.
 
 	<pre class="terminal">
 	$ cf push test-db-app
@@ -103,11 +121,13 @@ Our Cloud Foundry username is `janclouduser`.
     ...
 	</pre>
 
-1. To verify that the service instance is now recorded in [VCAP_SERVICES](../deploy-apps/environment-variable.html), we search the environment log.
+1. To verify that the service instance is now recorded in VCAP_SERVICES,
+we search the environment log.
 
 	<pre class="terminal">
 	$ cf files test-db-app logs/env.log | grep VCAP_SERVICES
-		VCAP_SERVICES={"cleardb-n/a":[{"name":"test-clear-777","label":"cleardb-n/a","tags":["mysql","relational"],"plan":"spark","credentials":{"jdbcUrl":"jdbc:mysql://bc3282dfc81aa8:24b81700@us-cdbr-east-05.cleardb.net:3306/ad_0688168026ae218","uri":"mysql://bc3282dfc81aa8:24b81700@us-cdbr-east-05.cleardb.net:3306/ad_0688168026ae218?reconnect=true","name":"ad_0688168026ae218","hostname":"us-cdbr-east-05.cleardb.net","port":"3306","username":"bc3282dfc81aa8","password":"24b81700"}}]}
+
+	VCAP_SERVICES={"example-db-n/a":[{"name":"test-ex-777","label":"example-db-n/","tags":["mysql","relational"],"plan":"basic","credentials":{"jdbcUrl":"jdbcmysql://bc3282dfc81aa8:24b81700@us-cdbr-east-05.example-db.net:3306/ad_068816026ae218","uri":"mysql://bc3282dfc81aa8:24b81700@us-cdbr-east-05.example-db.nt:1234/ad_0688168026ae218?reconnect=true","name":"ad_0688168026ae218","hostname":"us-cdbr-east-05.example-db.net","port":"1234","username":"bc3282dfc81aa8", "password":"24b81700"}}]}
 	</pre>
 
 

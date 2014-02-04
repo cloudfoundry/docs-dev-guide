@@ -105,7 +105,17 @@ Our Cloud Foundry username is `janclouduser`.
 
 	1. To verify that the service instance is now recorded in [VCAP_SERVICES](../deploy-apps/environment-variable.html), we search the environment log.
 
+<<<<<<< HEAD:services/create-managed-service.html.md
 		<pre class="terminal">
 		$ cf files test-db-app logs/env.log | grep VCAP_SERVICES
 			VCAP_SERVICES={"cleardb-n/a":[{"name":"test-clear-777","label":"cleardb-n/a","tags":["mysql","relational"],"plan":"spark","credentials":{"jdbcUrl":"jdbc:mysql://bc3282dfc81aa8:24b81700@us-cdbr-east-05.cleardb.net:3306/ad_0688168026ae218","uri":"mysql://bc3282dfc81aa8:24b81700@us-cdbr-east-05.cleardb.net:3306/ad_0688168026ae218?reconnect=true","name":"ad_0688168026ae218","hostname":"us-cdbr-east-05.cleardb.net","port":"3306","username":"bc3282dfc81aa8","password":"24b81700"}}]}
 		</pre>
+=======
+services, s                        List all services in the target space
+   service                            Show service instance info
+   create-service, cs                 Create a service instance
+   delete-service, ds                 Delete a service instance
+   rename-service                     Rename a service instance
+   bind-service, bs                   Bind a service instance to an app
+   unbind-service, us                 Unbind a service instance from an app
+>>>>>>> 25067461879ab2b92bdd22eb57fe5a0398741dcd:services/create-managed-service.html.md.erb

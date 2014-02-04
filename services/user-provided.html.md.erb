@@ -16,22 +16,20 @@ The user-provided service instance allows the developer to:
 * Treat the user-provide service instance exactly like any other service instance.
 
 Although the external asset in this example was a real Oracle database, it could
-have been just a placeholder just used for testing.
+have been a simple placeholder used for testing.
 
 User provided services are outside of Cloud Foundry, so you never create or
-otherwise manage the service itself through cf; you only create and manage service instances.
+otherwise manage the service itself through cf; you only create and manage service _instances_.
 
 The `cf services` command lists all the service instances (both user-provided and managed) in your target space.
 
-In contrast to the user-provided kind, a managed service is one that a service broker advertises in a catalog. See [Create a Managed Service Instance] (./create-managed-service.html).
+In contrast to the user-provided kind, a managed service is one that a service broker advertises in a catalog. See [Managed Service Instances] (./create-managed-service.html).
 
 ## <a id='user-cups'></a>cf Commands for Working with User-Provided Service Instances ##
 
 cf commands for creating and updating user-provided service instances can be used in three ways: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
 
 Once created, user-provided service instances can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
-
-Finally, you can list service auth tokens with `cf service-auth-tokens`, create them with `cf create-service-auth-token`, and update them with `cf update-service-auth-token`.
 
 ### <a id='user-cups'></a>The cf create-user-provided-service Command ###
 
@@ -97,16 +95,20 @@ Binding service test-mysql-01 to test-msg-app in org janclouduser-org / space de
 OK
 </pre>
 
+Once the binding has taken effect, it is described in the
+[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP_SERVICES) environment variable.
+
 For more information about manifests, see [Deploying with Application Manifests](../deploy-apps/manifest.html#services-block).
 
 For an example of the `cf bind-service` command, see the next section.
 
-## <a id='cups-example'></a> Example: Creating a Service Instance and Binding it to an Application ##
+## <a id='cups-example'></a> Example: Creating a User-Provide Service Instance and Binding it to an App ##
 
-Suppose we want to create and bind an instance of a publish-subscribe messaging service to an app called test-msg-app.
-Our Cloud Foundry username is `janclouduser`, and we know the URL and port for the service.
+Suppose we want to create and bind an instance of a publish-subscribe messaging service to an app called `test-msg-app`.
+Our Cloud Foundry username is `janclouduser`, and we plan to call the instance `test-pubsub-01`.
+We know the URL and port for the service.
 
-1. We begin with the `cf create-user-provided-service command` in interactive mode, using its alias, `cups`.
+1. We begin with the `cf create-user-provided-service` command in interactive mode, using its alias, `cups`.
 
 	<pre class="terminal">
 	$ cf cups test-pubsub-01 -p "host, port, binary, username, password"
@@ -144,9 +146,8 @@ Our Cloud Foundry username is `janclouduser`, and we know the URL and port for t
 	TIP: Use 'cf push' to ensure your env variable changes take effect
 	</pre>
 
-	At this point `VCAP_SERVICES`, the environment variable which controls binding, has been set locally but not yet pushed to the environment of the container where our app is running.
 
-1. We push our app a second time to update the container environment and cause the binding to take effect.
+1. For the binding to take effect, we must push our app a second time.
 
 	<pre class="terminal">
 	$ cf push test-msg-app

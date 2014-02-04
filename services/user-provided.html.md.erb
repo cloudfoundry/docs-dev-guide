@@ -15,9 +15,11 @@ The user-provided service instance allows the developer to:
 * Avoid hard-coding credentials for a service instance into her application.
 * Treat the user-provide service instance exactly like any other service instance.
 
-Although the external asset in this example was a real Oracle database, the external asset could have been a fictional service with whatever parameters the developer wanted.
-This allows you to create placeholder service instances for testing and development.
-Whether the service in question is real or fictional, it is outside of Cloud Foundry, so you never create or otherwise manage the service itself—you only create and manage service instances.
+Although the external asset in this example was a real Oracle database, it could
+have been just a placeholder just used for testing.
+
+User provided services are outside of Cloud Foundry, so you never create or
+otherwise manage the service itself through cf; you only create and manage service instances.
 
 The `cf services` command lists all the service instances (both user-provided and managed) in your target space.
 

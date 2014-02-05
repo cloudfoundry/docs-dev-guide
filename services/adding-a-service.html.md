@@ -46,8 +46,7 @@ $ cf create-service <SERVICE> <PLAN> <SERVICE-INSTANCE>
 * PLAN: Service plans are a way for providers to offer varying levels
 of resources or features for the same service.
 * SERVICE-INSTANCE: A name you provide for your service instance. This
-is an alias for the instance which is meaningful to you. `cf` provides
-a default for you, or you can enter any series of alpha-numeric
+is an alias for the instance which is meaningful to you. Enter any series of alpha-numeric
 characters ([a-z], [A-Z], [0-9]) plus hyphens (-) or underscores (\_). You can rename the instance later at any time.
 
 Following this step, your managed service instance is provisioned.

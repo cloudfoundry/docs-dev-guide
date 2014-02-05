@@ -4,8 +4,7 @@ title: cf Command Line Interface (CLI)
 
 When deploying and managing your applications on Cloud Foundry, you'll use the cf command line interface (CLI).
 
-The current production version of cf is 5.x.
-There is a new version of cf, v6, currently in beta.
+The current production version of cf is 6.x.
 
 Contents in this section:
 

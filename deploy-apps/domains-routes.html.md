@@ -1,7 +1,7 @@
 ---
 title: About Domains, Subdomains and Routes
 ---
-_This page assumes that you are using cf v5._
+_This page assumes you are using cf v6._
 
 This page has information about how to specify the route (or URL) that Cloud Foundry uses to direct requests to an application. A route is made up of a _subdomain_ (or host) and a _domain_ that you can specify when you push an application.
 
@@ -11,43 +11,48 @@ In the following route, the subdomain or host is `myapp` and the domain is `exam
 
 ## <a id='domains'></a>Key Facts About Domains ##
 
-In Cloud Foundry, domains are associated with spaces.
+In Cloud Foundry, domains are associated with orgs.
 
-A Cloud Foundry instance defines a default domain that is available to all spaces.
+A Cloud Foundry instance defines a default shared domain. Unless you specify a domain, `cf` uses the default shared domain in the route to your application.
 
-Cloud Foundry also supports _custom domains_ --- you can map a registered domain of your own to a space in Cloud Foundry, as described below.
+Cloud Foundry also supports custom domains: you can map a registered domain of your own to a space in Cloud Foundry, as described below.
 
-## <a id='map-domain'></a>Map a Custom Domain to a Space ##
+## <a id='create-domains'></a>Create a Custom Domain in Cloud Foundry ##
 
-If you want use a registered domain of your own, you must define it in Cloud Foundry and map it the application’s space with the `cf map-domain` command.
+If you want to use a registered domain of your own, you must define
+it in Cloud Foundry and associate it with an organization.
 
-The command below maps the custom domain `example.org` to the "development" space.
+The command below defines the custom domain `example.org` in the
+"test" organization:
 
-`cf map-domain --space development example.org`
+`cf create-domain test example.org`
 
-If you do not want the application to be available via a URL, do not assign a domain to the application.
+**(Admin only)** To create a shared domain that is available to all organizations in your account, use the `cf create-shared-domain` command:
 
-## <a id='view-domains'></a>View Domains for a Space ##
+`cf create-shared-domain example.org`
 
-You can see domains that are mapped to a space using the `cf domains` command. In this example, two domains are mapped to the "development" space: a system-wide default `example.com` domain and the custom `example.org` domain:
+## <a id='view-domains'></a>View Domains for an Org ##
 
-<pre class="terminal">
-cf push my-new-app
-cf domains --space development
-Getting domains in development... OK
-
-name           owner
-example.com    none
-example.org    jdoe
-</pre>
-
-## <a id='unmap-domain'></a>Unmap a Domain ##
-You can unmap a domain with the `cf unmap-domain` command. In this example, the `example.org` domain is unmapped from the "development" space:
+You can see available domains for the targeted organization using the `cf domains` command. In this example, there are two available domains: a system-wide default `example.com` domain and the custom `example.org` domain.
 
 <pre class="terminal">
-cf unmap-domain --space development example.org
-Unmapping example.org from development... OK
+cf domains
+Getting domains in org console as user@example.com... OK
+
+name           status
+example.com    shared
+example.org    owned
 </pre>
+
+## <a id='delete-domains'></a>Delete a Domain ##
+
+You can delete a domain from Cloud Foundry with the cf delete-domain command:
+
+`cf delete-domain example.org`
+
+**(Admin only)** To delete a shared domain:
+
+`cf delete-shared-domain example.org`
 
 ## <a id='subdomain'></a>Key Facts About Subdomains ##
 
@@ -60,70 +65,72 @@ You might choose not to assign a subdomain to an application that will not accep
 
 ## <a id='assign-at-push'></a>Assign Domain and Subdomain at push Time ##
 
-When you run `cf push` interactively, it prompts you to supply a subdomain and domain for the application. In the example dialog below, note that:
+When you run `cf push`, you can optionally specify a domain and subdomain for the application:
 
-- The options for subdomain are "myapp," the value supplied earlier in the dialog for application name, and "none". You can also enter a string at the prompt.
-- The options for domain are (1) `example.com`, the default domain for this example Cloud Foundry instance, (2) `example.org`, a custom domain previously mapped to the space, and (3) "none".
+<pre class="terminal">
+ cf push myapp -d example.org -n myapp
+</pre>
 
-The route created for the application as a result of the selections made below is:
+- Domain: Use the `-d` flag to specify one of the domains available to the targeted org.
+- Subdomain: Use the `-n` flag to provide a string for the subdomain.
+
+The route created for the application as a result of the selections above is:
 
 `myapp.example.org`
 
-<pre class="terminal">
-cf push
-Name> myapp
-
-Instances> 1
-
-1: 64M
-2: 128M
-3: 256M
-4: 512M
-Memory Limit> 256M
-
-Creating myapp... OK
-
-1: myapp
-2: none
-Subdomain> 1
-
-1: example.com
-2: example.org
-3: none
-Domain> 2
-
-Creating route myapp.example.org... OK
-Binding myapp.example.org to myapp... OK
-
-</pre>
-
-
 ## <a id='assign-in-manifest'></a>Assign Subdomain in Manifest ##
 
-If you create or edit the manifest for an application, you can use the `host` (for subdomain) and `domain` attributes to define the components of the application’s route. For more information, see [Application Manifests](../deploy-apps/manifest.html).
+If you create or edit the manifest for an application, you can use the `host` (for subdomain) and `domain` attributes to define the components of the application route. For more information, see [Application Manifests](../deploy-apps/manifest.html).
 
 ## <a id='list-routes'></a>List Routes ##
 
-You can list routes for the current space with `cf routes` command. Note that the subdomain is shown as "host", separate from the domain segment. For example:
+You can list routes for the current space with `cf routes` command. Note that the subdomain is shown as "host," separate from the domain segment. For example:
+
 <pre class="terminal">
 cf routes
-Getting routes... OK
+Getting routes as user@example.com ...
 
-host                     domain
-myapp                    example.org
-1test                    example.com
-sinatra-hello-world      example.com
-sinatra-to-do            example.com
+host                     domain          apps
+myapp                    example.org     myapp1
+                                         myapp2
+1test                    example.com     1test
+sinatra-hello-world      example.com     sinatra-hello-world
+sinatra-to-do            example.com     sinatra-to-do
 </pre>
 
-## <a id='define-route'></a>Define or Change a Route from Command Line
-You can assign or change the route for an application with the `cf map` command. For example, this command maps the route `myapp.example.org` to the application named "myapp":
+## <a id='define-route'></a>Define or Change a Route from the Command Line ##
+
+### <a id='create-route'></a>Create a route ###
+
+Create a route and associate it with a space for later use with the `cf create-route` command. You can use the optional `-n HOSTNAME` parameter to specify a unique hostname for each route that uses the same domain. For example, this command creates the `myapp.example.org` route in the "development" space:
+
 <pre class="terminal">
-
-cf map --app myapp --host myapp --domain example.org
+cf create-route development example.org -n myapp
 </pre>
 
-Note that you use the `--host` qualifier to specify the subdomain.
+### <a id='map-route'></a>Assign a route to an app ###
 
-If the application is running when you map a route, restart the application. The new route will not be active until the application is restarted.
+Assign or change the route for a particular application with the `cf map-route` command. Specifying the subdomain is optional. If the route does not already exist, this command creates it and then maps it. For example, the following command maps the route `myapp.example.org` to the "myapp" application:
+
+<pre class="terminal">
+cf map-route myapp example.org -n myapp
+</pre>
+
+**Note**: You can map a single route to multiple applications in the same space. See [Blue-Green Deployment](../deploy-apps/blue-green.html) to learn about an important extension of this technique.
+
+If the application is running when you map a route, restart the application. The new route is not active until the application is restarted.
+
+## <a id='delete-route'></a>Remove a Route Using the Command Line ##
+You can remove a route from an app using the `cf unmap-route` command, as in the example below. Unmapping a route leaves the route available in the targeted space for later use.
+
+<pre class="terminal">
+	cf unmap-route myapp example.org -n myapp
+</pre>
+
+You can remove a route from a space using the `cf delete-route` command:
+<pre class="terminal">
+	cf delete-route example.org -n myapp
+</pre>
+
+Note that for each of the above commands, using the `-n` parameter to specify the subdomain is optional.
 

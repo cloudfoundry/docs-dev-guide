@@ -74,7 +74,7 @@ When you run `cf push`, you can optionally specify a domain and subdomain for th
 - Domain: Use the `-d` flag to specify one of the domains available to the targeted org.
 - Subdomain: Use the `-n` flag to provide a string for the subdomain.
 
-The route created for the application as a result of the selections above is:
+The route cf creates for the application as a result of the selections above is:
 
 `myapp.example.org`
 
@@ -94,7 +94,7 @@ host                     domain          apps
 myapp                    example.org     myapp1
                                          myapp2
 1test                    <%=vars.app_domain%>     1test
-sinatra-hello-world      <%=vars.app_domain%>    sinatra-hello-world
+sinatra-hello-world      <%=vars.app_domain%>     sinatra-hello-world
 sinatra-to-do            <%=vars.app_domain%>     sinatra-to-do
 </pre>
 

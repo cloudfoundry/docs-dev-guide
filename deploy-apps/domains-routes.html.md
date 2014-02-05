@@ -5,9 +5,9 @@ _This page assumes you are using cf v6._
 
 This page has information about how to specify the route (or URL) that Cloud Foundry uses to direct requests to an application. A route is made up of a _subdomain_ (or host) and a _domain_ that you can specify when you push an application.
 
-In the following route, the subdomain or host is `myapp` and the domain is `example.com`:
+In the following route, the subdomain or host is `myapp` and the domain is `<%=vars.app_domain%>`:
 
-`myapp.example.com`
+`myapp.<%=vars.app_domain%>`
 
 ## <a id='domains'></a>Key Facts About Domains ##
 
@@ -33,14 +33,14 @@ The command below defines the custom domain `example.org` in the
 
 ## <a id='view-domains'></a>View Domains for an Org ##
 
-You can see available domains for the targeted organization using the `cf domains` command. In this example, there are two available domains: a system-wide default `example.com` domain and the custom `example.org` domain.
+You can see available domains for the targeted organization using the `cf domains` command. In this example, there are two available domains: a system-wide default `<%=vars.app_domain%>` domain and the custom `example.org` domain.
 
 <pre class="terminal">
 cf domains
-Getting domains in org console as user@example.com... OK
+Getting domains in org console as user@example.org... OK
 
 name           status
-example.com    shared
+<%=vars.app_domain%>    shared
 example.org    owned
 </pre>
 
@@ -88,14 +88,14 @@ You can list routes for the current space with `cf routes` command. Note that th
 
 <pre class="terminal">
 cf routes
-Getting routes as user@example.com ...
+Getting routes as user@example.org ...
 
 host                     domain          apps
 myapp                    example.org     myapp1
                                          myapp2
-1test                    example.com     1test
-sinatra-hello-world      example.com     sinatra-hello-world
-sinatra-to-do            example.com     sinatra-to-do
+1test                    <%=vars.app_domain%>     1test
+sinatra-hello-world      <%=vars.app_domain%>    sinatra-hello-world
+sinatra-to-do            <%=vars.app_domain%>     sinatra-to-do
 </pre>
 
 ## <a id='define-route'></a>Define or Change a Route from the Command Line ##

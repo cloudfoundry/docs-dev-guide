@@ -128,7 +128,7 @@ The relationships between domains, routes, organizations, and spaces have been s
 * Routes are (still) scoped to spaces and apps.
 
 As before, a route is a URL of the form `HOSTNAME.DOMAIN`.
-If you do not provide a hostname (also known as subdomain), the URL takes the form `APP.DOMAIN`.
+If you do not provide a hostname (also known as subdomain), the URL takes the form `APPNAME.DOMAIN`.
 
 cf v6 has improved separation between management of private domains and management of shared domains.
 Only administrators can manage shared domains.

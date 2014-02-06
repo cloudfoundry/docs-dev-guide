@@ -158,13 +158,13 @@ Use the `memory` attribute to specify the memory limit for all instances of an a
 memory: 1024M
 ~~~
 
-The default memory limit is 1G. You might want to specify a lower limit to conserve memory if you know that your app instances do not require 1G of memory.
+The default memory limit is 1G. You might want to specify a smaller limit to conserve <%=vars.quota_resource%> if you know that your app instances do not require 1G of memory.
 
 The command line option that overrides this attribute is `-m`.
 
 ### <a id='host'></a>The host attribute ###
 
-Use the `host` attribute to provide a hostname, or subdomain, in the form of a string. This segment of a route helps to ensure that the route is unique. If you do not provide a hostname, the URL for the app takes the form of `APP.DOMAIN`.
+Use the `host` attribute to provide a hostname, or subdomain, in the form of a string. This segment of a route helps to ensure that the route is unique. If you do not provide a hostname, the URL for the app takes the form of `APP-NAME.DOMAIN`.
 
 ~~~
 host: my-app
@@ -184,7 +184,7 @@ The command line option that overrides this attribute is `-p`.
 
 ### <a id='timeout'></a>The timeout attribute ###
 
-Use the `timeout` attribute to give your application more time to start, up to 180 seconds. The default is 60 seconds. For example:
+Use the `timeout` attribute to give your application more time to start, up to 180 seconds. The default timeout is 60 seconds. For example:
 
 ~~~
 timeout: 80

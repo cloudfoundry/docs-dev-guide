@@ -6,8 +6,6 @@ Version 6 of the cf cli is currently in beta. During the beta period, the execut
 
 To install gcf, download it from https://github.com/cloudfoundry/cli/releases then follow the instructions for your operating system.
 
-If you want to install the production release of cf, see [Install cf Version 5](install-ruby-cli.html).
-
 
 ## <a id="windows"></a>Install gcf on Windows ##
 

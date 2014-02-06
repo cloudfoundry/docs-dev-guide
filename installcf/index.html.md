@@ -8,7 +8,6 @@ The current production version of cf is 6.x.
 
 Contents in this section:
 
-* [Installing cf v5](./install-ruby-cli.html)
 * [cf v5 Reference](./cf.html)
 * [Installing cf v6](./install-go-cli.html)
 * [Getting Started with cf v6](./whats-new-v6.html)

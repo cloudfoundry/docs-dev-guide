@@ -78,11 +78,11 @@ Optional arguments include:
 * `--no-route` --- Do not map a route to this application (NEW).
 * `--no-start` --- Do not start the application after pushing.
 
-## <a id='user-provided'></a> User-Provided Services ##
+## <a id='user-provided'></a> User-Provided Service Instances ##
 
-cf v6 has new commands for creating and updating user-provided services. You have the choice of three ways to use these commands: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
+cf v6 has new commands for creating and updating user-provided service instances. You have the choice of three ways to use these commands: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
 
-Once created, user-provided services can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
+Once created, user-provided service instances can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
 
 ### <a id='user-cups'></a>The cf create-user-provided-service Command ###
 
@@ -93,11 +93,11 @@ cf then prompts you for each parameter in turn.
 
   `cf cups SERVICE_INSTANCE -p "host, port, dbname, username, password"`
 
-To create a service non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
+To create a service instance non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
 
   `cf cups SERVICE_INSTANCE -p '{"username":"admin","password":"pa55woRD"}'`
 
-To create a service that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
+To create a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
 
   `cf cups SERVICE_INSTANCE -l syslog://example.com`
 
@@ -107,16 +107,16 @@ The alias for `update-user-provided-service` is `uups`.
 You can use `cf update-user-provided-service` to update one or more of the attributes for a user-provided service instance.
 Attributes that you do not supply are not updated.
 
-To update a service in interactive mode, use the `-p` option with a comma-separated list of parameter names.
+To update a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names.
 cf then prompts you for each parameter in turn.
 
   `cf uups SERVICE_INSTANCE -p "HOST, PORT, DATABASE, USERNAME, PASSWORD"`
 
-To update a service non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
+To update a service instance non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
 
   `cf uups SERVICE_INSTANCE -p '{"username":"USERNAME","password":"PASSWORD"}'`
 
-To update a service that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
+To update a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
 
   `cf uups SERVICE_INSTANCE -l syslog://example.com`
 

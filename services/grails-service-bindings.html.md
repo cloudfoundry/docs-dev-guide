@@ -1,18 +1,29 @@
 ---
 title: Configure Service Connections for Grails
 ---
-_This page assumes that you are using cf v5._
+_This page assumes that you are using cf v6._
 
 # Introduction #
-This guide is for developers who wish to bind a service to a Grails application deployed and running on Cloud Foundry.
+This guide is for developers who want to bind a service to a Grails
+application deployed and running on Cloud Foundry.
 
-Cloud Foundry provides extensive support for connecting a Grails application to services such as MySQL, Postgres, MongoDB, Redis, and RabbitMQ. You can configure these connections manually, but in many cases the Cloud Foundry Grails plugin can detect and configure connections to services automatically.
+Cloud Foundry provides extensive support for connecting a Grails
+application to services such as MySQL, Postgres, MongoDB, Redis, and
+RabbitMQ. You can configure these connections manually, but in many
+cases the Cloud Foundry Grails plugin can detect and configure
+connections to services automatically.
 
 ## <a id="cf-library"></a>The cloudfoundry-runtime Library ##
 
-The `cloudfoundry-runtime` Java library provides methods for obtaining pre-configured clients and connection properties from Cloud Foundry services. To use `cloudfoundry-runtime`, add it to the `dependencies` section in your `BuildConfig.groovy` file. Note: The version of this library must be at least `0.8.4` for Cloud Foundry v2 support.
+The `cloudfoundry-runtime` Java library provides methods for
+obtaining pre-configured clients and connection properties from Cloud
+Foundry services. To use `cloudfoundry-runtime`, add it to the
+`dependencies` section in your `BuildConfig.groovy` file. Note: The
+version of this library must be at least `0.8.4` for Cloud Foundry v2
+support.
 
-You will also need to add the Spring Framework Milestone repository to the `repositories` section of the `BuildConfig.groovy` file.
+You will also need to add the Spring Framework Milestone repository
+to the `repositories` section of the `BuildConfig.groovy` file.
 
 ~~~
   repositories {
@@ -27,11 +38,17 @@ You will also need to add the Spring Framework Milestone repository to the `repo
   }
 ~~~
 
-Once your `BuildConfig.groovy` file has been modified, you can either manually set the connection parameters to your services, or enable auto-configuration of the connection settings by adding the Cloud Foundry Grails plugin.
+Once your `BuildConfig.groovy` file has been modified, you can either
+manually set the connection parameters to your services, or enable
+auto-configuration of the connection settings by adding the Cloud
+Foundry Grails plugin.
 
 ## <a id="manual"></a>Manually Set Connection Parameters ##
 
-After adding the `cloudfoundry-runtime` Java library to `BuildConfig.groovy`, you can use the cloudfoundry-runtime API in your `DataSources.groovy` to manually set the connection parameters to your services.
+After adding the `cloudfoundry-runtime` Java library to
+`BuildConfig.groovy`, you can use the cloudfoundry-runtime API in
+your `DataSources.groovy` to manually set the connection parameters
+to your services.
 
 To manually set connection parameters:
 
@@ -107,7 +124,10 @@ Example: If your application needs to use MySQL, MongoDB, and Redis, with the se
 
 ## <a id="auto"></a>Enable Auto-Configuration ##
 
-Grails provides plugins for accessing SQL (using [Hibernate](http://grails.org/plugin/hibernate)), [MongoDB](http://www.grails.org/plugin/mongodb), and [Redis](http://grails.org/plugin/redis) services. If you install any of these plugins and configure them in your `Config.groovy` or `DataSource.groovy` file, the Cloud Foundry Grails plugin will re-configure the plugins when your application starts to provide the correct connection information to the plugins.
+Grails provides plugins for accessing SQL (using [Hibernate](http://grails.org/plugin/hibernate)), [MongoDB](http://www.grails.org/plugin/mongodb), and [Redis](http://grails.org/plugin/redis) services. If you install any of these plugins and configure them in your `Config.groovy` or
+`DataSource.groovy` file, the Cloud Foundry Grails plugin will
+re-configure the plugins when your application starts to provide the
+correct connection information to the plugins.
 
 To enable auto-configuration of service connections, modify your `BuildConfig.groovy` file:
 
@@ -131,7 +151,11 @@ To enable auto-configuration of service connections, modify your `BuildConfig.gr
   }
 ~~~
 
-Once the `BuildConfig.groovy` file has been modified, the following fields in the `DataSources.groovy` or `Config.groovy` file will be automatically modified by the Cloud Foundry Grails plugin if the plugin detects the application is running in a Cloud Foundry environment:
+Once the `BuildConfig.groovy` file has been modified, the following
+fields in the `DataSources.groovy` or `Config.groovy` file will be
+automatically modified by the Cloud Foundry Grails plugin if the
+plugin detects the application is running in a Cloud Foundry
+environment:
 
 * url
 * host
@@ -140,7 +164,11 @@ Once the `BuildConfig.groovy` file has been modified, the following fields in th
 * username
 * password
 
-These fields must exist in the `DataSources.groovy` or `Config.groovy` file. You can use placeholder values in the fields if the application will only be run against Cloud Foundry services. To allow testing of the application locally against your own services, you can use actual values.
+These fields must exist in the `DataSources.groovy` or
+`Config.groovy` file. You can use placeholder values in the fields if
+the application will only be run against Cloud Foundry services. To
+allow testing of the application locally against your own services,
+you can use actual values.
 
 Example: If your application needs to use MySQL, MongoDB, and Redis, your `DataSources.groovy` file might look like this:
 

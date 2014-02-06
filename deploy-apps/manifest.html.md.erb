@@ -6,7 +6,7 @@ _This page assumes that you are using cf v6._
 
 Application manifests tell `cf push` what to do with applications. This includes everything from how many instances to create and how much memory to allocate to what services applications should use.
 
-Whether a manifest is useful depends on what you want to accomplish. For example, a manifest can help you automate deployment, especially of multiple applications at once. In any scenario, a manifest can spare you from typing the same command-line options over and over.
+Whether a manifest is useful depends on what you want to accomplish. For example, a manifest can help you automate deployment, especially of multiple applications at once. In any scenario, a manifest can spare you from typing the same command line options over and over.
 
 ## <a id='find-manifest'></a>How cf push Finds the Manifest ##
 
@@ -63,16 +63,16 @@ These behaviors are useful for testing.
 
 ## <a id='find-app'></a>How cf push Finds the Application ##
 
-By default, `cf` recursively pushes the contents of the current working directory. Alternatively, you can provide a path using either a manifest or a command-line option.
+By default, `cf` recursively pushes the contents of the current working directory. Alternatively, you can provide a path using either a manifest or a command line option.
 
 - If the path is to a directory, `cf` recursively pushes the contents of that directory instead of the current working directory.
 - If the path is to a file, `cf` pushes only that file.
 
 **Note:** If you want to push more than a single file, but not the entire contents of a directory, consider using a `.cfignore` file to tell `cf push` what to exclude.
 
-## <a id='precedence'></a>Precedence Between Manifests, Command-line Options, and Most Recent Values ##
+## <a id='precedence'></a>Precedence Between Manifests, Command line Options, and Most Recent Values ##
 
-When you push an application for the first time, `cf` applies default values to any attributes that you do not set in a manifest or `cf push` command-line options.
+When you push an application for the first time, `cf` applies default values to any attributes that you do not set in a manifest or `cf push` command line options.
 
 * For example, `cf push <application_name>` with no manifest might deploy one instance of the app with one gigabyte of memory.
 In this case the default values for instances and memory are "1" and "1G", respectively.
@@ -81,20 +81,20 @@ Between one push and another, attribute values can change in other ways.
 
 * For example, the `cf scale` command changes the number of instances.
 
-The attribute values on the server at any one time represent the cumulative result of all settings applied up to that point: defaults, attributes in the manifest, `cf push` command-line options, and commands like `cf scale`.
+The attribute values on the server at any one time represent the cumulative result of all settings applied up to that point: defaults, attributes in the manifest, `cf push` command line options, and commands like `cf scale`.
 There is no special name for this resulting set of values on the server.
 You can think of them as the most recent values.
 
 `cf push` follows rules of precedence when setting attribute values:
 
 * Manifests override most recent values, including defaults.
-* Command-line options override manifests.
+* Command line options override manifests.
 
-In general, you can think of manifests as just another input to `cf push`, to be combined with command-line options and most recent values.
+In general, you can think of manifests as just another input to `cf push`, to be combined with command line options and most recent values.
 
 ## <a id='optional-attributes'></a>Optional Attributes ##
 
-This section explains how to describe optional application attributes in manifests. Each of these attributes can also be specified by a command-line option. Command-line options override the manifest.
+This section explains how to describe optional application attributes in manifests. Each of these attributes can also be specified by a command line option. Command line options override the manifest.
 
 ### <a id='buildpack'></a>The buildpack attribute
 
@@ -104,9 +104,9 @@ If your application requires a custom buildpack, you can use the `buildpack` att
 buildpack: <buildpack_URL>
 ~~~
 
-**Note:** The `cf buildpacks` command lists the buildpacks that you can refer to by name in a manifest or a command-line option.
+**Note:** The `cf buildpacks` command lists the buildpacks that you can refer to by name in a manifest or a command line option.
 
-The command-line option that overrides this attribute is `-b`.
+The command line option that overrides this attribute is `-b`.
 
 ### <a id='start-commands'></a>The command attribute ###
 
@@ -120,7 +120,7 @@ command: bundle exec rake VERBOSE=true
 
 For some types of application, you must provide a custom start command, either from the command line or from the manifest. This is true of node.js applications, for example.
 
-The command-line option that overrides this attribute is `-c`.
+The command line option that overrides this attribute is `-c`.
 
 **Note**: The `-c` option with a value of 'null' forces `cf push` to use the buildpack start command. See [About Starting Applications](./app-startup.html).
 
@@ -136,7 +136,63 @@ You can use the `domain` attribute when you want your application to be served f
 domain: unique-example.com
 ~~~
 
-The command-line option that overrides this attribute is `-d`.
+The command line option that overrides this attribute is `-d`.
+
+### <a id='instances'></a>The instances attribute ###
+
+Use the `instances` attribute to specify the number of app instances you want to start upon push:
+
+~~~
+instances: 2
+~~~
+
+We recommend that you run at least two instances of any apps for which fault tolerance matters.
+
+The command line option that overrides this attribute is `-i`.
+
+### <a id='memory'></a>The memory attribute ###
+
+Use the `memory` attribute to specify the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case. For example:
+
+~~~
+memory: 1024M
+~~~
+
+The default memory limit is 1G. You might want to specify a lower limit to conserve memory if you know that your app instances do not require 1G of memory.
+
+The command line option that overrides this attribute is `-m`.
+
+### <a id='host'></a>The host attribute ###
+
+Use the `host` attribute to provide a hostname, or subdomain, in the form of a string. This segment of a route helps to ensure that the route is unique. If you do not provide a hostname, the URL for the app takes the form of `APP.DOMAIN`.
+
+~~~
+host: my-app
+~~~
+
+The command line option that overrides this attribute is `-n`.
+
+### <a id='path'></a>The path attribute
+
+You can use the `path` attribute to tell `cf` where to find your application. This is generally not necessary when you run `cf push` from the directory where an application is located.
+
+~~~
+path: <path_to_application_bits>
+~~~
+
+The command line option that overrides this attribute is `-p`.
+
+### <a id='timeout'></a>The timeout attribute ###
+
+Use the `timeout` attribute to give your application more time to start, up to 180 seconds. The default is 60 seconds. For example:
+
+~~~
+timeout: 80
+~~~
+
+If the app has not started by the timeout limit you set, Cloud Foundry stops trying to start the app. You might want to increase the timeout length to ensure that very large apps have sufficient time to start.
+
+The command line option that overrides this attribute is `-t`.
 
 ### <a id='no-route'></a>The no-route attribute ###
 
@@ -148,7 +204,7 @@ You can use the `no-route` attribute with a value of `true` to prevent a route f
 no-route: true
 ~~~
 
-The command-line option that corresponds to this attribute is ``--no-route``.
+The command line option that corresponds to this attribute is ``--no-route``.
 
 If you find that an application which should not have a route _does_ have one:
 
@@ -157,15 +213,6 @@ If you find that an application which should not have a route _does_ have one:
 
 For more about these situations, see [Describing Multiple Applications with One Manifest] (#multi-apps) below.
 
-### <a id = 'path'></a>The path attribute
-
-You can use the `path` attribute to tell `cf` where to find your application. This is generally not necessary when you run `cf push` from the directory where an application is located.
-
-~~~
-path: <path_to_application_bits>
-~~~
-
-The command-line option that overrides this attribute is `-p`.
 
 ### <a id='env-block'></a>Environment variables ###
 
@@ -276,7 +323,7 @@ Follow these general rules when using a multiple-application manifest:
 
 * Do not provide an application name with `cf push`.
 
-* Do not use any command-line options with `cf push`.
+* Do not use any command line options with `cf push`.
 
 There are only two narrow exceptions:
 

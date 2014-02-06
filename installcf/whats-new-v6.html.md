@@ -88,7 +88,7 @@ Once created, user-provided services can be bound to an application with `cf bin
 
 The alias for `create-user-provided-service` is `cups`.
 
-To create a service in interactive mode, use the `-p` option with a comma-separated list of parameter names.
+To create a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names.
 cf then prompts you for each parameter in turn.
 
   `cf cups SERVICE_INSTANCE -p "host, port, dbname, username, password"`
@@ -104,7 +104,7 @@ To create a service that drains information to third-party log management softwa
 ### <a id='user-uups'></a> The cf update-user-provided-service Command ###
 
 The alias for `update-user-provided-service` is `uups`.
-You can use `cf update-user-provided-service` to update one or more of the attributes for a user-provided service.
+You can use `cf update-user-provided-service` to update one or more of the attributes for a user-provided service instance.
 Attributes that you do not supply are not updated.
 
 To update a service in interactive mode, use the `-p` option with a comma-separated list of parameter names.

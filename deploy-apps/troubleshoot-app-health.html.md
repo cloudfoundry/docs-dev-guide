@@ -8,40 +8,31 @@ _This page assumes that you are using cf v6._
 
 Cloud Foundry's cf command line interface provides several commands you can use
 to investigate application deployment and health.
-For more information, see [cf Command Line Interface](../installcf/cf.html).
 
 * `cf apps`: Returns a list of the applications deployed to the current space
 with deployment options, including the name, current state, number of instances,
 memory and disk allocations, and URLs of each application.
-For command usage, see [cf apps](../installcf/cf.html#apps).
 
 * `cf app APP_NAME`: Returns the health and status of each instance of a
 specific application in the current space, including instance ID number, current
 state, how long it has been running, and how much CPU, memory, and disk it is
 using.
-For command usage, see [cf app](../installcf/cf.html#app).
 
 * `cf env APP_NAME`: Returns environment variables set using `cf set-env`.
-For command usage, see [cf env](../installcf/cf.html#env).
 
 * `cf files APP_NAME logs/env.log`: Returns environment variables in the container environment.
 The `VCAP_SERVICES` variable lists all services that have been bound to the
 application and the credentials for connecting to each service.
-For command usage, see [cf files](../installcf/cf.html#files).
 
 * `cf files APP_NAME logs/staging_task.log`: Returns the staging log for your
 app.
-For command usage, see [cf logs](../installcf/cf.html#logs).
 
 * `cf files APP_NAME logs/stderr.log`: Returns recent output to STDERR.
-For command usage, see [cf logs](../installcf/cf.html#logs).
 
 * `cf files APP_NAME logs/stdout.log`: Returns recent output to STDOUT.
-For command usage, see [cf logs](../installcf/cf.html#logs).
 
 * `cf logs APP_NAME`: Returns a real-time stream of the application STDOUT and
-STDERR. Use **Ctrl-C** (^C) to exit the real-time stream. For command usage, see
-[cf logs](../installcf/cf.html#logs).
+STDERR. Use **Ctrl-C** (^C) to exit the real-time stream.
 
   You may need to configure your application to issue messages to STDOUT and
 STDERR.
@@ -57,10 +48,8 @@ error codes.
 See
 [https://github.com/cloudfoundry/errors](https://github.com/cloudfoundry/errors)
 for a list of Cloud Foundry errors.
-For command usage, see [cf events](../installcf/cf.html#events).
 
 * `cf files APP_NAME`: Returns a list of files in an application directory.
-For command usage, see [cf files](../installcf/cf.html#files).
 
 ## <a id='java-apps'></a>Java and Grails Best Practices ##
 

@@ -20,8 +20,7 @@ environment variables.
 ### <a id='cli'></a>View Environment Variables using CLI ###
 
 The cf command line interface provides two commands that can return environment
-variables. For more information see [logs](../installcf/cf.html#logs) and
-[files](../installcf/cf.html#files). on [cf Command Line Interface](../installcf/cf.html).
+variables.
 
 To see the environment variables that you have set using the `cf set-env`
 command:

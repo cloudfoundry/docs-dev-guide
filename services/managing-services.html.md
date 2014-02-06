@@ -6,7 +6,7 @@ _This page assumes you are using cf v6._
 ## <a id='viewing-services'></a> View Available Services ##
 
 After targeting and logging into Cloud Foundry using
-[cf](../installcf/cf.html), you can view available services in the
+[cf](../installcf/whats-new-v6.html), you can view available services in the
 current targeted org and space using the `cf services` command:
 
 <pre class='terminal'>

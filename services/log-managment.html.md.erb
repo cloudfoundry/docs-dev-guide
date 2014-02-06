@@ -1,0 +1,194 @@
+---
+title: Third-Party Log Management Services
+---
+
+_This page assumes that you are using cf v6._
+
+Third-party solutions allow you to view and analyze logs from your application to satisfy compliance or other business requirements. Providers whose products or services work with Cloud Foundry include Logentries, logstash, Papertrail, and Splunk.
+To your application, the logging solution is a service. Their relationship can be described in terms of source, sink, and drain:
+
+* The application is an information source.
+* The logging service is an information sink.
+* A drain configured on the application helps the source communicate with the sink.
+
+Your notion of information source should include the system components that interact with the app, not just the app itself. For any one application, logs come from each instance of the app and also from <%=vars.cf_distro%> system components. For example, when a <%=vars.cf_distro%> Router routes an HTTP request to an app, the Router records that event in a log.  Logs tell you both what your app does and what the system does with your app.
+
+The Loggregator component of <%=vars.cf_distro%> consolidates all logs of actions that directly affect the app. In the Command Line Interface (CLI), you can view the entire Loggregator output or filter it to select a subset of logging information. Viewing logs in the CLI is essential preparation for working with a logging service.
+
+Loggregator keeps a limited amount of logging information in memory; the limit depends on the hardware where <%=vars.cf_distro%> is deployed. Eventually the newest logging information replaces the oldest. Loggregator keeps none of this logging information if its VM crashes and restarts. To persist larger amounts of logs, you should set up your application to drain logs to a third-party logging service.
+
+## <a id='cli'></a>Preparation: Viewing Logs in the Command Line Interface ##
+
+The `cf logs <app_name>` command enables you to view logs in the CLI. You can view all the logging information that Loggregator receives or possesses, or filter its output using shell commands. The examples below provide excerpts from log output, edited for brevity.
+Note: The filtering examples use the Linux `grep` command. The filtering command to use and its syntax may differ, depending on your operating system and shell.
+
+1. cf logs <app_name> displays all of the logging information that Loggregator receives in (almost) real time.
+
+	<pre class="terminal">
+		$ cf logs nifty-gui
+			Connected, tailing logs for app nifty-gui in org janclouduser / space jancloudspace as admin...
+			2014-02-06T12:00:19.44-0800 [API]     OUT Updated app with guid c8612fc2-85b1-464c-92f5-d4a1156eacbf ({"route"=>"2ef5796b-475a-4615-9c71-75bbe277022e"})
+			2014-02-06T12:00:27.54-0800 [DEA]     OUT Got staging request for app with id c8612fc2-85b1-464c-92f5-d4a1156eacbf
+			2014-02-06T12:00:28.51-0800 [API]     OUT Updated app with guid c8612fc2-85b1-464c-92f5-d4a1156eacbf ({"state"=>"STARTED"})
+			2014-02-06T12:00:28.69-0800 [STG]     OUT -----> Downloaded app package (552K)
+			2014-02-06T12:00:49.67-0800 [App/0]   ERR [2014-02-06 20:00:49] INFO  WEBrick 1.3.1
+			2014-02-06T12:01:15.63-0800 [RTR]     OUT nifty-gui.23.22.211.63.xip.io - [06/02/2014:20:01:15 +0000] "GET / HTTP/1.1" 200 44 "-" "curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8y zlib/1.2.5" 10.180.180.220:39648 response_time:0.019625952 app_id:c8612fc2-85b1-464c-92f5-d4a1156eacbf
+
+	</pre>
+
+1. `cf logs <app_name> --recent` Displays all the logging information that Loggregator possesses at that moment.
+
+	`cf logs <app_name> --recent`  TBD
+
+1. Filter log messages by log type. The possibilities are described in Types of Logs below. Our example filters for the second instance of an app (APP/1).
+
+1. Filter log messages by channel. The two possibilities are standard out (`STD`)  and standard error (`ERR`). Our example filters for ERR messages only.
+
+1. Filter log messages by HTTP method. The possibilities depend on your app. Our example filters for HTTP GET events only.
+
+1. Filter log messages by timestamp. The possibilities depend on your app. Our example filters for HTTP GET events only.
+
+### <a id='bind'></a>Binding a Third-Party Log Management Service Instance ###
+
+Three-step process:
+Configure the log management solution to treat your application as a source of data.
+Create a user-provided service instance appropriate for the log management solution.
+Bind the service instance to the application.
+Binding configures a drain on the application. A drain is simply a place to find two pieces of information:
+The URL and port number needed to communicate with the service. This is called a syslog URL.
+Cloud Foundry uses the syslog URL to route messages to the service. The service uses the application instance identifier to identify the source of messages.
+
+
+### <a id='types'></a> Types of Logs ###
+
+We usually identify different types of logs by origin. Every <%=vars.cf_distro%> component that generates logs inserts a three-letter code to identify messages as originating from that component. Some components use more than one code because they emit more than one type of log. Applications use the code APP/0 (“app instance zero”) for the first instance and increment the digit for every instance after that. These codes appear in the second field, enclosed in square brackets, in logs you view in the CLI.
+The primary types of logs and their codes are as follows:
+
+<table border="1">
+	<colgroup>
+		<col>
+		<col>
+		<col>
+	</colgroup>
+	<tbody>
+		<tr>
+			<td style="text-align: center;" class="confluenceTd">
+				foo
+			</td>
+			<td style="text-align: center;" class="confluenceTd">
+				bar
+			</td>
+			<td style="text-align: center;" class="confluenceTd">
+				baz
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+	Origin					Code			Notes
+application and instance		APP/0			0 is the first instance, 1 is the second, and so on.
+Cloud Controller			API
+Staging				STG			These messages originate from the DEA beginning when you deploy an app, and ending when the droplet is uploaded.
+Droplet Execution Agent		DEA			These messages begin when the DEA starts the app.
+Router					RTR
+
+
+
+## <a id='cups-example'></a> Binding User-Provided Service Instances to Applications  ##
+
+There are two ways to bind user-provided service instances to applications:
+
+* With a manifest, _when_ you push the application.
+* With the `cf bind-service` command, _after_ you push the application.
+
+In either case, you must push your app to a space where the desired user-provided instances already exist.
+
+For example, if you want to bind a service instance called `test-mysql-01` to an app, the services block in the manifest should look like this:
+
+~~~
+services:
+ - test-mysql-01
+~~~
+
+This excerpt from the cf push command and response shows that cf reads the manifest and binds the service instance to the app, which is called `test-msg-app`.
+
+<pre class="terminal">
+$ cf push
+Using manifest file /Users/janclouduser/test-apps/test-msg-app/manifest.yml
+
+...
+
+Binding service test-mysql-01 to test-msg-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>
+OK
+</pre>
+
+Once the binding has taken effect, it is described in the
+[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP_SERVICES) environment variable.
+
+For more information about manifests, see [Deploying with Application Manifests](../deploy-apps/manifest.html#services-block).
+
+For an example of the `cf bind-service` command, see the next section.
+
+## <a id='cups-example'></a> Example: Creating a User-Provide Service Instance and Binding it to an App ##
+
+Suppose we want to create and bind an instance of a publish-subscribe messaging service to an app called `test-msg-app`.
+Our Cloud Foundry username is `janclouduser`, and we plan to call the instance `test-pubsub-01`.
+We know the URL and port for the service.
+
+1. We begin with the `cf create-user-provided-service` command in interactive mode, using its alias, `cups`.
+
+	<pre class="terminal">
+	$ cf cups test-pubsub-01 -p "host, port, binary, username, password"
+
+	host> pubsub01.<%=vars.app_domain%>
+
+	port> 1234
+
+	url> pubsub-example.com
+
+	username> pubsubuser
+
+	password> p@$$w0rd
+	Creating user provided service test-pubsub-01 in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	OK
+	</pre>
+
+1. When we list available services, we see that the new service is not yet bound to any apps.
+
+	<pre class="terminal">
+	$ cf services
+	Getting services in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	OK
+
+	name               service         plan    bound apps
+	test-pubsub-01     user-provided
+	</pre>
+
+1. Now we bind the service to our app.
+
+	<pre class="terminal">
+	$ cf bind-service test-msg-app test-pubsub-01
+	Binding service test-pubsub-01 to app test-msg-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	OK
+	TIP: Use 'cf push' to ensure your env variable changes take effect
+	</pre>
+
+
+1. For the binding to take effect, we must push our app a second time.
+
+	<pre class="terminal">
+	$ cf push test-msg-app
+	Updating app test-msg-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	OK
+	...
+	</pre>
+
+1. To verify that the service instance is now recorded in [VCAP_SERVICES](../deploy-apps/environment-variable.html), we search the environment log.
+
+	<pre class="terminal">
+	$ cf files test-msg-app logs/env.log | grep VCAP_SERVICES
+	VCAP_SERVICES={"user-provided":[{"name":"test-pubsub-01","label":"user-provided","tags":[],"credentials":{"binary":"pubsub.rb","host":"pubsub01.<%=vars.app_domain%>","password":"p@29w0rd","port":"1234","username":"pubsubuser"},"syslog_drain_url":""}]}
+	</pre>
+
+

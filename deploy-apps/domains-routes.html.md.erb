@@ -3,40 +3,47 @@ title: About Domains, Subdomains and Routes
 ---
 _This page assumes you are using cf v6._
 
-This page has information about how to specify the route (or URL) that Cloud Foundry uses to direct requests to an application. A route is made up of a _subdomain_ (or host) and a _domain_ that you can specify when you push an application.
+This page has information about how to specify the route (or URL) that Cloud
+Foundry uses to direct requests to an application.
+A route is made up of a _subdomain_ (or host) and a _domain_ that you can
+specify when you push an application.
 
-In the following route, the subdomain or host is `myapp` and the domain is `<%=vars.app_domain%>`:
-
-`myapp.<%=vars.app_domain%>`
+In the route `myapp.<%=vars.app_domain%>`, the subdomain is `myapp` and the
+domain is `<%=vars.app_domain%>`.
 
 ## <a id='domains'></a>Key Facts About Domains ##
 
 In Cloud Foundry, domains are associated with orgs.
 
-A Cloud Foundry instance defines a default shared domain. Unless you specify a domain, `cf` uses the default shared domain in the route to your application.
+A Cloud Foundry instance defines a default shared domain.
+Unless you specify a domain, `cf` uses the default shared domain in the route to
+your application.
 
-Cloud Foundry also supports custom domains: you can map a registered domain of your own to a space in Cloud Foundry, as described below.
+Cloud Foundry also supports custom domains.
+You can map a registered domain of your own to a space in Cloud Foundry, as
+described below.
 
 ## <a id='create-domains'></a>Create a Custom Domain in Cloud Foundry ##
 
-If you want to use a registered domain of your own, you must define
-it in Cloud Foundry and associate it with an organization.
+If you want to use a registered domain of your own, you must define it in Cloud
+Foundry and associate it with an organization.
 
 The command below defines the custom domain `example.org` in the
 "test" organization:
 
-`cf create-domain test example.org`
-
-**(Admin only)** To create a shared domain that is available to all organizations in your account, use the `cf create-shared-domain` command:
-
-`cf create-shared-domain example.org`
+<pre class="terminal">
+$ cf create-domain test example.org
+</pre>
 
 ## <a id='view-domains'></a>View Domains for an Org ##
 
-You can see available domains for the targeted organization using the `cf domains` command. In this example, there are two available domains: a system-wide default `<%=vars.app_domain%>` domain and the custom `example.org` domain.
+You can see available domains for the targeted organization using the `cf
+domains` command.
+In this example, there are two available domains: a system-wide default
+`<%=vars.app_domain%>` domain and the custom `example.org` domain.
 
 <pre class="terminal">
-cf domains
+$ cf domains
 Getting domains in org console as user@example.org... OK
 
 name           status
@@ -46,48 +53,58 @@ example.org    owned
 
 ## <a id='delete-domains'></a>Delete a Domain ##
 
-You can delete a domain from Cloud Foundry with the cf delete-domain command:
+You can delete a domain from Cloud Foundry with the `cf delete-domain` command:
 
-`cf delete-domain example.org`
-
-**(Admin only)** To delete a shared domain:
-
-`cf delete-shared-domain example.org`
+<pre class="terminal">
+$ cf delete-domain example.org
+</pre>
 
 ## <a id='subdomain'></a>Key Facts About Subdomains ##
 
-In some cases, defining the subdomain portion of a route is optional, but generally speaking this segment of a route is required to ensure that the route is unique. Note in particular that you _must_ define a subdomain in the following cases:
+In some cases, defining the subdomain portion of a route is optional. In
+generally, though, this segment of a route is required to ensure the route is
+unique.
+Note in particular that you _must_ define a subdomain in the following cases:
 
-- If you assign the default domain defined for your Cloud Foundry instance
-- If you assign a custom domain to the application, and that domain is, or will be, assigned to other applications. Note that in the case of a custom domain, a subdomain for it must be registered with your naming service along with the top-level domain
+- If you assign the default domain defined for your Cloud Foundry instance.
+- If you assign a custom domain to the application, and that domain is, or will be, assigned to other applications. In the case of a custom domain, a subdomain for it must be registered with your naming service along with the top-level domain.
 
-You might choose not to assign a subdomain to an application that will not accept browser requests, or if you are using a custom domain for a single application only.
+You might choose not to assign a subdomain to an application that will not
+accept browser requests, or if you are using a custom domain for a single
+application only.
 
-## <a id='assign-at-push'></a>Assign Domain and Subdomain at push Time ##
+## <a id='assign-at-push'></a>Assign Domain and Subdomain at push ##
 
-When you run `cf push`, you can optionally specify a domain and subdomain for the application:
-
-<pre class="terminal">
- cf push myapp -d example.org -n myapp
-</pre>
+When you run `cf push`, you can optionally specify a domain and subdomain for
+the application.
 
 - Domain: Use the `-d` flag to specify one of the domains available to the targeted org.
 - Subdomain: Use the `-n` flag to provide a string for the subdomain.
 
-The route cf creates for the application as a result of the selections above is:
+Example:
 
-`myapp.example.org`
+<pre class="terminal">
+$ cf push myapp -d example.org -n myapp
+</pre>
+
+The route cf creates for the application as a result of this command is
+`myapp.example.org`.
 
 ## <a id='assign-in-manifest'></a>Assign Subdomain in Manifest ##
 
-If you create or edit the manifest for an application, you can use the `host` (for subdomain) and `domain` attributes to define the components of the application route. For more information, see [Application Manifests](../deploy-apps/manifest.html).
+If you create or edit the manifest for an application, you can use the `host`
+(for subdomain) and `domain` attributes to define the components of the
+application route.
+For more information, see [Application Manifests](../deploy-apps/manifest.html).
 
 ## <a id='list-routes'></a>List Routes ##
 
-You can list routes for the current space with `cf routes` command. Note that the subdomain is shown as "host," separate from the domain segment. For example:
+You can list routes for the current space with `cf routes` command.
+Note that the subdomain is shown as "host," separate from the domain segment.
+For example:
 
 <pre class="terminal">
-cf routes
+$ cf routes
 Getting routes as user@example.org ...
 
 host                     domain          apps
@@ -100,37 +117,52 @@ sinatra-to-do            <%=vars.app_domain%>     sinatra-to-do
 
 ## <a id='define-route'></a>Define or Change a Route from the Command Line ##
 
-### <a id='create-route'></a>Create a route ###
+### <a id='create-route'></a>Create a Route ###
 
-Create a route and associate it with a space for later use with the `cf create-route` command. You can use the optional `-n HOSTNAME` parameter to specify a unique hostname for each route that uses the same domain. For example, this command creates the `myapp.example.org` route in the "development" space:
-
-<pre class="terminal">
-cf create-route development example.org -n myapp
-</pre>
-
-### <a id='map-route'></a>Assign a route to an app ###
-
-Assign or change the route for a particular application with the `cf map-route` command. Specifying the subdomain is optional. If the route does not already exist, this command creates it and then maps it. For example, the following command maps the route `myapp.example.org` to the "myapp" application:
+Create a route and associate it with a space for later use with the `cf create-route` command.
+You can use the optional `-n HOSTNAME` parameter to specify a unique hostname
+for each route that uses the same domain.
+For example, this command creates the `myapp.example.org` route in the
+"development" space:
 
 <pre class="terminal">
-cf map-route myapp example.org -n myapp
+$ cf create-route development example.org -n myapp
 </pre>
 
-**Note**: You can map a single route to multiple applications in the same space. See [Blue-Green Deployment](../deploy-apps/blue-green.html) to learn about an important extension of this technique.
+### <a id='map-route'></a>Assign a Route to an Application ###
 
-If the application is running when you map a route, restart the application. The new route is not active until the application is restarted.
+Assign or change the route for a particular application with the `cf map-route`
+command.
+Specifying the subdomain is optional.
+If the route does not already exist, this command creates it and then maps it.
+For example, the following command maps the route `myapp.example.org` to the
+"myapp" application:
+
+<pre class="terminal">
+$ cf map-route myapp example.org -n myapp
+</pre>
+
+**Note**: You can map a single route to multiple applications in the same space.
+See [Blue-Green Deployment](../deploy-apps/blue-green.html) to learn about an
+important extension of this technique.
+
+If the application is running when you map a route, restart the application.
+The new route is not active until the application is restarted.
 
 ## <a id='delete-route'></a>Remove a Route Using the Command Line ##
-You can remove a route from an app using the `cf unmap-route` command, as in the example below. Unmapping a route leaves the route available in the targeted space for later use.
+You can remove a route from an app using the `cf unmap-route` command.
+Unmapping a route leaves the route available in the targeted space for later
+use.
 
 <pre class="terminal">
-	cf unmap-route myapp example.org -n myapp
+$ cf unmap-route myapp example.org -n myapp
 </pre>
 
 You can remove a route from a space using the `cf delete-route` command:
+
 <pre class="terminal">
-	cf delete-route example.org -n myapp
+$ cf delete-route example.org -n myapp
 </pre>
 
-Note that for each of the above commands, using the `-n` parameter to specify the subdomain is optional.
-
+Note that for each of the above commands, using the `-n` parameter to specify
+the subdomain is optional.

@@ -2,7 +2,7 @@
 title: Build Tool Integration
 ---
 
-_This page assumes you are using cf v5 and version 1.0.1 of either the Cloud Foundry Maven plugin or the Cloud Foundry Gradle plugin._
+_This page assumes you are using cf v6 and version 1.0.1 of either the Cloud Foundry Maven plugin or the Cloud Foundry Gradle plugin._
 
 ## <a id='maven'></a>Maven Plugin ##
 The Cloud Foundry Maven plugin allows you to deploy and manage applications with Maven goals. This plugin provides Maven users with access to the core functionality of the Cloud Foundry cf command-line tool.
@@ -116,23 +116,23 @@ Key functionality available with the Cloud Foundry Maven plugin:
 
 <table border="1" class="table" >
 <tr><th><strong>Maven Goal</strong></th><th><strong>Cloud Foundry Command</strong></th><th><strong>Syntax</strong></th></tr>
-<tr><td>cf:login</td><td>login [EMAIL]</td><td>$ mvn cf:login</td>
+<tr><td>cf:login</td><td>login -u USERNAME</td><td>$ mvn cf:login</td>
 <tr><td>cf:logout</td><td>logout</td><td>$ mvn cf:logout</td>
 <tr><td>cf:app</td><td>app APPNAME</td><td>$ mvn cf:app [-Dcf.appname=APPNAME]</td>
 <tr><td>cf:apps</td><td>apps</td><td>$ mvn cf:apps</td>
-<tr><td>cf:target</td><td>target</td><td>$ mvn cf:target</td>
+<tr><td>cf:target</td><td>api</td><td>$ mvn cf:target</td>
 <tr><td>cf:push</td><td>push</td><td>$ mvn cf:push [-Dcf.appname=APPNAME] [-Dcf.path=PATH] [-Dcf.url=URL] [-Dcf.no-start=BOOLEAN]</td>
 <tr><td>cf:start</td><td>start APPNAME</td><td>$ mvn cf:start [-Dcf.appname=APPNAME]</td>
 <tr><td>cf:stop</td><td>stop APPNAME</td><td>$ mvn cf:stop [-Dcf.appname=APPNAME]</td>
 <tr><td>cf:restart</td><td>restart APPNAME</td><td>$ mvn cf:stop [-Dcf.appname=APPNAME]</td>
 <tr><td>cf:delete</td><td>delete APPNAME</td><td>$ mvn cf:delete [-Dcf.appname=APPNAME]</td>
-<tr><td>cf:scale</td><td>scale APPNAME</td><td>$ mvn cf:scale [-Dcf.appname=APPNAME] [-Dcf.instances=INTEGER]</td>
+<tr><td>cf:scale</td><td>scale APPNAME -i INSTANCES</td><td>$ mvn cf:scale [-Dcf.appname=APPNAME] [-Dcf.instances=INTEGER]</td>
 <tr><td>cf:env</td><td>env APPNAME</td><td>$ mvn cf:env [-Dcf.appname=APPNAME]</td>
 <tr><td>cf:services</td><td>services</td><td>$ mvn cf:services</td>
-<tr><td>cf:create-services</td><td>create-service OFFERING NAME</td><td>$ mvn cf:create-services</td>
-<tr><td>cf:delete-services</td><td>create-service SERVICE</td><td>$ mvn cf:delete-service</td>
-<tr><td>cf:bind-services</td><td>bind-service [SERVICE] [APPNAME]</td><td>$ mvn cf:bind-services</td>
-<tr><td>cf:unbind-services</td><td>unbind-service [SERVICE] [APPNAME]</td><td>$ mvn cf:unbind-services</td>
+<tr><td>cf:create-services</td><td>create-service SERVICE PLAN SERVICE_INSTANCE</td><td>$ mvn cf:create-services</td>
+<tr><td>cf:delete-services</td><td>delete-service SERVICE_INSTANCE</td><td>$ mvn cf:delete-service</td>
+<tr><td>cf:bind-services</td><td>bind-service APPNAME SERVICE_INSTANCE</td><td>$ mvn cf:bind-services</td>
+<tr><td>cf:unbind-services</td><td>unbind-service APPNAME SERVICE_INSTANCE</td><td>$ mvn cf:unbind-services</td>
 </table>
 
 ## <a id='gradle'></a>Gradle Plugin ##
@@ -211,21 +211,21 @@ Key functionality available with the Cloud Foundry Gradle plugin:
 
 <table border="1" class="table" >
 <tr><th><strong>Gradle Task</strong></th><th><strong>Cloud Foundry Command</strong></th><th><strong>Syntax</strong></th></tr>
-<tr><td>cf-login</td><td>login [EMAIL]</td><td>$ gradle cf-login</td>
+<tr><td>cf-login</td><td>login -u USERNAME</td><td>$ gradle cf-login</td>
 <tr><td>cf-logout</td><td>logout</td><td>$ gradle cf-logout</td>
 <tr><td>cf-app</td><td>app APPNAME</td><td>$ gradle cf-app [-Pcf.application=APPNAME]</td>
 <tr><td>cf-apps</td><td>apps</td><td>$ gradle cf-apps</td>
-<tr><td>cf-target</td><td>target</td><td>$ gradle cf-target</td>
+<tr><td>cf-target</td><td>api</td><td>$ gradle cf-target</td>
 <tr><td>cf-push</td><td>push</td><td>$ gradle cf-push [-Pcf.application=APPNAME] [-Pcf.uri=URL] [-Pcf.startApp=BOOLEAN]</td>
 <tr><td>cf-start</td><td>start APPNAME</td><td>$ gradle cf-start [-Pcf.application=APPNAME]</td>
 <tr><td>cf-stop</td><td>stop APPNAME</td><td>$ gradle cf-stop [-Pcf.application=APPNAME]</td>
 <tr><td>cf-restart</td><td>restart APPNAME</td><td>$ gradle cf-stop [-Pcf.application=APPNAME]</td>
 <tr><td>cf-delete</td><td>delete APPNAME</td><td>$ gradle cf-delete [-Pcf.application=APPNAME]</td>
-<tr><td>cf-scale</td><td>scale APPNAME</td><td>$ gradle cf-scale [-Pcf.application=APPNAME] [-Pcf.instances=INTEGER]</td>
+<tr><td>cf-scale</td><td>scale APPNAME -i INSTANCES</td><td>$ gradle cf-scale [-Pcf.application=APPNAME] [-Pcf.instances=INTEGER]</td>
 <tr><td>cf-env</td><td>env APPNAME</td><td>$ gradle cf-env [-Pcf.application=APPNAME]</td>
 <tr><td>cf-services</td><td>services</td><td>$ gradle cf-services</td>
-<tr><td>cf-create-service</td><td>create-service OFFERING NAME</td><td>$ gradle cf-create-services</td>
-<tr><td>cf-delete-services</td><td>create-service SERVICE</td><td>$ gradle cf-delete-service</td>
-<tr><td>cf-bind</td><td>bind-service [SERVICE] [APPNAME]</td><td>$ gradle cf-bind-services</td>
-<tr><td>cf-unbind</td><td>unbind-service [SERVICE] [APPNAME]</td><td>$ gradle cf-unbind</td>
+<tr><td>cf-create-service</td><td>create-service SERVICE PLAN SERVICE_INSTANCE</td><td>$ gradle cf-create-services</td>
+<tr><td>cf-delete-services</td><td>delete-service SERVICE_INSTANCE</td><td>$ gradle cf-delete-service</td>
+<tr><td>cf-bind</td><td>bind-service APPNAME SERVICE_INSTANCE</td><td>$ gradle cf-bind-services</td>
+<tr><td>cf-unbind</td><td>unbind-service APPNAME SERVICE_INSTANCE</td><td>$ gradle cf-unbind</td>
 </table>

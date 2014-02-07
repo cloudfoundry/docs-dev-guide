@@ -29,14 +29,14 @@ To persist larger amounts of logs, set up your application to drain logs to a th
 
 ## <a id='cli'></a>Preparation: Viewing Logs in the Command Line Interface ##
 
-The `cf logs <app_name>` command enables you to view logs in the CLI.
+The `cf logs` command enables you to view logs in the CLI.
 You can view all the logging information that Loggregator has or receives, or filter it using shell commands.
 The log output examples below are edited for brevity.
 
 **Note**: The filtering examples use the Linux `grep` command.
 Depending on your operating system and shell, you may need to use a different command or syntax.
 
-1. cf logs <app_name> displays all of the logging information that Loggregator receives in (almost) real time.
+1. `cf logs <app_name>` displays all of the logging information that Loggregator receives in (almost) real time.
 
 	<pre class="terminal">
 		$ cf logs nifty-gui
@@ -52,9 +52,20 @@ Depending on your operating system and shell, you may need to use a different co
 
 1. `cf logs <app_name> --recent` Displays all the logging information that Loggregator possesses at that moment.
 
-	`cf logs <app_name> --recent`  TBD
+	<pre class="terminal">
+	cf logs --recent nifty-gui
+	Connected, dumping recent logs for app nifty-gui in org janclouduser / space jancloudspace as admin...
 
-1. Filter log messages by log type. The possibilities are described in Types of Logs below. Our example filters for the second instance of an app (APP/1).
+		2014-02-06T11:06:20.70-0800 [RTR]     OUT copy.23.22.211.63.xip.io - [06/02/2014:19:06:20 +0000] "GET / HTTP/1.1" 200 44 "-" "Fabula/1.00 [en] (X11; I; Praefator 3.0.3)" 10.180.180.220:57620 response_time:0.007610524 app_id:9801d83d-709b-45c9-bfdc-2565329dfb9a
+		2014-02-06T11:06:20.70-0800 [App/0]   ERR 204.15.0.254, 10.180.180.220 - - [06/Feb/2014 19:06:20] "GET / HTTP/1.1" 200 44 0.0004
+		2014-02-06T11:06:20.70-0800 [RTR]     OUT copy.23.22.211.63.xip.io - [06/02/2014:19:06:20 +0000] "GET / HTTP/1.1" 200 44 "-" "Fabula/1.00 [en] (X11; I; Praefator 3.0.3)" 10.180.180.220:57625 response_time:0.008446913 app_id:9801d83d-709b-45c9-bfdc-2565329dfb9a
+		2014-02-06T11:06:20.87-0800 [App/0]   ERR 204.15.0.254, 10.180.180.220 - - [06/Feb/2014 19:06:20] "GET / HTTP/1.1" 200 44 0.0005
+		2014-02-06T11:06:20.87-0800 [RTR]     OUT copy.23.22.211.63.xip.io - [06/02/2014:19:06:20 +0000] "GET / HTTP/1.1" 200 44 "-" "Fabula/1.00 [en] (X11; I; Praefator 3.0.3)" 10.180.180.220:57627 response_time:0.006277213 app_id:9801d83d-709b-45c9-bfdc-2565329dfb9a
+		2014-02-06T11:06:20.87-0800 [App/0]   ERR 204.15.0.254, 10.180.180.220 - - [06/Feb/2014 19:06:20] "GET / HTTP/1.1" 200 44 0.0003
+
+	</pre>
+
+1. Filter log messages by log type. The possibilities are described in Types of Logs below. Our example filter restricts output to messages from the second instance of an app (APP/1).
 
 1. Filter log messages by channel. The two possibilities are standard out (`STD`)  and standard error (`ERR`). Our example filters for ERR messages only.
 
@@ -64,8 +75,7 @@ Depending on your operating system and shell, you may need to use a different co
 
 ## <a id='use'></a>Using a Third-Party Log Management Service ##
 
-To drain logs to a third-party log management service from an application and the relevant Cloud Foundry components, you complete three steps.
-In general terms, the process looks like this:
+The overall process of enabling your application and the relevant Cloud Foundry components to drain logs to a third-party log management service looks like this:
 
 1. Configure the log management solution to treat your application as a source of data.
 
@@ -73,7 +83,7 @@ In general terms, the process looks like this:
 
 1. Bind the service instance to the application.
 
-Review the next three sections to learn critical details about each of these steps.
+Review the rest of this section to learn how to complete each of these steps.
 
 ### <a id='config'></a>Configure the service to accept traffic from Cloud Foundry ###
 
@@ -84,8 +94,7 @@ Ask your Cloud Foundry administrator for these IP addresses.
 (NAT boxes are systems responsible for Network Address Translation, not to be confused with the NATS messaging protocol.)
 
 You also need to obtain the special URL, called a syslog URL, that the service makes available as an endpoint for incoming log data.
-The URL is special because its protocol is `syslog`.
-It also includes a port number.
+This URL has a protocol of `syslog` and includes a port number.
 For example:
 
  `syslog://logs.example.com:1234`
@@ -100,11 +109,15 @@ Now you need a service instance to bind to your app.
 In this case, you create a user-provided service instance using the `cups` command with the `-l` option and the syslog URL you obtained earlier.
 See [User-Provided Services] (./user-provided.html#user-cups).
 
-Now the service instance and the syslog drain exist, but the service install still needs to be bound to the app.
+Now that the service instance and the syslog drain exist, you are ready to bind the service instance to the app.
 
 ### <a id='bind'></a>Bind the service instance to the application ###
 
-See [Binding User-Provided Service Instances to Applications](user-provided.html#cups-example).
+Use the `cf bind-service` command as described in [Binding User-Provided Service Instances to Applications](user-provided.html#cups-example).
+
+## <a id='verify'></a>Verifying that Logs are Draining to a Service ##
+
+_Let's provide a few clues about what to do once we've completed the procedure above._
 
 ## <a id='types'></a> Types of Logs ##
 
@@ -187,7 +200,7 @@ The primary types of logs and their codes are as follows:
 	</tbody>
 </table>
 
-## <a id='format'></a> About Log File Formats and Third-Party Log Management Software  ##
+## <a id='format'></a> The Syslog Protocol and How Syslog Messages are Transmitted  ##
 
 Loggregator formats logging data that it sends to third-party services according to [RFC 5424](http://tools.ietf.org/html/rfc5424), titled *The Syslog Protocol*.
 Logs viewed in the CLI are not in syslog format.

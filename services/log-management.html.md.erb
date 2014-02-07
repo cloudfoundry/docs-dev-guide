@@ -50,10 +50,10 @@ Depending on your operating system and shell, you may need to use a different co
 
 	</pre>
 
-1. `cf logs <app_name> --recent` Displays all the logging information that Loggregator possesses at that moment.
+1. `cf logs <app_name> --recent` displays all the logging information that Loggregator possesses at that moment.
 
 	<pre class="terminal">
-	cf logs --recent nifty-gui
+	$ cf logs --recent nifty-gui
 	Connected, dumping recent logs for app nifty-gui in org janclouduser / space jancloudspace as admin...
 
 		2014-02-06T11:06:20.70-0800 [RTR]     OUT copy.23.22.211.63.xip.io - [06/02/2014:19:06:20 +0000] "GET / HTTP/1.1" 200 44 "-" "Fabula/1.00 [en] (X11; I; Praefator 3.0.3)" 10.180.180.220:57620 response_time:0.007610524 app_id:9801d83d-709b-45c9-bfdc-2565329dfb9a
@@ -67,11 +67,54 @@ Depending on your operating system and shell, you may need to use a different co
 
 1. Filter log messages by log type. The possibilities are described in Types of Logs below. Our example filter restricts output to messages from the second instance of an app (APP/1).
 
+	<pre class="terminal">
+		$ cf logs nifty-gui --recent | grep App/1
+		2014-02-07T10:57:55.88-0800 [App/1]   OUT Express server started
+		2014-02-07T10:57:55.88-0800 [App/1]   ERR
+		2014-02-07T11:43:01.55-0800 [App/1]   OUT Express server started
+		2014-02-07T11:43:01.55-0800 [App/1]   ERR
+	</pre>
+
 1. Filter log messages by channel. The two possibilities are standard out (`STD`)  and standard error (`ERR`). Our example filters for ERR messages only.
+
+	<pre class="terminal">
+		$ cf logs nifty-gui --recent | grep ERR
+		2014-02-07T10:54:35.97-0800 [STG]     ERR
+		2014-02-07T10:54:46.31-0800 [App/0]   ERR
+		2014-02-07T10:57:55.88-0800 [App/1]   ERR
+		2014-02-07T11:42:49.86-0800 [STG]     ERR
+		2014-02-07T11:43:01.50-0800 [App/0]   ERR
+		2014-02-07T11:43:01.55-0800 [App/1]   ERR
+		2014-02-07T11:43:01.95-0800 [App/2]   ERR
+	</pre>
 
 1. Filter log messages by HTTP method. The possibilities depend on your app. Our example filters for HTTP GET events only.
 
-1. Filter log messages by timestamp. The possibilities depend on your app. Our example filters for HTTP GET events only.
+	<pre class="terminal">
+		$ cf logs nifty-gui --recent | grep GET
+		2014-02-07T11:59:02.25-0800 [RTR]     OUT hiya.<%=app_domain%> - [07/02/2014:19:59:02 +0000] "GET / HTTP/1.1" 200 12 "-" "curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8y zlib/1.2.5" 10.10.2.181:45610 response_time:0.002682034 app_id:4d397313-20e0-478a-9a74-307446eb7640
+		2014-02-07T10:59:13.13-0800 [RTR]     OUT hiya.<%=app_domain%> - [07/02/2014:18:59:13 +0000] "GET / HTTP/1.1" 200 12 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36" 10.10.66.101:36928 response_time:0.012257917 app_id:4d397313-20e0-478a-9a74-307446eb7640
+		2014-02-07T10:59:13.29-0800 [RTR]     OUT hiya.<%=app_domain%> - [07/02/2014:18:59:13 +0000] "GET /favicon.ico HTTP/1.1" 404 23 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36" 10.10.66.101:6625 response_time:0.003119610 app_id:4d397313-20e0-478a-9a74-307446eb7640
+		2014-02-07T11:30:20.03-0800 [RTR]     OUT hiya.<%=app_domain%> - [07/02/2014:19:30:20 +0000] "GET / HTTP/1.1" 200 12 "-" "curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8y zlib/1.2.5" 10.10.66.101:42516 response_time:0.008333640 app_id:4d397313-20e0-478a-9a74-307446eb7640
+		2014-02-07T11:35:57.28-0800 [RTR]     OUT hiya.<%=app_domain%> - [07/02/2014:19:35:57 +0000] "GET / HTTP/1.1" 200 12 "-" "Wget/1.14 (darwin12.5.0)" 10.10.66.101:12787 response_time:0.005691659 app_id:4d397313-20e0-478a-9a74-307446eb7640
+	</pre>
+
+1. Filter log messages by timestamp. The possibilities depend on your app. Our example filters for messages emitted between 11:40 and 11:50 in the morning of February 7th, 2014, US Pacific time (indicated by the `-0800`).
+
+	<pre class="terminal">
+		$ cf logs nifty-gui --recent | grep 2014-02-07T11:4
+		2014-02-07T11:42:21.90-0800 [STG]     OUT -----> Building runtime environment
+		2014-02-07T11:42:48.28-0800 [STG]     OUT -----> Uploading droplet (5.6M)
+		2014-02-07T11:42:49.55-0800 [DEA]     OUT Starting app instance (index 0) with guid 4d397313-20e0-478a-9a74-307446eb7640
+		2014-02-07T11:42:49.64-0800 [DEA]     OUT Starting app instance (index 1) with guid 4d397313-20e0-478a-9a74-307446eb7640
+		2014-02-07T11:42:49.83-0800 [DEA]     OUT Starting app instance (index 2) with guid 4d397313-20e0-478a-9a74-307446eb7640
+		2014-02-07T11:42:49.86-0800 [App/0]   OUT Express server started
+		2014-02-07T11:42:50.87-0800 [App/0]   ERR
+		2014-02-07T11:42:50.87-0800 [App/1]   OUT Express server started
+		2014-02-07T11:42:50.87-0800 [App/1]   ERR
+		2014-02-07T11:42:51.49-0800 [App/2]   ERR
+		2014-02-07T11:42:51.49-0800 [App/2]   OUT Express server started
+	</pre>
 
 ## <a id='use'></a>Using a Third-Party Log Management Service ##
 
@@ -113,15 +156,23 @@ Now that the service instance and the syslog drain exist, you are ready to bind 
 
 ### <a id='bind'></a>Bind the service instance to the application ###
 
-Use the `cf bind-service` command as described in [Binding User-Provided Service Instances to Applications](user-provided.html#cups-example).
+Use the `cf bind-service` command followed by `cf push` as described in [Binding User-Provided Service Instances to Applications](user-provided.html#cups-example).
 
 ## <a id='verify'></a>Verifying that Logs are Draining to a Service ##
 
-_Let's provide a few clues about what to do once we've completed the procedure above._
+Suppose you have completed the procedure described in the previous section and want to verify that logs are draining correctly to a third-party log management service.
+One basic technique you can employ is to take actions that you know should produce log messages, and then comparing the logs you see in the CLI against those that the service shows you.
+For example, assuming that your application has web pages, you could send HTTP requests to the application.
+
+**Note**: For security reasons, Cloud Foundry applications do _not_ respond to ping.
 
 ## <a id='types'></a> Types of Logs ##
 
-We identify different types of logs by origin. Every Cloud Foundry component that generates logs identifies itself with a three-letter code. Some components use more than one code because they emit more than one type of log. Applications use the code APP/0 (“app instance zero”) for the first instance and increment the digit for every instance after that. These codes appear in the second field, enclosed in square brackets, in logs you view in the CLI.
+We identify different types of logs by origin.
+Every Cloud Foundry component that generates logs identifies itself with a three-letter code.
+Some components use more than one code because they emit more than one type of log.
+Applications use the code APP/0 (“app instance zero”) for the first instance and increment the digit for every instance after that.
+These codes appear in the second field, enclosed in square brackets, in logs you view in the CLI.
 The primary types of logs and their codes are as follows:
 
 <table border="1">

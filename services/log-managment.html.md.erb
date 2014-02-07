@@ -4,23 +4,37 @@ title: Third-Party Log Management Services
 
 _This page assumes that you are using cf v6._
 
-Third-party solutions allow you to view and analyze logs from your application to satisfy compliance or other business requirements. Providers whose products or services work with Cloud Foundry include Logentries, logstash, Papertrail, and Splunk.
-To your application, the logging solution is a service. Their relationship can be described in terms of source, sink, and drain:
+Third-party solutions allow you to view and analyze logs from your application to satisfy compliance or other business requirements.
+Providers whose products or services work with Cloud Foundry include Logentries, logstash, Papertrail, and Splunk.
+To your application, the logging solution is a service.
+Their relationship can be described in terms of source, sink, and drain:
 
 * The application is an information source.
 * The logging service is an information sink.
 * A drain configured on the application helps the source communicate with the sink.
 
-Your notion of information source should include the system components that interact with the app, not just the app itself. For any one application, logs come from each instance of the app and also from <%=vars.cf_distro%> system components. For example, when a <%=vars.cf_distro%> Router routes an HTTP request to an app, the Router records that event in a log.  Logs tell you both what your app does and what the system does with your app.
+Your notion of source should include the system components that interact with the app, not just the app itself.
+For any one application, logs come from each instance of the app and also from Cloud Foundry system components.
+For example, when a Cloud Foundry Router routes an HTTP request to an app, the Router records that event in a log.
+Logs tell you both what your app does and what the system does with your app.
 
-The Loggregator component of <%=vars.cf_distro%> consolidates all logs of actions that directly affect the app. In the Command Line Interface (CLI), you can view the entire Loggregator output or filter it to select a subset of logging information. Viewing logs in the CLI is essential preparation for working with a logging service.
+The Loggregator component of Cloud Foundry consolidates all logs of actions that directly affect the app.
+In the Command Line Interface (CLI), you can view the entire Loggregator output or filter it to select a subset of logging information.
+If you plan to use a third-party log management service, learn how to view logs in the CLI first.
 
-Loggregator keeps a limited amount of logging information in memory; the limit depends on the hardware where <%=vars.cf_distro%> is deployed. Eventually the newest logging information replaces the oldest. Loggregator keeps none of this logging information if its VM crashes and restarts. To persist larger amounts of logs, you should set up your application to drain logs to a third-party logging service.
+Loggregator keeps a limited amount of logging information in memory; the limit depends on the hardware where Cloud Foundry is deployed.
+Eventually the newest logging information replaces the oldest.
+If it crashes and restarts, Loggregator retains no logging information from before the crash.
+To persist larger amounts of logs, set up your application to drain logs to a third-party logging service as described [below](#use).
 
 ## <a id='cli'></a>Preparation: Viewing Logs in the Command Line Interface ##
 
-The `cf logs <app_name>` command enables you to view logs in the CLI. You can view all the logging information that Loggregator receives or possesses, or filter its output using shell commands. The examples below provide excerpts from log output, edited for brevity.
-Note: The filtering examples use the Linux `grep` command. The filtering command to use and its syntax may differ, depending on your operating system and shell.
+The `cf logs <app_name>` command enables you to view logs in the CLI.
+You can view all the logging information that Loggregator has or receives, or filter it using shell commands.
+The log output examples below are edited for brevity.
+
+**Note**: The filtering examples use the Linux `grep` command.
+Depending on your operating system and shell, you may need to use a different command or syntax.
 
 1. cf logs <app_name> displays all of the logging information that Loggregator receives in (almost) real time.
 
@@ -48,20 +62,53 @@ Note: The filtering examples use the Linux `grep` command. The filtering command
 
 1. Filter log messages by timestamp. The possibilities depend on your app. Our example filters for HTTP GET events only.
 
-### <a id='bind'></a>Binding a Third-Party Log Management Service Instance ###
+## <a id='use'></a>Using a Third-Party Log Management Service ##
 
-Three-step process:
-Configure the log management solution to treat your application as a source of data.
-Create a user-provided service instance appropriate for the log management solution.
-Bind the service instance to the application.
-Binding configures a drain on the application. A drain is simply a place to find two pieces of information:
-The URL and port number needed to communicate with the service. This is called a syslog URL.
-Cloud Foundry uses the syslog URL to route messages to the service. The service uses the application instance identifier to identify the source of messages.
+To drain logs to a third-party log management service from an application and the relevant Cloud Foundry components, you complete three steps.
+In general terms, the process looks like this:
 
+1. Configure the log management solution to treat your application as a source of data.
 
-### <a id='types'></a> Types of Logs ###
+1. Create a user-provided service instance appropriate for the log management solution.
 
-We usually identify different types of logs by origin. Every <%=vars.cf_distro%> component that generates logs inserts a three-letter code to identify messages as originating from that component. Some components use more than one code because they emit more than one type of log. Applications use the code APP/0 (“app instance zero”) for the first instance and increment the digit for every instance after that. These codes appear in the second field, enclosed in square brackets, in logs you view in the CLI.
+1. Bind the service instance to the application.
+
+Review the next three sections to learn critical details about each of these steps.
+
+### <a id='config'></a>Configure the service to accept traffic from Cloud Foundry ###
+
+You must configure the third-party log management service to accept traffic from your Cloud Foundry.
+
+To do this you need the external IP addresses of the two NAT boxes from which your Cloud Foundry will send log traffic to the service.
+Ask your Cloud Foundry administrator for these IP addresses.
+(NAT boxes are systems responsible for Network Address Translation, not to be confused with the NATS messaging protocol.)
+
+You also need to obtain the special URL, called a syslog URL, that the service makes available as an endpoint for incoming log data.
+The URL is special because its protocol is `syslog`.
+It also includes a port number.
+For example:
+
+ `syslog://logs.example.com:1234`
+
+Cloud Foundry uses the syslog URL to route messages to the service.
+
+Further configuration details may vary depending on service provider.
+
+### <a id='create'></a>Create a user-provided service instance with a syslog drain ###
+
+Now you need a service instance to bind to your app.
+In this case, you create a user-provided service instance using the `cups` command with the `-l` option and the syslog URL you obtained earlier.
+See [User-Provided Services] (./user-provided.html#user-cups).
+
+Now the service instance and the syslog drain exist, but the service install still needs to be bound to the app.
+
+### <a id='bind'></a>Bind the service instance to the application ###
+
+See [Binding User-Provided Service Instances to Applications](user-provided.html#cups-example).
+
+## <a id='types'></a> Types of Logs ##
+
+We identify different types of logs by origin. Every Cloud Foundry component that generates logs identifies itself with a three-letter code. Some components use more than one code because they emit more than one type of log. Applications use the code APP/0 (“app instance zero”) for the first instance and increment the digit for every instance after that. These codes appear in the second field, enclosed in square brackets, in logs you view in the CLI.
 The primary types of logs and their codes are as follows:
 
 <table border="1">
@@ -72,123 +119,76 @@ The primary types of logs and their codes are as follows:
 	</colgroup>
 	<tbody>
 		<tr>
+			<th style="text-align: center;" class="confluenceTd">
+				Origin
+			</th>
+			<th style="text-align: center;" class="confluenceTd">
+				Code
+			</th>
+			<th style="text-align: center;" class="confluenceTd">
+				Notes
+			</th>
+		</tr>
+		<tr>
 			<td style="text-align: center;" class="confluenceTd">
-				foo
+				Application and instance
 			</td>
 			<td style="text-align: center;" class="confluenceTd">
-				bar
+				`APP/0`
 			</td>
 			<td style="text-align: center;" class="confluenceTd">
-				baz
+				0 is the first instance, 1 is the second, and so on.
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align: center;" class="confluenceTd">
+				Cloud Controller
+			</td>
+			<td style="text-align: center;" class="confluenceTd">
+				`API`
+			</td>
+			<td style="text-align: center;" class="confluenceTd">
+
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align: center;" class="confluenceTd">
+				Staging
+			</td>
+			<td style="text-align: center;" class="confluenceTd">
+				`STG`
+			</td>
+			<td style="text-align: center;" class="confluenceTd">
+				The DEA emits these messages beginning when you deploy an app, and ending once the droplet has been uploaded.
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align: center;" class="confluenceTd">
+				Droplet Execution Agent
+			</td>
+			<td style="text-align: center;" class="confluenceTd">
+				`DEA`
+			</td>
+			<td style="text-align: center;" class="confluenceTd">
+				The DEA emits these messages beginning when it starts the app.
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align: center;" class="confluenceTd">
+				Router
+			</td>
+			<td style="text-align: center;" class="confluenceTd">
+				`RTR`
+			</td>
+			<td style="text-align: center;" class="confluenceTd">
+
 			</td>
 		</tr>
 	</tbody>
 </table>
 
+## <a id='format'></a> About Log File Formats and Third-Party Log Management Software  ##
 
-	Origin					Code			Notes
-application and instance		APP/0			0 is the first instance, 1 is the second, and so on.
-Cloud Controller			API
-Staging				STG			These messages originate from the DEA beginning when you deploy an app, and ending when the droplet is uploaded.
-Droplet Execution Agent		DEA			These messages begin when the DEA starts the app.
-Router					RTR
-
-
-
-## <a id='cups-example'></a> Binding User-Provided Service Instances to Applications  ##
-
-There are two ways to bind user-provided service instances to applications:
-
-* With a manifest, _when_ you push the application.
-* With the `cf bind-service` command, _after_ you push the application.
-
-In either case, you must push your app to a space where the desired user-provided instances already exist.
-
-For example, if you want to bind a service instance called `test-mysql-01` to an app, the services block in the manifest should look like this:
-
-~~~
-services:
- - test-mysql-01
-~~~
-
-This excerpt from the cf push command and response shows that cf reads the manifest and binds the service instance to the app, which is called `test-msg-app`.
-
-<pre class="terminal">
-$ cf push
-Using manifest file /Users/janclouduser/test-apps/test-msg-app/manifest.yml
-
-...
-
-Binding service test-mysql-01 to test-msg-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>
-OK
-</pre>
-
-Once the binding has taken effect, it is described in the
-[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP_SERVICES) environment variable.
-
-For more information about manifests, see [Deploying with Application Manifests](../deploy-apps/manifest.html#services-block).
-
-For an example of the `cf bind-service` command, see the next section.
-
-## <a id='cups-example'></a> Example: Creating a User-Provide Service Instance and Binding it to an App ##
-
-Suppose we want to create and bind an instance of a publish-subscribe messaging service to an app called `test-msg-app`.
-Our Cloud Foundry username is `janclouduser`, and we plan to call the instance `test-pubsub-01`.
-We know the URL and port for the service.
-
-1. We begin with the `cf create-user-provided-service` command in interactive mode, using its alias, `cups`.
-
-	<pre class="terminal">
-	$ cf cups test-pubsub-01 -p "host, port, binary, username, password"
-
-	host> pubsub01.<%=vars.app_domain%>
-
-	port> 1234
-
-	url> pubsub-example.com
-
-	username> pubsubuser
-
-	password> p@$$w0rd
-	Creating user provided service test-pubsub-01 in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
-	OK
-	</pre>
-
-1. When we list available services, we see that the new service is not yet bound to any apps.
-
-	<pre class="terminal">
-	$ cf services
-	Getting services in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
-	OK
-
-	name               service         plan    bound apps
-	test-pubsub-01     user-provided
-	</pre>
-
-1. Now we bind the service to our app.
-
-	<pre class="terminal">
-	$ cf bind-service test-msg-app test-pubsub-01
-	Binding service test-pubsub-01 to app test-msg-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
-	OK
-	TIP: Use 'cf push' to ensure your env variable changes take effect
-	</pre>
-
-
-1. For the binding to take effect, we must push our app a second time.
-
-	<pre class="terminal">
-	$ cf push test-msg-app
-	Updating app test-msg-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
-	OK
-	...
-	</pre>
-
-1. To verify that the service instance is now recorded in [VCAP_SERVICES](../deploy-apps/environment-variable.html), we search the environment log.
-
-	<pre class="terminal">
-	$ cf files test-msg-app logs/env.log | grep VCAP_SERVICES
-	VCAP_SERVICES={"user-provided":[{"name":"test-pubsub-01","label":"user-provided","tags":[],"credentials":{"binary":"pubsub.rb","host":"pubsub01.<%=vars.app_domain%>","password":"p@29w0rd","port":"1234","username":"pubsubuser"},"syslog_drain_url":""}]}
-	</pre>
-
-
+Loggregator formats logging data that it sends to third-party services according to [RFC 5424](http://tools.ietf.org/html/rfc5424), titled *The Syslog Protocol*.
+Logs viewed in the CLI are not in syslog format.
+Third-Party Log Management Software is defined in [RFC 6587](http://tools.ietf.org/html/rfc6587), titled *Transmission of Syslog Messages over TCP*.

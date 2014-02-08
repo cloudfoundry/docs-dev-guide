@@ -173,7 +173,16 @@ Applications use the code APP/0 (“app instance zero”) for the first instance
 These codes appear in the second field, enclosed in square brackets, in logs you view in the CLI.
 The primary types of logs and their codes are as follows:
 
+<style type="text/css">
+.table {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}
+.table th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:center;}
+.table tr {background-color:#d4e3e5;}
+.table td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;}
+.table tr:hover {background-color:#ffffff;}
+</style>
+
 <table border="1">
+
 	<colgroup>
 		<col>
 		<col>
@@ -181,68 +190,68 @@ The primary types of logs and their codes are as follows:
 	</colgroup>
 	<tbody>
 		<tr>
-			<th style="text-align: center;" class="confluenceTd">
+			<th>
 				Origin
 			</th>
-			<th style="text-align: center;" class="confluenceTd">
+			<th style="text-align: center;" ">
 				Code
 			</th>
-			<th style="text-align: center;" class="confluenceTd">
+			<th style="text-align: center;" ">
 				Notes
 			</th>
 		</tr>
 		<tr>
-			<td style="text-align: center;" class="confluenceTd">
+			<td>
 				Application and instance
 			</td>
-			<td style="text-align: center;" class="confluenceTd">
-				`APP/0`
+			<td>
+				APP/0
 			</td>
-			<td style="text-align: center;" class="confluenceTd">
+			<td>
 				0 is the first instance, 1 is the second, and so on.
 			</td>
 		</tr>
 		<tr>
-			<td style="text-align: center;" class="confluenceTd">
+			<td>
 				Cloud Controller
 			</td>
-			<td style="text-align: center;" class="confluenceTd">
-				`API`
+			<td>
+				API
 			</td>
-			<td style="text-align: center;" class="confluenceTd">
+			<td>
 
 			</td>
 		</tr>
 		<tr>
-			<td style="text-align: center;" class="confluenceTd">
+			<td>
 				Staging
 			</td>
-			<td style="text-align: center;" class="confluenceTd">
-				`STG`
+			<td>
+				STG
 			</td>
-			<td style="text-align: center;" class="confluenceTd">
+			<td>
 				The DEA emits these messages beginning when you deploy an app, and ending once the droplet has been uploaded.
 			</td>
 		</tr>
 		<tr>
-			<td style="text-align: center;" class="confluenceTd">
+			<td>
 				Droplet Execution Agent
 			</td>
-			<td style="text-align: center;" class="confluenceTd">
-				`DEA`
+			<td>
+				DEA
 			</td>
-			<td style="text-align: center;" class="confluenceTd">
+			<td>
 				The DEA emits these messages beginning when it starts the app.
 			</td>
 		</tr>
 		<tr>
-			<td style="text-align: center;" class="confluenceTd">
+			<td>
 				Router
 			</td>
-			<td style="text-align: center;" class="confluenceTd">
-				`RTR`
+			<td>
+				RTR
 			</td>
-			<td style="text-align: center;" class="confluenceTd">
+			<td>
 
 			</td>
 		</tr>

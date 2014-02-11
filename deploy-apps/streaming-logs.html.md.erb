@@ -179,22 +179,21 @@ Depending on your operating system and shell, you may need to use a different co
 	<pre class="terminal">
 	$ cf logs nifty-gui --recent | grep App/1
 	2014-02-07T10:57:55.88-0800 [App/1]   OUT Express server started
-	2014-02-07T10:57:55.88-0800 [App/1]   ERR
+	2014-02-07T10:57:55.88-0800 [App/1]   204.15.0.254, 10.10.2.211 - - [07/Feb/2014 10:57:55] "GET / HTTP/1.1" 200 44 0.0004
 	2014-02-07T11:43:01.55-0800 [App/1]   OUT Express server started
-	2014-02-07T11:43:01.55-0800 [App/1]   ERR
+	2014-02-07T11:43:01.55-0800 [App/1]   204.15.0.254, 10.10.2.211 - - [07/Feb/2014 11:43:01] "GET / HTTP/1.1" 200 44 0.0004
 	</pre>
 
-* Filter log messages by channel. The two possibilities are standard out (`STD`)  and standard error (`ERR`). Our example filters for ERR messages only.
+* Filter log messages by channel. The two possibilities are standard out (`STD`)  and standard error (`ERR`).
+  Our example filters for messages in the ERR channel only.
+  **Note**: Messages in the ERR channel are not necessarily errors. This varies depending on buildpack.
 
 	<pre class="terminal">
 	$ cf logs nifty-gui --recent | grep ERR
-	2014-02-07T10:54:35.97-0800 [STG]     ERR
-	2014-02-07T10:54:46.31-0800 [App/0]   ERR
-	2014-02-07T10:57:55.88-0800 [App/1]   ERR
-	2014-02-07T11:42:49.86-0800 [STG]     ERR
-	2014-02-07T11:43:01.50-0800 [App/0]   ERR
-	2014-02-07T11:43:01.55-0800 [App/1]   ERR
-	2014-02-07T11:43:01.95-0800 [App/2]   ERR
+	2014-02-10T16:51:43.47-0800 [App/0]   ERR 204.15.0.254, 10.10.2.209 - - [10/Feb/2014 16:51:43] "GET / HTTP/1.1" 200 44 0.0023
+	2014-02-10T16:51:43.58-0800 [App/0]   ERR 204.15.0.254, 10.10.2.209 - - [10/Feb/2014 16:51:43] "GET /favicon.ico HTTP/1.1" 404 18 0.0006
+	2014-02-10T16:51:46.28-0800 [App/1]   ERR 204.15.0.254, 10.10.2.211 - - [10/Feb/2014 16:51:46] "GET / HTTP/1.1" 200 44 0.0004
+	2014-02-10T16:51:48.67-0800 [App/1]   ERR 204.15.0.254, 10.10.2.211 - - [10/Feb/2014 16:51:48] "GET / HTTP/1.1" 200 44 0.0004
 	</pre>
 
 * Filter log messages by HTTP method. The possibilities depend on your app. Our example filters for HTTP GET events only.
@@ -218,11 +217,9 @@ Depending on your operating system and shell, you may need to use a different co
 	2014-02-07T11:42:49.64-0800 [DEA]     OUT Starting app instance (index 1) with guid 4d397313-20e0-478a-9a74-307446eb7640
 	2014-02-07T11:42:49.83-0800 [DEA]     OUT Starting app instance (index 2) with guid 4d397313-20e0-478a-9a74-307446eb7640
 	2014-02-07T11:42:49.86-0800 [App/0]   OUT Express server started
-	2014-02-07T11:42:50.87-0800 [App/0]   ERR
+	2014-02-07T11:42:50.87-0800 [App/0]   ERR 204.15.0.254, 10.10.2.209 - - [07/Feb/2014 11:42:50] "GET / HTTP/1.1" 200 44 0.0004
 	2014-02-07T11:42:50.87-0800 [App/1]   OUT Express server started
-	2014-02-07T11:42:50.87-0800 [App/1]   ERR
-	2014-02-07T11:42:51.49-0800 [App/2]   ERR
-	2014-02-07T11:42:51.49-0800 [App/2]   OUT Express server started
+	2014-02-07T11:42:50.87-0800 [App/1]   ERR 204.15.0.254, 10.10.2.211 - - [07/Feb/2014 11:42:50] "GET / HTTP/1.1" 200 44 0.0004
 	</pre>
 
 

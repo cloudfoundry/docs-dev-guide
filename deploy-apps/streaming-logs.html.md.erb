@@ -138,16 +138,16 @@ Tailing, dumping, and filtering are the three main ways to view logs.
 `cf logs <app_name>` displays all of the logging information that Loggregator receives in (almost) real time.
 This is equivalent to running the UNIX `tail` command on the logs.
 
-	<pre class="terminal">
-	$ cf logs nifty-gui
-		Connected, tailing logs for app nifty-gui in org janclouduser / space jancloudspace as admin...
-		2014-02-06T12:00:19.44-0800 [API]     OUT Updated app with guid c8612fc2-85b1-464c-92f5-d4a1156eacbf ({"route"=>"2ef5796b-475a-4615-9c71-75bbe277022e"})
-		2014-02-06T12:00:27.54-0800 [DEA]     OUT Got staging request for app with id c8612fc2-85b1-464c-92f5-d4a1156eacbf
-		2014-02-06T12:00:28.51-0800 [API]     OUT Updated app with guid c8612fc2-85b1-464c-92f5-d4a1156eacbf ({"state"=>"STARTED"})
-		2014-02-06T12:00:28.69-0800 [STG]     OUT -----> Downloaded app package (552K)
-		2014-02-06T12:00:49.67-0800 [App/0]   ERR [2014-02-06 20:00:49] INFO  WEBrick 1.3.1
-		2014-02-06T12:01:15.63-0800 [RTR]     OUT nifty-gui.23.22.211.63.xip.io - [06/02/2014:20:01:15 +0000] "GET / HTTP/1.1" 200 44 "-" "curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8y zlib/1.2.5" 10.180.180.220:39648 response_time:0.019625952 app_id:c8612fc2-85b1-464c-92f5-d4a1156eacbf
-	</pre>
+<pre class="terminal">
+$ cf logs nifty-gui
+	Connected, tailing logs for app nifty-gui in org janclouduser / space jancloudspace as admin...
+	2014-02-06T12:00:19.44-0800 [API]     OUT Updated app with guid c8612fc2-85b1-464c-92f5-d4a1156eacbf ({"route"=>"2ef5796b-475a-4615-9c71-75bbe277022e"})
+	2014-02-06T12:00:27.54-0800 [DEA]     OUT Got staging request for app with id c8612fc2-85b1-464c-92f5-d4a1156eacbf
+	2014-02-06T12:00:28.51-0800 [API]     OUT Updated app with guid c8612fc2-85b1-464c-92f5-d4a1156eacbf ({"state"=>"STARTED"})
+	2014-02-06T12:00:28.69-0800 [STG]     OUT -----> Downloaded app package (552K)
+	2014-02-06T12:00:49.67-0800 [App/0]   ERR [2014-02-06 20:00:49] INFO  WEBrick 1.3.1
+	2014-02-06T12:01:15.63-0800 [RTR]     OUT nifty-gui.23.22.211.63.xip.io - [06/02/2014:20:01:15 +0000] "GET / HTTP/1.1" 200 44 "-" "curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8y zlib/1.2.5" 10.180.180.220:39648 response_time:0.019625952 app_id:c8612fc2-85b1-464c-92f5-d4a1156eacbf
+</pre>
 
 Use **Ctrl-C** (^C) to exit the real-time stream.
 
@@ -155,17 +155,17 @@ Use **Ctrl-C** (^C) to exit the real-time stream.
 
 `cf logs <app_name> --recent` displays (or "dumps") all the logging information that Loggregator has in memory at the moment that you run the command.
 
-	<pre class="terminal">
-  	$ cf logs --recent nifty-gui
-  	Connected, dumping recent logs for app nifty-gui in org janclouduser / space jancloudspace as admin...
+<pre class="terminal">
+$ cf logs --recent nifty-gui
+Connected, dumping recent logs for app nifty-gui in org janclouduser / space jancloudspace as admin...
 
-  		2014-02-06T11:06:20.70-0800 [RTR]     OUT copy.23.22.211.63.xip.io - [06/02/2014:19:06:20 +0000] "GET / HTTP/1.1" 200 44 "-" "Fabula/1.00 [en] (X11; I; Praefator 3.0.3)" 10.180.180.220:57620 response_time:0.007610524 app_id:9801d83d-709b-45c9-bfdc-2565329dfb9a
-  		2014-02-06T11:06:20.70-0800 [App/0]   ERR 204.15.0.254, 10.180.180.220 - - [06/Feb/2014 19:06:20] "GET / HTTP/1.1" 200 44 0.0004
-  		2014-02-06T11:06:20.70-0800 [RTR]     OUT copy.23.22.211.63.xip.io - [06/02/2014:19:06:20 +0000] "GET / HTTP/1.1" 200 44 "-" "Fabula/1.00 [en] (X11; I; Praefator 3.0.3)" 10.180.180.220:57625 response_time:0.008446913 app_id:9801d83d-709b-45c9-bfdc-2565329dfb9a
-  		2014-02-06T11:06:20.87-0800 [App/0]   ERR 204.15.0.254, 10.180.180.220 - - [06/Feb/2014 19:06:20] "GET / HTTP/1.1" 200 44 0.0005
-  		2014-02-06T11:06:20.87-0800 [RTR]     OUT copy.23.22.211.63.xip.io - [06/02/2014:19:06:20 +0000] "GET / HTTP/1.1" 200 44 "-" "Fabula/1.00 [en] (X11; I; Praefator 3.0.3)" 10.180.180.220:57627 response_time:0.006277213 app_id:9801d83d-709b-45c9-bfdc-2565329dfb9a
-  		2014-02-06T11:06:20.87-0800 [App/0]   ERR 204.15.0.254, 10.180.180.220 - - [06/Feb/2014 19:06:20] "GET / HTTP/1.1" 200 44 0.0003
-	</pre>
+	2014-02-06T11:06:20.70-0800 [RTR]     OUT copy.23.22.211.63.xip.io - [06/02/2014:19:06:20 +0000] "GET / HTTP/1.1" 200 44 "-" "Fabula/1.00 [en] (X11; I; Praefator 3.0.3)" 10.180.180.220:57620 response_time:0.007610524 app_id:9801d83d-709b-45c9-bfdc-2565329dfb9a
+	2014-02-06T11:06:20.70-0800 [App/0]   ERR 204.15.0.254, 10.180.180.220 - - [06/Feb/2014 19:06:20] "GET / HTTP/1.1" 200 44 0.0004
+	2014-02-06T11:06:20.70-0800 [RTR]     OUT copy.23.22.211.63.xip.io - [06/02/2014:19:06:20 +0000] "GET / HTTP/1.1" 200 44 "-" "Fabula/1.00 [en] (X11; I; Praefator 3.0.3)" 10.180.180.220:57625 response_time:0.008446913 app_id:9801d83d-709b-45c9-bfdc-2565329dfb9a
+	2014-02-06T11:06:20.87-0800 [App/0]   ERR 204.15.0.254, 10.180.180.220 - - [06/Feb/2014 19:06:20] "GET / HTTP/1.1" 200 44 0.0005
+	2014-02-06T11:06:20.87-0800 [RTR]     OUT copy.23.22.211.63.xip.io - [06/02/2014:19:06:20 +0000] "GET / HTTP/1.1" 200 44 "-" "Fabula/1.00 [en] (X11; I; Praefator 3.0.3)" 10.180.180.220:57627 response_time:0.006277213 app_id:9801d83d-709b-45c9-bfdc-2565329dfb9a
+	2014-02-06T11:06:20.87-0800 [App/0]   ERR 204.15.0.254, 10.180.180.220 - - [06/Feb/2014 19:06:20] "GET / HTTP/1.1" 200 44 0.0003
+</pre>
 
 ### <a id="filter"></a>Filtering Logs ###
 

@@ -194,33 +194,6 @@ VCAP_SERVICES=
 }
 ~~~
 
-## <a id='java-buildpack'></a>Variables Defined by Java Buildpack ##
-
-The subsections that follow describe the environment variables set by the Java
-Buildpack for an application at staging time.
-
-### <a id='JAVA_HOME'></a>JAVA_HOME ###
-
-The location of JAVA on the container running the application.
-
-`JAVA_HOME=/home/vcap/app/.jdk`
-
-### <a id='JAVA_OPTS'></a>JAVA_OPTS ###
-
-The Java options to use when running the application.
-All values are used without modification when invoking the JVM and can be
-configured in the Java buildpack’s `/config/javaopts.yml` file.
-
-`JAVA_OPTS=-Xmx512m -Xms512m -Dhttp.port=61857`
-
-### <a id='JAVA_TOOL_OPTIONS'></a>JAVA\_TOOL\_OPTIONS ###
-
-This environment variable defines Java options that are required to enable the
-Java buildpack to auto-configure services for a Java application that uses the
-Lift framework.
-
-`JAVA_TOOL_OPTIONS=-Drun.mode=production`
-
 ## <a id='ruby-buildpack'></a>Variables Defined by Ruby Buildpack ##
 
 The subsections that follow describe the environment variables set by the Ruby

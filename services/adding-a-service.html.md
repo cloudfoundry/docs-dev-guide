@@ -118,8 +118,12 @@ system parameters to the jvm.
 * **Manual**: [Parse the JSON yourself](../deploy-apps/environment-variable.html#app). Helper libraries are
 available for some frameworks.
 
-| Runtime               | Framework                   | Binding Strategy         |
-| :-------------        |:-------------               |:-------------            |
-| Java / JVM        | <li>[Spring](./spring-service-bindings.html) <li>[Grails](./grails-service-bindings.html) <li>[Lift](./lift-service-bindings.html) | Auto-configuration<br/>Manual |
-| Ruby            | <li>[Rack, Rails, or Sinatra](./ruby-service-bindings.html) |  [Limited auto-configuration support for Rails only](./ruby-service-bindings.html#auto-config)<br/>Manual |
-| Javascript          | <li>[Node.js](./node-service-bindings.html) | Manual |
+| Runtime    | Framework  | Binding Strategy         |
+| :--------- |:---------- |:-------------            |
+| JVM / Java | <li>[Grails][g] <li>[Play Framework][p] <li>[Spring][s] | Auto-configuration<br/>Manual |
+| Ruby       | <li>[Rack, Rails, or Sinatra](./ruby-service-bindings.html) |  [Limited auto-configuration support for Rails only](./ruby-service-bindings.html#auto-config)<br/>Manual |
+| Javascript | <li>[Node.js](./node-service-bindings.html) | Manual |
+
+[g]: ./grails-service-bindings.html
+[p]: ../using/services/play-service-bindings.html
+[s]: ./spring-service-bindings.html

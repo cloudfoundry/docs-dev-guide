@@ -97,7 +97,7 @@ information about the software resources each buildpack provides:
 | Runtime        | Framework                                                                             |
 | :------------- | :-------------                                                                        |
 | Javascript     | [Node.js](./node-tips.html)                           |
-| Java / JVM     | [Java Spring, Grails, Scala Lift, and Play](./java-tips.html)|
+| JVM    		 | [Grails, Groovy, Java, Play Framework, Spring Boot, and Servlet](./java-tips.html)|
 | Ruby           | [Rack, Rails, or Sinatra](./ruby-tips.html)                 |
 
 Cloud Foundry also supports custom buildpacks as described on the "Custom

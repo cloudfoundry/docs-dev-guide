@@ -129,6 +129,8 @@ Grails provides plugins for accessing SQL (using [Hibernate](http://grails.org/p
 re-configure the plugins when your application starts to provide the
 correct connection information to the plugins.
 
+If you were using all three types of services, your configuration might look like this:
+
 To enable auto-configuration of service connections, modify your `BuildConfig.groovy` file:
 
 * Add the [cloudfoundry-runtime Java library](#cf-library).

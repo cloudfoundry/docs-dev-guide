@@ -5,6 +5,12 @@ _This page assumes that you are using cf v6._
 
 Cloud Foundry can deploy a number of different JVM-based artifact types. For a more detailed explaination of what it supports, please see the [Java Buildpack documentation][d].
 
+## Java Client Library (`cloudfoundry-client-lib`) ##
+
+The Cloud Foundry Client Library provides a Java API for interacting with a Cloud Foundry instance. This library is used by the Cloud Foundry Maven plugin, the Cloud Foundry Gradle plugin, the [Cloud Foundry STS integration](./sts.html), and other Java-based tools.
+
+For information about using this library, see the [Java Cloud Foundry Library](./java-client.html) page.
+
 ## <a id='grails'></a>Grails ##
 Grails packages applications into WAR files for deployment into a Servlet container.
 To build the WAR file and deploy it, run the following:

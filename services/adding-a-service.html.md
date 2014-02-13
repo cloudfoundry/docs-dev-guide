@@ -125,5 +125,5 @@ available for some frameworks.
 | Javascript | <li>[Node.js](./node-service-bindings.html) | Manual |
 
 [g]: ./grails-service-bindings.html
-[p]: ../using/services/play-service-bindings.html
+[p]: ./play-service-bindings.html
 [s]: ./spring-service-bindings.html

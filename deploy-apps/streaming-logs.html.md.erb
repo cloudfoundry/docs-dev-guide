@@ -7,16 +7,16 @@ _This page assumes you are using cf v6._
 Loggregator, the Cloud Foundry component responsible for logging, provides a
 stream of log output from your application and from Cloud Foundry system
 components that interact with your app during updates and execution.
-By default, Loggregator streams logs to your console.
 
+By default, Loggregator streams logs to your console.
 If you want to persist more than the limited amount of logging information that
 Loggregator can buffer, you can drain logs to a third-party log management
 service.
 See [Third-Party Log Management Services](../services/log-management.html).
 
 Cloud Foundry gathers and stores logs in a best-effort manner.
-If clients are unable to consume log lines quickly enough, the Loggregator
-buffer may need overwrite some log lines before the client has consumed them.
+If a client is unable to consume log lines quickly enough, the Loggregator
+buffer may need to overwrite some lines before the client has consumed them.
 A syslog drain or a CLI tail can usually keep up with the flow of application
 logs.
 
@@ -113,14 +113,14 @@ The digit appended to the code indicates app instance: 0 is the first instance, 
 
 ## <a id='writing'></a>Writing to the Log from your Application ##
 
-Your application can write logs to `STDERR` or `STDOUT`.
+Your application must write logs to `STDERR` or `STDOUT`.
 Both are typically buffered, and you should flush the buffer before
 delivering the message to Loggregator.
 
 Alternatively, you can write log messages to `STDERR` or `STDOUT`
 synchronously.
-Because of the performance implications of this approach, it is mainly
-used for debugging.
+This approach is mainly used for debugging because it may affect
+application performance.
 
 ## <a id='view'></a> Viewing Logs in the Command Line Interface ##
 

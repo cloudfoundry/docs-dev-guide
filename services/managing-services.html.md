@@ -1,99 +1,89 @@
 ---
 title: Managing Services
 ---
+
 _This page assumes you are using cf v6._
 
 ## <a id='viewing-services'></a> View Available Services ##
 
-After targeting and logging into Cloud Foundry using
-[cf](../installcf/whats-new-v6.html), you can view available services in the
-current targeted org and space using the `cf services` command:
-
-<pre class='terminal'>
-	$ cf services
-
-	Getting services in org console / space development as user@example.org... OK
-
-	name             service       plan     bound apps
-	my-exampledb     exampledb     spark    sample1
-</pre>
-
-## <a id='create'></a>Create a Managed Service Instance ##
-
-You can create a managed service instance with the command `cf create-service`:
-
-```
-$ cf create-service <SERVICE> <PLAN> <SERVICE-INSTANCE>
-```
-
-`cf create-service` takes the following required arguments:
-
-* SERVICE: The service you choose.
-* PLAN: Service plans are a way for providers to offer varying levels
-of resources or features for the same service.
-* SERVICE-INSTANCE: A name you provide for your service instance. This
-is an alias for the instance which is meaningful to you. Enter any series of alpha-numeric
-characters ([a-z], [A-Z], [0-9]) plus hyphens (-) or underscores (\_). You can rename the instance later at any time.
-
-Following this step, your managed service instance is provisioned.
+After targeting and logging into Cloud Foundry, you can view what services are available to your targeted organization. Available services may differ between organizations and between Cloud Foundry marketplaces.
 
 <pre class="terminal">
-Creating service my-exampledb in org console / space development as user@example.com... OK
+$ cf services --marketplace
+Getting services from marketplace in org my-org / space test as me@example.com...
+OK
+
+service          plans                                                                 description
+blazemeter       basic1kmr, free-tier, hv40kmr, pp10kmr, pro5kmr                       The JMeter Load Testing Cloud
+cleardb          amp, boost, shock, spark                                              Highly available MySQL for your Apps.
+cloudamqp        bunny, lemur, panda, rabbit, tiger                                    Managed HA RabbitMQ servers in the cloud
+cloudforge       free, pro, standard                                                   Development Tools In The Cloud
+elephantsql      elephant, hippo, panda, turtle                                        PostgreSQL as a Service
+loadimpact       li100, li1000, li500, lifree                                          Cloud-based, on-demand website load testing
+memcachedcloud   100mb, 1gb, 2-5gb, 250mb, 25mb, 500mb, 5gb                            Enterprise-Class Memcached for Developers
+memcachier       dev                                                                   The easiest, most advanced memcache.
+mongolab         sandbox                                                               Fully-managed MongoDB-as-a-Service
+newrelic         standard                                                              Manage and monitor your apps
+rediscloud       100mb, 10gb, 1gb, 2-5gb, 250mb, 25mb, 500mb, 50gb, 5gb                Enterprise-Class Redis for Developers
+searchify        plus, pro, small                                                      Custom search you control
+searchly         advanced, business, enterprise, micro, professional, small, starter   Search Made Simple.
+sendgrid         bronze, free, gold, platinum, silver                                  Email Delivery. Simplified.
+</pre>
+
+<i>Note: This is an example. These services may not be available on your Cloud Foundry marketplace you target.</i>
+
+## <a id='create'></a>Create a Service Instance ##
+
+Use this command to create a service instance.
+
+<pre class="terminal">
+$ cf create-service cleardb spark cleardb-test
+Creating service cleardb-test in org my-org / space test as me@example.com...
+OK
 </pre>
 
 ## <a id='user-provided'></a>Create a User-Provided Service Instance ##
 
-User-provided service instances are service instances which have been provisioned outside of Cloud Foundry. For example, a DBA may provide a developer with credentials to an Oracle database managed outside of, and unknown to, Cloud Foundry. Rather than hard-coding credentials for these instances into your applications, you can create a mock service instance in Cloud Foundry to represent an external resource, and provide whatever credentials your application requires.
+User-provided service instances are service instances which have been provisioned outside of Cloud Foundry. For example, a DBA may provide a developer with credentials to an Oracle database managed outside of, and unknown to Cloud Foundry. Rather than hard coding credentials for these instances into your applications, you can create a mock service instance in Cloud Foundry to represent an external resource using the familiar `create-service` command, and provide whatever credentials your application requires.
 
-For more information about creating a user-provided service instance, refer to the [User-Provided Service Instances](./user-provided.html) topic.
+* [User Provided Service Instances](user-provided.html)
 
 ## <a id='bind'></a>Bind a Service Instance ##
 
-Binding a service to your application adds credentials for the service instance to the [VCAP\_SERVICES](../deploy-apps/environment-variable.html) environment variable. In most cases, these credentials are unique to the binding; another app bound to the same service instance would receive different credentials. You may need to restart your application for it to recognize the change.
+Binding a service to your application adds credentials for the service instance to the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. In most cases these credentials are unique to the binding; another app bound to the same service instance would receive different credentials.How your app leverages the contents of environment variables may depend on the framework you employ. Refer to the [Deploying Apps](../deploy-apps/index.html) section for more information.
 
-How your app leverages the contents of environment variables may depend on the framework you employ. Refer to the [Deploying Apps](../deploy-apps/) section of the help for more information.
+* You must restart or in some cases re-push your application for the application to recognize changes to environment variables.
+* Not all services support application binding. Many services provide value to the software development process and are not directly used by an application running on Cloud Foundry.
 
-You can bind either a managed or a user-provided service instance to an application with the command `cf bind-service`:
-
-```
-$ cf bind-service <APP> <SERVICE_INSTANCE>
-```
-
-`cf bind-service` takes the following required arguments:
-
-* APP: The name of the app to which you want to bind a service.
-* SERVICE_INSTANCE: The name you provided when you created your service instance.
-
-If the service supports binding, your cf service instance is now
-bound to your app. Use `cf push` to update the VCAP_SERVICES
-environment variable with your changes.
+You can bind an existing service to an existing application as follows:
 
 <pre class="terminal">
-Binding service my-exampledb to app rails-sample in org console / space development as user@example.com... OK
+$ cf bind-service my-app cleardb-test
+Binding service cleardb-test to my-app in org my-org / space test as me@example.com...
+OK
+TIP: Use 'cf push' to ensure your env variable changes take effect
 
-	TIP: Use 'cf push' to ensure your env variable changes take effect
+$ cf restart my-app
 </pre>
 
 ## <a id='unbind'></a>Unbind a Service Instance ##
 
-Unbinding a service removes the credentials created for your application from the [VCAP\_SERVICES](../deploy-apps/environment-variable.html) environment variable. You may need to restart your application for it to recognize the change.
+Unbinding a service removes the credentials created for your application from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. You must restart or in some cases re-push your application for the application to recognize changes to environment variables.
 
-You can unbind either a managed or a user-provided service instance with the command `cf bind-service`:
-
-```
-$ cf unbind-service <APP> <SERVICE_INSTANCE>
-```
-
-`cf unbind-service` takes the following required arguments:
-
-* APP: The name of the app to which you want to bind a service.
-* SERVICE_INSTANCE: The name you provided when you created your service instance.
+<pre class="terminal">
+$ cf unbind-service my-app cleardb-test
+Unbinding app my-app from service cleardb-test in org my-org / space test as me@example.com...
+OK
+</pre>
 
 ## <a id='delete'></a>Delete a Service Instance ##
 
 Deleting a service unprovisions the service instance and deletes *all data* along with the service instance.
 
-```
-$ cf delete-service <SERVICE_INSTANCE>
-```
-You can optionally include the `-f` flag to force deletion without confirmation.
+<pre class="terminal">
+$ cf delete-service cleardb-test
+
+Are you sure you want to delete the service cleardb-test ? y
+Deleting service cleardb-test in org my-org / space test as me@example.com...
+OK
+</pre>

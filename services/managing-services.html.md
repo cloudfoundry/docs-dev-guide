@@ -8,6 +8,8 @@ _This page assumes you are using cf v6._
 
 After targeting and logging into Cloud Foundry, you can view what services are available to your targeted organization. Available services may differ between organizations and between Cloud Foundry marketplaces.
 
+<i>Note: This is an example. These services may not be available on your Cloud Foundry marketplace you target.</i>
+
 <pre class="terminal">
 $ cf services --marketplace
 Getting services from marketplace in org my-org / space test as me@example.com...
@@ -29,8 +31,6 @@ searchify        plus, pro, small                                               
 searchly         advanced, business, enterprise, micro, professional, small, starter   Search Made Simple.
 sendgrid         bronze, free, gold, platinum, silver                                  Email Delivery. Simplified.
 </pre>
-
-<i>Note: This is an example. These services may not be available on your Cloud Foundry marketplace you target.</i>
 
 ## <a id='create'></a>Create a Service Instance ##
 

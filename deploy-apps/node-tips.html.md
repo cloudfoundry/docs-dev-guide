@@ -13,6 +13,26 @@ You can specify the version of Node.js you want to use in the `engine` node of
 your `package.json` file.
 As of July, 2013, Cloud Foundry uses 0.10.x as the default.
 
+Example `package.json` file:
+
+~~~JSON
+{
+  "name": "default-nodejs-app",
+  "version": "0.0.1",
+  "author": "Your Name",
+  "dependencies": {
+    "express": "3.4.8",
+    "consolidate": "0.10.0",
+    "express": "3.4.8",
+    "swig": "1.3.2",
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.3.x"
+  }
+}
+~~~
+
 ## <a id='port'></a> Application Port ##
 
 You need to use the VCAP\_APP\_PORT environment variable to determine which
@@ -28,8 +48,8 @@ app.listen(process.env.VCAP_APP_PORT || 3000);
 
 ## <a id='start'></a> Application Start Command ##
 
-Node.js applications require a start command, which is saved with other
-configurations in `manifest.yml`.
+Node.js applications require a start command.
+This start command is saved with other configuration settings in `manifest.yml`.
 
 You will be asked if you want to save your configuration the first time you
 deploy.

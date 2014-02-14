@@ -1,0 +1,95 @@
+---
+title: Cloud Foundry Java Client Library
+---
+## <a id='introduction'></a>Introduction ##
+This is a guide to using the Cloud Foundry Java Client Library to manage an account on a Cloud Foundry instance.
+
+## <a id='getting-the-library'></a>Getting the Library ##
+The Cloud Foundry Java Client Library is available in Maven Central. The library can be added as a dependency to Maven or Gradle project using the following information.
+
+### <a id='maven'></a>Maven ###
+The `cloudfoundry-client-lib` dependency can be added to your `pom.xml` as follows:
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>org.cloudfoundry</groupId>
+    <artifactId>cloudfoundry-client-lib</artifactId>
+    <version>1.0.2</version>
+  </dependency>
+</dependencies>
+```
+
+### <a id='gradle'></a>Gradle ###
+To use the Java client library in a Gradle project, add the `cloudfoundry-client-lib` dependency to your `build.gradle` file:
+
+```groovy
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile 'org.cloudfoundry:cloudfoundry-client-lib:1.0.2'
+}
+```
+
+## <a id='sample-code'></a>Sample Code ##
+The following is a very simple sample application that connects to a Cloud Foundry instance, logs in, and displays some information about the Cloud Foundry account. When running the program, provide the Cloud Foundry target (e.g. https://api.run.pivotal.io) along with a valid user name and password as command-line parameters.
+
+```java
+import org.cloudfoundry.client.lib.CloudCredentials;
+import org.cloudfoundry.client.lib.CloudFoundryClient;
+import org.cloudfoundry.client.lib.domain.CloudApplication;
+import org.cloudfoundry.client.lib.domain.CloudService;
+import org.cloudfoundry.client.lib.domain.CloudSpace;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+
+public final class JavaSample {
+
+    public static void main(String[] args) {
+        String target = args[0];
+        String user = args[1];
+        String password = args[2];
+
+        CloudCredentials credentials = new CloudCredentials(user, password);
+        CloudFoundryClient client = new CloudFoundryClient(credentials, getTargetURL(target));
+        client.login();
+
+        System.out.printf("%nSpaces:%n");
+        for (CloudSpace space : client.getSpaces()) {
+            System.out.printf("  %s\t(%s)%n", space.getName(), space.getOrganization().getName());
+        }
+
+        System.out.printf("%nApplications:%n");
+        for (CloudApplication application : client.getApplications()) {
+            System.out.printf("  %s%n", application.getName());
+        }
+
+        System.out.printf("%nServices%n");
+        for (CloudService service : client.getServices()) {
+            System.out.printf("  %s\t(%s)%n", service.getName(), service.getLabel());
+        }
+    }
+
+    private static URL getTargetURL(String target) {
+        try {
+            return URI.create(target).toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("The target URL is not valid: " + e.getMessage());
+        }
+    }
+
+}
+```
+
+For more details on the Cloud Foundry Java Client Library, view the [source][s] on GitHub. The [domain package][d] shows the objects that can be queried and inspected.
+
+The source for the Cloud Foundry [Maven Plugin][m] is also a good example of using the Java client library.
+
+
+[d]: https://github.com/cloudfoundry/cf-java-client/tree/master/cloudfoundry-client-lib/src/main/java/org/cloudfoundry/client/lib/domain
+[m]: https://github.com/cloudfoundry/cf-java-client/tree/master/cloudfoundry-maven-plugin
+[s]: https://github.com/cloudfoundry/cf-java-client/tree/master/cloudfoundry-client-lib

@@ -1,206 +1,121 @@
 ---
-title: Configure Service Connections for Grails
+title: Grails - Service Bindings
 ---
-_This page assumes that you are using cf v6._
+Cloud Foundry provides extensive support for connecting a Grails application to services such as MySQL, Postgres, MongoDB, Redis, and RabbitMQ. In many cases, a Grails application running on Cloud Foundry can automatically detect and configure connections to services. For more advanced cases, you can control service connection parameters yourself.
 
-# Introduction #
-This guide is for developers who want to bind a service to a Grails
-application deployed and running on Cloud Foundry.
-
-Cloud Foundry provides extensive support for connecting a Grails
-application to services such as MySQL, Postgres, MongoDB, Redis, and
-RabbitMQ. You can configure these connections manually, but in many
-cases the Cloud Foundry Grails plugin can detect and configure
-connections to services automatically.
-
-## <a id="cf-library"></a>The cloudfoundry-runtime Library ##
-
-The `cloudfoundry-runtime` Java library provides methods for
-obtaining pre-configured clients and connection properties from Cloud
-Foundry services. To use `cloudfoundry-runtime`, add it to the
-`dependencies` section in your `BuildConfig.groovy` file. Note: The
-version of this library must be at least `0.8.4` for Cloud Foundry v2
-support.
-
-You will also need to add the Spring Framework Milestone repository
-to the `repositories` section of the `BuildConfig.groovy` file.
-
-~~~
-  repositories {
-    grailsHome()
-    mavenCentral()
-    grailsCentral()
-    mavenRepo "http://maven.springframework.org/milestone/"
-  }
-
-  dependencies {
-    compile "org.cloudfoundry:cloudfoundry-runtime:0.8.4"
-  }
-~~~
-
-Once your `BuildConfig.groovy` file has been modified, you can either
-manually set the connection parameters to your services, or enable
-auto-configuration of the connection settings by adding the Cloud
-Foundry Grails plugin.
-
-## <a id="manual"></a>Manually Set Connection Parameters ##
-
-After adding the `cloudfoundry-runtime` Java library to
-`BuildConfig.groovy`, you can use the cloudfoundry-runtime API in
-your `DataSources.groovy` to manually set the connection parameters
-to your services.
-
-To manually set connection parameters:
-
-* Add the [cloudfoundry-runtime Java library](#cf-library) to BuildConfig.groovy.
-* Modify DataSources.groovy:
-  * Add `import org.cloudfoundry.runtime.env.CloudEnvironment`.
-  * Create a new instance of the general `CloudEnvironment` class.
-  * Read the connection parameters for your services from this `CloudEnvironment` object.
-
-Example: If your application needs to use MySQL, MongoDB, and Redis, with the services named "myapp-mysql", "myapp-mongodb", and "myapp-redis", your `DataSources.groovy` file might look like this:
-
-~~~
-  import org.cloudfoundry.runtime.env.CloudEnvironment
-  import org.cloudfoundry.runtime.env.RdbmsServiceInfo
-  import org.cloudfoundry.runtime.env.RedisServiceInfo
-  import org.cloudfoundry.runtime.env.MongoServiceInfo
-
-  def cloudEnv = new CloudEnvironment()
-
-  environments {
-    production {
-      dataSource {
-        pooled = true
-        dbCreate = 'update'
-        driverClassName = 'com.mysql.jdbc.Driver'
-
-        if (cloudEnv.isCloudFoundry()) {
-          def dbInfo = cloudEnv.getServiceInfo('myapp-mysql', RdbmsServiceInfo.class)
-          url = dbInfo.url
-          username = dbInfo.userName
-          password = dbInfo.password
-        } else {
-          url = 'jdbc:mysql://localhost:5432/myapp'
-          username = 'sa'
-          password = ''
-        }
-      }
-
-      grails {
-        mongo {
-          if (cloudEnv.isCloudFoundry()) {
-            def mongoInfo = cloudEnv.getServiceInfo('myapp-mongodb', MongoServiceInfo.class)
-            host = mongoInfo.host
-            port = mongoInfo.port
-            databaseName = mongoInfo.database
-            username = mongoInfo.userName
-            password = mongoInfo.password
-          } else {
-            host = 'localhost'
-            port = 27107
-            databaseName = 'local-db-name'
-            username = 'user'
-            password = 'password'
-          }
-        }
-
-        redis {
-          if (cloudEnv.isCloudFoundry()) {
-            def redisInfo = cloudEnv.getServiceInfo('myapp-redis', RedisServiceInfo.class)
-            host = redisInfo.host
-            port = redisInfo.port
-            password = redisInfo.password
-          } else {
-            host = 'localhost'
-            port = 6379
-            password = 'password'
-          }
-        }
-      }
-    }
-  }
-~~~
-
-## <a id="auto"></a>Enable Auto-Configuration ##
-
-Grails provides plugins for accessing SQL (using [Hibernate](http://grails.org/plugin/hibernate)), [MongoDB](http://www.grails.org/plugin/mongodb), and [Redis](http://grails.org/plugin/redis) services. If you install any of these plugins and configure them in your `Config.groovy` or
-`DataSource.groovy` file, the Cloud Foundry Grails plugin will
-re-configure the plugins when your application starts to provide the
-correct connection information to the plugins.
+## <a id="auto"></a>Auto-Configuration ##
+Grails provides plugins for accessing SQL (using [Hibernate](http://grails.org/plugin/hibernate)), [MongoDB](http://www.grails.org/plugin/mongodb), and [Redis](http://grails.org/plugin/redis) services. If you install any of these plugins and configure them in your `Config.groovy` or `DataSource.groovy` file, the Cloud Foundry Grails plugin will re-configure the plugins when the app starts to provide the connection information to the plugins.
 
 If you were using all three types of services, your configuration might look like this:
 
-To enable auto-configuration of service connections, modify your `BuildConfig.groovy` file:
+```groovy
+environments {
+  production {
+    dataSource {
+      url = 'jdbc:mysql://localhost/db?useUnicode=true&characterEncoding=utf8'
+      dialect = org.hibernate.dialect.MySQLInnoDBDialect
+      driverClassName = 'com.mysql.jdbc.Driver'
+      username = 'user'
+      password = "password"
+    }
+    grails {
+      mongo {
+        host = 'localhost'
+        port = 27107
+        databaseName = "foo"
+        username = 'user'
+        password = 'password'
+      }
+      redis {
+        host = 'localhost'
+        port = 6379
+        password = 'password'
+        timeout = 2000
+      }
+    }
+  }
+}
+```
 
-* Add the [cloudfoundry-runtime Java library](#cf-library).
-* Add the `cloud-foundry` plugin to the `plugins` section.
+The `url`, `host`, `port`, `databaseName`, `username`, and `password` fields in this configuration will be overriden by the Cloud Foundry auto-reconfiguration if it detects that the application is running in a Cloud Foundry environment. If you want to test the application locally against your own services, you can put real values in these fields. If the application will only be run against Cloud Foundry services, you can put placeholder values as shown here, but the fields must exist in the configuration.
 
-~~~
+## <a id="manual"></a>Manual Configuration ##
+If you do not want to use the Cloud Foundry auto-reconfiguration, you can choose to configure the Cloud Foundry service connections manually.
+
+The best way to do the manual configuration is to use the `spring-cloud` library to get the details of the Cloud Foundry environment the application is running in. To use this library, add it to the `dependencies` section in your `BuildConfig.groovy` file.
+
+```groovy
   repositories {
     grailsHome()
     mavenCentral()
     grailsCentral()
-    mavenRepo "http://maven.springframework.org/milestone/"
+    mavenRepo "http://repo.spring.io/milestone"
   }
 
   dependencies {
-    compile "org.cloudfoundry:cloudfoundry-runtime:0.8.4"
+    compile "org.springframework.cloud:cloudfoundry-connector:1.0.2"
+    compile "org.springframework.cloud:spring-service-connector:1.0.2"
   }
+```
 
-  plugins {
-    compile ':cloud-foundry:1.2.3'
-  }
-~~~
+Then you can use the `spring-cloud` API in your `DataSources.groovy` file to set the connection parameters. If you were using all three types of database services as in the auto-configuration example, and the services were named "myapp-mysql", "myapp-mongodb", and "myapp-redis", your `DataSources.groovy` file might look like the one below.
 
-Once the `BuildConfig.groovy` file has been modified, the following
-fields in the `DataSources.groovy` or `Config.groovy` file will be
-automatically modified by the Cloud Foundry Grails plugin if the
-plugin detects the application is running in a Cloud Foundry
-environment:
+```groovy
+def cloud
 
-* url
-* host
-* port
-* databaseName
-* username
-* password
+try {
+  cloud = new CloudFactory().getCloud()
+} catch(e) {}
 
-These fields must exist in the `DataSources.groovy` or
-`Config.groovy` file. You can use placeholder values in the fields if
-the application will only be run against Cloud Foundry services. To
-allow testing of the application locally against your own services,
-you can use actual values.
+environments {
+  production {
+    dataSource {
+      pooled = true
+      dbCreate = 'update'
+      driverClassName = 'com.mysql.jdbc.Driver'
 
-Example: If your application needs to use MySQL, MongoDB, and Redis, your `DataSources.groovy` file might look like this:
-
-~~~
-  environments {
-    production {
-      dataSource {
-        url = 'jdbc:mysql://localhost/db?useUnicode=true&characterEncoding=utf8'
-        dialect = org.hibernate.dialect.MySQLInnoDBDialect
-        driverClassName = 'com.mysql.jdbc.Driver'
-        username = 'user'
-        password = 'password'
+      if (cloud) {
+        def dbInfo = cloud.getServiceInfo('myapp-mysql', RdbmsServiceInfo.class)
+        url = dbInfo.url
+        username = dbInfo.userName
+        password = dbInfo.password
+      } else {
+        url = 'jdbc:mysql://localhost:5432/myapp'
+        username = 'sa'
+        password = ''
       }
+    }
 
-      grails {
-        mongo {
+    grails {
+      mongo {
+        if (cloud) {
+          def mongoInfo = cloud.getServiceInfo('myapp-mongodb', MongoServiceInfo.class)
+          host = mongoInfo.host
+          port = mongoInfo.port
+          databaseName = mongoInfo.database
+          username = mongoInfo.userName
+          password = mongoInfo.password
+        } else {
           host = 'localhost'
           port = 27107
           databaseName = 'foo'
           username = 'user'
           password = 'password'
         }
-
-        redis {
+      }
+      redis {
+        if (cloud) {
+          def redisInfo = cloud.getServiceInfo('myapp-redis', RedisServiceInfo.class)
+          host = redisInfo.host
+          port = redisInfo.port
+          password = redisInfo.password
+        } else {
           host = 'localhost'
           port = 6379
           password = 'password'
-          timeout = 2000
         }
       }
     }
   }
-~~~
+}
+```

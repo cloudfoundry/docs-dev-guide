@@ -45,9 +45,9 @@ my_services = JSON.parse(ENV['VCAP_SERVICES'])
 Use the hash key for the service to obtain the the connection credentials
 from `VCAP_SERVICES`.
 
-- For services that use the [v2 Service Broker API](../../services/services/api.html), the hash key is the name of the service.
+- For services that use the [v2 Service Broker API](../../services/api.html), the hash key is the name of the service.
 
-- For services that use the [v1 Service Broker API](../../services/services/api-v1.html), the hash key is formed by combining
+- For services that use the [v1 Service Broker API](../../services/api-v1.html), the hash key is formed by combining
 the service provider and version, in the format PROVIDER-VERSION.
 
   Example: For service provider "p-mysql" with version "n/a", the hash key is

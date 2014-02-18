@@ -217,7 +217,7 @@ type) or the `service-name` attribute.
  <cloud:service id="email" service-name="email-service" connector-type="com.something.EmailConnectory"/>
 ```
 
-#### Scanning for Services ####
+#### <a id='scanning-for-services'></a> Scanning for Services ####
 Besides these element that create one bean per element, we also support the
 `<cloud:service-scan>` element in the same spirit as the `<context:component-scan>`
 element. It scans for all the services bound to the app and creates a bean

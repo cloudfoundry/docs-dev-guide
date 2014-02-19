@@ -17,7 +17,7 @@ The timeout defaults to 60 seconds, but you can extend it up to 180 seconds with
 
 1. Obtain your database credentials by searching for the `VCAP_SERVICES` environment variable in the application environment log:
 
- `cf files my-app logs/env.log | grep VCAP_SERVICES`
+    `cf files my-app logs/env.log | grep VCAP_SERVICES`
 
 2. Connect to the database using your database credentials.
 
@@ -37,17 +37,17 @@ This method is efficient for occasional use because you can re-use the schema mi
 
 1. Create a schema migration command or SQL script to migrate the database. For example:
 
-  `rake db:migrate`
+    `rake db:migrate`
 
 2. Deploy a single instance of your application with the database migration command as the start command. For example:
 
-  `cf push APP -c ‘rake db:migrate’ -i 1`
+    `cf push APP -c ‘rake db:migrate’ -i 1`
 
-   **Note**: After this step the database has been migrated but the application itself has not started, because the normal start command is not used.
+    **Note**: After this step the database has been migrated but the application itself has not started, because the normal start command is not used.
 
 3. Deploy your application again with the normal start command and desired number of instances. For example:
 
-	`cf push APP -c 'null' -i 4`
+    `cf push APP -c 'null' -i 4`
 
     **Note**: This example assumes that the normal start command for your application is the one provided by the buildpack, which the `-c 'null'` option forces cf to use.
 
@@ -68,14 +68,14 @@ This option takes the most effort to implement, but becomes more efficient with 
    - The application name
    - The `command` attribute with a value of the schema migration script chained with a start command.
 
-   Example partial manifest:
+    Example partial manifest:
 
-   ~~~
+    ~~~
      ---
       applications:
       - name: my-rails-app
       command: bundle exec rake db:migrate && rails s
-   ~~~
+    ~~~
 
 3. Update the application using `cf push`.
 
@@ -83,7 +83,7 @@ This option takes the most effort to implement, but becomes more efficient with 
 
 1. Create a Rake task to limit an idempotent command to the first instance of a deployed application:
 
-  ~~~
+    ~~~
     namespace :cf do
       desc "Only run on the first application instance"
       task :on_first_instance do
@@ -91,15 +91,15 @@ This option takes the most effort to implement, but becomes more efficient with 
         exit(0) unless instance_index == 0
       end
     end
-  ~~~
+    ~~~
 
 2. Add the task to the `manifest.yml` file, referencing the idempotent command `rake db:migrate` with the the `command` attribute.
 
-  ~~~
+    ~~~
    ---
     applications:
     - name: my-rails-app
       command: bundle exec rake cf:on_primary_instance db:migrate && rails s
-  ~~~
+    ~~~
 
 3. Update the application using `cf push`.

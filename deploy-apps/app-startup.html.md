@@ -8,10 +8,11 @@ _This page assumes that you are using cf v6_.
 
 1. The `-c` command-line option, for example:
 
- ``$ cf push my-app -c "node my-app.js"``
+    ``$ cf push my-app -c "node my-app.js"``
+
 1. The `command` attribute in the application manifest, for example:
 
- `command: node my-app.js`
+    `command: node my-app.js`
 
 1. The buildpack, which provides a start command appropriate for a particular type of application.
 
@@ -33,10 +34,11 @@ You can specify a null start command in one of two ways.
 
 1. Using the `-c` command-line option:
 
- ``$ cf push my-app -c "null"``
+    ``$ cf push my-app -c "null"``
+
 1. Using the `command` attribute in the application manifest:
 
- `command: null`
+    `command: null`
 
 This can be helpful after you have deployed while providing a start command at the command line or the manifest.
 At this point, a command that you provided, rather than the buildpack start command, has become the default start command.

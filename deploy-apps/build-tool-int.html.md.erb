@@ -71,37 +71,37 @@ To implement this:
 
 1. Add a server to the servers section of the `settings.xml` file. Include the Cloud Foundry security credentials (username and password) and an `ID` tag. The `pom.xml` references this ID to access the security credentials.
 
-  ~~~
-  <settings>
-      . . .
-      <servers>
-          . . .
-          <server>
-              <id>cloud-foundry-credentials</id>
-              <username>my-name@email.com</username>
-              <password>s3cr3t</password>
-          </server>
-          . . .
-      </servers>
-      . . .
-  </settings>
-  ~~~
+    ~~~
+    <settings>
+        . . .
+        <servers>
+            . . .
+            <server>
+                <id>cloud-foundry-credentials</id>
+                <username>my-name@email.com</username>
+                <password>s3cr3t</password>
+            </server>
+            . . .
+        </servers>
+        . . .
+    </settings>
+    ~~~
 
 2. Add a server configuration element referencing the ID to the `pom.xml` file:
 
-  ~~~
-  <plugins>
-      <plugin>
-          <groupId>org.cloudfoundry</groupId>
-          <artifactId>cf-maven-plugin</artifactId>
-          <version>1.0.1</version>
-          <configuration>
-              <server>cloud-foundry-credentials</server>
-              . . .
-          </configuration>
-      </plugin>
-  </plugins>
-  ~~~
+    ~~~
+    <plugins>
+        <plugin>
+            <groupId>org.cloudfoundry</groupId>
+            <artifactId>cf-maven-plugin</artifactId>
+            <version>1.0.1</version>
+            <configuration>
+                <server>cloud-foundry-credentials</server>
+                . . .
+            </configuration>
+        </plugin>
+    </plugins>
+    ~~~
 
 ### <a id='maven-command-line'></a>Command-Line Usage ###
 Key functionality available with the Cloud Foundry Maven plugin:

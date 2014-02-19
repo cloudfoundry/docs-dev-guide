@@ -52,16 +52,16 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to Eclipse
 1. On the marketplace window, enter "Cloud Foundry" in the **Find** field, and click **Go**.
 1. In the search results, click the **Install** control next to the listing for Cloud Foundry Integration.
 
-  <%= image_tag("sts/eclipse-marketplace.png") %>
+    <%= image_tag("sts/eclipse-marketplace.png") %>
 
 1. The **Confirm Selected Features** window lists the plugin --- "Cloud Foundry Integration for Eclipse" --- and the optional "SpringSource UAA Integration" component, which reports tool usage data, anonymously. If you do not want your plugin usage statistics to be reported, de-select the UAA component before clicking **Confirm**.
 
-  <%= image_tag("sts/confirm-selected-features.png") %>
+    <%= image_tag("sts/confirm-selected-features.png") %>
 
 1. The **Review Licenses** window appears. Click "I accept the terms of the license agreement" and click **Finish**.
 1. The **Software Updates** window appears. Click **Yes** to restart Eclipse.
 
-  <%= image_tag("sts/software-updates.png") %>
+    <%= image_tag("sts/software-updates.png") %>
 
 ### <a id='install-to-sts'></a>Install to STS from Extensions Tab ###
 
@@ -72,21 +72,21 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to STS fro
 1. Enter "Cloud Foundry" in the **Find** field.
 1. Select **Cloud Foundry Integration for Eclipse** and click **Install**.
 
-  <%= image_tag("sts/extensions.png") %>
+    <%= image_tag("sts/extensions.png") %>
 
 1. The **Install** window lists the plugin --- "Cloud Foundry Integration for Eclipse" --- and the optional "Spring UAA Integration" component, which reports tool usage data, anonymously. If you prefer that your plugin usage statistics not be reported, de-select the UAA component beform clicking **Next**.
 
-  <%= image_tag("sts/install.png") %>
+    <%= image_tag("sts/install.png") %>
 
 1. On the **Install Details** window, click **Next**.
 
-  <%= image_tag("sts/install-details.png") %>
+    <%= image_tag("sts/install-details.png") %>
 
 1. The **Review Licenses** window appears. Click "I accept the terms of the license agreement" and click **Finish** to perform the installation.
 
 1. The **Software Updates** window appears. Click **Yes** to restart STS.
 
-  <%= image_tag("sts/restart-sts.png") %>
+    <%= image_tag("sts/restart-sts.png") %>
 
 1. After STS restarts, you can see new panes in the Editor portion of the screen. See [About the Plugin User Interface](#plugin-ui) below for a description of the plugin tabs and the information in each.
 1. Proceed to [Create a Cloud Foundry Server](#cloud-foundry-server).
@@ -139,11 +139,11 @@ This section has instructions for configuring a server resource that will repres
 
 1. On the **Cloud Foundry Account** window, if you already have a Cloud Foundry account, enter the email account and password you use to log on to Cloud Foundry and click **Validate Account**.
 
-  If you do not have a Cloud Foundry account, you can click **Pivotal CF Signup** to get one and complete this procedure after your account is established.
+    If you do not have a Cloud Foundry account, you can click **Pivotal CF Signup** to get one and complete this procedure after your account is established.
 
-  **Note:** The **Register Account** function is not supported by public instances of Cloud Foundry v2. map
+    **Note:** The **Register Account** function is not supported by public instances of Cloud Foundry v2. map
 
-     <%= image_tag("sts/cloud-foundry-account.png") %>
+    <%= image_tag("sts/cloud-foundry-account.png") %>
 
 1. The **Cloud Foundry Account** window is refreshed and displays a message indicating whether or not your credentials were valid --- if they were, click **Next**.
 
@@ -151,9 +151,9 @@ This section has instructions for configuring a server resource that will repres
 
 1. On the **Organizations and Spaces** window, select the space you want to target, and click **Finish**.
 
-   **Note:** If you do not select a space, the server will be configured to connect to the default space, which is the first encountered in a list of your spaces.
+    **Note:** If you do not select a space, the server will be configured to connect to the default space, which is the first encountered in a list of your spaces.
 
-      <%= image_tag("sts/orgs-and-spaces.png") %>
+    <%= image_tag("sts/orgs-and-spaces.png") %>
 
 1. Once you have successfully configured the Pivotal Cloud Foundry server, it will appear in the **Servers** view of the Eclipse or STS user interface. To familiarize yourself with the plugin user interface, see [About the Plugin User Interface](#plugin-ui). When you are ready, proceed to [Deploy an Application](#deploy-an-application).
 
@@ -210,34 +210,32 @@ To deploy an application to Cloud Foundry using the plugin:
   * Right-click the Pivotal Cloud Foundry server in the **Servers** view, select **Add and Remove** from the server context menu, and move the application from the **Available** to the **Configured** column.
 
 1. On the **Application Details** window:
+    * By default, the *Name* field is populated with the application project name. You can enter a different name if desired --- the name will be assigned to the deployed application, but will not rename the project.
+    * If you want to use an external buildpack to stage the application, enter the URL of the buildpack.
 
-  * By default, the *Name* field is populated with the application project name. You can enter a different name if desired --- the name will be assigned to the deployed application, but will not rename the project.
+    You can deploy the application without further configuration by clicking **Finish**. Note that because the application default values may take a second or two to load, the **Finish** button might not be enabled immediately. A progress indicator will indicate when the application default values have been loaded, and the "Finish" button will be enabled.
 
-  * If you want to use an external buildpack to stage the application, enter the URL of the buildpack.
+    Click **Next** to continue.
 
-  You can deploy the application without further configuration by clicking **Finish**. Note that because the application default values may take a second or two to load, the **Finish** button might not be enabled immediately. A progress indicator will indicate when the application default values have been loaded, and the "Finish" button will be enabled.
-
-  Click **Next** to continue.
-
-      <%= image_tag("sts/application-details.png") %>
+    <%= image_tag("sts/application-details.png") %>
 
 1. On the **Launch Deployment** window:
 
-  **Host** --- By default, contains the name of the application. You can enter a different value if desired. Note that if you push the same application to multiple spaces in the same organization, you must assign a unique **Host** to each.
+    **Host** --- By default, contains the name of the application. You can enter a different value if desired. Note that if you push the same application to multiple spaces in the same organization, you must assign a unique **Host** to each.
 
-  **Domain** --- Contains the default domain. If you have mapped custom domains to the target space, they appear in the pull-down list.  **Note**:  This version of the Cloud Foundry Eclipse plugin does not provide a mechanism for mapping a custom domain to a space. You must use the `cf map domain` command to do so.
+    **Domain** --- Contains the default domain. If you have mapped custom domains to the target space, they appear in the pull-down list.  **Note**:  This version of the Cloud Foundry Eclipse plugin does not provide a mechanism for mapping a custom domain to a space. You must use the `cf map domain` command to do so.
 
-  **Deployed URL** --- By default, contains the value of the **Host** and **Domain** fields, separated by a period (.) character.
+    **Deployed URL** --- By default, contains the value of the **Host** and **Domain** fields, separated by a period (.) character.
 
-  **Memory Reservation** --- Select the amount of memory to allocate to the application from the pull-down list.
+    **Memory Reservation** --- Select the amount of memory to allocate to the application from the pull-down list.
 
-  **Start application on deployment** --- If you do not want the application to be started upon deployment, uncheck the box.
+    **Start application on deployment** --- If you do not want the application to be started upon deployment, uncheck the box.
 
-      <%= image_tag("sts/launch-deployment.png") %>
+    <%= image_tag("sts/launch-deployment.png") %>
 
 1. The **Services Selection** window lists services provisioned in the target space. Checkmark the services, if any, that you want to bind to the application, and click **Finish**. Note that you can bind services to the application after deployment, as described in [Bind and Unbind Services](#bind-service).
 
-      <%= image_tag("sts/services-selection.png") %>
+    <%= image_tag("sts/services-selection.png") %>
 
    As the deployment proceeds, progress messages appear in the **Console** view. When deployment is complete, the application is listed in the **Applications** pane.
 
@@ -252,7 +250,7 @@ Before you can bind a service to an application you must create it. To do so:
   * **Name** --- Enter a name for the service.
   * **Type** --- Select the service type from the pull-down list.
 
-      <%= image_tag("sts/service-configuration.png") %>
+    <%= image_tag("sts/service-configuration.png") %>
 
 The new service appears in the **Services** pane.
 
@@ -273,7 +271,7 @@ You can view the contents of a file in a deployed application by selecting it th
 
 2. On the **Remote Systems View**, browse to the application and application file of interest, and double-click the file. A new tab appears in the editor area with the contents of the selected file.
 
-      <%= image_tag("sts/file-contents.png") %>
+    <%= image_tag("sts/file-contents.png") %>
 
 ## <a id='undeploy'></a>Undeploy an Application ##
 
@@ -337,15 +335,15 @@ To clone a server:
 1. Perform steps 1 and 2 of [Create a Cloud Foundry Server](#cloud-foundry-server).
 1. On the **Cloud Foundry Account** window, enter the email account and password you use to log on to the target instance, and then click **Manage Cloud URLs**
 
-  <%= image_tag("sts/cloud-foundry-account.png") %>
+    <%= image_tag("sts/cloud-foundry-account.png") %>
 
 1. On the **Manage Cloud URLs** window, click **Add**.
 
-      <%= image_tag("sts/manage-cloud-urls.png") %>
+    <%= image_tag("sts/manage-cloud-urls.png") %>
 
 1. On the **Add a Cloud URL** window, enter the name and URL of the target cloud instance and click **Finish**.
 
-      <%= image_tag("sts/add-cloud-url.png") %>
+    <%= image_tag("sts/add-cloud-url.png") %>
 
 1. The new cloud instance should appear in the list on the **Manage Cloud URLs** window. Click **OK** to proceed.
 1. On the **Cloud Foundry Account** window, click **Validate Account**.

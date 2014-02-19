@@ -1,5 +1,5 @@
 ---
-title: Managing Services
+title: Managing Services with the CLI
 ---
 
 _This page assumes you are using cf v6._

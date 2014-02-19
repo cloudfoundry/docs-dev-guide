@@ -10,8 +10,8 @@ This page describes the environment variables that Droplet Execution Agents
 (DEAs) and buildpacks set for applications.
 
 For information about setting your own application-specific environment
-variables, see [Set Environment Variable in a Manifest](manifest.html#var) on
-the [Application Manifests](manifest.html) page.
+variables, see [Set Environment Variable in a Manifest](./manifest.html#var) on
+the [Application Manifests](./manifest.html) page.
 
 ## <a id='view'></a>View Environment Variable Values ##
 The sections below describe methods of viewing the values of Cloud Foundry
@@ -161,10 +161,41 @@ The key for each service in the JSON document is the same as the value of the
 |plan|The service plan selected when the service was created |
 |credentials|A JSON object containing the service-specific set of credentials needed to access the service instance. For example, for the cleardb service, this will include name, hostname, port, username, password, uri, and jdbcUrl|
 
+To see the value of VCAP\_SERVICES for an application pushed to Cloud Foundry,
+see [View Environment Variable Values](#view).
 
-The example below contains the JSON for the VCAP_SERVICES environment variable
-for bound instances of several services available in the Cloud Foundry Services
-Marketplace.
+The example below shows the value of VCAP_SERVICES in the [v1 format](../../services/api-v1.html) for bound instances of several services
+available in the [Pivotal Web Services](http://run.pivotal.io) Marketplace.
+
+~~~
+VCAP_SERVICES=
+{
+  "elephantsql-dev-n/a": [
+    {
+      "name": "elephantsql-dev-c6c60",
+      "label": "elephantsql-dev-n/a",
+      "plan": "turtle",
+      "credentials": {
+        "uri": "postgres://seilbmbd:PHxTPJSbkcDakfK4cYwXHiIX9Q8p5Bxn@babar.elephantsql.com:5432/seilbmbd"
+      }
+    }
+  ],
+  "sendgrid-n/a": [
+    {
+      "name": "mysendgrid",
+      "label": "sendgrid-n/a",
+      "plan": "free",
+      "credentials": {
+        "hostname": "smtp.sendgrid.net",
+        "username": "QvsXMbJ3rK",
+        "password": "HCHMOYluTv"
+      }
+    }
+  ]
+}
+~~~
+
+The [v2 format](../../services/api.html) of the same services would look like this:
 
 ~~~
 VCAP_SERVICES=
@@ -193,6 +224,8 @@ VCAP_SERVICES=
   ]
 }
 ~~~
+
+
 
 ## <a id='ruby-buildpack'></a>Variables Defined by Ruby Buildpack ##
 

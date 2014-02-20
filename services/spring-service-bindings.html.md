@@ -4,7 +4,7 @@ title: Configure Service Connections for Spring
 
 ## <a id='intro'></a>Introduction ##
 
-Cloud Foundry provides extensive support for connecting a Spring application to services such as MySQL, Postgres, MongoDB, Redis, and RabbitMQ. In many cases, Cloud Foundry can automatically configure a Spring application without any code changes. For more advanced cases, you can control service connection parameters yourself.
+Cloud Foundry provides extensive support for connecting a Spring application to services such as MySQL, PostgreSQL, MongoDB, Redis, and RabbitMQ. In many cases, Cloud Foundry can automatically configure a Spring application without any code changes. For more advanced cases, you can control service connection parameters yourself.
 
 ## <a id='auto'></a>Auto-Reconfiguration ##
 
@@ -12,7 +12,7 @@ If your Spring application requires services (such as a relational database or m
 
 Cloud Foundry auto-reconfigures applications only if the following items are true for your application:
 
-* Only one service instance of a given service type is bound to the application. In this context, MySQL and Postgres are considered the same service type (relational database), so if both a MySQL and a Postgres service are bound to the application, auto-reconfiguration will not occur.
+* Only one service instance of a given service type is bound to the application. In this context, MySQL and PostgreSQL are considered the same service type (relational database), so if both a MySQL and a PostgreSQL service are bound to the application, auto-reconfiguration will not occur.
 * Only one bean of a matching type is in the Spring application context. For example, you can have only one bean of type `javax.sql.DataSource`.
 
 With auto-reconfiguration, Cloud Foundry creates the database or connection factory bean itself, using its own values for properties such as host, port, username and so on. For example, if you have a single `javax.sql.DataSource` bean in your application context that Cloud Foundry auto-reconfigures and binds to its own database service, Cloud Foundry doesn’t use the username, password and driver URL you originally specified. Rather, it uses its own internal values. This is transparent to the application, which really only cares about having a relational database to which it can write data but doesn’t really care what the specific properties are that created the database. Also note that if you have customized the configuration of a service (such as the pool size or connection properties), Cloud Foundry auto-reconfiguration ignores the customizations.
@@ -277,7 +277,7 @@ public class Configuration {
 
 }
 ```
-	 +### <a id='cloud-profiles-xml'></a>Profiles in XML Configration ###
+### <a id='cloud-profiles-xml'></a>Profiles in XML Configration ###
 In XML configuration files, you group the configuration for a specific environment using the profile attribute of a nested `<beans>` element in the appropriate Spring application context file. You can create your own custom profiles, but the ones that are most relevant in the context of Cloud Foundry are the `default` and `cloud` profiles.
 
 You should group all usages of the `<cloud:>` namespace within the `cloud` profile block to allow the application to run outside of Cloud Foundry environments. You then use the `default` profile (or a custom profile) to group the non-Cloud Foundry configuration that will be used if you deploy your application to a non-Cloud Foundry environment.
@@ -479,7 +479,7 @@ The following example shows how to use these advanced data source configuration 
   <cloud:connection properties="charset=utf-8" />
   <cloud:pool pool-size="5-10" max-wait-time="2000" />
 </cloud:data-source>
-````
+```
 
 In the preceding example, the JDBC driver is passed the property that specifies that it should use the UTF-8 character set. The minimum and maximum number of connections in the pool at any given time is 5 and 10, respectively. The maximum amount of time that the connection pool waits for a returned connection if there are none available is 2000 milliseconds (2 seconds), after which the JDBC connection pool throws an exception.
 

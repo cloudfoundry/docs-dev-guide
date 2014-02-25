@@ -571,7 +571,7 @@ The following table lists the attributes of the `<cloud:mongo-db-factory>` eleme
          <li><code>FSYNC_SAVE</code>: MongoDB service waits for the server to flush the data to disk before performing a write operation. Exceptions are raised for both network and server errors.</li>
        </ul>
      </td>
-     <td>String</td>
+     <td><code>String</code></td>
    </tr>
 </tbody>
 </table>

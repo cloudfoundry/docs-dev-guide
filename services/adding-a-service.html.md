@@ -18,9 +18,9 @@ There are two types of Cloud Foundry services:
 
 In order to use services with your application you will need to:
 
-1. [Create a service instance](#create)
-1. [Bind a service instance to your application](#bind)
-1. [Update your application to use the service](#use)
+1. [Create](#create) a service instance.
+1. [Bind](#bind) a service instance to your application.
+1. [Update](#use) your application to use the service.
 
 ### Services vs. Service Instances
 
@@ -36,11 +36,7 @@ Whatever is provisioned for you by a service is a service instance.
 
 ## <a id='create'></a>Creating Managed Service Instances ##
 
-You can create a managed service instance with the command `cf create-service`:
-
-```
-$ cf create-service SERVICE PLAN SERVICE_INSTANCE
-````
+You can create a managed service instance with the command: `cf create-service SERVICE PLAN SERVICE_INSTANCE`
 
 `cf create-service` takes the following required arguments:
 
@@ -55,7 +51,9 @@ You can rename the instance at any time.
 Following this step, your managed service instance is provisioned:
 
 <pre class="terminal">
-Creating service my-exampledb in org console / space development as
+$ cf create-service rabbitmq small-plan my_rabbitmq
+
+Creating service my_rabbitmq in org console / space development as
 user@example.com... OK
 </pre>
 
@@ -78,11 +76,7 @@ on the framework you employ.
 Refer to the [Deploy Applications](../deploy-apps/index.html) topics for more information.
 
 You can bind either a managed or a user-provided service instance to an
-application with the command `cf bind-service`:
-
-```
-$ cf bind-service APPLICATION SERVICE_INSTANCE
-```
+application with the command `cf bind-service APPLICATION SERVICE_INSTANCE`
 
 `cf bind-service` takes the following required arguments:
 
@@ -94,7 +88,9 @@ If the service supports binding, this command binds the service instance to your
 application.
 
 <pre class="terminal">
-Binding service my-exampledb to app rails-sample in org console / space development as user@example.com... OK
+$ cf bind-service rails-sample my_rabbitmq
+
+Binding service my_rabbitmq to app rails-sample in org console / space development as user@example.com... OK
 
 	TIP: Use 'cf push' to ensure your env variable changes take effect
 </pre>

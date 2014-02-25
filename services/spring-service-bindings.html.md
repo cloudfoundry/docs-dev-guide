@@ -409,7 +409,7 @@ and potentially auto-reconfigure:
     <property name="username" value="sa" />
     <property name="password" value="" />
 </bean>
-`~~~```
+```
 
 The relational database that Cloud Foundry actually uses depends on the service instance you explicitly bind to your application when you deploy it: MySQL or Postgres. Cloud Foundry creates either a commons DBCP or Tomcat datasource depending on which datasource implementation it finds on the classpath.
 

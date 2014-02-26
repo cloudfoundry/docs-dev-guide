@@ -409,7 +409,7 @@ and potentially auto-reconfigure:
     <property name="username" value="sa" />
     <property name="password" value="" />
 </bean>
-`~~~```
+```
 
 The relational database that Cloud Foundry actually uses depends on the service instance you explicitly bind to your application when you deploy it: MySQL or Postgres. Cloud Foundry creates either a commons DBCP or Tomcat datasource depending on which datasource implementation it finds on the classpath.
 
@@ -571,7 +571,7 @@ The following table lists the attributes of the `<cloud:mongo-db-factory>` eleme
          <li><code>FSYNC_SAVE</code>: MongoDB service waits for the server to flush the data to disk before performing a write operation. Exceptions are raised for both network and server errors.</li>
        </ul>
      </td>
-     <td>String</td>
+     <td><code>String</code></td>
    </tr>
 </tbody>
 </table>

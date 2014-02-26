@@ -11,6 +11,10 @@ It assumes you have pushed an application to your Cloud Foundry instance.
 
 Cloud Foundry Services are add-ons that can be provisioned alongside your application. Learn all about Services at [Using Services](index.html).
 
+There are two types of Cloud Foundry services:
+- Service brokers advertise catalogs of [managed services](./managed.html) such as databases, key-value stores, messaging, or other types of services.
+- [User-provided services](./user-provided.html) allow you to represent external assets like databases, messaging services, and key-value stores in Cloud Foundry.
+
 In order to use services with your application you will need to:
 
 1. [Create](#create) a service instance.
@@ -29,15 +33,7 @@ Whatever is provisioned for you by a service is a service instance.
 
 ## <a id='create'></a>Creating Managed Service Instances ##
 
-<<<<<<< HEAD
-You can create a managed service instance with the command `cf create-service`:
-
-<pre class="terminal">
-$ cf create-service SERVICE PLAN SERVICE_INSTANCE
-</pre>
-=======
 You can create a managed service instance with the command: `cf create-service SERVICE PLAN SERVICE_INSTANCE`
->>>>>>> upstream/master
 
 `cf create-service` takes the following required arguments:
 
@@ -54,8 +50,7 @@ Following this step, your managed service instance is provisioned:
 <pre class="terminal">
 $ cf create-service rabbitmq small-plan my_rabbitmq
 
-Creating service my_rabbitmq in org console / space development as
-user@example.com... OK
+Creating service my_rabbitmq in org console / space development as user@example.com... OK
 </pre>
 
 **Note**: For more information about creating a user-provided service instance,
@@ -76,8 +71,7 @@ How your application leverages the contents of environment variables may depend
 on the framework you employ.
 Refer to the [Deploy Applications](../deploy-apps/index.html) topics for more information.
 
-You can bind either a managed or a user-provided service instance to an
-application with the command `cf bind-service APPLICATION SERVICE_INSTANCE`
+You can bind either a managed or a user-provided service instance to an application with the command `cf bind-service APPLICATION SERVICE_INSTANCE`
 
 `cf bind-service` takes the following required arguments:
 

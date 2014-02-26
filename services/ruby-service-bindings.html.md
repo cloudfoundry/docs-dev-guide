@@ -119,14 +119,8 @@ For more information, see [Migrate a Database on Cloud Foundry](./migrate-db.htm
 
 ## <a id='troubleshooting'></a>Troubleshooting ##
 
-<<<<<<< HEAD
-If you have trouble connecting to your service, run the cf logs command to view log messages and see the values of the environment variables available to your application. The results of the `cf files my_app logs/env.log` command include the value of the `VCAP_SERVICES` environment variable.
+If you have trouble connecting to your service, run the `cf logs` command to view log messages for your application. The results of the `cf files my_app logs/env.log` command includes the value of the `VCAP_SERVICES` environment variable.
 
-=======
-If you have trouble connecting to your service, run the `cf logs` command to view log messages and see the values of the environment variables available to your application.
-The results of the `cf files my_app logs/env.log` command include the value of
-the `VCAP_SERVICES` environment variable.
->>>>>>> upstream/master
 Example:
 
 <pre class="terminal">

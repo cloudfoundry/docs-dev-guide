@@ -11,25 +11,21 @@ After targeting and logging into Cloud Foundry, you can view what services are a
 <i>Note: This is an example. These services may not be available on your Cloud Foundry marketplace you target.</i>
 
 <pre class="terminal">
-$ cf services --marketplace
-Getting services from marketplace in org my-org / space test as me@example.com...
+$ cf marketplace
+Getting services from marketplace in org scoen / space test as scoen@gopivotal.com...
 OK
 
-service          plans                                                                 description
-blazemeter       basic1kmr, free-tier, hv40kmr, pp10kmr, pro5kmr                       The JMeter Load Testing Cloud
-cleardb          amp, boost, shock, spark                                              Highly available MySQL for your Apps.
-cloudamqp        bunny, lemur, panda, rabbit, tiger                                    Managed HA RabbitMQ servers in the cloud
-cloudforge       free, pro, standard                                                   Development Tools In The Cloud
-elephantsql      elephant, hippo, panda, turtle                                        PostgreSQL as a Service
-loadimpact       li100, li1000, li500, lifree                                          Cloud-based, on-demand website load testing
-memcachedcloud   100mb, 1gb, 2-5gb, 250mb, 25mb, 500mb, 5gb                            Enterprise-Class Memcached for Developers
-memcachier       dev                                                                   The easiest, most advanced memcache.
-mongolab         sandbox                                                               Fully-managed MongoDB-as-a-Service
-newrelic         standard                                                              Manage and monitor your apps
-rediscloud       100mb, 10gb, 1gb, 2-5gb, 250mb, 25mb, 500mb, 50gb, 5gb                Enterprise-Class Redis for Developers
-searchify        plus, pro, small                                                      Custom search you control
-searchly         advanced, business, enterprise, micro, professional, small, starter   Search Made Simple.
-sendgrid         bronze, free, gold, platinum, silver                                  Email Delivery. Simplified.
+service                     plans                  description
+blazemeter                  free-tier              The JMeter Load Testing Cloud
+cleardb                     spark                  Highly available MySQL for your Apps.
+cloudamqp                   lemur                  Managed HA RabbitMQ servers in the cloud
+elephantsql                 turtle                 PostgreSQL as a Service
+memcachedcloud              25mb                   Enterprise-Class Memcached for Developers
+mongolab                    sandbox                Fully-managed MongoDB-as-a-Service
+newrelic                    standard               Manage and monitor your apps
+rediscloud                  25mb                   Enterprise-Class Redis for Developers
+searchly                    starter                Search Made Simple.
+sendgrid                    free                   SMTP service by SendGrid
 </pre>
 
 ## <a id='create'></a>Create a Service Instance ##

@@ -9,12 +9,7 @@ It assumes you have pushed an application to your Cloud Foundry instance.
 
 ## <a id='intro'></a>Intro to Services ##
 
-Cloud Foundry Services are add-ons that can be provisioned alongside your
-application.
-There are two types of Cloud Foundry services:
-
- - Service brokers advertise catalogs of [managed services](./managed.html) such as databases, key-value stores, messaging, or other types of services.
- - [User-provided services](./user-provided.html) allow you to represent external assets like databases, messaging services, and key-value stores in Cloud Foundry.
+Cloud Foundry Services are add-ons that can be provisioned alongside your application. Learn all about Services at [Using Services](index.html).
 
 In order to use services with your application you will need to:
 
@@ -24,9 +19,7 @@ In order to use services with your application you will need to:
 
 ### Services vs. Service Instances
 
-Services provision services instances.
-
-For example, ExampleDB might be a service that provisions MySQL databases.
+Services provision services instances. For example, ExampleDB might be a service that provisions MySQL databases.
 Depending on the plan you select, you might get a database in a multi-tenant
 server, or a dedicated server.
 
@@ -38,9 +31,9 @@ Whatever is provisioned for you by a service is a service instance.
 
 You can create a managed service instance with the command `cf create-service`:
 
-```
+<pre class="terminal">
 $ cf create-service SERVICE PLAN SERVICE_INSTANCE
-````
+</pre>
 
 `cf create-service` takes the following required arguments:
 

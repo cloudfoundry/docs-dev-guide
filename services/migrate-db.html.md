@@ -79,7 +79,7 @@ This option takes the most effort to implement, but becomes more efficient with 
 
 3. Update the application using `cf push`.
 
-### <a id='frequent_migration'></a> Example: Using the Migrate Frequently Method with Rails ###
+### <a id='migrate-ruby-db'></a> Example: Using the Migrate Frequently Method with Rails ###
 
 1. Create a Rake task to limit an idempotent command to the first instance of a deployed application:
 

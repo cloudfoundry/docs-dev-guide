@@ -53,8 +53,8 @@ The best way to do the manual configuration is to use the `spring-cloud` library
   }
 
   dependencies {
-    compile "org.springframework.cloud:cloudfoundry-connector:1.0.2"
-    compile "org.springframework.cloud:spring-service-connector:1.0.2"
+    compile "org.springframework.cloud:cloudfoundry-connector:0.9.5"
+    compile "org.springframework.cloud:spring-service-connector:0.9.5"
   }
 ```
 

@@ -10,3 +10,4 @@ Contents in this section:
 
 * [Installing cf v6](./install-go-cli.html)
 * [Getting Started with cf v6](./whats-new-v6.html)
+* [Setting HTTP_Proxy](./http-proxy.html)

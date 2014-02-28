@@ -9,6 +9,8 @@ Cloud Foundry, if the application design follows a few simple guidelines.
 Following these guidelines makes an application cloud-friendly, and facilitates
 deployment to Cloud Foundry and other cloud platforms.
 
+The following guidelines are not specific to Cloud Foundry. Instead, they represent best practices for developing modern web applications for cloud platforms. For further reading, you can find similar guidelines from other sources. In particular, [The Twelve-Factor App](12factor.net) site presents a detailed methodology from experienced app developers.
+
 ### <a id="filesystem"></a>Avoid Writing to the Local File System ###
 
 Applications running on Cloud Foundry should not write files to the local file

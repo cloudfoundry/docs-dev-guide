@@ -2,21 +2,21 @@
 title: Setting the HTTP_PROXY Environment Variable
 ---
 
-The HTTP_PROXY environment variable holds the hostname or IP address of your
+The HTTP\_PROXY environment variable holds the hostname or IP address of your
 proxy server.
 
 If you have an HTTP proxy server on your network between a host running `cf` and
-your Cloud Foundry API endpoint, you must set HTTP_PROXY with the hostname or IP
-address of the proxy server.
+your Cloud Foundry API endpoint, you must set HTTP\_PROXY with the hostname or
+IP address of the proxy server.
 
-HTTP_Proxy is a standard environment variable.
+HTTP\_Proxy is a standard environment variable.
 Like any environment variable, the specific steps you use to set it depends on
 your operating system.
 
 ## <a id="format"></a>Format of HTTP_PROXY ##
 
-HTTP_PROXY is set with hostname or IP address of the proxy server in URL format:
-`http_proxy=http://proxy.example.com`
+HTTP\_PROXY is set with hostname or IP address of the proxy server in URL
+format: `http_proxy=http://proxy.example.com`
 
 If the proxy server requires a user name and password, include the credentials:
 `http_proxy=http://username:password@proxy.example.com`
@@ -27,7 +27,7 @@ If the proxy server uses a port other than 80, include the port number:
 
 ## <a id="mac-linux"></a>Setting HTTP_PROXY in Mac OS or Linux ##
 
-Set the HTTP_PROXY environment variable using the command specific to your
+Set the HTTP\_PROXY environment variable using the command specific to your
 shell.
 For example, in bash, use the `export` command.
 
@@ -41,9 +41,9 @@ for the shell.
 For example, in bash, add a line like the following to your .bash_profile or
 .bashrc file:
 
-<pre class="detect-scrip"t>
+<pre class="detect-script"t>
   http_proxy=http://username:password@hostname:port;
-  export $http_proxy
+  export $HTTP_PROXY
 </pre>
 
 ## <a id="windows"></a>Setting HTTP_PROXY in Windows ##

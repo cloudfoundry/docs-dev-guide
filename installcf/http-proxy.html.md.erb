@@ -1,32 +1,38 @@
 ---
-title: Setting HTTP_Proxy
+title: Setting the HTTP_PROXY Environment Variable
 ---
 
-If there is an HTTP proxy server on your network between a host running `cf` and
-your Cloud Foundry API endpoint, you must set the HTTP_PROXY environment
-variable with the hostname or IP address of the proxy server:
+The HTTP_PROXY environment variable holds the hostname or IP address of your
+proxy server.
 
+If you have an HTTP proxy server on your network between a host running `cf` and
+your Cloud Foundry API endpoint, you must set HTTP_PROXY with the hostname or IP
+address of the proxy server.
+
+HTTP_Proxy is a standard environment variable.
+Like any environment variable, the specific steps you use to set it depends on
+your operating system.
+
+## <a id="format"></a>Format of HTTP_PROXY ##
+
+HTTP_PROXY is set with hostname or IP address of the proxy server in URL format:
 `http_proxy=http://proxy.example.com`
 
-If the proxy server requires a user name and password, include them in the
-following form:
-
+If the proxy server requires a user name and password, include the credentials:
 `http_proxy=http://username:password@proxy.example.com`
 
 If the proxy server uses a port other than 80, include the port number:
-
 `http_proxy=http://username:password@proxy.example.com:8080`
 
-The HTTP_PROXY environment variable is set like any environment variable.
 
-## <a id="mac-linux"></a>Mac OS X or Linux ##
+## <a id="mac-linux"></a>Setting HTTP_PROXY in Mac OS or Linux ##
 
 Set the HTTP_PROXY environment variable using the command specific to your
-shell, (e.g. set or export).
+shell.
+For example, in bash, use the `export` command.
 
 Example:
-
-<pre class="terminal">
+<pre class=terminal>
 $ export HTTP_PROXY=http://my.proxyserver.com:8080
 </pre>
 
@@ -40,17 +46,17 @@ For example, in bash, add a line like the following to your .bash_profile or
   export $http_proxy
 </pre>
 
-## <a id="windows"></a>Windows ##
+## <a id="windows"></a>Setting HTTP_PROXY in Windows ##
 
-1. On your desktop, right-click **Computer** and select **Properties**.
+1. Open the Start menu. Right-click **Computer** and select **Properties**.
 
     <%= image_tag("../images/proxy/properties.png") %>
 
-1. In the left pane of the System window, click on **Advanced system settings**.
+1. In the left pane of the System window, click **Advanced system settings**.
 
     <%= image_tag("../images/proxy/adv-settings.png") %>
 
-1. In the System Properties window, select the **Advanced** tab, then click on
+1. In the System Properties window, select the **Advanced** tab, then click
 **Environment Variables**.
 
     <%= image_tag("../images/proxy/env-var.png") %>
@@ -60,6 +66,8 @@ For example, in bash, add a line like the following to your .bash_profile or
     <%= image_tag("../images/proxy/new.png") %>
 
 1. In the Variable name field, input `HTTP_PROXY`.
-In the Variable value field, input your proxy server information and click OK.
+In the Variable value field, input your proxy server information.
 
     <%= image_tag("../images/proxy/proxy.png") %>
+
+1. Click OK.

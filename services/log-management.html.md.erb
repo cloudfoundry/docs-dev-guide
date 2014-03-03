@@ -62,8 +62,8 @@ See [Viewing Logs in the Command Line Interface](../deploy-apps/streaming-logs.h
 Typically, you must configure a third-party log management service to accept traffic from your Cloud Foundry.
 Depending on the service provider, you may need the following information:
 
-* The external IP addresses of the two NAT boxes from which Cloud Foundry will send log traffic to the service.
-Ask your Cloud Foundry administrator for these IP addresses.
+* The external IP addresses of the NAT boxes from which Cloud Foundry will send log traffic to the service<%=vars.log_drain%>
+<%=vars.admin%> assigns these IP addresses.
 (NAT boxes are systems responsible for Network Address Translation, not to be confused with the NATS messaging protocol.)
 
 * The syslog URL, a special URL that the service typically makes available as an endpoint for incoming log data.

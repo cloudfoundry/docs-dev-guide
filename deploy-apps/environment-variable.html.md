@@ -10,7 +10,7 @@ This page describes the environment variables that Droplet Execution Agents
 (DEAs) and buildpacks set for applications.
 
 For information about setting your own application-specific environment
-variables, see [Set Environment Variable in a Manifest](./manifest.html#var) on
+variables, see [Set Environment Variable in a Manifest](./manifest.html#env-block) on
 the [Application Manifests](./manifest.html) page.
 
 ## <a id='view'></a>View Environment Variable Values ##

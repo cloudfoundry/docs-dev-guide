@@ -1,0 +1,73 @@
+---
+title: Using cf with an HTTP Proxy Server
+---
+
+If you have an HTTP proxy server on your network between a host running `cf` and
+your Cloud Foundry API endpoint, you must set HTTP\_PROXY with the hostname or
+IP address of the proxy server.
+
+The HTTP\_PROXY environment variable holds the hostname or IP address of your
+proxy server.
+
+HTTP\_Proxy is a standard environment variable.
+Like any environment variable, the specific steps you use to set it depends on
+your operating system.
+
+## <a id="format"></a>Format of HTTP_PROXY ##
+
+HTTP\_PROXY is set with hostname or IP address of the proxy server in URL
+format: `http_proxy=http://proxy.example.com`
+
+If the proxy server requires a user name and password, include the credentials:
+`http_proxy=http://username:password@proxy.example.com`
+
+If the proxy server uses a port other than 80, include the port number:
+`http_proxy=http://username:password@proxy.example.com:8080`
+
+
+## <a id="mac-linux"></a>Setting HTTP_PROXY in Mac OS or Linux ##
+
+Set the HTTP\_PROXY environment variable using the command specific to your
+shell.
+For example, in bash, use the `export` command.
+
+Example:
+<pre class=terminal>
+$ export HTTP_PROXY=http://my.proxyserver.com:8080
+</pre>
+
+To make this change persistent, add the command to the appropriate profile file
+for the shell.
+For example, in bash, add a line like the following to your .bash_profile or
+.bashrc file:
+
+<pre class="detect-script"t>
+  http_proxy=http://username:password@hostname:port;
+  export $HTTP_PROXY
+</pre>
+
+## <a id="windows"></a>Setting HTTP_PROXY in Windows ##
+
+1. Open the Start menu. Right-click **Computer** and select **Properties**.
+
+    <%= image_tag("../images/proxy/properties.png") %>
+
+1. In the left pane of the System window, click **Advanced system settings**.
+
+    <%= image_tag("../images/proxy/adv-settings.png") %>
+
+1. In the System Properties window, select the **Advanced** tab, then click
+**Environment Variables**.
+
+    <%= image_tag("../images/proxy/env-var.png") %>
+
+1. In the Environment Variables window, under User variables, click **New**.
+
+    <%= image_tag("../images/proxy/new.png") %>
+
+1. In the Variable name field, input `HTTP_PROXY`.
+In the Variable value field, input your proxy server information.
+
+    <%= image_tag("../images/proxy/proxy.png") %>
+
+1. Click **OK**.

@@ -156,8 +156,8 @@ The key for each service in the JSON document is the same as the value of the
 |Attribute|Description |
 | --------- | --------- |
 |name|The name assigned to the service instance by the user when it was created |
-|label (v1 API)|The service name and service version (if there is no version attribute, the string "n/a" is used), separated by a dash character, for example "cleardb-n/a"|
-|label (v2 API)|The service name |
+|label| **v1 broker API** The service name and service version (if there is no version attribute, the string "n/a" is used), separated by a dash character, for example "cleardb-n/a"<br/>**v2 broker API** The service name|
+|tags| An array of strings an app can use to identify a service |
 |plan|The service plan selected when the service was created |
 |credentials|A JSON object containing the service-specific set of credentials needed to access the service instance. For example, for the cleardb service, this will include name, hostname, port, username, password, uri, and jdbcUrl|
 
@@ -170,10 +170,15 @@ available in the [Pivotal Web Services](http://run.pivotal.io) Marketplace.
 ~~~
 VCAP_SERVICES=
 {
-  "elephantsql-dev-n/a": [
+  "elephantsql-n/a": [
     {
-      "name": "elephantsql-dev-c6c60",
-      "label": "elephantsql-dev-n/a",
+      "name": "elephantsql-c6c60",
+      "label": "elephantsql-n/a",
+      "tags": [
+        "postgres",
+        "postgresql",
+        "relational"
+      ],
       "plan": "turtle",
       "credentials": {
         "uri": "postgres://seilbmbd:PHxTPJSbkcDakfK4cYwXHiIX9Q8p5Bxn@babar.elephantsql.com:5432/seilbmbd"
@@ -184,6 +189,9 @@ VCAP_SERVICES=
     {
       "name": "mysendgrid",
       "label": "sendgrid-n/a",
+      "tags": [
+        "smtp"
+      ],
       "plan": "free",
       "credentials": {
         "hostname": "smtp.sendgrid.net",
@@ -200,10 +208,15 @@ The [v2 format](../../services/api.html) of the same services would look like th
 ~~~
 VCAP_SERVICES=
 {
-  "elephantsql-dev": [
+  "elephantsql": [
     {
-      "name": "elephantsql-dev-c6c60",
-      "label": "elephantsql-dev",
+      "name": "elephantsql-c6c60",
+      "label": "elephantsql",
+      "tags": [
+        "postgres",
+        "postgresql",
+        "relational"
+      ],
       "plan": "turtle",
       "credentials": {
         "uri": "postgres://seilbmbd:PHxTPJSbkcDakfK4cYwXHiIX9Q8p5Bxn@babar.elephantsql.com:5432/seilbmbd"
@@ -214,6 +227,9 @@ VCAP_SERVICES=
     {
       "name": "mysendgrid",
       "label": "sendgrid",
+      "tags": [
+        "smtp"
+      ],
       "plan": "free",
       "credentials": {
         "hostname": "smtp.sendgrid.net",

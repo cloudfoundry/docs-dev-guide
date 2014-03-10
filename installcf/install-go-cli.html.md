@@ -27,7 +27,7 @@ To install cf on Windows:
 1. Select an install destination and click **Continue**.
 1. When prompted, click **Install**.
 
-## <a id="nixlike"></a>Next Steps ##
+## <a id="next-steps"></a>Next Steps ##
 To verify your installation, open a terminal window and type `cf`.
 If your installation was successful, the cf help listing appears.
 

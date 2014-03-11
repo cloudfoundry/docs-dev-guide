@@ -280,7 +280,7 @@ To see log entries in real time:
 To explore all logs available in the container, first view the log filenames, then view the log that interests you:
 
 <pre class="terminal">
-	cf files my-app logs/
+$ cf files my-app logs/
 	Getting files for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
 	OK
 
@@ -289,8 +289,7 @@ To explore all logs available in the container, first view the log filenames, th
 	stderr.log                                182B
 	stdout.log                                  0B
 
-	joeshost in ~/workspace/vcap-test-assets/sinatra/dora
-	$ cf files my-app logs/stderr.log
+$ cf files my-app logs/stderr.log
 	Getting files for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
 	OK
 

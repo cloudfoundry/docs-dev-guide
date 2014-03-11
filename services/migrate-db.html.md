@@ -93,7 +93,7 @@ This option takes the most effort to implement, but becomes more efficient with 
     end
     ~~~
 
-2. Add the task to the `manifest.yml` file, referencing the idempotent command `rake db:migrate` with the the `command` attribute.
+2. Add the task to the `manifest.yml` file, referencing the idempotent command `rake db:migrate` with the `command` attribute.
 
     ~~~
    ---

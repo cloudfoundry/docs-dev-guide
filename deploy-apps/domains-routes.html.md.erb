@@ -25,8 +25,11 @@ described below.
 
 ## <a id='create-domains'></a>Create a Custom Domain in Cloud Foundry ##
 
-If you want to use a registered domain of your own, you must define it in Cloud
-Foundry and associate it with an organization.
+If you want to use a registered domain of your own, you must:
+
+ 1. Define the domain in Cloud Foundry and associate it with an organization.
+ 1. [Map the route to your app](#map-route).
+ 1. Set up your domain name DNS. To do this, use a DNS CNAME record to alias the custom domain.
 
 The command below defines the custom domain `example.org` in the
 "test" organization:
@@ -34,6 +37,8 @@ The command below defines the custom domain `example.org` in the
 <pre class="terminal">
 $ cf create-domain test example.org
 </pre>
+
+To alias the custom domain, create a CNAME entry to point `example.org` to `yourappname.cfapps.io`.
 
 ## <a id='view-domains'></a>View Domains for an Org ##
 

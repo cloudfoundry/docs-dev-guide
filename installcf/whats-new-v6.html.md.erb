@@ -23,9 +23,17 @@ You can use new binaries or new native installers. See [Install cf Version 6](./
 
 We recommend that you watch our [tools page](https://console.run.pivotal.io/download_cli) to learn when updates are released, and download a new binary or a new installer when you want to update.
 
-## <a id='login'></a>login ##
+## <a id='login'></a>Login ##
 
-The `login` command in cf v6 has expanded functionality. In addition to your username and password, you can provide a target API endpoint, organization, and space. cf prompts for any values that you do not specify on the command line. If you have only one organization and one space, you can omit them because `cf login` targets them automatically. Usage:
+The `login` command in cf v6 has expanded functionality. In addition to your username and password, you can provide a target API endpoint, organization, and space. If not specified on the command line, cf prompts for:
+
+* **API endpoint**: <%=vars.api_endpoint%>
+* **Username**: Your username.
+* **Password**: Your password.
+* **Org**: The organization where you want to deploy your application.
+* **Space**: The space in the organization where you want to deploy your application.
+
+If you have only one organization and one space, you can omit them because `cf login` targets them automatically. Usage:
 
 <pre class="terminal">
 cf login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE]
@@ -37,7 +45,7 @@ Upon successful login, cf v6 saves a `config.json` file containing your API endp
 
 By default, `config.json` is located in your `~/.cf` directory. The new `CF_HOME` environment variable allows you to locate the `config.json` file wherever you like.
 
-## <a id='push'></a>push ##
+## <a id='push'></a>Push ##
 
 In cf v6, `push` is simpler to use and faster.
 
@@ -120,7 +128,7 @@ To update a service instance that drains information to third-party log manageme
 
   `cf uups SERVICE_INSTANCE -l syslog://example.com`
 
-## <a id='domains-etc'></a> Domains, Routes, Organizations and Spaces ##
+## <a id='domains-etc'></a> Domains, Routes, Organizations, and Spaces ##
 
 The relationships between domains, routes, organizations, and spaces have been simplified in cf v6.
 

@@ -100,7 +100,7 @@ The user account under which the DEA runs.
 
 `USER=vcap`
 
-### <a id='VCAP\_APP\_HOST'></a>VCAP\_APP\_HOST
+### <a id='VCAP_APP_HOST'></a>VCAP\_APP\_HOST
 
 The IP address of the DEA host.
 

@@ -42,7 +42,7 @@ In Ruby, you can read the contents of `VCAP_SERVICES` with `ENV`. For example:
 my_services = JSON.parse(ENV['VCAP_SERVICES'])
 ~~~
 
-Use the hash key for the service to obtain the the connection credentials
+Use the hash key for the service to obtain the connection credentials
 from `VCAP_SERVICES`.
 
 - For services that use the [v2 Service Broker API](../../services/api.html), the hash key is the name of the service.

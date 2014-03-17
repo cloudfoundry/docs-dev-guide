@@ -25,13 +25,15 @@ required, *bind* the service to the application.
 Before you deploy your application to Cloud Foundry, make sure that:
 
 * Your application is *cloud-ready*.
-Cloud Foundry behaviors related to file storage, HTTP
-sessions, and port usage may require modifications to your application.
+Cloud Foundry behaviors related to file storage, HTTP sessions, and port usage
+may require modifications to your application.
 
-* All required application resources are uploaded. For example, you may need to include a database driver.
+* All required application resources are uploaded.
+For example, you may need to include a database driver.
 
-* Extraneous files and artifacts are excluded from upload. You should explicitly exclude extraneous files that
-reside within your application directory structure, particularly if your application is large.
+* Extraneous files and artifacts are excluded from upload.
+You should explicitly exclude extraneous files that reside within your
+application directory structure, particularly if your application is large.
 
 * An instance of every service that your application needs has been created.
 
@@ -39,8 +41,7 @@ reside within your application directory structure, particularly if your applica
 deploy, or you have the URL of an externally available buildpack that can stage
 the application.
 
-For help preparing to
-deploy your application, see:
+For help preparing to deploy your application, see:
 
 * [Prepare to Deploy](prepare-to-deploy.html)
 * [Tips for Ruby Developers](ruby-tips.html)
@@ -51,7 +52,8 @@ deploy your application, see:
 
 Before you can push your application to Cloud Foundry you need to know:
 
-* The API endpoint, also known as the target URL, for your Cloud Foundry instance.
+* The API endpoint, also known as the target URL, for your Cloud Foundry
+instance.
 This is a URL that typically begins with "api."
 Consult your cloud operator if you are unsure of your API endpoint.
 * Your username and password for your Cloud Foundry instance.
@@ -63,15 +65,18 @@ spaces.
 
 ## <a id='domain'></a>Step 3: (Optional) Configure Domains ##
 
-Cloud Foundry directs requests to an application using a route, which is a URL made up of a subdomain and a domain.
+Cloud Foundry directs requests to an application using a route, which is a URL
+made up of a subdomain and a domain.
 
 * The subdomain is also known as the host portion of the URL.
 The name of an application is the default subdomain for that application.
 
-* Every application is deployed to an application space that belongs to a domain.
+* Every application is deployed to an application space that belongs to a
+domain.
 Every Cloud Foundry instance has a default domain defined.
-You can specify a non-default domain when deploying, provided that the domain is registered and is mapped to the
-organization which contains the target application space.
+You can specify a non-default domain when deploying, provided that the domain is
+registered and is mapped to the organization which contains the target
+application space.
 
 For more information, see [About Domains, Subdomains and Routes](./domains-routes.html).
 
@@ -81,8 +86,8 @@ Before you deploy, you need to decide on the following:
 
 * **Name**: You can use any series of alpha-numeric characters, without spaces,
 as the name of your application.
-* **Instances**: Generally speaking, the more instances you run, the less downtime
-your application is likely to have.
+* **Instances**: Generally speaking, the more instances you run, the less
+downtime your application is likely to have.
 If your application is still in development, running a single instance makes it
 easier to troubleshoot.
 For any production application, you should run a minimum of two instances.
@@ -91,21 +96,27 @@ application is allowed to consume.
 If an instance exceeds this limit, the instance is restarted.
 If the instance has to be restarted too often, it is terminated.
 To prevent this we recommend being generous with your memory limit.
-* **Start Command**: This is the command that Cloud Foundry uses to start
-each instance of your application.
+* **Start Command**: This is the command that Cloud Foundry uses to start each
+instance of your application.
 This start command varies by application framework.
 * **Subdomain (host) and Domain**:
-The route, which is the combination of subdomain and domain, must be globally unique.
-This is true whether you specify a portion of the route or allow Cloud Foundry to use defaults.
-* **Services**: Applications can bind to services such as databases, messaging, and key-value stores.
+The route, which is the combination of subdomain and domain, must be globally
+unique.
+This is true whether you specify a portion of the route or allow Cloud Foundry
+to use defaults.
+* **Services**: Applications can bind to services such as databases, messaging,
+and key-value stores.
 Applications are deployed into application spaces.
-An application can only bind to a service that has an existing instance in the target application space.
+An application can only bind to a service that has an existing instance in the
+target application space.
 
-### <a id='defining-options'></a>Defining Deployment Options ###
+### <a id='defining-options'></a>Define Deployment Options ###
 
 You can define deployment options on the command line, in a
 manifest file, or both together.
-See [Application Manifests](./manifest.html) to learn how application settings change from push to push, and how command-line options, manifests, and commands like `cf scale` interact.
+See [Deploying with Application Manifests](./manifest.html) to learn how
+application settings change from push to push, and how command-line options,
+manifests, and commands like `cf scale` interact.
 
 When you deploy an application while it is running, `cf` stops all instances of
 that application and then deploys.
@@ -132,17 +143,24 @@ The minimal command for deploying an application without a manifest is:
 
  `cf push <appname>`
 
-If you provide the application name in a manifest, you can reduce the command even further, to `cf push`.
+If you provide the application name in a manifest, you can reduce the command
+even further, to `cf push`.
 See [Deploying with Application Manifests](./manifest.html).
 
-Since all you have provided is the name of your application, `cf push` sets number of instances, amount of memory,
-and other attributes of your application to reasonable defaults.
-You can also use command-line options to specify these and additional attributes.
-The transcript below, generated when joeclouduser deployed a Sinatra application called `my-app`, shows how `cf` assigns
-default values to application when given a minimal push command.
+Since all you have provided is the name of your application, `cf push` sets the
+number of instances, amount of memory, and other attributes of your application
+to the default values.
+You can also use command-line options to specify these and additional
+attributes.
 
-**Note**: For your own apps, avoid generic names like `my-app`, because a route containing a generic host like `my-app` is
-unlikely to be unique. Deployment fails unless the application has a globally unique route.
+The following transcript, generated when joeclouduser deployed the "my-app"
+Sinatra application, shows how cf assigns default values to application when
+given a minimal push command.
+
+**Note**: When deploying your own apps, avoid generic names like `my-app`,
+because a route containing a generic host like `my-app` is unlikely to be
+unique.
+Deployment fails unless the application has a globally unique route.
 
 <pre class="terminal">
 	$ cf push my-app
@@ -173,11 +191,6 @@ unlikely to be unique. Deployment fails unless the application has a globally un
 	       Updating files in vendor/cache
 	       Your bundle is complete! It was installed into ./vendor/bundle
 	       Cleaning up the bundler cache.
-	-----> WARNINGS:
-	       You have not declared a Ruby version in your Gemfile.
-	       To set your Ruby version add this line to your Gemfile:"
-	       ruby '1.9.3'"
-	       # See https://devcenter.heroku.com/articles/ruby-versions for more information."
 	-----> Uploading droplet (23M)
 
 	1 of 1 instances running
@@ -216,11 +229,10 @@ application can run locally.
 
 You can troubleshoot your application in the cloud using `cf`.
 
-### <a id='health'></a>Health and status ###
+### <a id='health'></a>Check Health and Status ###
 
-To check the health and status of your application, use:
+To check the health and status of your application, use `cf app <appname>`.
 
-  `cf app <appname>`
 For example:
 
 <pre class="terminal">
@@ -237,7 +249,7 @@ urls: my-app999.<%=vars.app_domain%>
 #0   running   2014-01-27 11:59:30 AM   0.0%   18.5M of 256M   52.5M of 1G
 </pre>
 
-### <a id='env'></a>Environment variables ###
+### <a id='env'></a>Examine Environment Variables ###
 
 `cf push` deploys the application to a container on the server.
 The environment variables that reside in the container are the environment variables of your application.
@@ -248,7 +260,7 @@ See [Deploying with Application Manifests](./manifest.html).
 You can also set an environment variable with a `cf set-env` command followed by a `cf push` command:
 
 * Once you run `cf env`, you can see the variable locally.
-* However, you must run `cf push` again for the the variable to take effect in the container environment.
+* However, you must run `cf push` again for the variable to take effect in the container environment.
 
 To see the environment variables that you have set using the `cf set-env` command:
 
@@ -256,6 +268,7 @@ To see the environment variables that you have set using the `cf set-env` comman
 To see the variables in the container environment:
 
   `cf files <appname> logs/env.log`
+
 ### <a id='logs'></a>Logs ###
 
 To see recent log entries:
@@ -267,7 +280,7 @@ To see log entries in real time:
 To explore all logs available in the container, first view the log filenames, then view the log that interests you:
 
 <pre class="terminal">
-	cf files my-app logs/
+$ cf files my-app logs/
 	Getting files for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
 	OK
 
@@ -276,8 +289,7 @@ To explore all logs available in the container, first view the log filenames, th
 	stderr.log                                182B
 	stdout.log                                  0B
 
-	joeshost in ~/workspace/vcap-test-assets/sinatra/dora
-	$ cf files my-app logs/stderr.log
+$ cf files my-app logs/stderr.log
 	Getting files for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
 	OK
 

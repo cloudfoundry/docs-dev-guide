@@ -27,13 +27,13 @@ described below.
 
 If you want to use a registered domain of your own, you must:
 
- 1. Define the domain in Cloud Foundry and associate it with an organization.
+ 1. [Define the domain](#define-route) in Cloud Foundry and associate it with an organization.
 
-    The command below defines the custom domain `example.org` in the
-	"test" organization:
+    The command below defines the custom domain `myapp.example.org` in the
+	"test-org" organization:
 
 	<pre class="terminal">
-	$ cf create-domain test example.org
+	$ cf create-domain test-org myapp.example.org
 	</pre>
 
  1. [Map the route to your app](#map-route).
@@ -41,7 +41,7 @@ If you want to use a registered domain of your own, you must:
 
 **Custom subdomain**: Use a DNS CNAME record to alias one or more custom subdomains.
 
-To alias the custom domain, create a CNAME entry to point `www.example.org` to `yourappname.cfapps.io`, as in the following example:
+To alias the custom domain, create a CNAME record to point `myapp.example.org` to `yourappname.cfapps.io`, as in the following example:
 
 <table border="1" class="nice" >
 	<tr>
@@ -52,13 +52,13 @@ To alias the custom domain, create a CNAME entry to point `www.example.org` to `
 	</tr>
 	<tr>
 	  <td>CNAME</td>
-	  <td>www</td>
+	  <td>myapp</td>
 	  <td>yourappname.cfapps.io.</td>
 	  <td>Refer to your DNS provider documentation to determine whether the trailing `.` is required.</td>
 	</tr>
 	</table>
 
-**Root domain**: Some DNS providers support using an alternative custom record type, such as ANAME or ALIAS, for adding custom zone apex domains. These domains are also known as root domains. ANAME and ALIAS records follow the pattern below:
+**Root domain**: Some DNS providers support using an alternative custom record type, such as ANAME or ALIAS, for configuring custom zone apex domains. These domains are also known as root domains. ANAME and ALIAS records follow the pattern below:
 
 <table border="1" class="nice" >
 	<tr>
@@ -75,7 +75,7 @@ To alias the custom domain, create a CNAME entry to point `www.example.org` to `
 	</tr>
 	</table>
 
-**Subdomain redirection**: If your DNS provider does not support ANAME or ALIAS records, use subdomain redirection to add a custom root domain. This technique is also known as domain forwarding.
+**Subdomain redirection**: If your DNS provider does not support ANAME or ALIAS records, use subdomain redirection to handle requests to a custom root domain. This technique is also known as domain forwarding.
 
 **Note**: Using this method, secure requests to the root domain result in an error.
 
@@ -89,12 +89,12 @@ To alias the custom domain, create a CNAME entry to point `www.example.org` to `
 	<tr>
 	  <td>URL or Forward</td>
 	  <td>example.org</td>
-	  <td>www.example.org.</td>
+	  <td>myapp.example.org.</td>
 	  <td>This method results in a "301 permanent redirect" to the subdomain you configure. </td>
 	</tr>
 	<tr>
 	  <td>CNAME</td>
-	  <td>www</td>
+	  <td>myapp</td>
 	  <td>yourappname.cfapps.io</td>
 	  <td></td>
 	</tr>

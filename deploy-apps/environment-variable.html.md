@@ -67,7 +67,7 @@ Root folder for the deployed application.
 
 `HOME=/home/vcap/app`
 
-### <a id='HOME'></a>MEMORY_LIMIT ###
+### <a id='memory'></a>MEMORY_LIMIT ###
 The maximum amount of memory that each instance of the application can consume.
 This value is set as a result of the value you specify in an application
 manifest, or at the command line when pushing an application.

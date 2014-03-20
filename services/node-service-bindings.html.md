@@ -68,7 +68,7 @@ application uses. For example:
 * Postgres via the [pg](https://github.com/brianc/node-postgres) module
 * Redis via the [redis](https://github.com/mranney/node_redis) module
 
-## <a id='Connecting'></a> Add the Dependency to package.json ##
+## <a id='add'></a> Add the Dependency to package.json ##
 
 Edit `package.json` and add the intended module to dependencies section.
 Normally, only one would be necessary, but for the sake of the example we will

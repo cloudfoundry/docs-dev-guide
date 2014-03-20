@@ -263,7 +263,7 @@ up by the worker application.
 The browser is then redirected to `/thing` which will show the collection of
 "Things".
 
-### <a id='test'></a>Scale Workers ###
+### <a id='scale'></a>Scale Workers ###
 
 Use the `cf scale` command to change the number of Sidekiq workers.
 

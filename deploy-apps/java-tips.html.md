@@ -23,7 +23,7 @@ $ cf push <application-name> -p target/&lt;application-name&gt;-&lt;application-
 ## <a id='groovy'></a>Groovy ##
 Groovy applications based on both [Ratpack][r] and a simple collection of files are supported.
 
-### <a id='grails'></a>Ratpack ###
+### <a id='ratpack'></a>Ratpack ###
 Ratpack packages applications into two different styles; Cloud Foundry supports the `distZip` style. To build the ZIP and deploy it, run the following:
 
 <pre class="terminal">

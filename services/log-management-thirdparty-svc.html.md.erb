@@ -1,135 +1,171 @@
 ---
-title: Configuring selected Third-Party Log Management Services
+title: Configuring Selected Third-Party Log Management Services
 ---
 
 Instructions for configuring:
-*   [Logentries](#logentries)
-*   [Papertrail](#papertrail)
-*   [Splunk Storm](#splunkstorm)
-*   [SumoLogic](#sumologic)
 
-Once you have configured the service, refer to [Third-Party Log Management Services](log-management.html) to bind your application to the service.
+* [Logentries](#logentries)
+* [Papertrail](#papertrail)
+* [Splunk Storm](#splunkstorm)
+* [SumoLogic](#sumologic)
+
+Once you have configured the service, refer to [Third-Party Log Management Services](./log-management.html) to bind your application to the service.
 
 ## <a id='logentries'></a>Logentries ##
 
 From your Logentries account:
 
-1.  Click on the "Add new log" button.
-<%= image_tag("../images/third-party-logs/logentries-02.png") %>
+1. Click the **Add new log** button.
 
-1.  Select "Manual Configuration".
-<%= image_tag("../images/third-party-logs/logentries-03.png") %>
+    <%= image_tag("../images/third-party-logs/logentries-02.png") %>
 
-1.  Enter the values for the "log".
-<%= image_tag("../images/third-party-logs/logentries-04.png") %>
+1. Select **Manual Configuration**.
 
-1.  Note the assigned port.
-<%= image_tag("../images/third-party-logs/logentries-05.png") %>
+    <%= image_tag("../images/third-party-logs/logentries-03.png") %>
 
-Logentries will accept connections on this port from any IP address for the
-specified time period. After the first connection is received, only
-connections from that IP address will be accepted.
+1. Enter the values for the **log**.
 
-1.  Create the log drain service in CF.
+    <%= image_tag("../images/third-party-logs/logentries-04.png") %>
+
+1. Note the assigned port.
+
+    <%= image_tag("../images/third-party-logs/logentries-05.png") %>
+
+    Logentries will accept connections on this port from any IP address for the
+	specified time period.
+	After the first connection is received, only connections from that IP
+	address will be accepted.
+
+1. Create the log drain service in CF.
 
     `$ cf cups my-logs -l syslog://api.logentries.com:<port>`
 
-1.  Bind the service to an app, restart or re-stage as necessary.
+1. Bind the service to an app, then restart or re-stage as necessary.
 
-1.  Select the host and log from the left-hand nav to view logs.
-<%= image_tag("../images/third-party-logs/logentries-08.png") %>
+1. Select the host and log from the left-hand nav to view logs.
 
-1.  Click the "Live tail" button to see logs streaming from CF.
-<%= image_tag("../images/third-party-logs/logentries-09.png") %>
+    <%= image_tag("../images/third-party-logs/logentries-08.png") %>
+
+1. Click the **Live tail** button to see logs streaming from CF.
+
+    <%= image_tag("../images/third-party-logs/logentries-09.png") %>
 
 ## <a id='papertrail'></a>Papertrail ##
 
 From your Papertrail account:
 
-1.  Click on the "Add System" button.
-<%= image_tag("../images/third-party-logs/papertrail-02.png") %>
+1. Click the **Add System** button.
 
-1.  Click on the "Alternatives" link.
-<%= image_tag("../images/third-party-logs/papertrail-03.png") %>
+    <%= image_tag("../images/third-party-logs/papertrail-02.png") %>
 
-1.  Choose "I use Heroku", enter a name, and press "Save".
-<%= image_tag("../images/third-party-logs/papertrail-04.png") %>
+1. Click the **Alternatives** link.
 
-1.  Note the URL with port that is displayed after creating the system.
-<%= image_tag("../images/third-party-logs/papertrail-05.png") %>
+    <%= image_tag("../images/third-party-logs/papertrail-03.png") %>
 
-1.  Create the log drain service in CF.
+1. Select **I use Heroku**, enter a name, and click **Save**.
+
+    <%= image_tag("../images/third-party-logs/papertrail-04.png") %>
+
+1. Note the URL with port that is displayed after creating the system.
+
+    <%= image_tag("../images/third-party-logs/papertrail-05.png") %>
+
+1. Create the log drain service in CF.
 
     `$ cf cups my-logs -l syslog://logs.papertrailapp.com:<port>`
 
-1.  Bind the service to an app, restart or re-stage as necessary.
+1. Bind the service to an app, then restart or re-stage as necessary.
 
-1.  Once Papertrail starts receiving log entries, the view should automatically update to the logs viewing page.
-<%= image_tag("../images/third-party-logs/papertrail-11.png") %>
+1. Once Papertrail starts receiving log entries, the view automatically updates
+to the logs viewing page.
+
+    <%= image_tag("../images/third-party-logs/papertrail-11.png") %>
 
 ## <a id='splunkstorm'></a>Splunk Storm ##
 
 From your Splunk Storm account:
 
-1.  Click the "Add project" button.
-<%= image_tag("../images/third-party-logs/splunkstorm-02.png") %>
+1. Click the **Add project** button.
 
-1.  Enter the project details.
-<%= image_tag("../images/third-party-logs/splunkstorm-03.png") %>
+    <%= image_tag("../images/third-party-logs/splunkstorm-02.png") %>
 
-1.  Create a new "input" for "Network data".
-<%= image_tag("../images/third-party-logs/splunkstorm-04.png") %>
+1. Enter the project details.
 
-1.  Allow automatic authorization of incoming IP addresses. This will allow any IP address to connect and send logs for a period of 15 minutes, after which only recognized IP addresses will be accepted.
-<%= image_tag("../images/third-party-logs/splunkstorm-05.png") %>
+    <%= image_tag("../images/third-party-logs/splunkstorm-03.png") %>
 
-1.  Note the host and port provided for TCP input.
-<%= image_tag("../images/third-party-logs/splunkstorm-06.png") %>
+1. Create a new **input** for **Network data**.
 
-1.  Create the log drain service in CF using the displayed TCP host and port.
+    <%= image_tag("../images/third-party-logs/splunkstorm-04.png") %>
+
+1. Allow automatic authorization of incoming IP addresses.
+This will allow any IP address to connect and send logs for a period of 15
+minutes, after which only recognized IP addresses will be accepted.
+
+    <%= image_tag("../images/third-party-logs/splunkstorm-05.png") %>
+
+1. Note the host and port provided for TCP input.
+
+    <%= image_tag("../images/third-party-logs/splunkstorm-06.png") %>
+
+1. Create the log drain service in CF using the displayed TCP host and port.
 
     `$ cf cups my-logs -l syslog://<host:port>`
 
-1.  Bind the service to an app, restart or re-stage as necessary.
+1. Bind the service to an app, then restart or re-stage as necessary.
 
-1.  Wait for some events to appear, then click the "Data Summary" button.
-<%= image_tag("../images/third-party-logs/splunkstorm-09.png") %>
+1. Wait for some events to appear, then click **Data Summary**.
 
-1.  Click on the "loggregator" link to view all incoming log entries from CF.
-<%= image_tag("../images/third-party-logs/splunkstorm-10.png") %>
+    <%= image_tag("../images/third-party-logs/splunkstorm-09.png") %>
+
+1. Click the **loggregator** link to view all incoming log entries from CF.
+
+    <%= image_tag("../images/third-party-logs/splunkstorm-10.png") %>
 
 ## <a id='sumologic'></a>SumoLogic ##
 
-Note: SumoLogic uses HTTPS for communication, which is supported in Cloud
+Note: SumoLogic uses HTTPS for communication; HTTPS is supported in Cloud
 Foundry v158 and above.
 
-From your Sumo Logic account:
+From your SumoLogic account:
 
-1.  Click on the "Add Collector" link.
-<%= image_tag("../images/third-party-logs/sumologic-02.png") %>
+1. Click the **Add Collector** link.
 
-1.  Choose "Hosted Collector" and fill in the details.
-<%= image_tag("../images/third-party-logs/sumologic-03a.png") %>
-<%= image_tag("../images/third-party-logs/sumologic-03b.png") %>
+    <%= image_tag("../images/third-party-logs/sumologic-02.png") %>
 
-1.  In the new collector's row of the collectors view, click on the "Add Source" link.
-<%= image_tag("../images/third-party-logs/sumologic-04.png") %>
+1. Choose **Hosted Collector** and fill in the details.
 
-1.  Select "HTTP" source and fill in the details.
-<%= image_tag("../images/third-party-logs/sumologic-05.png") %>
+    <%= image_tag("../images/third-party-logs/sumologic-03a.png") %>
 
-1.  Once the source is created, a URL should be displayed; you can also view the URL using the "Show URL" link beside the created source.
-<%= image_tag("../images/third-party-logs/sumologic-06a.png") %>
-<%= image_tag("../images/third-party-logs/sumologic-06b.png") %>
+    <%= image_tag("../images/third-party-logs/sumologic-03b.png") %>
 
-1.  Create the log drain service in CF using the displayed URL.
+1. In the new collector's row of the collectors view, click the **Add Source**
+link.
+
+    <%= image_tag("../images/third-party-logs/sumologic-04.png") %>
+
+1. Select **HTTP** source and fill in the details.
+
+    <%= image_tag("../images/third-party-logs/sumologic-05.png") %>
+
+1. Once the source is created, a URL should be displayed.
+You can also view the URL by clicking the **Show URL** link beside the created
+source.
+
+    <%= image_tag("../images/third-party-logs/sumologic-06a.png") %>
+
+1. Create the log drain service in CF using the displayed URL.
 
     `$ cf cups my-logs -l <HTTP Source Address URL>`
 
-1.  Bind the service to an app, restart or re-stage as necessary.
+1. Bind the service to an app, then restart or re-stage as necessary.
 
-1.  In the SumoLogic dashboard, click on Manage, then Status to see a view of log messages received over time.
-<%= image_tag("../images/third-party-logs/sumologic-09.png") %>
+1. In the SumoLogic dashboard, click **Manage**, then click **Status** to see a
+view of log messages received over time.
 
-1.  In the SumoLogic dashboard, click on Search; put the cursor in the search box and press enter to submit an empty search query.
-<%= image_tag("../images/third-party-logs/sumologic-10.png") %>
+    <%= image_tag("../images/third-party-logs/sumologic-09.png") %>
+
+1. In the SumoLogic dashboard, click on **Search**.
+Place the cursor in the search box, then press **Enter** to submit an empty
+search query.
+
+    <%= image_tag("../images/third-party-logs/sumologic-10.png") %>

@@ -8,57 +8,48 @@ Foundry uses to direct requests to an application.
 A route is made up of a _subdomain_ (or host) and a _domain_ that you can
 specify when you push an application.
 
-In the route `myapp.<%=vars.app_domain%>`, the subdomain is `myapp` and the
-domain is `<%=vars.app_domain%>`.
+## <a id='domains'></a>Domains and Routes in Cloud Foundry ##
 
-## <a id='domains'></a>Key Facts About Domains ##
+A **domain** is a domain name like `acme.com` or `<%=vars.app_domain%>`. Domains can also be multi-level
+and contain sub-domains like the “store” in `store.acme.com`. In Cloud Foundry, domains are associated with orgs. Domain objects are not directly bound to apps.
 
-In Cloud Foundry, domains are associated with orgs.
+Cloud Foundry also supports custom domains. You can map a registered domain of your own to a space in Cloud Foundry.
+
+A **route**, based on a domain with an optional host as a prefix, may be associated with
+one or more applications. For example, `myapp` is the host and `<%=vars.app_domain%>` is the domain in the route `myapp.<%=vars.app_domain%>`. It is also possible to have a route that represents `<%=vars.app_domain%>` without a host. This type of route is
+known as a zone apex domain or a root domain. Routes are children of domains and are
+directly bound to apps in Cloud Foundry.
 
 A Cloud Foundry instance defines a default shared domain.
 Unless you specify a domain, `cf` uses the default shared domain in the route to
 your application.
 
-Cloud Foundry also supports custom domains.
-You can map a registered domain of your own to a space in Cloud Foundry, as
-described below.
-
 ## <a id='create-domains'></a>Use Your Custom Domain in Cloud Foundry ##
 
-If you want to use a registered domain of your own, you must:
+There are three different models for using your own custom domain in Cloud Foundry. Select the procedure that corresponds with the type of domain you want to use.
 
- 1. [Define the domain](#define-route) in Cloud Foundry and associate it with an organization.
+### <a id='root'></a>Map a Root Domain ###
 
-    The command below defines the custom domain `myapp.example.org` in the
+Use a DNS ALIAS record to map a custom root domain to your app.
+
+ 1. Create the domain in Cloud Foundry and associate it with an organization.
+
+    The command below defines the custom domain `example.org` in the
 	"test-org" organization:
 
 	<pre class="terminal">
-	$ cf create-domain test-org myapp.example.org
+	$ cf create-domain test-org example.org
 	</pre>
 
- 1. [Map the route to your app](#map-route).
- 1. Set up your domain name DNS using one of the methods described below.
+ 1. Map the route to your app:
 
-**Custom subdomain**: Use a DNS CNAME record to alias one or more custom subdomains.
+    <pre class="terminal">
+	$ cf map-route myapp example.org
+	</pre>
 
-To alias the custom domain, create a CNAME record to point `myapp.example.org` to `yourappname.cfapps.io`, as in the following example:
+ 1. Configure your custom root domain with your DNS provider using an ALIAS record.
 
-<table border="1" class="nice" >
-	<tr>
-		<th>Record</th>
-		<th>Name</th>
-		<th>Target</th>
-		<th>Note</th>
-	</tr>
-	<tr>
-	  <td>CNAME</td>
-	  <td>myapp</td>
-	  <td>yourappname.cfapps.io.</td>
-	  <td>Refer to your DNS provider documentation to determine whether the trailing `.` is required.</td>
-	</tr>
-	</table>
-
-**Root domain**: Some DNS providers support using an alternative custom record type, such as ANAME or ALIAS, for configuring custom zone apex domains. These domains are also known as root domains. ANAME and ALIAS records follow the pattern below:
+ALIAS records follow the pattern illustrated below:
 
 <table border="1" class="nice" >
 	<tr>
@@ -68,16 +59,35 @@ To alias the custom domain, create a CNAME record to point `myapp.example.org` t
 		<th>Note</th>
 	</tr>
 	<tr>
-	  <td>ALIAS or ANAME</td>
+	  <td>ALIAS</td>
 	  <td>empty or @</td>
 	  <td>yourappname.cfapps.io.</td>
 	  <td>Refer to your DNS provider documentation to determine whether to use an empty or @ value for the Name entry.</td>
 	</tr>
 	</table>
 
-**Subdomain redirection**: If your DNS provider does not support ANAME or ALIAS records, use subdomain redirection to handle requests to a custom root domain. This technique is also known as domain forwarding.
+### <a id='single-sub'></a>Map a Single Subdomain ###
 
-**Note**: Using this method, secure requests to the root domain result in an error.
+Use a DNS CNAME record to alias a multi-level custom subdomain.
+
+ 1. Create the domain in Cloud Foundry and associate it with an organization.
+
+    The command below defines the custom domain `test.example.org` in the
+	"test-org" organization:
+
+	<pre class="terminal">
+	$ cf create-domain test-org test.example.org
+	</pre>
+
+ 1. Map the route to your app:
+
+    <pre class="terminal">
+	$ cf map-route myapp test.example.org
+	</pre>
+
+ 1. Configure your custom domain with your DNS provider using a CNAME record.
+
+CNAME records follow the pattern illustrated below:
 
 <table border="1" class="nice" >
 	<tr>
@@ -87,19 +97,50 @@ To alias the custom domain, create a CNAME record to point `myapp.example.org` t
 		<th>Note</th>
 	</tr>
 	<tr>
-	  <td>URL or Forward</td>
-	  <td>example.org</td>
-	  <td>myapp.example.org.</td>
-	  <td>This method results in a "301 permanent redirect" to the subdomain you configure. </td>
-	</tr>
-	<tr>
 	  <td>CNAME</td>
-	  <td>myapp</td>
-	  <td>yourappname.cfapps.io</td>
-	  <td></td>
+	  <td>test</td>
+	  <td>yourappname.cfapps.io.</td>
+	  <td>Refer to your DNS provider documentation to determine whether the trailing `.` is required.</td>
 	</tr>
 	</table>
 
+### <a id='multi-sub'></a>Map Multiple Subdomains ###
+
+Use a DNS CNAME record to alias a custom subdomain.
+
+ 1. Create the domain in Cloud Foundry and associate it with an organization.
+
+    The command below defines the custom domain `myapp.example.org` in the
+	"test-org" organization:
+
+	<pre class="terminal">
+	$ cf create-domain test-org example.org -n myapp
+	</pre>
+
+ 1. Map the route to your app:
+
+    <pre class="terminal">
+    $ cf map-route myapp example.org -n myapp
+	</pre>
+
+ 1. Configure your custom domain with your DNS provider using a CNAME record.
+
+	CNAME records follow the pattern illustrated below:
+
+	<table border="1" class="nice" >
+		<tr>
+			<th>Record</th>
+			<th>Name</th>
+			<th>Target</th>
+			<th>Note</th>
+		</tr>
+		<tr>
+		  <td>CNAME</td>
+		  <td>test</td>
+		  <td>yourappname.cfapps.io.</td>
+		  <td>Refer to your DNS provider documentation to determine whether the trailing `.` is required.</td>
+		</tr>
+		</table>
 
 ## <a id='view-domains'></a>View Domains for an Org ##
 
@@ -125,10 +166,10 @@ You can delete a domain from Cloud Foundry with the `cf delete-domain` command:
 $ cf delete-domain example.org
 </pre>
 
-## <a id='subdomain'></a>Key Facts About Subdomains ##
+## <a id='subdomain'></a>About Subdomains ##
 
 In some cases, defining the subdomain portion of a route is optional. In
-generally, though, this segment of a route is required to ensure the route is
+general, though, this segment of a route is required to ensure the route is
 unique.
 Note in particular that you _must_ define a subdomain in the following cases:
 

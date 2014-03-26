@@ -26,7 +26,13 @@ your application.
 
 ## <a id='create-domains'></a>Use Your Custom Domain in Cloud Foundry ##
 
-There are three different models for using your own custom domain in Cloud Foundry. Select the procedure that corresponds with the type of domain you want to use.
+There are three different models for using your own custom domain in Cloud Foundry:
+
+ * Using a shared root domain, such as example.org.
+ * Using a shared subdomain, such as myapp.example.org.
+ * Using a shared domain plus a host to create a url, such as myapp.example.org
+
+Select the procedure below that corresponds with the type of domain you want to use.
 
 ### <a id='root'></a>Map a Root Domain ###
 
@@ -61,7 +67,7 @@ ALIAS records follow the pattern illustrated below:
 	<tr>
 	  <td>ALIAS</td>
 	  <td>empty or @</td>
-	  <td>yourappname.cfapps.io.</td>
+	  <td>yourappname.<%=vars.app_domain%>.</td>
 	  <td>Refer to your DNS provider documentation to determine whether to use an empty or @ value for the Name entry.</td>
 	</tr>
 	</table>
@@ -99,14 +105,14 @@ CNAME records follow the pattern illustrated below:
 	<tr>
 	  <td>CNAME</td>
 	  <td>test</td>
-	  <td>yourappname.cfapps.io.</td>
+	  <td>yourappname.<%=vars.app_domain%>.</td>
 	  <td>Refer to your DNS provider documentation to determine whether the trailing `.` is required.</td>
 	</tr>
 	</table>
 
 ### <a id='multi-sub'></a>Map Multiple Subdomains ###
 
-Use a DNS CNAME record to alias a custom subdomain.
+Use the `-n HOSTNAME` parameter with the `create-domain` command to specify a unique hostname for a route that uses a shared domain. Then use a DNS CNAME record to alias the custom subdomain.
 
  1. Create the domain in Cloud Foundry and associate it with an organization.
 
@@ -137,7 +143,7 @@ Use a DNS CNAME record to alias a custom subdomain.
 		<tr>
 		  <td>CNAME</td>
 		  <td>test</td>
-		  <td>yourappname.cfapps.io.</td>
+		  <td>yourappname.<%=vars.app_domain%>.</td>
 		  <td>Refer to your DNS provider documentation to determine whether the trailing `.` is required.</td>
 		</tr>
 		</table>

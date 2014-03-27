@@ -83,6 +83,13 @@ frameworks you use.
 The `.gitignore` templates for common frameworks, available at
 https://github.com/github/gitignore, are a useful starting point.
 
+## <a id="increase-availability"></a>Run Multiple Instances to Increase Availability ##
+
+When a DEA is upgraded, the applications running on it are shut down gracefully,
+or _evacuated_, on the DEA to be upgraded, then restarted on another DEA.
+To avoid the risk of an application being unavailable during Cloud Foundry
+upgrade processes, you should run more than one instance of an application.
+
 ## <a id="Buildpack"></a>Buildpacks and Language-Specific Considerations ##
 
 Cloud Foundry stages application using buildpacks.

@@ -17,7 +17,7 @@ To build the WAR file and deploy it, run the following:
 
 <pre class="terminal">
 $ grails prod war
-$ cf push <application-name> -p target/&lt;application-name&gt;-&lt;application-version&gt;.war
+$ cf push &lt;application-name&gt; -p target/&lt;application-name&gt;-&lt;application-version&gt;.war
 </pre>
 
 ## <a id='groovy'></a>Groovy ##
@@ -28,14 +28,14 @@ Ratpack packages applications into two different styles; Cloud Foundry supports 
 
 <pre class="terminal">
 $ gradle distZip
-$ cf push <application-name> -p build/distributions/&lt;application-name&gt;.zip
+$ cf push &lt;application-name&gt; -p build/distributions/&lt;application-name&gt;.zip
 </pre>
 
 ### <a id='raw-groovy'></a>Raw Groovy ###
  Groovy applications that are made up of a [single entry point][g] plus any supporting files can be run without any other work. To deploy them, run the following:
 
 <pre class="terminal">
-$ cf push <application-name>
+$ cf push &lt;application-name&gt;
 </pre>
 
 ## <a id='java-main'></a>Java Main ##
@@ -46,7 +46,7 @@ A Maven build can create a self-exectuable JAR. To build and deploy the JAR, run
 
 <pre class="terminal">
 	$ mvn package
-	$ cf push <application-name> -p target/&lt;application-name&gt;-&lt;application-version&gt;.jar
+	$ cf push &lt;application-name&gt; -p target/&lt;application-name&gt;-&lt;application-version&gt;.jar
 </pre>
 
 ### <a id='java-main-gradle'></a>Gradle ###
@@ -54,7 +54,7 @@ A Gradle build can create a self-exectuable JAR. To build and deploy the JAR, ru
 
 <pre class="terminal">
 	$ gradle build
-	$ cf push <application-name> -p build/libs/&lt;application-name&gt;-&lt;application-version&gt;.jar
+	$ cf push &lt;application-name&gt; -p build/libs/&lt;application-name&gt;-&lt;application-version&gt;.jar
 </pre>
 
 ## <a id='play-framework'></a>Play Framework ##
@@ -62,7 +62,7 @@ A Gradle build can create a self-exectuable JAR. To build and deploy the JAR, ru
 
 <pre class="terminal">
 $ play dist
-$ cf push <application-name> -p target/universal/&lt;application-name&gt;-&lt;application-version&gt.zip
+$ cf push &lt;application-name&gt; -p target/universal/&lt;application-name&gt;-&lt;application-version&gt.zip
 </pre>
 
 ## <a id='spring-boot-cli'></a>Spring Boot CLI ##
@@ -70,7 +70,7 @@ $ cf push <application-name> -p target/universal/&lt;application-name&gt;-&lt;ap
 
 <pre class="terminal">
 $ spring grab *.groovy
-$ cf push <application-name>
+$ cf push &lt;application-name&gt;
 </pre>
 
 ## <a id='servlet'></a>Servlet ##
@@ -81,7 +81,7 @@ A Maven build can create a Servlet WAR. To build and deploy the WAR, run the fol
 
 <pre class="terminal">
 $ mvn package
-$ cf push <application-name> -p target/&lt;application-name&gt;-&lt;application-version&gt;.war
+$ cf push &lt;application-name&gt; -p target/&lt;application-name&gt;-&lt;application-version&gt;.war
 </pre>
 
 
@@ -90,7 +90,7 @@ A Gradle build can create a Servlet WAR. To build and deploy the JAR, run the fo
 
 <pre class="terminal">
 $ gradle build
-$ cf push <application-name> -p build/libs/&lt;application-name&gt;-&lt;application-version&gt;.war
+$ cf push &lt;application-name&gt; -p build/libs/&lt;application-name&gt;-&lt;application-version&gt;.war
 </pre>
 
 ## <a id='services'></a>Binding to Services ##

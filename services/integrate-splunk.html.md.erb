@@ -11,8 +11,10 @@ To integrate Cloud Foundry with Splunk Enterprise, complete the following proces
 In Cloud Foundry, create a syslog drain user-provided service instance as
 described in [Third-Party Log Management Services](./log-management.html).
 
-One or more applications you are deploying to Cloud Foundry can drain logs
-to the syslog drain service.
+Choose one or more applications whose logs you want to drain to Splunk
+through the service.
+
+Bind each app to the service instance and restart the app.
 
 Note the GUID for each app, the port number for the service, and the
 IP address of the Loggregator host.

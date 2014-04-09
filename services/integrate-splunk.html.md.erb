@@ -1,0 +1,85 @@
+---
+title: Integrating Cloud Foundry with Splunk
+---
+
+_This page assumes that you are using cf v6._
+
+To integrate Cloud Foundry with Splunk Enterprise, complete the following process.
+
+## <a id='drain'></a> 1. Create a Cloud Foundry Syslog Drain for Splunk ##
+
+In Cloud Foundry, create a syslog drain user-provided service instance as
+described in [Third-Party Log Management Services](./log-management.html).
+
+One or more applications you are deploying to Cloud Foundry can drain logs
+to the syslog drain service.
+
+Note the GUID for each app, the port number for the service, and the
+IP address of the Loggregator host.
+
+## <a id='prep'></a>2. Prepare Splunk for Cloud Foundry ##
+
+For detailed information about the following tasks, see the [Splunk documentation]
+(http://docs.splunk.com/Documentation/Splunk).
+
+### <a id='config'></a>Install the RFC5424 Syslog Technology Add-On ###
+
+The Cloud Foundry Loggregator component formats logs according to the Syslog
+Protocol defined in [RFC 5424](http://tools.ietf.org/html/rfc5424).
+Splunk does not parse log fields according to this protocol.
+To allow Splunk to correctly parse RFC 5424 log fields, install the Splunk
+[RFC5424 Syslog Technical Add-On](http://apps.splunk.com/app/978/).
+
+### <a id='config'></a>Patch the RFC5424 Syslog Technology Add-On ###
+
+1. SSH into the Splunk VM
+1. Replace `/opt/splunk/etc/apps/rfc5424/default/transforms.conf` with a new
+`transforms.conf` file that consists of the following text:
+
+    <pre class="terminal">
+      [rfc5424_host]
+      DEST_KEY = MetaData:Host
+      REGEX = <\d+>\d{1}\s{1}\S+\s{1}(\S+)
+      FORMAT = host::$1
+
+      [rfc5424_header]
+      REGEX = <(\d+)>\d{1}\s{1}\S+\s{1}\S+\s{1}(\S+)\s{1}(\S+)\s{1}(\S+)
+      FORMAT = prival::$1 appname::$2 procid::$3 msgid::$4
+      MV_ADD = true
+    </pre>
+
+1. Restart Splunk
+
+### <a id='config'></a> Create a TCP Syslog Data Input ###
+
+Create a TCP Syslog Data Input in Splunk, with the following settings:
+
+* **TCP port** is the port number you assigned to your log drain service
+* **Set sourcetype** is `Manual`
+* **Source type** is `rfc5424_syslog` (type this value into text field)
+* **Index** is the index you created for your log drain service
+
+Your Cloud Foundry syslog drain service is now integrated with Splunk.
+
+## <a id='verify'></a>3. Verify that Integration was Successful  ##
+
+Use Splunk to execute a query of the form:
+
+  `sourcetype=rfc5424_syslog index=<the_index_you_created> appname=<app_guid>`
+
+To view logs from all apps at once, you can omit the `appname` field.
+
+Verify that results rows contain the three Cloud Foundry-specific fields:
+
+* **appname** — the GUID for the Cloud Foundry application
+* **host** — the IP address of the Loggregator host
+* **procid** — the Cloud Foundry component emitting the log
+
+If the Cloud Foundry-specific fields appear in the log search results,
+integration is successful.
+
+If logs from an app are missing, make sure that:
+
+* The app is bound to the service and was restarted after binding
+* The service port number matches the TCP port number in Splunk
+

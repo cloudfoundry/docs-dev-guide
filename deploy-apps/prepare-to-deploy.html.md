@@ -114,7 +114,7 @@ If you have an application that uses a language or framework that Cloud Foundry
 buildpacks do not support, there may be a third-party or community-developed
 buildpack that you can use. You can also customize existing buildpacks or write your own. To use a buildpack that is not built-in to Cloud Foundry, you specify the URL of the buildpack when you push an application, using the `-b` qualifier or the `buildpack: ` manifest key.
 
-* [Cloud Foundry Commmunity Buildpacks][c] --- This page has links to buildpacks contributed by members of the Cloud Foundry Community.
+* [Cloud Foundry Community Buildpacks][c] --- This page has links to buildpacks contributed by members of the Cloud Foundry Community.
 * [Heroku Third-Party Buildpacks][h] --- This page has links to buildpacks developed for Heroku, which may (but have not been verified to) work with Cloud Foundry.
 * [Custom Buildpacks][u] --- See this page for information about writing a custom buildpack.
 

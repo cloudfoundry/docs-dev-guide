@@ -6,7 +6,7 @@ _This page assumes that you are using cf v6._
 
 Application development and maintenance often requires changing a database schema, known as migrating the database. This topic describes three ways to migrate a database on Cloud Foundry.
 
-## <a id='single_migration'></a>Migrate Once ##
+## <a id='single-migration'></a>Migrate Once ##
 
 This method executes SQL commands directly on the database, bypassing Cloud Foundry.
 This is the fastest option for a single migration.
@@ -25,7 +25,7 @@ The timeout defaults to 60 seconds, but you can extend it up to 180 seconds with
 
 4. Update the application using `cf push`.
 
-## <a id='occasional_migration'></a>Migrate Occasionally ##
+## <a id='occasional-migration'></a>Migrate Occasionally ##
 
 This method requires you to:
 
@@ -51,7 +51,7 @@ This method is efficient for occasional use because you can re-use the schema mi
 
     **Note**: This example assumes that the normal start command for your application is the one provided by the buildpack, which the `-c 'null'` option forces cf to use.
 
-## <a id='frequent_migration'></a>Migrate Frequently ##
+## <a id='frequent-migration'></a>Migrate Frequently ##
 This method uses an idempotent script to partially automate migrations. The script runs on the first application instance only.
 
 This option takes the most effort to implement, but becomes more efficient with frequent migrations.

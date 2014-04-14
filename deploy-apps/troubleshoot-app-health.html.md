@@ -20,28 +20,8 @@ using.
 
 * `cf env APP_NAME`: Returns environment variables set using `cf set-env`.
 
-* `cf files APP_NAME logs/env.log`: Returns environment variables in the container environment.
-The `VCAP_SERVICES` variable lists all services that have been bound to the
-application and the credentials for connecting to each service.
-
-* `cf files APP_NAME logs/staging_task.log`: Returns the staging log for your
-app.
-
-* `cf files APP_NAME logs/stderr.log`: Returns recent output to STDERR.
-
-* `cf files APP_NAME logs/stdout.log`: Returns recent output to STDOUT.
-
 * `cf logs APP_NAME`: Returns a real-time stream of the application STDOUT and
 STDERR. Use **Ctrl-C** (^C) to exit the real-time stream.
-
-  You may need to configure your application to issue messages to STDOUT and
-STDERR.
-If your application uses a log4j facility that is configured to send log
-messages to STDOUT, such messages will also be returned by the `logs` command.
-
-  **Note:** Some of these commands may return connection credentials, so be sure
-not to post command output to a public forum without first removing this
-sensitive information.
 
 * `cf events APP_NAME`: Returns information about application crashes, including
 error codes.
@@ -50,6 +30,15 @@ See
 for a list of Cloud Foundry errors.
 
 * `cf files APP_NAME`: Returns a list of files in an application directory.
+
+Your application should direct its logs to STDOUT and STDERR.
+The `logs` command also returns messages from any [log4j](http://logging.apache.org/log4j/)
+facility that you configure to send logs to STDOUT.
+
+**Note:** Some of these commands may return connection credentials, so be sure
+not to post command output to a public forum without first removing this
+sensitive information.
+
 
 ## <a id='java-apps'></a>Java and Grails Best Practices ##
 

@@ -25,7 +25,7 @@ The `cf services` command lists all the service instances (both user-provided an
 
 In contrast to the user-provided kind, a managed service is one that a service broker advertises in a catalog. See [Managed Service Instances] (./managed.html).
 
-## <a id='user-cups'></a>cf Commands for Working with User-Provided Service Instances ##
+## <a id='commands'></a>cf Commands for Working with User-Provided Service Instances ##
 
 cf commands for creating and updating user-provided service instances can be used in three ways: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
 
@@ -67,7 +67,7 @@ To update a service instance that drains information to third-party log manageme
 
   `cf uups SERVICE_INSTANCE -l syslog://<%=vars.app_domain%>`
 
-## <a id='cups-example'></a> Binding User-Provided Service Instances to Applications  ##
+## <a id='bind-example'></a> Binding User-Provided Service Instances to Applications  ##
 
 There are two ways to bind user-provided service instances to applications:
 
@@ -96,7 +96,7 @@ OK
 </pre>
 
 Once the binding has taken effect, it is described in the
-[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP_SERVICES) environment variable.
+[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable.
 
 For more information about manifests, see [Deploying with Application Manifests](../deploy-apps/manifest.html#services-block).
 

@@ -1,30 +1,92 @@
 ---
-title: Deploying Applications
+title: Developer Guide
 ---
 
 This guide has instructions for pushing an application to Cloud Foundry and
 making the application work with any available cloud-based services it uses,
 such as databases, email, or message servers.
-The core of this guide is the [Deploy an Application](./deploy-apps/getting-started.html) process guide, which provides
-end-to-end instructions for running applications on Cloud Foundry,
-including tips for troubleshooting deployment and application health issues.
+The core of this guide is the [Deploy an Application](./deploy-apps/deploy-app.html) process
+guide, which provides end-to-end instructions for deploying and running
+applications on Cloud Foundry, including tips for troubleshooting deployment and
+application health issues.
 
 Before you can use the instructions in this document, you will need an account
 on your Cloud Foundry instance.
 
-* [Deploy Applications](./deploy-apps/): How to prepare your application for the cloud, including a step-by-step guide for deploying your first application.
+___
 
-* [The cf Command Line Tool](./installcf/index.html): Reference information for the cf command line tool, including installation instructions.
-  * [Installing cf v6](./installcf/install-go-cli.html)
-  * [Getting Started with cf v6](./installcf/whats-new-v6.html)
+## <a id='prepare'></a>Preparing Applications for the Cloud ##
+[Considerations for Designing and Running an Application in the Cloud](./deploy-apps/prepare-to-deploy.html)
 
+[Tips for Ruby Developers](./deploy-apps/ruby-tips.html)
 
-* <a id='using-services'></a>[Using Services](./services/): Guides for using services with Cloud Foundry.
-  * [Adding a Service](./services/adding-a-service.html)
-  * [Managing Services from the Command Line](./services/managing-services.html)
-  * [Binding Services](./services/bind-service.html)
-  * [Managed Service Instances](./services/managed.html)
-  * [User-Provided Service Instances](./services/user-provided.html)
-  * [Bind a Service Instance](./services/bind-service.html)
-  * [Configure Service Connections](./services/service-connections.html)
-  * [Migrate a Database on Cloud Foundry](./services/migrate-db.html)
+[Tips for Java Developers](./deploy-apps/java-tips.html)
+
+[Tips for Node.js Developers](./deploy-apps/node-tips.html)
+
+[Cloud Foundry Eclipse Plugin](./deploy-apps/sts.html)
+
+[Maven and Gradle Integration](./deploy-apps/build-tool-int.html)
+
+[Cloud Foundry Java Client Library](./deploy-apps/java-client.html)
+
+___
+
+## <a id='prepare'></a>	Deploying and Managing Applications ##
+[Deploy an Application](./deploy-apps/deploy-app.html)
+
+[Configuring Domains, Subdomains, and Routes](./deploy-apps/domains-routes.html)
+
+[Using Application Manifests](./deploy-apps/manifest.html)
+
+[Cloud Foundry Environment Variables](./deploy-apps/environment-variable.html)
+
+[Using Blue-Green Deployment to Reduce Downtime and Risk](./deploy-apps/blue-green.html)
+
+[Application Logging in Cloud Foundry](./deploy-apps/streaming-logs.html)
+
+[Troubleshooting Application Deployment and Health](./deploy-apps/troubleshoot-app-health.html)
+
+___
+
+## <a id='cf'></a>cf Command Line Interface ##
+[Installing the cf Command Line Interface](./installcf/install-go-cli.html)
+
+[Getting Started with cf v6](./installcf/whats-new-v6.html)
+
+[Using cf with an HTTP Proxy Server](./installcf/http-proxy.html)
+
+[Starting Applications using cf](./deploy-apps/app-startup.html)
+
+___
+
+## <a id='services'></a>Services ##
+[Services Overview](./services/index.html)
+
+[Adding a Service](./services/adding-a-service.html)
+
+[Binding a Service Instance](./services/bind-service.html)
+
+[Managing Service Instances](./services/managing-services.html)
+
+[Third-Party Managed Services](./services/managed.html)
+
+[User-Provided Services](./services/user-provided.html)
+
+[Configuring Node.js Service Connections](./services/node-service-bindings.html)
+
+[Configuring Ruby Service Connections](./services/ruby-service-bindings.html)
+
+[Configuring Grails Service Connections](./services/grails-service-bindings.html)
+
+[Configuring Spring Service Connections](./services/spring-service-bindings.html)
+
+[Configuring Play Framework Service Connections](./services/play-service-bindings.html)
+
+[Migrating a Database in Cloud Foundry](./services/migrate-db.html)
+
+[Using Third Party Log Management Services](./services/log-management.html)
+
+[Configuring Selected Third Party Log Management Services](./services/log-management-thirdparty-svc.html)
+
+___

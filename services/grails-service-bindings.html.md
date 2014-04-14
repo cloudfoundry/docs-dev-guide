@@ -61,10 +61,12 @@ The best way to do the manual configuration is to use the `spring-cloud` library
 Then you can use the `spring-cloud` API in your `DataSources.groovy` file to set the connection parameters. If you were using all three types of database services as in the auto-configuration example, and the services were named "myapp-mysql", "myapp-mongodb", and "myapp-redis", your `DataSources.groovy` file might look like the one below.
 
 ```groovy
+import org.springframework.cloud.CloudFactory
+
 def cloud
 
 try {
-  cloud = new CloudFactory().getCloud()
+  cloud = new CloudFactory().cloud
 } catch(e) {}
 
 environments {
@@ -75,8 +77,8 @@ environments {
       driverClassName = 'com.mysql.jdbc.Driver'
 
       if (cloud) {
-        def dbInfo = cloud.getServiceInfo('myapp-mysql', RdbmsServiceInfo.class)
-        url = dbInfo.url
+        def dbInfo = cloud.getServiceInfo('myapp-mysql')
+        url = dbInfo.jdbcUrl
         username = dbInfo.userName
         password = dbInfo.password
       } else {
@@ -89,7 +91,7 @@ environments {
     grails {
       mongo {
         if (cloud) {
-          def mongoInfo = cloud.getServiceInfo('myapp-mongodb', MongoServiceInfo.class)
+          def mongoInfo = cloud.getServiceInfo('myapp-mongodb')
           host = mongoInfo.host
           port = mongoInfo.port
           databaseName = mongoInfo.database
@@ -105,7 +107,7 @@ environments {
       }
       redis {
         if (cloud) {
-          def redisInfo = cloud.getServiceInfo('myapp-redis', RedisServiceInfo.class)
+          def redisInfo = cloud.getServiceInfo('myapp-redis')
           host = redisInfo.host
           port = redisInfo.port
           password = redisInfo.password

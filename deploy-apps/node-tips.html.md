@@ -4,7 +4,7 @@ title: Tips for Node.js Applications
 
 _This page assumes that you are using cf v6._
 
-This page will prepare you to deploy Node.js apps via the [Getting Started Guide](getting-started.html).
+This page will prepare you to deploy Node.js apps via the [Getting Started Guide](./deploy-app.html).
 
 ## <a id='packagejson'></a> Application Package File ##
 

@@ -17,7 +17,7 @@ A plain `cf push` command finds the manifest when it is named manifest.yml and l
 
 ~~~
 $ cf push
-Using manifest file <path to working directory>/manifest.yml
+Using manifest file /path_to_working_directory/manifest.yml
 ~~~
 
 
@@ -25,14 +25,14 @@ With the `-f` option, a path with no filename means that the filename must be `m
 
 ~~~
 $ cf push -f ./some_directory/some_other_directory/
-Using manifest file <path to working directory>/some_directory/some_other_directory/manifest.yml
+Using manifest file /path_to_working_directory/some_directory/some_other_directory/manifest.yml
 ~~~
 
 If the manifest is named something other than `manifest.yml`, use the `-f` option with both path _and_ filename.
 
 ~~~
 $ cf push -f ./some_directory/some_other_directory/alternative_manifest.yml
-Using manifest file <path to working directory>/some_directory/some_other_directory/alternative_manifest.yml
+Using manifest file /path_to_working_directory/some_directory/some_other_directory/alternative_manifest.yml
 ~~~
 
 ## <a id='minimal-manifest'></a>A Minimal Manifest ##
@@ -54,7 +54,7 @@ As described in [How cf push Finds the Manifest](#find-manifest) above, the simp
 If you do _not_ use a manifest, the minimal push command looks like this:
 
 ~~~
-cf push <application_name>
+cf push my-application-name
 ~~~
 
 **Note:** When you provide an application name at the command line, `cf push` uses that application name whether or not there is a different application name in the manifest.
@@ -74,7 +74,7 @@ By default, `cf` recursively pushes the contents of the current working director
 
 When you push an application for the first time, `cf` applies default values to any attributes that you do not set in a manifest or `cf push` command line options.
 
-* For example, `cf push <application_name>` with no manifest might deploy one instance of the app with one gigabyte of memory.
+* For example, `cf push my-application-name` with no manifest might deploy one instance of the app with one gigabyte of memory.
 In this case the default values for instances and memory are "1" and "1G", respectively.
 
 Between one push and another, attribute values can change in other ways.
@@ -101,7 +101,7 @@ This section explains how to describe optional application attributes in manifes
 If your application requires a custom buildpack, you can use the `buildpack` attribute to specify its URL or name:
 
 ~~~
-buildpack: <buildpack_URL>
+buildpack: buildpack_URL
 ~~~
 
 **Note:** The `cf buildpacks` command lists the buildpacks that you can refer to by name in a manifest or a command line option.
@@ -177,7 +177,7 @@ The command line option that overrides this attribute is `-n`.
 You can use the `path` attribute to tell `cf` where to find your application. This is generally not necessary when you run `cf push` from the directory where an application is located.
 
 ~~~
-path: <path_to_application_bits>
+path: path_to_application_bits
 ~~~
 
 The command line option that overrides this attribute is `-p`.
@@ -232,13 +232,13 @@ While the application is running, `cf` allows you to operate on environment vari
 
 * View all variables:
 
- `cf env <app>`
+ `cf env my-app`
 * Set an individual variable:
 
- `cf set-env <variable_name> <variable_value>`
+ `cf set-env my-variable_name my-variable_value`
 * Unset an individual variable:
 
- `cf unset-env <variable_name> <variable_value>`
+ `cf unset-env my-variable_name my-variable_value`
 
 Environment variables interact with manifests by somewhat complicated rules:
 
@@ -329,7 +329,7 @@ There are only two narrow exceptions:
 
 * If your manifest is not named `manifest.yml` or not in the current working directory, use the `-f` command line option.
 
-* If you want to push a single application rather than all of the applications described in the manifest, provide the desired application name by running `cf push <application_name>`.
+* If you want to push a single application rather than all of the applications described in the manifest, provide the desired application name by running `cf push my-application_name`.
 
 ## <a id='minimize-duplication'></a>Minimizing Duplication ##
 

@@ -67,7 +67,7 @@ Root folder for the deployed application.
 
 `HOME=/home/vcap/app`
 
-### <a id='HOME'></a>MEMORY_LIMIT ###
+### <a id='memory'></a>MEMORY_LIMIT ###
 The maximum amount of memory that each instance of the application can consume.
 This value is set as a result of the value you specify in an application
 manifest, or at the command line when pushing an application.
@@ -100,13 +100,13 @@ The user account under which the DEA runs.
 
 `USER=vcap`
 
-### <a id='VCAP_APP_HOST'></a>VCAP\_APP\_HOST
+### <a id='VCAP-APP-HOST'></a>VCAP\_APP\_HOST
 
 The IP address of the DEA host.
 
 `VCAP_APP_HOST=0.0.0.0`
 
-### <a id='VCAP_APPLICATION'></a>VCAP_APPLICATION ###
+### <a id='VCAP-APPLICATION'></a>VCAP_APPLICATION ###
 
 This variable contains useful information about a deployed application.
 Results are returned in JSON format.
@@ -134,11 +134,11 @@ VCAP_APPLICATION={"instance_id":"451f045fd16427bb99c895a2649b7b2a","instance_ind
 
 ~~~
 
-### <a id='VCAP_APP_PORT'></a>VCAP\_APP\_PORT ###
+### <a id='VCAP-APP-PORT'></a>VCAP\_APP\_PORT ###
 
 Equivalent to the [PORT](#PORT) variable, defined above.
 
-### <a id='VCAP_SERVICES'></a>VCAP\_SERVICES ###
+### <a id='VCAP-SERVICES'></a>VCAP\_SERVICES ###
 
 For [bindable services](../services/) Cloud Foundry will add connection details
 to the `VCAP_SERVICES` environment variable when you restart your application,

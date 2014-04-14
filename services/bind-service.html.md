@@ -9,7 +9,7 @@ _This page assumes that you are using cf v6._
 Some services provide bindable service instances.
 For services that offer bindable service instances, binding a service to your
 application adds credentials for the service instance to the
-[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP_SERVICES)
+[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES)
 environment variable.
 
 In most cases these credentials are unique to the binding; another application

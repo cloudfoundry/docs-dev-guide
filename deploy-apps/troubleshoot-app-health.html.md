@@ -35,10 +35,11 @@ Your application should direct its logs to STDOUT and STDERR.
 The `logs` command also returns messages from any [log4j](http://logging.apache.org/log4j/)
 facility that you configure to send logs to STDOUT.
 
-**Note:** Some of these commands may return connection credentials, so be sure
-not to post command output to a public forum without first removing this
-sensitive information.
+**Note:** Some of these commands may return connection credentials.
+Take care to remove credentials and other sensitive information from command
+output before you post the output a public forum.
 
+For more about `cf logs`, see [Viewing Logs in the Command Line Interface](./deploy-apps/streaming-logs.html#view).
 
 ## <a id='java-apps'></a>Java and Grails Best Practices ##
 

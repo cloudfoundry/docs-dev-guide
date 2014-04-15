@@ -39,7 +39,7 @@ facility that you configure to send logs to STDOUT.
 Take care to remove credentials and other sensitive information from command
 output before you post the output a public forum.
 
-For more about `cf logs`, see [Viewing Logs in the Command Line Interface](./deploy-apps/streaming-logs.html#view).
+For more about `cf logs`, see [Viewing Logs in the Command Line Interface](./streaming-logs.html#view).
 
 ## <a id='java-apps'></a>Java and Grails Best Practices ##
 

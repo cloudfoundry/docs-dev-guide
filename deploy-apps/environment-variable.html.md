@@ -248,19 +248,19 @@ VCAP_SERVICES=
 The subsections that follow describe the environment variables set by the Ruby
 buildpack for an application at staging time.
 
-### <a id='BUNDLE_BIN_PATH'></a>BUNDLE\_BIN\_PATH ###
+### <a id='BUNDLE-BIN-PATH'></a>BUNDLE\_BIN\_PATH ###
 
 Location where Bundler installs binaries.
 
 `BUNDLE_BIN_PATH:/home/vcap/app/vendor/bundle/ruby/1.9.1/gems/bundler-1.3.2/bin/bundle`
 
-### <a id='BUNDLE_GEMFILE'></a>BUNDLE_GEMFILE ###
+### <a id='BUNDLE-GEMFILE'></a>BUNDLE_GEMFILE ###
 
 Path to application’s gemfile.
 
 `BUNDLE_GEMFILE:/home/vcap/app/Gemfile`
 
-### <a id='BUNDLE_WITHOUT'></a>BUNDLE_WITHOUT ###
+### <a id='BUNDLE-WITHOUT'></a>BUNDLE_WITHOUT ###
 
 The `BUNDLE_WITHOUT` environment variable causes Cloud Foundry to skip
 installation of gems in excluded groups.
@@ -272,7 +272,7 @@ For information about using this variable, see http://blog.cloudfoundry.com/2012
 
 `BUNDLE_WITHOUT=assets`
 
-### <a id='DATABASE_URL'></a>DATABASE_URL ###
+### <a id='DATABASE-URL'></a>DATABASE_URL ###
 
 The Ruby buildpack looks at the database\_uri for bound services to see if they
 match known database types.
@@ -286,26 +286,26 @@ manually.
 
 `$ cf set-env my_app_name DATABASE_URL mysql://b5d435f40dd2b2:ebfc00ac@us-cdbr-east-03.cleardb.com:3306/ad_c6f4446532610ab`
 
-### <a id='GEM_HOME'></a>GEM_HOME ###
+### <a id='GEM-HOME'></a>GEM_HOME ###
 
 Location where gems are installed.
 
 `GEM_HOME:/home/vcap/app/vendor/bundle/ruby/1.9.1`
 
-### <a id='GEM_PATH'></a>GEM_PATH ###
+### <a id='GEM-PATH'></a>GEM_PATH ###
 
 Location where gems can be found.
 
 `GEM_PATH=/home/vcap/app/vendor/bundle/ruby/1.9.1:`
 
-### <a id='RACK_ENV'></a>RACK_ENV ###
+### <a id='RACK-ENV'></a>RACK_ENV ###
 This variable specifies the Rack deployment environment: development,
 deployment, or none.
 This governs what middleware is loaded to run the application.
 
 `RACK_ENV=production`
 
-### <a id='RAILS_ENV'></a>RAILS_ENV ###
+### <a id='RAILS-ENV'></a>RAILS_ENV ###
 This variable specifies the Rails deployment environment: development, test, or
 production.
 This controls which of the environment-specific configuration files will govern
@@ -321,10 +321,10 @@ interpreter.
 
 ## <a id='node-buildpack'></a>Variables Defined by Node Buildpack ##
 
-### <a id='BUILD_DIR'></a>BUILD_DIR ###
+### <a id='BUILD-DIR'></a>BUILD_DIR ###
 Directory into which Node.js is copied each time a Node.js application is run.
 
-### <a id='CACHE_DIR'></a>CACHE_DIR ###
+### <a id='CACHE-DIR'></a>CACHE_DIR ###
 
 Directory that Node.js uses for caching.
 

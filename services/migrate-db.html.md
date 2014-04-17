@@ -79,27 +79,4 @@ This option takes the most effort to implement, but becomes more efficient with 
 
 3. Update the application using `cf push`.
 
-### <a id='migrate-ruby-db'></a> Example: Using the Migrate Frequently Method with Rails ###
-
-1. Create a Rake task to limit an idempotent command to the first instance of a deployed application:
-
-    ~~~
-    namespace :cf do
-      desc "Only run on the first application instance"
-      task :on_first_instance do
-        instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"] rescue nil
-        exit(0) unless instance_index == 0
-      end
-    end
-    ~~~
-
-2. Add the task to the `manifest.yml` file, referencing the idempotent command `rake db:migrate` with the `command` attribute.
-
-    ~~~
-   ---
-    applications:
-    - name: my-rails-app
-      command: bundle exec rake cf:on_primary_instance db:migrate && rails s
-    ~~~
-
-3. Update the application using `cf push`.
+For an example of the migrate frequently method used with Rails, see [Running Rake Tasks](../../buildpacks/ruby/ruby-tips.html#rake).

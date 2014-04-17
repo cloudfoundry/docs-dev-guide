@@ -105,16 +105,11 @@ There are generally two methods for these consuming credentials.
 
 * **Auto-configuration**: Some buildpacks create a service connection for you
 by creating additional environment variables, updating config files, or passing
-system parameters to the jvm.
+system parameters to the JVM.
 * **Manual**: [Parse the JSON yourself](../deploy-apps/environment-variable.html#app). Helper libraries are
 available for some frameworks.
 
-| Runtime    | Framework  | Binding Strategy         |
-| :--------- |:---------- |:-------------            |
-| JVM / Java | <li>[Grails][g] <li>[Play Framework][p] <li>[Spring][s] | Auto-configuration<br/>Manual |
-| Ruby       | <li>[Rack, Rails, or Sinatra](./ruby-service-bindings.html) |  [Limited auto-configuration support for Rails only](./ruby-service-bindings.html#auto-config)<br/>Manual |
-| Javascript | <li>[Node.js](./node-service-bindings.html) | Manual |
+See the [buildpacks documentation](../../buildpacks) to learn more about
+working with specific frameworks.
 
-[g]: ./grails-service-bindings.html
-[p]: ./play-service-bindings.html
-[s]: ./spring-service-bindings.html
+

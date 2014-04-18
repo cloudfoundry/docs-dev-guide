@@ -48,6 +48,15 @@ For help preparing to deploy your application, see:
 * [Tips for Node.js Developers](../../buildpacks/node/node-tips.html)
 * [Tips for Java Developers](../../buildpacks/java/java-tips.html)
 
+**Note**: Using a Content Delivery Network (CDN) for static assets makes web
+pages load faster, partly by enabling browsers to make multiple requests in
+parallel.
+For best performance on a large scale, either use a CDN or compensate by
+scaling your app up to a higher number of instances.
+
+Popular CDNs include [Akamai](http://www.akamai.com/) and [Amazon Cloudfront]
+(http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html).
+
 ## <a id='logon-target'></a>Step 2: Know Your Credentials and Target ##
 
 Before you can push your application to Cloud Foundry you need to know:
@@ -109,16 +118,6 @@ and key-value stores.
 Applications are deployed into application spaces.
 An application can only bind to a service that has an existing instance in the
 target application space.
-
-**Note**:
-
-Using a Content Delivery Network (CDN) for static assets makes web pages load
-faster, partly by enabling browsers to make multiple requests in parallel.
-For best performance on a large scale, either use a CDN or compensate by
-scaling your app up to a higher number of instances.
-
-Popular CDNs include [Akamai](http://www.akamai.com/) and [Amazon Cloudfront]
-(http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html).
 
 ### <a id='defining-options'></a>Define Deployment Options ###
 

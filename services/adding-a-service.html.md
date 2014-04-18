@@ -21,7 +21,7 @@ In order to use services with your application you will need to:
 1. [Bind](#bind) a service instance to your application.
 1. [Update](#use) your application to use the service.
 
-### Services vs. Service Instances
+### <a id='instances'></a> Services vs. Service Instances ###
 
 Services provision services instances. For example, ExampleDB might be a service that provisions MySQL databases.
 Depending on the plan you select, you might get a database in a multi-tenant
@@ -55,6 +55,23 @@ Creating service my_rabbitmq in org console / space development as user@example.
 
 **Note**: For more information about creating a user-provided service instance,
 refer to [User-Provided Service Instances](./user-provided.html).
+
+### <a id='connections'></a> Choosing the right plan  ###
+
+Like all PaaSes, Cloud Foundry updates its VMs periodically.
+When updating DEAs, Cloud Foundry spins up a new DEA with a new copy of your
+app, then spins down the old app instance and the old DEA.
+Your app remains available, but during the "rolling update," the number of app
+instances increases.
+
+You need to consider this when choosing a service plan because
+every service plan specifies a maximum number of connections.
+Choose a plan which offers enough connections to cover the increase in application
+instances during DEA updates.
+To run a small number of app instances (including workers), look for a plan
+that offers twice that many connections.
+For large numbers of instances, the ratio of service connections to app instances
+can be closer to one-to-one.
 
 ## <a id='bind'></a>Binding a Service Instance to your Application ##
 

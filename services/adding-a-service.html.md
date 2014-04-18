@@ -60,18 +60,18 @@ refer to [User-Provided Service Instances](./user-provided.html).
 
 Like all PaaSes, Cloud Foundry updates its VMs periodically.
 When updating DEAs, Cloud Foundry spins up a new DEA with a new copy of your
-app, then spins down the old app instance and the old DEA.
-Your app remains available, but during the "rolling update," the number of app
-instances increases.
+app, then spins down the old one.
+The number of app instances temporarily increases during the "rolling update."
 
-You need to consider this when choosing a service plan because
-service plans limit the number of connections.
-Choose a plan which offers enough connections to cover the increase in application
-instances during DEA updates.
-To run a small number of app instances (including workers), look for a plan
-that offers twice that many connections.
-For larger numbers of instances, the ratio of service connections to app instances
-can be closer to one-to-one.
+Choose a service plan with enough connections to cover the increase in
+application instances.
+During DEA updates, new connections start to fail if the number of connections
+reaches the service plan limit.
+
+For a small number of app instances, look for a plan that offers twice that
+many connections.
+As you increase the number of instances, you can bring the ratio of service
+connections to instances closer to one-to-one.
 
 ## <a id='bind'></a>Binding a Service Instance to your Application ##
 

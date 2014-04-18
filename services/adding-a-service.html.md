@@ -65,12 +65,12 @@ Your app remains available, but during the "rolling update," the number of app
 instances increases.
 
 You need to consider this when choosing a service plan because
-every service plan specifies a maximum number of connections.
+service plans limit the number of connections.
 Choose a plan which offers enough connections to cover the increase in application
 instances during DEA updates.
 To run a small number of app instances (including workers), look for a plan
 that offers twice that many connections.
-For large numbers of instances, the ratio of service connections to app instances
+For larger numbers of instances, the ratio of service connections to app instances
 can be closer to one-to-one.
 
 ## <a id='bind'></a>Binding a Service Instance to your Application ##

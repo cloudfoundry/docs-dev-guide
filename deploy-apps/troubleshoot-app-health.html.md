@@ -10,6 +10,7 @@ The basic tools for troubleshooting are:
 * The [heuristics](#scenarios) to apply in common failure scenarios
 * Examining [environment variables](#env)
 * Exploring [logs](#logs)
+* Tracing [Cloud Controller REST API calls](#trace)
 * The [Cloud Foundry Developers](https://groups.google.com/a/cloudfoundry.org/forum/#!forum/vcap-dev)
 mailing list, where you can search on error messages
 
@@ -62,27 +63,6 @@ sufficient memory available for all instances of your app.
 * Verify that components within Cloud Foundry can communicate with each other.
 Look for log entries indicating problems such as _example here_.
 Cloud networking issues can cause problems like this.
-
-### <a id='trace'></a>Before you re-run a Command ###
-
-* If a command fails or produces unexpected results, re-run it with `CF_TRACE`
-enabled to view requests and responses between `cf` and the Cloud Controller
-REST API.
-
-For example:
-
-* Re-run `cf push` with `CF_TRACE` enabled:
-
-    `cf push <app_name> CF_TRACE=true`
-
-* Re-run `cf push` while appending API request diagnostics to a log file:
-
-    `cf push <app_name> CF_TRACE=<path_to_trace.log>`
-
-**Note**: `CF_TRACE` is a **local** environment variable that modifies
-the behavior of `cf` itself.
-Do not confuse `CF_TRACE` with the [variables in the container environment]
-(#env) where your apps run.
 
 ## <a id='cf-commands'></a>cf Troubleshooting Commands ##
 
@@ -169,3 +149,24 @@ $ cf files my-app logs/stderr.log
 	[2014-01-27 20:21:58] INFO  ruby 1.9.3 (2013-11-22) [x86_64-linux]
 	[2014-01-27 20:21:58] INFO  WEBrick::HTTPServer#start: pid=31 port=64391
 </pre>
+
+## <a id='trace'></a>Tracing Cloud Controller REST API Calls ##
+
+If a command fails or produces unexpected results, you can re-run it with
+`CF_TRACE` enabled to view requests and responses between `cf` and the
+Cloud Controller REST API.
+
+For example:
+
+* Re-run `cf push` with `CF_TRACE` enabled:
+
+    `cf push <app_name> CF_TRACE=true`
+
+* Re-run `cf push` while appending API request diagnostics to a log file:
+
+    `cf push <app_name> CF_TRACE=<path_to_trace.log>`
+
+**Note**: `CF_TRACE` is a **local** environment variable that modifies
+the behavior of `cf` itself.
+Do not confuse `CF_TRACE` with the [variables in the container environment]
+(#env) where your apps run.

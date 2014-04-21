@@ -124,27 +124,7 @@ logs.
 The `cf logs` command also returns messages from any [log4j](http://logging.apache.org/log4j/)
 facility that you configure to send logs to STDOUT.
 
-### <a id='health'></a>Check Health and Status ###
-
-To check the health and status of your application, use `cf app <appname>`.
-
-For example:
-
-<pre class="terminal">
-$ cf app my-app
-Showing health and status for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
-OK
-
-requested state: started
-instances: 1/1
-usage: 256M x 1 instances
-urls: my-app999.<%=vars.app_domain%>
-
-     state     since                    cpu    memory          disk
-#0   running   2014-01-27 11:59:30 AM   0.0%   18.5M of 256M   52.5M of 1G
-</pre>
-
-### <a id='env'></a>Examine Environment Variables ###
+## <a id='env'></a>Examining Environment Variables ##
 
 `cf push` deploys the application to a container on the server.
 The environment variables that reside in the container are the environment
@@ -167,7 +147,7 @@ To see the variables in the container environment:
 
   `cf files <appname> logs/env.log`
 
-### <a id='logs'></a>Explore logs ###
+## <a id='logs'></a>Exploring logs ##
 
 To explore all logs available in the container, first view the log filenames, then view the log that interests you:
 

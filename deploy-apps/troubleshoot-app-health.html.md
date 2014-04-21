@@ -8,6 +8,8 @@ The basic tools for troubleshooting are:
 
 * `cf apps`, `cf events`, `cf logs --recent` and the other [troubleshooting commands](#cf-commands)
 * The [heuristics](#scenarios) to apply in common failure scenarios
+* Examining [environment variables](#env)
+* Exploring [logs](#logs)
 * The [Cloud Foundry Developers](https://groups.google.com/a/cloudfoundry.org/forum/#!forum/vcap-dev)
 mailing list, where you can search on error messages
 
@@ -18,52 +20,52 @@ of app deployment.
 
 ### <a id='upload'></a>App fails to upload ###
 
-Verify that your app does not exceed the maximum size allowed by Cloud
+* Verify that your app does not exceed the maximum size allowed by Cloud
 Controller.
 
-Verify that your network connection is not slow and causing the upload to
+* Verify that your network connection is not slow and causing the upload to
 time out.
 If you are seeing `500` errors, a slow network connection may be at fault.
 
-If your app contains a large number of files and is failing to upload,
+* If your app contains a large number of files and is failing to upload,
 it sometimes helps to push the app repeatedly.
 Each push uploads a few more files.
 Eventually, all files have uploaded and the push succeeds.
 
 ### <a id='detect'></a>Cloud Foundry fails to detect a buildpack ###
 
-Verify that your app is in a language or framework supported by one of
+* Verify that your app is in a language or framework supported by one of
 the three [system buildpacks](../../buildpacks/), or, that you are using the
 `-b` option to give `cf push` the location of an appropriate buildpack.
 
 ### <a id='compile'></a>App fails to compile ###
 
-Verify that the amount of memory your app is configured to use is within
+* Verify that the amount of memory your app is configured to use is within
 the limit specified by the buildpack.
 
-Verify that your app uses the `PORT` environment variable and does not specify
+* Verify that your app uses the `PORT` environment variable and does not specify
 a port in any other way.
 
-Verify that your app generally adheres to the principles of the
+* Verify that your app generally adheres to the principles of the
 [Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an Application]
 (./prepare-to-deploy.html).
 Your app might build in a way that works fine locally but fails in the cloud.
 These texts explain the kinds of adjustments that solve this kind of problem.
 
-Alternatively, sometimes a Cloud Controller problem causes a compile failure.
+* Alternatively, sometimes a Cloud Controller problem causes a compile failure.
 
 ### <a id='start'></a>App fails to start or scale ###
 
-Verify that you are pushing the app to a Cloud Foundry app space that has
+* Verify that you are pushing the app to a Cloud Foundry app space that has
 sufficient memory available for all instances of your app.
 
-Verify that components within Cloud Foundry can communicate with each other.
+* Verify that components within Cloud Foundry can communicate with each other.
 Look for log entries indicating problems such as _example here_.
 Cloud networking issues can cause problems like this.
 
 ### <a id='trace'></a>Before you re-run a Command ###
 
-If a command fails or produces unexpected results, re-run it with `CF_TRACE`
+* If a command fails or produces unexpected results, re-run it with `CF_TRACE`
 enabled to view requests and responses between `cf` and the Cloud Controller
 REST API.
 
@@ -126,26 +128,24 @@ facility that you configure to send logs to STDOUT.
 
 ## <a id='env'></a>Examining Environment Variables ##
 
-`cf push` deploys the application to a container on the server.
-The environment variables that reside in the container are the environment
-variables of your application.
+`cf push` deploys your application to a container on the server.
+The environment variables in the container govern your application.
 
 You can set environment variables in a manifest created before you deploy.
 See [Deploying with Application Manifests](./manifest.html).
 
 You can also set an environment variable with a `cf set-env` command followed
-by a `cf push` command:
+by a `cf push` command.
+You must run `cf push` for the variable to take effect in the container
+environment.
 
-* Once you run `cf set-env`, you can see the variable by running `cf env`.
-* However, you must run `cf push` again for the variable to take effect in the
-container environment.
+* View the environment variables that you have set using the `cf set-env` command:
 
-To see the environment variables that you have set using the `cf set-env` command:
+    `cf env <appname>`
 
-  `cf env <appname>`
-To see the variables in the container environment:
+* View the variables in the container environment:
 
-  `cf files <appname> logs/env.log`
+    `cf files <appname> logs/env.log`
 
 ## <a id='logs'></a>Exploring logs ##
 

@@ -71,11 +71,11 @@ For example:
 
 * Re-run `cf push` with `CF_TRACE` enabled:
 
-  `cf push <app_name> CF_TRACE=true`
+    `cf push <app_name> CF_TRACE=true`
 
 * Re-run `cf push` while appending API request diagnostics to a log file:
 
-  `cf push <app_name> CF_TRACE=<path_to_trace.log>`
+    `cf push <app_name> CF_TRACE=<path_to_trace.log>`
 
 **Note**: `CF_TRACE` is a **local** environment variable that modifies
 the behavior of `cf` itself.
@@ -102,9 +102,6 @@ using.
 
 * `cf env <app_name>`: Returns environment variables set using `cf set-env`.
 
-* `cf logs <app_name>`: Returns a real-time stream of the application STDOUT and
-STDERR. Use **Ctrl-C** (^C) to exit the real-time stream.
-
 * `cf events <app_name>`: Returns information about application crashes, including
 error codes.
 See
@@ -112,12 +109,16 @@ See
 for a list of Cloud Foundry errors.
 Shows that an app instance exited; for more detail, look in the application logs.
 
+* `cf logs <app_name> --recent`: Dumps recent logs.
+See [Viewing Logs in the Command Line Interface](./streaming-logs.html#view).
+
+* `cf logs <app_name>`: Returns a real-time stream of the application STDOUT and
+STDERR. Use **Ctrl-C** (^C) to exit the real-time stream.
+
 * `cf files <app_name>`: Lists the files in an application directory.
 Given a path to a file, outputs the contents of that file. Given a path to a
-subdirectory, lists the files within.
-
-* `cf logs <app_name>`: Tails logs, or dumps recent ones with the `--recent` option.
-See [Viewing Logs in the Command Line Interface](./streaming-logs.html#view).
+subdirectory, lists the files within. Use this to [explore](#logs) individual
+logs.
 
 **Note**: Your application should direct its logs to STDOUT and STDERR.
 The `cf logs` command also returns messages from any [log4j](http://logging.apache.org/log4j/)
@@ -166,14 +167,8 @@ To see the variables in the container environment:
 
   `cf files <appname> logs/env.log`
 
-### <a id='logs'></a>Logs ###
+### <a id='logs'></a>Explore logs ###
 
-To see recent log entries:
-
-  `cf logs <appname> --recent`
-To see log entries in real time:
-
-  `cf logs <appname>`
 To explore all logs available in the container, first view the log filenames, then view the log that interests you:
 
 <pre class="terminal">

@@ -78,7 +78,7 @@ connections to instances closer to one-to-one.
 Some services provide bindable service instances.
 For services that offer bindable service instances, binding a service to your
 application adds credentials for the service instance to the
-[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP_SERVICES)
+[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES)
 environment variable.
 
 In most cases these credentials are unique to the binding; another application
@@ -116,7 +116,7 @@ Once you have a service instance created and bound to your application, you will
 need to configure the application to dynamically fetch the credentials for your
 service.
 These credentials are stored in the
-[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP_SERVICES)
+[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES)
 environment variable.
 There are generally two methods for these consuming credentials.
 

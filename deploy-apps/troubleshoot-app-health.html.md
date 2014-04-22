@@ -6,13 +6,13 @@ _This page assumes that you are using cf v6._
 
 The basic tools for troubleshooting are:
 
-* `cf apps`, `cf events`, `cf logs --recent` and the other [troubleshooting commands](#cf-commands)
-* The [heuristics](#scenarios) to apply in common failure scenarios
-* Examining [environment variables](#env)
-* Exploring [logs](#logs)
-* Tracing [Cloud Controller REST API calls](#trace)
+* [Troubleshooting commands](#cf-commands) like `cf apps`, `cf events`, and `cf logs --recent`
+* [Heuristics](#scenarios) to apply in common failure scenarios
+* [Environment variables](#env)
+* [Logs](#logs)
+* [Cloud Controller REST API requests and responses](#trace)
 * The [Cloud Foundry Developers](https://groups.google.com/a/cloudfoundry.org/forum/#!forum/vcap-dev)
-mailing list, where you can search on error messages
+mailing list
 
 ## <a id='scenarios'></a>Failure Scenarios and Troubleshooting Heuristics ##
 
@@ -61,7 +61,6 @@ These texts explain the kinds of adjustments that solve this kind of problem.
 sufficient memory available for all instances of your app.
 
 * Verify that components within Cloud Foundry can communicate with each other.
-Look for log entries indicating problems such as _example here_.
 Cloud networking issues can cause problems like this.
 
 ## <a id='cf-commands'></a>cf Troubleshooting Commands ##

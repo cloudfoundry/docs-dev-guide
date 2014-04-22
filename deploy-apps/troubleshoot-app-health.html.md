@@ -9,8 +9,6 @@ The basic tools for troubleshooting are:
 * [Troubleshooting commands](#cf-commands) like `cf apps`, `cf events`, and `cf logs --recent`
 * [Heuristics](#scenarios) to apply in common failure scenarios
 * Diagnostic information, including [environment variables](#env), [logs](#logs), and [Cloud Controller REST API requests and responses](#trace)
-* The [Cloud Foundry Developers](https://groups.google.com/a/cloudfoundry.org/forum/#!forum/vcap-dev)
-mailing list
 
 ## <a id='cf-commands'></a>cf Troubleshooting Commands ##
 
@@ -172,13 +170,6 @@ For example:
 the behavior of `cf` itself.
 Do not confuse `CF_TRACE` with the [variables in the container environment]
 (#env) where your apps run.
-
-## <a id='list'></a>The Cloud Foundry Developers Mailing List ##
-
-As you troubleshoot, search the [Cloud Foundry Developers]
-(https://groups.google.com/a/cloudfoundry.org/forum/#!forum/vcap-dev)
-mailing list for the error messages or other diagnostic information that you
-gather.
 
 
 

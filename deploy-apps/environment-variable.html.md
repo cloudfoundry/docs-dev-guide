@@ -35,32 +35,16 @@ To see the environment variables in the container environment:
 $ cf files my_app_name logs/env.log
 </pre>
 
-### <a id='app'></a>Access Environment Variables Programmatically ###
-
-The sections below show how to access an environment variable from a program. These examples obtain the `VCAP_SERVICES` environment variable
-
-### Java
-
-```
-System.getenv("VCAP_SERVICES");
-```
-
-### Ruby
-
-```
-ENV['VCAP_SERVICES']
-```
-
-### Node.js
-
-```
-process.env.VCAP_SERVICES
-```
-
 ## <a id='dea-set'></a>Variables Defined by the DEA ##
 
 The subsections that follow describe the environment variables set by a DEA for
 an application at staging time.
+
+You can access environment variables programmatically, including variables
+defined by the buildpack (if any).
+Refer to the buildpack documentation for [java](../../buildpacks/java/java-tips.html#env-var),
+[node.js](../../buildpacks/node/node-tips.html#env-var), and
+[ruby](../../buildpacks/ruby/ruby-tips.html#env-var).
 
 ### <a id='HOME'></a>HOME ###
 Root folder for the deployed application.
@@ -240,96 +224,3 @@ VCAP_SERVICES=
   ]
 }
 ~~~
-
-
-
-## <a id='ruby-buildpack'></a>Variables Defined by Ruby Buildpack ##
-
-The subsections that follow describe the environment variables set by the Ruby
-buildpack for an application at staging time.
-
-### <a id='BUNDLE-BIN-PATH'></a>BUNDLE\_BIN\_PATH ###
-
-Location where Bundler installs binaries.
-
-`BUNDLE_BIN_PATH:/home/vcap/app/vendor/bundle/ruby/1.9.1/gems/bundler-1.3.2/bin/bundle`
-
-### <a id='BUNDLE-GEMFILE'></a>BUNDLE_GEMFILE ###
-
-Path to application’s gemfile.
-
-`BUNDLE_GEMFILE:/home/vcap/app/Gemfile`
-
-### <a id='BUNDLE-WITHOUT'></a>BUNDLE_WITHOUT ###
-
-The `BUNDLE_WITHOUT` environment variable causes Cloud Foundry to skip
-installation of gems in excluded groups.
-`BUNDLE_WITHOUT` is particularly useful for Rails applications, where there are
-typically “assets” and “development” gem groups containing gems that are not
-needed when the app runs in production
-
-For information about using this variable, see http://blog.cloudfoundry.com/2012/10/02/polishing-cloud-foundrys-ruby-gem-support.
-
-`BUNDLE_WITHOUT=assets`
-
-### <a id='DATABASE-URL'></a>DATABASE_URL ###
-
-The Ruby buildpack looks at the database\_uri for bound services to see if they
-match known database types.
-If there are known relational database services bound to the application, the
-buildpack sets up the DATABASE_URL environment variable with the first one in
-the list.
-
-If your application depends on DATABASE\_URL being set to the connection string
-for your service, and Cloud Foundry does not set it, you can set this variable
-manually.
-
-`$ cf set-env my_app_name DATABASE_URL mysql://b5d435f40dd2b2:ebfc00ac@us-cdbr-east-03.cleardb.com:3306/ad_c6f4446532610ab`
-
-### <a id='GEM-HOME'></a>GEM_HOME ###
-
-Location where gems are installed.
-
-`GEM_HOME:/home/vcap/app/vendor/bundle/ruby/1.9.1`
-
-### <a id='GEM-PATH'></a>GEM_PATH ###
-
-Location where gems can be found.
-
-`GEM_PATH=/home/vcap/app/vendor/bundle/ruby/1.9.1:`
-
-### <a id='RACK-ENV'></a>RACK_ENV ###
-This variable specifies the Rack deployment environment: development,
-deployment, or none.
-This governs what middleware is loaded to run the application.
-
-`RACK_ENV=production`
-
-### <a id='RAILS-ENV'></a>RAILS_ENV ###
-This variable specifies the Rails deployment environment: development, test, or
-production.
-This controls which of the environment-specific configuration files will govern
-how the application will be executed.
-
-`RAILS_ENV=production`
-
-### <a id='RUBYOPT'></a>RUBYOPT ###
-This Ruby environment variable defines command-line options passed to Ruby
-interpreter.
-
-`RUBYOPT: -I/home/vcap/app/vendor/bundle/ruby/1.9.1/gems/bundler-1.3.2/lib -rbundler/setup`
-
-## <a id='node-buildpack'></a>Variables Defined by Node Buildpack ##
-
-### <a id='BUILD-DIR'></a>BUILD_DIR ###
-Directory into which Node.js is copied each time a Node.js application is run.
-
-### <a id='CACHE-DIR'></a>CACHE_DIR ###
-
-Directory that Node.js uses for caching.
-
-### <a id='PATH'></a>PATH ###
-
-The system path used by Node.js.
-
-`PATH=/home/vcap/app/bin:/home/vcap/app/node_modules/.bin:/bin:/usr/bin`

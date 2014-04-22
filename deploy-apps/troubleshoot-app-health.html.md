@@ -103,8 +103,10 @@ sufficient memory available for all instances of your app.
 * Verify that components within Cloud Foundry can communicate with each other.
 Cloud networking issues can cause problems like this.
 
-
 ## <a id='info'></a>Gathering Diagnostic Information ##
+
+Gather the diagnostic information that shows the symptoms of the problem you
+are troubleshooting, and also "baseline" information for context.
 
 ### <a id='env'></a>Examining Environment Variables ###
 
@@ -172,4 +174,19 @@ Do not confuse `CF_TRACE` with the [variables in the container environment]
 (#env) where your apps run.
 
 ## <a id='list'></a>The Cloud Foundry Developers Mailing List ##
+
+As you troubleshoot, search the [Cloud Foundry Developers]
+(https://groups.google.com/a/cloudfoundry.org/forum/#!forum/vcap-dev)
+mailing list for the error messages or other diagnostic information that you
+gather.
+
+
+
+
+
+
+
+
+
+
 

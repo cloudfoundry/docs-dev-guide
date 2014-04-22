@@ -8,11 +8,51 @@ The basic tools for troubleshooting are:
 
 * [Troubleshooting commands](#cf-commands) like `cf apps`, `cf events`, and `cf logs --recent`
 * [Heuristics](#scenarios) to apply in common failure scenarios
-* [Environment variables](#env)
-* [Logs](#logs)
-* [Cloud Controller REST API requests and responses](#trace)
+* Diagnostic information, including [environment variables](#env), [logs](#logs), and [Cloud Controller REST API requests and responses](#trace)
 * The [Cloud Foundry Developers](https://groups.google.com/a/cloudfoundry.org/forum/#!forum/vcap-dev)
 mailing list
+
+## <a id='cf-commands'></a>cf Troubleshooting Commands ##
+
+Cloud Foundry's cf command line interface provides commands for investigating
+app deployment and health.
+
+Some of these commands may return connection credentials.
+Remove credentials and other sensitive information from command
+output before you post the output a public forum.
+
+* `cf apps`: Returns a list of the applications deployed to the current space
+with deployment options, including the name, current state, number of instances,
+memory and disk allocations, and URLs of each application.
+
+* `cf app <app_name>`: Returns the health and status of each instance of a
+specific application in the current space, including instance ID number, current
+state, how long it has been running, and how much CPU, memory, and disk it is
+using.
+
+* `cf env <app_name>`: Returns environment variables set using `cf set-env`.
+
+* `cf events <app_name>`: Returns information about application crashes, including
+error codes.
+See
+[https://github.com/cloudfoundry/errors](https://github.com/cloudfoundry/errors)
+for a list of Cloud Foundry errors.
+Shows that an app instance exited; for more detail, look in the application logs.
+
+* `cf logs <app_name> --recent`: Dumps recent logs.
+See [Viewing Logs in the Command Line Interface](./streaming-logs.html#view).
+
+* `cf logs <app_name>`: Returns a real-time stream of the application STDOUT and
+STDERR. Use **Ctrl-C** (^C) to exit the real-time stream.
+
+* `cf files <app_name>`: Lists the files in an application directory.
+Given a path to a file, outputs the contents of that file. Given a path to a
+subdirectory, lists the files within. Use this to [explore](#logs) individual
+logs.
+
+**Note**: Your application should direct its logs to STDOUT and STDERR.
+The `cf logs` command also returns messages from any [log4j](http://logging.apache.org/log4j/)
+facility that you configure to send logs to STDOUT.
 
 ## <a id='scenarios'></a>Failure Scenarios and Troubleshooting Heuristics ##
 
@@ -63,49 +103,10 @@ sufficient memory available for all instances of your app.
 * Verify that components within Cloud Foundry can communicate with each other.
 Cloud networking issues can cause problems like this.
 
-## <a id='cf-commands'></a>cf Troubleshooting Commands ##
 
-Cloud Foundry's cf command line interface provides commands for investigating
-app deployment and health.
+## <a id='info'></a>Gathering Diagnostic Information ##
 
-Some of these commands may return connection credentials.
-Remove credentials and other sensitive information from command
-output before you post the output a public forum.
-
-* `cf apps`: Returns a list of the applications deployed to the current space
-with deployment options, including the name, current state, number of instances,
-memory and disk allocations, and URLs of each application.
-
-* `cf app <app_name>`: Returns the health and status of each instance of a
-specific application in the current space, including instance ID number, current
-state, how long it has been running, and how much CPU, memory, and disk it is
-using.
-
-* `cf env <app_name>`: Returns environment variables set using `cf set-env`.
-
-* `cf events <app_name>`: Returns information about application crashes, including
-error codes.
-See
-[https://github.com/cloudfoundry/errors](https://github.com/cloudfoundry/errors)
-for a list of Cloud Foundry errors.
-Shows that an app instance exited; for more detail, look in the application logs.
-
-* `cf logs <app_name> --recent`: Dumps recent logs.
-See [Viewing Logs in the Command Line Interface](./streaming-logs.html#view).
-
-* `cf logs <app_name>`: Returns a real-time stream of the application STDOUT and
-STDERR. Use **Ctrl-C** (^C) to exit the real-time stream.
-
-* `cf files <app_name>`: Lists the files in an application directory.
-Given a path to a file, outputs the contents of that file. Given a path to a
-subdirectory, lists the files within. Use this to [explore](#logs) individual
-logs.
-
-**Note**: Your application should direct its logs to STDOUT and STDERR.
-The `cf logs` command also returns messages from any [log4j](http://logging.apache.org/log4j/)
-facility that you configure to send logs to STDOUT.
-
-## <a id='env'></a>Examining Environment Variables ##
+### <a id='env'></a>Examining Environment Variables ###
 
 `cf push` deploys your application to a container on the server.
 The environment variables in the container govern your application.
@@ -126,7 +127,7 @@ environment.
 
     `cf files <appname> logs/env.log`
 
-## <a id='logs'></a>Exploring logs ##
+### <a id='logs'></a>Exploring logs ###
 
 To explore all logs available in the container, first view the log filenames, then view the log that interests you:
 
@@ -149,7 +150,7 @@ $ cf files my-app logs/stderr.log
 	[2014-01-27 20:21:58] INFO  WEBrick::HTTPServer#start: pid=31 port=64391
 </pre>
 
-## <a id='trace'></a>Tracing Cloud Controller REST API Calls ##
+### <a id='trace'></a>Tracing Cloud Controller REST API Calls ###
 
 If a command fails or produces unexpected results, you can re-run it with
 `CF_TRACE` enabled to view requests and responses between `cf` and the
@@ -169,3 +170,6 @@ For example:
 the behavior of `cf` itself.
 Do not confuse `CF_TRACE` with the [variables in the container environment]
 (#env) where your apps run.
+
+## <a id='list'></a>The Cloud Foundry Developers Mailing List ##
+

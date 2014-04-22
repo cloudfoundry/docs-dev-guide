@@ -59,14 +59,15 @@ of app deployment.
 
 ### <a id='upload'></a>App fails to upload ###
 
-* Verify that your app does not exceed the maximum size allowed by Cloud
+Verify that:
+
+* Your app does not exceed the maximum size allowed by Cloud
 Controller.
 
-* Verify that your network connection is not slow and causing the upload to
-time out.
+* Your network connection is not causing the upload to time out.
 If you are seeing `500` errors, a slow network connection may be at fault.
 
-* If your app contains a large number of files and is failing to upload,
+If your app contains a large number of files and is failing to upload,
 it sometimes helps to push the app repeatedly.
 Each push uploads a few more files.
 Eventually, all files have uploaded and the push succeeds.
@@ -79,27 +80,33 @@ the three [system buildpacks](../../buildpacks/), or, that you are using the
 
 ### <a id='compile'></a>App fails to compile ###
 
-* Verify that the amount of memory your app is configured to use is within
-the limit specified by the buildpack.
+Verify that:
 
-* Verify that your app uses the `PORT` environment variable and does not specify
+* The memory your app is configured to use is within the limit specified by the buildpack.
+
+* Your app uses the `PORT` environment variable and does not specify
 a port in any other way.
 
-* Verify that your app generally adheres to the principles of the
+* Your app generally adheres to the principles of the
 [Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an Application]
 (./prepare-to-deploy.html).
 Your app might build in a way that works fine locally but fails in the cloud.
 These texts explain the kinds of adjustments that solve this kind of problem.
 
-* Alternatively, sometimes a Cloud Controller problem causes a compile failure.
+Alternatively, sometimes a Cloud Controller problem causes a compile failure.
 
 ### <a id='start'></a>App fails to start or scale ###
 
-* Verify that you are pushing the app to a Cloud Foundry app space that has
-sufficient memory available for all instances of your app.
+Verify that:
 
-* Verify that components within Cloud Foundry can communicate with each other.
-Cloud networking issues can cause problems like this.
+*  You are pushing the app to a Cloud Foundry org that has
+sufficient memory available for all instances of your app.
+** Use `cf orgs` to see the names of your orgs and `cf org <org_name>` to see
+the memory alloted to the org where you are deploying.
+
+* The components within Cloud Foundry can communicate with each other.
+** Look for log entries similar to "RTR can’t connect to NATS".
+Cloud networking issues are a possible source of problems like this.
 
 ## <a id='info'></a>Gathering Diagnostic Information ##
 

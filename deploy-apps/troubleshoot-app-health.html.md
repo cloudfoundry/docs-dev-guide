@@ -82,7 +82,7 @@ the three [system buildpacks](../../buildpacks/), or, that you are using the
 
 Verify that:
 
-* The memory your app is configured to use is within the limit specified by the buildpack.
+* The memory your app is configured to use does not exceed the limit specified by the buildpack.
 
 * Your app uses the `PORT` environment variable and does not specify
 a port in any other way.
@@ -104,7 +104,7 @@ sufficient memory available for all instances of your app.
 ** Use `cf orgs` to see the names of your orgs and `cf org <org_name>` to see
 the memory alloted to the org where you are deploying.
 
-* The components within Cloud Foundry can communicate with each other.
+* Cloud Foundry components can communicate with each other.
 ** Look for log entries similar to "RTR can’t connect to NATS".
 Cloud networking issues are a possible source of problems like this.
 

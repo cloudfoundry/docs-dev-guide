@@ -67,6 +67,19 @@ Controller.
 * Your network connection is not causing the upload to time out.
 If you are seeing `500` errors, a slow network connection may be at fault.
 
+    You can give your app more time to upload by increasing the value of the
+    Cloud Controller property `app_bits_upload_grace_period_in_seconds`,
+    which defaults to 1200 seconds.
+
+    To do this, deploy with a manifest that specifies the grace period property
+    in a `ccng` hash within the `properties` block:
+
+    ~~~yml
+    properties:
+	  ccng:
+	    app_bits_upload_grace_period_in_seconds:<value_in_seconds>
+	~~~
+
 If your app contains a large number of files and is failing to upload,
 it sometimes helps to push the app repeatedly.
 Each push uploads a few more files.
@@ -105,12 +118,14 @@ Verify that:
 
 *  You are pushing the app to a Cloud Foundry org that has
 sufficient memory available for all instances of your app.
-** Use `cf orgs` to see the names of your orgs and `cf org <org_name>` to see
+
+    Use `cf orgs` to see the names of your orgs and `cf org <org_name>` to see
 the memory alloted to the org where you are deploying.
 
 * Cloud Foundry components can communicate with each other.
-** Look for log entries similar to "RTR can’t connect to NATS".
 Cloud networking issues are a possible source of problems like this.
+
+    Look for log entries similar to "RTR can’t connect to NATS".
 
 ## <a id='info'></a>Gathering Diagnostic Information ##
 

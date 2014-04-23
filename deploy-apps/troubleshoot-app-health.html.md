@@ -74,9 +74,13 @@ Eventually, all files have uploaded and the push succeeds.
 
 ### <a id='detect'></a>Cloud Foundry fails to detect a buildpack ###
 
-* Verify that your app is in a language or framework supported by one of
-the three [system buildpacks](../../buildpacks/), or, that you are using the
-`-b` option to give `cf push` the location of an appropriate buildpack.
+Verify that one of the following is true:
+
+* Your app is in a language or framework supported by one of the three
+[system buildpacks](../../buildpacks/).
+
+* You are using `cf push` with the `-b` option to deploy with an appropriate
+custom or admin buildpack.
 
 ### <a id='compile'></a>App fails to compile ###
 

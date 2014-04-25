@@ -51,10 +51,10 @@ Verify that:
 * When it needs the value of the port where the app listens, your application
 code always obtains the `VCAP_APP_PORT` environment variable.
 
-  For example, this Ruby snippet assigns the port value to the `listen_here`
-  variable:
+    For example, this Ruby snippet assigns the port value to the `listen_here`
+    variable:
 
-  `listen_here = ENV['VCAP_APP_PORT']`
+    `listen_here = ENV['VCAP_APP_PORT']`
 
 * Your app generally adheres to the principles of the
 [Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an Application]
@@ -62,60 +62,42 @@ code always obtains the `VCAP_APP_PORT` environment variable.
 These texts explain how to prevent situations where your app builds locally but
 cannot build in the cloud.
 
-Alternatively, sometimes a Cloud Controller problem causes a compile failure.
-
-
 ### <a id='time'></a>Deployment times out ###
 
 * A slow network connection can cause uploads to time out, including with `500` errors.
 
-	Make sure that your internet connection speed is at least 768 KB/s (6 Mb/s) for uploads;
-	resource-matching and uploading 1 Gig of data must take less than 30 minutes.
+	Resource-matching and uploading 1 Gig of data must take less than 30 minutes.
+	Recommended internet connection speed is at least 768 KB/s (6 Mb/s) for uploads.
+
+	You can estimate the maximum workable application size for slower connections
+	as follows:
+
+	 _upload speed in Megabits/Second_ times _1800 seconds_ equals _application size in Megabits_
+
+	(You can then divide the result by 8 to obtain the application size in Megabytes.)
+
+    For example:
+
+    _2 Mbps_ times _1800_ equals _3600 Megabits_ divided by _8_ equals a _450 Megabyte estimated maximum app size_
+
 
 *  Resource matching can exceed the request timeout, causing the deployment to fail with `504` errors.
 
-	Deploy with a manifest that sets the `request_timeout_in_seconds` property longer than the default of 300.
+    This problem is sometimes caused by an app containing too many small files.
 
-	This is a Cloud Controller property, so you set it in a `ccng` hash within the `properties` block:
+* Contact Support if you think any of the following apply:
 
-	~~~yml
-	properties:
-	  ccng:
-	    request_timeout_in_seconds: <value_in_seconds>
-	~~~
+    * Deployment fails with "Error uploading application," possibly because the app bits upload packaging job exceeds five minutes.
 
-* The app bits upload packaging job can exceed five minutes, causing the deployment to fail with "Error uploading application."
+    * Upload fails because uploading app bits takes longer than 20 minutes.
 
-* When uploading app bits takes longer than 20 minutes, the upload fails.
-
-    Deploy with a manifest that sets the `app_bits_upload_grace_period_in_seconds` property higher than the default of 1200 seconds.
-
-	This is a Cloud Controller property, so you set it in a `ccng` hash within the `properties` block:
-
-	~~~yml
-	properties:
-	  ccng:
-	    app_bits_upload_grace_period_in_seconds: <value_in_seconds>
-	~~~
-
-* Staging (after the bits are uploaded and packaged) can exceed the default timeout of 15 minutes, causing deployment to fail.
-
-    Deploy with a manifest that increases the value of the `CF_STAGING_TIMEOUT` environment variable.
-
-    ~~~yml
-	env:
-	  CF_STAGING_TIMEOUT: <value_in_seconds>
-	~~~
-
-* Load balancers time out after five minutes.
-
-    Contact Support if you encounter this problem with an AWS ELB.
+    * Deployment fails because staging (after the bits are uploaded and packaged) exceeds the default timeout of 15 minutes.
 
 
 ### <a id='out-of-memory'></a>App crashes with 'out of memory' errors ###
 
 * Verify that your app is not consuming more memory than you have configured
-as its limit using `cf push`, `cf scale`, and your deployment manifest.
+as its limit using `cf push` and `cf scale`.
 
 ## <a id='info'></a>Gathering Diagnostic Information ##
 

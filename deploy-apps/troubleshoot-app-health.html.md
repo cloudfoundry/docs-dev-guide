@@ -4,81 +4,29 @@ title: Troubleshoot Application Deployment and Health
 
 _This page assumes that you are using cf v6._
 
-The basic tools for troubleshooting are:
+## <a id='scenarios'></a>Failure Scenarios ##
 
-* [Troubleshooting commands](#cf-commands) like `cf apps`, `cf events`, and `cf logs --recent`
-* [Heuristics](#scenarios) to apply in common failure scenarios
-* Diagnostic information, including [environment variables](#env), [logs](#logs), and [Cloud Controller REST API requests and responses](#trace)
-
-## <a id='cf-commands'></a>cf Troubleshooting Commands ##
-
-Cloud Foundry's cf command line interface provides commands for investigating
-app deployment and health.
-
-Some of these commands may return connection credentials.
-Remove credentials and other sensitive information from command
-output before you post the output a public forum.
-
-* `cf apps`: Returns a list of the applications deployed to the current space
-with deployment options, including the name, current state, number of instances,
-memory and disk allocations, and URLs of each application.
-
-* `cf app <app_name>`: Returns the health and status of each instance of a
-specific application in the current space, including instance ID number, current
-state, how long it has been running, and how much CPU, memory, and disk it is
-using.
-
-* `cf env <app_name>`: Returns environment variables set using `cf set-env`.
-
-* `cf events <app_name>`: Returns information about application crashes, including
-error codes.
-See
-[https://github.com/cloudfoundry/errors](https://github.com/cloudfoundry/errors)
-for a list of Cloud Foundry errors.
-Shows that an app instance exited; for more detail, look in the application logs.
-
-* `cf logs <app_name> --recent`: Dumps recent logs.
-See [Viewing Logs in the Command Line Interface](./streaming-logs.html#view).
-
-* `cf logs <app_name>`: Returns a real-time stream of the application STDOUT and
-STDERR. Use **Ctrl-C** (^C) to exit the real-time stream.
-
-* `cf files <app_name>`: Lists the files in an application directory.
-Given a path to a file, outputs the contents of that file. Given a path to a
-subdirectory, lists the files within. Use this to [explore](#logs) individual
-logs.
-
-**Note**: Your application should direct its logs to STDOUT and STDERR.
-The `cf logs` command also returns messages from any [log4j](http://logging.apache.org/log4j/)
-facility that you configure to send logs to STDOUT.
-
-## <a id='scenarios'></a>Failure Scenarios and Troubleshooting Heuristics ##
-
-This section explains basic troubleshooting for failure scenarios in each stage
-of app deployment.
+This section explains how to troubleshoot common failure scenarios.
 
 ### <a id='upload'></a>App fails to upload ###
 
 Verify that:
 
-* Your app does not exceed the maximum size allowed by Cloud
-Controller.
+*  You are pushing the app to an org that has enough memory for all instances
+of your app.
 
-* Your network connection is not causing the upload to time out.
-If you are seeing `500` errors, a slow network connection may be at fault.
+    Use `cf orgs` to see the names of your orgs and `cf org <org_name>` to see
+the memory alloted to the org where you are deploying.
 
-    You can give your app more time to upload by increasing the value of the
-    Cloud Controller property `app_bits_upload_grace_period_in_seconds`,
-    which defaults to 1200 seconds.
+* Your app is not too large.
 
-    To do this, deploy with a manifest that specifies the grace period property
-    in a `ccng` hash within the `properties` block:
+    * The app bits to push cannot exceed 1GB.
 
-    ~~~yml
-    properties:
-	  ccng:
-	    app_bits_upload_grace_period_in_seconds:<value_in_seconds>
-	~~~
+    * The droplet that results from compiling those bits cannot exceed 1.5GB;
+droplets are typically 1/3 larger than the pushed bits.
+
+    * The app bits, compiled droplet, and buildpack cache together cannot use
+more than 4GB of space during staging.
 
 If your app contains a large number of files and is failing to upload,
 it sometimes helps to push the app repeatedly.
@@ -107,8 +55,8 @@ a port in any other way.
 * Your app generally adheres to the principles of the
 [Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an Application]
 (./prepare-to-deploy.html).
-Your app might build in a way that works fine locally but fails in the cloud.
-These texts explain the kinds of adjustments that solve this kind of problem.
+These texts explain how to prevent situations where your app builds locally but
+cannot build in the cloud.
 
 Alternatively, sometimes a Cloud Controller problem causes a compile failure.
 
@@ -116,16 +64,52 @@ Alternatively, sometimes a Cloud Controller problem causes a compile failure.
 
 Verify that:
 
-*  You are pushing the app to a Cloud Foundry org that has
-sufficient memory available for all instances of your app.
-
-    Use `cf orgs` to see the names of your orgs and `cf org <org_name>` to see
-the memory alloted to the org where you are deploying.
-
 * Cloud Foundry components can communicate with each other.
 Cloud networking issues are a possible source of problems like this.
 
     Look for log entries similar to "RTR can’t connect to NATS".
+
+### <a id='time'></a>Deployment times out ###
+
+* A slow network connection can cause uploads to time out, including with `500` errors.
+
+	Make sure that your internet connection speed is at least 768 KB/s (6 Mb/s) for uploads;
+	resource-matching and uploading 1 Gig of data must take less than 30 minutes.
+
+*  Resource matching can exceed the request timeout, causing the deployment to fail with `504` errors.
+
+	Deploy with a manifest that sets the `request_timeout_in_seconds` property longer than the default of 300.
+
+	This is a Cloud Controller property, so you set it in a `ccng` hash within the `properties` block:
+
+	~~~yml
+	properties:
+	  ccng:
+	    request_timeout_in_seconds:<value_in_seconds>
+	~~~
+
+* The app bits upload packaging job can exceed five minutes, causing the deployment to fail with "Error uploading application."
+
+* When uploading app bits takes longer than 20 minutes, the upload fails.
+
+    Deploy with a manifest that sets the `app_bits_upload_grace_period_in_seconds` property higher than the default of 1200 seconds.
+
+	This is a Cloud Controller property, so you set it in a `ccng` hash within the `properties` block:
+
+	~~~yml
+	properties:
+	  ccng:
+	    app_bits_upload_grace_period_in_seconds:<value_in_seconds>
+	~~~
+
+* Staging (after the bits are uploaded and packaged) can exceed the default timeout of 15 minutes, causing deployment to fail.
+
+    Deploy with a manifest that increases the value of the `CF_STAGING_TIMEOUT` environment variable.
+
+* Load balancers time out after five minutes.
+
+    Contact Support if you encounter this problem with an AWS ELB.
+
 
 ## <a id='info'></a>Gathering Diagnostic Information ##
 
@@ -186,16 +170,65 @@ For example:
 
 * Re-run `cf push` with `CF_TRACE` enabled:
 
-    `cf push <app_name> CF_TRACE=true`
+    `CF_TRACE=true cf push <app_name>`
 
 * Re-run `cf push` while appending API request diagnostics to a log file:
 
-    `cf push <app_name> CF_TRACE=<path_to_trace.log>`
+    `CF_TRACE=<path_to_trace.log> cf push <app_name>`
+
+These examples enable `CF_TRACE` for a single command only.
+To enable it for an entire shell session, set the variable first:
+
+  `export CF_TRACE=true`
+
+  `export CF_TRACE=<path_to_trace.log>`
 
 **Note**: `CF_TRACE` is a **local** environment variable that modifies
 the behavior of `cf` itself.
 Do not confuse `CF_TRACE` with the [variables in the container environment]
 (#env) where your apps run.
+
+## <a id='cf-commands'></a>cf Troubleshooting Commands ##
+
+Cloud Foundry's cf command line interface provides commands for investigating
+app deployment and health.
+
+Some of these commands may return connection credentials.
+Remove credentials and other sensitive information from command
+output before you post the output a public forum.
+
+* `cf apps`: Returns a list of the applications deployed to the current space
+with deployment options, including the name, current state, number of instances,
+memory and disk allocations, and URLs of each application.
+
+* `cf app <app_name>`: Returns the health and status of each instance of a
+specific application in the current space, including instance ID number, current
+state, how long it has been running, and how much CPU, memory, and disk it is
+using.
+
+* `cf env <app_name>`: Returns environment variables set using `cf set-env`.
+
+* `cf events <app_name>`: Returns information about application crashes, including
+error codes.
+See
+[https://github.com/cloudfoundry/errors](https://github.com/cloudfoundry/errors)
+for a list of Cloud Foundry errors.
+Shows that an app instance exited; for more detail, look in the application logs.
+
+* `cf logs <app_name> --recent`: Dumps recent logs.
+See [Viewing Logs in the Command Line Interface](./streaming-logs.html#view).
+
+* `cf logs <app_name>`: Returns a real-time stream of the application STDOUT and
+STDERR. Use **Ctrl-C** (^C) to exit the real-time stream.
+
+* `cf files <app_name>`: Lists the files in an application directory.
+Given a path to a file, outputs the contents of that file. Given a path to a
+subdirectory, lists the files within. Use this to [explore](#logs) individual
+logs.
+
+**Note**: Your application should direct its logs to STDOUT and STDERR.
+The `cf logs` command also returns messages from any [log4j](http://logging.apache.org/log4j/)
+facility that you configure to send logs to STDOUT.
 
 
 

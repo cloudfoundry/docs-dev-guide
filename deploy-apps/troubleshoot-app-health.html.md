@@ -6,7 +6,7 @@ _This page assumes that you are using cf v6._
 
 ## <a id='scenarios'></a>Failure Scenarios ##
 
-This section explains how to troubleshoot common failure scenarios.
+This section explains how to troubleshoot common `cf push` failure scenarios.
 
 ### <a id='upload'></a>App fails to upload ###
 
@@ -32,6 +32,7 @@ If your app contains a large number of files and is failing to upload,
 it sometimes helps to push the app repeatedly.
 Each push uploads a few more files.
 Eventually, all files have uploaded and the push succeeds.
+This is less likely to work if your app has many _small_ files.
 
 ### <a id='detect'></a>Cloud Foundry fails to detect a buildpack ###
 
@@ -47,10 +48,13 @@ custom or admin buildpack.
 
 Verify that:
 
-* The memory your app is configured to use does not exceed the limit specified by the buildpack.
+* When it needs the value of the port where the app listens, your application
+code always obtains the `VCAP_APP_PORT` environment variable.
 
-* Your app uses the `PORT` environment variable and does not specify
-a port in any other way.
+  For example, this Ruby snippet assigns the port value to the `listen_here`
+  variable:
+
+  `listen_here = ENV['VCAP_APP_PORT']`
 
 * Your app generally adheres to the principles of the
 [Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an Application]
@@ -60,14 +64,6 @@ cannot build in the cloud.
 
 Alternatively, sometimes a Cloud Controller problem causes a compile failure.
 
-### <a id='start'></a>App fails to start or scale ###
-
-Verify that:
-
-* Cloud Foundry components can communicate with each other.
-Cloud networking issues are a possible source of problems like this.
-
-    Look for log entries similar to "RTR can’t connect to NATS".
 
 ### <a id='time'></a>Deployment times out ###
 
@@ -85,7 +81,7 @@ Cloud networking issues are a possible source of problems like this.
 	~~~yml
 	properties:
 	  ccng:
-	    request_timeout_in_seconds:<value_in_seconds>
+	    request_timeout_in_seconds: <value_in_seconds>
 	~~~
 
 * The app bits upload packaging job can exceed five minutes, causing the deployment to fail with "Error uploading application."
@@ -99,17 +95,27 @@ Cloud networking issues are a possible source of problems like this.
 	~~~yml
 	properties:
 	  ccng:
-	    app_bits_upload_grace_period_in_seconds:<value_in_seconds>
+	    app_bits_upload_grace_period_in_seconds: <value_in_seconds>
 	~~~
 
 * Staging (after the bits are uploaded and packaged) can exceed the default timeout of 15 minutes, causing deployment to fail.
 
     Deploy with a manifest that increases the value of the `CF_STAGING_TIMEOUT` environment variable.
 
+    ~~~yml
+	env:
+	  CF_STAGING_TIMEOUT: <value_in_seconds>
+	~~~
+
 * Load balancers time out after five minutes.
 
     Contact Support if you encounter this problem with an AWS ELB.
 
+
+### <a id='out-of-memory'></a>App crashes with 'out of memory' errors ###
+
+* Verify that your app is not consuming more memory than you have configured
+as its limit using `cf push`, `cf scale`, and your deployment manifest.
 
 ## <a id='info'></a>Gathering Diagnostic Information ##
 

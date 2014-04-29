@@ -10,57 +10,48 @@ This section explains how to troubleshoot common `cf push` failure scenarios.
 
 ### <a id='upload'></a>App fails to upload ###
 
-Verify that:
-
-*  You are pushing the app to an org that has enough memory for all instances
-of your app.
-
-    Use `cf orgs` to see the names of your orgs and `cf org <org_name>` to see
+**Make sure your org has enough memory for all instances of your app.**
+Use `cf orgs` to see the names of your orgs and `cf org <org_name>` to see
 the memory alloted to the org where you are deploying.
 
-* Your app is not too large.
+**Make sure your app is not too large.**
 
-    * The app bits to push cannot exceed 1GB.
+* The app bits to push cannot exceed 1GB.
 
-    * The droplet that results from compiling those bits cannot exceed 1.5GB;
+* The droplet that results from compiling those bits cannot exceed 1.5GB;
 droplets are typically 1/3 larger than the pushed bits.
 
-    * The app bits, compiled droplet, and buildpack cache together cannot use
+* The app bits, compiled droplet, and buildpack cache together cannot use
 more than 4GB of space during staging.
 
-If your app contains a large number of files and is failing to upload,
-it sometimes helps to push the app repeatedly.
+**If your app contains a large number of files, try pushing the app repeatedly.**
 Each push uploads a few more files.
 Eventually, all files have uploaded and the push succeeds.
 This is less likely to work if your app has many _small_ files.
 
 ### <a id='detect'></a>Cloud Foundry fails to detect a buildpack ###
 
-Verify that one of the following is true:
-
-* Your app is in a language or framework supported by one of the three
-[system buildpacks](../../buildpacks/).
-
-* You are using `cf push` with the `-b` option to deploy with an appropriate
-custom or admin buildpack.
+**Make sure your app is in a language or framework supported by one of the three
+[system buildpacks](../../buildpacks/).**
+If that is not the case, use `cf push` with the `-b` option to deploy with an
+appropriate custom buildpack.
 
 ### <a id='compile'></a>App fails to compile ###
 
-Verify that:
-
-* When it needs the value of the port where the app listens, your application
-code always obtains the `VCAP_APP_PORT` environment variable.
+**Make sure your application code uses the `VCAP_APP_PORT` environment variable.**
+When it needs the value of the port where the app listens, your application
+code must alway obtain the `VCAP_APP_PORT` environment variable.
 
     For example, this Ruby snippet assigns the port value to the `listen_here`
     variable:
 
     `listen_here = ENV['VCAP_APP_PORT']`
 
-* Your app generally adheres to the principles of the
+**Make sure your app generally adheres to the principles of the
 [Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an Application]
-(./prepare-to-deploy.html).
+(./prepare-to-deploy.html).**
 These texts explain how to prevent situations where your app builds locally but
-cannot build in the cloud.
+fails to build in the cloud.
 
 ### <a id='time'></a>Deployment times out ###
 
@@ -86,8 +77,11 @@ Type `cf help` at the command line for more information.
 
 ### <a id='out-of-memory'></a>App crashes with 'out of memory' errors ###
 
-* Verify that your app is not consuming more memory than you have configured
-as its limit using `cf push` and `cf scale`.
+**Make sure your app is not consuming more memory than it should.**
+When you ran `cf push` and `cf scale`, that configured a limit on the amount
+of memory your app should use.
+Check your app's actual memory usage.
+If it exceeds the limit, modify the app to use less memory.
 
 ## <a id='info'></a>Gathering Diagnostic Information ##
 

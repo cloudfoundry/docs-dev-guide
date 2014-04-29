@@ -78,7 +78,7 @@ Make sure you are pushing just your application's directory.
 If your application is too large, or if it has many small files, Cloud Foundry may time out during the upload.
 You can also reduce the size of the upload by removing unneeded files or [specifying files to be ignored](prepare-to-deploy.html#exclude) in the `.cfignore` file.
 
-**Set the CF_STAGING_TIMEOUT and CF_STARTUP_TIMEOUT environment variables.**
+**Set the CF\_STAGING\_TIMEOUT and CF\_STARTUP\_TIMEOUT environment variables.**
 By default your app has 15 minutes to stage and 5 minutes to start.
 You can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`.
 Type `cf help` at the command line for more information.

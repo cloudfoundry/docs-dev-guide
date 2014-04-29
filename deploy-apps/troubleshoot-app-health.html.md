@@ -64,34 +64,24 @@ cannot build in the cloud.
 
 ### <a id='time'></a>Deployment times out ###
 
-* A slow network connection can cause uploads to time out, including with `500` errors.
+A cf push can timeout during an upload or a staging.
+Symptoms can include a 504 Gateway Timeout error or a message stating "Error uploading application."
+If this happens, try these techniques.
 
-	Resource-matching and uploading 1 Gig of data must take less than 30 minutes.
-	Recommended internet connection speed is at least 768 KB/s (6 Mb/s) for uploads.
+**Check your network speed.**
+Depending on the size of your application, your cf push could be timing out because the upload is taking too long.
+Recommended internet connection speed is at least 768 KB/s (6 Mb/s) for uploads.
 
-	You can estimate the maximum workable application size for slower connections
-	as follows:
+**Make sure you are only pushing needed files.**
+By default cf will push all the contents of the current working directory.
+Make sure you are pushing just your application's directory.
+If your application is too large, or if it has many small files, Cloud Foundry may time out during the upload.
+You can also reduce the size of the upload by removing unneeded files or [specifying files to be ignored](prepare-to-deploy.html#exclude) in the `.cfignore` file.
 
-	 _upload speed in Megabits/Second_ times _1800 seconds_ equals _application size in Megabits_
-
-	(You can then divide the result by 8 to obtain the application size in Megabytes.)
-
-    For example:
-
-    _2 Mbps_ times _1800_ equals _3600 Megabits_ divided by _8_ equals a _450 Megabyte estimated maximum app size_
-
-
-*  Resource matching can exceed the request timeout, causing the deployment to fail with `504` errors.
-
-    This problem is sometimes caused by an app containing too many small files.
-
-* Contact Support if you think any of the following apply:
-
-    * Deployment fails with "Error uploading application," possibly because the app bits upload packaging job exceeds five minutes.
-
-    * Upload fails because uploading app bits takes longer than 20 minutes.
-
-    * Deployment fails because staging (after the bits are uploaded and packaged) exceeds the default timeout of 15 minutes.
+**Set the CF_STAGING_TIMEOUT and CF_STARTUP_TIMEOUT environment variables.**
+By default your app has 15 minutes to stage and 5 minutes to start.
+You can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`.
+Type `cf help` at the command line for more information.
 
 
 ### <a id='out-of-memory'></a>App crashes with 'out of memory' errors ###

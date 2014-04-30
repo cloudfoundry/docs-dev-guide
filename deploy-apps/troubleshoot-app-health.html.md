@@ -49,9 +49,19 @@ Use `cf orgs` to see the names of your orgs and `cf org <org_name>` to see
 the memory allotted to the org where you are deploying.
 
 **Make sure your app is not too large.**
-The app bits to push cannot exceed 1GB.
-Reduce the number of bits you are pushing as described in **Make sure you are only
-pushing needed files** [above](#time).
+By default cf will push all the contents of the current working directory.
+To reduce the number of bits you are pushing, make sure you are pushing just
+your application's directory, and remove unneeded files or
+[specify files to be ignored](prepare-to-deploy.html#exclude) in the `.cfignore` file.
+These limits apply:
+
+* The app bits to push cannot exceed 1GB.
+
+* The droplet that results from compiling those bits cannot exceed 1.5GB;
+droplets are typically 1/3 larger than the pushed bits.
+
+* The app bits, compiled droplet, and buildpack cache together cannot use
+more than 4GB of space during staging.
 
 ### <a id='detect'></a>Cloud Foundry fails to detect a supported application type ###
 

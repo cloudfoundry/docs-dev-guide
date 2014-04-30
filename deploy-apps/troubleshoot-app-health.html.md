@@ -6,57 +6,12 @@ _This page assumes that you are using cf v6._
 
 ## <a id='scenarios'></a>Failure Scenarios ##
 
-This section explains how to troubleshoot common `cf push` failure scenarios.
+### <a id='time'></a>cf push times out ###
 
-### <a id='upload'></a>App fails to upload ###
-
-**Make sure your org has enough memory for all instances of your app.**
-Use `cf orgs` to see the names of your orgs and `cf org <org_name>` to see
-the memory alloted to the org where you are deploying.
-
-**Make sure your app is not too large.**
-
-* The app bits to push cannot exceed 1GB.
-
-* The droplet that results from compiling those bits cannot exceed 1.5GB;
-droplets are typically 1/3 larger than the pushed bits.
-
-* The app bits, compiled droplet, and buildpack cache together cannot use
-more than 4GB of space during staging.
-
-**If your app contains a large number of files, try pushing the app repeatedly.**
-Each push uploads a few more files.
-Eventually, all files have uploaded and the push succeeds.
-This is less likely to work if your app has many _small_ files.
-
-### <a id='detect'></a>Cloud Foundry fails to detect a buildpack ###
-
-**Make sure your app is in a language or framework supported by one of the three
-[system buildpacks](../../buildpacks/).**
-If that is not the case, use `cf push` with the `-b` option to deploy with an
-appropriate custom buildpack.
-
-### <a id='compile'></a>App fails to compile ###
-
-**Make sure your application code uses the `VCAP_APP_PORT` environment variable.**
-When it needs the value of the port where the app listens, your application
-code must alway obtain the `VCAP_APP_PORT` environment variable.
-
-    For example, this Ruby snippet assigns the port value to the `listen_here`
-    variable:
-
-    `listen_here = ENV['VCAP_APP_PORT']`
-
-**Make sure your app generally adheres to the principles of the
-[Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an Application]
-(./prepare-to-deploy.html).**
-These texts explain how to prevent situations where your app builds locally but
-fails to build in the cloud.
-
-### <a id='time'></a>Deployment times out ###
-
-A cf push can timeout during an upload or a staging.
-Symptoms can include a 504 Gateway Timeout error or a message stating "Error uploading application."
+A cf push can time out during an upload or a staging.
+Symptoms can include a "504 Gateway Timeout" error or messages stating
+"Error uploading application" or "timed out waiting for async job <job_name>
+to finish."
 If this happens, try these techniques.
 
 **Check your network speed.**
@@ -67,15 +22,98 @@ Recommended internet connection speed is at least 768 KB/s (6 Mb/s) for uploads.
 By default cf will push all the contents of the current working directory.
 Make sure you are pushing just your application's directory.
 If your application is too large, or if it has many small files, Cloud Foundry may time out during the upload.
-You can also reduce the size of the upload by removing unneeded files or [specifying files to be ignored](prepare-to-deploy.html#exclude) in the `.cfignore` file.
+You can also reduce the size of the upload by removing unneeded files or
+[specifying files to be ignored](prepare-to-deploy.html#exclude) in the `.cfignore` file.
 
 **Set the CF\_STAGING\_TIMEOUT and CF\_STARTUP\_TIMEOUT environment variables.**
 By default your app has 15 minutes to stage and 5 minutes to start.
 You can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`.
 Type `cf help` at the command line for more information.
 
+**If your app contains a large number of files, try pushing the app repeatedly.**
+Each push uploads a few more files.
+Eventually, all files have uploaded and the push succeeds.
+This is less likely to work if your app has many _small_ files.
 
-### <a id='out-of-memory'></a>App crashes with 'out of memory' errors ###
+### <a id='upload'></a>App fails to upload ###
+
+A cf push can fail during upload when the app is too large or requests
+excessive memory.
+Symptoms can include a "413 Request Entity Too Large" error or a message that
+states "You have exceeded your organization's memory limit."
+
+If this happens, do the following.
+
+**Make sure your org has enough memory for all instances of your app.**
+Use `cf orgs` to see the names of your orgs and `cf org <org_name>` to see
+the memory allotted to the org where you are deploying.
+
+**Make sure your app is not too large.**
+The app bits to push cannot exceed 1GB.
+Reduce the number of bits you are pushing as described in **Make sure you are only
+pushing needed files** [above](#time).
+
+### <a id='detect'></a>Cloud Foundry fails to detect a supported application type ###
+
+A cf push can fail if [buildpack detection](../../buildpacks/detection.html)
+Cloud Foundry cannot identify an appropriate buildpack for building the app.
+Symptoms can include a message stating "Unable to detect a supported
+application type."
+
+If this happens, do the following.
+
+**Make sure your app is in a language or framework supported by one of the three
+[system buildpacks](../../buildpacks/).**
+If that is not the case, use `cf push` with the `-b` option to deploy with an
+appropriate custom buildpack.
+
+### <a id='start'></a>App fails to start ###
+
+After cf push stages the app and uploads the droplet, the app may fail to start,
+commonly with a pattern of starting and crashing:
+
+<pre class="terminal">
+-----> Uploading droplet (23M)
+...
+0 of 1 instances running, 1 starting
+0 of 1 instances running, 1 down
+...
+0 of 1 instances running, 1 failing
+FAILED
+Start unsuccessful
+</pre>
+
+If this happens, try the following techniques.
+
+**Find the reason app is failing and modify your code.**
+Run `cf events <app_name>` and `cf logs <app_name> --recent` and look for
+messages similar to this:
+
+  `2014-04-29T17:52:34.00-0700   app.crash          index: 0, reason: CRASHED, exit_description: app instance exited, exit_status: 1`
+
+These messages may identify a memory or port issue.
+If they do, take that as a starting point when you re-examine and fix your
+application code.
+
+**Make sure your application code uses the `VCAP_APP_PORT` environment variable.**
+The value of the port where the app listens can only be set using the
+`VCAP_APP_PORT` environment variable.
+
+For example, this Ruby snippet assigns the port value to the `listen_here`
+variable:
+
+  `listen_here = ENV['VCAP_APP_PORT']`
+
+**Make sure your app adheres to the principles of the
+[Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an Application]
+(./prepare-to-deploy.html).**
+These texts explain how to prevent situations where your app builds locally but
+fails to build in the cloud.
+
+### <a id='out-of-memory'></a>App consumes too much memory, then crashes ###
+
+An app that cf push has uploaded and started can crash later if it uses
+too much memory.
 
 **Make sure your app is not consuming more memory than it should.**
 When you ran `cf push` and `cf scale`, that configured a limit on the amount
@@ -134,9 +172,9 @@ $ cf files my-app logs/stderr.log
 
 ### <a id='trace'></a>Tracing Cloud Controller REST API Calls ###
 
-If a command fails or produces unexpected results, you can re-run it with
-`CF_TRACE` enabled to view requests and responses between `cf` and the
-Cloud Controller REST API.
+If a command fails or produces unexpected results, re-run it with `CF_TRACE`
+enabled to view requests and responses between `cf` and the Cloud Controller
+REST API.
 
 For example:
 
@@ -162,10 +200,10 @@ Do not confuse `CF_TRACE` with the [variables in the container environment]
 
 ## <a id='cf-commands'></a>cf Troubleshooting Commands ##
 
-Cloud Foundry's cf command line interface provides commands for investigating
-app deployment and health.
+You can investigate app deployment and health using the `cf` command line
+interface.
 
-Some of these commands may return connection credentials.
+Some `cf` commands may return connection credentials.
 Remove credentials and other sensitive information from command
 output before you post the output a public forum.
 

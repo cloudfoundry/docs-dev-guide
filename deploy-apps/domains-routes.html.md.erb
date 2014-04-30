@@ -112,8 +112,6 @@ CNAME records follow the pattern illustrated below:
 
 ### <a id='multi-sub'></a>Map Multiple Subdomains ###
 
-Use the `-n HOSTNAME` parameter with the `create-domain` command to specify a unique hostname for a route that uses a shared domain. Then use a DNS CNAME record to alias the custom subdomain.
-
  1. Create the domain in Cloud Foundry and associate it with an organization.
 
     The command below defines the custom domain `myapp.example.org` in the
@@ -123,7 +121,7 @@ Use the `-n HOSTNAME` parameter with the `create-domain` command to specify a un
 	$ cf create-domain test-org example.org
 	</pre>
 
- 1. Map the route to your app:
+ 1. Use the `-n HOSTNAME` parameter with the `maproute` command to specify a unique hostname for a route that uses a shared domain. Map the route to your app:
 
     <pre class="terminal">
     $ cf map-route myapp example.org -n myapp

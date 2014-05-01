@@ -4,6 +4,11 @@ title: Troubleshoot Application Deployment and Health
 
 _This page assumes that you are using cf v6._
 
+The failure scenarios that begin this topic are common but cannot
+account for all possibilities.
+By contrast, the diagnostic techniques and `cf` commands
+that follow are fundamental in any troubleshooting situation.
+
 ## <a id='scenarios'></a>Failure Scenarios ##
 
 ### <a id='time'></a>cf push times out ###
@@ -133,8 +138,8 @@ If it exceeds the limit, modify the app to use less memory.
 
 ## <a id='info'></a>Gathering Diagnostic Information ##
 
-Gather the diagnostic information that shows the symptoms of the problem you
-are troubleshooting, and also "baseline" information for context.
+Use the techniques in this section to gather diagnostic information that
+captures the symptoms of the problem you are troubleshooting.
 
 ### <a id='env'></a>Examining Environment Variables ###
 

@@ -4,12 +4,11 @@ title: Troubleshoot Application Deployment and Health
 
 _This page assumes that you are using cf v6._
 
-The failure scenarios that begin this topic are common but cannot
-account for all possibilities.
-By contrast, the diagnostic techniques and `cf` commands
-that follow are fundamental in any troubleshooting situation.
+Refer to this topic for help diagnosing and resolving common
+problems pushing and running apps on Cloud Foundry.
 
-## <a id='scenarios'></a>Failure Scenarios ##
+
+## <a id='scenarios'></a>Common Problems ##
 
 ### <a id='time'></a>cf push times out ###
 
@@ -40,20 +39,28 @@ Each push uploads a few more files.
 Eventually, all files have uploaded and the push succeeds.
 This is less likely to work if your app has many _small_ files.
 
-### <a id='upload'></a>App fails to upload ###
+### <a id='upload'></a>App Too Large ###
 
-A cf push can fail during upload when the app is too large or requests
-excessive memory.
-Symptoms can include a "413 Request Entity Too Large" error or a message that
-states "You have exceeded your organization's memory limit."
+If your application is too large, you may receive one of the following error
+messages on `cf push`:
+
+* 413 Request Entity Too Large
+* You have exceeded your organization's memory limit
 
 If this happens, do the following.
 
 **Make sure your org has enough memory for all instances of your app.**
-Use `cf orgs` to see the names of your orgs and `cf org <org_name>` to see
-the memory allotted to the org where you are deploying.
+You will not be able to use more memory than is allocated for your
+organization.
+To see the memory quota for your org, use `cf org ORG_NAME`.
 
-**Make sure your app is not too large.**
+Your total memory usage is the sum of the memory used by all applications
+in all spaces within the org.
+Each application's memory usage is the memory allocated to it
+multiplied by the number of instances.
+To see the memory usage of all the apps in a space, use `cf apps`.
+
+**Make sure your application is less than 1GB.**
 By default cf will push all the contents of the current working directory.
 To reduce the number of bits you are pushing, make sure you are pushing just
 your application's directory, and remove unneeded files or

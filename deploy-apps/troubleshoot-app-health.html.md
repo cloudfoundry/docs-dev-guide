@@ -75,21 +75,23 @@ droplets are typically 1/3 larger than the pushed bits.
 * The app bits, compiled droplet, and buildpack cache together cannot use
 more than 4GB of space during staging.
 
-### <a id='detect'></a>Cloud Foundry fails to detect a supported application type ###
+### <a id='detect'></a>Unable to Detect a Supported Application Type ###
 
-A cf push can fail if [buildpack detection](../../buildpacks/detection.html)
-Cloud Foundry cannot identify an appropriate buildpack for building the app.
-Symptoms can include a message stating "Unable to detect a supported
+If Cloud Foundry cannot [identify an appropriate buildpack](/buildpacks/detection.html)
+for your app, you will see an error message that says "Unable to detect a supported
 application type."
 
-If this happens, do the following.
+You can see what buildpacks are available with the `cf buildpacks` command.
 
-**Make sure your app is in a language or framework supported by one of the three
-[system buildpacks](../../buildpacks/).**
-If that is not the case, use `cf push` with the `-b` option to deploy with an
-appropriate custom buildpack.
+If you see a buildpack that you believe should support your app, refer to the
+[buildpack documentation](/buildpacks/) for details about how that buildpack detects
+applications it supports.
 
-### <a id='start'></a>App fails to start ###
+If you do not see a buildpack for your app, you may still be able to push your
+application with a [custom buildpack](/buildpacks/custom.html)
+using `cf push -b` with a path to your buildpack.
+
+### <a id='start'></a>App Fails to Start ###
 
 After cf push stages the app and uploads the droplet, the app may fail to start,
 commonly with a pattern of starting and crashing:

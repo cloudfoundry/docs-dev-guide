@@ -77,18 +77,17 @@ more than 4GB of space during staging.
 
 ### <a id='detect'></a>Unable to Detect a Supported Application Type ###
 
-If Cloud Foundry cannot [identify an appropriate buildpack](/buildpacks/detection.html)
+If Cloud Foundry cannot [identify an appropriate buildpack](../../buildpacks/detection.html)
 for your app, you will see an error message that says "Unable to detect a supported
 application type."
 
 You can see what buildpacks are available with the `cf buildpacks` command.
 
 If you see a buildpack that you believe should support your app, refer to the
-[buildpack documentation](/buildpacks/) for details about how that buildpack detects
-applications it supports.
+[buildpack documentation](../../buildpacks/) for details about how that buildpack detects applications it supports.
 
 If you do not see a buildpack for your app, you may still be able to push your
-application with a [custom buildpack](/buildpacks/custom.html)
+application with a [custom buildpack](../../buildpacks/custom.html)
 using `cf push -b` with a path to your buildpack.
 
 ### <a id='start'></a>App Fails to Start ###

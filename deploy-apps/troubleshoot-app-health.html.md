@@ -119,13 +119,16 @@ If they do, take that as a starting point when you re-examine and fix your
 application code.
 
 **Make sure your application code uses the `VCAP_APP_PORT` environment variable.**
-The value of the port where the app listens can only be set using the
-`VCAP_APP_PORT` environment variable.
+Your application may be failing because it is listening on the wrong port.
+Instead of hard coding the port on which your application listens, use the `VCAP_APP_PORT` environment variable.
 
 For example, this Ruby snippet assigns the port value to the `listen_here`
 variable:
 
   `listen_here = ENV['VCAP_APP_PORT']`
+
+For more examples specific to your application framework, see the
+appropriate [buildpacks documentation](/buildpacks/) for your app's language.
 
 **Make sure your app adheres to the principles of the
 [Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an Application]

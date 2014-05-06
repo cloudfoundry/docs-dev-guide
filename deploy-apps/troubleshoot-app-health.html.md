@@ -128,7 +128,7 @@ variable:
   `listen_here = ENV['VCAP_APP_PORT']`
 
 For more examples specific to your application framework, see the
-appropriate [buildpacks documentation](/buildpacks/) for your app's language.
+appropriate [buildpacks documentation](../../buildpacks/) for your app's language.
 
 **Make sure your app adheres to the principles of the
 [Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an Application]

@@ -20,7 +20,7 @@ buffer may need to overwrite some lines before the client has consumed them.
 A syslog drain or a CLI tail can usually keep up with the flow of application
 logs.
 
-## <a id='types'></a>The Anatomy a Log Line  ##
+## <a id='types'></a>Anatomy a Log Line ##
 
 Every log line contains four fields:
 
@@ -30,34 +30,35 @@ Every log line contains four fields:
 1. Message
 
 Loggregator assigns the timestamp when it receives log data.
-The log data is opaque to Loggregator, which simply puts it in the message
-field of the log line.
+The log data is opaque to Loggregator, which simply puts it in the message field
+of the log line.
 Applications or system components sending log data to Loggregator may include
 their own timestamps, which then appear in the message field.
 
 Origin codes distinguish the different log types.
 Origin codes from system components have three letters.
-The application origin code is `APP` followed by slash and a digit
-that indicates the application instance.
+The application origin code is `APP` followed by slash and a digit that
+indicates the application instance.
 
-Many frameworks write to an application log that is separate from STDOUT
-and STDERR.
+Many frameworks write to an application log that is separate from STDOUT and
+STDERR.
 This is not supported by Loggregator.
-Your application must write to STDOUT or STDERR for its logs to be included
-in the Loggregator stream.
+Your application must write to STDOUT or STDERR for its logs to be included in
+the Loggregator stream.
 Check the buildpack your application uses to determine whether it automatically
 insures that your application correctly writes logs to STDOUT and STDERR only.
 Some buildpacks do this, and some do not.
 
 ## <a id='format'></a>Log Types and Their Messages ##
 
-Different types of logs have different message formats, as shown in the examples below.
+Different types of logs have different message formats, as shown in the examples
+below.
 
-### <a id='api'></a>API  ###
+### <a id='api'></a>API ###
 
-Users make API calls to request changes in application state. Cloud Controller, the
-Cloud Foundry component responsible for the API, logs the actions that Cloud Controller
-takes in response.
+Users make API calls to request changes in application state. Cloud Controller,
+the Cloud Foundry component responsible for the API, logs the actions that Cloud
+Controller takes in response.
 
 For example:
 
@@ -65,24 +66,27 @@ For example:
 2014-02-13T11:44:52.11-0800 [API]     OUT Updated app with guid e1ca6390-cf78-4fc7-9d86-5b7ed01e9c28 ({"instances"=>2})
 </pre>
 
-### <a id='stg'></a>STG  ###
+### <a id='stg'></a>STG ###
 
 The Droplet Execution Agent emits STG logs when staging or restaging an app.
 These actions implement the desired state requested by the user.
 Once the droplet has been uploaded, STG messages end and DEA messages begin.
 
 For example:
+
 <pre class="terminal">
 2014-02-07T10:54:36.80-0800 [STG]     OUT -----> Downloading and installing node
 </pre>
 
-### <a id='dea'></a>DEA  ###
+### <a id='dea'></a>DEA ###
 
-The Droplet Execution Agent emits DEA logs beginning when it starts or stops the app.
+The Droplet Execution Agent emits DEA logs beginning when it starts or stops the
+app.
 These actions implement the desired state requested by the user.
 The DEA also emits messages when an app crashes.
 
 For example:
+
 <pre class="terminal">
 2014-02-13T11:44:52.07-0800 [DEA]     OUT Starting app instance (index 1) with guid e1ca6390-cf78-4fc7-9d86-5b7ed01e9c28
 </pre>
@@ -90,14 +94,16 @@ For example:
 ### <a id='rtr'></a>RTR ###
 
 The Router emits RTR logs when it routes HTTP requests to the application.
-Router messages include the application name followed by a Router timestamp and then selections from the HTTP request.
+Router messages include the application name followed by a Router timestamp and
+then selections from the HTTP request.
 
 For example:
+
 <pre class="terminal">
 2014-02-13T11:42:31.96-0800 [RTR]     OUT nifty-gui.<%=vars.app_domain%> - [13/02/2014:19:42:31 +0000] "GET /favicon.ico HTTP/1.1" 404 23 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36" 10.10.2.142:6609 response_time:0.004092262 app_id:e1ca6390-cf78-4fc7-9d86-5b7ed01e9c28
 </pre>
 
-### <a id=''></a>LGR  ###
+### <a id='lgr'></a>LGR ###
 
 Loggregator emits LGR to indicate problems with the logging process.
 Examples include "can't reach syslog drain url" and "dropped log messages due to high rate."
@@ -105,7 +111,8 @@ Examples include "can't reach syslog drain url" and "dropped log messages due to
 ### <a id='app'></a>APP ###
 
 Every application emits logs according to choices by the developer.
-The digit appended to the code indicates app instance: 0 is the first instance, 1 is the second, and so on.
+The digit appended to the code indicates app instance: 0 is the first instance,
+1 is the second, and so on.
 
 For example:
 
@@ -116,15 +123,14 @@ For example:
 ## <a id='writing'></a>Writing to the Log from your Application ##
 
 Your application must write logs to `STDERR` or `STDOUT`.
-Both are typically buffered, and you should flush the buffer before
-delivering the message to Loggregator.
+Both are typically buffered, and you should flush the buffer before delivering
+the message to Loggregator.
 
-Alternatively, you can write log messages to `STDERR` or `STDOUT`
-synchronously.
-This approach is mainly used for debugging because it may affect
-application performance.
+Alternatively, you can write log messages to `STDERR` or `STDOUT` synchronously.
+This approach is mainly used for debugging because it may affect application
+performance.
 
-## <a id='view'></a> Viewing Logs in the Command Line Interface ##
+## <a id='view'></a>Viewing Logs in the Command Line Interface ##
 
 You view logs in the CLI using the `cf logs` command.
 You can tail, dump, or filter log output.
@@ -152,7 +158,8 @@ Use **Ctrl-C** (^C) to exit the real-time stream.
 
 ### <a id="filter"></a>Filtering Logs ###
 
-To view some subset of log output, use `cf logs` in conjunction with filtering commands of your choice.
+To view some subset of log output, use `cf logs` in conjunction with filtering
+commands of your choice.
 In the example below, `grep -v` excludes all Router logs:
 
 <pre class="terminal">

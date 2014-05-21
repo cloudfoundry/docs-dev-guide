@@ -6,7 +6,9 @@ _This page assumes that you are using cf v6._
 ## <a id='intro'></a>Overview of Deployment Process ##
 
 You deploy an application to Cloud Foundry by running a `push` command from a
-Cloud Foundry command line interface (CLI). Refer to the [Install cf v6](../installcf/install-go-cli.html) topic for more information.
+Cloud Foundry command line interface (CLI).
+Refer to the [Install cf v6](../installcf/install-go-cli.html) topic for more
+information.
 Between the time you run `push` and the time that the application is available,
 Cloud Foundry:
 
@@ -48,21 +50,17 @@ For help preparing to deploy your application, see:
 * [Tips for Node.js Developers](../../buildpacks/node/node-tips.html)
 * [Tips for Java Developers](../../buildpacks/java/java-tips.html)
 
-**Note**: Using a Content Delivery Network (CDN) such as [Akamai](http://www.akamai.com/) or [Amazon Cloudfront]
-(http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) for static assets makes web
-pages load faster, partly by enabling browsers to make multiple requests in
-parallel.
-For best performance on a large scale, either use a CDN or compensate by
-scaling your app up to a higher number of instances.
+**Note**: Using a Content Delivery Network (CDN) such as
+[Akamai](http://www.akamai.com/) or [Amazon Cloudfront](http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) for static assets makes web pages load faster, partly by
+enabling browsers to make multiple requests in parallel.
+For best performance on a large scale, either use a CDN or compensate by scaling
+your app up to a higher number of instances.
 
 ## <a id='logon-target'></a>Step 2: Know Your Credentials and Target ##
 
 Before you can push your application to Cloud Foundry you need to know:
 
-* The API endpoint, also known as the target URL, for your Cloud Foundry
-instance.
-This is a URL that typically begins with "api."
-Consult your cloud operator if you are unsure of your API endpoint.
+* <%=vars.api_endpoint%>: This is the API endpoint, also known as the target URL, for your Cloud Foundry instance.
 * Your username and password for your Cloud Foundry instance.
 * The organization and space where you want to deploy your application.
 A Cloud Foundry workspace is organized into organizations, and within them,
@@ -119,8 +117,8 @@ target application space.
 
 ### <a id='defining-options'></a>Define Deployment Options ###
 
-You can define deployment options on the command line, in a
-manifest file, or both together.
+You can define deployment options on the command line, in a manifest file, or
+both together.
 See [Deploying with Application Manifests](./manifest.html) to learn how
 application settings change from push to push, and how command-line options,
 manifests, and commands like `cf scale` interact.

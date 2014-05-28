@@ -1,0 +1,33 @@
+---
+title: Identifying the API Endpoint for your Cloud Foundry Instance
+---
+
+The API endpoint, or target URL, for your Cloud Foundry instance is the URL of the Cloud Controller in your Cloud Foundry instance.
+
+## <a id='console'></a>From the Developer Console ##
+
+If you have access to the Developer Console for your Cloud Foundry instance,
+click **Tools** in the left navigation panel.
+The **Getting Started** section of the Tools page shows your API endpoint.
+
+## <a id='cli'></a>From the Command Line ##
+
+From a command line, use the `cf api` command to view your API endpoint.
+
+Example:
+
+<pre class='termnial'>
+$ cf api
+API endpoint: https://api.sample.com (API version: 2.2.0)
+</pre>
+
+## <a id='console'></a>From the Cloud Foundry Deployment Manifest ##
+
+The manifest used to deploy your Cloud Foundry instance specifies properties for
+the cloud controller.
+The value of one of these properties, `domain`, is appended to the string
+**api.** to form the API endpoint for your Cloud Foundry instance.
+
+For example, if your Cloud Foundry deployment manifest specifies the `domain`
+property for your cloud controller as **sample.com**, the API endpoint is
+**api.sample.com**.

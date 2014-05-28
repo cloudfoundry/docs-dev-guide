@@ -20,14 +20,3 @@ Example:
 $ cf api
 API endpoint: https://api.sample.com (API version: 2.2.0)
 </pre>
-
-## <a id='console'></a>From the Cloud Foundry Deployment Manifest ##
-
-The manifest used to deploy your Cloud Foundry instance specifies properties for
-the cloud controller.
-The value of one of these properties, `domain`, is appended to the string
-**api.** to form the API endpoint for your Cloud Foundry instance.
-
-For example, if your Cloud Foundry deployment manifest specifies the `domain`
-property for your cloud controller as **sample.com**, the API endpoint is
-**api.sample.com**.

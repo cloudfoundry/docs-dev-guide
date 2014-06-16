@@ -1,5 +1,5 @@
 ---
-title: Install cf Version 6
+title: Installing the cf Command Line Interface
 ---
 
 To install cf, download it from https://github.com/cloudfoundry/cli/releases and follow the instructions for your operating system.

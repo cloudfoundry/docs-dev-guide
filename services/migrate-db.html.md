@@ -1,5 +1,5 @@
 ---
-title: Migrating a Database on Cloud Foundry
+title: Migrating a Database in Cloud Foundry
 ---
 
 _This page assumes that you are using cf v6._

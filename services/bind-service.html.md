@@ -1,5 +1,5 @@
 ---
-title: Bind a Service
+title: Binding a Service
 ---
 
 _This page assumes that you are using cf v6._

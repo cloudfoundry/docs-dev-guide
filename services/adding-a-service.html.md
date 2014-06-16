@@ -1,5 +1,5 @@
 ---
-title: Add a Service
+title: Adding a Service
 ---
 
 _This page assumes that you are using cf v6._
@@ -12,6 +12,7 @@ It assumes you have pushed an application to your Cloud Foundry instance.
 Cloud Foundry Services are add-ons that can be provisioned alongside your application. Learn all about Services at [Using Services](index.html).
 
 There are two types of Cloud Foundry services:
+
 - Service brokers advertise catalogs of [managed services](./managed.html) such as databases, key-value stores, messaging, or other types of services.
 - [User-provided services](./user-provided.html) allow you to represent external assets like databases, messaging services, and key-value stores in Cloud Foundry.
 

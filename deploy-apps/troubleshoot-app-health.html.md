@@ -1,5 +1,5 @@
 ---
-title: Troubleshoot Application Deployment and Health
+title: Troubleshooting Application Deployment and Health
 ---
 
 _This page assumes that you are using cf v6._

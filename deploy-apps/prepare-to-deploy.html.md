@@ -1,5 +1,5 @@
 ---
-title: Prepare to Deploy an Application
+title: Considerations for Designing and Running an Application in the Cloud
 ---
 
 ## <a id="app-design"></a>Application Design for the Cloud ##

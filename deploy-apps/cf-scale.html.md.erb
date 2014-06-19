@@ -1,0 +1,59 @@
+---
+title: Scaling an Application Using cf scale
+---
+
+The disk space and memory an application uses can change based on factors such
+as user load, or the number and nature of tasks performed by the application.
+For many applications, increasing the available disk space or memory can improve
+overall performance.
+Similarly, running additional instances of an application can allow the
+application to handle increases in user load and concurrent requests.
+
+**Scaling** an application means changing the number of instances of the
+application, or changing the size of resources available to the application.
+Scaling an application up means increasing the number of instances or adding
+resources; scaling down means decreasing the number of instances or removing
+resources.
+
+Use `cf scale` to scale your application up or down to meet changes in traffic
+or demand.
+
+## <a id="horizontal"></a>Scaling Horizontally ##
+
+Horizontally scaling an application creates or destroys instances of your application.
+
+Incoming requests to your application are automatically load balanced across all
+instances of your application, and each instance handles tasks in parallel with
+every other instance.
+Adding more instances allows your application to handle increased traffic and
+demand.
+
+Use `cf scale APP -i INSTANCES` to horizontally scale your application.
+Cloud Foundry will increase or decrease the number of instances of your application to match `INSTANCES`.
+
+<pre class='terminal'>
+$ cf scale myApp -i 5
+</pre>
+
+## <a id="vertical"></a>Scaling Vertically ##
+
+Vertically scaling an application changes the disk space limit or memory limit
+that Cloud Foundry applies to all instances of the application.
+
+Use `cf scale APP -k DISK` to change the disk space limit applied to all
+instances of your application.
+`DISK` must be an integer followed by either an **M**, for megabytes, or **G**,
+for gigabytes.
+
+<pre class='terminal'>
+$ cf scale myApp -k 512M
+</pre>
+
+Use `cf scale APP -m MEMORY` to change the memory limit applied to all instances
+of your application.
+`MEMORY` must be an integer followed by either an **M**, for megabytes, or
+**G**, for gigabytes.
+
+<pre class='terminal'>
+$ cf scale myApp -m 1G
+</pre>

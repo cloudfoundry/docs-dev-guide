@@ -54,8 +54,8 @@ $ cf create-service rabbitmq small-plan my_rabbitmq
 Creating service my_rabbitmq in org console / space development as user@example.com... OK
 </pre>
 
-**Note**: For more information about creating a user-provided service instance,
-refer to [User-Provided Service Instances](./user-provided.html).
+<p class="note"><strong>Note</strong>: For more information about creating a user-provided service instance,
+refer to <a href="./user-provided.html">User-Provided Service Instances</a>.</p>
 
 ### <a id='connections'></a> Choosing the right plan  ###
 

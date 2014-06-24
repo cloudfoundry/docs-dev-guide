@@ -10,7 +10,7 @@ If you previously used the cf v5 Ruby gem, you must uninstall this gem before in
 
 To uninstall, run `gem uninstall cf`.
 
-**Note**: To ensure that your Ruby environment manager registers the change, close and reopen your terminal.
+<p class="note"><strong>Note</strong>: To ensure that your Ruby environment manager registers the change, close and reopen your terminal.</p>
 
 ## <a id="windows"></a>Install cf on Windows ##
 

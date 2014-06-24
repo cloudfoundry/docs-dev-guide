@@ -12,8 +12,8 @@ This method executes SQL commands directly on the database, bypassing Cloud Foun
 This is the fastest option for a single migration.
 However, this method is less efficient for multiple migrations because it requires manually accessing the database every time.
 
-**Note**: Use this method if you expect your database migration to take longer than the timeout that cf push applies to your application.
-The timeout defaults to 60 seconds, but you can extend it up to 180 seconds with the `-t` command line option.
+<p class="note"><strong>Note</strong>: Use this method if you expect your database migration to take longer than the timeout that cf push applies to your application.
+The timeout defaults to 60 seconds, but you can extend it up to 180 seconds with the <code>-t</code> command line option.</p>
 
 1. Obtain your database credentials by searching for the `VCAP_SERVICES` environment variable in the application environment log:
 
@@ -43,13 +43,13 @@ This method is efficient for occasional use because you can re-use the schema mi
 
     `cf push APP -c ‘rake db:migrate’ -i 1`
 
-    **Note**: After this step the database has been migrated but the application itself has not started, because the normal start command is not used.
+    <p class="note"><strong>Note</strong>: After this step the database has been migrated but the application itself has not started, because the normal start command is not used.</p>
 
 3. Deploy your application again with the normal start command and desired number of instances. For example:
 
     `cf push APP -c 'null' -i 4`
 
-    **Note**: This example assumes that the normal start command for your application is the one provided by the buildpack, which the `-c 'null'` option forces cf to use.
+    <p class="note"><strong>Note</strong>: This example assumes that the normal start command for your application is the one provided by the buildpack, which the <code>-c 'null'</code> option forces cf to use.</p>
 
 ## <a id='frequent-migration'></a>Migrate Frequently ##
 This method uses an idempotent script to partially automate migrations. The script runs on the first application instance only.

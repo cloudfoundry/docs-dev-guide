@@ -219,10 +219,9 @@ To enable it for an entire shell session, set the variable first:
 
   `export CF_TRACE=<path_to_trace.log>`
 
-**Note**: `CF_TRACE` is a **local** environment variable that modifies
-the behavior of `cf` itself.
-Do not confuse `CF_TRACE` with the [variables in the container environment]
-(#env) where your apps run.
+<p class="note"><strong>Note</strong>: <code>CF_TRACE</code> is a local environment variable that modifies
+the behavior of <code>cf</code> itself.
+Do not confuse <code>CF_TRACE</code> with the <a href="#env">variables in the container environment</a> where your apps run.</p>
 
 ## <a id='cf-commands'></a>cf Troubleshooting Commands ##
 
@@ -262,9 +261,9 @@ Given a path to a file, outputs the contents of that file. Given a path to a
 subdirectory, lists the files within. Use this to [explore](#logs) individual
 logs.
 
-**Note**: Your application should direct its logs to STDOUT and STDERR.
-The `cf logs` command also returns messages from any [log4j](http://logging.apache.org/log4j/)
-facility that you configure to send logs to STDOUT.
+<p class="note"><strong>Note</strong>: Your application should direct its logs to STDOUT and STDERR.
+The <code>cf logs</code> command also returns messages from any <a href="http://logging.apache.org/log4j/">log4j</a>
+facility that you configure to send logs to STDOUT.</p>
 
 
 

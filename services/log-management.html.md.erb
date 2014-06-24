@@ -55,7 +55,7 @@ Depending on the service provider, you may need the following information:
 
 * The <%=vars.external_ips%> <%=vars.admin%> assigns to outbound traffic.
 
-    **Note**: You must whitelist all of these IP addresses. Allowing traffic from a subset of the external IP addresses assigned to outbound traffic restricts the logs that are available to third-party services.
+    <p class="note"><strong>Note</strong>: You must whitelist all of these IP addresses. Allowing traffic from a subset of the external IP addresses assigned to outbound traffic restricts the logs that are available to third-party services.</p>
 
 * The syslog URL provided by the third-party service. Third-party services
 typically provide a syslog URL to use as an endpoint for incoming log data.
@@ -94,4 +94,4 @@ For example, assuming that your application serves web pages, you can send HTTP 
 In Cloud Foundry, these generate Router log messages, which you can view in the CLI.
 The third-party logging service should show you corresponding messages, although probably in a different format.
 
-**Note**: For security reasons, Cloud Foundry applications do not respond to ping, so you cannot use ping to generate log entries.
+<p class="note"><strong>Note</strong>: For security reasons, Cloud Foundry applications do not respond to ping, so you cannot use ping to generate log entries.</p>

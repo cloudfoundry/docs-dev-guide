@@ -57,9 +57,9 @@ If you do _not_ use a manifest, the minimal push command looks like this:
 cf push my-application-name
 ~~~
 
-**Note:** When you provide an application name at the command line, `cf push` uses that application name whether or not there is a different application name in the manifest.
-If the manifest describes multiple applications, you can push a single application by providing its name at the command line; `cf` does not push the others.
-These behaviors are useful for testing.
+<p class="note"><strong>Note</strong>: When you provide an application name at the command line, <code>cf push</code> uses that application name whether or not there is a different application name in the manifest.
+If the manifest describes multiple applications, you can push a single application by providing its name at the command line; <code>cf</code> does not push the others.
+These behaviors are useful for testing.</p>
 
 ## <a id='find-app'></a>How cf push Finds the Application ##
 
@@ -68,7 +68,7 @@ By default, `cf` recursively pushes the contents of the current working director
 - If the path is to a directory, `cf` recursively pushes the contents of that directory instead of the current working directory.
 - If the path is to a file, `cf` pushes only that file.
 
-**Note:** If you want to push more than a single file, but not the entire contents of a directory, consider using a `.cfignore` file to tell `cf push` what to exclude.
+<p class="note"><strong>Note</strong>: If you want to push more than a single file, but not the entire contents of a directory, consider using a <code>.cfignore</code> file to tell <code>cf push</code> what to exclude.</p>
 
 ## <a id='precedence'></a>Precedence Between Manifests, Command line Options, and Most Recent Values ##
 
@@ -104,7 +104,7 @@ If your application requires a custom buildpack, you can use the `buildpack` att
 buildpack: buildpack_URL
 ~~~
 
-**Note:** The `cf buildpacks` command lists the buildpacks that you can refer to by name in a manifest or a command line option.
+<p class="note"><strong>Note</strong>: The <code>cf buildpacks</code> command lists the buildpacks that you can refer to by name in a manifest or a command line option.</p>
 
 The command line option that overrides this attribute is `-b`.
 

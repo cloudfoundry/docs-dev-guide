@@ -124,7 +124,7 @@ There are generally two methods for these consuming credentials.
 * **Auto-configuration**: Some buildpacks create a service connection for you
 by creating additional environment variables, updating config files, or passing
 system parameters to the JVM.
-* **Manual**: [Parse the JSON yourself](../deploy-apps/environment-variable.html#app). Helper libraries are
+* **Manual**: [Parse the JSON yourself](../deploy-apps/environment-variable.html#VCAP-APPLICATION). Helper libraries are
 available for some frameworks.
 
 See the [buildpacks documentation](../../buildpacks) to learn more about

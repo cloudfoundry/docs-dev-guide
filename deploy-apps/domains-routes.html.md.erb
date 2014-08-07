@@ -36,7 +36,9 @@ Select the procedure below that corresponds with the type of domain you want to 
 
 ### <a id='root'></a>Map a Root Domain ###
 
-Use a DNS ALIAS record to map a custom root domain to your app.
+Some DNS providers support using an alternative custom record type, such as ANAME or ALIAS, for adding custom zone apex domains. These domains are also known as root domains.
+
+Use a DNS ALIAS OR ANAME record to map a custom root domain to your app.
 
  1. Create the domain in Cloud Foundry and associate it with an organization.
 
@@ -53,9 +55,9 @@ Use a DNS ALIAS record to map a custom root domain to your app.
 	$ cf map-route myapp example.org
 	</pre>
 
- 1. Configure your custom root domain with your DNS provider using an ALIAS record.
+ 1. Configure your custom root domain with your DNS provider using an ALIAS or ANAME record.
 
-ALIAS records follow the pattern illustrated below:
+ALIAS and ANAME records follow the pattern illustrated below:
 
 <table border="1" class="nice" >
 	<tr>
@@ -65,12 +67,39 @@ ALIAS records follow the pattern illustrated below:
 		<th>Note</th>
 	</tr>
 	<tr>
-	  <td>ALIAS</td>
+	  <td>ALIAS or ANAME</td>
 	  <td>empty or @</td>
 	  <td>yourappname.<%=vars.app_domain%>.</td>
 	  <td>Refer to your DNS provider documentation to determine whether to use an empty or @ value for the Name entry.</td>
 	</tr>
 	</table>
+	
+#### <a id='root'></a>Map a Root Domain Using Subdomain Redirection ####
+		
+If your DNS provider does not support ANAME or ALIAS records, use subdomain redirection to add a custom root domain. This technique is also known as domain forwarding. If you use this method, note that SSL requests to the root domain result in an error because the SSL certificate generally only matches the subdomain. This error does not display if you are not using SSL or are only distributing URLs in subdomain SSL form, meaning `https://www.example.com`.
+
+Configure the redirect from the root domain to the target <code>www</code> subdomain, and configure the <code>www</code> subdomain as a CNAME record reference to the target app URL. The table below illustrates this pattern.
+
+<table border="1" class="nice" >
+	<tr>
+		<th>Record</th>
+		<th>Name</th>
+		<th>Target</th>
+		<th>Note</th>
+	</tr>
+	<tr>
+	  <td>URL or Forward</td>
+	  <td>example.org</td>
+	  <td>www.example.org.</td>
+	  <td>This method results in a "301 permanent redirect" to the subdomain you configure. </td>
+	</tr>
+	<tr>
+	  <td>CNAME</td>
+	  <td>www</td>
+	  <td>yourappname.cfapps.io</td>
+	  <td></td>
+	</tr>
+	</table>		
 
 ### <a id='single-sub'></a>Map a Single Subdomain ###
 

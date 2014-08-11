@@ -76,7 +76,7 @@ ALIAS and ANAME records follow the pattern illustrated below:
 	
 #### <a id='root'></a>Map a Root Domain Using Subdomain Redirection ####
 		
-If your DNS provider does not support ANAME or ALIAS records, use subdomain redirection to add a custom root domain. This technique is also known as domain forwarding. If you use this method, note that SSL requests to the root domain result in an error because the SSL certificate generally only matches the subdomain. This error does not display if you are not using SSL or are only distributing URLs in subdomain SSL form, meaning `https://www.example.com`.
+If your DNS provider does not support ANAME or ALIAS records, use subdomain redirection to add a custom root domain. This technique is also known as domain forwarding. If you use this method, note that SSL requests to the root domain result in an error because the SSL certificate generally only matches the subdomain. This error does not display if you are not using SSL or are only using SSL with URLs in subdomain form, meaning `https://www.example.com`.
 
 Configure the redirect from the root domain to the target <code>www</code> subdomain, and configure the <code>www</code> subdomain as a CNAME record reference to the target app URL. The table below illustrates this pattern.
 
@@ -90,7 +90,7 @@ Configure the redirect from the root domain to the target <code>www</code> subdo
 	<tr>
 	  <td>URL or Forward</td>
 	  <td>example.org</td>
-	  <td>www.example.org.</td>
+	  <td>www.example.org</td>
 	  <td>This method results in a "301 permanent redirect" to the subdomain you configure. </td>
 	</tr>
 	<tr>

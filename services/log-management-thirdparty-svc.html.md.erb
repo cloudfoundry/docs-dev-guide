@@ -4,51 +4,12 @@ title: Configuring Selected Third-Party Log Management Services
 
 Instructions for configuring:
 
-* [Logentries](#logentries)
 * [Papertrail](#papertrail)
 * [Splunk Storm](#splunkstorm)
 * [SumoLogic](#sumologic)
+* [Logentries](#logentries)
 
 Once you have configured the service, refer to [Third-Party Log Management Services](./log-management.html) to bind your application to the service.
-
-## <a id='logentries'></a>Logentries ##
-
-From your Logentries account:
-
-1. Click the **Add new log** button.
-
-    <%= image_tag("../images/third-party-logs/logentries-02.png") %>
-
-1. Select **Manual Configuration**.
-
-    <%= image_tag("../images/third-party-logs/logentries-03.png") %>
-
-1. Enter the values for the **log**.
-
-    <%= image_tag("../images/third-party-logs/logentries-04.png") %>
-
-1. Note the assigned port.
-
-    <%= image_tag("../images/third-party-logs/logentries-05.png") %>
-
-    Logentries will accept connections on this port from any IP address for the
-	specified time period.
-	After the first connection is received, only connections from that IP
-	address will be accepted.
-
-1. Create the log drain service in CF.
-
-    `$ cf cups my-logs -l syslog://api.logentries.com:<port>`
-
-1. Bind the service to an app, then restart or re-stage as necessary.
-
-1. Select the host and log from the left-hand nav to view logs.
-
-    <%= image_tag("../images/third-party-logs/logentries-08.png") %>
-
-1. Click the **Live tail** button to see logs streaming from CF.
-
-    <%= image_tag("../images/third-party-logs/logentries-09.png") %>
 
 ## <a id='papertrail'></a>Papertrail ##
 
@@ -97,9 +58,9 @@ From your Splunk Storm account:
 
     <%= image_tag("../images/third-party-logs/splunkstorm-04.png") %>
 
-1. Allow automatic authorization of incoming IP addresses.
-This will allow any IP address to connect and send logs for a period of 15
-minutes, after which only recognized IP addresses will be accepted.
+1. Manually enter the external IP addresses your Cloud Foundry administrator
+assigns to outbound traffic. For developers running on Pivotal Web Services,
+ please refer to [Externally Visible IP Addresses](http://docs.run.pivotal.io/marketplace/external-ips.html).
 
     <%= image_tag("../images/third-party-logs/splunkstorm-05.png") %>
 
@@ -169,3 +130,9 @@ Place the cursor in the search box, then press **Enter** to submit an empty
 search query.
 
     <%= image_tag("../images/third-party-logs/sumologic-10.png") %>
+
+## <a id='logentries'></a>Logentries ##
+
+Cloud Foundry distributes log messages over multiple servers in order to handle
+load. At this time Logentries do not support multiple syslog sources and are
+not recommended.

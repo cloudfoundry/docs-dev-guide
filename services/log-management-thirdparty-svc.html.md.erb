@@ -59,8 +59,8 @@ From your Splunk Storm account:
     <%= image_tag("../images/third-party-logs/splunkstorm-04.png") %>
 
 1. Manually enter the external IP addresses your Cloud Foundry administrator
-assigns to outbound traffic. For developers running on Pivotal Web Services,
- please refer to [Externally Visible IP Addresses](http://docs.run.pivotal.io/marketplace/external-ips.html).
+assigns to outbound traffic. If you are using Pivotal Web Services,
+ refer to the [Externally Visible IP Addresses](http://docs.run.pivotal.io/marketplace/external-ips.html) topic.
 
     <%= image_tag("../images/third-party-logs/splunkstorm-05.png") %>
 
@@ -116,7 +116,7 @@ source.
 
 1. Create the log drain service in CF using the displayed URL.
 
-    `$ cf cups my-logs -l <HTTP Source Address URL>`
+    `$ cf cups my-logs -l <HTTP SOURCE-URL>`
 
 1. Bind the service to an app, then restart or re-stage as necessary.
 
@@ -134,5 +134,4 @@ search query.
 ## <a id='logentries'></a>Logentries ##
 
 Cloud Foundry distributes log messages over multiple servers in order to handle
-load. At this time Logentries do not support multiple syslog sources and are
-not recommended.
+load. Currently, we do not recommend using Logentries as it does not support multiple syslog sources.

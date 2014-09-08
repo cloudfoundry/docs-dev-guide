@@ -101,7 +101,7 @@ The table below lists the attributes that are returned.
 | --------- | --------- |
 |application_users, users | |
 |instance_id|GUID that identifies the application. |
-|instance_index |Index number, relative to the DEA, of the instance. |
+|instance_index |Index number of the instance. |
 |application_version, version |GUID that identifies a version of the application that was pushed. Each time an application is pushed, this value is updated. |
 |application_name, name |The name assigned to the application when it was pushed. |
 |application_uris |The URI(s) assigned to the application.   |

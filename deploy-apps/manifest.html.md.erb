@@ -6,10 +6,9 @@ _This page assumes that you are using cf v6._
 
 Application manifests tell `cf push` what to do with applications. This includes everything from how many instances to create and how much memory to allocate to what services applications should use.
 
-Whether a manifest is useful depends on what you want to accomplish. For example, a manifest can help you automate deployment, especially of multiple applications at once. In any scenario, a manifest can spare you from typing the same command line options over and over.
+A manifest can help you automate deployment, especially of multiple applications at once.
 
-## <a id='find-manifest'></a>How cf push Finds the Manifest ##
-
+##<a id='find-manifest'></a>How cf push Finds the Manifest ##
 
 The `cf push` command looks for the `manifest.yml` file in the current working directory unless you use the `-f` option to provide a non-standard manifest location or filename.
 
@@ -230,17 +229,11 @@ env:
 
 While the application is running, `cf` allows you to operate on environment variables.
 
-* View all variables:
+* View all variables: `cf env my-app`
+* Set an individual variable: `cf set-env my-variable_name my-variable_value`
+* Unset an individual variable: `cf unset-env my-variable_name my-variable_value`
 
- `cf env my-app`
-* Set an individual variable:
-
- `cf set-env my-variable_name my-variable_value`
-* Unset an individual variable:
-
- `cf unset-env my-variable_name my-variable_value`
-
-Environment variables interact with manifests by somewhat complicated rules:
+Environment variables interact with manifests in the following ways:
 
 * When you deploy an application for the first time, `cf` reads the variables described in the environment block of the manifest, and adds them to the environment of the container where the application is deployed.
 

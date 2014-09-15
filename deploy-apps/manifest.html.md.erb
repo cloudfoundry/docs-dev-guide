@@ -10,15 +10,16 @@ A manifest can help you automate deployment, especially of multiple applications
 
 ##<a id='find-manifest'></a>How cf push Finds the Manifest ##
 
-The `cf push` command looks for the `manifest.yml` file in the current working directory unless you use the `-f` option to provide a non-standard manifest location or filename.
+By default, the `cf push` command deploys an application using a `manifest.yml`
+file in the current working directory.
+Use the `-f` option to provide a non-standard manifest location or filename.
 
-A plain `cf push` command finds the manifest when it is named manifest.yml and located in the current working directory.
+To use `cf push` without an '-f` option, you must provide a manifest named `manifest.yml` in the current working directory.
 
 ~~~
 $ cf push
 Using manifest file /path_to_working_directory/manifest.yml
 ~~~
-
 
 With the `-f` option, a path with no filename means that the filename must be `manifest.yml`.
 
@@ -417,13 +418,4 @@ applications:
    path: ./december/target/december-weather.war
 ~~~
 
-Powerful as it is, inheritance can increase the potential for confusion. It’s a good idea to add comments which explain precisely how the child manifest extends or overrides the descriptions in the parent manifest.
-
-
-
-
-
-
-
-
-
+<class='note'><strong>Note</strong>: Inheritance can add an additional level of complexity to manifest creation and maintenance. Comments that precisely explain how the child manifest extends or overrides the descriptions in the parent manifest can alleviate this complexity.</p>

@@ -10,8 +10,8 @@ This page describes the environment variables that Droplet Execution Agents
 (DEAs) and buildpacks set for applications.
 
 For information about setting your own application-specific environment
-variables, see [Set Environment Variable in a Manifest](./manifest.html#env-block) on
-the [Application Manifests](./manifest.html) page.
+variables, refer to the [Set Environment Variable in a Manifest](./manifest.html#env-block) section in
+the Application Manifests topic.
 
 ## <a id='view'></a>View Environment Variable Values ##
 The sections below describe methods of viewing the values of Cloud Foundry
@@ -42,9 +42,9 @@ an application at staging time.
 
 You can access environment variables programmatically, including variables
 defined by the buildpack (if any).
-Refer to the buildpack documentation for [java](../../buildpacks/java/java-tips.html#env-var),
-[node.js](../../buildpacks/node/node-tips.html#env-var), and
-[ruby](../../buildpacks/ruby/ruby-tips.html#env-var).
+Refer to the buildpack documentation for [Java](../../buildpacks/java/java-tips.html#env-var),
+[Node.js](../../buildpacks/node/node-tips.html#env-var), and
+[Ruby](../../buildpacks/ruby/ruby-tips.html#env-var).
 
 ### <a id='HOME'></a>HOME ###
 Root folder for the deployed application.

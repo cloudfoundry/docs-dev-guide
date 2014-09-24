@@ -83,15 +83,15 @@ services:
  - test-mysql-01
 ~~~
 
-This excerpt from the cf push command and response shows that cf reads the manifest and binds the service instance to the app, which is called `test-msg-app`.
+This excerpt from the cf push command and response shows that cf reads the manifest and binds the service instance to the app, which is called `msgapp`.
 
 <pre class="terminal">
 $ cf push
-Using manifest file /Users/janclouduser/test-apps/test-msg-app/manifest.yml
+Using manifest file /Users/a.user/test-apps/msgapp/manifest.yml
 
 ...
 
-Binding service test-mysql-01 to test-msg-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>
+Binding service test-mysql-01 to msgapp in org my-org / space development as a.user@<%=vars.app_domain%>
 OK
 </pre>
 
@@ -104,14 +104,14 @@ For an example of the `cf bind-service` command, see the next section.
 
 ## <a id='cups-example'></a> Example: Creating a User-Provide Service Instance and Binding it to an App ##
 
-Suppose we want to create and bind an instance of a publish-subscribe messaging service to an app called `test-msg-app`.
-Our Cloud Foundry username is `janclouduser`, and we plan to call the instance `test-pubsub-01`.
+Suppose we want to create and bind an instance of a publish-subscribe messaging service to an app called `msgapp`.
+Our Cloud Foundry username is `a.user`, and we plan to call the instance `pubsub`.
 We know the URL and port for the service.
 
 1. We begin with the `cf create-user-provided-service` command in interactive mode, using its alias, `cups`.
 
 	<pre class="terminal">
-	$ cf cups test-pubsub-01 -p "host, port, binary, username, password"
+	$ cf cups pubsub -p "host, port, binary, username, password"
 
 	host> pubsub01.<%=vars.app_domain%>
 
@@ -122,7 +122,7 @@ We know the URL and port for the service.
 	username> pubsubuser
 
 	password> p@$$w0rd
-	Creating user provided service test-pubsub-01 in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	Creating user provided service pubsub in org my-org / space development as a.user@<%=vars.app_domain%>...
 	OK
 	</pre>
 
@@ -130,18 +130,18 @@ We know the URL and port for the service.
 
 	<pre class="terminal">
 	$ cf services
-	Getting services in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	Getting services in org my-org / space development as a.user@<%=vars.app_domain%>...
 	OK
 
 	name               service         plan    bound apps
-	test-pubsub-01     user-provided
+	pubsub     user-provided
 	</pre>
 
 1. Now we bind the service to our app.
 
 	<pre class="terminal">
-	$ cf bind-service test-msg-app test-pubsub-01
-	Binding service test-pubsub-01 to app test-msg-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	$ cf bind-service msgapp pubsub
+	Binding service pubsub to app msgapp in org my-org / space development as a.user@<%=vars.app_domain%>...
 	OK
 	TIP: Use 'cf push' to ensure your env variable changes take effect
 	</pre>
@@ -150,8 +150,8 @@ We know the URL and port for the service.
 1. For the binding to take effect, we must push our app a second time.
 
 	<pre class="terminal">
-	$ cf push test-msg-app
-	Updating app test-msg-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	$ cf push msgapp
+	Updating app msgapp in org my-org / space development as a.user@<%=vars.app_domain%>...
 	OK
 	...
 	</pre>
@@ -159,8 +159,10 @@ We know the URL and port for the service.
 1. To verify that the service instance is now recorded in [VCAP_SERVICES](../deploy-apps/environment-variable.html), we search the environment log.
 
 	<pre class="terminal">
-	$ cf files test-msg-app logs/env.log | grep VCAP_SERVICES
-	VCAP_SERVICES={"user-provided":[{"name":"test-pubsub-01","label":"user-provided","tags":[],"credentials":{"binary":"pubsub.rb","host":"pubsub01.<%=vars.app_domain%>","password":"p@29w0rd","port":"1234","username":"pubsubuser"},"syslog_drain_url":""}]}
+	$ cf files msgapp logs/env.log | grep VCAP_SERVICES
+	VCAP_SERVICES={"user-provided":[{"name":"pubsub","label":"user-provided","tags":[],
+	"credentials":{"binary":"pubsub.rb","host":"pubsub01.<%=vars.app_domain%>","password":"p@29w0rd","port":"1234","username":"pubsubuser"},
+	"syslog_drain_url":""}]}
 	</pre>
 
 

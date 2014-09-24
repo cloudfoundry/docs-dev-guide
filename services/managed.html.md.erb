@@ -78,17 +78,17 @@ For more information about manifests, see [Deploying with Application Manifests]
 ## <a id='create-service'></a>Example: Create a Managed Service Instance and Bind it to an App ##
 
 Suppose we want to create an instance of a service called `example-db` and bind
-it to an app called `test-db-app`.
+it to an app called `db-app`.
 A service broker catalog informs us that `example-db` offers a plan called
 "basic."
 Our Cloud Foundry username is `janclouduser` and we plan to name the service
-instance `test-ex-777`.
+instance `test-777`.
 
 1. We begin with the `cf create-service` command.
 
 	<pre class="terminal">
-	$ cf create-service example-db basic test-ex-777
-	Creating service test-ex-777 in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	$ cf create-service example-db basic test-777
+	Creating service test-777 in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
 	OK
 	</pre>
 
@@ -102,14 +102,14 @@ bound to any apps.
 	OK
 
 	name               service         plan    bound apps
-	test-ex-777     example-db         basic
+	test-777     example-db         basic
 	</pre>
 
 1. Now we bind the service to our app.
 
 	<pre class="terminal">
-	$ cf bind-service test-db-app test-ex-777
-	Binding service test-ex-777 to app test-db-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	$ cf bind-service db-app test-777
+	Binding service test-777 to app db-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
 	OK
 	TIP: Use 'cf push' to ensure your env variable changes take effect
 	</pre>
@@ -117,8 +117,8 @@ bound to any apps.
 1. For the binding to take effect, we must push our app a second time.
 
 	<pre class="terminal">
-	$ cf push test-db-app
-	Updating app test-db-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
+	$ cf push db-app
+	Updating app db-app in org janclouduser-org / space development as janclouduser@<%=vars.app_domain%>...
 	OK
     ...
 	</pre>
@@ -127,9 +127,13 @@ bound to any apps.
 we search the environment log.
 
 	<pre class="terminal">
-	$ cf files test-db-app logs/env.log | grep VCAP_SERVICES
+	$ cf files db-app logs/env.log | grep VCAP_SERVICES
 
-	VCAP_SERVICES={"example-db-n/a":[{"name":"test-ex-777","label":"example-db-n/","tags":["mysql","relational"],"plan":"basic","credentials":{"jdbcUrl":"jdbcmysql://bc3282dfc81aa8:24b81700@us-cdbr-east-05.example-db.net:3306/ad_068816026ae218","uri":"mysql://bc3282dfc81aa8:24b81700@us-cdbr-east-05.example-db.nt:1234/ad_0688168026ae218?reconnect=true","name":"ad_0688168026ae218","hostname":"us-cdbr-east-05.example-db.net","port":"1234","username":"bc3282dfc81aa8", "password":"24b81700"}}]}
+	VCAP_SERVICES={"example-db-n/a":[{"name":"test-777","label":"example-db-n/","tags":["mysql","relational"],
+	"plan":"basic","credentials":{"jdbcUrl":"jdbcmysql://bc3282dfc81aa8:24b81700@us-cdbr-east-05.example-db.net
+	:3306/ad_068816026ae218","uri":"mysql://bc3282dfc81aa8:24b81700@us-cdbr-east-05.example-db.nt:
+	1234/ad_0688168026ae218?reconnect=true","name":"ad_0688168026ae218","hostname":"us-cdbr-east-05.example-db.net",
+	"port":"1234","username":"bc3282dfc81aa8", "password":"24b81700"}}]}
 	</pre>
 
 

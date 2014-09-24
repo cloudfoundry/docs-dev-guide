@@ -156,13 +156,13 @@ We know the URL and port for the service.
 	...
 	</pre>
 
-1. To verify that the service instance is now recorded in [VCAP_SERVICES](../deploy-apps/environment-variable.html), we search the environment log.
+1. To verify that the service instance is now recorded in [VCAP_SERVICES](../deploy-apps/environment-variable.html), search the environment log.
 
 	<pre class="terminal">
 	$ cf files msgapp logs/env.log | grep VCAP_SERVICES
 	VCAP_SERVICES={"user-provided":[{"name":"pubsub","label":"user-provided","tags":[],
-	"credentials":{"binary":"pubsub.rb","host":"pubsub01.<%=vars.app_domain%>","password":"p@29w0rd","port":"1234","username":"pubsubuser"},
-	"syslog_drain_url":""}]}
+	"credentials":{"binary":"pubsub.rb","host":"pubsub01.<%=vars.app_domain%>","password":"p@29w0rd","port":"1234",
+	"username":"pubsubuser"},"syslog_drain_url":""}]}
 	</pre>
 
 

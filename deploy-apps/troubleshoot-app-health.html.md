@@ -179,7 +179,7 @@ To explore all logs available in the container, first view the log filenames, th
 
 <pre class="terminal">
 $ cf files my-app logs/
-	Getting files for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+	Getting files for app my-app in org my-org / space development as a.user@example.com...
 	OK
 
 	env.log                                   932B
@@ -188,7 +188,7 @@ $ cf files my-app logs/
 	stdout.log                                  0B
 
 $ cf files my-app logs/stderr.log
-	Getting files for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+	Getting files for app my-app in org my-org / space development as a.user@example.com...
 	OK
 
 	[2014-01-27 20:21:58] INFO  WEBrick 1.3.1

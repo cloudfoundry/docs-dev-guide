@@ -13,26 +13,38 @@ For information about setting your own application-specific environment
 variables, refer to the [Set Environment Variable in a Manifest](./manifest.html#env-block) section in
 the Application Manifests topic.
 
-## <a id='view'></a>View Environment Variable Values ##
-The sections below describe methods of viewing the values of Cloud Foundry
-environment variables.
+## <a id='view-env'></a>View Environment Variables ##
 
-### <a id='cli'></a>View Environment Variables using CLI ###
+Use the `cf env` command to view the Cloud Foundry environment variables for your application. `cf env` displays the following environment variables:
 
-The cf command line interface provides two commands that can return environment
-variables.
-
-To see the environment variables that you have set using the `cf set-env`
-command:
+* The `VCAP_SERVICES` variables existing in the container environment
+* The user-provided variables set using the `cf set-env` command
 
 <pre class="terminal">
-$ cf env my_app_name
-</pre>
+  $ cf env my-app
+  Getting env variables for app my-app in org My-Org / space development as admin...
+  OK
 
-To see the environment variables in the container environment:
+  System-Provided:
+  {
+    "VCAP_SERVICES": {
+      "p-mysql-n/a": [
+        {
+          "credentials": {
+      	    "uri":"postgres://lrra:e6B-X@p-mysqlprovider.example.com:5432/lraa
+          },
+          "label": "p-mysql-n/a",
+          "name": "p-mysql",
+          "syslog_drain_url": "",
+          "tags": ["postgres","postgresql","relational"]
+        }
+      ]
+    }
+  }
 
-<pre class="terminal">
-$ cf files my_app_name logs/env.log
+  User-Provided:
+  my-env-var: 100
+  my-drain: http://drain.example.com
 </pre>
 
 ## <a id='dea-set'></a>Variables Defined by the DEA ##
@@ -116,7 +128,7 @@ The table below lists the attributes that are returned.
 
 VCAP_APPLICATION={"instance_id":"451f045fd16427bb99c895a2649b7b2a",
 "instance_index":0,"host":"0.0.0.0","port":61857,"started_at":"2013-08-12
-00:05:29 +0000","started_at_timestamp":1376265929,"start":"2013-08-12 00:05:29 
+00:05:29 +0000","started_at_timestamp":1376265929,"start":"2013-08-12 00:05:29
 +0000","state_timestamp":1376265929,"limits":{"mem":512,"disk":1024,"fds":16384}
 ,"application_version":"c1063c1c-40b9-434e-a797-db240b587d32","application_name"
 :"styx-james","application_uris":["styx-james.a1-app.cf-app.com"],"version":"c10

@@ -165,13 +165,9 @@ by a `cf push` command.
 You must run `cf push` for the variable to take effect in the container
 environment.
 
-* View the environment variables that you have set using the `cf set-env` command:
+* Use the `cf env` command to view the environment variables that you have set using the `cf set-env` command and the variables in the container environment:
 
-    `cf env <appname>`
-
-* View the variables in the container environment:
-
-    `cf files <appname> logs/env.log`
+    `cf env APPNAME`
 
 ### <a id='logs'></a>Exploring logs ###
 
@@ -182,7 +178,6 @@ $ cf files my-app logs/
 	Getting files for app my-app in org my-org / space development as a.user@example.com...
 	OK
 
-	env.log                                   932B
 	staging_task.log                          844B
 	stderr.log                                182B
 	stdout.log                                  0B
@@ -219,8 +214,7 @@ To enable it for an entire shell session, set the variable first:
 
   `export CF_TRACE=<path_to_trace.log>`
 
-<p class="note"><strong>Note</strong>: <code>CF_TRACE</code> is a local environment variable that modifies
-the behavior of <code>cf</code> itself.
+<p class="note"><strong>Note</strong>: <code>CF_TRACE</code> is a local environment variable that modifies the behavior of <code>cf</code> itself.
 Do not confuse <code>CF_TRACE</code> with the <a href="#env">variables in the container environment</a> where your apps run.</p>
 
 ## <a id='cf-commands'></a>cf Troubleshooting Commands ##
@@ -241,10 +235,9 @@ specific application in the current space, including instance ID number, current
 state, how long it has been running, and how much CPU, memory, and disk it is
 using.
 
-* `cf env <app_name>`: Returns environment variables set using `cf set-env`.
+* `cf env <app_name>`: Returns environment variables set using `cf set-env` and variables existing in the container environment.
 
-* `cf events <app_name>`: Returns information about application crashes, including
-error codes.
+* `cf events <app_name>`: Returns information about application crashes, including error codes.
 See
 [https://github.com/cloudfoundry/errors](https://github.com/cloudfoundry/errors)
 for a list of Cloud Foundry errors.

@@ -15,9 +15,35 @@ However, this method is less efficient for multiple migrations because it requir
 <p class="note"><strong>Note</strong>: Use this method if you expect your database migration to take longer than the timeout that cf push applies to your application.
 The timeout defaults to 60 seconds, but you can extend it up to 180 seconds with the <code>-t</code> command line option.</p>
 
-1. Obtain your database credentials by searching for the `VCAP_SERVICES` environment variable in the application environment log:
+1. Run `cf env` and obtain your database credentials by searching in the `VCAP_SERVICES` environment variable:
 
-    `cf files my-app logs/env.log | grep VCAP_SERVICES`
+    <pre class="terminal">
+    $ cf env db-app
+    Getting env variables for app my-db-app in org My-Org / space development as admin...
+    OK
+
+    System-Provided:
+    {
+      "VCAP_SERVICES": {
+        "example-db-n/a": [
+          {
+            "name": "test-777",
+            "label": "example-db-n",
+            "tags": ["mysql","relational"],
+            "plan": "basic",
+            "credentials" : {
+              "jdbcUrl": "jdbcmysql://aa11:2b@cdbr-05.example.net:3306/ad_01",
+              "uri": "mysql://aa11:2b@cdbr-05.example.net:	34/ad_01?reconnect=true",
+              "name": "ad_01",
+              "hostname": "cdbr-05.example.net",
+              "port": "1234",
+              "username": "aa11",
+              "password": "2b"
+            }
+          }
+        ]
+      }
+    </pre>
 
 2. Connect to the database using your database credentials.
 

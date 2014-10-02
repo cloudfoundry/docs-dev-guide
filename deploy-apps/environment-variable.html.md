@@ -133,7 +133,7 @@ VCAP_APPLICATION={"instance_id":"451f045fd16427bb99c895a2649b7b2a",
 ,"application_version":"c1063c1c-40b9-434e-a797-db240b587d32","application_name"
 :"styx-james","application_uris":["styx-james.a1-app.cf-app.com"],"version":"c10
 63c1c-40b9-434e-a797-db240b587d32","name":"styx-james","uris":["styx-james.a1-ap
-p.cf-app.com"],"users":null}`
+p.cf-app.com"],"users":null}
 
 ~~~
 

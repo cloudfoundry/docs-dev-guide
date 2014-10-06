@@ -67,7 +67,7 @@ This method is efficient for occasional use because you can re-use the schema mi
 
 2. Deploy a single instance of your application with the database migration command as the start command. For example:
 
-    `cf push APP -c ‘rake db:migrate’ -i 1`
+    `cf push APP -c 'rake db:migrate' -i 1`
 
     <p class="note"><strong>Note</strong>: After this step the database has been migrated but the application itself has not started, because the normal start command is not used.</p>
 

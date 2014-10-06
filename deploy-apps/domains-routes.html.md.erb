@@ -38,7 +38,7 @@ Select the procedure below that corresponds with the type of domain you want to 
 
 Some DNS providers support using an alternative custom record type, such as ANAME or ALIAS, for adding custom zone apex domains. These domains are also known as root domains.
 
-Use a DNS ALIAS OR ANAME record to map a custom root domain to your app.
+Use a DNS ALIAS or ANAME record to map a custom root domain to your app.
 
  1. Create the domain in Cloud Foundry and associate it with an organization.
 
@@ -73,9 +73,9 @@ ALIAS and ANAME records follow the pattern illustrated below:
 	  <td>Refer to your DNS provider documentation to determine whether to use an empty or @ value for the Name entry.</td>
 	</tr>
 	</table>
-	
+
 #### <a id='root'></a>Map a Root Domain Using Subdomain Redirection ####
-		
+
 If your DNS provider does not support ANAME or ALIAS records, use subdomain redirection to add a custom root domain. This technique is also known as domain forwarding. If you use this method, note that SSL requests to the root domain result in an error because the SSL certificate generally only matches the subdomain. This error does not display if you are not using SSL or are only using SSL with URLs in subdomain form, meaning `https://www.example.com`.
 
 Configure the redirect from the root domain to the target <code>www</code> subdomain, and configure the <code>www</code> subdomain as a CNAME record reference to the target app URL. The table below illustrates this pattern.
@@ -99,7 +99,7 @@ Configure the redirect from the root domain to the target <code>www</code> subdo
 	  <td>yourappname.cfapps.io</td>
 	  <td></td>
 	</tr>
-	</table>		
+	</table>
 
 ### <a id='single-sub'></a>Map a Single Subdomain ###
 

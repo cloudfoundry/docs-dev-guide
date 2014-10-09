@@ -9,6 +9,6 @@ The current production version of cf is 6.x.
 Contents in this section:
 
 * [Installing cf v6](./install-go-cli.html)
-* [Getting Started with cf v6](./whats-new-v6.html)
+* [Getting Started with the cf CLI](./whats-new-v6.html)
 * [Using cf with an HTTP Proxy Server](./http-proxy.html)
 * [Scaling an Application Using cf scale](../deploy-apps/cf-scale.html)

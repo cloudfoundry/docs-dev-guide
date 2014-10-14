@@ -46,4 +46,4 @@ In this situation, if you decide to deploy using the buildpack start command, th
 
 ##<a id='databases'></a>Start commands for Deploying while Migrating a Database ##
 
-Start commands are used in special ways when you migrate a database as part of an application deployment. See [Migrating a Database on Cloud Foundry](../services/migrate-db.html).
+Start commands are used in special ways when you migrate a database as part of an application deployment. See [Migrating a Database in Cloud Foundry](../services/migrate-db.html).

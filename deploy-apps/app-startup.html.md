@@ -44,6 +44,6 @@ This can be helpful after you have deployed while providing a start command at t
 At this point, a command that you provided, rather than the buildpack start command, has become the default start command.
 In this situation, if you decide to deploy using the buildpack start command, the `null` command makes that easy.
 
-##<a id='databases'></a>Start commands for Deploying while Migrating a Database ##
+##<a id='databases'></a>Start Commands when Migrating a Database ##
 
 Start commands are used in special ways when you migrate a database as part of an application deployment. See [Migrating a Database in Cloud Foundry](../services/migrate-db.html).

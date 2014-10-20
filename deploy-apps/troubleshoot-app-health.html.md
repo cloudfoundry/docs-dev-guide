@@ -5,83 +5,84 @@ title: Troubleshooting Application Deployment and Health
 _This page assumes that you are using cf v6._
 
 Refer to this topic for help diagnosing and resolving common
-problems pushing and running apps on Cloud Foundry.
+issues when you deploy and run apps on Cloud Foundry.
 
 
-## <a id='scenarios'></a>Common Problems ##
+## <a id='scenarios'></a>Common Issues ##
 
-### <a id='time'></a>cf push times out ###
+The following sections describe common issues you might encounter when attempting to deploy and run your application, and possible resolutions. 
 
-A cf push can time out during an upload or a staging.
-Symptoms can include a "504 Gateway Timeout" error or messages stating
-"Error uploading application" or "timed out waiting for async job <job_name>
-to finish."
-If this happens, try these techniques.
+### <a id='time'></a>cf push Times Out ###
 
-**Check your network speed.**
-Depending on the size of your application, your cf push could be timing out because the upload is taking too long.
+If your deployment times out during the upload or staging phase, you may receive one of the following error messages:
+
+* `504 Gateway Timeout`
+* `Error uploading application`
+* `Timed out waiting for async job <job_name> to finish`
+
+If this happens, do the following:
+
+  * **Check your network speed.**
+  Depending on the size of your application, your `cf push` could be timing out because the upload is taking too long.
 Recommended internet connection speed is at least 768 KB/s (6 Mb/s) for uploads.
 
-**Make sure you are only pushing needed files.**
-By default cf will push all the contents of the current working directory.
-Make sure you are pushing just your application's directory.
+  * **Make sure you are pushing only needed files.**
+  By default cf will push all the contents of the current working directory.
+Make sure you are pushing only the directory for your application.
 If your application is too large, or if it has many small files, Cloud Foundry may time out during the upload.
-You can also reduce the size of the upload by removing unneeded files or
-[specifying files to be ignored](prepare-to-deploy.html#exclude) in the `.cfignore` file.
+To reduce the number of files you are pushing, ensure that you push only the directory for your application, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude).
 
-**Set the CF\_STAGING\_TIMEOUT and CF\_STARTUP\_TIMEOUT environment variables.**
-By default your app has 15 minutes to stage and 5 minutes to start.
+  * **Set the CF\_STAGING\_TIMEOUT and CF\_STARTUP\_TIMEOUT environment variables.**
+  By default your app has 15 minutes to stage and 5 minutes to start.
 You can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`.
 Type `cf help` at the command line for more information.
 
-**If your app contains a large number of files, try pushing the app repeatedly.**
-Each push uploads a few more files.
+  * **If your app contains a large number of files, try pushing the app repeatedly.**
+  Each push uploads a few more files.
 Eventually, all files have uploaded and the push succeeds.
-This is less likely to work if your app has many _small_ files.
+This is less likely to work if your app has many small_ files.
 
 ### <a id='upload'></a>App Too Large ###
 
 If your application is too large, you may receive one of the following error
 messages on `cf push`:
 
-* 413 Request Entity Too Large
-* You have exceeded your organization's memory limit
+* `413 Request Entity Too Large`
+* `You have exceeded your organization's memory limit`
 
-If this happens, do the following.
+If this happens, do the following:
 
-**Make sure your org has enough memory for all instances of your app.**
-You will not be able to use more memory than is allocated for your
+  * **Make sure your org has enough memory for all instances of your app.**
+  You will not be able to use more memory than is allocated for your
 organization.
-To see the memory quota for your org, use `cf org ORG_NAME`.
+  To view the memory quota for your org, use `cf org ORG_NAME`.
 
-Your total memory usage is the sum of the memory used by all applications
+    Your total memory usage is the sum of the memory used by all applications
 in all spaces within the org.
-Each application's memory usage is the memory allocated to it
+    Each application's memory usage is the memory allocated to it
 multiplied by the number of instances.
-To see the memory usage of all the apps in a space, use `cf apps`.
+  To view the memory usage of all the apps in a space, use `cf apps`.
 
-**Make sure your application is less than 1GB.**
-By default cf will push all the contents of the current working directory.
-To reduce the number of bits you are pushing, make sure you are pushing just
-your application's directory, and remove unneeded files or
-[specify files to be ignored](prepare-to-deploy.html#exclude) in the `.cfignore` file.
-These limits apply:
+  * **Make sure your application is less than 1 GB.**
+  By default, cf deploys all the contents of the current working directory.
+  To reduce the number of files you are pushing, ensure that you push only the directory for your application, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude).
+  The following limits apply:
 
-* The app bits to push cannot exceed 1GB.
+    * The app files to push cannot exceed 1 GB.
 
-* The droplet that results from compiling those bits cannot exceed 1.5GB;
-droplets are typically 1/3 larger than the pushed bits.
+    * The droplet that results from compiling those files cannot exceed 1.5 GB.
+    Droplets are typically a third larger than the pushed files.
 
-* The app bits, compiled droplet, and buildpack cache together cannot use
-more than 4GB of space during staging.
+    * The combined size of the app files, compiled droplet, and buildpack cache cannot total more than 4 GB of space during staging.
+
+For more information on cf size and time limitations when deploying an app, refer to the [App Upload Limitations](./deploy-app.html#app-upload-limits) section of Deploy an Application. 
 
 ### <a id='detect'></a>Unable to Detect a Supported Application Type ###
 
 If Cloud Foundry cannot [identify an appropriate buildpack](../../buildpacks/detection.html)
-for your app, you will see an error message that says "Unable to detect a supported
-application type."
+for your app, you will see an error message that states `Unable to detect a supported application type`.
 
-You can see what buildpacks are available with the `cf buildpacks` command.
+You can view what buildpacks are available with the `cf buildpacks` command.
 
 If you see a buildpack that you believe should support your app, refer to the
 [buildpack documentation](../../buildpacks/) for details about how that buildpack detects applications it supports.
@@ -92,8 +93,7 @@ using `cf push -b` with a path to your buildpack.
 
 ### <a id='start'></a>App Fails to Start ###
 
-After cf push stages the app and uploads the droplet, the app may fail to start,
-commonly with a pattern of starting and crashing:
+After `cf push` stages the app and uploads the droplet, the app may fail to start, commonly with a pattern of starting and crashing similar to the following example:
 
 <pre class="terminal">
 -----> Uploading droplet (23M)
@@ -106,7 +106,7 @@ FAILED
 Start unsuccessful
 </pre>
 
-If this happens, try the following techniques.
+If this happens, try the following:
 
 **Find the reason app is failing and modify your code.**
 Run `cf events <app_name>` and `cf logs <app_name> --recent` and look for
@@ -118,7 +118,7 @@ These messages may identify a memory or port issue.
 If they do, take that as a starting point when you re-examine and fix your
 application code.
 
-**Make sure your application code uses the `VCAP_APP_PORT` environment variable.**
+  * **Make sure your application code uses the `VCAP_APP_PORT` environment variable.**
 Your application may be failing because it is listening on the wrong port.
 Instead of hard coding the port on which your application listens, use the `VCAP_APP_PORT` environment variable.
 
@@ -130,7 +130,7 @@ variable:
 For more examples specific to your application framework, see the
 appropriate [buildpacks documentation](../../buildpacks/) for your app's language.
 
-**Make sure your app adheres to the principles of the
+  * **Make sure your app adheres to the principles of the
 [Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an Application]
 (./prepare-to-deploy.html).**
 These texts explain how to prevent situations where your app builds locally but
@@ -138,7 +138,7 @@ fails to build in the cloud.
 
 ### <a id='out-of-memory'></a>App consumes too much memory, then crashes ###
 
-An app that cf push has uploaded and started can crash later if it uses
+An app that `cf push` has uploaded and started can crash later if it uses
 too much memory.
 
 **Make sure your app is not consuming more memory than it should.**
@@ -149,8 +149,7 @@ If it exceeds the limit, modify the app to use less memory.
 
 ## <a id='info'></a>Gathering Diagnostic Information ##
 
-Use the techniques in this section to gather diagnostic information that
-captures the symptoms of the problem you are troubleshooting.
+Use the techniques in this section to gather diagnostic information and troubleshoot app deployment issues.
 
 ### <a id='env'></a>Examining Environment Variables ###
 
@@ -165,7 +164,7 @@ by a `cf push` command.
 You must run `cf push` for the variable to take effect in the container
 environment.
 
-* Use the `cf env` command to view the environment variables that you have set using the `cf set-env` command and the variables in the container environment:
+Use the `cf env` command to view the environment variables that you have set using the `cf set-env` command and the variables in the container environment:
 
     `cf env APPNAME`
 

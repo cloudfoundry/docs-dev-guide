@@ -75,8 +75,6 @@ multiplied by the number of instances.
 
     * The combined size of the app files, compiled droplet, and buildpack cache cannot total more than 4 GB of space during staging.
 
-For more information on cf size and time limitations when deploying an app, refer to the [App Upload Limitations](./deploy-app.html#app-upload-limits) section of Deploy an Application. 
-
 ### <a id='detect'></a>Unable to Detect a Supported Application Type ###
 
 If Cloud Foundry cannot [identify an appropriate buildpack](../../buildpacks/detection.html)

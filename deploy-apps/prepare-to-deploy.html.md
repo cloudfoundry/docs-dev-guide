@@ -14,20 +14,17 @@ The following guidelines represent best practices for developing modern applicat
 ### <a id="filesystem"></a>Avoid Writing to the Local File System ###
 
 Applications running on Cloud Foundry should not write files to the local file
-system.
-There are a few reasons for this.
+system for the following reasons:
 
 * **Local file system storage is short-lived.** When an application instance crashes or stops, the resources assigned to that instance are reclaimed by the platform including any local disk changes made since the app started. When the instance is restarted, the application will start with a new disk image. Although your application can write local files while it is running, the files will disappear after the application restarts.
 
-* **Instances of the same application do not share a local file system.** Each application instance runs in its own isolated container. Thus a file written by one instance is not visible to other instances of the same application. If the files are temporary, this should not be a problem. However, if your application needs the data in the files to persist across application restarts, or the data needs to be shared across all running instances of the application, the local file system should not be used. Rather we recommend using a shared data service like a database or blob store for this purpose.
+* **Instances of the same application do not share a local file system.** Each application instance runs in its own isolated container. Thus a file written by one instance is not visible to other instances of the same application. If the files are temporary, this should not be a problem. However, if your application needs the data in the files to persist across application restarts, or the data needs to be shared across all running instances of the application, the local file system should not be used. Rather we recommend using a shared data service like a database or blobstore for this purpose.
 
 For example, rather than using the local file system, you can use a Cloud
 Foundry service such as the MongoDB document database or a relational database
 (MySQL or Postgres).
 Another option is to use cloud storage providers such as [Amazon S3](http://aws.amazon.com/s3/), [Google Cloud Storage](https://cloud.google.com/products/cloud-storage), [Dropbox](https://www.dropbox.com/developers), or [Box](http://developers.box.com/).
-If your application needs to communicate across different instances of itself
-(for example to share state), consider a cache like Redis or a messaging-based
-architecture with RabbitMQ.
+If your application needs to communicate across different instances of itself, consider a cache like Redis or a messaging-based architecture with RabbitMQ.
 
 ### <a id="sessions"></a>HTTP Sessions Not Persisted or Replicated ###
 
@@ -90,19 +87,11 @@ or _evacuated_, on the DEA to be upgraded, then restarted on another DEA.
 To avoid the risk of an application being unavailable during Cloud Foundry
 upgrade processes, you should run more than one instance of an application.
 
-## <a id="Buildpack"></a>Buildpacks and Language-Specific Considerations ##
+## <a id="buildpacks"></a>Using Buildpacks ##
 
-Cloud Foundry stages application using buildpacks.
-Heroku developed the buildpack approach and made it available to the open source
-community.
-Cloud Foundry currently provides buildpacks for the several runtimes and
-frameworks.
+A buildpack consists of bundles of detection and configuration scripts that
+provide framework and runtime support for your applications.
+When you deploy an application that needs a buildpack, Cloud Foundry installs
+the buildpack on the Droplet Execution Agent (DEA) where the application runs.
 
-### <a id="system-buildpacks"></a>Cloud Foundry Buildpacks ###
-
-Cloud Foundry uses [buildpacks](../../buildpacks/) to transform user-provided
-artifacts into runnable applications.
-The functionality of buildpacks varies, but many of them examine the
-user-provided artifact in order to properly download needed dependencies and
-configure applications to communicate with bound services.
-Heroku developed the buildpack approach and Cloud Foundry embraces it.
+For more information, see the [Buildpacks](../../buildpacks/) topic.

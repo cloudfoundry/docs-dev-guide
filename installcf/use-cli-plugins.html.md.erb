@@ -23,13 +23,14 @@ For example, if you set `CF_PLUGIN_HOME` to `/my-folder`, cf CLI stores plugins 
 1. Download a binary or the source code for a plugin from a trusted provider. 
 
     <p class="note"><strong>Note</strong>: The cf CLI requires a binary file compiled from source code written in Go. If you 
-download source code, you must compile the code to create a binary.
+download source code, you must compile the code to create a binary.</p>
 
 1. Run `cf install-plugin BINARY_FILENAME` to install a plugin. Replace `BINARY_FILENAME` with the path to and name of your binary file.
 
-    <p class="note"><strong>Notes</strong>: You cannot install a plugin that has the same name or that uses the same command as an existing plugin. You must first uninstall the existing plugin.
+    <p class="note"><strong>Notes</strong>: 
+    <ul><li>You cannot install a plugin that has the same name or that uses the same command as an existing plugin. You must first uninstall the existing plugin.</li>
 
-The cf CLI prohibits you from installing any plugin that uses an existing cf CLI command name or alias.
+    <li>The cf CLI prohibits you from implementing any plugin that uses a native cf CLI command name or alias. For example, if you attempt to install a third-party plugin that includes the command <code>cf push</code>, the cf CLI halts the installation.</li></ul></p>
 
 ## <a id="plugin-run-cmd"></a>Running a Plugin Command ##
 

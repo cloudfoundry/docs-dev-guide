@@ -1,0 +1,60 @@
+---
+title: Using Cloud Foundry Command Line Interface Plugins
+---
+
+The Cloud Foundry Command Line Interface (cf CLI) v.6.7 and higher includes plugin functionality. These plugins enable developers to add custom commands to the cf CLI. You can install and use plugins that Cloud Foundry developers and third-party developers create. 
+
+The cf CLI identifies a plugin by its binary filename, its developer-defined plugin name, and the commands the plugin provides. You use the binary filename only to install a plugin. You use the plugin name or a command for any other action.
+
+<p class="note"><strong>Note</strong>: The cf CLI uses case-sensitive plugin names and commands, but not case-sensitive binary filenames.</p>
+
+## <a id="prereqs"></a>Prerequisites ##
+
+Using plugins requires cf CLI v.6.7 or higher. Refer to the [Installing the cf Command Line Interface](./install-go-cli.html) topic for information on how to download, install, and uninstall the cf CLI.
+
+## <a id="plugin-directory"></a>Changing the Plugin Directory ##
+
+By default, the cf CLI stores plugins in `$HOME/.cf/plugins` on your workstation. To change the root directory of this path from `$HOME`, set the `CF_PLUGIN_HOME` environment variable. The cf CLI appends `.cf/plugins` to the `CF_PLUGIN_HOME` path that you specify and stores plugins in that location.
+
+For example, if you set `CF_PLUGIN_HOME` to `/my-folder`, cf CLI stores plugins in `/my-folder/.cf/plugins`.
+
+## <a id="plugin-install"></a>Installing a Plugin ##
+
+1. Download a binary or the source code for a plugin from a trusted provider. 
+
+    <p class="note"><strong>Note</strong>: The cf CLI requires a binary file compiled from source code written in Go. If you 
+download source code, you must compile the code to create a binary.
+
+1. Run `cf install-plugin BINARY_FILENAME` to install a plugin. Replace `BINARY_FILENAME` with the path to and name of your binary file.
+
+    <p class="note"><strong>Notes</strong>: You cannot install a plugin that has the same name or that uses the same command as an existing plugin. You must first uninstall the existing plugin.
+
+The cf CLI prohibits you from installing any plugin that uses an existing cf CLI command name or alias.
+
+## <a id="plugin-run-cmd"></a>Running a Plugin Command ##
+
+Use the contents of the `cf help` `PLUGIN` and `PLUGIN COMMANDS` sections to manage plugins and run plugin commands. 
+
+1. Run `cf plugins` to list all installed plugins and all commands that the plugins provide.
+1. Run `cf PLUGIN_COMMAND` to execute a plugin command.
+
+## <a id="plugin-uninstall"></a>Uninstalling a Plugin ##
+
+Use the `PLUGIN_NAME` to remove a plugin, not the `BINARY_FILENAME`.
+
+1. Run `cf plugins` to view the names of all installed plugins.
+1. Run `cf uninstall-plugin PLUGIN_NAME` to remove a plugin.
+
+## <a id="troubleshoot"></a>Troubleshooting ##
+
+The cf CLI provides the following error messages to help you troubleshoot installation and usage issues. Third-party plugins can provide their own error messages.
+
+### Permission Denied###
+If you receive a `permission denied` error message, you lack required permissions to the plugin. You must have `read` and `execute` permissions to the plugin binary file.
+
+### Plugin Command Collision###
+Plugin names and commands must be unique. The CLI displays an error message if you attempt to install a plugin with a non-unique name or command.
+
+If the plugin has the same name or command as a currently installed plugin, you must first uninstall the existing plugin to install the new plugin.
+
+If the plugin has a command with the same name as a native cf CLI command or alias, you cannot install the plugin.

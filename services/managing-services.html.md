@@ -42,13 +42,13 @@ OK
 
 User-provided service instances are service instances which have been provisioned outside of Cloud Foundry. For example, a DBA may provide a developer with credentials to an Oracle database managed outside of, and unknown to Cloud Foundry. Rather than hard coding credentials for these instances into your applications, you can create a mock service instance in Cloud Foundry to represent an external resource using the familiar `create-service` command, and provide whatever credentials your application requires.
 
-* [User Provided Service Instances](user-provided.html)
+Refer to the [User Provided Service Instances](user-provided.html) topic for more information.
 
 ## <a id='update_service'></a>Update a Service Instance Plan ##
 
-Updating the service instance plan modifies the plan used by an existing service instance. For example, updating a database service instance with a 1GB plan to a new 100MB plan.
+Updating the service instance plan modifies the plan used by an existing service instance. For example, updating a database service instance with a 1 GB plan to a new 100 MB plan.
 
-* You must restart your application such that it recognizes changes to environment variables.
+You must restart your application to ensure that it recognizes changes to environment variables.
 
 You can update an existing service instance as follows:
 

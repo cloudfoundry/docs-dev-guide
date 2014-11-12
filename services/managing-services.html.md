@@ -44,6 +44,22 @@ User-provided service instances are service instances which have been provisione
 
 * [User Provided Service Instances](user-provided.html)
 
+## <a id='update_service'></a>Update a Service Instance Plan ##
+
+Updating the service instance plan modifies the plan used by an existing service instance. For example, updating a database service instance with a 1GB plan to a new 100MB plan.
+
+* You must restart your application such that it recognizes changes to environment variables.
+
+You can update an existing service instance as follows:
+
+<pre class="terminal">
+$ cf update-service my-service-instance -p new-plan
+Updating service instance my-service-instance as me@example.com...
+OK
+
+$ cf restart my-app
+</pre>
+
 ## <a id='bind'></a>Bind a Service Instance ##
 
 Binding a service to your application adds credentials for the service instance to the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. In most cases these credentials are unique to the binding; another app bound to the same service instance would receive different credentials.How your app leverages the contents of environment variables may depend on the framework you employ. Refer to the [Deploying Apps](../deploy-apps/index.html) section for more information.

@@ -8,7 +8,7 @@ The current production version of the cf CLI is 6.x.
 
 Contents in this section:
 
-* [Installing cf v6](./install-go-cli.html)
+* [Installing cf CLI v6](./install-go-cli.html)
 * [Getting Started with the cf CLI](./whats-new-v6.html)
 * [Using the cf CLI with an HTTP Proxy Server](./http-proxy.html)
 * [Using cf CLI Plugins](./use-cli-plugins.html)

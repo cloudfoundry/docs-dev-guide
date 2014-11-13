@@ -50,7 +50,7 @@ With v192 of [cf-release](https://github.com/cloudfoundry/cf-release) and v6.7 o
 
 ### Upgrade/Downgrade Service Plan
 
-By updating the service plan for an instance, users can effectively upgrade and downgrade their service instance to other service plans. Though the platform and CLI now supports this feature, services must expressly implement support for it so not all services will. Further, a service may support updating between some plans but not others (eg. a service may support updating a plan where only a logical change is required, but not where data migration is necessary). In either case, users can expect to see a meaningful error when plan update is not supported.
+By updating the service plan for an instance, users can effectively upgrade and downgrade their service instance to other service plans. Though the platform and CLI now supports this feature, services must expressly implement support for it so not all services will. Further, a service may support updating between some plans but not others (e.g. a service may support updating a plan where only a logical change is required, but not where data migration is necessary). In either case, users can expect to see a meaningful error when plan update is not supported.
 
 You can update the plan for an existing service instance as follows:
 

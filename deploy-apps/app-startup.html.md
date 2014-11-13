@@ -2,7 +2,7 @@
 title: About Starting Applications
 ---
 
-_This page assumes that you are using cf v6_.
+_This page assumes you are using cf CLI v6_.
 
 `cf push` starts your application with a command from one of three sources:
 
@@ -16,7 +16,7 @@ _This page assumes that you are using cf v6_.
 
 1. The buildpack, which provides a start command appropriate for a particular type of application.
 
-The source `cf` uses depends on factors explained below.
+The source that the `cf` CLI uses depends on factors explained below.
 
 ##<a id='first-time'></a>How cf push Determines its Default Start Command ##
 
@@ -28,7 +28,7 @@ When you provide start commands _both_ at the command line and in the manifest, 
 
 ##<a id='revert'></a>Forcing cf push to use the Buildpack Start Command ##
 
-To force `cf` to use the buildpack start command, specify a start command of `null`.
+To force the `cf` CLI to use the buildpack start command, specify a start command of `null`.
 
 You can specify a null start command in one of two ways.
 

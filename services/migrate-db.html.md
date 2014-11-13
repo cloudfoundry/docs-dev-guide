@@ -2,7 +2,7 @@
 title: Migrating a Database in Cloud Foundry
 ---
 
-_This page assumes that you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 Application development and maintenance often requires changing a database schema, known as migrating the database. This topic describes three ways to migrate a database on Cloud Foundry.
 
@@ -75,7 +75,7 @@ This method is efficient for occasional use because you can re-use the schema mi
 
     `cf push APP -c 'null' -i 4`
 
-    <p class="note"><strong>Note</strong>: This example assumes that the normal start command for your application is the one provided by the buildpack, which the <code>-c 'null'</code> option forces cf to use.</p>
+    <p class="note"><strong>Note</strong>: This example assumes that the normal start command for your application is the one provided by the buildpack, which the <code>-c 'null'</code> option forces Cloud Foundry to use.</p>
 
 ## <a id='frequent-migration'></a>Migrate Frequently ##
 This method uses an idempotent script to partially automate migrations. The script runs on the first application instance only.

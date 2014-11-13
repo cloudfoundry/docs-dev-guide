@@ -2,7 +2,7 @@
 title: Application Logging in Cloud Foundry
 ---
 
-_This page assumes you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 Loggregator, the Cloud Foundry component responsible for logging, provides a
 stream of log output from your application and from Cloud Foundry system
@@ -100,9 +100,9 @@ then selections from the HTTP request.
 For example:
 
 <pre class="terminal">
-2014-02-13T11:42:31.96-0800 [RTR]     OUT nifty-gui.<%=vars.app_domain%> - [13/02/2014:19:42:31 +0000] 
-"GET /favicon.ico HTTP/1.1" 404 23 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 
-(KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36" 10.10.2.142:6609 response_time:0.004092262 
+2014-02-13T11:42:31.96-0800 [RTR]     OUT nifty-gui.<%=vars.app_domain%> - [13/02/2014:19:42:31 +0000]
+"GET /favicon.ico HTTP/1.1" 404 23 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36
+(KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36" 10.10.2.142:6609 response_time:0.004092262
 app_id:e1ca6390-cf78-4fc7-9d86-5b7ed01e9c28
 </pre>
 
@@ -147,14 +147,14 @@ For example:
 <pre class="terminal">
 $ cf logs nifty-gui
 	Connected, tailing logs for app nifty-gui in org janclouduser / space jancloudspace as admin...
-	2014-02-06T12:00:19.44-0800 [API]     
-		OUT Updated app with guid c8612fc2-85b1-464c-92f5-d4a1156eacbf 
+	2014-02-06T12:00:19.44-0800 [API]
+		OUT Updated app with guid c8612fc2-85b1-464c-92f5-d4a1156eacbf
 		({"route"=>"2ef5796b-475a-4615-9c71-75bbe277022e"})
-	2014-02-06T12:00:27.54-0800 [DEA]     
-		OUT Got staging request for app with id 
+	2014-02-06T12:00:27.54-0800 [DEA]
+		OUT Got staging request for app with id
 		c8612fc2-85b1-464c-92f5-d4a1156eacbf
-	2014-02-06T12:00:28.51-0800 [API]     
-		OUT Updated app with guid c8612fc2-85b1-464c-92f5-d4a1156eacbf 
+	2014-02-06T12:00:28.51-0800 [API]
+		OUT Updated app with guid c8612fc2-85b1-464c-92f5-d4a1156eacbf
 		({"state"=>"STARTED"})
 	...
 </pre>
@@ -173,22 +173,22 @@ In the example below, `grep -v` excludes all Router logs:
 
 <pre class="terminal">
 $ cf logs nifty-gui --recent | grep -v RTR
-	Connected, dumping recent logs for app nifty-gui in org jancloudspace-org / space development 
+	Connected, dumping recent logs for app nifty-gui in org jancloudspace-org / space development
 	as jancloudspace@<%=vars.app_domain%>...
-	2014-02-07T10:54:40.41-0800 [STG]     
+	2014-02-07T10:54:40.41-0800 [STG]
 		OUT -----> Uploading droplet (5.6M)
-	2014-02-07T10:54:44.44-0800 [DEA]     
-		OUT Starting app instance (index 0) with guid 
+	2014-02-07T10:54:44.44-0800 [DEA]
+		OUT Starting app instance (index 0) with guid
 		4d397313-20e0-478a-9a74-307446eb7640
-	2014-02-07T10:54:46.31-0800 [App/0]   
+	2014-02-07T10:54:46.31-0800 [App/0]
 		OUT Express server started
-	2014-02-07T10:57:53.60-0800 [API]     
-		OUT Updated app with guid 4d397313-20e0-478a-9a74-307446eb7640 
+	2014-02-07T10:57:53.60-0800 [API]
+		OUT Updated app with guid 4d397313-20e0-478a-9a74-307446eb7640
 		({"instances"=>2})
-	2014-02-07T10:57:53.64-0800 [DEA]     
-		OUT Starting app instance (index 1) with guid 
+	2014-02-07T10:57:53.64-0800 [DEA]
+		OUT Starting app instance (index 1) with guid
 		4d397313-20e0-478a-9a74-307446eb7640
-	2014-02-07T10:57:55.88-0800 [App/1]   
+	2014-02-07T10:57:55.88-0800 [App/1]
 		OUT Express server started
 	...
 </pre>

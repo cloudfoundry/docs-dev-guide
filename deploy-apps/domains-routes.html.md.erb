@@ -1,7 +1,7 @@
 ---
 title: Domains, Subdomains, and Routes
 ---
-_This page assumes you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 This page has information about how to specify the route (or URL) that Cloud
 Foundry uses to direct requests to an application.
@@ -21,7 +21,7 @@ known as a zone apex domain or a root domain. Routes are children of domains and
 directly bound to apps in Cloud Foundry.
 
 A Cloud Foundry instance defines a default shared domain.
-Unless you specify a domain, `cf` uses the default shared domain in the route to
+Unless you specify a domain, Cloud Foundry uses the default shared domain in the route to
 your application.
 
 ## <a id='create-domains'></a>Use Your Custom Domain in Cloud Foundry ##
@@ -227,7 +227,7 @@ Example:
 $ cf push myapp -d example.org -n myapp
 </pre>
 
-The route cf creates for the application as a result of this command is
+The route Cloud Foundry creates for the application as a result of this command is
 `myapp.example.org`.
 
 ## <a id='assign-in-manifest'></a>Assign Subdomain in Manifest ##

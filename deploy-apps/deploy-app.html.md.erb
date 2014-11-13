@@ -1,7 +1,7 @@
 ---
 title: Deploy an Application
 ---
-_This page assumes that you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 <p class="note"><strong>Note:</strong> See the <a href="../../buildpacks/">buildpacks</a> documentation for complete deployment guides specific to your application language or framework, such as the <a href="../../buildpacks/ruby/gsg-ror.html">Getting Started Deploying Ruby on Rails Apps</a> guide.</p>
 
@@ -9,7 +9,7 @@ _This page assumes that you are using cf v6._
 
 You deploy an application to Cloud Foundry by running a `push` command from a
 Cloud Foundry command line interface (CLI).
-Refer to the [Install cf v6](../installcf/install-go-cli.html) topic for more
+Refer to the [Install cf CLI v6](../installcf/install-go-cli.html) topic for more
 information.
 Between the time you run `push` and the time that the application is available,
 Cloud Foundry:
@@ -123,7 +123,7 @@ See [Deploying with Application Manifests](./manifest.html) to learn how
 application settings change from push to push, and how command-line options,
 manifests, and commands like `cf scale` interact.
 
-When you deploy an application while it is running, `cf` stops all instances of
+When you deploy an application while it is running, Cloud Foundry stops all instances of
 that application and then deploys.
 Users who try to run the application get a "404 not found" message while cf push
 is running.
@@ -133,7 +133,7 @@ A worst-case example would be deploying an update that involved a database
 schema migration, because instances running the old code would not work and
 users could lose data.
 
-`cf` uploads all application files except version control files with file
+Cloud Foundry uploads all application files except version control files with file
 extensions `.svn`, `.git`, and `.darcs`.
 To exclude other files from upload, specify them in a `.cfignore` file in the
 directory where you run the push command.
@@ -159,7 +159,7 @@ You can also use command-line options to specify these and additional
 attributes.
 
 The following transcript, generated when joeclouduser deployed the "my-app"
-Sinatra application, shows how cf assigns default values to application when
+Sinatra application, shows how Cloud Foundry assigns default values to application when
 given a minimal push command.
 
 <p class ="note"><strong>Note</strong>: When deploying your own apps, avoid generic names like <code>my-app</code>,
@@ -233,5 +233,5 @@ framework:
 If your application does not start on Cloud Foundry, first check that your
 application can run locally.
 
-You can troubleshoot your application in the cloud using `cf`.
+You can troubleshoot your application in the cloud using the `cf` CLI.
 See [Troubleshoot Application Deployment and Health](./troubleshoot-app-health.html).

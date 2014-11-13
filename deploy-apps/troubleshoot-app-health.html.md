@@ -2,7 +2,7 @@
 title: Troubleshooting Application Deployment and Health
 ---
 
-_This page assumes that you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 Refer to this topic for help diagnosing and resolving common
 issues when you deploy and run apps on Cloud Foundry.
@@ -10,7 +10,7 @@ issues when you deploy and run apps on Cloud Foundry.
 
 ## <a id='scenarios'></a>Common Issues ##
 
-The following sections describe common issues you might encounter when attempting to deploy and run your application, and possible resolutions. 
+The following sections describe common issues you might encounter when attempting to deploy and run your application, and possible resolutions.
 
 ### <a id='time'></a>cf push Times Out ###
 
@@ -27,7 +27,7 @@ If this happens, do the following:
 Recommended internet connection speed is at least 768 KB/s (6 Mb/s) for uploads.
 
   * **Make sure you are pushing only needed files.**
-  By default cf will push all the contents of the current working directory.
+  By default, `cf push` will push all the contents of the current working directory.
 Make sure you are pushing only the directory for your application.
 If your application is too large, or if it has many small files, Cloud Foundry may time out during the upload.
 To reduce the number of files you are pushing, ensure that you push only the directory for your application, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude).
@@ -64,7 +64,7 @@ multiplied by the number of instances.
   To view the memory usage of all the apps in a space, use `cf apps`.
 
   * **Make sure your application is less than 1 GB.**
-  By default, cf deploys all the contents of the current working directory.
+  By default, Cloud Foundry deploys all the contents of the current working directory.
   To reduce the number of files you are pushing, ensure that you push only the directory for your application, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude).
   The following limits apply:
 
@@ -191,7 +191,7 @@ $ cf files my-app logs/stderr.log
 ### <a id='trace'></a>Tracing Cloud Controller REST API Calls ###
 
 If a command fails or produces unexpected results, re-run it with `CF_TRACE`
-enabled to view requests and responses between `cf` and the Cloud Controller
+enabled to view requests and responses between the cf CLI and the Cloud Controller
 REST API.
 
 For example:
@@ -219,7 +219,7 @@ Do not confuse <code>CF_TRACE</code> with the <a href="#env">variables in the co
 You can investigate app deployment and health using the `cf` command line
 interface.
 
-Some `cf` commands may return connection credentials.
+Some cf CLI commands may return connection credentials.
 Remove credentials and other sensitive information from command
 output before you post the output a public forum.
 

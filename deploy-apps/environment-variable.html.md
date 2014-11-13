@@ -2,7 +2,7 @@
 title: Cloud Foundry Environment Variables
 ---
 
-_This page assumes that you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 Environment variables are the means by which the Cloud Foundry runtime
 communicates with a deployed application about its environment.

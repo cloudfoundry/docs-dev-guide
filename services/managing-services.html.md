@@ -2,7 +2,7 @@
 title: Managing Service Instances with the CLI
 ---
 
-_This page assumes you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 ## <a id='viewing-services'></a> View Available Services ##
 

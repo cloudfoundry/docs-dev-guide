@@ -2,7 +2,7 @@
 title: User-Provided Service Instances
 ---
 
-_This page assumes that you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 User-provided service instances allow you to represent external assets like databases, messaging services, and key-value stores in Cloud Foundry.
 
@@ -19,15 +19,15 @@ Although the external asset in this example was a real Oracle database, it could
 have been a simple placeholder used for testing.
 
 User provided services are outside of Cloud Foundry, so you never create or
-otherwise manage the service itself through cf; you only create and manage service _instances_.
+otherwise manage the service itself through Cloud Foundry; you only create and manage service _instances_.
 
 The `cf services` command lists all the service instances (both user-provided and managed) in your target space.
 
 In contrast to the user-provided kind, a managed service is one that a service broker advertises in a catalog. See [Managed Service Instances] (./managed.html).
 
-## <a id='commands'></a>cf Commands for Working with User-Provided Service Instances ##
+## <a id='commands'></a>cf CLI Commands for Working with User-Provided Service Instances ##
 
-cf commands for creating and updating user-provided service instances can be used in three ways: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
+cf CLI commands for creating and updating user-provided service instances can be used in three ways: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
 
 Once created, user-provided service instances can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
 
@@ -36,7 +36,7 @@ Once created, user-provided service instances can be bound to an application wit
 The alias for `create-user-provided-service` is `cups`.
 
 To create a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names.
-cf then prompts you for each parameter in turn.
+The cf CLI then prompts you for each parameter in turn.
 
   `cf cups SERVICE_INSTANCE -p "host, port, dbname, username, password"`
 
@@ -55,7 +55,7 @@ You can use `cf update-user-provided-service` to update one or more of the attri
 Attributes that you do not supply are not updated.
 
 To update a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names.
-cf then prompts you for each parameter in turn.
+The cf CLI then prompts you for each parameter in turn.
 
   `cf uups SERVICE_INSTANCE -p "HOST, PORT, DATABASE, USERNAME, PASSWORD"`
 
@@ -83,7 +83,7 @@ services:
  - test-mysql-01
 ~~~
 
-This excerpt from the cf push command and response shows that cf reads the manifest and binds the service instance to the app, which is called `msgapp`.
+This excerpt from the cf push command and response shows that Cloud Foundry reads the manifest and binds the service instance to the app, which is called `msgapp`.
 
 <pre class="terminal">
 $ cf push

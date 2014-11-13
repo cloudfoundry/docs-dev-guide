@@ -2,7 +2,7 @@
 title: Deploying with Application Manifests
 ---
 
-_This page assumes that you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 Application manifests tell `cf push` what to do with applications. This includes everything from how many instances to create and how much memory to allocate to what services applications should use.
 
@@ -63,16 +63,16 @@ These behaviors are useful for testing.</p>
 
 ## <a id='find-app'></a>How cf push Finds the Application ##
 
-By default, `cf` recursively pushes the contents of the current working directory. Alternatively, you can provide a path using either a manifest or a command line option.
+By default, `cf push` recursively pushes the contents of the current working directory. Alternatively, you can provide a path using either a manifest or a command line option.
 
-- If the path is to a directory, `cf` recursively pushes the contents of that directory instead of the current working directory.
-- If the path is to a file, `cf` pushes only that file.
+- If the path is to a directory, `cf push` recursively pushes the contents of that directory instead of the current working directory.
+- If the path is to a file, `cf push` pushes only that file.
 
 <p class="note"><strong>Note</strong>: If you want to push more than a single file, but not the entire contents of a directory, consider using a <code>.cfignore</code> file to tell <code>cf push</code> what to exclude.</p>
 
 ## <a id='precedence'></a>Precedence Between Manifests, Command line Options, and Most Recent Values ##
 
-When you push an application for the first time, `cf` applies default values to any attributes that you do not set in a manifest or `cf push` command line options.
+When you push an application for the first time, Cloud Foundry applies default values to any attributes that you do not set in a manifest or `cf push` command line options.
 
 * For example, `cf push my-application-name` with no manifest might deploy one instance of the app with one gigabyte of memory.
 In this case the default values for instances and memory are "1" and "1G", respectively.
@@ -128,7 +128,7 @@ The command line option that overrides this attribute is `-c`.
 
 Every `cf push` deploys applications to one particular Cloud Foundry instance.
 Every Cloud Foundry instance may have a shared domain set by an admin.
-Unless you specify a domain, `cf` incorporates that shared domain in the route to your application.
+Unless you specify a domain, Cloud Foundry incorporates that shared domain in the route to your application.
 
 You can use the `domain` attribute when you want your application to be served from a domain other than the default shared domain.
 
@@ -174,7 +174,7 @@ The command line option that overrides this attribute is `-n`.
 
 ### <a id='path'></a>The path attribute
 
-You can use the `path` attribute to tell `cf` where to find your application. This is generally not necessary when you run `cf push` from the directory where an application is located.
+You can use the `path` attribute to tell Cloud Foundry where to find your application. This is generally not necessary when you run `cf push` from the directory where an application is located.
 
 ~~~
 path: path_to_application_bits
@@ -228,7 +228,7 @@ env:
 
 `cf push` deploys the application to a container on the server. The variables belong to the container environment.
 
-While the application is running, `cf` allows you to operate on environment variables.
+While the application is running, Cloud Foundry allows you to operate on environment variables.
 
 * View all variables: `cf env my-app`
 * Set an individual variable: `cf set-env my-variable_name my-variable_value`
@@ -236,7 +236,7 @@ While the application is running, `cf` allows you to operate on environment vari
 
 Environment variables interact with manifests in the following ways:
 
-* When you deploy an application for the first time, `cf` reads the variables described in the environment block of the manifest, and adds them to the environment of the container where the application is deployed.
+* When you deploy an application for the first time, Cloud Foundry reads the variables described in the environment block of the manifest, and adds them to the environment of the container where the application is deployed.
 
 * When you stop and then restart an application, its environment variables persist.
 
@@ -262,13 +262,13 @@ Binding to a service instance is a special case of setting an environment variab
 
 You can deploy multiple applications with one `cf push` command by describing them in a single manifest. In doing so, you need to pay extra attention to directory structure and path lines in the manifest.
 
-Suppose you want to deploy two applications called respectively spark and flame, and you want `cf` to create and start spark before flame. You accomplish this by listing spark first in the manifest.
+Suppose you want to deploy two applications called respectively spark and flame, and you want Cloud Foundry to create and start spark before flame. You accomplish this by listing spark first in the manifest.
 
 In this situation there are two sets of bits you want to push. Let’s say that they are `spark.rb` in the spark directory and `flame.rb` in the flame directory. One level up, the fireplace directory contains the spark and the flame directories along with the `manifest.yml` file. Your plan is to run `cf` from fireplace, where you know it can find the manifest.
 
-Now that you have changed the directory structure and manifest location, `cf push` can no longer find your applications by its default behavior of looking in the current working directory. How can you ensure that `cf` finds the bits you want to push?
+Now that you have changed the directory structure and manifest location, `cf push` can no longer find your applications by its default behavior of looking in the current working directory. How can you ensure that `cf push` finds the bits you want to push?
 
-The answer is to add a path line to each application description to lead `cf` to the correct bits. Assume that `cf` is run from the `fireplace` directory.
+The answer is to add a path line to each application description to lead `cf push` to the correct bits. Assume that `cf push` is run from the `fireplace` directory.
 
 For `spark`:
 

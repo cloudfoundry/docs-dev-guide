@@ -2,7 +2,7 @@
 title: Adding a Service
 ---
 
-_This page assumes that you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 This guide walks you through adding, binding, and using services.
 It assumes you have pushed an application to your Cloud Foundry instance.

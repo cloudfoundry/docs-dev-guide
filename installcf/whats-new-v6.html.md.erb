@@ -2,30 +2,30 @@
 title: Getting Started with the cf CLI
 ---
 
-_This guide introduces cf v5 users to what is new in cf v6._
+_This guide introduces cf CLI v5 users to what is new in cf CLI v6._
 
-cf v6 is simpler, faster and more powerful than v5.
+The cf CLI v6 is simpler, faster and more powerful than v5.
 Consider these key differences:
 
-* cf has been completely re-written in Go, and is more performant than previous versions, which were written in Ruby.
+* The cf CLI has been completely re-written in Go, and is more performant than previous versions, which were written in Ruby.
 * There are now native installers for all major operating systems.
 * Commands behave consistently and logically: required arguments never have flags; optional arguments always have flags.
 * Command names are shorter, yet more communicative, and most have single-letter aliases.
-* While many cf v5 commands read manifests, only the push command in cf v6 reads manifests.
-* While cf v5 used interactive prompts widely, cf v6 uses interactive prompts only for login and optionally for creating user-provided services (you can also create user-provided services non-interactively).
+* While many cf CLI v5 commands read manifests, only the push command in cf CLI v6 reads manifests.
+* While cf CLI v5 used interactive prompts widely, cf CLI v6 uses interactive prompts only for login and optionally for creating user-provided services (you can also create user-provided services non-interactively).
 
-In the guided tour of cf v6 which follows, we highlight new and improved features and how to use them.
+In the guided tour of the cf CLI v6 which follows, we highlight new and improved features and how to use them.
 
 ## <a id='install'></a>Installation ##
 
-cf v6 installs with a simple point-and-click, and you no longer need to install Ruby on your system first (or ever).
-You can use new binaries or new native installers. See [Install cf Version 6](./install-go-cli.html).
+cf CLI v6 installs with a simple point-and-click, and you no longer need to install Ruby on your system first (or ever).
+You can use new binaries or new native installers. See [Install cf CLI Version 6](./install-go-cli.html).
 
 We recommend that you watch our [tools page](https://console.run.pivotal.io/tools) to learn when updates are released, and download a new binary or a new installer when you want to update.
 
 ## <a id='login'></a>Login ##
 
-The `login` command in cf v6 has expanded functionality. In addition to your username and password, you can provide a target API endpoint, organization, and space. If not specified on the command line, cf prompts for:
+The `login` command in the cf CLI v6 has expanded functionality. In addition to your username and password, you can provide a target API endpoint, organization, and space. If not specified on the command line, the cf CLI prompts for:
 
 * **API endpoint**: This is <%=vars.api_endpoint%>.
 * **Username**: Your username.
@@ -41,13 +41,13 @@ cf login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE]
 
 Alternatively, you can write a script to log in and set your target, using the non-interactive `cf api`, `cf auth`, and `cf target` commands.
 
-Upon successful login, cf v6 saves a `config.json` file containing your API endpoint, organization, space values, and access token. If you change these settings, the `config.json` file is updated accordingly.
+Upon successful login, the cf CLI v6 saves a `config.json` file containing your API endpoint, organization, space values, and access token. If you change these settings, the `config.json` file is updated accordingly.
 
 By default, `config.json` is located in your `~/.cf` directory. The new `CF_HOME` environment variable allows you to locate the `config.json` file wherever you like.
 
 ## <a id='push'></a>Push ##
 
-In cf v6, `push` is simpler to use and faster.
+In cf CLI v6, `push` is simpler to use and faster.
 
 * `APP`, the name of the application to push, is the only required argument, and the only argument that has no flag. Even `APP` can be omitted when you provide the application name in a manifest.
 * Many command line options are now one character long. For example, `-n` is now the flag for hostname or subdomain, replacing ``--host``.
@@ -56,10 +56,10 @@ In cf v6, `push` is simpler to use and faster.
 * You no longer create services with push interactively or in a manifest. See [User-Provided Services](#user-provided) to learn about new commands for creating services.
 * The `-m` (memory limit) option now requires a unit of measurement: `M`,`MB`,`G`, or `GB`, in upper case or lower case.
 
-cf v6 has expanded capabilities in the form of four new options.
+The cf CLI v6 has expanded capabilities in the form of four new options.
 
 * `-t` (timeout) allows you to give your application more time to start, up to 180 seconds.
-* `--no-manifest` forces cf to ignore any existing manifest.
+* `--no-manifest` forces the cf CLI to ignore any existing manifest.
 * `--no-hostname` makes it possible to specify a route with a domain but no hostname.
 * `--no-route` is suitable for applications which process data while running in the background. These applications, sometimes called "workers" are bound only to services and should not have routes.
 
@@ -89,7 +89,7 @@ Optional arguments include:
 
 ## <a id='user-provided'></a> User-Provided Service Instances ##
 
-cf v6 has new commands for creating and updating user-provided service instances. You have the choice of three ways to use these commands: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
+The cf CLI v6 has new commands for creating and updating user-provided service instances. You have the choice of three ways to use these commands: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
 
 Once created, user-provided service instances can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
 
@@ -98,7 +98,7 @@ Once created, user-provided service instances can be bound to an application wit
 The alias for `create-user-provided-service` is `cups`.
 
 To create a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names.
-cf then prompts you for each parameter in turn.
+The cf CLI then prompts you for each parameter in turn.
 
   `cf cups SERVICE_INSTANCE -p "host, port, dbname, username, password"`
 
@@ -117,7 +117,7 @@ You can use `cf update-user-provided-service` to update one or more of the attri
 Attributes that you do not supply are not updated.
 
 To update a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names.
-cf then prompts you for each parameter in turn.
+The cf CLI then prompts you for each parameter in turn.
 
   `cf uups SERVICE_INSTANCE -p "HOST, PORT, DATABASE, USERNAME, PASSWORD"`
 
@@ -131,7 +131,7 @@ To update a service instance that drains information to third-party log manageme
 
 ## <a id='domains-etc'></a> Domains, Routes, Organizations, and Spaces ##
 
-The relationships between domains, routes, organizations, and spaces have been simplified in cf v6.
+The relationships between domains, routes, organizations, and spaces have been simplified in cf CLI v6.
 
 * All domains are now mapped to an org.
 * Routes are (still) scoped to spaces and apps.
@@ -139,10 +139,10 @@ The relationships between domains, routes, organizations, and spaces have been s
 As before, a route is a URL of the form `HOSTNAME.DOMAIN`.
 If you do not provide a hostname (also known as subdomain), the URL takes the form `APPNAME.DOMAIN`.
 
-cf v6 has improved separation between management of private domains and management of shared domains.
+The cf CLI v6 has improved separation between management of private domains and management of shared domains.
 Only administrators can manage shared domains.
 
-In terms of domains, cf v6 is designed to work with both new and older versions of `cf_release`.
+In terms of domains, cf CLI v6 is designed to work with both new and older versions of `cf_release`.
 
 <p class="note"><strong>Note</strong>: The <code>map-domain</code> and <code>unmap-domain</code> commands no longer exist.</p>
 
@@ -184,9 +184,9 @@ Commands for managing roles (admin-only):
 
 ## <a id='easy'></a> Consistent Behavior to Help You Work Efficiently  ##
 
-We have focused on building clear principles into cf v6 to help operators and developers work efficiently and comfortably.
+We have focused on building clear principles into the cf CLI v6 to help operators and developers work efficiently and comfortably.
 
-cf v6 commands behave consistently and logically:
+The cf CLI v6 commands behave consistently and logically:
 
 * Required arguments never have flags.
 * Optional arguments always have flags.
@@ -202,27 +202,27 @@ For example:
 * `cf map-route` replaces `cf map`.
 * `cf marketplace` replaces `cf m`.
 
-One improvement mainly of interest to developers is that `cf curl` is easier to use cf v6.
+One improvement mainly of interest to developers is that `cf curl` is easier to use cf CLI v6.
 
 * `curl` automatically uses the identity with which you are logged in.
 * `curl` usage has been simplified to closely resemble the familiar UNIX pattern.
 
 ### <a id='aliases'></a> New Aliases and Command Line Help Conventions ###
 
-cf v6 command aliases and command line help feature improved consistency and convenience.
+The cf CLI v6 command aliases and command line help feature improved consistency and convenience.
 
-cf v6 introduces single-letter aliases for commonly used commands.
+The cf CLI v6 introduces single-letter aliases for commonly used commands.
 For example:
 
 * `cf p` is the alias for `cf push`.
 * `cf t` is the alias for `cf target`.
 
-cf v6 command line help introduces streamlined style conventions:
+The cf CLI v6 command line help introduces streamlined style conventions:
 
 * User input is capitalized, as in `cf push APP`.
 * Optional user input is designated with a flag and brackets, as in `cf create-route SPACE DOMAIN [-n HOSTNAME]`.
 
-Run `cf help` to view a list of all cf commands and a brief description of each.
+Run `cf help` to view a list of all cf CLI commands and a brief description of each.
 Run `cf <command-name> -h` to view detailed help (including alias) for any command. For example:
 
 <pre class="terminal">

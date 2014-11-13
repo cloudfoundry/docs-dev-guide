@@ -2,7 +2,7 @@
 title: Binding a Service Instance
 ---
 
-_This page assumes that you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 ## <a id='binding'></a>Binding a Service Instance to your Application ##
 

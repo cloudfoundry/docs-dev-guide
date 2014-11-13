@@ -31,7 +31,7 @@ From your Papertrail account:
 
     <%= image_tag("../images/third-party-logs/papertrail-05.png") %>
 
-1. Create the log drain service in CF.
+1. Create the log drain service in Cloud Foundry.
 
     `$ cf cups my-logs -l syslog://logs.papertrailapp.com:<port>`
 
@@ -68,7 +68,7 @@ assigns to outbound traffic. If you are using Pivotal Web Services,
 
     <%= image_tag("../images/third-party-logs/splunkstorm-06.png") %>
 
-1. Create the log drain service in CF using the displayed TCP host and port.
+1. Create the log drain service in Cloud Foundry using the displayed TCP host and port.
 
     `$ cf cups my-logs -l syslog://<host:port>`
 
@@ -78,7 +78,7 @@ assigns to outbound traffic. If you are using Pivotal Web Services,
 
     <%= image_tag("../images/third-party-logs/splunkstorm-09.png") %>
 
-1. Click the **loggregator** link to view all incoming log entries from CF.
+1. Click the **loggregator** link to view all incoming log entries from Cloud Foundry.
 
     <%= image_tag("../images/third-party-logs/splunkstorm-10.png") %>
 
@@ -114,7 +114,7 @@ source.
 
     <%= image_tag("../images/third-party-logs/sumologic-06a.png") %>
 
-1. Create the log drain service in CF using the displayed URL.
+1. Create the log drain service in Cloud Foundry using the displayed URL.
 
     `$ cf cups my-logs -l <HTTP SOURCE-URL>`
 

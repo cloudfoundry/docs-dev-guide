@@ -110,19 +110,27 @@ The command line option that overrides this attribute is `-b`.
 
 ### <a id='start-commands'></a>The command attribute ###
 
-You can use the `command` attribute to set a custom start command for your application.
+Some languages and frameworks require that you provide a custom command to start an application. Refer to the [buildpack](../../buildpacks/index.html) documentation to determine if you need to provide a custom start command.
 
-For example:
+You can provide the custom start command in your application manifest or on the command line.
 
-~~~
-command: bundle exec rake VERBOSE=true
-~~~
+* In your application manifest, add `command: START-COMMAND` to specify the custom start command.
 
-For some types of application, you must provide a custom start command, either from the command line or from the manifest. This is true of node.js applications, for example.
+    Example: To use `bundle exec rake VERBOSE=true` as a custom start command in your manifest, add the following line to your application manifest:
 
-The command line option that overrides this attribute is `-c`.
+    ~~~
+    command: bundle exec rake VERBOSE=true
+    ~~~
 
-<p class="note"><strong>Note</strong>: The <code>-c</code> option with a value of 'null' forces <code>cf push</code> to use the buildpack start command. See <a href="./app-startup.html">About Starting Applications</a> for more information.</p>
+	* On the command line, use the `-c` flag to specify the custom start command.
+
+	Example:
+
+	~~~
+	$ cf push my-App -c 'bundle exec rake VERBOSE=true'
+	~~~
+
+    <p class="note"><strong>Note</strong>: The <code>-c</code> option with a value of 'null' forces <code>cf push</code> to use the buildpack start command. See <a href="./app-startup.html">About Starting Applications</a> for more information.</p>
 
 ### <a id='domain'></a>The domain attribute ###
 

@@ -100,7 +100,7 @@ This option takes the most effort to implement, but becomes more efficient with 
      ---
       applications:
       - name: my-rails-app
-	    command: bundle exec rake cf:on_first_instance db:migrate && bundle exec rails s -p $PORT -e $RAILS_ENV
+        command: bundle exec rake cf:on_first_instance db:migrate && bundle exec rails s -p $PORT -e $RAILS_ENV
     ~~~
 
 3. Update the application using `cf push`.

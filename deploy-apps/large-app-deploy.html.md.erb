@@ -50,7 +50,8 @@ To deploy large apps to <%=vars.product_short%>, ensure the following:
   * `CF_STARTUP_TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to start. Value set in minutes.
   * `cf push -t TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to start. When you use this flag, cf ignores any app start timeout value set in the manifest or in the `CF_STARTUP_TIMEOUT` environment variable. Value set in seconds.
 
-    For more information on using the cf CLI to deploy apps, type `cf -help` on the command line, and refer to the [Push](../installcf/whats-new-v6.html#push) section of the Getting Started with the cf CLI topic.
+
+    For more information on using the cf CLI to deploy apps, type `cf -help` on the command line, and refer to the [Push section ](../installcf/whats-new-v6.html#push) of the Getting Started with the cf CLI topic.
 
     <p class="note"><strong>Note</strong>: Your app might still succeed or fail a phase because of the difference between your specified timeout values for the CLI or manifest and the timeout values for a phase set by your administrator. For example, your app might successfully start even though the CLI reports that the app failed the start phase.</p> 
 
@@ -83,8 +84,7 @@ Default: 5 minutes</td>
 <tr>
 <td><code>cf push -t TIMEOUT</code></td>
 <td>App start timeout maximum<br />
-Default: 60 seconds<br />
-Your administrator can set this to a maximum of 5 minutes.</td>
+Default: 60 seconds<br /></td>
 </tr>
 <tr>
 <td>Disk Space Allocation</td>

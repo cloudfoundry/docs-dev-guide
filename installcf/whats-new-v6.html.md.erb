@@ -87,6 +87,8 @@ Optional arguments include:
 * `--no-route` --- Do not map a route to this application (NEW).
 * `--no-start` --- Do not start the application after pushing.
 
+<p class='note'><strong>Note</strong>: The `--no-route` option also removes existing routes from previous pushes of this app.</p>
+
 ## <a id='user-provided'></a> User-Provided Service Instances ##
 
 The cf CLI v6 has new commands for creating and updating user-provided service instances. You have the choice of three ways to use these commands: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).

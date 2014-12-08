@@ -98,10 +98,10 @@ For any production application, we recommend a minimum of two instances.
 * **Memory Limit**: The maximum amount of memory that each instance of your
 application can consume.
 If an instance exceeds this limit, Cloud Foundry restarts the instance.
-Initially, Cloud Foundry immediately restarts an instances that exceed the
-memory limit.
-If an instance repeatedly exceeds the memory limit in a short period of time,
-Cloud Foundry delays restarting the instance.
+    <p class='note'><strong>Note</strong>: Initially, Cloud Foundry immediately
+	restarts any instances that exceed the memory limit. If an instance
+	repeatedly exceeds the memory limit in a short period of time, Cloud Foundry
+	delays restarting the instance.</p>
 * **Start Command**: This is the command that Cloud Foundry uses to start each
 instance of your application.
 This start command varies by application framework.

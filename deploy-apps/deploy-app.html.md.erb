@@ -92,15 +92,16 @@ Before you deploy, you need to decide on the following:
 * **Name**: You can use any series of alpha-numeric characters, without spaces,
 as the name of your application.
 * **Instances**: Generally speaking, the more instances you run, the less
-downtime your application is likely to have.
-If your application is still in development, running a single instance makes it
-easier to troubleshoot.
-For any production application, you should run a minimum of two instances.
+downtime your application will experience.
+If your application is still in development, running a single instance can simplify troubleshooting.
+For any production application, we recommend a minimum of two instances.
 * **Memory Limit**: The maximum amount of memory that each instance of your
-application is allowed to consume.
-If an instance exceeds this limit, the instance is restarted.
-If the instance has to be restarted too often, it is terminated.
-To prevent this we recommend being generous with your memory limit.
+application can consume.
+If an instance exceeds this limit, Cloud Foundry restarts the instance.
+Initially, Cloud Foundry immediately restarts an instances that exceed the
+memory limit.
+If an instance repeatedly exceeds the memory limit in a short period of time,
+Cloud Foundry delays restarting the instance.
 * **Start Command**: This is the command that Cloud Foundry uses to start each
 instance of your application.
 This start command varies by application framework.

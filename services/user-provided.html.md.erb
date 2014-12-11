@@ -74,7 +74,7 @@ There are two ways to bind user-provided service instances to applications:
 * With a manifest, _when_ you push the application.
 * With the `cf bind-service` command, _after_ you push the application.
 
-In either case, you must push your app to a space where the desired user-provided instances already exist.
+In either case, you must push your app to a space where the desired user-provided instances already exist. (This does not apply to binding log drains; they automatically activate after a short delay.)
 
 For example, if you want to bind a service instance called `test-mysql-01` to an app, the services block in the manifest should look like this:
 

@@ -74,7 +74,7 @@ There are two ways to bind user-provided service instances to applications:
 * With a manifest, _when_ you push the application.
 * With the `cf bind-service` command, _after_ you push the application.
 
-In either case, you must push your app to a space where the desired user-provided instances already exist. (This does not apply to binding log drains; they automatically activate after a short delay.)
+In either case, you must push your app to a space where the desired user-provided instances already exist. 
 
 For example, if you want to bind a service instance called `test-mysql-01` to an app, the services block in the manifest should look like this:
 
@@ -148,6 +148,8 @@ We know the URL and port for the service.
 
 
 1. For the binding to take effect, we must push our app a second time.
+
+    <p class="note"><strong>Note</strong>: You can skip this step if you bind a syslog drain service instance to a deployed app. Syslog drain service instances bound to deployed apps automatically start after a short delay. </p>
 
 	<pre class="terminal">
 	$ cf push msgapp

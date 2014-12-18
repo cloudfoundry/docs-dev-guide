@@ -2,13 +2,17 @@
 title: Deploying a Large Application
 ---
 
-This topic describes constraints and recommended settings for deploying applications between 750 MB and 1 GB to <%=vars.product_full%>.
+This topic describes constraints and recommended settings for deploying
+applications between 750 MB and 1 GB to <%=vars.product_full%>.
 
 ## <a id="consid_limits"></a>Deployment Considerations and Limitations ##
 
-<%=vars.product_short%> supports application uploads up to 1 GB. 
+<%=vars.product_short%> supports application uploads up to 1 GB.
 
-The deployment process involves uploading, staging, and starting the app. Your app must successfully complete each of these phases within the time limits that your administrator establishes for each phase. The default time limits for the phases are as follows:
+The deployment process involves uploading, staging, and starting the app.
+Your app must successfully complete each of these phases within the time limits
+that your administrator establishes for each phase.
+The default time limits for the phases are as follows:
 
 * Upload: 15 minutes
 * Stage: 15 minutes
@@ -18,9 +22,9 @@ The deployment process involves uploading, staging, and starting the app. Your a
 
 To deploy large apps to <%=vars.product_short%>, ensure the following:
 
-* Your network connection speed is sufficient to upload your app within the 15 minute limit. Pivotal recommends a minimum speed of 874 KB/s. 
+* Your network connection speed is sufficient to upload your app within the 15 minute limit. Pivotal recommends a minimum speed of 874 KB/s.
 
-<p class="note"><strong>Note</strong>: <%=vars.product_short%> provides an authorization token that is valid for a minimum of 20 minutes.</p> 
+<p class="note"><strong>Note</strong>: <%=vars.product_short%> provides an authorization token that is valid for a minimum of 20 minutes.</p>
 
 * The total size of the files to upload for your app does not exceed 1 GB.
 
@@ -32,7 +36,7 @@ To deploy large apps to <%=vars.product_short%>, ensure the following:
 
     For more information on using manifests, refer to the [Deploying with Application Manifests](./manifest.html) topic.
 
-* You push only the files that are necessary for your application. 
+* You push only the files that are necessary for your application.
 
     To meet this requirement, push only the directory for your application, and remove unneeded files or use the `.cfignore` file to [specify excluded files](./prepare-to-deploy.html#exclude).
 
@@ -44,7 +48,7 @@ To deploy large apps to <%=vars.product_short%>, ensure the following:
 
     For more information on using the cf CLI to deploy apps, refer to the [Push section ](../installcf/whats-new-v6.html#push) of the Getting Started with the cf CLI topic.
 
-    <p class="note"><strong>Note</strong>: Your app might successfully start even though the CLI reports <code>App failed</code> because of the differences between the phase timeout values you specify in the CLI or manifest and those set by your administrator. For example, your admin sets a start value of 180 seconds. You set a start value of 120 seconds in the manifest, but override this on the CLI with a start value of 60 seconds and deploy the app. In this scenario, your app might successfully start even though the CLI reports that the app fails because of the longer start timeout value specified by the administrator. Run <code>cf apps APP_NAME</code> to review the actual status of your app.</p> 
+    <p class="note"><strong>Note</strong>: Your app might successfully start even though the CLI reports <code>App failed</code> because of the differences between the phase timeout values you specify in the CLI or manifest and those set by your administrator. For example, your admin sets a start value of 180 seconds. You set a start value of 120 seconds in the manifest, but override this on the CLI with a start value of 60 seconds and deploy the app. In this scenario, your app might successfully start even though the CLI reports that the app fails because of the longer start timeout value specified by the administrator. Run <code>cf apps APP_NAME</code> to review the actual status of your app.</p>
 
 ## <a id="limits_table"></a>Default Settings and Limitations Summary Table ##
 
@@ -86,4 +90,3 @@ Default: 60 seconds<br /></td>
 <td>Recommended Minimum: 874 KB/s</td>
 </tr>
 </table>
-

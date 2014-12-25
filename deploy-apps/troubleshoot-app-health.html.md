@@ -7,14 +7,14 @@ _This page assumes you are using cf CLI v6._
 Refer to this topic for help diagnosing and resolving common
 issues when you deploy and run apps on Cloud Foundry.
 
-
 ## <a id='scenarios'></a>Common Issues ##
 
 The following sections describe common issues you might encounter when attempting to deploy and run your application, and possible resolutions.
 
 ### <a id='time'></a>cf push Times Out ###
 
-If your deployment times out during the upload or staging phase, you may receive one of the following error messages:
+If your deployment times out during the upload or staging phase, you may receive
+one of the following error messages:
 
 * `504 Gateway Timeout`
 * `Error uploading application`

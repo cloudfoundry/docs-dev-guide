@@ -89,6 +89,20 @@ If you do not see a buildpack for your app, you may still be able to push your
 application with a [custom buildpack](../../buildpacks/custom.html)
 using `cf push -b` with a path to your buildpack.
 
+### App Deploy Fails ###
+Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
+
+Common reasons deploying an app fails include:
+
+* You did not successfully create and bind a needed service instance to the app, such as a PostgreSQL or MongoDB service instance. Refer to Step 3: Create and Bind a Service Instance for a RoR Application.
+* You did not successfully create a unique URL for the app. Refer to the troubleshooting tip App Requires Unique URL.
+
+### App Requires Unique URL ###
+<%=vars.product_short%> requires that each app that you deploy has a unique URL. Otherwise, the new app URL collides with an existing app URL and <%=vars.product_short%> cannot successfully deploy the app. You can resolve this issue by running `cf push` with either of the following flags to create a unique URL:
+
+* `-n` to assign a different HOST name for the app.
+* `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
+
 ### <a id='start'></a>App Fails to Start ###
 
 After `cf push` stages the app and uploads the droplet, the app may fail to start, commonly with a pattern of starting and crashing similar to the following example:

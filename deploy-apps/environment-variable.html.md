@@ -141,6 +141,7 @@ p.cf-app.com"],"users":null}
 
 Equivalent to the [PORT](#PORT) variable, defined above.
 
+
 ### <a id='VCAP-SERVICES'></a>VCAP\_SERVICES ###
 
 For [bindable services](../services/) Cloud Foundry will add connection details
@@ -243,3 +244,31 @@ VCAP_SERVICES=
   ]
 }
 ~~~
+## <a id='instance-vars'></a>Application Instance-Specific Variables ##
+
+Each instance of an application can access a set of variables with the <code>CF_INSTANCE</code> prefix. These variables provide information for a given application instance, including identification of the host DEA by its IP address.
+
+### <a id='CF-INSTANCE-ADDR'></a>CF\_INSTANCE\_ADDR ###
+The [CF\_INSTANCE\_IP](#CF-INSTANCE-IP) and [CF\_INSTANCE\_PORT](#CF-INSTANCE-PORT) of the app instance in the format `particular-DEA-IP:particular-app-instance-port`.
+
+`CF_INSTANCE_ADDR=1.2.3.4:5678`
+
+### <a id='CF-INSTANCE-INDEX'></a>CF\_INSTANCE\_INDEX ###
+The index number of the app instance.
+
+`CF_INSTANCE_INDEX=0`
+
+### <a id='CF-INSTANCE-IP'></a>CF\_INSTANCE\_IP ###
+The external IP address of the DEA running the container with the app instance.
+
+`CF_INSTANCE_IP=1.2.3.4`
+
+### <a id='CF-INSTANCE-PORT'></a>CF\_INSTANCE\_PORT ###
+The [PORT](#PORT) of the app instance.
+
+`CF_INSTANCE_PORT=5678`
+
+### <a id='CF-INSTANCE-PORTS'></a>CF\_INSTANCE\_PORTS ###
+The external and internal ports allocated to the app instance.
+
+`CF_INSTANCE_PORTS=[{external:5678,internal:5678}]`

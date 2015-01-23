@@ -35,7 +35,7 @@ From your Papertrail account:
 
     `$ cf cups my-logs -l syslog://logs.papertrailapp.com:<port>`
 
-1. Bind the service to an app. After a short delay, logs begin to flow automatically.
+1. Bind the service to an app. Restage or push the app using either the `cf restage <APPLICATION-NAME>` or `cf push <APPLICATION-NAME>` command. After a short delay, logs begin to flow automatically.
 
 1. Once Papertrail starts receiving log entries, the view automatically updates
 to the logs viewing page.
@@ -72,7 +72,7 @@ assigns to outbound traffic. If you are using Pivotal Web Services,
 
     `$ cf cups my-logs -l syslog://<host:port>`
 
-1. Bind the service to an app. After a short delay, logs begin to flow automatically.
+1. Bind the service to an app. Restage or push the app using either the `cf restage <APPLICATION-NAME>` or `cf push <APPLICATION-NAME>` command. After a short delay, logs begin to flow automatically.
 
 1. Wait for some events to appear, then click **Data Summary**.
 
@@ -118,7 +118,7 @@ source.
 
     `$ cf cups my-logs -l <HTTP SOURCE-URL>`
 
-1. Bind the service to an app. After a short delay, logs begin to flow automatically.
+1. Bind the service to an app. Restage or push the app using either the `cf restage <APPLICATION-NAME>` or `cf push <APPLICATION-NAME>` command. After a short delay, logs begin to flow automatically.
 
 1. In the SumoLogic dashboard, click **Manage**, then click **Status** to see a
 view of log messages received over time.

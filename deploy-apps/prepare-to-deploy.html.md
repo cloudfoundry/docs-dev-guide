@@ -47,11 +47,16 @@ that needs to be shared by all instances of an application, should be stored in
 a Cloud Foundry service.
 There are several open source projects that share sessions in a data service.
 
-### <a id="ports"></a>HTTP and HTTPS Port Limitations ###
+### <a id="ports"></a>Port Limitations ###
 
 Applications running on Cloud Foundry receive requests using only the URLs
-configured for the application, and only on ports 80 (the standard HTTP port)
-and 443 (the standard HTTPS port).
+configured for the application and only on ports 80 and 443, with the following
+exceptions:
+
+* Applications using the default settings of cf-release with HAProxy 
+as a load balancer receive requests on port 4443. Note that HAProxy is suitable 
+for lab and test environments, but not production environments.
+* Applications running on AWS receive TCP and WebSocket traffic on port 4443.
 
 ## <a id="exclude"></a>Ignore Unnecessary Files When Pushing ##
 
@@ -82,10 +87,10 @@ https://github.com/github/gitignore, are a useful starting point.
 
 ## <a id="increase-availability"></a>Run Multiple Instances to Increase Availability ##
 
-When a DEA is upgraded, the applications running on it are shut down gracefully,
-or _evacuated_, on the DEA to be upgraded, then restarted on another DEA.
-To avoid the risk of an application being unavailable during Cloud Foundry
-upgrade processes, you should run more than one instance of an application.
+When a DEA is upgraded, the applications running on it are shut down gracefully, 
+then restarted on another DEA. To avoid the risk of an application being unavailable 
+during a Cloud Foundry upgrade processes, you should run more than one instance of the 
+application.
 
 ## <a id="buildpacks"></a>Using Buildpacks ##
 

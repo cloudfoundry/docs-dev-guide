@@ -49,14 +49,9 @@ There are several open source projects that share sessions in a data service.
 
 ### <a id="ports"></a>Port Limitations ###
 
-Applications running on Cloud Foundry receive requests using only the URLs
-configured for the application and only on ports 80 and 443, with the following
-exceptions:
+Applications running on <%=vars.product_short%> receive requests using only the URLs configured for the application on ports 80 (the standard HTTP port) and 443 (the standard HTTPS port).
 
-* Applications using the default settings of cf-release with HAProxy 
-as a load balancer receive requests on port 4443. Note that HAProxy is suitable 
-for lab and test environments, but not production environments.
-* Applications running on AWS receive TCP and WebSocket traffic on port 4443.
+<%=vars.haproxy_note%> Most production load balancers require a separately configured port for TCP/websocket traffic. Applications deployed <%=vars.deployment_port%> for TCP/websocket traffic by default<%=vars.config_choice%>.
 
 ## <a id="exclude"></a>Ignore Unnecessary Files When Pushing ##
 

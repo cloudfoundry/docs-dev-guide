@@ -49,9 +49,9 @@ There are several open source projects that share sessions in a data service.
 
 ### <a id="ports"></a>Port Limitations ###
 
-Applications running on <%=vars.product_short%> receive requests using only the URLs configured for the application on ports 80 (the standard HTTP port) and 443 (the standard HTTPS port).
+Applications running on <%=vars.product_short%> receive requests through the URLs configured for the application. HTTP requests arrive on ports 80 and 443. Additionally, <%=vars.product_short%> requires a channel for TCP/WebSocket traffic.
 
-<%=vars.haproxy_note%> Most production load balancers require a separately configured port for TCP/websocket traffic. Applications deployed <%=vars.deployment_port%> for TCP/websocket traffic by default<%=vars.config_choice%>.
+Most production load balancers require separate ports for HTTP and TCP/WebSocket traffic. <%=vars.haproxy_note%> Applications deployed <%=vars.deployment_port%> for TCP/WebSocket communications. <%=vars.config_choice%>
 
 ## <a id="exclude"></a>Ignore Unnecessary Files When Pushing ##
 

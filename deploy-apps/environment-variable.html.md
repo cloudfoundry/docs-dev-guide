@@ -106,22 +106,62 @@ This variable contains useful information about a deployed application.
 Results are returned in JSON format.
 The table below lists the attributes that are returned.
 
-Note that you can access the port and index of the application instance directly with the [PORT](#PORT) and [CF_INSTANCE_INDEX](#CF-INSTANCE-INDEX) variables.
+Note that you can access the port and index of the application instance directly with the [PORT](#PORT) and [CF\_INSTANCE\_INDEX](#CF-INSTANCE-INDEX) variables.
 
-|Attribute|Description |
-| --------- | --------- |
-|application_users, users | |
-|instance_id|GUID that identifies the application. |
-|instance_index |Index number of the instance. |
-|application_version, version |GUID that identifies a version of the application that was pushed. Each time an application is pushed, this value is updated. |
-|application_name, name |The name assigned to the application when it was pushed. |
-|application_uris |The URI(s) assigned to the application.   |
-|started_at, start |The last time the application was started. |
-|started\_at\_timestamp |Timestamp for the last time the application was started. |
-|host |IP address of the application instance. |
-|port |Port of the application instance. |
-|limits  |The memory, disk, and number of files permitted to the instance. Memory and disk limits are supplied when the application is deployed, either on the command line or in the application manifest. The number of files allowed is operator-defined. |
-|state_timestamp |The timestamp for the time at which the application achieved its current state.|
+<table border="1" class="nice">
+  <tr>
+    <th>Attribute</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>application_users</code>, <code>users</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>instance_id</code></td>
+    <td>GUID that identifies the application.</td>
+  </tr>
+  <tr>
+    <td><code>instance_index</code></td>
+    <td>Index number of the index.</td>
+  </tr>
+  <tr>
+    <td><code>application_version</code>, <code>version</code></td>
+    <td>GUID that identifies a version of the application that was pushed. Each time an application is pushed, this value is updated.</td>
+  </tr>
+  <tr>
+    <td><code>application_name</code>, <code>name</code></td>
+    <td>The name assigned to the application when it was pushed.</td>
+  </tr>
+  <tr>
+    <td><code>application_uris</code></td>
+    <td>The URI(s) assigned to the application.</td>
+  </tr>
+  <tr>
+    <td><code>started_at</code>, <code>start</code></td>
+    <td>The last time the application was started.</td>
+  </tr>
+  <tr>
+    <td><code>started_at_timestamp</code></td>
+    <td>Timestamp for the last time the application was started.</td>
+  </tr>
+  <tr>
+    <td><code>host</code></td>
+    <td>IP address of the application isntance.</td>
+  </tr>
+  <tr>
+    <td><code>port</code></td>
+    <td>Port of the application instance.</td>
+  </tr>
+  <tr>
+    <td><code>limits</code></td>
+    <td>The memory, disk, and number of files permitted to the instance. Memory and disk limits are supplied when the application is deployed, either on the command line or in the application manifest. The number of files allowed is operator-defined.</td>
+  </tr>
+  <tr>
+    <td><code>state_timestamp</code></td>
+    <td>The timestamp for the time at which the application achieved its current state.</td>
+  </tr>
+</table>
 
 For example:
 
@@ -158,13 +198,32 @@ The attributes that describe a bound service are defined in the table below.
 The key for each service in the JSON document is the same as the value of the
 "label" attribute.
 
-|Attribute|Description |
-| --------- | --------- |
-|name|The name assigned to the service instance by the user when it was created |
-|label| **v1 broker API** The service name and service version (if there is no version attribute, the string "n/a" is used), separated by a dash character, for example "cleardb-n/a"<br/>**v2 broker API** The service name|
-|tags| An array of strings an app can use to identify a service |
-|plan|The service plan selected when the service was created |
-|credentials|A JSON object containing the service-specific set of credentials needed to access the service instance. For example, for the cleardb service, this will include name, hostname, port, username, password, uri, and jdbcUrl|
+<table border="1" class="nice">
+  <tr>
+    <th>Attribute</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>name</code></td>
+    <td>The name assigned to the service instance by the user when it was created.</td>
+  </tr>
+  <tr>
+    <td><code>label</code></td>
+    <td><strong>v1 broker API</strong> The service name and service version (if there is no version attribute, the string "n/a" is used), separated by a dash character, for example "cleardb-n/a".<br/><strong>v2 broker API</strong> The service name.</td>
+  </tr>
+  <tr>
+    <td><code>tags</code></td>
+    <td>An array of strings an app can use to identify a service.</td>
+  </tr>
+  <tr>
+    <td><code>plan</code></td>
+    <td>The service plan selected when the service was created.</td>
+  </tr>
+  <tr>
+    <td><code>credentials</code></td>
+    <td>A JSON object containing the service-specific set of credentials needed to access the service instance. For example, for the cleardb service, this will include name, hostname, port, username, password, uri, and jdbcUrl.</td>
+  </tr>
+</table>
 
 To see the value of VCAP\_SERVICES for an application pushed to Cloud Foundry,
 see [View Environment Variable Values](#view-env).

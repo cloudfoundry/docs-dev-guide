@@ -47,13 +47,12 @@ Use the `cf env` command to view the Cloud Foundry environment variables for you
   my-drain: http://drain.example.com
 </pre>
 
-## <a id='dea-set'></a>Variables Defined by the DEA ##
+## <a id='dea-set'></a>Variables Available to Your Application ##
 
-The subsections that follow describe the environment variables set by a DEA for
-an application at staging time.
+The subsections that follow describe the environment variables that Cloud Foundry makes available for your application container.
 
 You can access environment variables programmatically, including variables
-defined by the buildpack (if any).
+defined by the buildpack.
 Refer to the buildpack documentation for [Java](../../buildpacks/java/java-tips.html#env-var),
 [Node.js](../../buildpacks/node/node-tips.html#env-var), and
 [Ruby](../../buildpacks/ruby/ruby-tips.html#env-var).
@@ -64,9 +63,8 @@ Root folder for the deployed application.
 `HOME=/home/vcap/app`
 
 ### <a id='memory'></a>MEMORY_LIMIT ###
-The maximum amount of memory that each instance of the application can consume.
-This value is set as a result of the value you specify in an application
-manifest, or at the command line when pushing an application.
+The maximum amount of memory that each instance of the application can consume. 
+You specify this value in an application manifest or with the cf CLI when pushing an application. The value is limited by space and org quotas.
 
 If an instance goes over the maximum limit, it will be restarted. If it has to be restarted too often, it will be terminated.
 
@@ -108,6 +106,7 @@ This variable contains useful information about a deployed application.
 Results are returned in JSON format.
 The table below lists the attributes that are returned.
 
+Note that you can access the port and index of the application instance directly with the [PORT](#PORT) and [CF_INSTANCE_INDEX](#CF-INSTANCE-INDEX) variables.
 
 |Attribute|Description |
 | --------- | --------- |
@@ -123,6 +122,8 @@ The table below lists the attributes that are returned.
 |port |Port of the application instance. |
 |limits  |The memory, disk, and number of files permitted to the instance. Memory and disk limits are supplied when the application is deployed, either on the command line or in the application manifest. The number of files allowed is operator-defined. |
 |state_timestamp |The timestamp for the time at which the application achieved its current state.|
+
+For example:
 
 ~~~
 

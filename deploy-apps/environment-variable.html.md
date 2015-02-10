@@ -106,8 +106,6 @@ This variable contains useful information about a deployed application.
 Results are returned in JSON format.
 The table below lists the attributes that are returned.
 
-Note that you can access the port and index of the application instance directly with the [PORT](#PORT) and [CF\_INSTANCE\_INDEX](#CF-INSTANCE-INDEX) variables.
-
 <table border="1" class="nice">
   <tr>
     <th>Attribute</th>
@@ -123,7 +121,7 @@ Note that you can access the port and index of the application instance directly
   </tr>
   <tr>
     <td><code>instance_index</code></td>
-    <td>Index number of the index.</td>
+    <td>Index number of the instance. You can access this value directly with the [CF\_INSTANCE\_INDEX](#CF-INSTANCE-INDEX) variable.</td>
   </tr>
   <tr>
     <td><code>application_version</code>, <code>version</code></td>
@@ -151,7 +149,7 @@ Note that you can access the port and index of the application instance directly
   </tr>
   <tr>
     <td><code>port</code></td>
-    <td>Port of the application instance.</td>
+    <td>Port of the application instance. You can access this value directly with the [PORT](#PORT) variable.</td>
   </tr>
   <tr>
     <td><code>limits</code></td>

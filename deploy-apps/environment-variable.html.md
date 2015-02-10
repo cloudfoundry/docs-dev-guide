@@ -121,7 +121,7 @@ The table below lists the attributes that are returned.
   </tr>
   <tr>
     <td><code>instance_index</code></td>
-    <td>Index number of the instance. You can access this value directly with the [CF\_INSTANCE\_INDEX](#CF-INSTANCE-INDEX) variable.</td>
+    <td>Index number of the instance. You can access this value directly with the <a href="#CF-INSTANCE-INDEX">CF_INSTANCE_INDEX</a> variable.</td>
   </tr>
   <tr>
     <td><code>application_version</code>, <code>version</code></td>
@@ -149,7 +149,7 @@ The table below lists the attributes that are returned.
   </tr>
   <tr>
     <td><code>port</code></td>
-    <td>Port of the application instance. You can access this value directly with the [PORT](#PORT) variable.</td>
+    <td>Port of the application instance. You can access this value directly with the <a href="#PORT">PORT</a> variable.</td>
   </tr>
   <tr>
     <td><code>limits</code></td>

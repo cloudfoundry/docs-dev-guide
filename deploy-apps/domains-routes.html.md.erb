@@ -15,7 +15,7 @@ A **route** is a path used to access an application online. It is a URL composed
 
 ## <a id='root'></a>Using a Root Domain ##
 
-A **root domain** or a **zone apex domain** such as "example.com" consists of a domain without a host. TO access an application deployed to a root domain you must use either custom record types or **subdomain redirection**.
+A **root domain** or a **zone apex domain** such as "example.com" consists of a domain without a host. To access an application deployed to a root domain you must use either custom record types or **subdomain redirection**.
 
 The following section contains instructions for mapping a root domain to your application by configuring ALIAS or ANAME custom record types or by using subdomain redirection.
 
@@ -230,7 +230,7 @@ sinatra-to-do            <%=vars.app_domain%>     sinatra-to-do
 
 Create a route and associate it with a space for later use with the `cf create-route` command. You can use the optional `-n HOSTNAME` parameter to specify a unique hostname for each route that uses the same domain.
 
-For example, this command creates the `myapp.example.org` route in the "development" space:
+For example, this command creates the "myapp.example.org" route in the "development" space:
 
 <pre class="terminal">
 $ cf create-route development example.org -n myapp
@@ -240,7 +240,7 @@ $ cf create-route development example.org -n myapp
 
 Assign or change the route for a particular application with the `cf map-route` command. Specifying the host is optional. If the route does not already exist, this command creates it and then maps it.
 
-For example, the following command maps the route `myapp.example.org` to the "myapp" application:
+For example, the following command maps the route "myapp.example.org" to the "myapp" application:
 
 <pre class="terminal">
 $ cf map-route myapp example.org -n myapp

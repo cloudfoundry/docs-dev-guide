@@ -1,25 +1,29 @@
 ---
-title: Domains and Customizing Routes
+title: Creating Domains and Routes
 ---
 _This page assumes you are using cf CLI v6._
 
-This page has information about how to customize domains and specify the route  that Cloud Foundry uses to direct requests to an application.
+This topic describes how to create and use Cloud Foundry domains.
 
-## <a id='domains'></a>Creating Domains and Mapping Routes ##
+<p class="note"><strong>Note</strong>: The term <strong>domain</strong> in this topic differs from its common usage and is specific to Cloud Foundry. A Cloud Foundry instance defines a default shared domain that your application uses unless you specify a different domain.</p>
 
-A _domain_ is a domain name like `<%=vars.app_domain%>`. In Cloud Foundry, domains are associated with orgs and are not directly bound to applications. Cloud Foundry also supports custom domains. You can map a registered domain of your own to a space in Cloud Foundry.
+In Cloud Foundry, you create a domain according to the guidelines in this topic. Cloud Foundry uses these domains to direct requests to applications. A **custom domain** refers to a third party registered domain that you own and can use with your applications in Cloud Foundry. [For more information on using custom domains shared across all orgs in your Cloud Foundry account, refer to the [VARIABLIZED LINK TO OTHER TOPIC, ONLY PCF GETS IT: Domains and Shared Domains](../../opsguide/domains.html) topic.]
 
-A _route_ is made up of a domain with an optional subdomain, or host, as a prefix. For example, `myapp` is the host and `<%=vars.app_domain%>` is the domain in the route `myapp.<%=vars.app_domain%>`. Each route is directly bound to one or more applications in Cloud Foundry.
+Domains are associated with orgs and are not directly bound to applications. Domains can be **shared** or **private**. Shared domains are registered to multiple orgs while private domains, or **owned** domains, are registered to one org.
 
-### <a id='root'></a>Using a Root Domain ##
+A **route** is a path used to access an application online. It is a URL composed of a domain and an optional host as a prefix. For example, "myappname" is the host and "<%=vars.app_domain%>" is the domain in the route "myappname.<%=vars.app_domain%>." Here "<%=vars.app_domain%>" could either be a custom domain of your own, or a domain that you have created through Cloud Foundry. Each route is directly bound to one or more applications in Cloud Foundry.
 
-It is possible to have a route that represents `<%=vars.app_domain%>` without a host. This type of route is known as a _root domain_ or a _zone apex domain_.
+## <a id='root'></a>Using a Root Domain ##
 
-####<a id='root-dns'></a>Configuring an ALIAS or ANAME Record with Your DNS Provider ####
+A **root domain** or a **zone apex domain** such as "example.com" consists of a domain without a host. TO access an application deployed to a root domain you must use either custom record types or **subdomain redirection**.
 
-If your DNS provider supports using an ALIAS or ANAME record, configure your custom root domain with your DNS provider.
+The following section contains instructions for mapping a root domain to your application by configuring ALIAS or ANAME custom record types or by using subdomain redirection.
 
-ALIAS and ANAME records follow the pattern illustrated below:
+###<a id='root-dns'></a>Configuring an ALIAS or ANAME Record with Your DNS Provider ###
+
+If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider.
+
+ALIAS and ANAME records follow the pattern shown below:
 
 <table border="1" class="nice" >
 	<tr>
@@ -31,14 +35,14 @@ ALIAS and ANAME records follow the pattern illustrated below:
 	<tr>
 		<td>ALIAS or ANAME</td>
 		<td>empty or @</td>
-		<td>yourappname.<%=vars.app_domain%>.</td>
+		<td>foo.example.com.</td>
 		<td>Refer to your DNS provider documentation to determine whether to use an empty or @ value for the Name entry.</td>
 	</tr>
 </table>
 
-If your DNS provider does not support ANAME or ALIAS records, use _subdomain redirection_, a technique also known as _domain forwarding_, to add a custom root domain. If you use this method, note that SSL requests to the root domain result in an error because the SSL certificate generally only matches the subdomain. This error does not display if you are not using SSL or are only using SSL with URLs in subdomain form, meaning `https://www.example.com`.
+If your DNS provider does not support ANAME or ALIAS records use subdomain redirection, a technique also known as **domain forwarding**, to add a root domain. If you use this method, note that SSL requests to the root domain result in an error because the SSL certificate generally only matches the subdomain.
 
-Configure the redirect from the root domain to the target <code>www</code> subdomain, and configure the <code>www</code> subdomain as a CNAME record reference to the target app URL. The table below illustrates this pattern.
+Configure the redirect from the root domain to the target "www" subdomain, and configure the "www" subdomain as a CNAME record reference to the target app URL. The table below illustrates this pattern.
 
 <table border="1" class="nice" >
 	<tr>
@@ -51,47 +55,65 @@ Configure the redirect from the root domain to the target <code>www</code> subdo
 		<td>URL or Forward</td>
 		<td>example.org</td>
 		<td>www.example.org</td>
-		<td>This method results in a "301 permanent redirect" to the subdomain you configure. </td>
+		<td>This method results in a <code>301 permanent redirect</code> to the subdomain you configure.</td>
 	</tr>
 	<tr>
 		<td>CNAME</td>
 		<td>www</td>
-		<td>yourappname.cfapps.io</td>
+		<td>foo.cfapps.io</td>
 		<td></td>
 	</tr>
 </table>
 
-####<a id='root-app'></a>Configuring Your Application to Use a Root Domain ####
+###<a id='root-app'></a>Configuring Your Application to Use a Root Domain ###
+
+The following section contains instructions for creating a domain and mapping the route to your application. Since the route is a root domain and does not have a host appended to the domain, both the domain and route in this section are represented with "example.org."
 
 1. Create the domain in Cloud Foundry and associate it with an organization.
 
-	The command below defines the custom domain `example.org` in the "test-org" organization:
+	The command below defines the domain "example.org" in the “test-org” organization:
 
 	<pre class="terminal">
-		$ cf create-domain test-org example.org
+	$ cf create-domain test-org example.org
 	</pre>
 
-1. Map the route to your app depending upon whether it is using a shared domain.
+1. Map the route to your app. The command you use depends on whether the app uses a shared domain.
 
 	If your route is not using a shared domain, use the `cf map-route` command as the example shows:
 
 	<pre class="terminal">
-		$ cf map-route myapp example.org
+	$ cf map-route myapp example.org
 	</pre>
 
-	If your route is using a shared domain, use the `-n HOSTNAME` parameter with the `cf map-route` command to specify a unique hostname for the route. The command below maps the route `myapp.example.org` to the application named "myapp":
+	If your route is using a shared domain, use the `-n HOSTNAME` parameter with the `cf map-route` command to specify a unique hostname for the route. The command below maps the route "myapp.example.org" with the hostname "app" to the application named "myapp":
 
 	<pre class="terminal">
-	  $ cf map-route myapp example.org -n myapp
+	$ cf map-route myapp example.org -n app
 	</pre>
 
-### <a id='subdomain'></a>Mapping a Private or Shared Subdomain ###
+## <a id='parent'></a>Using a Parent Domain ##
 
-Domains can be multi-level and contain subdomains like the “myapp” in `myapp.<%=vars.app_domain%>`. A subdomain can be _shared_ or _private_. Shared domains are registered to multiple orgs while private domains are registered to one org.
+In the multi-level domain "myapp.<%=vars.app_domain%>," "<%=vars.app_domain%>" is the parent domain of subdomain “myapp.”
 
-####<a id='subdomain-dns'></a>Configuring a CNAME Record with Your DNS Provider ####
+###<a id='parent-dns'></a>Configuring a CNAME Record with Your DNS Provider ###
 
-Configure your custom domain using a CNAME record.
+Follow the [Configuring a CNAME Record with Your DNS Provider](#subdomain-dns) procedure in the Using a Private or Shared Subdomain section.
+
+###<a id='parent-app'></a>Configuring Your Application to Use a Private or Shared Parent Domain ###
+
+You can modify your application domain by creating parent domains that meet the following requirements:
+
+* **Private Parent Domains**: You can only create a private domain that is parent to a private subdomain.
+
+* **Shared Parent Domains**: You can create a shared domain that is parent to either a shared or a private subdomain.
+
+## <a id='subdomain'></a>Using a Private or Shared Subdomain ##
+
+Domains in Cloud Foundry can be multi-level and contain subdomains like the “myapp” in the domain "myapp.<%=vars.app_domain%>." In this case, "<%=vars.app_domain%>" is the parent domain of the subdomain “myapp.” In the domain "test.myapp.example.org," “test” is a subdomain with the parent domain "myapp.example.org."
+
+###<a id='subdomain-dns'></a>Configuring a CNAME Record with Your DNS Provider ###
+
+Configure your domain using a CNAME record.
 
 CNAME records follow the pattern illustrated below:
 
@@ -105,54 +127,38 @@ CNAME records follow the pattern illustrated below:
 	<tr>
 		<td>CNAME</td>
 		<td>test</td>
-		<td>yourappname.<%=vars.app_domain%>.</td>
-		<td>Refer to your DNS provider documentation to determine whether the trailing `.` is required.</td>
+		<td>foo.<%=vars.app_domain%>.</td>
+		<td>Refer to your DNS provider documentation to determine whether the trailing <code>.</code> is required.</td>
 	</tr>
 </table>
 
-####<a id='subdomain-app'></a>Configuring Your Application to Use a Private or Shared Subdomain ####
+###<a id='subdomain-app'></a>Configuring Your Application to Use a Private or Shared Subdomain ###
 
-You can customize your application domain by mapping subdomains that meet the following requirements:
+You can modify your application domain by mapping subdomains to the domain. Each added subdomain is the child to its following parent domain. The subdomains must meet the following requirements:
 
-* Private Subdomains:
-	* You can only map a private subdomain to a private domain if the domains belong to the same org.
-	* You can map a private subdomain to a shared domain.
+* **Private Subdomains**:
+	* You can map a private subdomain to a private parent domain only if the domains belong to the same org.
+	* You can map a private subdomain to a shared parent domain.
 
-* Shared Subdomains:
-	* You can only map a shared subdomain to a shared domain.
-	* You cannot map a shared subdomain to a private domain.
+* **Shared Subdomains**:
+	* You can only map a shared subdomain to a shared parent domain.
+	* You cannot map a shared subdomain to a private parent domain.
 
-To configure your application to use a subdomain:
+To configure your application to use a domain with a subdomain, create the domain and map the route to your application as follows:
 
-1. Create the domain in Cloud Foundry and associate it with an organization.
+1. Create the domain in Cloud Foundry and associate it with an org.
 
-	The command below defines the custom domain `test.example.org` in the "test-org" organization:
-
-	<pre class="terminal">
-		$ cf create-domain test-org test.example.org
-	</pre>
-
-1. Map the route to your app as the example shows:
+	The command below defines the domain "myapp.example.org" in the "test-org" organization:
 
 	<pre class="terminal">
-		$ cf map-route myapp test.example.org
+	$ cf create-domain test-org myapp.example.org
 	</pre>
 
-### <a id='parent'></a>Creating a Parent Domain ###
+1. Map the route to your app with an optional hostname, as the example shows:
 
-In the multi-level domain `myapp.<%=vars.app_domain%>`, `<%=vars.app_domain%>` is the parent domain of “myapp”.
-
-####<a id='parent-dns'></a>Configuring a CNAME Record with Your DNS Provider ####
-
-Refer to [Configuring a CNAME Record with Your DNS Provider](#subdomain-dns) in the Mapping a Private or Shared Subdomain section.
-
-####<a id='parent-app'></a>Configuring Your Application to Use a Private or Shared Parent Domain ####
-
-You can customize your application domain by creating parent domains that meet the following requirements:
-
-* Private Parent Domains: You can only create a private domain that is parent to a private subdomain.
-
-* Shared Parent Domains: You can create a shared domain that is parent to either a shared or a private subdomain.
+	<pre class="terminal">
+	$ cf map-route myapp myapp.example.org -n test
+	</pre>
 
 ## <a id='customize-route'></a>Managing Your Domains ##
 
@@ -160,64 +166,64 @@ You can customize your application domain by creating parent domains that meet t
 
 You can view available domains for the targeted organization using the `cf domains` command.
 
-In this example, there are two available domains: a system-wide default `<%=vars.app_domain%>` domain and the custom `example.org` domain.
+In this example, there are two available domains: a system-wide default "<%=vars.app_domain%>" domain and the custom "example.org" domain.
 
 <pre class="terminal">
-	$ cf domains
-	Getting domains in org console as user@example.org... OK
+$ cf domains
+Getting domains in org console as user@example.org... OK
 
-	name           status
-	<%=vars.app_domain%>    shared
-	example.org    owned
+name           status
+<%=vars.app_domain%>    shared
+example.org    owned
 </pre>
 
-### <a id='assign-domains-subdomains'></a>Assign Domains and Subdomains ###
+### <a id='assign-domains-hosts'></a>Assign Domains and Hosts ###
 
-You can assign a domain and subdomain to your application from either the command line with `cf push` or in the application manifest.
+You can assign a domain and host to your application using either the command line or the application manifest.
 
 #### <a id='assign-at-push'></a>Assign Using the cf CLI ####
 
-When you run `cf push`, you can optionally assign a domain and subdomain to the application.
+When you run `cf push`, you can optionally assign a domain and host to the application.
 
-- Domain: Use the `-d` flag to specify one of the domains available to the targeted org.
-- Subdomain: Use the `-n` flag to provide a string for the subdomain.
+- **Domain**: Use the `-d` flag to specify one of the domains available to the targeted org.
+- **Subdomain**: Use the `-n` flag to provide a string for the host.
 
 The route Cloud Foundry creates for the application as a result of the following command is `myapp.example.org`.
 
 <pre class="terminal">
-	$ cf push myapp -d example.org -n myapp
+$ cf push myapp -d example.org -n myapp
 </pre>
 
 #### <a id='assign-in-manifest'></a>Assign Using the Manifest ####
 
-When you create or edit the manifest for an application, you can use the `host` and `domain` attributes to define the subdomain and domain components of the application route, respectively. For more information, see [Application Manifests](../deploy-apps/manifest.html).
+When you create or edit the manifest for an application, you can use the `host` and `domain` attributes to define the host and domain components of the application route, respectively. For more information, see [Application Manifests](../deploy-apps/manifest.html).
 
 ### <a id='delete-domains'></a>Delete a Domain ###
 
 You can delete a domain from Cloud Foundry with the `cf delete-domain` command:
 
 <pre class="terminal">
-	$ cf delete-domain example.org
+$ cf delete-domain example.org
 </pre>
 
 ## <a id='customize-route'></a>Managing Your Routes ##
 
 ### <a id='list-routes'></a>List Routes ###
 
-You can list routes for the current space with `cf routes` command. Note that the subdomain is shown as "host," separate from the domain segment.
+You can list routes for the current space with `cf routes` command. Note that the host is separate from the domain segment.
 
 For example:
 
 <pre class="terminal">
-	$ cf routes
-	Getting routes as user@example.org ...
+$ cf routes
+Getting routes as user@example.org ...
 
-	host                     domain          apps
-	myapp                    example.org     myapp1
-	myapp2
-	1test                    <%=vars.app_domain%>     1test
-	sinatra-hello-world      <%=vars.app_domain%>     sinatra-hello-world
-	sinatra-to-do            <%=vars.app_domain%>     sinatra-to-do
+host                     domain          apps
+myapp                    example.org     myapp1
+myapp2
+1test                    <%=vars.app_domain%>     1test
+sinatra-hello-world      <%=vars.app_domain%>     sinatra-hello-world
+sinatra-to-do            <%=vars.app_domain%>     sinatra-to-do
 </pre>
 
 ### <a id='create-route'></a>Create a Route ###
@@ -227,22 +233,20 @@ Create a route and associate it with a space for later use with the `cf create-r
 For example, this command creates the `myapp.example.org` route in the "development" space:
 
 <pre class="terminal">
-	$ cf create-route development example.org -n myapp
+$ cf create-route development example.org -n myapp
 </pre>
 
 ### <a id='map-route'></a>Assign or Change a Route ###
 
-Assign or change the route for a particular application with the `cf map-route` command. Specifying the subdomain is optional. If the route does not already exist, this command creates it and then maps it.
+Assign or change the route for a particular application with the `cf map-route` command. Specifying the host is optional. If the route does not already exist, this command creates it and then maps it.
 
 For example, the following command maps the route `myapp.example.org` to the "myapp" application:
 
 <pre class="terminal">
-	$ cf map-route myapp example.org -n myapp
+$ cf map-route myapp example.org -n myapp
 </pre>
 
-<p class="note"><strong>Note</strong>: You can map a single route to multiple applications in the same space.
-	See <a href="../deploy-apps/blue-green.html">Blue-Green Deployment</a> to learn about an
-	important extension of this technique.</p>
+<p class="note"><strong>Note</strong>: You can map a single route to multiple applications in the same space. See <a href="../deploy-apps/blue-green.html">Blue-Green Deployment</a> to learn about an important extension of this technique.</p>
 
 If the application is running when you map a route, restart the application. The new route is not active until the application is restarted.
 
@@ -251,13 +255,13 @@ If the application is running when you map a route, restart the application. The
 You can remove a route from an app using the `cf unmap-route` command. Unmapping a route leaves the route available in the targeted space for later use.
 
 <pre class="terminal">
-	$ cf unmap-route myapp example.org -n myapp
+$ cf unmap-route myapp example.org -n myapp
 </pre>
 
 You can remove a route from a space using the `cf delete-route` command:
 
 <pre class="terminal">
-	$ cf delete-route example.org -n myapp
+$ cf delete-route example.org -n myapp
 </pre>
 
-Note that for each of the above commands, using the `-n` parameter to specify the subdomain is optional.
+Note that for each of the above commands, using the `-n` parameter to specify the host is optional.

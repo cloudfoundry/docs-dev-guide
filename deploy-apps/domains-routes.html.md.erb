@@ -3,19 +3,19 @@ title: Creating Domains and Routes
 ---
 _This page assumes you are using cf CLI v6._
 
-This topic describes how to create and use Cloud Foundry domains.
+This topic describes how to create and use domains and routes in Cloud Foundry.
 
-<p class="note"><strong>Note</strong>: The term <strong>domain</strong> in this topic differs from its common usage and is specific to Cloud Foundry. A Cloud Foundry instance defines a default shared domain that your application uses unless you specify a different domain.</p>
+<p class="note"><strong>Note</strong>: The term <strong>domain</strong> in this topic differs from its common use and is specific to Cloud Foundry.</p>
 
-In Cloud Foundry, you create a domain according to the guidelines in this topic. Cloud Foundry uses these domains to direct requests to applications. A **custom domain** refers to a third party registered domain that you own and can use with your applications in Cloud Foundry. <%=vars.domains_shared_domains%>
+In Cloud Foundry, you create a domain according to the guidelines in this topic. Cloud Foundry uses these domains in routes to direct requests to applications. A **custom domain** refers to a third party registered domain that you own and can use with your applications in Cloud Foundry. <%=vars.domains_shared_domains%>
 
-Domains are associated with orgs and are not directly bound to applications. Domains can be **shared** or **private**. Shared domains are registered to multiple orgs while private domains, or **owned** domains, are registered to one org.
+Domains are associated with orgs and are not directly bound to applications. Domains can be **shared** or **private**. Shared domains are registered to multiple orgs while private domains, or **owned** domains, are registered to one org. A Cloud Foundry instance defines a default shared domain that your application uses unless you specify a different domain.
 
-A **route** is a path used to access an application online. It is a URL composed of a domain and an optional host as a prefix. For example, "myappname" is the host and "<%=vars.app_domain%>" is the domain in the route "myappname.<%=vars.app_domain%>." Here "<%=vars.app_domain%>" could either be a custom domain of your own, or a domain that you have created through Cloud Foundry. Each route is directly bound to one or more applications in Cloud Foundry.
+A **route** is a path used to access an application online. Each route is directly bound to one or more applications in Cloud Foundry. A route is a URL composed of a domain and an optional host as a prefix. For example, "myappname" is the host and "<%=vars.app_domain%>" is the domain in the route "myappname.<%=vars.app_domain%>." Here "<%=vars.app_domain%>" could either be a custom domain of your own, or a domain that you have created through Cloud Foundry.
 
 ## <a id='root'></a>Using a Root Domain ##
 
-A **root domain** or a **zone apex domain** such as "example.com" consists of a domain without a host. To access an application deployed to a root domain you must use either custom record types or **subdomain redirection**.
+A **root domain** or a **zone apex domain** such as "example.com" consists of a domain without a host. To access an application deployed to a root domain, you must use either custom record types or **subdomain redirection**.
 
 The following section contains instructions for mapping a root domain to your application by configuring ALIAS or ANAME custom record types or by using subdomain redirection.
 
@@ -40,7 +40,7 @@ ALIAS and ANAME records follow the pattern shown below:
 	</tr>
 </table>
 
-If your DNS provider does not support ANAME or ALIAS records use subdomain redirection, a technique also known as **domain forwarding**, to add a root domain. If you use this method, note that SSL requests to the root domain result in an error because the SSL certificate generally only matches the subdomain.
+If your DNS provider does not support ANAME or ALIAS records, use subdomain redirection, a technique also known as **domain forwarding**, to add a root domain. If you use this method, note that SSL requests to the root domain result in an error because the SSL certificate generally only matches the subdomain.
 
 Configure the redirect from the root domain to the target "www" subdomain, and configure the "www" subdomain as a CNAME record reference to the target app URL. The table below illustrates this pattern.
 
@@ -67,7 +67,7 @@ Configure the redirect from the root domain to the target "www" subdomain, and c
 
 ###<a id='root-app'></a>Configuring Your Application to Use a Root Domain ###
 
-The following section contains instructions for creating a domain and mapping the route to your application. Since the route is a root domain and does not have a host appended to the domain, both the domain and route in this section are represented with "example.org."
+The following section contains instructions for creating a domain and using that domain as the route for your application. Since the route is a root domain and does not have a host, both the domain and route in this section are represented with "example.org."
 
 1. Create the domain in Cloud Foundry and associate it with an organization.
 
@@ -91,7 +91,7 @@ The following section contains instructions for creating a domain and mapping th
 	$ cf map-route myapp example.org -n app
 	</pre>
 
-## <a id='parent'></a>Using a Parent Domain ##
+## <a id='parent'></a>Creating a Parent Domain ##
 
 In the multi-level domain "myapp.<%=vars.app_domain%>," "<%=vars.app_domain%>" is the parent domain of subdomain “myapp.”
 
@@ -101,7 +101,7 @@ Follow the [Configuring a CNAME Record with Your DNS Provider](#subdomain-dns) p
 
 ###<a id='parent-app'></a>Configuring Your Application to Use a Private or Shared Parent Domain ###
 
-You can modify your application domain by creating parent domains that meet the following requirements:
+Parent domains must meet the following requirements:
 
 * **Private Parent Domains**: You can only create a private domain that is parent to a private subdomain.
 
@@ -134,7 +134,7 @@ CNAME records follow the pattern illustrated below:
 
 ###<a id='subdomain-app'></a>Configuring Your Application to Use a Private or Shared Subdomain ###
 
-You can modify your application domain by mapping subdomains to the domain. Each added subdomain is the child to its following parent domain. The subdomains must meet the following requirements:
+You can create a new domain by mapping subdomains to an existing domain. Each added subdomain is the child to its following parent domain. The subdomains must meet the following requirements:
 
 * **Private Subdomains**:
 	* You can map a private subdomain to a private parent domain only if the domains belong to the same org.
@@ -186,7 +186,7 @@ You can assign a domain and host to your application using either the command li
 When you run `cf push`, you can optionally assign a domain and host to the application.
 
 - **Domain**: Use the `-d` flag to specify one of the domains available to the targeted org.
-- **Subdomain**: Use the `-n` flag to provide a string for the host.
+- **Host**: Use the `-n` flag to provide a string for the host.
 
 The route Cloud Foundry creates for the application as a result of the following command is `myapp.example.org`.
 

@@ -22,29 +22,38 @@ Use the `cf env` command to view the Cloud Foundry environment variables for you
 
 <pre class="terminal">
   $ cf env my-app
-  Getting env variables for app my-app in org My-Org / space development as admin...
+  Getting env variables for app my-app in org My-Org / space My-Space as admin...
   OK
-
+  
   System-Provided:
+  
+  
   {
-    "VCAP_SERVICES": {
-      "p-mysql-n/a": [
-        {
-          "credentials": {
-      	    "uri":"postgres://lrra:e6B-X@p-mysqlprovider.example.com:5432/lraa
-          },
-          "label": "p-mysql-n/a",
-          "name": "p-mysql",
-          "syslog_drain_url": "",
-          "tags": ["postgres","postgresql","relational"]
-        }
-      ]
-    }
+   "VCAP_APPLICATION": {
+    "application_name": "my-app",
+    "application_uris": [
+     "my-app.10.244.0.34.xip.io"
+    ],
+    "application_version": "fb8fbcc6-8d58-479e-bcc7-3b4ce5a7f0ca",
+    "limits": {
+    "disk": 1024,
+    "fds": 16384,
+    "mem": 256
+    },
+    "name": "my-app",
+    "space_id": "06450c72-4669-4dc6-8096-45f9777db68a",
+    "space_name": "My-Space",
+    "uris": [
+     "my-app.10.244.0.34.xip.io"
+    ],
+    "users": null,
+    "version": "fb8fbcc6-8d58-479e-bcc7-3b4ce5a7f0ca"
   }
-
+  }
+  
   User-Provided:
-  my-env-var: 100
-  my-drain: http://drain.example.com
+  MY_DRAIN: http://drain.example.com
+  MY_ENV_VARIABLE: 100
 </pre>
 
 ## <a id='dea-set'></a>Variables Available to Your Application ##

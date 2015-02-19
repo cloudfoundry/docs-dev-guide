@@ -22,7 +22,7 @@ Use the `cf env` command to view the Cloud Foundry environment variables for you
 
 <pre class="terminal">
   $ cf env my-app
-  Getting env variables for app my-app in org My-Org / space My-Space as admin...
+  Getting env variables for app my-app in org my-org / space my-space as admin...
   OK
   
   System-Provided:
@@ -42,13 +42,13 @@ Use the `cf env` command to view the Cloud Foundry environment variables for you
     },
     "name": "my-app",
     "space_id": "06450c72-4669-4dc6-8096-45f9777db68a",
-    "space_name": "My-Space",
+    "space_name": "my-space",
     "uris": [
      "my-app.10.244.0.34.xip.io"
     ],
     "users": null,
     "version": "fb8fbcc6-8d58-479e-bcc7-3b4ce5a7f0ca"
-  }
+    }
   }
   
   User-Provided:

@@ -236,6 +236,14 @@ For example, this command creates the "myapp.example.org" route in the "developm
 $ cf create-route development example.org -n myapp
 </pre>
 
+If you are an administrator, you can create a **wildcard route** by specifying a host as `*`.
+
+For example, the following command creates the wildcard route "*.example.org" in the "development" space:
+
+<pre class="terminal">
+$ cf create-route development example.org -n *
+</pre>
+
 ### <a id='map-route'></a>Assign or Change a Route ###
 
 Assign or change the route for a particular application with the `cf map-route` command. Specifying the host is optional. If the route does not already exist, this command creates it and then maps it.
@@ -244,6 +252,12 @@ For example, the following command maps the route "myapp.example.org" to the "my
 
 <pre class="terminal">
 $ cf map-route myapp example.org -n myapp
+</pre>
+
+An application bound to a wildcard route is a "fallback" app that a user accesses if no other application routes match what the user typed. For example, the command below maps the route "*.example.org" to the "myfallbackapp" application:
+
+<pre class="terminal">
+$ cf map-route myfallbackapp example.org -n *
 </pre>
 
 <p class="note"><strong>Note</strong>: You can map a single route to multiple applications in the same space. See <a href="../deploy-apps/blue-green.html">Blue-Green Deployment</a> to learn about an important extension of this technique.</p>

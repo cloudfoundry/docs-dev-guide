@@ -178,7 +178,32 @@ environment.
 
 Use the `cf env` command to view the environment variables that you have set using the `cf set-env` command and the variables in the container environment:
 
-    `cf env APPNAME`
+<pre class="terminal">
+$ cf env my-app
+ Getting env variables for app my-app in org My-Org / space development as admin...
+ OK
+
+ System-Provided:
+ {
+   "VCAP_SERVICES": {
+     "p-mysql-n/a": [
+       {
+         "credentials": {
+           "uri":"postgres://lrra:e6B-X@p-mysqlprovider.example.com:5432/lraa
+         },
+         "label": "p-mysql-n/a",
+         "name": "p-mysql",
+         "syslog_drain_url": "",
+         "tags": ["postgres","postgresql","relational"]
+       }
+     ]
+   }
+ }
+
+ User-Provided:
+ my-env-var: 100
+ my-drain: http://drain.example.com
+</pre>
 
 ### <a id='logs'></a>Exploring logs ###
 

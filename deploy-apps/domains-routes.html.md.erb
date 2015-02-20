@@ -236,7 +236,7 @@ For example, this command creates the "myapp.example.org" route in the "developm
 $ cf create-route development example.org -n myapp
 </pre>
 
-If you are an administrator, you can create a **wildcard route** by specifying a host as `*`.
+If you are an administrator, you can create a **wildcard route** by specifying a host as `*`. The splat operator `*` signals a wildcard route to match any URL that uses your domain, regardless of the host.
 
 For example, the following command creates the wildcard route "*.example.org" in the "development" space:
 
@@ -254,7 +254,9 @@ For example, the following command maps the route "myapp.example.org" to the "my
 $ cf map-route myapp example.org -n myapp
 </pre>
 
-An application bound to a wildcard route is a "fallback" app that a user accesses if no other application routes match what the user typed. For example, the command below maps the route "*.example.org" to the "myfallbackapp" application:
+An application bound to a wildcard route is a "fallback" app that a user accesses if no other application routes match what the user typed. For example, if a user types "myap.example.org" in an attempt to access the application bound to "myapp.example.org", the user accesses the application bound to "*.example.org."
+
+The command below maps the route "*.example.org" to the "myfallbackapp" application:
 
 <pre class="terminal">
 $ cf map-route myfallbackapp example.org -n *

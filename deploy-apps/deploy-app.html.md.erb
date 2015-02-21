@@ -71,19 +71,20 @@ spaces.
 ## <a id='domain'></a>Step 3: (Optional) Configure Domains ##
 
 Cloud Foundry directs requests to an application using a route, which is a URL
-made up of a subdomain and a domain.
+made up of a host and a domain.
 
-* The subdomain is also known as the host portion of the URL.
-The name of an application is the default subdomain for that application.
+* The name of an application is the default host for that application.
 
 * Every application is deployed to an application space that belongs to a
 domain.
 Every Cloud Foundry instance has a default domain defined.
-You can specify a non-default domain when deploying, provided that the domain is
+You can specify a non-default, or custom, domain when deploying, provided that the domain is
 registered and is mapped to the organization which contains the target
 application space.
 
-For more information, see [Creating Domains and Routes](./domains-routes.html).
+<%=vars.ssl%>
+
+For more information about domains, see [Creating Domains and Routes](./domains-routes.html).
 
 ## <a id='options'></a>Step 4: Determine Deployment Options ##
 

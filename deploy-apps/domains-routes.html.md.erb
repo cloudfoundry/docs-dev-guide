@@ -236,12 +236,18 @@ For example, this command creates the "myapp.example.org" route in the "developm
 $ cf create-route development example.org -n myapp
 </pre>
 
-If you are an administrator, you can create a **wildcard route** by specifying a host as `*`. The splat operator `*` signals a wildcard route to match any URL that uses your domain, regardless of the host.
+If you are an administrator, you can create a **wildcard route** by specifying a
+host as `*`.
+The star operator `*` signals a wildcard route to match any URL that uses your
+domain, regardless of the host.
 
-For example, the following command creates the wildcard route "*.example.org" in the "development" space:
+<p class="note"><strong>Note</strong>: You must surround the <code>*</code> with quotation marks when referencing it using the CLI.</p>
+
+For example, the following command creates the wildcard route "*.example.org" in
+the "development" space:
 
 <pre class="terminal">
-$ cf create-route development example.org -n *
+$ cf create-route development example.org -n "*"
 </pre>
 
 ### <a id='map-route'></a>Assign or Change a Route ###

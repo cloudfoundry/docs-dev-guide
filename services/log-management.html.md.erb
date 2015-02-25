@@ -67,6 +67,8 @@ typically provide a syslog URL to use as an endpoint for incoming log data.
 
     `syslog://logs.example.com:1234`
 
+    <p class="note"><strong>Note</strong>: If you are running your own syslog server and want to use <code>syslog-tls</code>, you must have an SSL certificate signed by a well-known certificate authority. Self-signed certificates are not supported.</p>
+
 ### <a id='create'></a>Creating a user-provided service instance with a syslog drain ###
 
 Create a user-provided service instance using the `create-user-provided-service` command with the `-l` option and the syslog URL you obtained earlier.

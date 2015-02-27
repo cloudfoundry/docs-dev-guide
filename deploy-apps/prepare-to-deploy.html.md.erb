@@ -54,8 +54,9 @@ There are several open source projects that share sessions in a data service.
 ## <a id="exclude"></a>Ignore Unnecessary Files When Pushing ##
 
 By default, when you push an application, all files in the application’s project
-directory tree, except version control files with file extensions `.svn` `.git`,
-and `.darcs`, are uploaded to your Cloud Foundry instance.
+directory tree, except version control files or configuration files with file 
+names `.svn`, `.git`, `_darc`, `.hg` and `.DS_Store`,
+are uploaded to your Cloud Foundry instance.
 If the application directory contains other files (such as `temp` or `log`
 files), or complete subdirectories that are not required to build and run your
 application, the best practice is to exclude them using a `.cfignore` file.

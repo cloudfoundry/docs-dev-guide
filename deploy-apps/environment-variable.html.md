@@ -339,3 +339,36 @@ The [PORT](#PORT) of the app instance.
 The external and internal ports allocated to the app instance.
 
 `CF_INSTANCE_PORTS=[{external:5678,internal:5678}]`
+
+## <a id='evgroups'></a>Environment Variable Groups ##
+
+Environment variable groups are system-wide variables that enable operators to apply a group of environment variables to all running applications and all staging applications separately. These values can contain information such as HTTP proxy information. Environment variables defined by a group are case-sensitive in both key and value.
+
+An environment variable group consists of a single hash of name value pairs that are later inserted into an application’s container at runtime or at staging. Only the Cloud Foundry operator can retrieve and set the hash value for each group, but all authenticated users can see the environment variables assigned to their application.
+
+All variable changes take effect after the operator restarts or restages the applications. Any user-defined variable takes precedence over environment variables provided by these groups.
+
+The table below lists the environment variable groups.
+
+<table border="1" class="nice">
+  <tr>
+    <th>Variable Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>running-environment-variable-group</code>, <code>revg</code></td>
+    <td>Retrieves the contents of the running environment variable group.</td>
+  </tr>
+  <tr>
+    <td><code>staging-environment-variable-group</code>, <code>sevg</code></td>
+    <td>Retrieves the contents of the staging environment variable group.</td>
+  </tr>
+  <tr>
+    <td><code>set-staging-environment-variable-group</code>, <code>ssevg</code></td>
+    <td>Passes parameters as JSON to create a staging environment variable group.</td>
+  </tr>
+  <tr>
+    <td><code>set-running-environment-variable-group</code>, <code>srevg</code></td>
+    <td>Passes parameters as JSON to create a running environment variable group.</td>
+  </tr>
+ </table>

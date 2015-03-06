@@ -344,7 +344,7 @@ The external and internal ports allocated to the app instance.
 
 Environment variable groups are system-wide variables that enable operators to apply a group of environment variables to all running applications and all staging applications separately. These values can contain information such as HTTP proxy information. Environment variables defined by a group are case-sensitive in both key and value.
 
-An environment variable group consists of a single hash of name value pairs that are later inserted into an application’s container at runtime or at staging. Only the Cloud Foundry operator can retrieve and set the hash value for each group, but all authenticated users can see the environment variables assigned to their application.
+An environment variable group consists of a single hash of name value pairs that are later inserted into an application’s container at runtime or at staging. Only the Cloud Foundry operator can set the hash value for each group, but all authenticated users can get the environment variables assigned to their application.
 
 All variable changes take effect after the operator restarts or restages the applications. Any user-defined variable takes precedence over environment variables provided by these groups.
 
@@ -352,7 +352,7 @@ The table below lists the environment variable groups.
 
 <table border="1" class="nice">
   <tr>
-    <th>Variable Group</th>
+    <th>CLI Command</th>
     <th>Description</th>
   </tr>
   <tr>
@@ -372,3 +372,75 @@ The table below lists the environment variable groups.
     <td>Passes parameters as JSON to create a running environment variable group.</td>
   </tr>
  </table>
+ 
+ Example:
+ 
+  ```
+  $ cf revg
+  Retrieving the contents of the running environment variable group as sampledeveloper@pivotal.io...
+  OK
+  Variable Name   Assigned Value
+  test            www.google.com
+ 
+  $ cf sevg
+  Retrieving the contents of the staging environment variable group as sampledeveloper@pivotal.io...
+  OK
+  Variable Name   Assigned Value
+  test            www.yahoo.com
+  awesomeness     9001
+
+ $ cf apps
+  Getting apps in org example@pivotal.io / space dev as sampledeveloper@pivotal.io...
+  OK
+
+  name                                               requested state   instances   memory   disk   urls
+  app-sinatra-services                               started           1/1         256M     1G     app-sinatra-services.a1-app.cf-app.com
+  dora                                               started           1/1         256M     1G     dora.test-foo.com, test-foo.com
+  dora-diego                                         started           1/1         256M     1G     dora-diego.a1-app.cf-app.com, test-foo.com
+  dora-test-sharing                                  started           1/1         256M     1G     dora-test-sharing.routeme.a1-app.cf-app.com
+  hello-java                                         started           ?/1         256M     1G     hello-java.a1-app.cf-app.com
+  spring-music                                       started           1/1         512M     1G     spring-music-qczgi.a1-app.cf-app.com
+  spring-music-1                                     started           1/1         512M     1G     spring-music-ninth-shelf.a1-app.cf-app.com, spring-music-noncommendatory-superbias.a1-app.cf-app.com
+ 
+  $ cf env dora-diego
+  Getting env variables for app dora-diego in org example@pivotal.io / space dev as sampledeveloper@pivotal.io...
+  OK
+
+  System-Provided:
+
+
+  {
+   "VCAP_APPLICATION": {
+    "application_name": "dora-diego",
+    "application_uris": [
+     "dora-diego.a1-app.cf-app.com",
+     "test-foo.com"
+    ],
+    "application_version": "7d0d64be-7f6f-406a-9d21-504643147d63",
+    "limits": {
+     "disk": 1024,
+     "fds": 16384,
+     "mem": 256
+    },
+    "name": "dora-diego",
+    "space_id": "17399895-4133-4699-865e-8ebd0e2df89a",
+    "space_name": "dev",
+    "uris": [
+     "dora-diego.a1-app.cf-app.com",
+     "test-foo.com"
+    ],
+    "users": null,
+    "version": "7d0d64be-7f6f-406a-9d21-504643147d63"
+   }
+  }
+
+  User-Provided:
+  DIEGO_STAGE_BETA: true
+
+  Running Environment Variable Groups:
+  test: www.google.com
+
+  Staging Environment Variable Groups:
+  awesomeness: 9001
+  test: www.yahoo.com
+  ```

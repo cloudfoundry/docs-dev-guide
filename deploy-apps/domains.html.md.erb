@@ -1,0 +1,90 @@
+---
+title: Domains and Shared Domains
+---
+_This page assumes you are using cf CLI v6._
+
+This page has information about domains and shared domains.
+For more information, see [Creating Domains and Routes](./domains-routes.html).
+
+A domain is an IP resource represented by a domain name like "<%= vars.app_domain %>".
+A domain is not directly bound to an application, but acts as part of the route
+to an application.
+
+When you deploy an application, you supply a hostname.
+This hostname is prepended to the domain to create the full URL, or route, to
+the application.
+
+Example: If I use the hostname "demo-time" for my application, and my domain is
+"<%= vars.app_domain %>", the route to the application is the full
+URL "demo-time.<%= vars.app_domain %>".
+
+A Cloud Foundry instance defines a default shared domain.
+Unless you specify a different domain, routes to your application are created
+using this shared domain.
+
+Cloud Foundry also supports custom domains.
+
+## <a id='create-domains'></a>Create a Custom Domain ##
+
+If you want to use a registered domain of your own, you can:
+
+- Create and associate it with a single organization in your account.
+
+- Create and associate it with _all_ organizations in your account. Note: This can only be done by an **account** administrator.
+
+### Associate a Custom Domain with a Single Organization ###
+
+Use the `create-domain` command to create the custom domain `<%= vars.app_domain %>` in the
+"test" organization:
+
+<pre class="terminal">
+$ cf create-domain test <%= vars.app_domain %>
+</pre>
+
+### Associate a Custom Domain with All Organizations in an Account ###
+
+Use the `create-shared-domain` command to create a shared custom domain
+available to all organizations in your account:
+
+<pre class="terminal">
+$ cf create-shared-domain <%= vars.app_domain %>
+</pre>
+
+## <a id='view-domains'></a>View Domains ##
+
+You can see available domains for the targeted organization using the `cf
+domains` command.
+In this example, there are two available domains: a system-wide default
+`<%=vars.app_domain%>` domain and the custom `example.org` domain.
+
+<pre class="terminal">
+$ cf domains
+Getting domains in org console as a.user@<%=vars.app_domain%>... OK
+
+name           status
+<%=vars.app_domain%>    shared
+example.org     owned
+</pre>
+
+## <a id='delete-domains'></a>Delete a Domain ##
+
+### Delete a Custom Domain ###
+
+Use the `cf delete-domain` command to delete a domain:
+
+<pre class="terminal">
+$ cf delete-domain <%= vars.app_domain %>
+</pre>
+
+### Delete a Custom Shared Domain ###
+
+Deleting a shared domain can only be done by an **account** administrator.
+
+**Caution**: Deleting a shared domain will remove all associated routes, and
+will make any application with this domain unreachable.
+
+To delete a shared domain:
+
+<pre class="terminal">
+$ cf delete-shared-domain <%= vars.app_domain %>
+</pre>

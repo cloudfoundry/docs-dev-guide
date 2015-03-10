@@ -348,7 +348,7 @@ An environment variable group consists of a single hash of name value pairs that
 
 All variable changes take effect after the operator restarts or restages the applications. Any user-defined variable takes precedence over environment variables provided by these groups.
 
-The table below lists the environment variable groups.
+The table below lists the commands for environment variable groups.
 
 <table border="1" class="nice">
   <tr>
@@ -375,58 +375,52 @@ The table below lists the environment variable groups.
  
  Example:
  
-  ```
+  <pre class="terminal">
   $ cf revg
   Retrieving the contents of the running environment variable group as sampledeveloper@pivotal.io...
   OK
   Variable Name   Assigned Value
-  test            www.google.com
+  HTTP Proxy      87.226.68.130
  
   $ cf sevg
   Retrieving the contents of the staging environment variable group as sampledeveloper@pivotal.io...
   OK
   Variable Name   Assigned Value
-  test            www.yahoo.com
-  awesomeness     9001
+  HTTP Proxy      27.145.145.105
+  EXAMPLE-GROUP   2001
 
  $ cf apps
-  Getting apps in org example@pivotal.io / space dev as sampledeveloper@pivotal.io...
+  Getting apps in org SAMPLE-ORG-NAME / space dev as sampledeveloper@pivotal.io...
   OK
 
   name                                               requested state   instances   memory   disk   urls
-  app-sinatra-services                               started           1/1         256M     1G     app-sinatra-services.a1-app.cf-app.com
-  dora                                               started           1/1         256M     1G     dora.test-foo.com, test-foo.com
-  dora-diego                                         started           1/1         256M     1G     dora-diego.a1-app.cf-app.com, test-foo.com
-  dora-test-sharing                                  started           1/1         256M     1G     dora-test-sharing.routeme.a1-app.cf-app.com
-  hello-java                                         started           ?/1         256M     1G     hello-java.a1-app.cf-app.com
-  spring-music                                       started           1/1         512M     1G     spring-music-qczgi.a1-app.cf-app.com
-  spring-music-1                                     started           1/1         512M     1G     spring-music-ninth-shelf.a1-app.cf-app.com, spring-music-noncommendatory-superbias.a1-app.cf-app.com
+  APP-NAME                                         started           1/1         256M     1G     APP-NAME.cf-app.com, test-foo.com
  
-  $ cf env dora-diego
-  Getting env variables for app dora-diego in org example@pivotal.io / space dev as sampledeveloper@pivotal.io...
+  $ cf env APP-NAME
+  Getting env variables for app APP-NAME in org SAMPLE-ORG-NAME / space dev as sampledeveloper@pivotal.io...
   OK
 
   System-Provided:
 
 
   {
-   "VCAP_APPLICATION": {
-    "application_name": "dora-diego",
-    "application_uris": [
-     "dora-diego.a1-app.cf-app.com",
+   "VCAP\_APPLICATION": {
+    "application\_name": "APP-NAME",
+    "application\_uris": [
+     "APP-NAME.sample-app.com",
      "test-foo.com"
     ],
-    "application_version": "7d0d64be-7f6f-406a-9d21-504643147d63",
+    "application\_version": "7d0d64be-7f6f-406a-9d21-504643147d63",
     "limits": {
      "disk": 1024,
      "fds": 16384,
      "mem": 256
     },
-    "name": "dora-diego",
-    "space_id": "17399895-4133-4699-865e-8ebd0e2df89a",
+    "name": "APP-NAME",
+    "space\_id": "37189599-2407-9946-865e-8ebd0e2df89a",
     "space_name": "dev",
     "uris": [
-     "dora-diego.a1-app.cf-app.com",
+     "APP-NAME.sample-app.com",
      "test-foo.com"
     ],
     "users": null,
@@ -434,13 +428,31 @@ The table below lists the environment variable groups.
    }
   }
 
-  User-Provided:
-  DIEGO_STAGE_BETA: true
-
   Running Environment Variable Groups:
-  test: www.google.com
+  HTTP Proxy: 87.226.68.130
 
   Staging Environment Variable Groups:
-  awesomeness: 9001
-  test: www.yahoo.com
-  ```
+  EXAMPLE-GROUP: 2001
+  HTTP Proxy: 27.145.145.105
+  
+  $ cf ssevg '{"test":"87.226.68.130","test2":"27.145.145.105"}'
+  Setting the contents of the staging environment variable group as admin...
+  OK
+  $ cf sevg
+  Retrieving the contents of the staging environment variable group as admin...
+  OK
+  Variable Name   Assigned Value
+  test            87.226.68.130
+  test2           27.145.145.105
+  
+  $ cf srevg '{"test3":"2001","test4":"2010"}'
+  Setting the contents of the running environment variable group as admin...
+  OK
+  $ cf revg
+  Retrieving the contents of the running environment variable group as admin...
+  OK
+  Variable Name   Assigned Value
+  test3           2001
+  test4           2010
+ 
+</pre>

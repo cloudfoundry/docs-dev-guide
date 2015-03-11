@@ -342,9 +342,9 @@ The external and internal ports allocated to the app instance.
 
 ## <a id='evgroups'></a>Environment Variable Groups ##
 
-Environment variable groups are system-wide variables that enable operators to apply a group of environment variables to all running applications and all staging applications separately. These values can contain information such as HTTP proxy information. Environment variables defined by a group are case-sensitive in both key and value.
+Environment variable groups are system-wide variables that enable operators to apply a group of environment variables to all running applications and all staging applications separately. These values can contain information such as HTTP proxy information. The keys and values for variables set in an environment variable group are case-sensitive.
 
-An environment variable group consists of a single hash of name value pairs that are later inserted into an application’s container at runtime or at staging. Only the Cloud Foundry operator can set the hash value for each group, but all authenticated users can get the environment variables assigned to their application.
+An environment variable group consists of a single hash of name value pairs that are later inserted into an application’s container at runtime or at staging. Only the Cloud Foundry operator can set the hash value for each group. All authenticated users can get the environment variables assigned to their application.
 
 All variable changes take effect after the operator restarts or restages the applications. Any user-defined variable takes precedence over environment variables provided by these groups.
 

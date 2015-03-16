@@ -342,11 +342,16 @@ The external and internal ports allocated to the app instance.
 
 ## <a id='evgroups'></a>Environment Variable Groups ##
 
-Environment variable groups are system-wide variables that enable operators to apply a group of environment variables to all running applications and all staging applications separately. These values can contain information such as HTTP proxy information. The keys and values for variables set in an environment variable group are case-sensitive.
+Environment variable groups are system-wide variables that enable operators to apply a group of environment variables to all running applications and all staging applications separately.
 
-An environment variable group consists of a single hash of name value pairs that are later inserted into an application’s container at runtime or at staging. Only the Cloud Foundry operator can set the hash value for each group. All authenticated users can get the environment variables assigned to their application.
+An environment variable group consists of a single hash of name-value pairs that are later inserted into an application container at runtime or at staging. These values can contain information such as HTTP proxy information. The values for variables set in an environment variable group are case-sensitive.
 
-All variable changes take effect after the operator restarts or restages the applications. Any user-defined variable takes precedence over environment variables provided by these groups.
+When creating environment variable groups, consider the following:
+
+* Only the Cloud Foundry operator can set the hash value for each group.
+* All authenticated users can get the environment variables assigned to their application.
+* All variable changes take effect after the operator restarts or restages the applications.
+* Any user-defined variable takes precedence over environment variables provided by these groups.
 
 The table below lists the commands for environment variable groups.
 
@@ -373,7 +378,7 @@ The table below lists the commands for environment variable groups.
   </tr>
  </table>
  
- Example:
+ The following examples demonstrate how to get the environment variables:
  
   <pre class="terminal">
   $ cf revg
@@ -389,7 +394,7 @@ The table below lists the commands for environment variable groups.
   HTTP Proxy      27.145.145.105
   EXAMPLE-GROUP   2001
 
- $ cf apps
+  $ cf apps
   Getting apps in org SAMPLE-ORG-NAME / space dev as sampledeveloper@pivotal.io...
   OK
 
@@ -434,7 +439,11 @@ The table below lists the commands for environment variable groups.
   Staging Environment Variable Groups:
   EXAMPLE-GROUP: 2001
   HTTP Proxy: 27.145.145.105
+  </pre>
   
+  The following examples demonstrate how to set the environment variables:
+  
+  <pre class="terminal">
   $ cf ssevg '{"test":"87.226.68.130","test2":"27.145.145.105"}'
   Setting the contents of the staging environment variable group as admin...
   OK

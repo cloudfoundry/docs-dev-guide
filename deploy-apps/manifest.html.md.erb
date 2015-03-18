@@ -214,6 +214,17 @@ hosts:
 
 The command line option that overrides this attribute is `-n`.
 
+### <a id='nohosts'></a>The no-hostname attribute ###
+
+By default if you do not provide a hostname, the URL for the app takes the form of `APP-NAME.DOMAIN`. If you want to override this and map the root domain to this app then you can set no-hostname as true.
+
+<pre>
+---
+no-hostname: true
+</pre>
+
+The command line option that corresponds to this attribute is --no-hostname.
+
 ### <a id='path'></a>The path attribute
 
 You can use the `path` attribute to tell Cloud Foundry where to find your application. This is generally not necessary when you run `cf push` from the directory where an application is located.

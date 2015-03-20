@@ -161,6 +161,18 @@ You can use the `domain` attribute when you want your application to be served f
 
 The command line option that overrides this attribute is `-d`.
 
+### <a id-'disk_quota'></a>The disk quota attribute ###
+
+Use the `disk_quota` attribute to allocate the disk space for your app instance. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case.
+
+<pre>
+---
+  ...
+  disk_quota: 1024M
+</pre>
+
+The command line option that overrides this attribute is `-k`.
+
 ### <a id='instances'></a>The instances attribute ###
 
 Use the `instances` attribute to specify the number of app instances you want to start upon push:

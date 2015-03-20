@@ -161,14 +161,14 @@ You can use the `domain` attribute when you want your application to be served f
 
 The command line option that overrides this attribute is `-d`.
 
-### <a id-'disk_quota'></a>The Disk Quota attribute ###
+### <a id-'disk_quota'></a>The disk quota attribute ###
 
-You can allocate a dedicated disk space to your app. You can use the `disk_quota` attribute to allocate the disk space for your app instance. This attributes units of measurement is in `MB`.
+Use the `disk_quota` attribute to allocate the disk space for your app instance. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case.
 
 <pre>
 ---
   ...
-  disk_quota: 1024
+  disk_quota: 1024M
 </pre>
 
 The command line option that overrides this attribute is `-k`.

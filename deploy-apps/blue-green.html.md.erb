@@ -91,14 +91,14 @@ After the cf map:
 ### <a id='unmap-blue'></a>Step 4: Unmap Route to Blue ###
 
 Once you verify Green is running as expected, stop routing requests to Blue
-using the `cf unmap` command:
+using the `cf unmap-route` command:
 
 <pre class="terminal">
 cf unmap-route Blue example.com -n demo-time
 Unbinding demo-time.example.com from blue... OK
 </pre>
 
-After cf unmap:
+After cf unmap-route:
 
 * The CF Router stops sending traffic to Blue.
 Instead, it routes all traffic to `demo-time.example.com` to Green:
@@ -107,7 +107,7 @@ Instead, it routes all traffic to `demo-time.example.com` to Green:
 
 ### <a id='remove-temp-route'></a>Step 5: Remove Temporary Route to Green ###
 
-You can now use `cf unmap` to remove the route to `demo-time-temp.example.com`.
+You can now use `cf unmap-route` to remove the route to `demo-time-temp.example.com`.
 You can also decommission Blue, or keep it in case you need to roll back your
 changes.
 

@@ -2,7 +2,7 @@
 title: Using cf CLI Plugins
 ---
 
-The Cloud Foundry Command Line Interface (cf CLI) v.6.7 and higher includes plugin functionality. These plugins enable developers to add custom commands to the cf CLI. You can install and use plugins that Cloud Foundry developers and third-party developers create. 
+The Cloud Foundry Command Line Interface (cf CLI) v.6.7 and higher includes plugin functionality. These plugins enable developers to add custom commands to the cf CLI. You can install and use plugins that Cloud Foundry developers and third-party developers create. You can find the Cloud Foundry Community CLI repository (repo) and site [here](http://plugins.cloudfoundry.org/ui/) and information on submitting your own plugin to the community [here](https://github.com/cloudfoundry-incubator/cli-plugin-repo).
 
 The cf CLI identifies a plugin by its binary filename, its developer-defined plugin name, and the commands the plugin provides. You use the binary filename only to install a plugin. You use the plugin name or a command for any other action.
 
@@ -28,9 +28,10 @@ download source code, you must compile the code to create a binary.</p>
 1. Run `cf install-plugin BINARY_FILENAME` to install a plugin. Replace `BINARY_FILENAME` with the path to and name of your binary file.
 
     <p class="note"><strong>Notes</strong>: 
-    <ul><li>You cannot install a plugin that has the same name or that uses the same command as an existing plugin. You must first uninstall the existing plugin.</li>
-
-    <li>The cf CLI prohibits you from implementing any plugin that uses a native cf CLI command name or alias. For example, if you attempt to install a third-party plugin that includes the command <code>cf push</code>, the cf CLI halts the installation.</li></ul></p>
+    <ul>
+		<li>You cannot install a plugin that has the same name or that uses the         same command as an existing plugin. You must first uninstall the                existing plugin.</li>
+        <li>The cf CLI prohibits you from implementing any plugin that uses a           native cf CLI command name or alias. For example, if you attempt to             install a third-party plugin that includes the command <code>cf                 push</code>, the cf CLI halts the installation.</li>
+	</ul></p>
 
 ## <a id="plugin-run-cmd"></a>Running a Plugin Command ##
 
@@ -45,6 +46,34 @@ Use the `PLUGIN_NAME` to remove a plugin, not the `BINARY_FILENAME`.
 
 1. Run `cf plugins` to view the names of all installed plugins.
 1. Run `cf uninstall-plugin PLUGIN_NAME` to remove a plugin.
+
+## <a id="adding-plugin-repo"></a>Adding a Plugin Repo ##
+
+Run `cf add-plugin-repo REPO_NAME URL` to add a plugin repo.
+
+Example:
+<pre class="terminal">
+$ cf add-plugin-repo CF-Community http://plugins.cloudfoundry.org
+OK
+http://plugins.cloudfoundry.org/list added as 'CF-Community'
+</pre>
+
+## <a id="listing-plugin-repo"></a>Listing Available Plugin Repos ##
+
+Run `cf list-plugin-repos` to view your available plugin repos. If you have not yet added a plugin repo, your results will be blank.
+
+Example:
+<pre class="terminal">
+$ cf list-plugin-repos
+OK
+
+Repo Name      Url   
+CF-Community   http://plugins.cloudfoundry.org 
+</pre>
+
+## <a id="listing-plugin-repo"></a>Listing All Plugins by Repo ##
+
+Run `cf repo-plugins` to show all plugins from all available repos.
 
 ## <a id="troubleshoot"></a>Troubleshooting ##
 

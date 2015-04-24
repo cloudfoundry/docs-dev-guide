@@ -173,6 +173,19 @@ You can use the `domain` attribute when you want your application to be served f
 
 The command line option that overrides this attribute is `-d`.
 
+### <a id='domains'></a>The domains attribute ###
+
+Use the `domains` attribute to provide multiple domains. If you define both `domain` and `domains` attributes, Cloud Foundry creates routes for domains defined in both of these fields.
+
+<pre>
+---
+  domains:
+  - domain-example1.com
+  - domain-example2.org
+</pre>
+
+The command line option that overrides this attribute is `-d`.
+
 
 ### <a id='instances'></a>The instances attribute ###
 
@@ -220,9 +233,9 @@ Use the `hosts` attribute to provide multiple hostnames or subdomains. Each host
 
 <pre>
 ---
-hosts:
-- app_host1
-- app_host2
+  hosts:
+  - app_host1
+  - app_host2
 </pre>
 
 The command line option that overrides this attribute is `-n`.
@@ -233,7 +246,7 @@ By default if you do not provide a hostname, the URL for the app takes the form 
 
 <pre>
 ---
-no-hostname: true
+  no-hostname: true
 </pre>
 
 The command line option that corresponds to this attribute is --no-hostname.

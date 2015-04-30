@@ -127,7 +127,7 @@ system parameters to the JVM.
 * **Manual**: [Parse the JSON yourself](../deploy-apps/environment-variable.html#VCAP-APPLICATION). Helper libraries are
 available for some frameworks.
 
-See the [buildpacks documentation](../../buildpacks) to learn more about
-working with specific frameworks.
+See the [buildpacks documentation](../../buildpacks/index.html) to learn more
+about working with specific frameworks.
 
 

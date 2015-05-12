@@ -1,7 +1,7 @@
 ---
 title: Deploy an Application
 ---
-_This page assumes you are using cf CLI v6._
+_This page assumes that you are using cf CLI v6._
 
 <p class="note"><strong>Note:</strong> See the <a href="../../buildpacks/">buildpacks</a> documentation for complete deployment guides specific to your application language or framework, such as the <a href="../../buildpacks/ruby/gsg-ror.html">Getting Started Deploying Ruby on Rails Apps</a> guide.</p>
 
@@ -9,10 +9,8 @@ _This page assumes you are using cf CLI v6._
 
 You deploy an application to Cloud Foundry by running a `push` command from a
 Cloud Foundry command line interface (CLI).
-Refer to the [Install cf CLI v6](../installcf/install-go-cli.html) topic for more
-information.
-Between the time you run `push` and the time that the application is available,
-Cloud Foundry:
+Refer to the [Install cf CLI v6](../installcf/install-go-cli.html) topic for more information.
+Between the time that you run `push` and the time that the application is available, Cloud Foundry performs the following tasks:
 
 * Uploads and stores application files
 * Examines and stores application metadata
@@ -21,8 +19,9 @@ Cloud Foundry:
 * Starts the application
 
 An application that uses services, such as a database, messaging, or email
-server, is not fully functional until you *provision* the service and, if
-required, *bind* the service to the application.
+server, is not fully functional until you provision the service and, if 
+required, bind the service to the application. 
+For more information on services, see the [Services Overview](../services/index.html) topic.
 
 ## <a id='prepare'></a>Step 1: Prepare to Deploy ##
 
@@ -55,7 +54,8 @@ For help preparing to deploy your application, see:
 
 Before you can push your application to Cloud Foundry you need to know:
 
-* The API endpoint for your Cloud Foundry instance. Also known as the target URL, this is <%=vars.api_endpoint%>.
+* The API endpoint for your Cloud Foundry instance. Also known as the target 
+URL, this is <%=vars.api_endpoint%>.
 * Your username and password for your Cloud Foundry instance.
 * The organization and space where you want to deploy your application.
 A Cloud Foundry workspace is organized into organizations, and within them,
@@ -73,9 +73,8 @@ made up of a host and a domain.
 * Every application is deployed to an application space that belongs to a
 domain.
 Every Cloud Foundry instance has a default domain defined.
-You can specify a non-default, or custom, domain when deploying, provided that the domain is
-registered and is mapped to the organization which contains the target
-application space.
+You can specify a non-default, or custom, domain when deploying, provided that 
+the domain is registered and is mapped to the organization which contains the target application space.
 
 <%=vars.ssl%>
 
@@ -89,7 +88,8 @@ Before you deploy, you need to decide on the following:
 as the name of your application.
 * **Instances**: Generally speaking, the more instances you run, the less
 downtime your application will experience.
-If your application is still in development, running a single instance can simplify troubleshooting.
+If your application is still in development, running a single instance can 
+simplify troubleshooting.
 For any production application, we recommend a minimum of two instances.
 * **Memory Limit**: The maximum amount of memory that each instance of your
 application can consume.
@@ -120,8 +120,7 @@ See [Deploying with Application Manifests](./manifest.html) to learn how
 application settings change from push to push, and how command-line options,
 manifests, and commands like `cf scale` interact.
 
-When you deploy an application while it is running, Cloud Foundry stops all instances of
-that application and then deploys.
+When you deploy an application while it is running, Cloud Foundry stops all instances of that application and then deploys.
 Users who try to run the application get a "404 not found" message while cf push
 is running.
 Stopping all instances is necessary to prevent two versions of your code running
@@ -130,8 +129,8 @@ A worst-case example would be deploying an update that involved a database
 schema migration, because instances running the old code would not work and
 users could lose data.
 
-Cloud Foundry uploads all application files except version control files with file
-extensions `.svn`, `.git`, and `.darcs`.
+Cloud Foundry uploads all application files except version control files with 
+file extensions `.svn`, `.git`, and `.darcs`.
 To exclude other files from upload, specify them in a `.cfignore` file in the
 directory where you run the push command.
 This technique is similar to using a `.gitignore` file.
@@ -141,12 +140,12 @@ For more information about the manifest file, see the [Deploying with Applicatio
 
 ## <a id='push'></a>Step 5: Push the Application ##
 
-The minimal command for deploying an application without a manifest is:
+Run the following command to deploy an application without a manifest:
 
- `cf push <appname>`
+  `cf push APP-NAME`
 
-If you provide the application name in a manifest, you can reduce the command
-even further, to `cf push`.
+If you provide the application name in a manifest, you can reduce the command to 
+`cf push`.
 See [Deploying with Application Manifests](./manifest.html).
 
 Since all you have provided is the name of your application, `cf push` sets the
@@ -155,18 +154,14 @@ to the default values.
 You can also use command-line options to specify these and additional
 attributes.
 
-The following transcript, generated when joeclouduser deployed the "my-app"
-Sinatra application, shows how Cloud Foundry assigns default values to application when
-given a minimal push command.
+The following transcript illustrates  how Cloud Foundry assigns default values 
+to application when given a `cf push` command.
 
-<p class ="note"><strong>Note</strong>: When deploying your own apps, avoid generic names like <code>my-app</code>,
-because a route containing a generic host like <code>my-app</code> is unlikely to be
-unique.
-Deployment fails unless the application has a globally unique route.</p>
+<p class ="note"><strong>Note</strong>: When deploying your own apps, avoid generic names like <code>my-app</code>. Cloud Foundry uses the app name to compose the route to the app, and deployment fails unless the app has a globally unique route.</p>
 
 <pre class="terminal">
 	$ cf push my-app
-	Creating app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+	Creating app my-app in org example-org / space development as a.user@<%=vars.app_domain%>...
 	OK
 
 	Creating route my-app.<%=vars.app_domain%>...
@@ -179,7 +174,7 @@ Deployment fails unless the application has a globally unique route.</p>
 	Uploading app: 560.1K, 9 files
 	OK
 
-	Starting app my-app in org joeclouduser-org / space development as joeclouduser@<%= vars.app_domain %>...
+	Starting app my-app in org example-org / space development as a.user@<%= vars.app_domain %>...
 	-----> Downloaded app package (552K)
 	OK
 	-----> Using Ruby version: ruby-1.9.3
@@ -200,7 +195,7 @@ Deployment fails unless the application has a globally unique route.</p>
 
 	App started
 
-	Showing health and status for app my-app in org joeclouduser-org / space development as joeclouduser@<%=vars.app_domain%>...
+	Showing health and status for app my-app in org example-org / space development as a.user@<%=vars.app_domain%>...
 	OK
 
 	requested state: started
@@ -215,7 +210,7 @@ Deployment fails unless the application has a globally unique route.</p>
 
 ## <a id='service-connection'></a>Step 6: (Optional) Configure Service Connections ##
 
-If you bound a service to the application you deployed, it may be necessary to
+If you bound a service to the application that you deployed, you might need to 
 configure your application with the service URL and credentials.
 For more information, see the specific documentation for your application
 framework:
@@ -227,8 +222,8 @@ framework:
 
 ## <a id='troubleshoot-push'></a>Step 7: Troubleshoot Deployment Problems ##
 
-If your application does not start on Cloud Foundry, first check that your
-application can run locally.
+If your application does not start on Cloud Foundry, first ensure that your 
+application can run locally. 
 
 You can troubleshoot your application in the cloud using the `cf` CLI.
 See [Troubleshoot Application Deployment and Health](./troubleshoot-app-health.html).

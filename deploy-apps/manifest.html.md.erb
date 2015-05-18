@@ -2,11 +2,14 @@
 title: Deploying with Application Manifests
 ---
 
-_This page assumes you are using cf CLI v6._
+_This page assumes that youare using cf CLI v6._
 
-Application manifests tell `cf push` what to do with applications. This includes everything from how many instances to create and how much memory to allocate to what services applications should use.
+Application manifests tell `cf push` what to do with applications. 
+This includes everything from how many instances to create and how much memory 
+to allocate to what services applications should use.
 
-A manifest can help you automate deployment, especially of multiple applications at once.
+A manifest can help you automate deployment, especially of multiple applications 
+at once.
 
 ##<a id='find-manifest'></a>How cf push Finds the Manifest ##
 
@@ -14,30 +17,36 @@ By default, the `cf push` command deploys an application using a `manifest.yml`
 file in the current working directory.
 Use the `-f` option to provide a non-standard manifest location or filename.
 
-To use `cf push` without an `-f` option, you must provide a manifest named `manifest.yml` in the current working directory.
+To use `cf push` without an `-f` option, you must provide a manifest named 
+`manifest.yml` in the current working directory.
 
 <pre class="terminal">
 $ cf push
 Using manifest file /path_to_working_directory/manifest.yml
 </pre>
 
-With the `-f` option, a path with no filename means that the filename must be `manifest.yml`.
+With the `-f` option, a path with no filename means that the filename must be 
+`manifest.yml`.
 
 <pre class="terminal">
 $ cf push -f ./some_directory/some_other_directory/
 Using manifest file /path_to_working_directory/some_directory/some_other_directory/manifest.yml
 </pre>
 
-If the manifest is named something other than `manifest.yml`, use the `-f` option with both path _and_ filename.
+If the manifest is named something other than `manifest.yml`, use the `-f` 
+option. You must include both the path and the filename with the `-f` option.
 
 <pre class="terminal">
 $ cf push -f ./some_directory/some_other_directory/alternative_manifest.yml
 Using manifest file /path_to_working_directory/some_directory/some_other_directory/alternative_manifest.yml
 </pre>
 
-## <a id='minimal-manifest'></a>An Example Manifest ##
+## <a id='minimal-manifest'></a>Example Manifest ##
 
-You can deploy applications without ever using a manifest. The benefits manifests may provide include consistency and reproducibility. When you want applications to be portable between different clouds, manifests may prove especially useful.
+You can deploy applications without ever using a manifest. 
+The benefits manifests may provide include consistency and reproducibility. 
+When you want applications to be portable between different clouds, manifests 
+may prove especially useful.
 
 Manifests are written in YAML. The manifest below illustrates some YAML conventions, as follows:
 
@@ -54,24 +63,31 @@ applications:
   host: nifty
 </pre>
 
-A _minimal manifest_ requires only an application `name`. To create a valid minimal manifest, remove the `memory` and `host` properties from this example.
+A minimal manifest requires only an application `name`. 
+To create a valid minimal manifest, remove the `memory` and `host` properties 
+from this example.
 
-Place your `manifest.yml` in the directory that contains the application files you want to push and run `cf push`. `cf push` searches the current directory for a manifest unless you specify another path with the `-p` option.
+Place your `manifest.yml` in the directory that contains the application files 
+that you want to push and run `cf push`. 
+`cf push` searches the current directory for a manifest unless you specify 
+another path with the `-p` option. 
 
 ## <a id='name'></a>Always Provide an Application Name to cf push ##
 
-`cf push` requires an application name, which you provide either in a manifest or at the command line.
+`cf push` requires an application name, which you provide either in a manifest 
+or at the command line.
 
-As described in [How cf push Finds the Manifest](#find-manifest) above, the simple command `cf push` works when the `manifest.yml` file is in the current working directory.
+As described in [How cf push Finds the Manifest](#find-manifest) above, the 
+command `cf push` works when the `manifest.yml` file is in the current working 
+directory.
 
-If you do _not_ use a manifest, the minimal push command looks like this:
+If you do not use a manifest, the minimal push command looks like this:
 
 <pre class="terminal">
 cf push my-application-name
 </pre>
 
-<p class="note"><strong>Note</strong>: When you provide an application name at the command line, <code>cf push</code> uses that application name whether or not there is a different application name in the manifest.
-If the manifest describes multiple applications, you can push a single application by providing its name at the command line; <code>cf</code> does not push the others.
+<p class="note"><strong>Note</strong>: When you provide an application name at the command line, <code>cf push</code> uses that application name whether or not there is a different application name in the manifest. If the manifest describes multiple applications, you can push a single application by providing its name at the command line; <code>cf</code> does not push the others.
 These behaviors are useful for testing.</p>
 
 ## <a id='find-app'></a>How cf push Finds the Application ##
@@ -83,7 +99,7 @@ By default, `cf push` recursively pushes the contents of the current working dir
 
 <p class="note"><strong>Note</strong>: If you want to push more than a single file, but not the entire contents of a directory, consider using a <code>.cfignore</code> file to tell <code>cf push</code> what to exclude.</p>
 
-## <a id='precedence'></a>Precedence Between Manifests, Command line Options, and Most Recent Values ##
+## <a id='precedence'></a>Precedence Between Manifests, Command Line Options, and Most Recent Values ##
 
 When you push an application for the first time, Cloud Foundry applies default values to any attributes that you do not set in a manifest or `cf push` command line options.
 
@@ -189,7 +205,7 @@ The command line option that overrides this attribute is `-d`.
 
 ### <a id='instances'></a>The instances attribute ###
 
-Use the `instances` attribute to specify the number of app instances you want to start upon push:
+Use the `instances` attribute to specify the number of app instances that you want to start upon push:
 
 <pre>
 ---
@@ -242,22 +258,22 @@ The command line option that overrides this attribute is `-n`.
 
 ### <a id='nohosts'></a>The no-hostname attribute ###
 
-By default if you do not provide a hostname, the URL for the app takes the form of `APP-NAME.DOMAIN`. If you want to override this and map the root domain to this app then you can set no-hostname as true.
+By default, if you do not provide a hostname, the URL for the app takes the form of `APP-NAME.DOMAIN`. If you want to override this and map the root domain to this app then you can set no-hostname as true.
 
 <pre>
 ---
   no-hostname: true
 </pre>
 
-The command line option that corresponds to this attribute is --no-hostname.
+The command line option that corresponds to this attribute is `--no-hostname`.
 
 ### <a id='random-route'></a>The random-route attribute ###
 
-Use the `random-route` attribute to create a URL that includes the app name and
-random words.
+Use the `random-route` attribute to create a URL that includes the app name and 
+random words. 
 Use this attribute to avoid URL collision when pushing the same app to multiple spaces, or to avoid managing app URLs.
 
-The command line option that corresponds to this attribute is --random-route.
+The command line option that corresponds to this attribute is `--random-route`.
 
 <pre>
 ---
@@ -287,7 +303,7 @@ Use the `timeout` attribute to give your application more time to start, up to 1
   timeout: 80
 </pre>
 
-If the app has not started by the timeout limit you set, Cloud Foundry stops trying to start the app. You might want to increase the timeout length to ensure that very large apps have sufficient time to start.
+If the app has not started by the timeout limit that you set, Cloud Foundry stops trying to start the app. You might want to increase the timeout length to ensure that very large apps have sufficient time to start.
 
 The command line option that overrides this attribute is `-t`.
 
@@ -303,9 +319,9 @@ You can use the `no-route` attribute with a value of `true` to prevent a route f
   no-route: true
 </pre>
 
-The command line option that corresponds to this attribute is ``--no-route``.
+The command line option that corresponds to this attribute is `--no-route`.
 
-If you find that an application which should not have a route _does_ have one:
+If you find that an application which should not have a route does have one:
 
 1. Remove the route using the `cf unmap-route` command.
 1. Push the app again with the `no-route: true` attribute in the manifest or the `--no-route` command line option.
@@ -323,7 +339,7 @@ For example:
   ...
   env:
     RAILS_ENV: production
-    RACK_ENV: production
+    RACK_ENV: production 
 </pre>
 
 `cf push` deploys the application to a container on the server. The variables belong to the container environment.
@@ -366,7 +382,7 @@ You can deploy multiple applications with one `cf push` command by describing th
 
 Suppose you want to deploy two applications called respectively spark and flame, and you want Cloud Foundry to create and start spark before flame. You accomplish this by listing spark first in the manifest.
 
-In this situation there are two sets of bits you want to push. Let’s say that they are `spark.rb` in the spark directory and `flame.rb` in the flame directory. One level up, the fireplace directory contains the spark and the flame directories along with the `manifest.yml` file. Your plan is to run `cf` from fireplace, where you know it can find the manifest.
+In this situation there are two sets of bits that you want to push. Let’s say that they are `spark.rb` in the spark directory and `flame.rb` in the flame directory. One level up, the fireplace directory contains the spark and the flame directories along with the `manifest.yml` file. Your plan is to run `cf` from fireplace, where you know it can find the manifest.
 
 Now that you have changed the directory structure and manifest location, `cf push` can no longer find your applications by its default behavior of looking in the current working directory. How can you ensure that `cf push` finds the bits you want to push?
 

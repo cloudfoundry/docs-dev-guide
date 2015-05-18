@@ -4,11 +4,11 @@ title: Deploying with Application Manifests
 
 _This page assumes that youare using cf CLI v6._
 
-Application manifests tell `cf push` what to do with applications. 
-This includes everything from how many instances to create and how much memory 
+Application manifests tell `cf push` what to do with applications.
+This includes everything from how many instances to create and how much memory
 to allocate to what services applications should use.
 
-A manifest can help you automate deployment, especially of multiple applications 
+A manifest can help you automate deployment, especially of multiple applications
 at once.
 
 ##<a id='find-manifest'></a>How cf push Finds the Manifest ##
@@ -17,7 +17,7 @@ By default, the `cf push` command deploys an application using a `manifest.yml`
 file in the current working directory.
 Use the `-f` option to provide a non-standard manifest location or filename.
 
-To use `cf push` without an `-f` option, you must provide a manifest named 
+To use `cf push` without an `-f` option, you must provide a manifest named
 `manifest.yml` in the current working directory.
 
 <pre class="terminal">
@@ -25,7 +25,7 @@ $ cf push
 Using manifest file /path_to_working_directory/manifest.yml
 </pre>
 
-With the `-f` option, a path with no filename means that the filename must be 
+With the `-f` option, a path with no filename means that the filename must be
 `manifest.yml`.
 
 <pre class="terminal">
@@ -33,19 +33,19 @@ $ cf push -f ./some_directory/some_other_directory/
 Using manifest file /path_to_working_directory/some_directory/some_other_directory/manifest.yml
 </pre>
 
-If the manifest is named something other than `manifest.yml`, use the `-f` 
+If the manifest is named something other than `manifest.yml`, use the `-f`
 option. You must include both the path and the filename with the `-f` option.
 
 <pre class="terminal">
-$ cf push -f ./some_directory/some_other_directory/alternative_manifest.yml
-Using manifest file /path_to_working_directory/some_directory/some_other_directory/alternative_manifest.yml
+$ cf push -f ./some_directory/some_other_directory/alternate_manifest.yml
+Using manifest file /path_to_working_directory/some_directory/some_other_directory/alternate_manifest.yml
 </pre>
 
 ## <a id='minimal-manifest'></a>Example Manifest ##
 
-You can deploy applications without ever using a manifest. 
-The benefits manifests may provide include consistency and reproducibility. 
-When you want applications to be portable between different clouds, manifests 
+You can deploy applications without ever using a manifest.
+The benefits manifests may provide include consistency and reproducibility.
+When you want applications to be portable between different clouds, manifests
 may prove especially useful.
 
 Manifests are written in YAML. The manifest below illustrates some YAML conventions, as follows:
@@ -63,28 +63,28 @@ applications:
   host: nifty
 </pre>
 
-A minimal manifest requires only an application `name`. 
-To create a valid minimal manifest, remove the `memory` and `host` properties 
+A minimal manifest requires only an application `name`.
+To create a valid minimal manifest, remove the `memory` and `host` properties
 from this example.
 
-Place your `manifest.yml` in the directory that contains the application files 
-that you want to push and run `cf push`. 
-`cf push` searches the current directory for a manifest unless you specify 
-another path with the `-p` option. 
+Place your `manifest.yml` in the directory that contains the application files
+that you want to push and run `cf push`.
+`cf push` searches the current directory for a manifest unless you specify
+another path with the `-p` option.
 
 ## <a id='name'></a>Always Provide an Application Name to cf push ##
 
-`cf push` requires an application name, which you provide either in a manifest 
+`cf push` requires an application name, which you provide either in a manifest
 or at the command line.
 
-As described in [How cf push Finds the Manifest](#find-manifest) above, the 
-command `cf push` works when the `manifest.yml` file is in the current working 
+As described in [How cf push Finds the Manifest](#find-manifest) above, the
+command `cf push` works when the `manifest.yml` file is in the current working
 directory.
 
 If you do not use a manifest, the minimal push command looks like this:
 
 <pre class="terminal">
-cf push my-application-name
+cf push my-app
 </pre>
 
 <p class="note"><strong>Note</strong>: When you provide an application name at the command line, <code>cf push</code> uses that application name whether or not there is a different application name in the manifest. If the manifest describes multiple applications, you can push a single application by providing its name at the command line; <code>cf</code> does not push the others.
@@ -103,7 +103,7 @@ By default, `cf push` recursively pushes the contents of the current working dir
 
 When you push an application for the first time, Cloud Foundry applies default values to any attributes that you do not set in a manifest or `cf push` command line options.
 
-* For example, `cf push my-application-name` with no manifest might deploy one instance of the app with one gigabyte of memory.
+* For example, `cf push my-app` with no manifest might deploy one instance of the app with one gigabyte of memory.
 In this case the default values for instances and memory are "1" and "1G", respectively.
 
 Between one push and another, attribute values can change in other ways.
@@ -156,7 +156,7 @@ To specify the custom start command in your application manifest, add it in the 
 On the command line, use the `-c` option to specify the custom start command as the following example shows:
 
 <pre class="terminal">
-$ cf push my-App -c "bundle exec rake VERBOSE=true"
+$ cf push my-app -c "bundle exec rake VERBOSE=true"
 </pre>
 
 <p class="note"><strong>Note</strong>: The <code>-c</code> option with a value of 'null' forces <code>cf push</code> to use the buildpack start command. See <a href="./app-startup.html">About Starting Applications</a> for more information.</p>
@@ -195,6 +195,7 @@ Use the `domains` attribute to provide multiple domains. If you define both `dom
 
 <pre>
 ---
+  ...
   domains:
   - domain-example1.com
   - domain-example2.org
@@ -249,6 +250,7 @@ Use the `hosts` attribute to provide multiple hostnames or subdomains. Each host
 
 <pre>
 ---
+  ...
   hosts:
   - app_host1
   - app_host2
@@ -262,6 +264,7 @@ By default, if you do not provide a hostname, the URL for the app takes the form
 
 <pre>
 ---
+  ...
   no-hostname: true
 </pre>
 
@@ -269,14 +272,15 @@ The command line option that corresponds to this attribute is `--no-hostname`.
 
 ### <a id='random-route'></a>The random-route attribute ###
 
-Use the `random-route` attribute to create a URL that includes the app name and 
-random words. 
+Use the `random-route` attribute to create a URL that includes the app name and
+random words.
 Use this attribute to avoid URL collision when pushing the same app to multiple spaces, or to avoid managing app URLs.
 
 The command line option that corresponds to this attribute is `--random-route`.
 
 <pre>
 ---
+  ...
   random-route: true
 </pre>
 
@@ -339,7 +343,7 @@ For example:
   ...
   env:
     RAILS_ENV: production
-    RACK_ENV: production 
+    RACK_ENV: production
 </pre>
 
 `cf push` deploys the application to a container on the server. The variables belong to the container environment.
@@ -445,7 +449,7 @@ There are only two narrow exceptions:
 
 * If your manifest is not named `manifest.yml` or not in the current working directory, use the `-f` command line option.
 
-* If you want to push a single application rather than all of the applications described in the manifest, provide the desired application name by running `cf push my-application_name`.
+* If you want to push a single application rather than all of the applications described in the manifest, provide the desired application name by running `cf push my-app`.
 
 ## <a id='minimize-duplication'></a>Minimizing Duplication ##
 
@@ -459,6 +463,7 @@ Notice how much content in the manifest below has been promoted in this way.
 
 <pre>
 ---
+  ...
 # all applications use these settings and services
 domain: <%=vars.app_domain%>
 memory: 1G
@@ -494,7 +499,8 @@ Every child manifest must contain an “inherit” line that points to the paren
 
 <pre>
 ---
-inherit: base-manifest.yml
+  ...
+  inherit: base-manifest.yml
 </pre>
 
 You do not need to add anything to the parent manifest.

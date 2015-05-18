@@ -229,7 +229,7 @@ The command line option that overrides this attribute is `-n`.
 
 ### <a id='hosts'></a>The hosts attribute ###
 
-Use the `hosts` attribute to provide multiple hostnames or subdomains. Each hostname generates a unique route for the app. `hosts` can be used in conjuntion with `host`. If you define both attributes, Cloud Foundry creates routes for hostnames defined in both `host` and `hosts`.
+Use the `hosts` attribute to provide multiple hostnames or subdomains. Each hostname generates a unique route for the app. `hosts` can be used in conjunction with `host`. If you define both attributes, Cloud Foundry creates routes for hostnames defined in both `host` and `hosts`.
 
 <pre>
 ---
@@ -253,7 +253,9 @@ The command line option that corresponds to this attribute is --no-hostname.
 
 ### <a id='random-route'></a>The random route attribute ###
 
-Use the `random-route` to create a URL that includes the app name and random words. This is useful when pushing the same app to many spaces and you wish to avoid URL collision, as well as avoid managing app URL's.
+Use the `random-route` attribute to create a URL that includes the app name and 
+random words. 
+Use this attribute to avoid URL collision when pushing the same app to multiple spaces, or to avoid managing app URLs.
 
 The command line option that corresponds to this attribute is --random-route.
 

@@ -56,7 +56,7 @@ applications:
 
 A _minimal manifest_ requires only an application `name`. To create a valid minimal manifest, remove the `memory` and `host` properties from this example.
 
-Place your `manifest.yml` in the directory that contains the application files you want to push and run `cf push`. `cf push` searches the current directory for a manifest unless you specify another path with the `-p` option. 
+Place your `manifest.yml` in the directory that contains the application files you want to push and run `cf push`. `cf push` searches the current directory for a manifest unless you specify another path with the `-p` option.
 
 ## <a id='name'></a>Always Provide an Application Name to cf push ##
 
@@ -251,10 +251,10 @@ By default if you do not provide a hostname, the URL for the app takes the form 
 
 The command line option that corresponds to this attribute is --no-hostname.
 
-### <a id='random-route'></a>The random route attribute ###
+### <a id='random-route'></a>The random-route attribute ###
 
-Use the `random-route` attribute to create a URL that includes the app name and 
-random words. 
+Use the `random-route` attribute to create a URL that includes the app name and
+random words.
 Use this attribute to avoid URL collision when pushing the same app to multiple spaces, or to avoid managing app URLs.
 
 The command line option that corresponds to this attribute is --random-route.
@@ -323,7 +323,7 @@ For example:
   ...
   env:
     RAILS_ENV: production
-    RACK_ENV: production 
+    RACK_ENV: production
 </pre>
 
 `cf push` deploys the application to a container on the server. The variables belong to the container environment.

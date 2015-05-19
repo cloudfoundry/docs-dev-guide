@@ -60,6 +60,21 @@ Updating service instance mydb as me@example.com...
 OK
 </pre>
 
+### <a id='arbitrary-params-update'></a> Arbitrary Parameters  ###
+Some services may support additional configuration parameters, which can be passed along with the update request. The parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
+
+<pre class="terminal">
+$ cf update-service mydb -c '{"storage_gb":4}'
+
+Updating service instance mydb as me@example.com...
+</pre>
+
+<pre class="terminal">
+$ cf update-service mydb -c /tmp/config.json
+
+Updating service instance mydb as me@example.com...
+</pre>
+
 ## <a id='bind'></a>Bind a Service Instance ##
 
 Binding a service to your application adds credentials for the service instance to the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. In most cases these credentials are unique to the binding; another app bound to the same service instance would receive different credentials.How your app leverages the contents of environment variables may depend on the framework you employ. Refer to the [Deploying Apps](../deploy-apps/index.html) section for more information.

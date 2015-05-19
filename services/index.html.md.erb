@@ -19,7 +19,7 @@ Think of a service as a factory which produces service instances.
 There are two ways in which Cloud Foundry enables developers to provision
 services: [Managed Services](#managed-services) and [User-provided Service Instances](#user-provided-services).
 
-* [Adding a Service](./adding-a-service.html)
+* [Adding a Service](./managing-services.html#create)
 * [Managing Services from the Command Line](./managing-services.html)
 
 ## <a id='managed-services'></a>Managed Services ##
@@ -32,7 +32,7 @@ Cloud Foundry, and receive calls from Cloud Foundry for four functions: create,
 delete, bind, and unbind.
 The broker then passes these calls onto the service itself.
 
-For more information on creating managed services see [Managed Service Instances](./managed.html).
+For more information on creating managed services see [Managed Service Instances](./managing-services.html#create).
 
 ## <a id='user-provided-services'></a>User-Provided Services  ##
 
@@ -70,14 +70,14 @@ environment variable in the application runtime called
 [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES).
 The application can use this information to integrate with the service instance.
 
-* [Using Bound Service Instances with your Application](./adding-a-service.html#use)
+* [Using Bound Service Instances with your Application](./managing-services.html#bind)
 * [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html#VCAP-SERVICES)
 
 The following topics describe the different types of services in Cloud Foundry,
 and have instructions for creating a service, and as necessary, binding it to an
 application, and configuring the application to connect to it.
 
-For more information on binding services, see [Bind a Service Instance](./bind-service.html)
+For more information on binding services, see [Bind a Service Instance](./managing-services.html#bind)
 
 For information on using services with specific application development
 frameworks, refer to the [buildpacks](../../buildpacks/) documentation.

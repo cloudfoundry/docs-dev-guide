@@ -55,6 +55,7 @@ You can create a managed service instance with the command: `cf create-service S
 * PLAN: Service plans are a way for providers to offer varying levels
 of resources or features for the same service.
 * SERVICE\_INSTANCE: A name you provide for your service instance.
+
 This is an alias for the instance which is meaningful to you.
 Use any series of alpha-numeric characters, hyphens (-), and underscores (\_).
 You can rename the instance at any time.

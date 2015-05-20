@@ -1,0 +1,21 @@
+---
+title: Switching Application Domains
+---
+_This page assumes you are using cf CLI v6._
+
+This topic explains how to change the domain of an existing Pivotal Cloud Foundry installation. We will change the domain from “myapps.mydomain.com” to “newapps.mydomain.com”.
+
+1. In PCF Ops Manager, select the Pivotal Elastic Runtime tile.
+
+1. Select Cloud Controller from the menu to see the current domain for your Elastic Runtime deployment. In this example, it is  myapps.mydomain.com.
+
+1. In the terminal, run `cf login -a YOUR_API_ENDPOINT`. You will be prompted for your PCF username and password, as well as an org and space. See Identifying the API Endpoint for your Elastic Runtime Instance if you don’t know your api endpoint.
+
+1. Run `cf domains` to view the domains in the space. If you have more than one shared domain, ensure that the domain you want to change is at the top of the list before you apply the new domain to your Elastic Runtime tile configuration. You can delete and re-create the other shared domains as necessary to push the domain you want to change to the top of the list. If you do this, make sure to re-map the routes for each domain. 
+
+	<pre class="terminal">
+		$ cf domains
+		Getting domains in org my-org as admin...
+		name                  status
+		myapps.mydomain.com   shared
+	</pre>

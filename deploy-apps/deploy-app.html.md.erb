@@ -138,28 +138,31 @@ For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-
 
 For more information about the manifest file, see the [Deploying with Application Manifests](./manifest.html) topic.
 
-### <a id='profiled'></a>Configure the Initial Environment for Your Applications ###
+### <a id='profiled'></a>Set Environment Variables ###
 
-Each application deployed to Cloud Foundry runs within its own self-contained
-environment, a Linux [Warden](../../concepts/architecture/warden.html)
-container.
-During startup, the container runs a [bash](https://www.gnu.org/software/bash/bash.html) shell that executes any
-scripts found in the `.profile.d` directory.
-To configure the initial environment for your applications, you must do the
-following:
+Environment variables are key-value pairs defined at the operating system level.
+These key-value pairs provide a way to configure the applications running on a
+system.
+For example, any application can access the **LANG** environment variable to
+determine which language to use for error messages and instructions, collating
+sequences, and date formats.
 
-1. Create a `.profile.d` directory under the build directory of your
-application.
-1. Add shell scripts to the `.profile.d` directory. These shell scripts must be
-executable by bash, and must have a `.sh` extension.
+To set an environment variable, add a bash script to the `.profile.d` directory
+in the source code of your application.
+Cloud Foundry runs this script when deploying each instance of your application.
 
-For example, set the [MEMORY_LIMIT](./environment-variable.html#memory)
-environment variable to 512 MB by creating a shell script, with the following
-content, within the `profile.d` directory:
+<p class='note'><strong>Note</strong>: You must give your shell scripts a <code>.sh</code> extension.</p>
 
-```
-export MEMORY_LIMIT=512M;
-```
+Example `.profile.d/setenv.sh` script:
+
+~~~bash
+# Set the Java environment path for your applications
+export JAVA_HOME=/usr/lib/jvm/jdk1.7.0
+export PATH=$PATH:$JAVA_HOME/bin
+
+# Set the default LANG for your applications
+export LANG=en_US.UTF-8
+~~~
 
 ## <a id='push'></a>Step 5: Push the Application ##
 

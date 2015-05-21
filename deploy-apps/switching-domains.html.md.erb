@@ -9,7 +9,7 @@ This topic explains how to change the domain of an existing Pivotal Cloud Foundr
 
 1. Select Cloud Controller from the menu to see the current domain for your Elastic Runtime deployment. In this example, it is  myapps.mydomain.com.
 
-1. In the terminal, run `cf login -a YOUR_API_ENDPOINT`. You will be prompted for your PCF username and password, as well as an org and space. See [Identifying the API Endpoint for your Elastic Runtime Instance](../customizing/api-endpoint.html) if you don’t know your api endpoint.
+1. In the terminal, run `cf login -a YOUR_API_ENDPOINT`. You will be prompted for your PCF username and password, as well as the org and space you want to access. See [Identifying the API Endpoint for your Elastic Runtime Instance](../customizing/api-endpoint.html) if you don’t know your api endpoint.
 
 	<%= image_tag '../images/switching_domains/old_domain.png'%>
 	
@@ -33,7 +33,7 @@ This topic explains how to change the domain of an existing Pivotal Cloud Foundr
 		my-space   myapp   myapps.mydomain.com   myapp
 	</pre>
 
-1. Run the following command to create the new domain you want to use:
+1. Run `cf create-share-domain YOUR_DESIRED_NEW_DOMAIN` to create the new domain you want to use:
 
 	<pre class='terminal'>
 		$ cf create-shared-domain newapps.mydomain.com
@@ -55,11 +55,11 @@ This topic explains how to change the domain of an existing Pivotal Cloud Foundr
 
 1. Repeat the previous step for each app in this space. Afterwards, check Apps Manager to confirm that the route URL has updated correctly for each app, as illustrated below for myapp.newapps.mydomain.com.
 
-	<%= image_tag '../images/switching_domains/new_domain_confirmed.png'%>
+	<%= image_tag '../images/switching_domains/new_domain_confirmed1.png'%>
 
-1. Repeat steps (2)-(7) for each space in your PCF installation, except for the PCF apps in the ‘system’ org. If you pushed apps in system (which we do not recommend) you will have to repeat steps (2)-(7) for these as well.
+1. Repeat steps (2)-(7) for each space in your PCF installation, except for the PCF apps in the System org. If you pushed apps in System (which we do not recommend) you will have to repeat steps (2)-(7) for these as well.
 
-1. Once you have confirmed that every app in every space has been mapped to the new domain, delete the old domain:
+1. Once you have confirmed that every app in every space has been mapped to the new domain, delete the old domain by running `cf delete-shared-domain OLD_DOMAIN_TO_DELETE`:
 	
 	<pre class='terminal'>
 		$ cf delete-shared-domain myapps.mydomain.com
@@ -74,4 +74,4 @@ This topic explains how to change the domain of an existing Pivotal Cloud Foundr
 
 1. Configure your Elastic Runtime tile to use the new domain, and apply changes. This new domain will be used by any new apps that are pushed after your update finishes.
 
-	<%= image_tag '../images/shwatever.png'%>
+	<%= image_tag '../images/switching_domains/new_domain_config.png'%>

@@ -9,13 +9,69 @@ This topic explains how to change the domain of an existing Pivotal Cloud Foundr
 
 1. Select Cloud Controller from the menu to see the current domain for your Elastic Runtime deployment. In this example, it is  myapps.mydomain.com.
 
-1. In the terminal, run `cf login -a YOUR_API_ENDPOINT`. You will be prompted for your PCF username and password, as well as an org and space. See Identifying the API Endpoint for your Elastic Runtime Instance if you don’t know your api endpoint.
+1. In the terminal, run `cf login -a YOUR_API_ENDPOINT`. You will be prompted for your PCF username and password, as well as an org and space. See [Identifying the API Endpoint for your Elastic Runtime Instance](../customizing/api-endpoint.html) if you don’t know your api endpoint.
 
-1. Run `cf domains` to view the domains in the space. If you have more than one shared domain, ensure that the domain you want to change is at the top of the list before you apply the new domain to your Elastic Runtime tile configuration. You can delete and re-create the other shared domains as necessary to push the domain you want to change to the top of the list. If you do this, make sure to re-map the routes for each domain. 
+	<%= image_tag '../images/switching_domains/old_domain.png'%>
+	
+1. Run `cf domains` to view the domains in the space. If you have more than one shared domain, ensure that the domain you want to change is at the top of the list before you apply the new domain to your Elastic Runtime tile configuration. You can delete and re-create the other shared domains as necessary to push the domain you want to change to the top of the list. If you do this, make sure to [re-map the routes for each domain](./domains-routes.html##root-app). 
 
 	<pre class="terminal">
 		$ cf domains
 		Getting domains in org my-org as admin...
+
 		name                  status
 		myapps.mydomain.com   shared
 	</pre>
+
+1. Run `cf routes` to confirm that your apps are assigned to the domain you plan to change.
+
+	<pre class='terminal'>
+		$ cf routes
+		Getting routes as admin ...
+
+		space      host    domain                apps
+		my-space   myapp   myapps.mydomain.com   myapp
+	</pre>
+
+1. Run the following command to create the new domain you want to use:
+
+	<pre class='terminal'>
+		$ cf create-shared-domain newapps.mydomain.com
+
+		Creating shared domain newapps.mydomain.com as admin...
+		OK
+	</pre>
+
+1. Run `cf map-route APP_NAME NEW_DOMAIN -n HOST_NAME` to map the new domain to your app. In this example both the `NEW_DOMAIN` and `HOST_NAME` arguments are `myapp`, since this is both the name of the app to which we are mapping a route, and the intended hostname for the URL.
+
+	<pre class='terminal'>
+		$ cf map-route myapp newapps.mydomain.com -n myapp
+
+		Creating route myapp.newapps.mydomain.com for org my-org / space my-space as admin...
+		OK
+		Adding route myapp.newapps.mydomain.com to app myapp in org my-org / space my-space as admin...
+		OK
+	</pre>
+
+1. Repeat the previous step for each app in this space. Afterwards, check Apps Manager to confirm that the route URL has updated correctly for each app, as illustrated below for myapp.newapps.mydomain.com.
+
+	<%= image_tag '../images/switching_domains/new_domain_confirmed.png'%>
+
+1. Repeat steps (2)-(7) for each space in your PCF installation, except for the PCF apps in the ‘system’ org. If you pushed apps in system (which we do not recommend) you will have to repeat steps (2)-(7) for these as well.
+
+1. Once you have confirmed that every app in every space has been mapped to the new domain, delete the old domain:
+	
+	<pre class='terminal'>
+		$ cf delete-shared-domain myapps.mydomain.com
+		Deleting domain myapps.mydomain.com as admin...
+
+		This domain is shared across all orgs.
+		Deleting it will remove all associated routes, and will make any app with this domain unreachable.
+		Are you sure you want to delete the domain myapps.mydomain.com? 
+		> yes
+		OK
+	</pre>
+
+1. Configure your Elastic Runtime tile to use the new domain, and apply changes. This new domain will be used by any new apps that are pushed after your update finishes.
+
+	<%= image_tag '../images/shwatever.png'%>

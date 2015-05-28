@@ -51,7 +51,7 @@ Following this step, your managed service instance is provisioned:
 <pre class="terminal">
 $ cf create-service rabbitmq small-plan my_rabbitmq
 
-Creating service my_rabbitmq in org console / space development as user@example.com... OK
+Creating service my_rabbitmq in org my-org / space development as user@example.com... OK
 </pre>
 
 <p class="note"><strong>Note</strong>: For more information about creating a user-provided service instance,
@@ -103,7 +103,7 @@ application.
 <pre class="terminal">
 $ cf bind-service rails-sample my_rabbitmq
 
-Binding service my_rabbitmq to app rails-sample in org console / space development as user@example.com... OK
+Binding service my_rabbitmq to app rails-sample in org my-org / space development as user@example.com... OK
 
 	TIP: Use 'cf push' to ensure your env variable changes take effect
 </pre>

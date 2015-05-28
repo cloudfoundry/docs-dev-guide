@@ -85,8 +85,12 @@ The following section contains instructions for creating a domain and using that
 	$ cf map-route myapp example.org
 	</pre>
 
-	If your route is using a shared domain, use the `-n HOSTNAME` parameter with the `cf map-route` command to specify a unique hostname for the route. The command below maps the route "myapp.example.org" with the hostname "app" to the application named "myapp":
+	If your route is using a shared domain, use the `-n HOSTNAME` parameter with the `cf map-route` command to specify a unique hostname for the route. The command below does two things:
 
+	<ul>
+		<li> Combines the existing route "myapp.example.org" with the hostname "app" to produce the new route "app.myapp.example.org"</li>
+		<li> Maps the new route to the application named "myapp" </li>
+    </ul>
 	<pre class="terminal">
 	$ cf map-route myapp example.org -n app
 	</pre>

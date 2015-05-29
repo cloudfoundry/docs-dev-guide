@@ -111,6 +111,19 @@ Parent domains must meet the following requirements:
 
 * **Shared Parent Domains**: You can create a shared domain that is parent to either a shared or a private subdomain.
 
+## <a id='shared-private'></a>Sharing a Private Domain Between One or More Orgs
+
+As an Org Manager, you can specify a private domain to be used by more than one org. You must have Org Manager permissions for all associated orgs. Select one of your orgs to own the others.
+
+From the Cloud Controller:
+
+* `PUT /v2/organizations/:GUID/private_domains/:PRIVATE_DOMAIN_GUID` associates a private domain with the organization. You cannot `PUT` to the owning org.
+
+* `DELETE /v2/organizations/:GUID/private_domains/:PRIVATE_DOMAIN_GUID` disassociates a private domain with the organization. You cannot remove the owning org with `DELETE`.
+
+* `GET /v2/private_domains/:GUID/shared_organizations` lists all shared organizations for the private domain.
+
+
 ## <a id='subdomain'></a>Using a Private or Shared Subdomain ##
 
 Domains in Cloud Foundry can be multi-level and contain subdomains like the “myapp” in the domain "myapp.<%=vars.app_domain%>." In this case, "<%=vars.app_domain%>" is the parent domain of the subdomain “myapp.” In the domain "test.myapp.example.org," “test” is a subdomain with the parent domain "myapp.example.org."

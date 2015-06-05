@@ -40,7 +40,7 @@ Run <code>cf config --locale YOUR_LANGUAGE </code> to set the language. The defa
 <pre class="terminal">
 cf config --locale pt_BR
 </pre>
-	
+
 The CLI currently supports eight languages:
 
 *  German: <code>de\_DE</code>
@@ -56,7 +56,7 @@ The CLI currently supports eight languages:
 
 ## <a id='login'></a>Login ##
 
-The `login` command in the cf CLI v6 has expanded functionality. In addition to your username and password, you can provide a target API endpoint, organization, and space. 
+The `login` command in the cf CLI v6 has expanded functionality. In addition to your username and password, you can provide a target API endpoint, organization, and space.
 
 
 If not specified on the command line, the cf CLI prompts for:
@@ -95,7 +95,7 @@ The cf CLI v6 has expanded capabilities in the form of four new options.
 * `-t` (timeout) allows you to give your application more time to start, up to 180 seconds.
 * `--no-manifest` forces the cf CLI to ignore any existing manifest.
 * `--no-hostname` makes it possible to specify a route with a domain but no hostname.
-* `--no-route` is suitable for applications which process data while running in the background. These applications, sometimes called "workers" are bound only to services and should not have routes.
+* `--no-route` removes existing and suppresses new external routes to your application. Use this flag when pushing worker apps.
 
 Usage:
 

@@ -119,7 +119,7 @@ service.
 These credentials are stored in the
 [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES)
 environment variable.
-There are generally two methods for these consuming credentials.
+There are generally two methods for consuming these credentials.
 
 * **Auto-configuration**: Some buildpacks create a service connection for you
 by creating additional environment variables, updating config files, or passing

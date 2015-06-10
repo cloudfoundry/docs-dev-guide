@@ -275,7 +275,7 @@ VCAP_SERVICES=
 }
 ~~~
 
-The <%= vars.api_zv2_format %> of the same services would look like this:
+The <%= vars.api_v2_format %> of the same services would look like this:
 
 ~~~
 VCAP_SERVICES=

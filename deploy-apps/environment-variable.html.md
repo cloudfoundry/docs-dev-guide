@@ -235,8 +235,9 @@ The key for each service in the JSON document is the same as the value of the
 To see the value of VCAP\_SERVICES for an application pushed to Cloud Foundry,
 see [View Environment Variable Values](#view-env).
 
-The example below shows the value of VCAP_SERVICES in the [v1 format](../../services/api-v1.html) for bound instances of several services
-available in the [Pivotal Web Services](http://run.pivotal.io) Marketplace.
+The example below shows the value of VCAP_SERVICES in the 
+<%=vars.api_v1_format%> for bound instances of several services available in the 
+[Pivotal Web Services](http://run.pivotal.io) Marketplace.
 
 ~~~
 VCAP_SERVICES=
@@ -274,7 +275,7 @@ VCAP_SERVICES=
 }
 ~~~
 
-The [v2 format](../../services/api.html) of the same services would look like this:
+The <%=vars.api_v2_format%> of the same services would look like this:
 
 ~~~
 VCAP_SERVICES=

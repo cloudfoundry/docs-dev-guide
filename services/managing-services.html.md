@@ -85,7 +85,7 @@ $ cf create-service my-db-service small-plan my-db -c /tmp/config.json
 Creating service my-db in org console / space development as user@example.com... OK
 </pre>
 
-### <a id='user-provided'></a>Create a User-Provided Service Instance ##
+## <a id='user-provided'></a>Create a User-Provided Service Instance ##
 
 User-provided service instances are resources which have been pre-provisioned outside of Cloud Foundry. For example, a DBA may provide a developer with credentials to an Oracle database managed outside of, and unknown to Cloud Foundry. Rather than hard coding credentials for these instances into your applications, you can create a mock service instance in Cloud Foundry to represent an external resource and configure it with the credentials provided by your DBA. Once this mock instance is created in the platform, the same CLI commands (documented on this page) can be used to manage user-provided instances as for instances provisioned by the platform.
 

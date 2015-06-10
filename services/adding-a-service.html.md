@@ -57,23 +57,6 @@ Creating service my_rabbitmq in org my-org / space development as user@example.c
 <p class="note"><strong>Note</strong>: For more information about creating a user-provided service instance,
 refer to <a href="./user-provided.html">User-Provided Service Instances</a>.</p>
 
-### <a id='connections'></a> Choosing the right plan  ###
-
-Like all PaaSes, Cloud Foundry updates its VMs periodically.
-When updating DEAs, Cloud Foundry spins up a new DEA with a new copy of your
-app, then spins down the old one.
-The number of app instances temporarily increases during the "rolling update."
-
-Choose a service plan with enough connections to cover the increase in
-application instances.
-During DEA updates, new connections start to fail if the number of connections
-reaches the service plan limit.
-
-For a small number of app instances, look for a plan that offers twice that
-many connections.
-As you increase the number of instances, you can bring the ratio of service
-connections to instances closer to one-to-one.
-
 ## <a id='bind'></a>Binding a Service Instance to your Application ##
 
 Some services provide bindable service instances.

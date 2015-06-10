@@ -236,7 +236,7 @@ To see the value of VCAP\_SERVICES for an application pushed to Cloud Foundry,
 see [View Environment Variable Values](#view-env).
 
 The example below shows the value of VCAP_SERVICES in the 
-<%=vars.api_v1_format%> for bound instances of several services available in the 
+<%= vars.api_v1_format %> for bound instances of several services available in the 
 [Pivotal Web Services](http://run.pivotal.io) Marketplace.
 
 ~~~
@@ -275,7 +275,7 @@ VCAP_SERVICES=
 }
 ~~~
 
-The <%=vars.api_zv2_format%> of the same services would look like this:
+The <%= vars.api_zv2_format %> of the same services would look like this:
 
 ~~~
 VCAP_SERVICES=

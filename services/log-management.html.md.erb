@@ -4,53 +4,20 @@ title: Using Third-Party Log Management Services
 
 _This page assumes you are using cf CLI v6._
 
-Logs tell you both what your app does and what the system does with your app.
-For any one application, logs come from each instance of the app and also from Cloud Foundry system components.
-For example, when a Cloud Foundry Router routes an HTTP request to an app, the Router records that event in the application log stream.
+Logs record activity in all instances of your applications and in other components of your Cloud Foundry installation. For example, when a Cloud Foundry Router routes an HTTP request to an app, the Router records that event in the application log stream.
 
-Cloud Foundry keeps a limited amount of logging information in memory.
-When you want to persist more log information than this, you must drain logs to a third-party log management service.
-You can then use the third-party service to analyze the logs.
-For example, you could produce metrics for application response times or error rates.
+The Cloud Foundry [Loggregator](../deploy-apps/streaming-logs.html) component consolidates log information from across your Cloud Foundry installation. Loggregator keeps only a limited quantity of this information, and this information is lost any time the Loggregator is restarted. To keep more log information than what Loggregator stores, you can use a Cloud Foundry compatible third-party log management service, such as Logentries, Logstash, Papertrail, or Splunk. Third-party service also offer tools to analyze the logs. For example, you could produce metrics for application response times or error rates.
 
-Providers whose log management products or services work with Cloud Foundry include Logentries, logstash, Papertrail, and Splunk. You will need to [setup an appropriate connection with these services for use with Cloud Foundry](log-management-thirdparty-svc.html).
+Think of the relationship between Cloud Foundry and the third-party logging service in terms of source, sink, and drain:
 
-You can think of the relationship between Cloud Foundry and the third-party logging service in terms of source, sink, and drain:
-
-* The application and the system components that interact with the app are an information **source**.
-* The logging service is an information **sink**.
+* Your applications and the Cloud Foundry components that interact with them make up your information **source**.
+* The third-party log management service is an information **sink**.
 * A **drain** configured on the application helps the source communicate with the sink.
 
-## <a id='loggregator'></a>Loggregator ##
+## <a id='config'></a>Step 1: Configure the log management service to treat your application as a source of data ##
 
-The Loggregator component of Cloud Foundry consolidates the logs of all actions that directly affect the app.
-Loggregator keeps a limited amount of app log data in memory.
-Eventually the newest log lines replace the oldest.
-Since all log data is stored transiently in memory, restarting the loggregator service loses any log data that you have not exported.
+You must configure a third-party log management service to accept traffic from your Cloud Foundry environment. See [Configuring Selected Third-Party Log Management Services](log-management-thirdparty-svc.html) for instructions.
 
-When sending logs to third-party services, Loggregator formats the data according to the *Syslog Protocol* defined in [RFC 5424](http://tools.ietf.org/html/rfc5424).
-Third-Party Log Management Software is defined in [RFC 6587](http://tools.ietf.org/html/rfc6587).
-
-In the Command Line Interface (CLI), you can stream an app log or view the most recent log data in memory.
-Logs viewed in the CLI are not in syslog format, and do not exactly match the output to third-party services.
-
-## <a id='use'></a>Draining Logs to a Third-Party Log Management Service ##
-
-To drain logs from your application and relevant Cloud Foundry components to a third-party log management service, complete this procedure:
-
-1. Configure the log management service to treat your application as a source of data.
-
-1. Create a user-provided service instance with a syslog drain.
-
-1. Bind the service instance to the application.
-
-1. Verify that logs are draining correctly.
-
-Details about each of these steps follow.
-
-### <a id='config'></a>Configuring the log management service to treat your application as a source of data ###
-
-Typically, you must configure a third-party log management service to accept traffic from your Cloud Foundry environment.
 Depending on the service provider, you may need the following information:
 
 * The <%=vars.external_ips%> <%=vars.admin%> assigns to outbound traffic.
@@ -69,13 +36,13 @@ typically provide a syslog URL to use as an endpoint for incoming log data.
 
     <p class="note"><strong>Note</strong>: <%=vars.product_short%> does not support using <code>syslog-tls</code> with self-signed certificates. If you are running your own syslog server and want to use <code>syslog-tls</code>, you must have an SSL certificate signed by a well-known certificate authority.</p>
 
-### <a id='create'></a>Creating a user-provided service instance with a syslog drain ###
+## <a id='create'></a>Step 2: Create a user-provided service instance with a syslog drain ##
 
 Create a user-provided service instance using the `create-user-provided-service` command with the `-l` option and the syslog URL you obtained earlier.
 The `-l` option configures the syslog drain.
 Refer to the [User-Provided Services](./user-provided.html#user-cups) topic for more information.
 
-### <a id='bind'></a>Binding the service instance to the application ###
+## <a id='bind'></a>Step 3: Bind the service instance to the application ##
 
 You have two options:
 
@@ -84,7 +51,7 @@ You have two options:
 
 See [Binding User-Provided Service Instances to Applications](user-provided.html#cups-example).
 
-### <a id='verify'></a>Verifying that Logs are Draining Correctly ###
+## <a id='verify'></a>Step 4: Verify that Logs are Draining Correctly ##
 
 To verify that logs are draining correctly to a third-party log management service:
 

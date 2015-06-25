@@ -113,16 +113,19 @@ Parent domains must meet the following requirements:
 
 ## <a id='shared-private'></a>Sharing a Private Domain Between One or More Orgs
 
-As an Org Manager, you can specify a private domain to be used by more than one org. You must have Org Manager permissions for all associated orgs. Select one of your orgs to own the others.
+As an Org Manager, you can specify a private domain to be used by more than one org. You must have Org Manager permissions for all associated orgs.
 
-From the Cloud Controller:
+* Share a private domain with an org with the `cf share-private-domain` command.
 
-* `PUT /v2/organizations/:GUID/private_domains/:PRIVATE_DOMAIN_GUID` associates a private domain with the organization. You cannot `PUT` to the owning org.
+	<pre class="terminal">
+	$ cf share-private-domain test-org example.com
+	</pre>
+	
+* Unshare a private domain with an org with the `cf share-private-domain` command.
 
-* `DELETE /v2/organizations/:GUID/private_domains/:PRIVATE_DOMAIN_GUID` disassociates a private domain with the organization. You cannot remove the owning org with `DELETE`.
-
-* `GET /v2/private_domains/:GUID/shared_organizations` lists all shared organizations for the private domain.
-
+	<pre class="terminal">
+	$ cf unshare-private-domain test-org example.com
+	</pre>
 
 ## <a id='subdomain'></a>Using a Private or Shared Subdomain ##
 

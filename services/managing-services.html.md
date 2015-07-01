@@ -71,6 +71,9 @@ Creating service my_rabbitmq in org console / space development as user@example.
 refer to <a href="./user-provided.html">User-Provided Service Instances</a>.</p>
 
 ### <a id='arbitrary-params-create'></a> Arbitrary Parameters  ###
+
+_Arbitrary parameters require cf CLI v6.12.1+_
+
 Some services may support additional configuration parameters, which can be passed along with the provision request. The parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
 
 <pre class="terminal">
@@ -118,6 +121,9 @@ OK
 </pre>
 
 ### <a id='arbitrary-params-update'></a> Arbitrary Parameters  ###
+
+_Arbitrary parameters require cf CLI v6.12.1+_
+
 Some services may support additional configuration parameters, which can be passed along with the update request. The parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
 
 <pre class="terminal">
@@ -151,6 +157,9 @@ $ cf restart my-app
 </pre>
 
 ### <a id='arbitrary-params-binding'></a> Arbitrary Parameters  ###
+
+_Arbitrary parameters require cf CLI v6.12.1+_
+
 Some services may support additional configuration parameters, which can be passed along with the binding request. The parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
 
 <pre class="terminal">

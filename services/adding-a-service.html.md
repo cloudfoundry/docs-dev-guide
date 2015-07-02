@@ -61,7 +61,7 @@ refer to <a href="./user-provided.html">User-Provided Service Instances</a>.</p>
 
 _Arbitrary parameters require cf CLI v6.12.1+_
 
-Some services may support additional configuration parameters, which can be passed along with the provision request. The parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
+Some services might support additional configuration parameters, which you can pass along with the provision request. Pass the parameters in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
 
 <pre class="terminal">
 $ cf create-service my-db-service small-plan my-db -c '{"storage_gb":4}'
@@ -116,7 +116,7 @@ changes.
 
 _Arbitrary parameters require cf CLI v6.12.1+_
 
-Some services may support additional configuration parameters, which can be passed along with the binding request. The parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
+Some services might support additional configuration parameters, which you can pass along with the binding request. Pass the parameters in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
 
 <pre class="terminal">
 $ cf bind-service rails-sample my-db -c '{"role":"read-only"}'

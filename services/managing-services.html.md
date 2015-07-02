@@ -4,19 +4,19 @@ title: Managing Service Instances with the CLI
 
 _This page assumes you are using cf CLI v6._
 
-This guide walks you through adding, binding, and using services.
-It assumes you have pushed an application to your Cloud Foundry instance.
+This topic walks you through adding, binding, and using services.
+Before using this topic, Pivotal recommends that you push an application to your Cloud Foundry instance.
 
 ## <a id='intro'></a>Intro to Services ##
 
-Cloud Foundry Services are add-ons that can be provisioned alongside your application. Learn all about Services at [Using Services](index.html).
+Cloud Foundry Services are add-ons that you can provision alongside your application. For more information about Services, refer to the [Using Services](index.html) topic.
 
-There are two types of Cloud Foundry services:
+There are two types of Cloud Foundry Services:
 
-- Service brokers advertise catalogs of [managed services](./managed.html) such as databases, key-value stores, messaging, or other types of services.
+- Service brokers advertise catalogs of [managed services](./managed.html) such as databases, key-value stores, or messaging services.
 - [User-provided services](./user-provided.html) allow you to represent external assets like databases, messaging services, and key-value stores in Cloud Foundry.
 
-In order to use services with your application you will need to:
+In order to use services with your application you need to:
 
 1. [Create](#create) a service instance.
 1. [Bind](#bind) a service instance to your application.
@@ -27,13 +27,13 @@ Services provision services instances. For example, ExampleDB might be a service
 Depending on the plan you select, you might get a database in a multi-tenant
 server, or a dedicated server.
 
-Not all services provide databases; a service may simply provision an account on
-their system for you.
-Whatever is provisioned for you by a service is a service instance.
+Not all services provide databases. A service might simply provision an account on
+its system for you.
+Whatever a service provisions for you is a service instance.
 
 ## <a id='viewing-services'></a> View Available Services ##
 
-After targeting and logging into Cloud Foundry, you can view what services are available to your targeted organization. Available services may differ between organizations and between Cloud Foundry marketplaces.
+After targeting and logging into Cloud Foundry, you can view what services are available to your targeted organization. Available services might differ between organizations and between Cloud Foundry marketplaces.
 
 <pre class="terminal">
 $ cf marketplace
@@ -59,7 +59,7 @@ This is an alias for the instance which is meaningful to you.
 Use any series of alpha-numeric characters, hyphens (-), and underscores (\_).
 You can rename the instance at any time.
 
-Following this step, your managed service instance is provisioned:
+Run the following command to provision your managed service instance:
 
 <pre class="terminal">
 $ cf create-service rabbitmq small-plan my_rabbitmq
@@ -68,7 +68,7 @@ Creating service my_rabbitmq in org console / space development as user@example.
 </pre>
 
 <p class="note"><strong>Note</strong>: For more information about creating a user-provided service instance,
-refer to <a href="./user-provided.html">User-Provided Service Instances</a>.</p>
+refer to the <a href="./user-provided.html">User-Provided Service Instances</a> topic.</p>
 
 ### <a id='arbitrary-params-create'></a> Arbitrary Parameters  ###
 
@@ -96,7 +96,7 @@ Refer to the [User Provided Service Instances](user-provided.html) topic for mor
 
 ## <a id='rename_service'></a>Rename a Service Instance ##
 
-You can change the name given to a service instance. Keep in mind that upon restarting any bound applications, the name of the instance will change in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your application depends on the instance name for discovering credentials, changing the name could break your applications use of the service instance.
+You can change the name given to a service instance. Keep in mind that upon restarting any bound applications, the name of the instance changes in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your application depends on the instance name for discovering credentials, changing the name could break your applications use of the service instance.
 
 <pre class="terminal">
 $ cf rename-service mydb mydb1
@@ -110,7 +110,7 @@ With v192 of [cf-release](https://github.com/cloudfoundry/cf-release) and v6.7 o
 
 ### Upgrade/Downgrade Service Plan
 
-By updating the service plan for an instance, users can effectively upgrade and downgrade their service instance to other service plans. Though the platform and CLI now supports this feature, services must expressly implement support for it so not all services will. Further, a service may support updating between some plans but not others (e.g. a service may support updating a plan where only a logical change is required, but not where data migration is necessary). In either case, users can expect to see a meaningful error when plan update is not supported.
+By updating the service plan for an instance, users can effectively upgrade and downgrade their service instance to other service plans. Though the platform and CLI now support this feature, services must expressly implement support for it so not all services will. Further, a service might support updating between some plans but not others (e.g. a service might support updating a plan where only a logical change is required, but not where data migration is necessary). In either case, users can expect to see a meaningful error when plan update is not supported.
 
 You can update the plan for an existing service instance as follows:
 
@@ -124,7 +124,7 @@ OK
 
 _Arbitrary parameters require cf CLI v6.12.1+_
 
-Some services may support additional configuration parameters, which can be passed along with the update request. The parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
+Some services might support additional configuration parameters, which can be passed along with the update request. The parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
 
 <pre class="terminal">
 $ cf update-service mydb -c '{"storage_gb":4}'
@@ -140,7 +140,7 @@ Updating service instance mydb as me@example.com...
 
 ## <a id='bind'></a>Bind a Service Instance ##
 
-Some services provide bindable service instances. Binding a service to your application adds credentials for the service instance to the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. In most cases these credentials are unique to the binding; another app bound to the same service instance would receive different credentials. How your app leverages the contents of environment variables may depend on the framework you employ. Refer to the [Deploying Apps](../deploy-apps/index.html) section for more information.
+Some services provide bindable service instances. Binding a service to your application adds credentials for the service instance to the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. In most cases these credentials are unique to the binding; another app bound to the same service instance would receive different credentials. How your app leverages the contents of environment variables might depend on the framework you employ. Refer to the [Deploying Apps](../deploy-apps/index.html) section for more information.
 
 * You must restart or in some cases re-push your application for the application to recognize changes to environment variables.
 * Not all services support application binding. Many services provide value to the software development process and are not directly used by an application running on Cloud Foundry.
@@ -160,7 +160,7 @@ $ cf restart my-app
 
 _Arbitrary parameters require cf CLI v6.12.1+_
 
-Some services may support additional configuration parameters, which can be passed along with the binding request. The parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
+Some services might support additional configuration parameters, which can be passed along with the binding request. The parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
 
 <pre class="terminal">
 $ cf bind-service rails-sample my-db -c '{"role":"read-only"}'
@@ -176,7 +176,7 @@ Binding service my-db to app rails-sample in org console / space development as 
 
 ## <a id='use'></a>Using Bound Services ##
 
-Once you have a service instance created and bound to your application, you will
+Once you have a service instance created and bound to your application, you
 need to configure the application to dynamically fetch the credentials for your
 service.
 These credentials are stored in the

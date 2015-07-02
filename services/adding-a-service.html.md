@@ -43,7 +43,7 @@ You can create a managed service instance with the command: `cf create-service S
 of resources or features for the same service.
 * SERVICE\_INSTANCE: A name you provide for your service instance.
 This is an alias for the instance which is meaningful to you.
-Use any series of alpha-numeric characters, hyphens (-), and underscores (_).
+Use any series of alpha-numeric characters, hyphens (-), and underscores (\_).
 You can rename the instance at any time.
 
 Following this step, your managed service instance is provisioned:
@@ -56,6 +56,24 @@ Creating service my_rabbitmq in org my-org / space development as user@example.c
 
 <p class="note"><strong>Note</strong>: For more information about creating a user-provided service instance,
 refer to <a href="./user-provided.html">User-Provided Service Instances</a>.</p>
+
+### <a id='arbitrary-params-create'></a> Arbitrary Parameters  ###
+
+_Arbitrary parameters require cf CLI v6.12.1+_
+
+Some services might support additional configuration parameters, which you can pass along with the provision request. Pass the parameters in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
+
+<pre class="terminal">
+$ cf create-service my-db-service small-plan my-db -c '{"storage_gb":4}'
+
+Creating service my-db in org console / space development as user@example.com... OK
+</pre>
+
+<pre class="terminal">
+$ cf create-service my-db-service small-plan my-db -c /tmp/config.json
+
+Creating service my-db in org console / space development as user@example.com... OK
+</pre>
 
 ## <a id='bind'></a>Binding a Service Instance to your Application ##
 
@@ -94,6 +112,24 @@ Binding service my_rabbitmq to app rails-sample in org my-org / space developmen
 Use `cf push` to update the VCAP_SERVICES environment variable with your
 changes.
 
+### <a id='arbitrary-params-binding'></a> Arbitrary Parameters  ###
+
+_Arbitrary parameters require cf CLI v6.12.1+_
+
+Some services might support additional configuration parameters, which you can pass along with the binding request. Pass the parameters in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
+
+<pre class="terminal">
+$ cf bind-service rails-sample my-db -c '{"role":"read-only"}'
+
+Binding service my-db to app rails-sample in org console / space development as user@example.com... OK
+</pre>
+
+<pre class="terminal">
+$ cf bind-service rails-sample my-db -c /tmp/config.json
+
+Binding service my-db to app rails-sample in org console / space development as user@example.com... OK
+</pre>
+
 ## <a id='use'></a>Using Bound Services ##
 
 Once you have a service instance created and bound to your application, you will
@@ -112,5 +148,3 @@ available for some frameworks.
 
 See the [buildpacks documentation](../../buildpacks/index.html) to learn more
 about working with specific frameworks.
-
-

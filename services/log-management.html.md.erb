@@ -6,13 +6,7 @@ _This page assumes you are using cf CLI v6._
 
 Logs record activity in all instances of your applications and in other components of your Cloud Foundry installation. For example, when a Cloud Foundry Router routes an HTTP request to an app, the Router records that event in the application log stream.
 
-The Cloud Foundry [Loggregator](../deploy-apps/streaming-logs.html) component consolidates log information from across your Cloud Foundry installation. Loggregator streams only a limited quantity of this information, and this information is lost any time the Loggregator is restarted. To keep more log information than what Loggregator stores, you can use a Cloud Foundry compatible third-party log management service, such as Logentries, Logstash, Papertrail, or Splunk. Third-party service also offer tools to analyze the logs. For example, you could produce metrics for application response times or error rates.
-
-Think of the relationship between Cloud Foundry and the third-party logging service in terms of source, sink, and drain:
-
-* Your applications and the Cloud Foundry components that interact with them make up your information **source**, into which your data is put.
-* The third-party log management service is an information **sink**, to which your data is written out.
-* A **drain** configured on the application helps the source communicate with the sink.
+The Cloud Foundry [Loggregator](../deploy-apps/streaming-logs.html) component consolidates log information from across your Cloud Foundry installation. Loggregator streams only a limited quantity of this information, and this information is lost any time the Loggregator is restarted. To keep more log information, you can use a Cloud Foundry-compatible third-party log management service, such as Logentries, Logstash, Papertrail, or Splunk. Third-party service also offer tools to analyze the logs. For example, you could produce metrics for application response times or error rates.
 
 Refer to the following steps to learn how to use third-party log management services with your Cloud Foundry installation to drain logs.
 

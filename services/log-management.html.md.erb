@@ -4,25 +4,28 @@ title: Using Third-Party Log Management Services
 
 _This page assumes you are using cf CLI v6._
 
+This topic describes how to use a third-party log management service to drain logs from your Cloud Foundry installation.
+
 Logs record activity in all instances of your applications and in other components of your Cloud Foundry installation. For example, when a Cloud Foundry Router routes an HTTP request to an app, the Router records that event in the application log stream.
 
-The Cloud Foundry [Loggregator](../deploy-apps/streaming-logs.html) component consolidates log information from across your Cloud Foundry installation. Loggregator streams only a limited quantity of this information, and this information is lost any time the Loggregator is restarted. To keep more log information, you can use a Cloud Foundry-compatible third-party log management service, such as Logentries, Logstash, Papertrail, or Splunk. Third-party service also offer tools to analyze the logs. For example, you could produce metrics for application response times or error rates.
+Cloud Foundry [Doppler](../deploy-apps/streaming-logs.html) consolidates log information from your application and from Cloud Foundry system components. By default, Doppler streams logs to your terminal. If you want to persist more than the limited amount of logging information that Doppler can buffer, you can drain logs to a third-party log management service such as Logentries, Logstash, Papertrail, or Splunk.
 
-Refer to the following steps to learn how to use third-party log management services with your Cloud Foundry installation to drain logs.
+Complete the following procedure to use a third-party log management service.
 
-## <a id='config'></a>Step 1: Configure the Log Management Service  ##
+## <a id='config'></a>Step 1: Configure the Log Management Service
 
-You must configure a third-party log management service to accept traffic from your Cloud Foundry environment. See [Configuring Selected Third-Party Log Management Services](log-management-thirdparty-svc.html) for instructions.
+Set up a communication channel between the log management service and your Cloud Foundry deployment as follows:
 
-Depending on the service provider, you may need the following information:
+1. Obtain the <%=vars.external_ips%> that <%=vars.admin%> assigns to outbound traffic.
 
-* The <%=vars.external_ips%> <%=vars.admin%> assigns to outbound traffic.
+1. Provide these IP addresses to the log management service. The specific steps to configure
+a third-party log management service depend on the service. See the [Configuring Selected Third-Party Log Management Services](log-management-thirdparty-svc.html) topic for more information.
 
-    <p class="note"><strong>Note</strong>: You must whitelist all of these IP addresses. Allowing traffic from a subset of the external IP addresses assigned to outbound traffic restricts the logs that are available to third-party services.</p>
+1. Whitelist these IP addresses to ensure unrestricted log routing to your log management service.
 
-* The syslog URL provided by the third-party service. Third-party services
-typically provide a syslog URL to use as an endpoint for incoming log data.
-
+1. Record the syslog URL provided by the third-party service. Third-party services
+typically provide a syslog URL to use as an endpoint for incoming log data. You use this syslog URL in [Step 2: Create a User-provided Service Instance](#create).
+<br><br>
     Cloud Foundry uses the syslog URL to route messages to the service.
     The syslog URL has a scheme of `syslog`, `syslog-tls`, or `https`, and can
     include a port number.
@@ -34,11 +37,11 @@ typically provide a syslog URL to use as an endpoint for incoming log data.
 
 ## <a id='create'></a>Step 2: Create a User-provided Service Instance ##
 
-Create a user-provided service instance using the `create-user-provided-service` command with the `-l` option and the syslog URL you obtained earlier as the example below shows.
-The `-l` option configures the syslog drain.
+Create a user-provided service instance using the [cf CLI](../installcf/) `create-user-provided-service` command with the `-l` flag and the syslog URL that you obtained in [Step 1: Configure the Log Management Service](#config).
+The `-l` flag configures the syslog drain.
 
 <pre class="terminal">
-cf create-user-provided-service SERVICE-INSTANCE -l syslog://example.com
+$ cf create-user-provided-service SERVICE-INSTANCE -l SYSLOG-URL
 </pre>
 
 Refer to the [cf create-user-provided-service Command](./user-provided.html#user-cups) section of the _User-Provided Service Instances_ topic for more information.
@@ -47,21 +50,21 @@ Refer to the [cf create-user-provided-service Command](./user-provided.html#user
 
 You have two options for binding the service instance to an application:
 
-* Use `cf push` with a manifest. The services block in the manifest must specify the service instance that you want to bind.
-* Use `cf bind-service`. After a short delay, logs begin to flow automatically.
+* Run `cf push` with a manifest. The services block in the manifest must specify the service instance that you want to bind.
+* Run `cf bind-service`. After a short delay, logs begin to flow automatically.
 
-See [Binding User-Provided Service Instances to Applications](user-provided.html#cups-example).
+Refer to the [Binding User-Provided Service Instances to Applications](user-provided.html#cups-example) topic for more information.
 
-## <a id='verify'></a>Step 4: Verify that Logs are Draining Correctly ##
+## <a id='verify'></a>Step 4: Verify Logs are Draining ##
 
 To verify that logs are draining correctly to a third-party log management service:
 
-1. Take actions that you believe should produce log messages, such as making requests of your app.
+1. Take actions that produce log messages, such as making requests of your app.
 
-1. Compare the logs you see in the CLI against those that the service shows you.
+1. Compare the logs displayed in the CLI against those displayed by the log management service.
 
 For example, if your application serves web pages, you can send HTTP requests to the application.
 In Cloud Foundry, these generate Router log messages, which you can view in the CLI.
-The third-party logging service should display corresponding messages.
+Your third-party log management service should display corresponding messages.
 
 <p class="note"><strong>Note</strong>: For security reasons, Cloud Foundry applications do not respond to ping. Therefore, you cannot use ping to generate log entries.</p>

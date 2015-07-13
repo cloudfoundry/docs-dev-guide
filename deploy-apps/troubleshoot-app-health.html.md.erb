@@ -255,11 +255,7 @@ Do not confuse <code>CF_TRACE</code> with the <a href="#env">variables in the co
 
 ### <a id='routing-conflict'></a>Routing Conflict ###
 
-Cloud Foundry allows multiple apps, or versions of the same app, to be mapped to the same route. This enables Blue/Green deployment, which is the deployment strategy that Pivotal recommends. See [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).
-
-However, a routing conflict due to accidentally mapping multiples apps to the same route can cause unexpected behavior and file-load errors. 
-
-If you suspect a routing conflict, run `cf apps` in the Cloud Foundry command line interface to check the routes assigned to your apps.
+<%= partial 'routing_conflict' %>
 
 ## <a id='cf-commands'></a>cf Troubleshooting Commands ##
 

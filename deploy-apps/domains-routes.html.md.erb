@@ -316,6 +316,4 @@ Note that for each of the above commands, using the `-n` parameter to specify th
 
 ### <a id='apps-sharing-route'></a>Sharing a Route between Two Apps ###
 
-Cloud Foundry allows multiple apps, or versions of the same app, to be mapped to the same route. This enables Blue/Green deployment, which is the deployment strategy that Pivotal recommends. See [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).
-
-However, a routing conflict due to accidentally mapping multiple apps to the same route can cause unexpected behavior such as seemingly random file-load errors.
+<%= partial 'routing_conflict' %>

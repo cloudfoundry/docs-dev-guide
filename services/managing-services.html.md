@@ -90,6 +90,8 @@ Creating service my-db in org console / space development as user@example.com...
 </pre>
 
 ### <a id='instance-tags-create'></a> Instance Tags  ###
+_Instance tags require cf CLI v6.12.1+_
+
 Services include a list of tags to help categorize the service. To help distinguish between different service instances, one may pass a comma-separated list of tags using the `-t` flag. When the service instance is bound to an app, these tags will be made available in [VCAP_SERVICES](../deploy-apps/environment-variable.html), in addition to the tags provided by the service.
 
 <pre class="terminal">
@@ -149,6 +151,8 @@ Updating service instance mydb as me@example.com...
 </pre>
 
 ### <a id='instance-tags-create'></a> Instance Tags  ###
+_Instance tags require cf CLI v6.12.1+_
+
 Services include a list of tags to help categorize the service. To help distinguish between different service instances, one may pass a comma-separated list of tags using the `-t` flag. When the service instance is bound to an app, these tags will be made available in [VCAP_SERVICES](../deploy-apps/environment-variable.html), in addition to the tags provided by the service.
 
 <pre class="terminal">

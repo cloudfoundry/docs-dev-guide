@@ -55,6 +55,7 @@ You can create a managed service instance with the command: `cf create-service S
 * PLAN: Service plans are a way for providers to offer varying levels
 of resources or features for the same service.
 * SERVICE\_INSTANCE: A name you provide for your service instance.
+
 This is an alias for the instance which is meaningful to you.
 Use any series of alpha-numeric characters, hyphens (-), and underscores (\_).
 You can rename the instance at any time.
@@ -84,6 +85,17 @@ Creating service my-db in org console / space development as user@example.com...
 
 <pre class="terminal">
 $ cf create-service my-db-service small-plan my-db -c /tmp/config.json
+
+Creating service my-db in org console / space development as user@example.com... OK
+</pre>
+
+### <a id='instance-tags-create'></a> Instance Tags  ###
+_Instance tags require cf CLI v6.12.1+_
+
+Services include a list of tags to help categorize the service. To help distinguish between different service instances, one may pass a comma-separated list of tags using the `-t` flag. When the service instance is bound to an app, these tags will be made available in [VCAP_SERVICES](../deploy-apps/environment-variable.html), in addition to the tags provided by the service.
+
+<pre class="terminal">
+$ cf create-service my-db-service small-plan my-db -t "prod, workers"
 
 Creating service my-db in org console / space development as user@example.com... OK
 </pre>
@@ -136,6 +148,17 @@ Updating service instance mydb as me@example.com...
 $ cf update-service mydb -c /tmp/config.json
 
 Updating service instance mydb as me@example.com...
+</pre>
+
+### <a id='instance-tags-create'></a> Instance Tags  ###
+_Instance tags require cf CLI v6.12.1+_
+
+Services include a list of tags to help categorize the service. To help distinguish between different service instances, one may pass a comma-separated list of tags using the `-t` flag. When the service instance is bound to an app, these tags will be made available in [VCAP_SERVICES](../deploy-apps/environment-variable.html), in addition to the tags provided by the service.
+
+<pre class="terminal">
+$ cf update-service my-db -t "staging, web"
+
+Updating service my-db in org console / space development as user@example.com... OK
 </pre>
 
 ## <a id='bind'></a>Bind a Service Instance ##

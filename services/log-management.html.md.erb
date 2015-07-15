@@ -1,25 +1,41 @@
 ---
-title: Using Third-Party Log Management Services
+title: Using Log Management Services
 ---
 
 _This page assumes you are using cf CLI v6._
 
-This topic describes how to use a third-party log management service to drain logs from your Cloud Foundry installation.
+This topic describes how to drain logs for applications on Cloud Foundry use a log management service.
 
-Logs record activity in all instances of your applications and in other components of your Cloud Foundry installation. For example, when a Cloud Foundry Router routes an HTTP request to an app, the Router records that event in the application log stream.
+Cloud Foundry aggregates logs for all instances of your applications as well as for requests made to your applications through internal components of Cloud Foundry. For example, when an application request is forwarded to the application by the Cloud Foundry Router, the Router records that event in the application log stream. These logs can be streamed to your terminal using the CLI command `cf logs APP`.
 
-Cloud Foundry [Doppler](../deploy-apps/streaming-logs.html) consolidates log information from your application and from Cloud Foundry system components. By default, Doppler streams logs to your terminal. If you want to persist more than the limited amount of logging information that Doppler can buffer, you can drain logs to a third-party log management service such as Logentries, Logstash, Papertrail, or Splunk.
+If you want to persist more than the limited amount of logging information that Cloud Foundry can buffer, Cloud Foundry can drain these logs to a log management service.
 
-Complete the following procedure to use a third-party log management service.
+For more information on the systems responsible for log aggregation and streaming in Cloud Foundry, see [Doppler](../deploy-apps/streaming-logs.html).
 
-## <a id='config'></a>Step 1: Configure the Log Management Service
+## <a id='marketplace'></a>Using Marketplace Log Drain Services ##
+
+If a service that supports syslog draining is available in your Cloud Foundry marketplace, streaming application logs to it is as simple as creating an instance of the service and binding it to your application. See [Managing Service Instances](managing-services.html) for more information.
+
+<p class='note'><strong>Note:</strong> Not all marketplace services support syslog drains. Services may implement an integration with Cloud Foundry that enables automated streaming of application syslogs. <%= vars.custom_services %></p>
+
+## <a id='other'></a>Streaming Application Logs to Other Services##
+
+If a compatible log management service is not available in your Cloud Foundry marketplace, you can use user-provided service instances to stream the same logs to a system of your choice. Below you'll find [generic instructions](#other-generic) for any log management service, as well as [specific instructions](#other-selected) for a few services we've tested.
+
+### <a id='other-selected'></a>Instructions for Selected Services
+
+See [Service-Specific Instructions for Streaming Application Logs](log-management-thirdparty-svc.html) to learn how to stream application logs to specific services including Papertrail, Splunk, Splunk Storm, and SumoLogic.
+
+### <a id='other-generic'></a>Generic Instructions
+
+#### Step 1: Configure the Log Management Service
 
 Set up a communication channel between the log management service and your Cloud Foundry deployment as follows:
 
 1. Obtain the <%=vars.external_ips%> that <%=vars.admin%> assigns to outbound traffic.
 
 1. Provide these IP addresses to the log management service. The specific steps to configure
-a third-party log management service depend on the service. See the [Configuring Selected Third-Party Log Management Services](log-management-thirdparty-svc.html) topic for more information.
+a third-party log management service depend on the service. See [Configuring Selected Third-Party Log Management Services](log-management-thirdparty-svc.html) for instructions for a few services.
 
 1. Whitelist these IP addresses to ensure unrestricted log routing to your log management service.
 
@@ -35,7 +51,7 @@ typically provide a syslog URL to use as an endpoint for incoming log data. You 
 
     <p class="note"><strong>Note</strong>: <%=vars.product_short%> does not support using <code>syslog-tls</code> with self-signed certificates. If you are running your own syslog server and want to use <code>syslog-tls</code>, you must have an SSL certificate signed by a well-known certificate authority.</p>
 
-## <a id='create'></a>Step 2: Create a User-provided Service Instance ##
+#### Step 2: Create a User-provided Service Instance
 
 Create a user-provided service instance using the [cf CLI](../installcf/) `create-user-provided-service` command with the `-l` flag and the syslog URL that you obtained in [Step 1: Configure the Log Management Service](#config).
 The `-l` flag configures the syslog drain.
@@ -44,18 +60,18 @@ The `-l` flag configures the syslog drain.
 $ cf create-user-provided-service SERVICE-INSTANCE -l SYSLOG-URL
 </pre>
 
-Refer to the [cf create-user-provided-service Command](./user-provided.html#user-cups) section of the _User-Provided Service Instances_ topic for more information.
+Refer to [User-Provided Service Instances](./user-provided.html) for more information.
 
-## <a id='bind'></a>Step 3: Bind the Service Instance ##
+#### Step 3: Bind the Service Instance
 
 You have two options for binding the service instance to an application:
 
 * Run `cf push` with a manifest. The services block in the manifest must specify the service instance that you want to bind.
 * Run `cf bind-service`. After a short delay, logs begin to flow automatically.
 
-Refer to the [Binding User-Provided Service Instances to Applications](user-provided.html#cups-example) topic for more information.
+Refer to [Binding User-Provided Service Instances to Applications](user-provided.html#bind-example) for more information.
 
-## <a id='verify'></a>Step 4: Verify Logs are Draining ##
+#### Step 4: Verify Logs are Draining
 
 To verify that logs are draining correctly to a third-party log management service:
 

@@ -24,10 +24,10 @@ Use the `cf env` command to view the Cloud Foundry environment variables for you
   $ cf env my-app
   Getting env variables for app my-app in org my-org / space my-space as admin...
   OK
-  
+
   System-Provided:
-  
-  
+
+
   {
    "VCAP_APPLICATION": {
     "application_name": "my-app",
@@ -50,7 +50,7 @@ Use the `cf env` command to view the Cloud Foundry environment variables for you
     "version": "fb8fbcc6-8d58-479e-bcc7-3b4ce5a7f0ca"
     }
   }
-  
+
   User-Provided:
   MY_DRAIN: http://drain.example.com
   MY_ENV_VARIABLE: 100
@@ -72,7 +72,7 @@ Root folder for the deployed application.
 `HOME=/home/vcap/app`
 
 ### <a id='memory'></a>MEMORY_LIMIT ###
-The maximum amount of memory that each instance of the application can consume. 
+The maximum amount of memory that each instance of the application can consume.
 You specify this value in an application manifest or with the cf CLI when pushing an application. The value is limited by space and org quotas.
 
 If an instance goes over the maximum limit, it will be restarted. If it has to be restarted too often, it will be terminated.
@@ -212,70 +212,31 @@ The key for each service in the JSON document is the same as the value of the
   </tr>
   <tr>
     <td><code>name</code></td>
-    <td>The name assigned to the service instance by the user when it was created.</td>
+    <td>The name assigned to the service instance by the user</td>
   </tr>
   <tr>
     <td><code>label</code></td>
-    <td><strong>v1 broker API</strong> The service name and service version (if there is no version attribute, the string "n/a" is used), separated by a dash character, for example "cleardb-n/a".<br/><strong>v2 broker API</strong> The service name.</td>
+    <td>The name of the service offering</td>
   </tr>
   <tr>
     <td><code>tags</code></td>
-    <td>An array of strings an app can use to identify a service.</td>
+    <td>An array of strings an app can use to identify a service instance</td>
   </tr>
   <tr>
     <td><code>plan</code></td>
-    <td>The service plan selected when the service was created.</td>
+    <td>The service plan selected when the service instance was created</td>
   </tr>
   <tr>
     <td><code>credentials</code></td>
-    <td>A JSON object containing the service-specific set of credentials needed to access the service instance. For example, for the cleardb service, this will include name, hostname, port, username, password, uri, and jdbcUrl.</td>
+    <td>A JSON object containing the service-specific credentials needed to access the service instance.</td>
   </tr>
 </table>
 
 To see the value of VCAP\_SERVICES for an application pushed to Cloud Foundry,
 see [View Environment Variable Values](#view-env).
 
-The example below shows the value of VCAP_SERVICES in the 
-<%= vars.api_v1_format %> for bound instances of several services available in the 
+The example below shows the value of VCAP_SERVICES for bound instances of several services available in the
 [Pivotal Web Services](http://run.pivotal.io) Marketplace.
-
-~~~
-VCAP_SERVICES=
-{
-  "elephantsql-n/a": [
-    {
-      "name": "elephantsql-c6c60",
-      "label": "elephantsql-n/a",
-      "tags": [
-        "postgres",
-        "postgresql",
-        "relational"
-      ],
-      "plan": "turtle",
-      "credentials": {
-        "uri": "postgres://seilbmbd:PHxTPJSbkcDakfK4cYwXHiIX9Q8p5Bxn@babar.elephantsql.com:5432/seilbmbd"
-      }
-    }
-  ],
-  "sendgrid-n/a": [
-    {
-      "name": "mysendgrid",
-      "label": "sendgrid-n/a",
-      "tags": [
-        "smtp"
-      ],
-      "plan": "free",
-      "credentials": {
-        "hostname": "smtp.sendgrid.net",
-        "username": "QvsXMbJ3rK",
-        "password": "HCHMOYluTv"
-      }
-    }
-  ]
-}
-~~~
-
-The <%= vars.api_v2_format %> of the same services would look like this:
 
 ~~~
 VCAP_SERVICES=
@@ -378,16 +339,16 @@ The table below lists the commands for environment variable groups.
     <td>Passes parameters as JSON to create a running environment variable group.</td>
   </tr>
  </table>
- 
+
  The following examples demonstrate how to get the environment variables:
- 
+
   <pre class="terminal">
   $ cf revg
   Retrieving the contents of the running environment variable group as sampledeveloper@pivotal.io...
   OK
   Variable Name   Assigned Value
   HTTP Proxy      87.226.68.130
- 
+
   $ cf sevg
   Retrieving the contents of the staging environment variable group as sampledeveloper@pivotal.io...
   OK
@@ -401,7 +362,7 @@ The table below lists the commands for environment variable groups.
 
   name                                               requested state   instances   memory   disk   urls
   APP-NAME                                         started           1/1         256M     1G     APP-NAME.cf-app.com, test-foo.com
- 
+
   $ cf env APP-NAME
   Getting env variables for app APP-NAME in org SAMPLE-ORG-NAME / space dev as sampledeveloper@pivotal.io...
   OK
@@ -441,9 +402,9 @@ The table below lists the commands for environment variable groups.
   EXAMPLE-GROUP: 2001
   HTTP Proxy: 27.145.145.105
   </pre>
-  
+
   The following examples demonstrate how to set the environment variables:
-  
+
   <pre class="terminal">
   $ cf ssevg '{"test":"87.226.68.130","test2":"27.145.145.105"}'
   Setting the contents of the staging environment variable group as admin...
@@ -454,7 +415,7 @@ The table below lists the commands for environment variable groups.
   Variable Name   Assigned Value
   test            87.226.68.130
   test2           27.145.145.105
-  
+
   $ cf srevg '{"test3":"2001","test4":"2010"}'
   Setting the contents of the running environment variable group as admin...
   OK
@@ -464,5 +425,5 @@ The table below lists the commands for environment variable groups.
   Variable Name   Assigned Value
   test3           2001
   test4           2010
- 
+
 </pre>

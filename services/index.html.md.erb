@@ -2,89 +2,39 @@
 title: Services Overview
 ---
 
-This documentation is intended for end users of Cloud Foundry and covers
-provisioning of service instances and integrating them with applications that
-have been pushed to Cloud Foundry.
-<%= vars.custom_services %>
+This documentation is intended for end users of Cloud Foundry and covers provisioning of service instances and integrating them with applications that have been pushed to Cloud Foundry. <%= vars.custom_services %>
 
 ## <a id='instances'></a>Services and Service Instances ##
 
-Cloud Foundry Services enable end users to provision a resource on demand.
-Examples of a resource a service might provide are databases on a multi-tenant
-server, or simply accounts on a SaaS application.
+Cloud Foundry offers a marketplace of services, from which users can provision reserved resources on-demand. Examples of resources services provide include databases on a shared or dedicated server, or accounts on a SaaS application. These resources are known as Service Instances and the systems that deliver and operate these resources are known as Services. Think of a service as a factory that delivers service instances.
 
-These resources are known as Service Instances.
-Think of a service as a factory which produces service instances.
+For documentation on provisioning service instances and other lifecycle operations, see [Managing Service Instances](./managing-services.html).
 
-There are two ways in which Cloud Foundry enables developers to provision
-services: [Managed Services](#managed-services) and [User-provided Service Instances](#user-provided-services).
+<p class='note'><strong>Note:</strong> For a service to be available in the marketplace, it must be integrated with Cloud Foundry by way of APIs. <%= vars.custom_services %></p>
 
-* [Adding a Service](./managing-services.html#create)
-* [Managing Services from the Command Line](./managing-services.html)
+### <a id='user-provided-services'></a>User-Provided Service Instances ###
 
-## <a id='managed-services'></a>Managed Services ##
+Cloud Foundry enables users to integrate services that are not available in the marketplace with their applications using a feature called [User-Provided Service Instances](./user-provided.html) (UPSI).
 
-A Managed Service integrates with Cloud Foundry via a service broker that
-implements the Service Broker API.
+## <a id='binding-services'></a>Service Binding ##
 
-A service broker advertises a catalog of service offerings and service plans to
-Cloud Foundry, and receive calls from Cloud Foundry for four functions: create,
-delete, bind, and unbind.
-The broker then passes these calls onto the service itself.
+Cloud Foundry enables users to automatically provision credentials an application needs to reach a service instance, and delivers these credentials to the application runtime in an environment variable. This operation is called Binding.
 
-For more information on creating managed services see [Managed Service Instances](./managing-services.html#create).
-
-## <a id='user-provided-services'></a>User-Provided Services  ##
-
-Managed Services have been integrated with Cloud Foundry via APIs and enable
-end-users to provision new service instances and credentials on demand.
-User-provided Service Instances are a mechanism to deliver credentials to
-applications for service instances which have been pre-provisioned outside of
-Cloud Foundry.
-
-Both operators and developers frequently ask how applications pushed to their
-Cloud Foundry instances can bind with external services, such as Oracle, which
-they operate themselves or are outside of Cloud Foundry's control.
-User-provided Service Instances enable developers to use external services with
-their applications using familiar workflows.
-
-For more information on using User-Provided Services, see [User-Provided Service Instances](./user-provided.html).
-
-## <a id='log-management'></a>Third-Party Log Management Services ##
-
-To learn how your applications can drain their logs to a third-party log
-management solution, see [Third-Party Log Management Services](./log-management.html).
-This is also known as setting up a syslog drain.
-
-For more information about specific third-party log management services, see
-[Configuring Selected Third-Party Log Management Services](./log-management-thirdparty-svc.html)
-
-## <a id='binding-services'></a>About Service Binding ##
-
-Some services support the concept of Binding.
-Applications pushed to Cloud Foundry can be bound with service instances that
-support this feature.
-When an application is bound to a service instance, information about the
-service instance (such as location and account credentials) is written to an
-environment variable in the application runtime called
-[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES).
-The application can use this information to integrate with the service instance.
-
-* [Using Bound Service Instances with your Application](./managing-services.html#bind)
+* [Binding a Service Instance to an Application](./managing-services.html#bind)
 * [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html#VCAP-SERVICES)
 
-The following topics describe the different types of services in Cloud Foundry,
-and have instructions for creating a service, and as necessary, binding it to an
-application, and configuring the application to connect to it.
+<p class='note'><strong>Note:</strong> Not all services support application binding. Some services provide business value directly to users, rather than through integration with applications.</p>
 
-For more information on binding services, see [Bind a Service Instance](./managing-services.html#bind)
+### <a id='frameworks'></a>Service Binding Specifics for Development Frameworks ###
 
-For information on using services with specific application development
-frameworks, refer to the [buildpacks](../../buildpacks/) documentation.
+For details on binding and credentials specific to your application development framework, refer to the Service Binding section in the documentation for [your framework's buildpack](../../buildpacks/)..
+
+## <a id='log-management'></a>Streaming Applications Logs to Log Management Services ##
+
+To learn how your application logs can be streamed to third-party log management services, see [Log Management Services](./log-management.html).
+
+User-provided service instances can be used to drain applications logs to a service not available in the marketplace. This is also known as setting up a syslog drain. We've documented instructions for a few providers at [Configuring Selected Third-Party Log Management Services](./log-management-thirdparty-svc.html).
 
 ## <a id='migrating'></a>Database Migrations ##
 
-If your application relies on a relational database, you will need to apply
-schema changes periodically.
-
-For guidance on how to do database migrations on Cloud Foundry-managed services, see [Migrating a Database in Cloud Foundry](./migrate-db.html).
+If your application relies on a relational database, you will need to apply schema changes periodically. For guidance on how to do database migrations on Cloud Foundry-managed services, see [Migrating a Database in Cloud Foundry](./migrate-db.html).

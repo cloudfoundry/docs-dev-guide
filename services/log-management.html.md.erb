@@ -40,7 +40,7 @@ a third-party log management service depend on the service. See [Configuring Sel
 1. Whitelist these IP addresses to ensure unrestricted log routing to your log management service.
 
 1. Record the syslog URL provided by the third-party service. Third-party services
-typically provide a syslog URL to use as an endpoint for incoming log data. You use this syslog URL in [Step 2: Create a User-provided Service Instance](#create).
+typically provide a syslog URL to use as an endpoint for incoming log data. You use this syslog URL in Step 2: Create a User-provided Service Instance.
 <br><br>
     Cloud Foundry uses the syslog URL to route messages to the service.
     The syslog URL has a scheme of `syslog`, `syslog-tls`, or `https`, and can
@@ -53,7 +53,7 @@ typically provide a syslog URL to use as an endpoint for incoming log data. You 
 
 #### Step 2: Create a User-provided Service Instance
 
-Create a user-provided service instance using the [cf CLI](../installcf/) `create-user-provided-service` command with the `-l` flag and the syslog URL that you obtained in [Step 1: Configure the Log Management Service](#config).
+Create a user-provided service instance using the [cf CLI](../installcf/) `create-user-provided-service` command with the `-l` flag and the syslog URL that you obtained in Step 1: Configure the Log Management Service.
 The `-l` flag configures the syslog drain.
 
 <pre class="terminal">

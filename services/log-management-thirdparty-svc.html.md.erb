@@ -1,5 +1,5 @@
 ---
-title: Configuring Selected Third-Party Log Management Services
+title: Service-Specific Instructions for Streaming Application Logs
 ---
 
 This topic provides instructions for configuring some third-party log management
@@ -37,6 +37,10 @@ From your Papertrail account:
 to the logs viewing page.
 
     <%= image_tag("../images/third-party-logs/papertrail-11.png") %>
+
+## <a id='splunk'></a>Splunk ##
+
+See [Streaming Application Logs to Splunk](integrate-splunk.html) for details.
 
 ## <a id='splunkstorm'></a>Splunk Storm ##
 
@@ -126,7 +130,7 @@ search query.
 
     <%= image_tag("../images/third-party-logs/sumologic-10.png") %>
 
-## <a id='logentries'></a>Logentries ##
+## <a id='logentries'></a>Logentries is Not Supported ##
 
 Cloud Foundry distributes log messages over multiple servers in order to handle
 load. Currently, we do not recommend using Logentries as it does not support multiple syslog sources.

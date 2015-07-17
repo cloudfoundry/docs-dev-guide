@@ -27,11 +27,11 @@ If your application needs to communicate across different instances of itself, c
 
 ### <a id="shared-cookies"></a>Cookies Accessible across Applications ###
 
-In an environment with shared domains, cookies are accessible across applications.
+In an environment with shared domains, cookies might be accessible across applications.
 
-<%= vars.cookies_shared_domain_1 %> Many tracking tools such as Google Analytics and Mixpanel use the highest available domain to set their cookies. <%= vars.cookies_shared_domain_2 %>
+<%= vars.cookies_shared_domain_1 %> Many tracking tools such as Google Analytics and Mixpanel use the highest available domain to set their cookies. <%= vars.cookies_shared_domain_2 %> For example, an application at <code>my-app.<%= vars.app_domain %></code> might be able to access the cookies for an application at <code>your-app.<%= vars.app_domain %></code>.
 
-Consider whether you want to use tools that set and store your cookies at the highest available domain, given that cookies are accessible by other applications sharing the same domain.
+Consider whether you want your applications or tools that use cookies to set and store the cookies at the highest available domain.
 
 ### <a id="sessions"></a>HTTP Sessions Not Persisted or Replicated ###
 

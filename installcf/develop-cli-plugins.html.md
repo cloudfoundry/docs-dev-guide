@@ -15,17 +15,17 @@ Using plugins requires cf CLI v.6.7 or higher. Refer to the [Installing the cf C
 
 ### Initializing the Plugin ###
 
-1. To initialize a plugin, call `plugin.Start(new(MyPluginStruct))` from within the `main()` method of your plugin. The `plugin.Start(...)` function requires a new reference to the struct that implements the defined interface.
+To initialize a plugin, call `plugin.Start(new(MyPluginStruct))` from within the `main()` method of your plugin. The `plugin.Start(...)` function requires a new reference to the struct that implements the defined interface.
 
 ### Invoking CLI Commands ###
 
-1. Invoke CLI commands with `cliConnection.CliCommand([]args)` from within a plugin's `Run(...)` method. `The Run(...)` method receives the `cliConnection` as its first argument.
-    The `cliConnection.CliCommand([]args)` returns the output printed by the command and an error. The output is returned as a slice of strings. The error will be present if the call to the CLI command fails.
-    See the [calling CLI commands example](https://github.com/cloudfoundry/cli/blob/master/plugin_examples/call_cli_cmd/main/call_cli_cmd.go) included in the CLI repo.
+Invoke CLI commands with `cliConnection.CliCommand([]args)` from within a plugin's `Run(...)` method. `The Run(...)` method receives the `cliConnection` as its first argument.
+The `cliConnection.CliCommand([]args)` returns the output printed by the command and an error. The output is returned as a slice of strings. The error will be present if the call to the CLI command fails.
+See the [calling CLI commands example](https://github.com/cloudfoundry/cli/blob/master/plugin_examples/call_cli_cmd/main/call_cli_cmd.go) included in the CLI repo.
 	
 ### Installing a Plugin ###
 
-1. To install a plugin, run:
+To install a plugin, run:
 
 ```
 cf install-plugin PATH_TO_PLUGIN_BINARY

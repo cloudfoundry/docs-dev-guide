@@ -229,6 +229,24 @@ Once you have a service instance created and bound to your application, you need
 
 For details on consuming credentials specific to your development framework, refer to the Service Binding section in the documentation for [your framework's buildpack](../../buildpacks/).
 
+## <a id='update-credentials'></a>Update Service Credentials
+
+If you need to update your service credentials, perform the following steps:
+
+  1. [Unbind the service instance](#unbind) using the credentials you are updating with the following command:
+
+    <pre class='terminal'>
+    $ cf unbind-service &lt;YOUR-APP&gt; &lt;YOUR-SERVICE-INSTANCE&gt;
+    </pre>
+
+  1. [Bind the service instance](#bind). This adds your credentials to the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
+
+    <pre class='terminal'>
+    $ cf bind-service &lt;YOUR-APP&gt; &lt;YOUR-SERVICE-INSTANCE&gt;
+    </pre>
+
+  1. Restart or re-push the application bound to the service instance so that the application recognizes your environment variable updates.
+
 ## <a id='unbind'></a>Unbind a Service Instance ##
 
 Unbinding a service removes the credentials created for your application from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.

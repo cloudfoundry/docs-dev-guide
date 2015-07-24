@@ -1,6 +1,6 @@
 Cloud Foundry allows multiple apps, or versions of the same app, to be mapped to the same route. This enables Blue-Green deployment, which is the deployment strategy that Pivotal recommends. See [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).
 
-However, a routing conflict due to accidentally mapping multiples apps to the same route will cause unexpected behavior, as incoming requests will be randomly routed to one or the other app on the shared route.
+However, multiple apps should be mapped to the same route only during a Blue-Green deployment. In other situations this can cause file load errors and other buggy behavior, as incoming requests will be randomly routed to one or the other app on the shared route.
 
 <% if $this_topic == 'domains-routes' %>
 

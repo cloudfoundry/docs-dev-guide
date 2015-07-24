@@ -1,6 +1,9 @@
 ---
 title: Creating Domains and Routes
 ---
+
+<% $this_topic = 'domains-routes' %>
+
 _This page assumes you are using cf CLI v6._
 
 This topic describes how to create and use domains and routes in Cloud Foundry.
@@ -294,9 +297,11 @@ The command below maps the route "*.example.org" to the "myfallbackapp" applicat
 $ cf map-route myfallbackapp example.org -n *
 </pre>
 
-<p class="note"><strong>Note</strong>: You can map a single route to multiple applications in the same space. See <a href="../deploy-apps/blue-green.html">Blue-Green Deployment</a> to learn about an important extension of this technique.</p>
-
 If the application is running when you map a route, restart the application. The new route is not active until the application is restarted.
+
+### <a id='apps-sharing-route'></a>Sharing a Route between Two Apps ###
+
+<%= partial 'routing_conflict' %>
 
 ### <a id='delete-route'></a>Remove a Route ###
 
@@ -313,7 +318,3 @@ $ cf delete-route example.org -n myapp
 </pre>
 
 Note that for each of the above commands, using the `-n` parameter to specify the host is optional.
-
-### <a id='apps-sharing-route'></a>Sharing a Route between Two Apps ###
-
-<%= partial 'routing_conflict' %>

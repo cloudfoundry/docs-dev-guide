@@ -159,6 +159,10 @@ of memory your app should use.
 Check your app's actual memory usage.
 If it exceeds the limit, modify the app to use less memory.
 
+### <a id='routing-conflict'></a>Routing Conflict ###
+
+<%= partial 'routing_conflict' %>
+
 ## <a id='info'></a>Gathering Diagnostic Information ##
 
 Use the techniques in this section to gather diagnostic information and troubleshoot app deployment issues.
@@ -252,10 +256,6 @@ To enable it for an entire shell session, set the variable first:
 
 <p class="note"><strong>Note</strong>: <code>CF_TRACE</code> is a local environment variable that modifies the behavior of <code>cf</code> itself.
 Do not confuse <code>CF_TRACE</code> with the <a href="#env">variables in the container environment</a> where your apps run.</p>
-
-### <a id='routing-conflict'></a>Routing Conflict ###
-
-<%= partial 'routing_conflict' %>
 
 ## <a id='cf-commands'></a>cf Troubleshooting Commands ##
 

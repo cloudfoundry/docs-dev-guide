@@ -26,28 +26,12 @@ Cloud Foundry also supports custom domains.
 
 ## <a id='create-domains'></a>Create a Custom Domain ##
 
-If you want to use a registered domain of your own, you can:
+If you want to use a registered domain of your own, use the `create-domain` command to create and associate it with a single organization in your account.
 
-- Create and associate it with a single organization in your account.
-
-- Create and associate it with _all_ organizations in your account. Note: This can only be done by an **account** administrator.
-
-### Associate a Custom Domain with a Single Organization ###
-
-Use the `create-domain` command to create the custom domain `<%= vars.app_domain %>` in the
-"test" organization:
+The example uses the `create-domain` command to create the custom domain `<%= vars.app_domain %>` in the "test" organization:
 
 <pre class="terminal">
 $ cf create-domain test <%= vars.app_domain %>
-</pre>
-
-### Associate a Custom Domain with All Organizations in an Account ###
-
-Use the `create-shared-domain` command to create a shared custom domain
-available to all organizations in your account:
-
-<pre class="terminal">
-$ cf create-shared-domain <%= vars.app_domain %>
 </pre>
 
 ## <a id='view-domains'></a>View Domains ##
@@ -68,23 +52,8 @@ example.org     owned
 
 ## <a id='delete-domains'></a>Delete a Domain ##
 
-### Delete a Custom Domain ###
-
 Use the `cf delete-domain` command to delete a domain:
 
 <pre class="terminal">
 $ cf delete-domain <%= vars.app_domain %>
-</pre>
-
-### Delete a Custom Shared Domain ###
-
-Deleting a shared domain can only be done by an **account** administrator.
-
-**Caution**: Deleting a shared domain will remove all associated routes, and
-will make any application with this domain unreachable.
-
-To delete a shared domain:
-
-<pre class="terminal">
-$ cf delete-shared-domain <%= vars.app_domain %>
 </pre>

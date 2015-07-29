@@ -22,7 +22,7 @@ A **root domain** or a **zone apex domain** such as "example.com" consists of a 
 
 The following section contains instructions for mapping a root domain to your application by configuring ALIAS or ANAME custom record types or by using subdomain redirection.
 
-###<a id='root-dns'></a>Configuring an ALIAS or ANAME Record with Your DNS Provider ###
+### <a id='root-dns'></a>Configuring an ALIAS or ANAME Record with Your DNS Provider ###
 
 If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider.
 
@@ -68,13 +68,13 @@ Configure the redirect from the root domain to the target "www" subdomain, and c
 	</tr>
 </table>
 
-###<a id='root-app'></a>Configuring Your Application to Use a Root Domain ###
+### <a id='root-app'></a>Configuring Your Application to Use a Root Domain ###
 
 The following section contains instructions for creating a domain and using that domain as the route for your application. Since the route is a root domain and does not have a host, both the domain and route in this section are represented with "example.org."
 
 1. Create the domain in Cloud Foundry and associate it with an organization.
 
-	The command below defines the domain "example.org" in the “test-org” organization:
+	The command below defines the domain "example.org" in the "test-org" organization:
 
 	<pre class="terminal">
 	$ cf create-domain test-org example.org
@@ -100,13 +100,13 @@ The following section contains instructions for creating a domain and using that
 
 ## <a id='parent'></a>Creating a Parent Domain ##
 
-In the multi-level domain "myapp.<%=vars.app_domain%>," "<%=vars.app_domain%>" is the parent domain of subdomain “myapp.”
+In the multi-level domain "myapp.<%=vars.app_domain%>," "<%=vars.app_domain%>" is the parent domain of subdomain "myapp."
 
-###<a id='parent-dns'></a>Configuring a CNAME Record with Your DNS Provider ###
+### <a id='parent-dns'></a>Configuring a CNAME Record with Your DNS Provider ###
 
 Follow the [Configuring a CNAME Record with Your DNS Provider](#subdomain-dns) procedure in the Using a Private or Shared Subdomain section.
 
-###<a id='parent-app'></a>Configuring Your Application to Use a Private or Shared Parent Domain ###
+### <a id='parent-app'></a>Configuring Your Application to Use a Private or Shared Parent Domain ###
 
 Parent domains must meet the following requirements:
 
@@ -114,7 +114,7 @@ Parent domains must meet the following requirements:
 
 * **Shared Parent Domains**: You can create a shared domain that is parent to either a shared or a private subdomain.
 
-## <a id='shared-private'></a>Sharing a Private Domain Between One or More Orgs
+## <a id='shared-private'></a>Sharing a Private Domain Between One or More Orgs ##
 
 As an Org Manager, you can specify a private domain to be used by more than one org. You must have Org Manager permissions for all associated orgs.
 
@@ -123,7 +123,7 @@ As an Org Manager, you can specify a private domain to be used by more than one 
 	<pre class="terminal">
 	$ cf share-private-domain test-org example.com
 	</pre>
-	
+
 * Unshare a private domain with an org with the `cf share-private-domain` command.
 
 	<pre class="terminal">
@@ -132,9 +132,9 @@ As an Org Manager, you can specify a private domain to be used by more than one 
 
 ## <a id='subdomain'></a>Using a Private or Shared Subdomain ##
 
-Domains in Cloud Foundry can be multi-level and contain subdomains like the “myapp” in the domain "myapp.<%=vars.app_domain%>." In this case, "<%=vars.app_domain%>" is the parent domain of the subdomain “myapp.” In the domain "test.myapp.example.org," “test” is a subdomain with the parent domain "myapp.example.org."
+Domains in Cloud Foundry can be multi-level and contain subdomains like the "myapp" in the domain "myapp.<%=vars.app_domain%>." In this case, "<%=vars.app_domain%>" is the parent domain of the subdomain "myapp." In the domain "test.myapp.example.org," "test" is a subdomain with the parent domain "myapp.example.org."
 
-###<a id='subdomain-dns'></a>Configuring a CNAME Record with Your DNS Provider ###
+### <a id='subdomain-dns'></a>Configuring a CNAME Record with Your DNS Provider ###
 
 Configure your domain using a CNAME record.
 
@@ -161,7 +161,7 @@ CNAME records follow the pattern illustrated below:
 	</tr>
 </table>
 
-###<a id='subdomain-app'></a>Configuring Your Application to Use a Private or Shared Subdomain ###
+### <a id='subdomain-app'></a>Configuring Your Application to Use a Private or Shared Subdomain ###
 
 You can create a new domain by mapping subdomains to an existing domain. Each added subdomain is the child to its following parent domain. The subdomains must meet the following requirements:
 

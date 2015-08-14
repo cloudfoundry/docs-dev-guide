@@ -16,20 +16,18 @@ For more information on the systems responsible for log aggregation and streamin
 
 ## <a id='other-selected'></a>Using Services from the Cloud Foundry Marketplace
 
-The Cloud Foundry marketplace offers several log management services. To use one of these, create an instance of the service and bind it to your application. See the following for more information: 
+The Cloud Foundry marketplace offers several log management services. To use one of these services, create an instance of the service and bind it to your application. See the following topics for more information: 
 
-- [Service-Specific Instructions for Streaming Application Logs](log-management-thirdparty-svc.html) to learn how to stream application logs to specific services including Papertrail, Splunk, Splunk Storm, and SumoLogic.
+- [Service-Specific Instructions for Streaming Application Logs](log-management-thirdparty-svc.html) to learn how to stream application logs to specific services including Papertrail, Splunk, and SumoLogic.
 - [Managing Service Instances](managing-services.html) to learn about creating and binding service instances.
 
 <p class='note'><strong>Note:</strong> Not all marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that enables automated streaming of application syslogs. <%= vars.custom_services %></p>
-
 
 ## <a id='other'></a>Using Other Services
 
 If a compatible log management service is not available in your Cloud Foundry marketplace, use the following procedure to stream your logs to a service of your choice.
 
-
-<p class='note'><strong>Note</strong>: Only use this procedure if the service you want to use is not covered in the <a href='log-management-thirdparty-svc.html'>specific service instructions topic</a>.</p>
+<p class='note'><strong>Note</strong>: Only use this procedure if the service that you want to use is not covered in the <a href='log-management-thirdparty-svc.html'>Service-Specific Instructions for Streaming Application Logs</a> topic.</p>
 
 ### Step 1: Configure the Log Management Service
 
@@ -37,8 +35,10 @@ Complete the following steps to set up a communication channel between the log m
 
 1. Obtain the <%=vars.external_ips%> that <%=vars.admin%> assigns to outbound traffic.
 
-1. Provide these IP addresses to the log management service. The specific steps to configure
-a third-party log management service depend on the service. See [Configuring Selected Third-Party Log Management Services](log-management-thirdparty-svc.html) for instructions for a few services.
+1. Provide these IP addresses to the log management service. 
+The specific steps to configure a third-party log management service depend on 
+the service. 
+See the [Service-Specific Instructions for Streaming Application Logs](log-management-thirdparty-svc.html) topic for more information.
 
 1. Whitelist these IP addresses to ensure unrestricted log routing to your log management service.
 
@@ -86,4 +86,4 @@ For example, if your application serves web pages, you can send HTTP requests to
 In Cloud Foundry, these generate Router log messages, which you can view in the CLI.
 Your third-party log management service should display corresponding messages.
 
-<p class="note"><strong>Note</strong>: For security reasons, Cloud Foundry applications do not respond to ping. Therefore, you cannot use ping to generate log entries.</p>
+<p class="note"><strong>Note</strong>: For security reasons, Cloud Foundry applications do not respond to `ping`. Therefore, you cannot use `ping` to generate log entries.</p>

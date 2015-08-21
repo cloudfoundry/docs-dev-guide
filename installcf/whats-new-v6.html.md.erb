@@ -31,7 +31,7 @@ We recommend that you watch our [tools page](https://console.run.pivotal.io/tool
 
 ##<a id='i18n'></a>Localization ##
 
-The cf CLI translates terminal output into the language you select.
+The cf CLI translates terminal output into the language that you select.
 
 <p class='note'><strong>Note</strong>: Localization affects only messages that the cf CLI generates. </p>
 
@@ -70,7 +70,7 @@ If not specified on the command line, the cf CLI prompts for:
 If you have only one organization and one space, you can omit them because `cf login` targets them automatically. Usage:
 
 <pre class="terminal">
-cf login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE]
+$ cf login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE]
 </pre>
 
 Alternatively, you can write a script to log in and set your target, using the non-interactive `cf api`, `cf auth`, and `cf target` commands.
@@ -100,7 +100,7 @@ The cf CLI v6 has expanded capabilities in the form of four new options.
 Usage:
 
 <pre class="terminal">
-cf push APP [-b URL] [-c COMMAND] [-d DOMAIN] [-i NUM_INSTANCES] [-m MEMORY] /
+$ cf push APP [-b URL] [-c COMMAND] [-d DOMAIN] [-i NUM_INSTANCES] [-m MEMORY] /
 [-n HOST] [-p PATH] [-s STACK] [--no-hostname] [--no-route] [--no-start]
 </pre>
 
@@ -125,7 +125,7 @@ Optional arguments include:
 
 ## <a id='user-provided'></a> User-Provided Service Instances ##
 
-The cf CLI v6 has new commands for creating and updating user-provided service instances. You have the choice of three ways to use these commands: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
+The cf CLI v6 has new commands for creating and updating user-provided service instances. You have the choice of three ways to use these commands: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, the cf CLI sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
 
 Once created, user-provided service instances can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
 
@@ -254,7 +254,7 @@ The cf CLI v6 command line help introduces streamlined style conventions:
 * Optional user input is designated with a flag and brackets, as in `cf create-route SPACE DOMAIN [-n HOSTNAME]`.
 
 Run `cf help` to view a list of all cf CLI commands and a brief description of each.
-Run `cf <command-name> -h` to view detailed help (including alias) for any command. For example:
+Run `cf COMMAND -h` to view detailed help, including any alias, for any command. For example:
 
 <pre class="terminal">
 	$ cf p -h

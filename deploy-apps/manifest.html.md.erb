@@ -2,7 +2,7 @@
 title: Deploying with Application Manifests
 ---
 
-_This page assumes that youare using cf CLI v6._
+_This page assumes that you are using cf CLI v6._
 
 Application manifests tell `cf push` what to do with applications.
 This includes everything from how many instances to create and how much memory
@@ -85,10 +85,10 @@ If you do not use a manifest, the minimal push command looks like this:
 
 <pre class="terminal">
 cf push my-app
-</pre>
+$ </pre>
 
-<p class="note"><strong>Note</strong>: When you provide an application name at the command line, <code>cf push</code> uses that application name whether or not there is a different application name in the manifest. If the manifest describes multiple applications, you can push a single application by providing its name at the command line; <code>cf</code> does not push the others.
-These behaviors are useful for testing.</p>
+<p class="note"><strong>Note</strong>: When you provide an application name at the command line, <code>cf push</code> uses that application name whether or not there is a different application name in the manifest. If the manifest describes multiple applications, you can push a single application by providing its name at the command line; the cf CLI does not push the others.
+Use these behaviors for testing.</p>
 
 ## <a id='find-app'></a>How cf push Finds the Application ##
 
@@ -386,7 +386,7 @@ You can deploy multiple applications with one `cf push` command by describing th
 
 Suppose you want to deploy two applications called respectively spark and flame, and you want Cloud Foundry to create and start spark before flame. You accomplish this by listing spark first in the manifest.
 
-In this situation there are two sets of bits that you want to push. Let’s say that they are `spark.rb` in the spark directory and `flame.rb` in the flame directory. One level up, the fireplace directory contains the spark and the flame directories along with the `manifest.yml` file. Your plan is to run `cf` from fireplace, where you know it can find the manifest.
+In this situation there are two sets of bits that you want to push. Let’s say that they are `spark.rb` in the spark directory and `flame.rb` in the flame directory. One level up, the `fireplace` directory contains the spark and the flame directories along with the `manifest.yml` file. Your plan is to run the cf CLI from the `fireplace` directory, where you know it can find the manifest.
 
 Now that you have changed the directory structure and manifest location, `cf push` can no longer find your applications by its default behavior of looking in the current working directory. How can you ensure that `cf push` finds the bits you want to push?
 

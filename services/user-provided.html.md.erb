@@ -27,7 +27,7 @@ In contrast to the user-provided kind, a managed service is one that a service b
 
 ## <a id='commands'></a>cf CLI Commands for Working with User-Provided Service Instances ##
 
-cf CLI commands for creating and updating user-provided service instances can be used in three ways: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, cf sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
+cf CLI commands for creating and updating user-provided service instances can be used in three ways: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, the cf CLI sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
 
 Once created, user-provided service instances can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
 
@@ -78,7 +78,7 @@ services:
  - test-mysql-01
 ~~~
 
-This excerpt from the cf push command and response shows that Cloud Foundry reads the manifest and binds the service instance to the app, which is called `msgapp`.
+This excerpt from the `cf push` command and response demonstrates that Cloud Foundry reads the manifest and binds the service instance to the app, which is called `msgapp`.
 
 <pre class="terminal">
 $ cf push

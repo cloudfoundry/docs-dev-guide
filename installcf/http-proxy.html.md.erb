@@ -2,9 +2,7 @@
 title: Using the cf CLI with an HTTP Proxy Server
 ---
 
-If you have an HTTP proxy server on your network between a host running the cf CLI and
-your Cloud Foundry API endpoint, you must set HTTP\_PROXY with the hostname or
-IP address of the proxy server.
+If you have an HTTP proxy server on your network between a host running the cf CLI and your Cloud Foundry API endpoint, you must set HTTP\_PROXY with the hostname or IP address of the proxy server.
 
 The HTTP\_PROXY environment variable holds the hostname or IP address of your
 proxy server.
@@ -38,8 +36,8 @@ $ export HTTP_PROXY=http://my.proxyserver.com:8080
 
 To make this change persistent, add the command to the appropriate profile file
 for the shell.
-For example, in bash, add a line like the following to your .bash_profile or
-.bashrc file:
+For example, in bash, add a line like the following to your `.bash_profile` or
+`.bashrc` file:
 
 <pre class="detect-script"t>
   http_proxy=http://username:password@hostname:port;

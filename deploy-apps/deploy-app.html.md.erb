@@ -121,10 +121,8 @@ application settings change from push to push, and how command-line options,
 manifests, and commands like `cf scale` interact.
 
 When you deploy an application while it is running, Cloud Foundry stops all instances of that application and then deploys.
-Users who try to run the application get a "404 not found" message while cf push
-is running.
-Stopping all instances is necessary to prevent two versions of your code running
-at the same time.
+Users who try to run the application get a "404 not found" message while `cf push` runs.
+Stopping all instances is necessary to prevent two versions of your code from running at the same time.
 A worst-case example would be deploying an update that involved a database
 schema migration, because instances running the old code would not work and
 users could lose data.
@@ -251,5 +249,5 @@ framework:
 If your application does not start on Cloud Foundry, first ensure that your
 application can run locally.
 
-You can troubleshoot your application in the cloud using the `cf` CLI.
+You can troubleshoot your application in the cloud using the cf CLI.
 See [Troubleshoot Application Deployment and Health](./troubleshoot-app-health.html).

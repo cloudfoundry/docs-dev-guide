@@ -33,11 +33,11 @@ This app is a web page that displays the words "Blue time" and the date/time on
 the server.
 
 ### <a id='push-an-app'></a>Step 1: Push an App ###
-Use the `cf` command-line interface to push the application.
+Use the cf CLI to push the application.
 Name the application "Blue" with the subdomain "demo-time."
 
 <pre class="terminal">
-cf push Blue -n demo-time
+$ cf push Blue -n demo-time
 </pre>
 
 As shown in the graphic below:
@@ -55,10 +55,10 @@ Run `cf push` again, but use the name "Green" for the application and provide a
 different subdomain to create a temporary route:
 
 <pre class="terminal">
-cf push Green -n demo-time-temp
+$ cf push Green -n demo-time-temp
 </pre>
 
-After this cf push:
+After this push:
 
 * Two instances of our application are now running on Cloud Foundry: the
 original Blue and the updated Green.
@@ -76,11 +76,11 @@ Do this by mapping the original URL route (`demo-time.example.com`) to the Green
 application.
 
 <pre class="terminal">
-cf map-route Green example.com -n demo-time
+$ cf map-route Green example.com -n demo-time
 Binding demo-time.example.com to Green... OK
 </pre>
 
-After the cf map:
+After the `cf map-route` command :
 
 * The CF Router continues to send traffic for `demo-time-temp.example.com` to Green.
 * The CF Router immediately begins to load balance traffic for
@@ -94,11 +94,11 @@ Once you verify Green is running as expected, stop routing requests to Blue
 using the `cf unmap-route` command:
 
 <pre class="terminal">
-cf unmap-route Blue example.com -n demo-time
+$ cf unmap-route Blue example.com -n demo-time
 Unbinding demo-time.example.com from blue... OK
 </pre>
 
-After cf unmap-route:
+After `cf unmap-route` command:
 
 * The CF Router stops sending traffic to Blue.
 Instead, it routes all traffic to `demo-time.example.com` to Green:

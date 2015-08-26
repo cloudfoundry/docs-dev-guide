@@ -1,0 +1,107 @@
+---
+title: Binding Applications to Service Instances
+---
+
+_This page assumes you are using cf CLI v6._
+
+This topic describes binding applications to service instances for the purpose of generating credentials and delivering them to applications. For an overview of services, and documentation on other service management operations, see [Using Services](index.html). <%= vars.custom_services %>
+
+## <a id='bind'></a>Bind a Service Instance ##
+
+Binding a service instance to your application triggers credentials to be provisioned for the service instance and delivered to the application runtime in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. For details on consuming these credentials with your application, see [Using Bound Service Instances](#use).
+
+Not all services support binding, as some services deliver value to users directly without integration with an application. In many cases binding credentials are unique to an application, and another app bound to the same service instance would receive different credentials; however this depends on the service.
+
+<pre class="terminal">
+$ cf bind-service my-app mydb
+Binding service mydb to my-app in org my-org / space test as me@example.com...
+OK
+TIP: Use 'cf push' to ensure your env variable changes take effect
+
+$ cf restart my-app
+</pre>
+
+<p class='note'><strong>Note:</strong> You must restart or in some cases re-push your application for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the application to recognize these changes.</p>
+
+### <a id='arbitrary-params-binding'></a> Arbitrary Parameters  ###
+
+_Arbitrary parameters require cf CLI v6.12.1+_
+
+Some services support additional configuration parameters with the bind request. These parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
+
+<pre class="terminal">
+$ cf bind-service rails-sample my-db -c '{"role":"read-only"}'
+
+Binding service my-db to app rails-sample in org console / space development as user@example.com...
+OK
+</pre>
+
+<pre class="terminal">
+$ cf bind-service rails-sample my-db -c /tmp/config.json
+
+Binding service my-db to app rails-sample in org console / space development as user@example.com... OK
+</pre>
+
+### <a id='bind-with-manifest'></a> Binding with Application Manifest ###
+
+As an alternative to binding a service instance after pushing an application, you can use the application manifest to bind the service instance during push. As of cf CLI v6.12.1, [Arbitrary Parameters](#arbitrary-params-binding) are not supported in application manifests.
+
+The following excerpt from an application manifest would bind a service instance called `test-mysql-01` to the application on push.
+
+```
+services:
+ - test-mysql-01
+```
+
+The following excerpt from the `cf push` command and response demonstrates that the cf CLI reads the manifest and binds the service instance to an app called `test-msg-app`.
+
+<pre class="terminal">
+$ cf push
+Using manifest file /Users/Bob/test-apps/test-msg-app/manifest.yml
+
+...
+
+Binding service test-mysql-01 to test-msg-app in org My-Org / space development as Bob@<%=vars.app_domain%>
+OK
+</pre>
+
+For more information on application manifests, see [Deploying with Application Manifests](../deploy-apps/manifest.html#services-block).
+
+### <a id='use'></a>Using Bound Service Instances ###
+
+Once you have a service instance created and bound to your application, you need to configure the application to dynamically fetch the credentials for your service instance. The [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable contains credentials and additional metadata for all bound service instances. There are two methods developers can leverage to have their applications consume binding credentials.
+
+* **Parse the JSON yourself:** See the documentation for [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES). Helper libraries are available for some frameworks.
+* **Auto-configuration:** Some buildpacks create a service connection for you by creating additional environment variables, updating config files, or passing system parameters to the JVM.
+
+For details on consuming credentials specific to your development framework, refer to the Service Binding section in the documentation for [your framework's buildpack](../../buildpacks/).
+
+## <a id='update-credentials'></a>Update Service Credentials
+
+To update your service credentials, perform the following steps:
+
+  1. [Unbind the service instance](#unbind) using the credentials you are updating with the following command:
+
+    <pre class='terminal'>
+    $ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
+    </pre>
+
+  1. [Bind the service instance](#bind) with the following command. This adds your credentials to the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
+
+    <pre class='terminal'>
+    $ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
+    </pre>
+
+  1. Restart or re-push the application bound to the service instance so that the application recognizes your environment variable updates.
+
+## <a id='unbind'></a>Unbind a Service Instance ##
+
+Unbinding a service removes the credentials created for your application from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
+
+<pre class="terminal">
+$ cf unbind-service my-app mydb
+Unbinding app my-app from service mydb in org my-org / space test as me@example.com...
+OK
+</pre>
+
+<p class='note'><strong>Note:</strong> You must restart or in some cases re-push your application for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the application to recognize these changes.</p>

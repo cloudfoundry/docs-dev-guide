@@ -41,7 +41,7 @@ $ cf push -f ./some_directory/some_other_directory/alternate_manifest.yml
 Using manifest file /path_to_working_directory/some_directory/some_other_directory/alternate_manifest.yml
 </pre>
 
-## <a id='minimal-manifest'></a>Example Manifest ##
+##<a id='minimal-manifest'></a>Example Manifest ##
 
 You can deploy applications without ever using a manifest.
 The benefits manifests may provide include consistency and reproducibility.
@@ -72,7 +72,7 @@ that you want to push and run `cf push`.
 `cf push` searches the current directory for a manifest unless you specify
 another path with the `-p` option.
 
-## <a id='name'></a>Always Provide an Application Name to cf push ##
+##<a id='name'></a>Always Provide an Application Name to cf push ##
 
 `cf push` requires an application name, which you provide either in a manifest
 or at the command line.
@@ -84,13 +84,13 @@ directory.
 If you do not use a manifest, the minimal push command looks like this:
 
 <pre class="terminal">
-cf push my-app
-$ </pre>
+$ cf push my-app
+</pre>
 
 <p class="note"><strong>Note</strong>: When you provide an application name at the command line, <code>cf push</code> uses that application name whether or not there is a different application name in the manifest. If the manifest describes multiple applications, you can push a single application by providing its name at the command line; the cf CLI does not push the others.
 Use these behaviors for testing.</p>
 
-## <a id='find-app'></a>How cf push Finds the Application ##
+##<a id='find-app'></a>How cf push Finds the Application ##
 
 By default, `cf push` recursively pushes the contents of the current working directory. Alternatively, you can provide a path using either a manifest or a command line option.
 
@@ -99,7 +99,7 @@ By default, `cf push` recursively pushes the contents of the current working dir
 
 <p class="note"><strong>Note</strong>: If you want to push more than a single file, but not the entire contents of a directory, consider using a <code>.cfignore</code> file to tell <code>cf push</code> what to exclude.</p>
 
-## <a id='precedence'></a>Precedence Between Manifests, Command Line Options, and Most Recent Values ##
+##<a id='precedence'></a>Precedence Between Manifests, Command Line Options, and Most Recent Values ##
 
 When you push an application for the first time, Cloud Foundry applies default values to any attributes that you do not set in a manifest or `cf push` command line options.
 
@@ -121,11 +121,11 @@ You can think of them as the most recent values.
 
 In general, you can think of manifests as just another input to `cf push`, to be combined with command line options and most recent values.
 
-## <a id='optional-attributes'></a>Optional Attributes ##
+##<a id='optional-attributes'></a>Optional Attributes ##
 
 This section explains how to describe optional application attributes in manifests. Each of these attributes can also be specified by a command line option. Command line options override the manifest.
 
-### <a id='buildpack'></a>The buildpack attribute
+###<a id='buildpack'></a>The buildpack attribute ###
 
 If your application requires a custom buildpack, you can use the `buildpack` attribute to specify its URL or name:
 
@@ -139,7 +139,7 @@ If your application requires a custom buildpack, you can use the `buildpack` att
 
 The command line option that overrides this attribute is `-b`.
 
-### <a id='start-commands'></a>The command attribute ###
+###<a id='start-commands'></a>The command attribute ###
 
 Some languages and frameworks require that you provide a custom command to start an application. Refer to the [buildpack](../../buildpacks/index.html) documentation to determine if you need to provide a custom start command.
 
@@ -161,7 +161,7 @@ $ cf push my-app -c "bundle exec rake VERBOSE=true"
 
 <p class="note"><strong>Note</strong>: The <code>-c</code> option with a value of 'null' forces <code>cf push</code> to use the buildpack start command. See <a href="./app-startup.html">About Starting Applications</a> for more information.</p>
 
-### <a id='disk-quota'></a>The disk quota attribute ###
+###<a id='disk-quota'></a>The disk quota attribute ###
 
 Use the `disk_quota` attribute to allocate the disk space for your app instance. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case.
 
@@ -173,7 +173,7 @@ Use the `disk_quota` attribute to allocate the disk space for your app instance.
 
 The command line option that overrides this attribute is `-k`.
 
-### <a id='domain'></a>The domain attribute ###
+###<a id='domain'></a>The domain attribute ###
 
 Every `cf push` deploys applications to one particular Cloud Foundry instance.
 Every Cloud Foundry instance may have a shared domain set by an admin.
@@ -189,7 +189,7 @@ You can use the `domain` attribute when you want your application to be served f
 
 The command line option that overrides this attribute is `-d`.
 
-### <a id='domains'></a>The domains attribute ###
+###<a id='domains'></a>The domains attribute ###
 
 Use the `domains` attribute to provide multiple domains. If you define both `domain` and `domains` attributes, Cloud Foundry creates routes for domains defined in both of these fields.
 
@@ -204,7 +204,7 @@ Use the `domains` attribute to provide multiple domains. If you define both `dom
 The command line option that overrides this attribute is `-d`.
 
 
-### <a id='instances'></a>The instances attribute ###
+###<a id='instances'></a>The instances attribute ###
 
 Use the `instances` attribute to specify the number of app instances that you want to start upon push:
 
@@ -218,7 +218,7 @@ We recommend that you run at least two instances of any apps for which fault tol
 
 The command line option that overrides this attribute is `-i`.
 
-### <a id='memory'></a>The memory attribute ###
+###<a id='memory'></a>The memory attribute ###
 
 Use the `memory` attribute to specify the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case. For example:
 
@@ -232,7 +232,7 @@ The default memory limit is 1G. You might want to specify a smaller limit to con
 
 The command line option that overrides this attribute is `-m`.
 
-### <a id='host'></a>The host attribute ###
+###<a id='host'></a>The host attribute ###
 
 Use the `host` attribute to provide a hostname, or subdomain, in the form of a string. This segment of a route helps to ensure that the route is unique. If you do not provide a hostname, the URL for the app takes the form of `APP-NAME.DOMAIN`.
 
@@ -244,7 +244,7 @@ Use the `host` attribute to provide a hostname, or subdomain, in the form of a s
 
 The command line option that overrides this attribute is `-n`.
 
-### <a id='hosts'></a>The hosts attribute ###
+###<a id='hosts'></a>The hosts attribute ###
 
 Use the `hosts` attribute to provide multiple hostnames or subdomains. Each hostname generates a unique route for the app. `hosts` can be used in conjunction with `host`. If you define both attributes, Cloud Foundry creates routes for hostnames defined in both `host` and `hosts`.
 
@@ -258,7 +258,7 @@ Use the `hosts` attribute to provide multiple hostnames or subdomains. Each host
 
 The command line option that overrides this attribute is `-n`.
 
-### <a id='nohosts'></a>The no-hostname attribute ###
+###<a id='nohosts'></a>The no-hostname attribute ###
 
 By default, if you do not provide a hostname, the URL for the app takes the form of `APP-NAME.DOMAIN`. If you want to override this and map the root domain to this app then you can set no-hostname as true.
 
@@ -270,7 +270,7 @@ By default, if you do not provide a hostname, the URL for the app takes the form
 
 The command line option that corresponds to this attribute is `--no-hostname`.
 
-### <a id='random-route'></a>The random-route attribute ###
+###<a id='random-route'></a>The random-route attribute ###
 
 Use the `random-route` attribute to create a URL that includes the app name and
 random words.
@@ -285,7 +285,7 @@ The command line option that corresponds to this attribute is `--random-route`.
 </pre>
 
 
-### <a id='path'></a>The path attribute
+###<a id='path'></a>The path attribute
 
 You can use the `path` attribute to tell Cloud Foundry where to find your application. This is generally not necessary when you run `cf push` from the directory where an application is located.
 
@@ -297,7 +297,7 @@ You can use the `path` attribute to tell Cloud Foundry where to find your applic
 
 The command line option that overrides this attribute is `-p`.
 
-### <a id='timeout'></a>The timeout attribute ###
+###<a id='timeout'></a>The timeout attribute ###
 
 Use the `timeout` attribute to give your application more time to start, up to 180 seconds. The default timeout is 60 seconds. For example:
 
@@ -311,7 +311,7 @@ If the app has not started by the timeout limit that you set, Cloud Foundry stop
 
 The command line option that overrides this attribute is `-t`.
 
-### <a id='no-route'></a>The no-route attribute ###
+###<a id='no-route'></a>The no-route attribute ###
 
 By default, `cf push` assigns a route to every application. But some applications process data while running in the background, and should not be assigned routes.
 
@@ -330,9 +330,9 @@ If you find that an application which should not have a route does have one:
 1. Remove the route using the `cf unmap-route` command.
 1. Push the app again with the `no-route: true` attribute in the manifest or the `--no-route` command line option.
 
-For more about these situations, see [Describing Multiple Applications with One Manifest] (#multi-apps) below.
+For more about these situations, see [Describing Multiple Applications with One Manifest](#multi-apps) below.
 
-### <a id='env-block'></a>Environment variables ###
+###<a id='env-block'></a>Environment variables ###
 
 The `env` block consists of a heading, then one or more environment variable/value pairs.
 
@@ -360,7 +360,7 @@ Environment variables interact with manifests in the following ways:
 
 * When you stop and then restart an application, its environment variables persist.
 
-### <a id='services-block'></a>Services ###
+###<a id='services-block'></a>Services ###
 
 Applications can bind to services such as databases, messaging, and key-value stores.
 
@@ -380,7 +380,7 @@ Whoever creates the service chooses the service instance names. These names can 
 
 Binding to a service instance is a special case of setting an environment variable, namely `VCAP_SERVICES`. See the [Bind a Service](../services/managing-services.html#bind) section of the _Managing Service Instances with the CLI_ topic.
 
-## <a id='multi-apps'></a>Describing Multiple Applications with One Manifest ##
+##<a id='multi-apps'></a>Describing Multiple Applications with One Manifest ##
 
 You can deploy multiple applications with one `cf push` command by describing them in a single manifest. In doing so, you need to pay extra attention to directory structure and path lines in the manifest.
 
@@ -451,7 +451,7 @@ There are only two narrow exceptions:
 
 * If you want to push a single application rather than all of the applications described in the manifest, provide the desired application name by running `cf push my-app`.
 
-## <a id='minimize-duplication'></a>Minimizing Duplication ##
+##<a id='minimize-duplication'></a>Minimizing Duplication ##
 
 In manifests where multiple applications share settings or services, you begin to see content duplicated. While the manifests still work, duplication increases the risk of typographical errors which cause deployment to fail.
 
@@ -481,7 +481,7 @@ applications:
 
 In the next section we carry this principle further by distributing content across multiple manifests.
 
-## <a id='multi-manifests'></a>Multiple Manifests with Inheritance ##
+##<a id='multi-manifests'></a>Multiple Manifests with Inheritance ##
 
 A single manifest can describe multiple applications. Another powerful technique is to create multiple manifests with inheritance. Here, manifests have parent-child relationships such that children inherit descriptions from a parent. Children can use inherited descriptions as-is, extend them, or override them.
 

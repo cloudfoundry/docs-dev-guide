@@ -48,7 +48,7 @@ To deploy large apps to <%=vars.product_short%>, ensure the following:
 
     For more information on using the cf CLI to deploy apps, refer to the [Push section ](../installcf/whats-new-v6.html#push) of the Getting Started with the cf CLI topic.
 
-    <p class="note"><strong>Note</strong>: Your app might successfully start even though the CLI reports <code>App failed</code> because of the differences between the phase timeout values you specify in the CLI or manifest and those set by your administrator. For example, your admin sets a start value of 180 seconds. You set a start value of 120 seconds in the manifest, but override this on the CLI with a start value of 60 seconds and deploy the app. In this scenario, your app might successfully start even though the CLI reports that the app fails because of the longer start timeout value specified by the administrator. Run <code>cf apps APP_NAME</code> to review the actual status of your app.</p>
+    <p class="note"><strong>Note</strong>: Changing the timeout setting for cf CLI does not change the timeout limit for CF's server-side jobs such as staging or starting applications. Server-side timeouts must be changed in the manifest. Because of the differences between the timeout values for the CLI and for CF, your app might successfully start even though the CLI reports <code>App failed</code>. Run <code>cf apps APP_NAME</code> to review the actual status of your app.</p>
 
 ## <a id="limits_table"></a>Default Settings and Limitations Summary Table ##
 

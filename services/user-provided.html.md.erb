@@ -46,7 +46,7 @@ To create a service instance non-interactively, use the `-p` option with a JSON 
 
 To create a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
 
-  `cf cups SERVICE_INSTANCE -l syslog://<%=vars.app_domain%>`
+  `cf cups SERVICE_INSTANCE -l syslog://<%=vars.app_domain%>:514`
 
 ### <a id='user-uups'></a> The cf update-user-provided-service Command ###
 
@@ -60,7 +60,9 @@ To update a service instance non-interactively, use the `-p` option with a JSON 
 
 To update a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
 
-  `cf uups SERVICE_INSTANCE -l syslog://<%=vars.app_domain%>`
+  `cf uups SERVICE_INSTANCE -l syslog://<%=vars.app_domain%>:514`
+
+ <p class="note"><strong>Note</strong>: 514 is the default syslog port, ensure that this value is correct for your environment.</p>
 
 ## <a id='bind-example'></a> Binding User-Provided Service Instances to Applications  ##
 

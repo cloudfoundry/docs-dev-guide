@@ -144,7 +144,7 @@ To create a service instance non-interactively, use the `-p` option with a JSON 
 
 To create a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
 
-  `cf cups SERVICE_INSTANCE -l syslog://example.com`
+  `cf cups SERVICE_INSTANCE -l syslog://example.com:514`
 
 ### <a id='user-uups'></a> The cf update-user-provided-service Command ###
 
@@ -158,7 +158,7 @@ To update a service instance non-interactively, use the `-p` option with a JSON 
 
 To update a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
 
-  `cf uups SERVICE_INSTANCE -l syslog://example.com`
+  `cf uups SERVICE_INSTANCE -l syslog://example.com:514`
 
 ## <a id='domains-etc'></a> Domains, Routes, Organizations, and Spaces ##
 

@@ -21,39 +21,39 @@ Use the `cf env` command to view the Cloud Foundry environment variables for you
 * The user-provided variables set using the `cf set-env` command
 
 <pre class="terminal">
-  $ cf env my-app
-  Getting env variables for app my-app in org my-org / space my-space as admin...
-  OK
+$ cf env my-app
+Getting env variables for app my-app in org my-org / space my-space as 
+admin...
+OK
 
-  System-Provided:
+System-Provided:
 
-
-  {
-   "VCAP_APPLICATION": {
-    "application_name": "my-app",
-    "application_uris": [
-     "my-app.10.244.0.34.xip.io"
-    ],
-    "application_version": "fb8fbcc6-8d58-479e-bcc7-3b4ce5a7f0ca",
-    "limits": {
-    "disk": 1024,
-    "fds": 16384,
-    "mem": 256
-    },
-    "name": "my-app",
-    "space_id": "06450c72-4669-4dc6-8096-45f9777db68a",
-    "space_name": "my-space",
-    "uris": [
-     "my-app.10.244.0.34.xip.io"
-    ],
-    "users": null,
-    "version": "fb8fbcc6-8d58-479e-bcc7-3b4ce5a7f0ca"
-    }
+{
+ "VCAP_APPLICATION": {
+  "application_id": "fa05c1a9-0fc1-4fbd-bae1-139850dec7a3",
+  "application_name": "my-app",
+  "application_uris": [
+    "my-app.10.244.0.34.xip.io"
+  ],
+  "application_version": "fb8fbcc6-8d58-479e-bcc7-3b4ce5a7f0ca",
+  "limits": {
+  "disk": 1024,
+  "fds": 16384,
+  "mem": 256
+  },
+  "name": "my-app",
+  "space_id": "06450c72-4669-4dc6-8096-45f9777db68a",
+  "space_name": "my-space",
+  "uris": [
+    "my-app.10.244.0.34.xip.io"
+  ],
+  "users": null,
+  "version": "fb8fbcc6-8d58-479e-bcc7-3b4ce5a7f0ca"
   }
 
-  User-Provided:
-  MY_DRAIN: http://drain.example.com
-  MY_ENV_VARIABLE: 100
+User-Provided:
+MY_DRAIN: http://drain.example.com
+MY_ENV_VARIABLE: 100
 </pre>
 
 ## <a id='dea-set'></a>Variables Available to Your Application ##
@@ -124,9 +124,25 @@ The table below lists the attributes that are returned.
     <td><code>application_id</code></td>
     <td>GUID that identifies the application.</td>
   </tr>
-<tr>
-    <td><code>application_users</code>, <code>users</code></td>
+  <tr>
+    <td><code>application_name</code> or <code>name</code></td>
+    <td>The name assigned to the application when it was pushed.</td>
+  </tr>
+  <tr>
+    <td><code>application_users</code> or <code>users</code></td>
     <td></td>
+  </tr>
+  <tr>
+    <td><code>application_uris</code> or <code>uris</code></td>
+    <td>The URI(s) assigned to the application.</td>
+  </tr>
+  <tr>
+    <td><code>application_version</code> or <code>version</code></td>
+    <td>GUID that identifies a version of the application that was pushed. Each time an application is pushed or restarted, this value is updated.</td>
+  </tr>
+  <tr>
+    <td><code>host</code></td>
+    <td>IP address of the application instance.</td>
   </tr>
   <tr>
     <td><code>instance_id</code></td>
@@ -137,36 +153,20 @@ The table below lists the attributes that are returned.
     <td>Index number of the instance. You can access this value directly with the <a href="#CF-INSTANCE-INDEX">CF_INSTANCE_INDEX</a> variable.</td>
   </tr>
   <tr>
-    <td><code>application_version</code>, <code>version</code></td>
-    <td>GUID that identifies a version of the application that was pushed. Each time an application is pushed or restarted, this value is updated.</td>
-  </tr>
-  <tr>
-    <td><code>application_name</code>, <code>name</code></td>
-    <td>The name assigned to the application when it was pushed.</td>
-  </tr>
-  <tr>
-    <td><code>application_uris</code></td>
-    <td>The URI(s) assigned to the application.</td>
-  </tr>
-  <tr>
-    <td><code>started_at</code>, <code>start</code></td>
-    <td>The last time the application was started.</td>
-  </tr>
-  <tr>
-    <td><code>started_at_timestamp</code></td>
-    <td>Timestamp for the last time the application was started.</td>
-  </tr>
-  <tr>
-    <td><code>host</code></td>
-    <td>IP address of the application instance.</td>
+    <td><code>limits</code></td>
+    <td>The memory, disk, and number of files permitted to the instance. Memory and disk limits are supplied when the application is deployed, either on the command line or in the application manifest. The number of files allowed is operator-defined.</td>
   </tr>
   <tr>
     <td><code>port</code></td>
     <td>Port of the application instance. You can access this value directly with the <a href="#PORT">PORT</a> variable.</td>
   </tr>
   <tr>
-    <td><code>limits</code></td>
-    <td>The memory, disk, and number of files permitted to the instance. Memory and disk limits are supplied when the application is deployed, either on the command line or in the application manifest. The number of files allowed is operator-defined.</td>
+    <td><code>started_at</code> or <code>start</code></td>
+    <td>The last time the application was started.</td>
+  </tr>
+  <tr>
+    <td><code>started_at_timestamp</code></td>
+    <td>Timestamp for the last time the application was started.</td>
   </tr>
   <tr>
     <td><code>state_timestamp</code></td>
@@ -177,16 +177,14 @@ The table below lists the attributes that are returned.
 For example:
 
 ~~~
-
-VCAP_APPLICATION={"instance_id":"451f045fd16427bb99c895a2649b7b2a",
-"instance_index":0,"host":"0.0.0.0","port":61857,"started_at":"2013-08-12
+VCAP_APPLICATION={"instance_id":"fe98dc76ba549876543210abcd1234",
+"instance_index":0,"host":"0.0.0.0","port":61857,"started_at":"2013-08-12 
 00:05:29 +0000","started_at_timestamp":1376265929,"start":"2013-08-12 00:05:29
 +0000","state_timestamp":1376265929,"limits":{"mem":512,"disk":1024,"fds":16384}
-,"application_version":"c1063c1c-40b9-434e-a797-db240b587d32","application_name"
-:"styx-james","application_uris":["styx-james.a1-app.cf-app.com"],"version":"c10
-63c1c-40b9-434e-a797-db240b587d32","name":"styx-james","uris":["styx-james.a1-ap
-p.cf-app.com"],"users":null}
-
+,"application_version":"ab12cd34-5678-abcd-0123-abcdef987654","application_name"
+:"styx-james","application_uris":["styx-james.a1-app.cf-app.com"],"version":"ab1
+2cd34-5678-abcd-0123-abcdef987654","name":"my-app","uris":["my-app.example.com"]
+,"users":null}
 ~~~
 
 ### <a id='VCAP-APP-PORT'></a>VCAP\_APP\_PORT ###
@@ -256,7 +254,7 @@ VCAP_SERVICES=
       ],
       "plan": "turtle",
       "credentials": {
-        "uri": "postgres://seilbmbd:PHxTPJSbkcDakfK4cYwXHiIX9Q8p5Bxn@babar.elephantsql.com:5432/seilbmbd"
+        "uri": "postgres://seilbmbd:ABcdEF@babar.elephantsql.com:5432/seilbmbd"
       }
     }
   ],
@@ -327,109 +325,107 @@ The table below lists the commands for environment variable groups.
     <th>Description</th>
   </tr>
   <tr>
-    <td><code>running-environment-variable-group</code>, <code>revg</code></td>
-    <td>Retrieves the contents of the running environment variable group.</td>
+    <td><code>running-environment-variable-group</code> or <code>revg</code></td>
+    <td>Retrieves the contents of the running environment variable group</td>
   </tr>
   <tr>
-    <td><code>staging-environment-variable-group</code>, <code>sevg</code></td>
-    <td>Retrieves the contents of the staging environment variable group.</td>
+    <td><code>staging-environment-variable-group</code> or <code>sevg</code></td>
+    <td>Retrieves the contents of the staging environment variable group</td>
   </tr>
   <tr>
-    <td><code>set-staging-environment-variable-group</code>, <code>ssevg</code></td>
-    <td>Passes parameters as JSON to create a staging environment variable group.</td>
+    <td><code>set-staging-environment-variable-group</code> or <code>ssevg</code></td>
+    <td>Passes parameters as JSON to create a staging environment variable group</td>
   </tr>
   <tr>
-    <td><code>set-running-environment-variable-group</code>, <code>srevg</code></td>
-    <td>Passes parameters as JSON to create a running environment variable group.</td>
+    <td><code>set-running-environment-variable-group</code> or <code>srevg</code></td>
+    <td>Passes parameters as JSON to create a running environment variable group</td>
   </tr>
  </table>
 
- The following examples demonstrate how to get the environment variables:
+The following examples demonstrate how to retrieve the environment variables:
 
-  <pre class="terminal">
-  $ cf revg
-  Retrieving the contents of the running environment variable group as sampledeveloper@pivotal.io...
-  OK
-  Variable Name   Assigned Value
-  HTTP Proxy      87.226.68.130
+<pre class="terminal">
+$ cf revg
+Retrieving the contents of the running environment variable group as 
+sampledeveloper@example.com...
+OK
+Variable Name   Assigned Value
+HTTP Proxy      87.226.68.130
 
-  $ cf sevg
-  Retrieving the contents of the staging environment variable group as sampledeveloper@pivotal.io...
-  OK
-  Variable Name   Assigned Value
-  HTTP Proxy      27.145.145.105
-  EXAMPLE-GROUP   2001
+$ cf sevg
+Retrieving the contents of the staging environment variable group as 
+sampledeveloper@example.com...
+OK
+Variable Name   Assigned Value
+HTTP Proxy      27.145.145.105
+EXAMPLE-GROUP   2001
 
-  $ cf apps
-  Getting apps in org SAMPLE-ORG-NAME / space dev as sampledeveloper@pivotal.io...
-  OK
+$ cf apps
+Getting apps in org SAMPLE-ORG-NAME / space dev as 
+sampledeveloper@example.com...
+OK
 
-  name                                               requested state   instances   memory   disk   urls
-  APP-NAME                                         started           1/1         256M     1G     APP-NAME.cf-app.com, test-foo.com
+name    requested state   instances   memory   disk   urls
+my-app  started           1/1         256M     1G     my-app.com
 
-  $ cf env APP-NAME
-  Getting env variables for app APP-NAME in org SAMPLE-ORG-NAME / space dev as sampledeveloper@pivotal.io...
-  OK
+$ cf env APP-NAME
+Getting env variables for app APP-NAME in org SAMPLE-ORG-NAME / space dev as 
+sampledeveloper@example.com...
+OK
 
-  System-Provided:
+System-Provided:
 
+{
+  "VCAP_APPLICATION": {
+  "application_name": "APP-NAME",
+  "application_uris": [
+    "my-app.example.com"
+  ],
+  "application_version": "7d0d64be-7f6f-406a-9d21-504643147d63",
+  "limits": {
+  "disk": 1024,
+  "fds": 16384,
+  "mem": 256
+  },
+  "name": "APP-NAME",
+  "space_id": "37189599-2407-9946-865e-8ebd0e2df89a",
+  "space_name": "dev",
+  "uris": [
+    "my-app.example.com"
+  ],
+  "users": null,
+  "version": "7d0d64be-7f6f-406a-9d21-504643147d63"
+ }
+}
 
-  {
-   "VCAP\_APPLICATION": {
-    "application\_name": "APP-NAME",
-    "application\_uris": [
-     "APP-NAME.sample-app.com",
-     "test-foo.com"
-    ],
-    "application\_version": "7d0d64be-7f6f-406a-9d21-504643147d63",
-    "limits": {
-     "disk": 1024,
-     "fds": 16384,
-     "mem": 256
-    },
-    "name": "APP-NAME",
-    "space\_id": "37189599-2407-9946-865e-8ebd0e2df89a",
-    "space_name": "dev",
-    "uris": [
-     "APP-NAME.sample-app.com",
-     "test-foo.com"
-    ],
-    "users": null,
-    "version": "7d0d64be-7f6f-406a-9d21-504643147d63"
-   }
-  }
+Running Environment Variable Groups:
+HTTP Proxy: 87.226.68.130
 
-  Running Environment Variable Groups:
-  HTTP Proxy: 87.226.68.130
-
-  Staging Environment Variable Groups:
-  EXAMPLE-GROUP: 2001
-  HTTP Proxy: 27.145.145.105
-  </pre>
-
-  The following examples demonstrate how to set the environment variables:
-
-  <pre class="terminal">
-  $ cf ssevg '{"test":"87.226.68.130","test2":"27.145.145.105"}'
-  Setting the contents of the staging environment variable group as admin...
-  OK
-  $ cf sevg
-  Retrieving the contents of the staging environment variable group as admin...
-  OK
-  Variable Name   Assigned Value
-  test            87.226.68.130
-  test2           27.145.145.105
-
-  $ cf srevg '{"test3":"2001","test4":"2010"}'
-  Setting the contents of the running environment variable group as admin...
-  OK
-  $ cf revg
-  Retrieving the contents of the running environment variable group as admin...
-  OK
-  Variable Name   Assigned Value
-  test3           2001
-  test4           2010
-
+Staging Environment Variable Groups:
+EXAMPLE-GROUP: 2001
+HTTP Proxy: 27.145.145.105
 </pre>
 
+The following examples demonstrate how to set environment variables:
 
+<pre class="terminal">
+$ cf ssevg '{"test":"87.226.68.130","test2":"27.145.145.105"}'
+Setting the contents of the staging environment variable group as admin...
+OK
+$ cf sevg
+Retrieving the contents of the staging environment variable group as admin...
+OK
+Variable Name   Assigned Value
+test            87.226.68.130
+test2           27.145.145.105
+
+$ cf srevg '{"test3":"2001","test4":"2010"}'
+Setting the contents of the running environment variable group as admin...
+OK
+$ cf revg
+Retrieving the contents of the running environment variable group as admin...
+OK
+Variable Name   Assigned Value
+test3           2001
+test4           2010
+</pre>

@@ -203,6 +203,19 @@ Use the `domains` attribute to provide multiple domains. If you define both `dom
 
 The command line option that overrides this attribute is `-d`.
 
+###<a id='stack'></a>The stack attribute ###
+
+Use the `stack` attribute to specify which stack to deploy your application to.
+
+To see a list of available stacks, run `cf stacks` from the cf cli.
+
+<pre>
+---
+  ...
+  stack: cflinuxfs2
+</pre>
+
+The command line option that overrides this attribute is `-s`.
 
 ###<a id='instances'></a>The instances attribute ###
 

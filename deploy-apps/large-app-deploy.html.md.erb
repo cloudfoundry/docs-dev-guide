@@ -24,7 +24,7 @@ To deploy large apps to <%=vars.product_short%>, ensure the following:
 
 * Your network connection speed is sufficient to upload your app within the 15 minute limit. Pivotal recommends a minimum speed of 874 KB/s.
 
-<p class="note"><strong>Note</strong>: <%=vars.product_short%> provides an authorization token that is valid for a minimum of 20 minutes.</p>
+    <p class="note"><strong>Note</strong>: <%=vars.product_short%> provides an authorization token that is valid for a minimum of 20 minutes.</p>
 
 * The total size of the files to upload for your app does not exceed 1 GB.
 
@@ -40,15 +40,15 @@ To deploy large apps to <%=vars.product_short%>, ensure the following:
 
     To meet this requirement, push only the directory for your application, and remove unneeded files or use the `.cfignore` file to [specify excluded files](./prepare-to-deploy.html#exclude).
 
-* You configure cf CLI staging, startup, and timeout settings to override settings in the manifest, as necessary.
+* You configure Cloud Foundry Command Line Interface (cf CLI) staging, startup, and timeout settings to override settings in the manifest, as necessary.
 
-  * `CF_STAGING_TIMEOUT`: Controls the maximum time that cf CLI waits for an app to stage after Cloud Foundry successfully uploads and packages the app. Value set in minutes.
-  * `CF_STARTUP_TIMEOUT`: Controls the maximum time that cf CLI waits for an app to start. Value set in minutes.
-  * `cf push -t TIMEOUT`: Controls the maximum time that cf CLI waits for an app to start. When you use this flag, the cf CLI ignores any app start timeout value set in the manifest or in the `CF_STARTUP_TIMEOUT` environment variable. Value set in seconds.
+  * `CF_STAGING_TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to stage after Cloud Foundry successfully uploads and packages the app. Value set in minutes.
+  * `CF_STARTUP_TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to start. Value set in minutes.
+  * `cf push -t TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to start. When you use this flag, the cf CLI ignores any app start timeout value set in the manifest or in the `CF_STARTUP_TIMEOUT` environment variable. Value set in seconds.
 
     For more information about using the cf CLI to deploy apps, refer to the [Push section](../installcf/whats-new-v6.html#push) of the _Getting Started with the cf CLI_ topic.
 
-    <p class="note"><strong>Note</strong>: Changing the timeout setting for cf CLI does not change the timeout limit for Cloud Foundry server-side jobs such as staging or starting applications. Server-side timeouts must be changed in the manifest. Because of the differences between the Cloud Foundry and cf CLI timeout values, your app might successfully start even though the cf CLI reports <code>App failed</code>. Run <code>cf apps APP_NAME</code> to review the actual status of your app.</p>
+    <p class="note"><strong>Note</strong>: Changing the timeout setting for the cf CLI does not change the timeout limit for Cloud Foundry server-side jobs such as staging or starting applications. Server-side timeouts must be changed in the manifest. Because of the differences between the Cloud Foundry and cf CLI timeout values, your app might successfully start even though the cf CLI reports <code>App failed</code>. Run <code>cf apps APP_NAME</code> to review the actual status of your app.</p>
 
 ## <a id="limits_table"></a>Default Settings and Limitations Summary Table ##
 
@@ -60,7 +60,7 @@ This table provides summary information of constraints and default settings to c
 <th>Note</th>
 </tr>
 <tr>
-<td>App Package Size </td>
+<td>App Package Size</td>
 <td>Maximum: 1 GB</td>
 </tr>
 <td>Authorization Token Grace Period</td>
@@ -83,7 +83,7 @@ Default: 60 seconds<br /></td>
 </tr>
 <tr>
 <td>Disk Space Allocation</td>
-<td>Default: 1024 MB </td>
+<td>Default: 1024 MB</td>
 </tr>
 <tr>
 <td>Internet Connection Speed</td>

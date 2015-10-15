@@ -1,21 +1,20 @@
-Cloud Foundry allows multiple apps, or versions of the same app, to be mapped to the same route. This enables Blue-Green deployment, which is the deployment strategy that Pivotal recommends. See [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).
+Cloud Foundry allows multiple apps, or versions of the same app, to be mapped to the same route. This enables Blue-Green deployment, the deployment strategy that Pivotal recommends. See [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).
 
-However, multiple apps should be mapped to the same route only during a Blue-Green deployment. In other situations this can cause file load errors and other buggy behavior, as incoming requests will be randomly routed to one or the other app on the shared route.
+Multiple apps should be mapped to the same route only during a Blue-Green 
+deployment. In other situations, routing multiple apps to the same route can cause file load errors and other buggy behavior, as incoming requests are randomly routed to one of the apps on the shared route.
 
 <% if $this_topic == 'domains-routes' %>
 
-See [Routing Conflicts](./troubleshoot-app-health.html#routing-conflict) for more information on troubleshooting this problem.
+See [Routing Conflicts](./troubleshoot-app-health.html#routing-conflict) for more information about troubleshooting this problem.
 
 <% elsif $this_topic == 'troubleshoot-app-health' %>
 
-If you suspect a routing conflict, run <pre class='terminal'>cf routes</pre> in the Cloud Foundry command line interface to check the routes in your installation.
+If you suspect a routing conflict, run `cf routes` to check the routes in your installation.
 
-If two apps share a route and this is not a deliberate part of a blue-green deploy, choose one app to re-assign to a different route. Run the following to unmap that app:
+If two apps share a route outside of a Blue-Green deploy strategy, choose one app to re-assign to a different route and follow the procedure below:
 
-<pre class='terminal'>cf unmap-route YOUR-APP-NAME OLD-ROUTE</pre>
+1. Run `cf unmap-route YOUR-APP-NAME OLD-ROUTE` to remove the existing route from that app.
 
-Then run the following to map the app to a new, unique route:
-
-<pre class='terminal'>cf map-route YOUR-APP-NAME NEW-ROUTE</pre>
+1. Run `cf map-route YOUR-APP-NAME NEW-ROUTE` to map the app to a new, unique route.
 
 <% end %>

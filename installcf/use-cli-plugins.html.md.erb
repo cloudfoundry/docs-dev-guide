@@ -2,6 +2,8 @@
 title: Using cf CLI Plugins
 ---
 
+<strong><%= modified_date %></strong>
+
 The Cloud Foundry Command Line Interface (cf CLI) v.6.7 and higher includes plugin functionality. These plugins enable developers to add custom commands to the cf CLI. You can install and use plugins that Cloud Foundry developers and third-party developers create. You can review the [Cloud Foundry Community CLI Plugin page](http://plugins.cloudfoundry.org/ui/) for a current list of community-supported plugins. You can find information about submitting your own plugin to the community in the [Cloud Foundry CLI plugin repository](https://github.com/cloudfoundry-incubator/cli-plugin-repo) on GitHub.
 
 The cf CLI identifies a plugin by its binary filename, its developer-defined plugin name, and the commands that the plugin provides. You use the binary filename only to install a plugin. You use the plugin name or a command for any other action.
@@ -20,9 +22,9 @@ For example, if you set `CF_PLUGIN_HOME` to `/my-folder`, cf CLI stores plugins 
 
 ## <a id="plugin-install"></a>Installing a Plugin ##
 
-1. Download a binary or the source code for a plugin from a trusted provider. 
+1. Download a binary or the source code for a plugin from a trusted provider.
 
-    <p class="note"><strong>Note</strong>: The cf CLI requires a binary file compiled from source code written in Go. If you 
+    <p class="note"><strong>Note</strong>: The cf CLI requires a binary file compiled from source code written in Go. If you
 download source code, you must compile the code to create a binary.</p>
 
 1. Run `cf install-plugin BINARY_FILENAME` to install a plugin. Replace `BINARY_FILENAME` with the path to and name of your binary file.
@@ -35,7 +37,7 @@ download source code, you must compile the code to create a binary.</p>
 
 ## <a id="plugin-run-cmd"></a>Running a Plugin Command ##
 
-Use the contents of the `cf help` **PLUGIN** and **PLUGIN COMMANDS** sections to manage plugins and run plugin commands. 
+Use the contents of the `cf help` **PLUGIN** and **PLUGIN COMMANDS** sections to manage plugins and run plugin commands.
 
 1. Run `cf plugins` to list all installed plugins and all commands that the plugins provide.
 1. Run `cf PLUGIN_COMMAND` to execute a plugin command.
@@ -67,8 +69,8 @@ Example:
 $ cf list-plugin-repos
 OK
 
-Repo Name      Url   
-CF-Community   http://plugins.cloudfoundry.org 
+Repo Name      Url
+CF-Community   http://plugins.cloudfoundry.org
 </pre>
 
 ## <a id="listing-plugin-repo"></a>Listing All Plugins by Repo ##

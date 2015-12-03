@@ -2,6 +2,8 @@
 title: Migrating a Database in Cloud Foundry
 ---
 
+<strong><%= modified_date %></strong>
+
 _This page assumes you are using cf CLI v6._
 
 Application development and maintenance often requires changing a database schema, known as migrating the database. This topic describes three ways to migrate a database on Cloud Foundry.

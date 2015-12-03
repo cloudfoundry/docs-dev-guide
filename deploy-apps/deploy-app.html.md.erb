@@ -1,6 +1,9 @@
 ---
 title: Deploy an Application
 ---
+
+<strong><%= modified_date %></strong>
+
 _This page assumes that you are using cf CLI v6._
 
 <p class="note"><strong>Note:</strong> See the <a href="../../buildpacks/">buildpacks</a> documentation for complete deployment guides specific to your application language or framework, such as the <a href="../../buildpacks/ruby/gsg-ror.html">Getting Started Deploying Ruby on Rails Apps</a> guide.</p>
@@ -68,7 +71,7 @@ spaces.
 Cloud Foundry directs requests to an application using a route, which is a URL
 made up of a host and a domain.
 
-* The name of an application is the default host for that application, unless you specify the host name with the <code>-n</code> flag. 
+* The name of an application is the default host for that application, unless you specify the host name with the <code>-n</code> flag.
 
 * Every application is deployed to an application space that belongs to a
 domain.
@@ -83,8 +86,8 @@ CF ​allows​ app names, but not app URLs, to include underscores. CF converts
 * The URL for your app must be unique from other apps hosted by <%=vars.product_short%>. Use the following options with the [cf CLI](../installcf/index.html) to help create a unique URL:
 
    * `-n` to assign a different HOST name for the app
-   * `--random-route` to create a URL that includes the app name and random words 
- 
+   * `--random-route` to create a URL that includes the app name and random words
+
  <p class='note'><strong>Note</strong>: Use <code>cf help push</code> to view other options for this command.</p>
 
 <%=vars.ssl%>

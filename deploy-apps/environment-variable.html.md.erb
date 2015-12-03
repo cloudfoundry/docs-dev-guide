@@ -2,6 +2,8 @@
 title: Cloud Foundry Environment Variables
 ---
 
+<strong><%= modified_date %></strong>
+
 _This page assumes you are using cf CLI v6._
 
 Environment variables are the means by which the Cloud Foundry runtime
@@ -22,7 +24,7 @@ Use the `cf env` command to view the Cloud Foundry environment variables for you
 
 <pre class="terminal">
 $ cf env my-app
-Getting env variables for app my-app in org my-org / space my-space as 
+Getting env variables for app my-app in org my-org / space my-space as
 admin...
 OK
 
@@ -178,7 +180,7 @@ For example:
 
 ~~~
 VCAP_APPLICATION={"instance_id":"fe98dc76ba549876543210abcd1234",
-"instance_index":0,"host":"0.0.0.0","port":61857,"started_at":"2013-08-12 
+"instance_index":0,"host":"0.0.0.0","port":61857,"started_at":"2013-08-12
 00:05:29 +0000","started_at_timestamp":1376265929,"start":"2013-08-12 00:05:29
 +0000","state_timestamp":1376265929,"limits":{"mem":512,"disk":1024,"fds":16384}
 ,"application_version":"ab12cd34-5678-abcd-0123-abcdef987654","application_name"
@@ -346,14 +348,14 @@ The following examples demonstrate how to retrieve the environment variables:
 
 <pre class="terminal">
 $ cf revg
-Retrieving the contents of the running environment variable group as 
+Retrieving the contents of the running environment variable group as
 sampledeveloper@example.com...
 OK
 Variable Name   Assigned Value
 HTTP Proxy      87.226.68.130
 
 $ cf sevg
-Retrieving the contents of the staging environment variable group as 
+Retrieving the contents of the staging environment variable group as
 sampledeveloper@example.com...
 OK
 Variable Name   Assigned Value
@@ -361,7 +363,7 @@ HTTP Proxy      27.145.145.105
 EXAMPLE-GROUP   2001
 
 $ cf apps
-Getting apps in org SAMPLE-ORG-NAME / space dev as 
+Getting apps in org SAMPLE-ORG-NAME / space dev as
 sampledeveloper@example.com...
 OK
 
@@ -369,7 +371,7 @@ name    requested state   instances   memory   disk   urls
 my-app  started           1/1         256M     1G     my-app.com
 
 $ cf env APP-NAME
-Getting env variables for app APP-NAME in org SAMPLE-ORG-NAME / space dev as 
+Getting env variables for app APP-NAME in org SAMPLE-ORG-NAME / space dev as
 sampledeveloper@example.com...
 OK
 

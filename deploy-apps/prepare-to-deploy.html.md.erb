@@ -2,6 +2,8 @@
 title: Considerations for Designing and Running an Application in the Cloud
 ---
 
+<strong><%= modified_date %></strong>
+
 ## <a id="app-design"></a>Application Design for the Cloud ##
 
 Applications written in supported application frameworks often run unmodified on
@@ -96,9 +98,9 @@ https://github.com/github/gitignore, are a useful starting point.
 
 ## <a id="increase-availability"></a>Run Multiple Instances to Increase Availability ##
 
-When a DEA is upgraded, the applications running on it are shut down gracefully, 
-then restarted on another DEA. To avoid the risk of an application being unavailable 
-during a Cloud Foundry upgrade processes, you should run more than one instance of the 
+When a DEA is upgraded, the applications running on it are shut down gracefully,
+then restarted on another DEA. To avoid the risk of an application being unavailable
+during a Cloud Foundry upgrade processes, you should run more than one instance of the
 application.
 
 ## <a id="buildpacks"></a>Using Buildpacks ##

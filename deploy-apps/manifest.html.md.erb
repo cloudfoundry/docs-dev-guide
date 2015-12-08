@@ -2,6 +2,8 @@
 title: Deploying with Application Manifests
 ---
 
+<strong><%= modified_date %></strong>
+
 _This page assumes that you are using cf CLI v6._
 
 Application manifests tell `cf push` what to do with applications.
@@ -203,6 +205,19 @@ Use the `domains` attribute to provide multiple domains. If you define both `dom
 
 The command line option that overrides this attribute is `-d`.
 
+###<a id='stack'></a>The stack attribute ###
+
+Use the `stack` attribute to specify which stack to deploy your application to.
+
+To see a list of available stacks, run `cf stacks` from the cf cli.
+
+<pre>
+---
+  ...
+  stack: cflinuxfs2
+</pre>
+
+The command line option that overrides this attribute is `-s`.
 
 ###<a id='instances'></a>The instances attribute ###
 
@@ -246,7 +261,7 @@ The command line option that overrides this attribute is `-n`.
 
 ###<a id='hosts'></a>The hosts attribute ###
 
-Use the `hosts` attribute to provide multiple hostnames or subdomains. Each hostname generates a unique route for the app. `hosts` can be used in conjunction with `host`. If you define both attributes, Cloud Foundry creates routes for hostnames defined in both `host` and `hosts`.
+Use the `hosts` attribute to provide multiple hostnames, or subdomains. Each hostname generates a unique route for the app. `hosts` can be used in conjunction with `host`. If you define both attributes, Cloud Foundry creates routes for hostnames defined in both `host` and `hosts`.
 
 <pre>
 ---

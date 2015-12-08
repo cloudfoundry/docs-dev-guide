@@ -2,6 +2,8 @@
 title: Using Blue-Green Deployment to Reduce Downtime and Risk
 ---
 
+<strong><%= modified_date %></strong>
+
 _This page assumes you are using cf CLI v6._
 
 Blue-green deployment is a release technique that reduces downtime and risk by
@@ -9,7 +11,7 @@ running two identical production environments called Blue and Green.
 
 At any time, only one of the environments is live, with the live environment
 serving all production traffic.
-For this example, let's say Blue is currently live and Green is idle.
+For this example, Blue is currently live and Green is idle.
 
 As you prepare a new release of your software, deployment and the final stage of
 testing takes place in the environment that is *not* live: in this example,

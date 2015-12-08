@@ -2,6 +2,8 @@
 title: User-Provided Service Instances
 ---
 
+<strong><%= modified_date %></strong>
+
 _This page assumes you are using cf CLI v6._
 
 User-provided service instances enable developers to use services not available in the marketplace with their applications running on Cloud Foundry.
@@ -19,8 +21,6 @@ The alias for `cf create-user-provided-service` is `cf cups`.
 Suppose a developer obtains a URL, port, username, and password for communicating with an Oracle database managed outside of Cloud Foundry. The developer could manually create custom environment variables to configure their application with these credentials (of course you would never hard code these credentials in your application!).
 
 User-provided service instances enable developers to configure their applications with these using the familiar [Application Binding](application-binding.html) operation and the same application runtime environment variable used by Cloud Foundry to automatically deliver credentials for marketplace services ([VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES)).
-
-To create a user-provided service instance with credentials non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
 
 <pre class="terminal">
 cf cups SERVICE_INSTANCE -p '{"username":"admin","password":"pa55woRD"}'

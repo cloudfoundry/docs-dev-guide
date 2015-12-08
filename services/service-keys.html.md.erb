@@ -2,9 +2,11 @@
 title: Managing Service Keys
 ---
 
+<strong><%= modified_date %></strong>
+
 _This page assumes you are using cf CLI v6._
 
-This topic describes generation of credentials for service instances for use by external or local clients. For an overview of services, and documentation on other service management operations, see [Using Services](index.html). <%= vars.custom_services %>
+This topic describes generation of credentials for service instances for use by external or local clients. For an overview of services, and documentation on other service management operations, see the [Services Overview](index.html) topic. <%= vars.custom_services %>
 
 <p class='note'><strong>Note:</strong> Not all services support automated generation of credentials. Some services support credentials through application binding only.</p>
 
@@ -53,7 +55,7 @@ e3696fcb-7a8f-437f-8692-436558e45c7b
 OK
 </pre>
 
-## <a id='delete'></a>Delete a Service Instance ##
+## <a id='delete'></a>Delete Service Key ##
 
 <pre class="terminal">
 $ cf delete-service-key myservice mykey

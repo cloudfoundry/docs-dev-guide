@@ -2,6 +2,8 @@
 title: Using Log Management Services
 ---
 
+<strong><%= modified_date %></strong>
+
 _This page assumes you are using cf CLI v6._
 
 This topic describes how to drain logs from Cloud Foundry to a third party log management service.
@@ -12,11 +14,11 @@ Cloud Foundry aggregates logs for all instances of your applications as well as 
 
 If you want to persist more than the limited amount of logging information that Cloud Foundry can buffer, drain these logs to a log management service.
 
-For more information on the systems responsible for log aggregation and streaming in Cloud Foundry, see [Application Logging in Cloud Foundry](../deploy-apps/streaming-logs.html).
+For more information about the systems responsible for log aggregation and streaming in Cloud Foundry, see [Application Logging in Cloud Foundry](../deploy-apps/streaming-logs.html).
 
 ## <a id='other-selected'></a>Using Services from the Cloud Foundry Marketplace
 
-The Cloud Foundry marketplace offers several log management services. To use one of these services, create an instance of the service and bind it to your application. See the following topics for more information: 
+The Cloud Foundry marketplace offers several log management services. To use one of these services, create an instance of the service and bind it to your application. See the following topics for more information:
 
 - [Service-Specific Instructions for Streaming Application Logs](log-management-thirdparty-svc.html) to learn how to stream application logs to specific services including Papertrail, Splunk, and SumoLogic.
 - [Managing Service Instances](managing-services.html) to learn about creating and binding service instances.
@@ -35,9 +37,9 @@ Complete the following steps to set up a communication channel between the log m
 
 1. Obtain the <%=vars.external_ips%> that <%=vars.admin%> assigns to outbound traffic.
 
-1. Provide these IP addresses to the log management service. 
-The specific steps to configure a third-party log management service depend on 
-the service. 
+1. Provide these IP addresses to the log management service.
+The specific steps to configure a third-party log management service depend on
+the service.
 See the [Service-Specific Instructions for Streaming Application Logs](log-management-thirdparty-svc.html) topic for more information.
 
 1. Whitelist these IP addresses to ensure unrestricted log routing to your log management service.
@@ -86,4 +88,4 @@ For example, if your application serves web pages, you can send HTTP requests to
 In Cloud Foundry, these generate Router log messages, which you can view in the CLI.
 Your third-party log management service should display corresponding messages.
 
-<p class="note"><strong>Note</strong>: For security reasons, Cloud Foundry applications do not respond to `ping`. Therefore, you cannot use `ping` to generate log entries.</p>
+<p class="note"><strong>Note</strong>: For security reasons, Cloud Foundry applications do not respond to <code>ping</code>. You cannot use <code>ping</code> to generate log entries.</p>

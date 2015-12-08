@@ -1,6 +1,9 @@
 ---
 title: Troubleshooting Application Deployment and Health
 ---
+
+<strong><%= modified_date %></strong>
+
 <% $this_topic = 'troubleshoot-app-health' %>
 _This page assumes you are using cf CLI v6._
 
@@ -82,7 +85,7 @@ If you see a buildpack that you believe should support your app, refer to the [b
 If you do not see a buildpack for your app, you may still be able to push your application with a [custom buildpack](../../buildpacks/custom.html) using `cf push -b` with a path to your buildpack.
 
 ### App Deploy Fails ###
-Even when the deploy fails, the app might exist on <%=vars.product_short%>. 
+Even when the deploy fails, the app might exist on <%=vars.product_short%>.
 Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
 
 Common reasons deploying an app fails include the following:

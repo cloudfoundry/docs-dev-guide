@@ -81,10 +81,6 @@ For an application to receive requests to a route, the route must be "mapped" to
 
 #### <a id='map-route-manually'></a>Map Route Manually ####
 
-<p class="note">
-	The <code>cf map-route</code> command will create the route if it doesn't exist; a shortcut that can be used to skip the create step unless you'd like to reserve the route for mapping later.
-</p>
-
 Use the `-n HOSTNAME` option to identfy the route to map to your application. If your route was created from a private domain without a hostname, as described in [Routes without Hostnames](#without-hostname), omit `-n`.
 
 <pre class="terminal">

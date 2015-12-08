@@ -4,179 +4,48 @@ title: User-Provided Service Instances
 
 _This page assumes you are using cf CLI v6._
 
-User-provided service instances allow you to represent external assets like databases, messaging services, and key-value stores in Cloud Foundry.
+User-provided service instances enable developers to use services not available in the marketplace with their applications running on Cloud Foundry.
 
-For example, suppose a developer obtains credentials, a URL, and a port number for communicating with an Oracle database that is managed outside of Cloud Foundry.
-Then the developer creates a user-provided service instance to represent this external resource and provisions the service instance with all the parameters required for communicating with the real Oracle database.
-Finally, she binds the user-provided service instance to her application.
+User-provided service instances can be used to deliver service credentials to an application, and/or to trigger streaming of application logs to a syslog compatible consumer. These two functions can be used alone or at the same time.
 
-The user-provided service instance allows the developer to:
+Once created, user-provided service instances behave like service instances created through the marketplace; see [Managing Service Instances](managing-services.html) and [Application Binding](application-binding.html) for details on listing, renaming, deleting, binding, and unbinding.
 
-* Avoid hard-coding credentials for a service instance into her application.
-* Treat the user-provided service instance exactly like any other service instance.
+## <a id='create'></a>Create a User-Provided Service Instance ##
 
-Although the external asset in this example was a real Oracle database, it could
-have been a simple placeholder used for testing.
+The alias for `cf create-user-provided-service` is `cf cups`.
 
-User provided services are outside of Cloud Foundry, so you never create or
-otherwise manage the service itself through Cloud Foundry; you only create and manage service _instances_.
+### <a id='credentials'></a>Deliver Service Credentials to an Application ###
 
-The `cf services` command lists all the service instances (both user-provided and managed) in your target space.
+Suppose a developer obtains a URL, port, username, and password for communicating with an Oracle database managed outside of Cloud Foundry. The developer could manually create custom environment variables to configure their application with these credentials (of course you would never hard code these credentials in your application!).
 
-In contrast to the user-provided kind, a managed service is one that a service broker advertises in a catalog.
+User-provided service instances enable developers to configure their applications with these using the familiar [Application Binding](application-binding.html) operation and the same application runtime environment variable used by Cloud Foundry to automatically deliver credentials for marketplace services ([VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES)).
 
-## <a id='commands'></a>cf CLI Commands for Working with User-Provided Service Instances ##
-
-cf CLI commands for creating and updating user-provided service instances can be used in three ways: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, the cf CLI sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
-
-Once created, user-provided service instances can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
-
-### <a id='user-cups'></a>The cf create-user-provided-service Command ###
-
-The alias for `create-user-provided-service` is `cups`.
-
-To create a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names.
-The cf CLI then prompts you for each parameter in turn.
-
-  `cf cups SERVICE_INSTANCE -p "host, port, dbname, username, password"`
-
-To create a service instance non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
-
-  `cf cups SERVICE_INSTANCE -p '{"username":"admin","password":"pa55woRD"}'`
-
-To create a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
-
-  `cf cups SERVICE_INSTANCE -l syslog://<%=vars.app_domain%>`
-
-### <a id='user-uups'></a> The cf update-user-provided-service Command ###
-
-The alias for `update-user-provided-service` is `uups`.
-You can use `cf update-user-provided-service` to update one or more of the attributes for a user-provided service instance.
-Attributes that you do not supply are not updated.
-
-To update a service instance non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
-
-  `cf uups SERVICE_INSTANCE -p '{"username":"USERNAME","password":"PASSWORD"}'`
-
-To update a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
-
-  `cf uups SERVICE_INSTANCE -l syslog://<%=vars.app_domain%>`
-
-## <a id='bind-example'></a> Binding User-Provided Service Instances to Applications  ##
-
-There are two ways to bind user-provided service instances to applications:
-
-* With a manifest, _when_ you push the application.
-* With the `cf bind-service` command, _after_ you push the application.
-
-In either case, you must push your app to a space where the desired user-provided instances already exist. 
-
-For example, if you want to bind a service instance called `test-mysql-01` to an app, the services block in the manifest should look like this:
-
-~~~
-services:
- - test-mysql-01
-~~~
-
-This excerpt from the `cf push` command and response demonstrates that Cloud Foundry reads the manifest and binds the service instance to the app, which is called `msgapp`.
+To create a user-provided service instance with credentials non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
 
 <pre class="terminal">
-$ cf push
-Using manifest file /Users/a.user/test-apps/msgapp/manifest.yml
-
-...
-
-Binding service test-mysql-01 to msgapp in org my-org / space development as a.user@<%=vars.app_domain%>
-OK
+cf cups SERVICE_INSTANCE -p '{"username":"admin","password":"pa55woRD"}'
 </pre>
 
-Once the binding has taken effect, it is described in the
-[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable.
+To create a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names. The cf CLI will prompt you for each parameter value.
 
-For more information about manifests, see [Deploying with Application Manifests](../deploy-apps/manifest.html#services-block).
+<pre class="terminal">
+cf cups SERVICE_INSTANCE -p "host, port, dbname, username, password"
+</pre>
 
-For an example of the `cf bind-service` command, see the next section.
+Once the user-provided service instance is created, to deliver the credentials to one or more applications see [Application Binding](application-binding.html).
 
-## <a id='cups-example'></a> Example: Creating a User-Provided Service Instance and Binding it to an App ##
+### <a id='syslog'></a>Stream Application Logs to a Service ###
 
-Suppose we want to create and bind an instance of a publish-subscribe messaging service to an app called `msgapp`.
-Our Cloud Foundry username is `a.user`, and we plan to call the instance `pubsub`.
-We know the URL and port for the service.
+User-provided service instances enable developers to stream applications logs to a syslog compatible aggregation or analytics service that isn't available in the marketplace. For more information on the syslog protocol see [RFC 5424](http://tools.ietf.org/html/rfc5424) and [RFC 6587](http://tools.ietf.org/html/rfc6587).
 
-1. We begin with the `cf create-user-provided-service` command in interactive mode, using its alias, `cups`.
+Create the user-provided service instance, specifying the URL of the service with the `-l` option.
 
-	<pre class="terminal">
-	$ cf cups pubsub -p "host, port, binary, username, password"
+<pre class="terminal">
+cf cups SERVICE_INSTANCE -l syslog://example.log-aggregator.com
+</pre>
 
-	host> pubsub01.<%=vars.app_domain%>
+## <a id='update'></a> Update a User-provided Service Instance ###
 
-	port> 1234
+You can use `cf update-user-provided-service` to update one or more of the same attributes provided when the user-provided service instance was created. Attributes not provided are not updated.
 
-	url> pubsub-example.com
-
-	username> pubsubuser
-
-	password> p@$$w0rd
-	Creating user provided service pubsub in org my-org / space development as a.user@<%=vars.app_domain%>...
-	OK
-	</pre>
-
-1. When we list available services, we see that the new service is not yet bound to any apps.
-
-	<pre class="terminal">
-	$ cf services
-	Getting services in org my-org / space development as a.user@<%=vars.app_domain%>...
-	OK
-
-	name               service         plan    bound apps
-	pubsub     user-provided
-	</pre>
-
-1. Now we bind the service to our app.
-
-	<pre class="terminal">
-	$ cf bind-service msgapp pubsub
-	Binding service pubsub to app msgapp in org my-org / space development as a.user@<%=vars.app_domain%>...
-	OK
-	TIP: Use 'cf push' to ensure your env variable changes take effect
-	</pre>
-
-
-1. For the binding to take effect, we must push our app a second time.
-
-    <p class="note"><strong>Note</strong>: You can skip this step if you bind a syslog drain service instance to a deployed app. Syslog drain service instances bound to deployed apps automatically start after a short delay. </p>
-
-	<pre class="terminal">
-	$ cf push msgapp
-	Updating app msgapp in org my-org / space development as a.user@<%=vars.app_domain%>...
-	OK
-	...
-	</pre>
-
-1. To verify that the service instance is now recorded in `VCAP_SERVICES`,
-examine the output of `cf env`:
-
-	<pre class="terminal">
-	$ cf env msgapp
-    Getting env variables for app msgapp in org My-Org / space development as a.user@<%=vars.app_domain%>...
-
-    System-Provided:
-    {
-      "VCAP_SERVICES": {
-        "user-provided": [
-          {
-	        "name": "pubsub",
-            "label": "user-provided",
-            "tags": [],
-            "credentials": {
-              "binary": "pubsub.rb",
-              "host": "pubsub01.<%=vars.app_domain%>",
-              "password": "p@29w0rd",
-              "port": "1234",
-              "username": "pubsubuser"
-            },
-          "syslog_drain_url": ""
-        }
-      ]
-    }
-	</pre>
+The alias for `update-user-provided-service` is `uups`.

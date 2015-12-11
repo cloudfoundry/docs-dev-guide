@@ -1,5 +1,5 @@
 ---
-title: Domains and Routes
+title: Routes and Domains
 ---
 
 <strong><%= modified_date %></strong>
@@ -65,10 +65,10 @@ You can list routes for the current space with the `cf routes` command. A route 
 $ cf routes
 Getting routes as user@<%=vars.private_app_domain%> ...
 
-space   host                     domain          apps
-my-space    myapp                    <%=vars.app_domain%>     myapp
-my-space    myapp2                    <%=vars.app_domain%>
-my-space    foo                    <%=vars.private_app_domain%>     myapp
+space       host                     domain                 apps
+my-space    myapp                    <%=vars.app_domain%>      myapp
+my-space    myapp2                   <%=vars.app_domain%>
+my-space    foo                      <%=vars.private_app_domain%>     myapp
 </pre>
 
 ### <a id='map-route'></a>Map a Route to your Application ###
@@ -81,7 +81,7 @@ For an application to receive requests to a route, the route must be "mapped" to
 
 #### <a id='map-route-manually'></a>Map Route Manually ####
 
-Use the `-n HOSTNAME` option to identfy the route to map to your application. If your route was created from a private domain without a hostname, as described in [Routes without Hostnames](#without-hostname), omit `-n`.
+Use the `-n HOSTNAME` option to identfy the route to map to your application. If your route was created from a private domain without a hostname, as described in [Routes without Hostnames](#create-route-without-hostname), omit `-n`.
 
 <pre class="terminal">
 $ cf map-route myapp <%=vars.app_domain%> -n myapp

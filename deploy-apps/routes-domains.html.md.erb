@@ -9,53 +9,63 @@ title: Routes and Domains
 _This page assumes you are using cf CLI v6._
 
 <p class="note">
-	<strong>Note</strong>: The term "domain" in this topic differs from its common use and is specific to Cloud Foundry. Likewise, "shared domain" and "private domain" refer to resources with specific meaning in Cloud Foundry. The use of "domain name", "root domain", and "subdomain" refers to DNS records.
+	<strong>Note</strong>: The term <em>domain</em> in this topic differs from its common use and is specific to <%=vars.product_full%>. Likewise, <em>shared domain</em> and <em>private domain</em> refer to resources with specific meaning in <%=vars.product_short%>. The use of <em>domain name</em>, <em>root domain</em>, and <em>subdomain</em> refers to DNS records.
 </p>
 
 
 ## <a id='routes'></a>Routes ##
 
-HTTP requests are routed to applications pushed to Cloud Foundry by associating an application with a url, known as a route. This association is called a mapping, as in "app myapp is mapped to route myapp.<%=vars.app_domain%>". Many apps can be mapped to a single route, resulting in requests for the route being load balanced across all instances of all mapped apps (useful for blue/green deploys). An individual app can also be mapped to multiple routes, enabling the app to be accessed via multiple urls.
+HTTP requests are routed to applications pushed to <%=vars.product_short%> by associating an application with a URL, known as a route. This association can be called a mapping. For example, a developer might say, "I mapped route `myapp.<%=vars.app_domain%>` to app `myapp`". 
 
-Routes belong to a space, so that only apps in the same space can be mapped to a route. Routes are globally unique, so that member users of one space can not create a route with the same url as members of another space, no matter what orgs these spaces belong to.
+Many apps can be mapped to a single route resulting in load balanced requests for the route across all instances of all mapped apps. This approach makes the blue/green deploy strategy possible. An individual app can also be mapped to multiple routes, granting multiple URLs access to the app.
+
+Routes belong to a space, so that only apps in the same space can be mapped to a route. Routes are globally unique, so that member users of one space cannot create a route with the same URL as members of another space, regardless of which orgs control these spaces.
 
 ### <a id='create-route'></a>Create a Route ###
 
-Routes can be created and reserved for later; they don't need to be immediately mapped to an application and they will persist after being unmapped from an application.
+Routes can be created and reserved for later use. They do not need to be immediately mapped to an application. Additionally, they will persist after being unmapped from an application.
 
-Routes are based on a domain (a Cloud Foundry term; see [Domains](#domains) below) plus an optional hostname. Three kinds of routes can be created depending on the domain and the accompanying hostname.
+Routes are based on a domain plus an optional hostname, where domain is a <%=vars.product_short%> term. See [Domains](#domains) below for further detail. Three kinds of routes can be created depending on the domain and the accompanying hostname.
 
-#### <a id='create-route-with-hostname'></a>Create Route with Hostname ####
+#### <a id='create-route-with-hostname'></a>Create a Route with Hostname ####
 
-Routes can be created and added to an app afterward; see [Map a Route to your App](#map-route).
+Routes can be created and subsequently added to an app. See [Map a Route to your App](#map-route) for further detail.
 
 <pre class="terminal">
 $ cf create-route my-space <%=vars.app_domain%> -n myapp
 </pre>
 
-Only requests for `http://myapp.<%=vars.app_domain%>`, `https://myapp.<%=vars.app_domain%>`, or any path under those urls (e.g. `http://myapp.<%=vars.app_domain%>/bar`), will be routed to apps mapped to this route.
+Only requests for `HTTP`, `HTTPS` or a path under those URLs will be routed to apps mapped to this route.
 
-#### <a id='create-route-without-hostname'></a>Create Route without Hostname ####
+<p class="note"><strong>Note</strong>: The mapped route <code><%=vars.app_domain%></code> handles requests for <code>HTTP</code>, <code>HTTPS</code>, and any path under the domain URL, for example:<br> <code>http:/<span>/</span><%=vars.app_domain%></code>, <br><code>https:/<span>/</span><%=vars.app_domain%></code>, and <br><code>http:/<span>/</span><%=vars.app_domain%>/foo</code>.</p>
 
-This creates a route for the domain itself. This is permitted for [Private Domains](#private-domains) only.
+#### <a id='create-route-without-hostname'></a>Create a Route without Hostname ####
+
+This approach creates a route for the domain itself and is permitted for [Private Domains](#private-domains) only.
 
 <pre class="terminal">
 $ cf create-route my-space <%=vars.private_app_domain%>
 </pre>
 
-This creates a route in space `my-space` from domain `<%=vars.private_app_domain%>` with no hostname. Assuming DNS has been configured correctly, Cloud Foundry will route requests for `http://<%=vars.private_app_domain%>`, `https://<%=vars.private_app_domain%>`, or any path under those urls (e.g. `http://<%=vars.private_app_domain%>/foo`) to applications that are mapped to the route. If there are no other routes for the domain, requests to any subdomain (e.g. `http://foo.<%=vars.private_app_domain%>`) will fail.
+The `create-route` command creates a route in space `my-space` from domain `<%=vars.private_app_domain%>` with no hostname. If DNS has been configured correctly, <%=vars.product_short%> will route requests for `<%=vars.private_app_domain%>` to applications with that route mapping.
 
-Domains can also be created in Cloud Foundry for subdomains (e.g. `foo.<%=vars.private_app_domain%>`). Assuming DNS has been configured for this subdomain, a route created from this domain with no added host would result in requests for `http://foo.<%=vars.private_app_domain%>`, `https://foo.<%=vars.private_app_domain%>`, or any path under those urls (e.g. `http://foo.<%=vars.private_app_domain%>/foo`) to be routed to applications mapped to the route.
+<p class="note"><strong>Note</strong>: The mapped route <code><%=vars.private_app_domain%></code> handles requests for <code>HTTP</code>, <code>HTTPS</code>, and any path under the domain URL, for example:<br> <code>http:/<span>/</span><%=vars.private_app_domain%></code>, <br><code>https:/<span>/</span><%=vars.private_app_domain%></code>, and <br> <code>http:/<span>/</span><%=vars.private_app_domain%>/foo</code>.</p>
 
-#### <a id='create-route-with-wildcard-hostname'></a>Create Route with Wildcard Hostname ####
+If there are no other routes for the domain, requests to any subdomain will fail. For example <code>http:<span>/</span>/bar.<%=vars.private_app_domain%></code> would not resolve to an address in this case.
 
-When creating a route, an asterix can be submitted for the hostname. This is called a wildcard route.
+Domains can also be created in <%=vars.product_short%> for subdomains. If DNS has been configured correctly for this subdomain, a route created from a domain with no added host will result in <%=vars.product_short%> routing requests to applications with that route mapping.
+
+<p class="note"><strong>Note</strong>: The mapped route <code>foo.<%=vars.private_app_domain%></code> handles requests for <code>HTTP</code>, <code>HTTPS</code>, and any path under the domain URL, for example:<br> <code>http:/<span>/</span>foo.<%=vars.private_app_domain%></code>, <br><code>https:/<span>/</span>foo.<%=vars.private_app_domain%></code>, and <br> <code>http:/<span>/</span>foo.<%=vars.private_app_domain%>/baz</code>.</p>
+
+#### <a id='create-route-with-wildcard-hostname'></a>Create a Route with Wildcard Hostname ####
+
+To create a wildcard route submit an asterix for the hostname.
 
 <pre class="terminal">
 $ cf create-route my-space foo.<%=vars.app_domain%> -n *
 </pre>
 
-An application mapped to a wildcard route is a "fallback" app that requests are routed to if the requested route doesn't exist. For example, if a client sends a request to `http://myap.foo.<%=vars.app_domain%>` in an attempt to access the application mapped to the route `myapp.foo.<%=vars.app_domain%>`, the request will be routed to the application mapped to the route `*.foo.<%=vars.app_domain%>`.
+An application mapped to a wildcard route acts as a fallback app for route requests if the requested route does not exist. For example, if a client sends a request to `http://myapp.foo.<%=vars.app_domain%>` in an attempt to access the application mapped to the route `myapp.foo.<%=vars.app_domain%>`, the request will be routed to the application mapped to the route `*.foo.<%=vars.app_domain%>`.
 
 ### <a id='list-routes'></a>List Routes ###
 
@@ -65,23 +75,22 @@ You can list routes for the current space with the `cf routes` command. A route 
 $ cf routes
 Getting routes as user@<%=vars.private_app_domain%> ...
 
-space       host                     domain                 apps
-my-space    myapp                    <%=vars.app_domain%>      myapp
-my-space    myapp2                   <%=vars.app_domain%>
-my-space    foo                      <%=vars.private_app_domain%>     myapp
+space       host                     domain                        apps
+my-space    myapp                    <%=vars.app_domain%>             myapp
+my-space    myapp2                   <%=vars.app_domain%>             myapp
+my-space    foo                      <%=vars.private_app_domain%>            myapp
 </pre>
 
 ### <a id='map-route'></a>Map a Route to your Application ###
 
-For an application to receive requests to a route, the route must be "mapped" to the app. Map a route to an application with the `cf map-route` command. If the route does not already exist, this command will also create it.
+For an application to receive requests to a route, the route must be assigned, or mapped, to the app. Map a route to an application with the `cf map-route` command. If the route does not already exist, this command will also create it.
 
-<p class="note">
-	Applications running on the legacy runtime (DEA) must be restarted after routes for an app are changed (mapped or unmapped). Applications running on the latest runtime (Diego) do not need to be restarted.
+<p class="note"><strong>Note</strong>: Applications running on the legacy runtime (DEA) must be restarted after routes for an app are mapped or unmapped. Applications running on the Diego runtime do not need to be restarted.
 </p>
 
-#### <a id='map-route-manually'></a>Map Route Manually ####
+#### <a id='map-route-manually'></a>Manually Map a Route ####
 
-Use the `-n HOSTNAME` option to identfy the route to map to your application. If your route was created from a private domain without a hostname, as described in [Routes without Hostnames](#create-route-without-hostname), omit `-n`.
+The `-n HOSTNAME` option identfies the route to map to your application. Omit the `-n` flag if your route was created from a private domain without a hostname, as described in [Routes without Hostnames](#create-route-without-hostname).
 
 <pre class="terminal">
 $ cf map-route myapp <%=vars.app_domain%> -n myapp
@@ -93,35 +102,35 @@ The command below maps the wildcard route `*.foo.<%=vars.app_domain%>` to the ap
 $ cf map-route myfallbackapp foo.<%=vars.app_domain%> -n *
 </pre>
 
-#### <a id='map-route-on-push'></a>Map Route on Application Push ####
+#### <a id='map-route-on-push'></a>Map a Route with Application Push ####
 
-A route can be mapped to your application when you run `cf push`. The default route is based on the appname and default domain.
+A route can be mapped to your application with the `cf push` command. The default route is based on the app name and default domain.
 
-Given a default shared domain `<%=vars.app_domain%>`, an app called `myapp` pushed with the following command would result in a route `myapp.<%=vars.app_domain%>` being created and mapped to the app (if the route has not already been created in another space).
+Push your `myapp` app to create the `myapp.<%=vars.app_domain%>` route with the default shared domain `<%=vars.app_domain%>`.  If the route has not already been created in another space this command will also map it to the app.
 
 <pre class="terminal">
 $ cf push myapp
 </pre>
 
-To customize the route during `push`, specify the domain using the `-d` flag and the hostname with the `-n` flag. The following command creates a route for myapp `foo.<%=vars.private_app_domain%>`.
+To customize the route during `push`, specify the domain using the `-d` flag and the hostname with the `-n` flag. The following command creates the `foo.<%=vars.private_app_domain%>` route for `myapp`.
 
 <pre class="terminal">
 $ cf push myapp -d <%=vars.private_app_domain%> -n foo
 </pre>
 
-#### <a id='map-route-with-manifest'></a>Map Route Using Application Manifest ####
+#### <a id='map-route-with-manifest'></a>Map a Route Using Application Manifest ####
 
 When you create or edit the manifest for an application, you can use the `host` and `domain` attributes to define the host and domain components of the application route, respectively. For more information, see [Application Manifests](../deploy-apps/manifest.html).
 
-#### <a id='mapping-route-to-multiple-apps'></a>Mapping a Route to Multiple Apps ####
+#### <a id='map-route-to-multiple-apps'></a>Map a Route to Multiple Apps ####
 
-Cloud Foundry allows multiple apps, or versions of the same app, to be mapped to the same route. This enables Blue-Green deployment; see [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).
+<%=vars.product_short%> allows multiple apps, or versions of the same app, to be mapped to the same route. This feature enables Blue-Green deployment. For more information see [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).
 
-In other situations, routing multiple apps to the same route may cause undesirable behavior, as incoming requests are randomly routed to one of the apps on the shared route. See [Routing Conflicts](./troubleshoot-app-health.html#routing-conflict) for more information about troubleshooting this problem.
+Routing multiple apps to the same route may cause undesirable behavior in some situations by routing incoming requests randomly to one of the apps on the shared route. See [Routing Conflicts](./troubleshoot-app-health.html#routing-conflict) for more information about troubleshooting this problem.
 
 ### <a id='unmap-route'></a>Unmap a Route ###
 
-You can remove a route from an app using the `cf unmap-route` command. Unmapping a route leaves the route available in the targeted space for later use.
+You can remove a route from an app using the `cf unmap-route` command. Unmapping a route makes the route available in the targeted space for later use.
 
 <pre class="terminal">
 $ cf unmap-route myapp <%=vars.private_app_domain%> -n myapp
@@ -129,7 +138,7 @@ $ cf unmap-route myapp <%=vars.private_app_domain%> -n myapp
 
 ### <a id='delete-route'></a>Delete a Route ###
 
-You can delete a route from a space using the `cf delete-route` command:
+You can delete a route from a space using the `cf delete-route` command.
 
 <pre class="terminal">
 $ cf delete-route <%=vars.private_app_domain%> -n myapp
@@ -138,24 +147,24 @@ $ cf delete-route <%=vars.private_app_domain%> -n myapp
 
 ## <a id='domains'></a>Domains ##
 
-Domains in Cloud Foundry provide a namespace from which to create routes, and the presence of a domain in Cloud Foundry indicates to a developer that requests for any route created from the domain will be routed to Cloud Foundry. This requires DNS to be configured out-of-band to resolve the domain name to the IP address of a load balancer configured to forward requests to the CF routers.
+Domains in <%=vars.product_short%> provide a namespace from which to create routes. The presence of a domain in <%=vars.product_short%> indicates to a developer that requests for any route created from the domain will be routed to <%=vars.product_short%>. This provision requires DNS to be configured out-of-band to resolve the domain name to the IP address of a load balancer configured to forward requests to the CF routers.
 
 ### <a id='list-domains'></a>List Domains for an Org ###
 
-You can view available domains for the targeted organization using the `cf domains` command. In following example, there are two available domains: a system-wide shared domain `<%=vars.app_domain%>` and the private `<%=vars.private_app_domain%>` domain.
+You can view available domains for the targeted organization using the `cf domains` command. In following example, there are two available domains: a system-wide shared domain `<%=vars.app_domain%>`, and the private `<%=vars.private_app_domain%>` domain.
 
 <pre class="terminal">
 $ cf domains
 Getting domains in org my-org as user@mydomain.com... OK
 
-name           status
+name                 status
 <%=vars.app_domain%>    shared
-<%=vars.private_app_domain%>    owned
+<%=vars.private_app_domain%>   owned
 </pre>
 
 ### <a id='shared-domains'></a>Shared Domains ###
 
-*Shared domains* are managed by the system admin and are available to users in all orgs. An admin can offer multiple shared domains to users, one of which is configured as the default.
+The system admin manages shared domains and those domains are available to users in all orgs. An admin can offer multiple shared domains to users, one of which is configured as the default.
 
 Routes created for shared domains must use a hostname.
 
@@ -166,11 +175,11 @@ Admins can create a shared domain with the `cf create-shared-domain` command:
 $ cf create-shared-domain <%=vars.app_domain%>
 </pre>
 
-Example: CF admin John offers users the choice of creating routes for their apps from two domains by configuring CF with shared domains `<%=vars.app_domain%>` and `cf.some-company.com`. John configures the former to be the default. When developer Jane  pushes her app `awesome` to Cloud Foundry and doesn't specify a route, the route `awesome.<%=vars.app_domain%>` is created and mapped to her app automatically. Requests to `http://awesome.<%=vars.app_domain%>` would immediately be routed to Jane's app. If Jane would like her app to be accessible at `awesome.cf.some-company.com`, she can create this route and map it to her app.
+The following example illustrates the point: CF admin John offers users the choice of creating routes for their apps from two domains by configuring CF with shared domains `<%=vars.app_domain%>` and `cf.some-company.com`. John configures the former to be the default. When developer Jane  pushes her app `awesome` to <%=vars.product_short%> and does not specify a route, she automatically creates and maps the route `awesome.<%=vars.app_domain%>` to her app. Requests to `http://awesome.<%=vars.app_domain%>` route immediately to Jane's app. If Jane wants her app to be accessible at `awesome.cf.some-company.com`, she can create this route and map it to her app.
 
 #### <a id='delete-shared-domain'></a>Delete a Shared Domain ####
 
-Admins can delete a domain from Cloud Foundry with the `cf delete-shared-domain` command:
+Admins can delete a domain from <%=vars.product_short%> with the `cf delete-shared-domain` command:
 
 <pre class="terminal">
 $ cf delete-domain mydomain.com
@@ -178,7 +187,7 @@ $ cf delete-domain mydomain.com
 
 ### <a id='private-domains'></a>Private Domains ###
 
-*Private domains* (also known as *custom domains*) can be added by users with the OrgManager role and enable members of the org to create routes for privately registered domain names. Private domains can also be shared with other organizations, enabling users of those orgs to create routes from the domain.
+Users can add *private domains* (or *custom domains*) with the Org Manager role and give members of the org permission to create routes for privately registered domain names. Private domains can additionally be shared with other organizations, enabling users of those orgs to create routes from the domain.
 
 #### <a id='create-private-domain'></a>Create a Private Domain ####
 
@@ -204,7 +213,7 @@ $ cf unshare-private-domain test-org <%=vars.private_app_domain%>
 
 #### <a id='delete-private-domain'></a>Delete a Private Domain ####
 
-Org Managers can delete a domain from Cloud Foundry with the `cf delete-domain` command:
+Org Managers can delete a domain from <%=vars.product_short%> with the `cf delete-domain` command:
 
 <pre class="terminal">
 $ cf delete-domain <%=vars.private_app_domain%>
@@ -228,7 +237,7 @@ The domain `foo.myapp.<%=vars.app_domain%>` is the child subdomain of `myapp.<%=
 
 #### <a id='subdomain-dns'></a>Configuring DNS for a Subdomain of your Registered Domain ####
 
-To use a subdomain of your registered domain name with applications on Cloud Foundry, configure the subdomain as CNAME record with your DNS provider, pointing at any shared domain offered in Cloud Foundry.
+To use a subdomain of your registered domain name with applications on <%=vars.product_short%>, configure the subdomain as CNAME record with your DNS provider, pointing at any shared domain offered in <%=vars.product_short%>.
 
 <table border="1" class="nice" >
 	<tr>
@@ -253,9 +262,11 @@ To use a subdomain of your registered domain name with applications on Cloud Fou
 
 #### <a id='root-domain-dns'></a>Configuring DNS for Your Registered Root Domain ####
 
-To use your *root domain* (also known as the *zone apex domain*, e.g. mydomain.com) for applications on Cloud Foundry you can either use custom DNS record types like ALIAS and ANAME, if your DNS provider offers them, or *subdomain redirection*.
+To use your *root domain* (for example `mydomain.com`) for applications on <%=vars.product_short%> you can either use custom DNS record types like ALIAS and ANAME, if your DNS provider offers them, or *subdomain redirection*.
 
-If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider to point at a shared domain in Cloud Foundry.
+<p class="note"><strong>Note</strong>: Root domains are also called <em>zone apex domains</em>.</p>
+
+If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider to point at a shared domain in <%=vars.product_short%>.
 
 <table border="1" class="nice" >
 	<tr>
@@ -274,11 +285,10 @@ If your DNS provider supports using an ALIAS or ANAME record, configure your roo
 
 If your DNS provider does not support ANAME or ALIAS records you can use subdomain redirection, also known as *domain forwarding*, to redirect requests for your root domain to a subdomain configured as a CNAME.
 
-<p class="note">
-	<strong>Note</strong>: If you use domain forwarding, SSL requests to the root domain may fail if the SSL certificate only matches the subdomain.
+<p class="note"><strong>Note</strong>: If you use domain forwarding, SSL requests to the root domain may fail if the SSL certificate only matches the subdomain.
 </p>
 
-Configure the root domain to point at a subdomain (e.g. www), and configure the subdomain as a CNAME record pointing at a shared domain in Cloud Foundry.
+Configure the root domain to point at a subdomain (`www`), and configure the subdomain as a CNAME record pointing at a shared domain in <%=vars.product_short%>.
 
 <table border="1" class="nice" >
 	<tr>

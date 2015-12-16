@@ -35,9 +35,7 @@ Routes can be created and subsequently added to an app. See [Map a Route to your
 $ cf create-route my-space <%=vars.app_domain%> -n myapp
 </pre>
 
-Only requests for `HTTP`, `HTTPS` or a path under those URLs will be routed to apps mapped to this route.
-
-<p class="note"><strong>Note</strong>: The mapped route <code><%=vars.app_domain%></code> handles requests for <code>HTTP</code>, <code>HTTPS</code>, and any path under the domain URL, for example:<br> <code>http:/<span>/</span><%=vars.app_domain%></code>, <br><code>https:/<span>/</span><%=vars.app_domain%></code>, and <br><code>http:/<span>/</span><%=vars.app_domain%>/foo</code>.</p>
+Only requests for `http://myapp.<%=vars.app_domain%>`, `https://myapp.<%=vars.app_domain%>`, or any path under those URLs (for example `http://myapp.<%=vars.app_domain%>/bar`), will be routed to apps mapped to this route.
 
 #### <a id='create-route-without-hostname'></a>Create a Route without Hostname ####
 
@@ -47,15 +45,9 @@ This approach creates a route for the domain itself and is permitted for [Privat
 $ cf create-route my-space <%=vars.private_app_domain%>
 </pre>
 
-The `create-route` command creates a route in space `my-space` from domain `<%=vars.private_app_domain%>` with no hostname. If DNS has been configured correctly, <%=vars.product_short%> will route requests for `<%=vars.private_app_domain%>` to applications with that route mapping.
+This example creates a route in space `my-space` from domain `<%=vars.private_app_domain%>` with no hostname. If DNS has been configured correctly, <%=vars.product_short%> will route requests for `http://<%=vars.private_app_domain%>`, `https://<%=vars.private_app_domain%>`, or any path under those URLs (for example `http://<%=vars.private_app_domain%>/foo`) to applications that are mapped to the route. If there are no other routes for the domain, requests to any subdomain (for example `http://foo.<%=vars.private_app_domain%>`) will fail.
 
-<p class="note"><strong>Note</strong>: The mapped route <code><%=vars.private_app_domain%></code> handles requests for <code>HTTP</code>, <code>HTTPS</code>, and any path under the domain URL, for example:<br> <code>http:/<span>/</span><%=vars.private_app_domain%></code>, <br><code>https:/<span>/</span><%=vars.private_app_domain%></code>, and <br> <code>http:/<span>/</span><%=vars.private_app_domain%>/foo</code>.</p>
-
-If there are no other routes for the domain, requests to any subdomain will fail. For example <code>http:<span>/</span>/bar.<%=vars.private_app_domain%></code> would not resolve to an address in this case.
-
-Domains can also be created in <%=vars.product_short%> for subdomains. If DNS has been configured correctly for this subdomain, a route created from a domain with no added host will result in <%=vars.product_short%> routing requests to applications with that route mapping.
-
-<p class="note"><strong>Note</strong>: The mapped route <code>foo.<%=vars.private_app_domain%></code> handles requests for <code>HTTP</code>, <code>HTTPS</code>, and any path under the domain URL, for example:<br> <code>http:/<span>/</span>foo.<%=vars.private_app_domain%></code>, <br><code>https:/<span>/</span>foo.<%=vars.private_app_domain%></code>, and <br> <code>http:/<span>/</span>foo.<%=vars.private_app_domain%>/baz</code>.</p>
+Domains can also be created in <%=vars.product_short%> for subdomains, for example `foo.<%=vars.private_app_domain%>`. Assuming DNS has been configured for this subdomain, a route created from this domain with no added host would result in requests for `http://foo.<%=vars.private_app_domain%>`, `https://foo.<%=vars.private_app_domain%>`, or any path under those URLs (for example `http://foo.<%=vars.private_app_domain%>/foo`) to be routed to applications mapped to the route.
 
 #### <a id='create-route-with-wildcard-hostname'></a>Create a Route with Wildcard Hostname ####
 

@@ -15,7 +15,7 @@ _This page assumes you are using cf CLI v6._
 
 ## <a id='routes'></a>Routes ##
 
-HTTP requests are routed to applications pushed to <%=vars.product_short%> by associating an application with a URL, known as a route. This association can be called a mapping. For example, a developer might say, "I mapped route `myapp.<%=vars.app_domain%>` to app `myapp`". 
+HTTP requests are routed to applications pushed to <%=vars.product_short%> by associating an application with a URL, known as a route. This association can be called a mapping. For example, a developer might say, "I mapped route `myapp.<%=vars.app_domain%>` to app `myapp`".
 
 Many apps can be mapped to a single route resulting in load balanced requests for the route across all instances of all mapped apps. This approach makes the blue/green deploy strategy possible. An individual app can also be mapped to multiple routes, granting multiple URLs access to the app.
 
@@ -57,7 +57,7 @@ To create a wildcard route submit an asterix for the hostname.
 $ cf create-route my-space foo.<%=vars.app_domain%> -n *
 </pre>
 
-An application mapped to a wildcard route acts as a fallback app for route requests if the requested route does not exist. For example, if a client sends a request to `http://myapp.foo.<%=vars.app_domain%>` in an attempt to access the application mapped to the route `myapp.foo.<%=vars.app_domain%>`, the request will be routed to the application mapped to the route `*.foo.<%=vars.app_domain%>`.
+An application mapped to a wildcard route acts as a fallback app for route requests if the requested route does not exist. For example, if a client sends a request to `http://app.foo.<%=vars.app_domain%>` by accident, meaning to reach `myapp.foo.<%=vars.app_domain%>`, the request will be routed to the application mapped to the route `*.foo.<%=vars.app_domain%>`.
 
 ### <a id='list-routes'></a>List Routes ###
 

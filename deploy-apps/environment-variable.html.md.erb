@@ -8,8 +8,8 @@ _This page assumes you are using cf CLI v6._
 
 Environment variables are the means by which the Cloud Foundry runtime
 communicates with a deployed application about its environment.
-This page describes the environment variables that Droplet Execution Agents
-(DEAs) and buildpacks set for applications.
+This page describes the environment variables that the runtime
+and buildpacks set for applications.
 
 For information about setting your own application-specific environment
 variables, refer to the [Set Environment Variable in a Manifest](./manifest.html#env-block) section in
@@ -19,7 +19,7 @@ the Application Manifests topic.
 
 Use the `cf env` command to view the Cloud Foundry environment variables for your application. `cf env` displays the following environment variables:
 
-* The `VCAP_SERVICES` variables existing in the container environment
+* The `VCAP_APPLICATION` and `VCAP_SERVICES` variables provided in the container environment
 * The user-provided variables set using the `cf set-env` command
 
 <pre class="terminal">
@@ -58,15 +58,56 @@ MY_DRAIN: http://drain.example.com
 MY_ENV_VARIABLE: 100
 </pre>
 
-## <a id='dea-set'></a>Variables Available to Your Application ##
+## <a id='app-system-env'></a>Application-Specific System Variables ##
 
-The subsections that follow describe the environment variables that Cloud Foundry makes available for your application container.
+The subsections that follow describe the environment variables that
+Cloud Foundry makes available to your application container.
+Some of these variables are the same across instances of a single
+application, and some vary from instance to instance.
 
 You can access environment variables programmatically, including variables
 defined by the buildpack.
 Refer to the buildpack documentation for [Java](../../buildpacks/java/java-tips.html#env-var),
 [Node.js](../../buildpacks/node/node-tips.html#env-var), and
 [Ruby](../../buildpacks/ruby/ruby-tips.html#env-var).
+
+### <a id='CF-INSTANCE-ADDR'></a>CF\_INSTANCE\_ADDR ###
+The [CF\_INSTANCE\_IP](#CF-INSTANCE-IP) and [CF\_INSTANCE\_PORT](#CF-INSTANCE-PORT) of the app instance in the format `IP:PORT`.
+
+`CF_INSTANCE_ADDR=1.2.3.4:5678`
+
+### <a id='CF-INSTANCE-GUID'></a>CF\_INSTANCE\_GUID ###
+The GUID of the application. Available only to instances on Diego cells.
+
+`CF_INSTANCE_GUID=41653aa4-3a3a-486a-4431-ef258b39f042`
+
+### <a id='CF-INSTANCE-INDEX'></a>CF\_INSTANCE\_INDEX ###
+The index number of the app instance.
+
+`CF_INSTANCE_INDEX=0`
+
+### <a id='CF-INSTANCE-IP'></a>CF\_INSTANCE\_IP ###
+The external IP address of the host running the app instance.
+
+`CF_INSTANCE_IP=1.2.3.4`
+
+### <a id='CF-INSTANCE-PORT'></a>CF\_INSTANCE\_PORT ###
+Same as the [PORT](#PORT) of the app instance.
+
+`CF_INSTANCE_PORT=5678`
+
+### <a id='CF-INSTANCE-PORTS'></a>CF\_INSTANCE\_PORTS ###
+
+The list of mappings between internal (container-side) and external
+(host-side) ports allocated to the instance's container.
+Note that not all of the internal ports are necessarily available for the
+application to bind to, as some of them may be used by system-provided
+services that also run inside the container.
+On the DEAs, these internal and external values will be the same, but on Diego
+cells, they may differ.
+
+`CF_INSTANCE_PORTS=[{external:61045,internal:5678},{external:61046,internal:2222}]`
+
 
 ### <a id='HOME'></a>HOME ###
 Root folder for the deployed application.
@@ -75,17 +116,21 @@ Root folder for the deployed application.
 
 ### <a id='memory'></a>MEMORY_LIMIT ###
 The maximum amount of memory that each instance of the application can consume.
-You specify this value in an application manifest or with the cf CLI when pushing an application. The value is limited by space and org quotas.
+You specify this value in an application manifest or with the cf CLI when
+pushing an application.
+The value is limited by space and org quotas.
 
-If an instance goes over the maximum limit, it will be restarted. If it has to be restarted too often, it will be terminated.
+If an instance goes over the maximum limit, it will be restarted.
+If it has to be restarted too often, it will be terminated.
 
 `MEMORY_LIMIT=512m`
 
 ### <a id='PORT'></a>PORT ###
-The port on the DEA for communication with the application.
-The DEA allocates a port to the application during staging.
-For this reason, code that obtains or uses the application port should reference
-it using `PORT`.
+
+The port on which the application should listen for requests.
+The Cloud Foundry runtime allocates a port dynamically for each instance
+of the application, so code that obtains or uses the application port
+should refer to it via the `PORT` environment variable.
 
 `PORT=61857`
 
@@ -93,7 +138,7 @@ it using `PORT`.
 Identifies the present working directory, where the buildpack that processed the
 application ran.
 
-`PWD=/home/vcap`
+`PWD=/home/vcap/app`
 
 ### <a id='TMPDIR'></a>TMPDIR###
 Directory location where temporary and staging files are stored.
@@ -101,15 +146,22 @@ Directory location where temporary and staging files are stored.
 `TMPDIR=/home/vcap/tmp`
 
 ### <a id='USER'></a>USER###
-The user account under which the DEA runs.
+The user account under which the application runs.
 
 `USER=vcap`
 
 ### <a id='VCAP-APP-HOST'></a>VCAP\_APP\_HOST
 
-The IP address of the DEA host.
+The IP address of the host. Deprecated: the DEAs set this to be `0.0.0.0`,
+and Diego Cells do not provide this environment variable.
 
 `VCAP_APP_HOST=0.0.0.0`
+
+
+### <a id='VCAP-APP-PORT'></a>VCAP\_APP\_PORT ###
+
+Deprecated name for the [PORT](#PORT) variable defined above.
+
 
 ### <a id='VCAP-APPLICATION'></a>VCAP_APPLICATION ###
 
@@ -124,27 +176,23 @@ The table below lists the attributes that are returned.
   </tr>
   <tr>
     <td><code>application_id</code></td>
-    <td>GUID that identifies the application.</td>
+    <td>GUID identifying the application.</td>
   </tr>
   <tr>
-    <td><code>application_name</code> or <code>name</code></td>
+    <td><code>application_name</code></td>
     <td>The name assigned to the application when it was pushed.</td>
   </tr>
   <tr>
-    <td><code>application_users</code> or <code>users</code></td>
-    <td></td>
+    <td><code>application_uris</code></td>
+    <td>The URIs assigned to the application.</td>
   </tr>
   <tr>
-    <td><code>application_uris</code> or <code>uris</code></td>
-    <td>The URI(s) assigned to the application.</td>
-  </tr>
-  <tr>
-    <td><code>application_version</code> or <code>version</code></td>
-    <td>GUID that identifies a version of the application that was pushed. Each time an application is pushed or restarted, this value is updated.</td>
+    <td><code>application_version</code></td>
+    <td>GUID identifying a version of the application. Each time an application is pushed or restarted, this value is updated.</td>
   </tr>
   <tr>
     <td><code>host</code></td>
-    <td>IP address of the application instance.</td>
+    <td>Deprecated. IP address of the application instance. </td>
   </tr>
   <tr>
     <td><code>instance_id</code></td>
@@ -152,27 +200,51 @@ The table below lists the attributes that are returned.
   </tr>
   <tr>
     <td><code>instance_index</code></td>
-    <td>Index number of the instance. You can access this value directly with the <a href="#CF-INSTANCE-INDEX">CF_INSTANCE_INDEX</a> variable.</td>
+    <td>Index number of the instance. Identical to the <a href="#CF-INSTANCE-INDEX">CF_INSTANCE_INDEX</a> variable.</td>
   </tr>
   <tr>
     <td><code>limits</code></td>
     <td>The memory, disk, and number of files permitted to the instance. Memory and disk limits are supplied when the application is deployed, either on the command line or in the application manifest. The number of files allowed is operator-defined.</td>
   </tr>
   <tr>
-    <td><code>port</code></td>
-    <td>Port of the application instance. You can access this value directly with the <a href="#PORT">PORT</a> variable.</td>
+    <td><code>name</code></td>
+    <td>Identical to <code>application_name</code>.</td>
   </tr>
   <tr>
-    <td><code>started_at</code> or <code>start</code></td>
-    <td>The last time the application was started.</td>
+    <td><code>port</code></td>
+    <td>Port of the application instance. Identical to the <a href="#PORT">PORT</a> variable.</td>
+  </tr>
+  <tr>
+    <td><code>space_id</code></td>
+    <td>GUID identifying the application's space.</td>
+  </tr>
+  <tr>
+    <td><code>start</code></td>
+    <td>Human-readable timestamp for the time the instance was started. Not provided on Diego cells.</td>
+  </tr>
+  <tr>
+    <td><code>started_at</code></td>
+    <td>Identical to <code>start</code>. Not provided on Diego cells.</td>
   </tr>
   <tr>
     <td><code>started_at_timestamp</code></td>
-    <td>Timestamp for the last time the application was started.</td>
+    <td>Unix epoch timestamp for the time the instance was started. Not provided on Diego cells.</td>
   </tr>
   <tr>
     <td><code>state_timestamp</code></td>
-    <td>The timestamp for the time at which the application achieved its current state.</td>
+    <td>Identical to <code>started_at_timestamp</code>. Not provided on Diego cells.</td>
+  </tr>
+  <tr>
+    <td><code>uris</code></td>
+    <td>Identical to <code>application_uris</code>.</td>
+  </tr>
+  <tr>
+    <td><code>users</code></td>
+    <td>Deprecated. Not provided on Diego cells.</td>
+  </tr>
+  <tr>
+    <td><code>version</code></td>
+    <td>Identical to <code>application_version</code>.</td>
   </tr>
 </table>
 
@@ -188,10 +260,6 @@ VCAP_APPLICATION={"instance_id":"fe98dc76ba549876543210abcd1234",
 2cd34-5678-abcd-0123-abcdef987654","name":"my-app","uris":["my-app.example.com"]
 ,"users":null}
 ~~~
-
-### <a id='VCAP-APP-PORT'></a>VCAP\_APP\_PORT ###
-
-Deprecated name for the [PORT](#PORT) variable, defined above.
 
 
 ### <a id='VCAP-SERVICES'></a>VCAP\_SERVICES ###
@@ -277,34 +345,7 @@ VCAP_SERVICES=
   ]
 }
 ~~~
-## <a id='instance-vars'></a>Application Instance-Specific Variables ##
 
-Each instance of an application can access a set of variables with the <code>CF_INSTANCE</code> prefix. These variables provide information for a given application instance, including identification of the host DEA by its IP address.
-
-### <a id='CF-INSTANCE-ADDR'></a>CF\_INSTANCE\_ADDR ###
-The [CF\_INSTANCE\_IP](#CF-INSTANCE-IP) and [CF\_INSTANCE\_PORT](#CF-INSTANCE-PORT) of the app instance in the format `particular-DEA-IP:particular-app-instance-port`.
-
-`CF_INSTANCE_ADDR=1.2.3.4:5678`
-
-### <a id='CF-INSTANCE-INDEX'></a>CF\_INSTANCE\_INDEX ###
-The index number of the app instance.
-
-`CF_INSTANCE_INDEX=0`
-
-### <a id='CF-INSTANCE-IP'></a>CF\_INSTANCE\_IP ###
-The external IP address of the DEA running the container with the app instance.
-
-`CF_INSTANCE_IP=1.2.3.4`
-
-### <a id='CF-INSTANCE-PORT'></a>CF\_INSTANCE\_PORT ###
-The [PORT](#PORT) of the app instance.
-
-`CF_INSTANCE_PORT=5678`
-
-### <a id='CF-INSTANCE-PORTS'></a>CF\_INSTANCE\_PORTS ###
-The external and internal ports allocated to the app instance.
-
-`CF_INSTANCE_PORTS=[{external:5678,internal:5678}]`
 
 ## <a id='evgroups'></a>Environment Variable Groups ##
 

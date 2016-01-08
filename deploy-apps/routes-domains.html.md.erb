@@ -160,7 +160,7 @@ The system admin manages shared domains and those domains are available to users
 
 Routes created for shared domains must use a hostname.
 
-#### <a id='create-private-domain'></a>Create a Private Domain ####
+#### <a id='create-private-domain'></a>Create a Shared Domain ####
 
 Admins can create a shared domain with the `cf create-shared-domain` command:
 <pre class="terminal">
@@ -171,10 +171,10 @@ The following example illustrates the point: CF admin John offers users the choi
 
 #### <a id='delete-shared-domain'></a>Delete a Shared Domain ####
 
-Admins can delete a domain from <%=vars.product_short%> with the `cf delete-shared-domain` command:
+Admins can delete a shared domain from <%=vars.product_short%> with the `cf delete-shared-domain` command:
 
 <pre class="terminal">
-$ cf delete-domain mydomain.com
+$ cf delete-shared-domain mydomain.com
 </pre>
 
 ### <a id='private-domains'></a>Private Domains ###

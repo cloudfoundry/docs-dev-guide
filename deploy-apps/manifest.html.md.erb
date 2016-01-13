@@ -163,6 +163,20 @@ $ cf push my-app -c "bundle exec rake VERBOSE=true"
 
 <p class="note"><strong>Note</strong>: The <code>-c</code> option with a value of 'null' forces <code>cf push</code> to use the buildpack start command. See <a href="./app-startup.html">About Starting Applications</a> for more information.</p>
 
+If you override the start command for a Buildpack or Docker application then Linux will invoke
+your application via a <code>bash -c YOUR_COMMAND</code> or <code>sh -c YOUR_COMMAND</code> respectively.
+For example, a simple start command for your application could be <code>echo 'Hello World'</code>.
+This command will print out `Hello World` in you application's log lines, but your application
+will not run afterwards. If you want your application also to run, you can set your application's command
+to <code>echo 'Hello World' && exec YOUR_COMMAND</code>.
+
+<p class="note"><strong>Note</strong>:
+That <code>exec</code> statement as part of the new start command is very important. It causes your custom start
+command to become the root process of your application. <a href="./prepare-to-deploy.html#moving-apps">Cloud Foundry Updates and Your Application</a>
+explains the importance for your application to handle a terminate signal during Cloud Foundry Updates. Without that
+<code>exec</code> statement the parent process would remain as the implied bash process, which will not propagate signals
+to your application process, and that is probably not what you intended. </p>
+
 ###<a id='disk-quota'></a>The disk quota attribute ###
 
 Use the `disk_quota` attribute to allocate the disk space for your app instance. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case.

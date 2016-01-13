@@ -60,6 +60,16 @@ There are several open source projects that share sessions in a data service.
 
 <%=vars.port_limitations%>
 
+### <a id="moving-apps"></a> Cloud Foundry Updates and Your Application ###
+
+During management of your application instances, Cloud Foundry may need to shut them down and
+restart them elsewhere. When this happens, Cloud Foundry informs your application that we are
+going to shut it down by sending a single <code>termination signal</code> to the root process
+that your start command invokes. Cloud Foundry will then wait 10 seconds allowing your application
+to cleanly shut down any child processes and handle any open connections. After the 10 seconds
+have passed, Cloud Foundry will forcefully shut down your application. If your application
+doesn't handle the termination signal, it will not be able to shutdown gracefully.
+
 ## <a id="exclude"></a>Ignore Unnecessary Files When Pushing ##
 
 By default, when you push an application, all files in the application’s project

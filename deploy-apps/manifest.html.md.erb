@@ -163,19 +163,15 @@ $ cf push my-app -c "bundle exec rake VERBOSE=true"
 
 <p class="note"><strong>Note</strong>: The <code>-c</code> option with a value of 'null' forces <code>cf push</code> to use the buildpack start command. See <a href="./app-startup.html">About Starting Applications</a> for more information.</p>
 
-If you override the start command for a Buildpack or Docker application then Linux will invoke
-your application via a <code>bash -c YOUR_COMMAND</code> or <code>sh -c YOUR_COMMAND</code> respectively.
-For example, a simple start command for your application could be <code>echo 'Hello World'</code>.
-This command will print out `Hello World` in you application's log lines, but your application
-will not run afterwards. If you want your application also to run, you can set your application's command
-to <code>echo 'Hello World' && exec YOUR_COMMAND</code>.
+If you override the start command for a Buildpack application, Linux uses 
+<code>bash -c YOUR-COMMAND</code> to invoke your application.
+If you override the start command for a Docker application, Linux uses <code>sh -c YOUR-COMMAND</code> to invoke your application.
+Because of this, you should include <code>exec</code> as part of any start command you override.
 
-<p class="note"><strong>Note</strong>:
-That <code>exec</code> statement as part of the new start command is very important. It causes your custom start
-command to become the root process of your application. <a href="./prepare-to-deploy.html#moving-apps">Cloud Foundry Updates and Your Application</a>
-explains the importance for your application to handle a terminate signal during Cloud Foundry Updates. Without that
-<code>exec</code> statement the parent process would remain as the implied bash process, which will not propagate signals
-to your application process, and that is probably not what you intended. </p>
+<code>exec</code> causes the custom start command to become the root process of your application. The <a href="./prepare-to-deploy.html#moving-apps">Cloud Foundry Updates and Your Application</a> section of the _Considerations for Designing and Running an Application in the Cloud_ topic explains why your application should handle a `termination signal` during Cloud Foundry updates. 
+Without an <code>exec</code> statement, the parent process remains as the implied bash process, and does not propagate signals to your application process.
+
+For example, if you specify <code>echo 'Hello World'</code> as a custom start command for your application, the command will output `Hello World` to your application's log, but your application will not run. To run your application, you could set the custom start command as <code>echo 'Hello World' && exec YOUR-COMMAND</code>.
 
 ###<a id='disk-quota'></a>The disk quota attribute ###
 

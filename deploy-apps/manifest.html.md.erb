@@ -324,7 +324,11 @@ The command line option that overrides this attribute is `-p`.
 
 ###<a id='timeout'></a>The timeout attribute ###
 
-Use the `timeout` attribute to give your application more time to start, up to 180 seconds. The default timeout is 60 seconds. For example:
+You can use the `timeout` attribute to tell Cloud Foundry how long to wait for an application to start.
+
+The `timeout` attribute sets the amount of time Cloud Foundry attempts to start your application before it fails..
+
+For example:
 
 <pre>
 ---
@@ -332,9 +336,10 @@ Use the `timeout` attribute to give your application more time to start, up to 1
   timeout: 80
 </pre>
 
-If the app has not started by the timeout limit that you set, Cloud Foundry stops trying to start the app. You might want to increase the timeout length to ensure that very large apps have sufficient time to start.
-
-The command line option that overrides this attribute is `-t`.
+If the app has not started by the timeout limit that you set, Cloud Foundry stops trying to start the app. You can increase the timeout length for very large apps that require more time to start. The default timeout is 60 seconds with an upper bound of 180 seconds. 
+<p class="note"><strong>Note</strong>: Administrators can set the upper bound of the `maximum_health_check_timeout` property to any value. 
+ </p>
+The command line option that overrides the timeout attribute for the shell is `-t`. Manifest values will still apply to applications pushed to the deployment.
 
 ###<a id='no-route'></a>The no-route attribute ###
 

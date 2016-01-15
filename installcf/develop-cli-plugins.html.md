@@ -4,8 +4,7 @@ title: Developing cf CLI Plugins
 
 <strong><%= modified_date %></strong>
 
-Users can create and install Cloud Foundry command line interface (cf CLI)
-plugins to provide custom commands.
+Users can create and install Cloud Foundry Command Line Interface (cf CLI) plugins to provide custom commands.
 These plugins can be submitted and shared to the [CF Community repo](http://plugins.cloudfoundry.org/ui/).
 
 ### Requirements ###

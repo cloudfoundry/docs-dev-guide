@@ -5,7 +5,7 @@ title: Developer Guide
 This guide has instructions for pushing an application to Cloud Foundry and
 making the application work with any available cloud-based services it uses,
 such as databases, email, or message servers.
-The core of this guide is the [Deploy an Application](./deploy-apps/deploy-app.html) process
+The core of this guide is the * [Deploy an Application](./deploy-apps/deploy-app.html) process
 guide, which provides end-to-end instructions for deploying and running
 applications on Cloud Foundry, including tips for troubleshooting deployment and
 application health issues.
@@ -17,51 +17,65 @@ ___
 
 ## <a id='prepare'></a>Preparing Applications for the Cloud ##
 
-[Considerations for Designing and Running an Application in the Cloud](./deploy-apps/prepare-to-deploy.html)
+* [Considerations for Designing and Running an Application in the Cloud](./deploy-apps/prepare-to-deploy.html)
 
 ___
 
 ## <a id='prepare'></a>	Deploying and Managing Applications ##
-[Deploy an Application](./deploy-apps/deploy-app.html)
+* [Understanding Application Deployment](./deploy-apps/index.html)
 
-[Deploy a Large Application](./deploy-apps/large-app-deploy.html)
+* [Deploy an Application](./deploy-apps/deploy-app.html)
 
-[Routes and Domains](./deploy-apps/routes-domains.html)
+* [Deploy a Large Application](./deploy-apps/large-app-deploy.html)
 
-[Deploying with Application Manifests](./deploy-apps/manifest.html)
+* [Routes and Domains](./deploy-apps/routes-domains.html)
 
-[Cloud Foundry Environment Variables](./deploy-apps/environment-variable.html)
+* [Deploying with Application Manifests](./deploy-apps/manifest.html)
 
-[Using Blue-Green Deployment to Reduce Downtime and Risk](./deploy-apps/blue-green.html)
+* [Cloud Foundry Environment Variables](./deploy-apps/environment-variable.html)
 
-[Application Logging in Cloud Foundry](./deploy-apps/streaming-logs.html)
+* [Using Blue-Green Deployment to Reduce Downtime and Risk](./deploy-apps/blue-green.html)
 
-[Troubleshooting Application Deployment and Health](./deploy-apps/troubleshoot-app-health.html)
+* [Application Logging in Cloud Foundry](./deploy-apps/streaming-logs.html)
+
+* [Troubleshooting Application Deployment and Health](./deploy-apps/troubleshoot-app-health.html)
 
 ___
 
-## <a id='cf'></a>cf Command Line Interface ##
-[Installing the cf Command Line Interface](./installcf/install-go-cli.html)
+## <a id='cf'></a>Cloud Foundry Command Line Interface (cf CLI) ##
+* [Installing the cf Command Line Interface](./installcf/install-go-cli.html)
 
-[Getting Started with the cf CLI](./installcf/whats-new-v6.html)
+* [Getting Started with the cf CLI](./installcf/whats-new-v6.html)
 
-[Using the cf CLI with an HTTP Proxy Server](./installcf/http-proxy.html)
+* [Using the cf CLI with an HTTP Proxy Server](./installcf/http-proxy.html)
 
-[Using cf CLI Plugins](./installcf/use-cli-plugins.html)
+* [Developing cf CLI Plugins](./installcf/develop-cli-plugins.html)
 
-[About Starting Applications](./deploy-apps/app-startup.html)
+* [Using cf CLI Plugins](./installcf/use-cli-plugins.html)
 
-[Scaling an Application Using cf scale](./deploy-apps/cf-scale.html)
+* [About Starting Applications](./deploy-apps/app-startup.html)
+
+* [Scaling an Application Using cf scale](./deploy-apps/cf-scale.html)
 
 ___
 
 ## <a id='services'></a>Services ##
-[Services Overview](./services/index.html)
+* [Services Overview](./services/index.html)
 
-[Managing Service Instances](./services/managing-services.html)
+* [Managing Service Instances](./services/managing-services.html)
 
-[User-Provided Service Instances](./services/user-provided.html)
+* [Managing Service Keys](./services/service-keys.html)
 
-[Using Log Management Services](./services/log-management.html)
+* [Binding Applications to Service Instances](./services/application-binding.html)
 
-[Migrating a Database in Cloud Foundry](./services/migrate-db.html)
+* [User-Provided Service Instances](./services/user-provided.html)
+
+* [Using Log Management Services](./services/log-management.html)
+
+* [Service-Specific Instructions for Streaming Application Logs](./services/log-management-thirdparty-svc.html)
+
+* [Streaming Application Logs to Splunk](./services/integrate-splunk.html)
+
+* [Configuring Play Framework Service Connections](./services/play-service-bindings.html)
+
+* [Migrating a Database in Cloud Foundry](./services/migrate-db.html)

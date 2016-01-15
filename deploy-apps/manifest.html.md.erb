@@ -318,7 +318,7 @@ The command line option that corresponds to this attribute is `--random-route`.
 
 You can use the `path` attribute to tell Cloud Foundry where to find your application. This is generally not necessary when you run `cf push` from the directory where an application is located.
 
-<pre>
+<pre>d
 ---
   ...
   path: path_to_application_bits
@@ -328,9 +328,7 @@ The command line option that overrides this attribute is `-p`.
 
 ###<a id='timeout'></a>The timeout attribute ###
 
-You can use the `timeout` attribute to tell Cloud Foundry how long to wait for an application to start.
-
-The `timeout` attribute sets the amount of time Cloud Foundry attempts to start your application before it fails..
+The `timeout` attribute defines the number of seconds Cloud Foundry allocates for starting your application. 
 
 For example:
 
@@ -340,10 +338,10 @@ For example:
   timeout: 80
 </pre>
 
-If the app has not started by the timeout limit that you set, Cloud Foundry stops trying to start the app. You can increase the timeout length for very large apps that require more time to start. The default timeout is 60 seconds with an upper bound of 180 seconds. 
-<p class="note"><strong>Note</strong>: Administrators can set the upper bound of the `maximum_health_check_timeout` property to any value. 
- </p>
-The command line option that overrides the timeout attribute for the shell is `-t`. Manifest values will still apply to applications pushed to the deployment.
+You can increase the timeout length for very large apps that require more time to start. The default timeout is 60 seconds with an upper bound of 180 seconds. 
+<p class="note"><strong>Note</strong>: Administrators can set the upper bound of the `maximum_health_check_timeout` property to any value. Any changes to Cloud Controller properties in the deployment manifest require running `bosh deploy`.</p>
+
+The command line option that overrides the timeout attribute for the shell is `-t`. Manifest values still apply to applications pushed to the deployment.
 
 ###<a id='no-route'></a>The no-route attribute ###
 

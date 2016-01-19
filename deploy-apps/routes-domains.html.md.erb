@@ -32,7 +32,7 @@ Routes are based on a domain plus an optional hostname, where domain is a <%=var
 Routes can be created and subsequently added to an app. See [Map a Route to your App](#map-route) for further detail.
 
 <pre class="terminal">
-$ cf create-route my-space <%=vars.app_domain%> -n myapp
+$ cf create-route my-space <%=vars.app_domain%> --hostname myapp
 </pre>
 
 Only requests for `http://myapp.<%=vars.app_domain%>`, `https://myapp.<%=vars.app_domain%>`, or any path under those URLs (for example `http://myapp.<%=vars.app_domain%>/bar`), will be routed to apps mapped to this route.
@@ -54,45 +54,42 @@ Domains can also be created in <%=vars.product_short%> for subdomains, for examp
 To create a wildcard route submit an asterix for the hostname.
 
 <pre class="terminal">
-$ cf create-route my-space foo.<%=vars.app_domain%> -n *
+$ cf create-route my-space foo.<%=vars.app_domain%> --hostname *
 </pre>
 
 An application mapped to a wildcard route acts as a fallback app for route requests if the requested route does not exist. For example, if a client sends a request to `http://app.foo.<%=vars.app_domain%>` by accident, meaning to reach `myapp.foo.<%=vars.app_domain%>`, the request will be routed to the application mapped to the route `*.foo.<%=vars.app_domain%>`.
 
 #### <a id='create-route-with-path'></a>Create a Route with a Path####
 
-To create a route for a host with a path.
+Paths can be used to route requests for the same hostname and domain to different apps.
+
+Given three applications `products`, `orders`, and `storefront` and following routes:
 
 <pre class="terminal">
-$ cf create-route my-space <%=vars.app_domain%> -n myapp --path mypath
+$ cf create-route my-space <%=vars.app_domain%> --hostname store --path products
+$ cf create-route my-space <%=vars.app_domain%> --hostname store --path orders
+$ cf create-route my-space <%=vars.app_domain%> --hostname store
 </pre>
 
-This creates a route in space `my-space` from domain `<%=vars.app_domain%>` with hostname `myapp` and path `mypath`.
+If the first route is mapped to the `products` app, the second route to the `orders` app, and the last route to the `storefront` app, then:
 
-<p class="note"><strong>Note</strong>: You cannot create a route with the same host and domain, but a different path, in another space.</p>
-
-For example, assuming there are three applications deployed (`products`, `orders` and `storefront`) and following routes are created:
-
-<pre class="terminal">
-$ cf create-route my-space <%=vars.app_domain%> -n store --path products
-$ cf create-route my-space <%=vars.app_domain%> -n store --path orders
-$ cf create-route my-space <%=vars.app_domain%> -n store
-</pre>
-
-If the first route is associated to the `products` app, the second route to the `orders` app and the last route to the `storefront` app:
-
-Requests to `http://store.<%=vars.app_domain%>/products` will be routed to the `products` app
-Requests to `http://store.<%=vars.app_domain%>/orders` will be routed to the `orders` app
-Requests to `http://store.<%=vars.app_domain%>` will be routed to the `storefront` app
+- Requests to `http://store.<%=vars.app_domain%>/products` will be routed to the `products` app
+- Requests to `http://store.<%=vars.app_domain%>/orders` will be routed to the `orders` app
+- Requests to `http://store.<%=vars.app_domain%>` will be routed to the `storefront` app
 
 Routes with a path will be attempted to be matched on first and then attempt to match on host and domain.
 
-<p class="note"><strong>Note</strong>: A route with a path does NOT map to the root context of an application, meaning that the app that is associated to a route with a path must be able to respond to that path.</p>
+<p class="note">
+	<strong>Note</strong>: Routes with the same shared domain and hostname, but different paths, may only be created in the same space. Private domains do not have this limitation.
+</p>
 
+<p class="note">
+	<strong>Note</strong>: Requests for routes with a path are not routed to the root context of a mapped application, meaning that an app that is mapped to a route with a path must be able to respond to that path.
+</p>
 
 ### <a id='list-routes'></a>List Routes ###
 
-You can list routes for the current space with the `cf routes` command. A route is uniquely identified by the combination of host and domain.
+You can list routes for the current space with the `cf routes` command. A route is uniquely identified by the combination of hostname, domain, and path.
 
 <pre class="terminal">
 $ cf routes
@@ -100,8 +97,7 @@ Getting routes as user@<%=vars.private_app_domain%> ...
 
 space      host     domain               path        apps
 my-space   myapp    <%=vars.app_domain%>                myapp
-my-space   myapp2   <%=vars.app_domain%>                myapp
-my-space   foo      <%=vars.private_app_domain%>               myapp
+my-space   myapp    <%=vars.private_app_domain%>               myapp
 my-space   store    <%=vars.app_domain%>    /products   products
 my-space   store    <%=vars.app_domain%>    /orders     orders
 my-space   store    <%=vars.app_domain%>                storefront
@@ -113,14 +109,7 @@ You may only see routes in spaces for which you are currently a member. Attempts
 To check to see if a particular route is already taken, use the `cf check-route` command.
 
 Check if a particular route exists:
-<pre class="terminal">
-$ cf check-route myapp <%=vars.app_domain%>
-Checking for route...
-OK
-Route myapp.<%=vars.app_domain%> does exist
-</pre>
 
-Check if a particular route with path exists:
 <pre class="terminal">
 $ cf check-route store <%=vars.app_domain%> --path /products
 Checking for route...
@@ -137,22 +126,8 @@ For an application to receive requests to a route, the route must be assigned, o
 
 #### <a id='map-route-manually'></a>Manually Map a Route ####
 
-The `-n HOSTNAME` option identfies the route to map to your application. Omit the `-n` flag if your route was created from a private domain without a hostname, as described in [Routes without Hostnames](#create-route-without-hostname).
+Given the following routes and applications:
 
-<pre class="terminal">
-$ cf map-route myapp <%=vars.app_domain%> -n myapp
-</pre>
-
-The command below maps the wildcard route `*.foo.<%=vars.app_domain%>` to the application `myfallbackapp`.
-
-<pre class="terminal">
-$ cf map-route myfallbackapp foo.<%=vars.app_domain%> -n *
-</pre>
-
-
-The `--path` option allows you to map an application to a route with a path, as described in [Create Route with a Path](#create-route-with-path).
-
-For example, based on the following:
 <table border="1" class="nice" >
 	<tr>
 		<th>Route</th>
@@ -172,12 +147,18 @@ For example, based on the following:
 	</tr>
 </table>
 
-The commands below will map the above routes to apps:
+The commands below will map the above routes to their respective apps. Hostname, domain, and path are used to uniquely identify a route to map an application to.
 
 <pre class="terminal">
-$ cf map-route products <%=vars.app_domain%> -n store --path products
-$ cf map-route orders <%=vars.app_domain%> -n store --path orders
-$ cf map-route storefront <%=vars.app_domain%> -n store
+$ cf map-route products <%=vars.app_domain%> --hostname store --path products
+$ cf map-route orders <%=vars.app_domain%> --hostname store --path orders
+$ cf map-route storefront <%=vars.app_domain%> --hostname store
+</pre>
+
+The command below maps the wildcard route `*.foo.<%=vars.app_domain%>` to the application `myfallbackapp`.
+
+<pre class="terminal">
+$ cf map-route myfallbackapp foo.<%=vars.app_domain%> --hostname *
 </pre>
 
 #### <a id='map-route-on-push'></a>Map a Route with Application Push ####
@@ -190,10 +171,10 @@ Push your `myapp` app to create the `myapp.<%=vars.app_domain%>` route with the 
 $ cf push myapp
 </pre>
 
-To customize the route during `push`, specify the domain using the `-d` flag and the hostname with the `-n` flag. The following command creates the `foo.<%=vars.private_app_domain%>` route for `myapp`.
+To customize the route during `push`, specify the domain using the `-d` flag and the hostname with the `--hostname` flag. The following command creates the `foo.<%=vars.private_app_domain%>` route for `myapp`.
 
 <pre class="terminal">
-$ cf push myapp -d <%=vars.private_app_domain%> -n foo
+$ cf push myapp -d <%=vars.private_app_domain%> --hostname foo
 </pre>
 
 #### <a id='map-route-with-manifest'></a>Map a Route Using Application Manifest ####
@@ -208,29 +189,19 @@ Routing multiple apps to the same route may cause undesirable behavior in some s
 
 ### <a id='unmap-route'></a>Unmap a Route ###
 
-You can remove a route from an app using the `cf unmap-route` command. Unmapping a route makes the route available in the targeted space for later use.
+You can remove a route from an app using the `cf unmap-route` command. The route will remain reserved for later use in the space is was created until it is deleted. Hostname, domain, and path are used to uniquely identify a route to unmap.
 
 <pre class="terminal">
-$ cf unmap-route myapp <%=vars.private_app_domain%> -n myapp
-</pre>
-
-You can also unmap a route with a path using the `--path` flag:
-<pre class="terminal">
-$ cf unmap-route myapp <%=vars.private_app_domain%> -n myapp --path mypath
+$ cf unmap-route myapp <%=vars.private_app_domain%> --hostname myapp --path mypath
 </pre>
 
 
 ### <a id='delete-route'></a>Delete a Route ###
 
-You can delete a route from a space using the `cf delete-route` command.
+You can delete a route from a space using the `cf delete-route` command. Hostname, domain, and path are used to uniquely identify a route to delete.
 
 <pre class="terminal">
-$ cf delete-route <%=vars.private_app_domain%> -n myapp
-</pre>
-
-You can also delete a route with a path using the `--path` flag:
-<pre class="terminal">
-$ cf delete-route <%=vars.private_app_domain%> -n myapp --path mypath
+$ cf delete-route <%=vars.private_app_domain%> --hostname myapp --path mypath
 </pre>
 
 

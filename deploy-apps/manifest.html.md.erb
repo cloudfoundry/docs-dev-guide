@@ -168,14 +168,15 @@ If you override the start command for a Buildpack application, Linux uses
 If you override the start command for a Docker application, Linux uses <code>sh -c YOUR-COMMAND</code> to invoke your application.
 Because of this, if you override a start command, you should prefix <code>exec</code> to the final command in your custom composite start command.
 
-<code>exec</code> causes the last command to become the root process of your application. The <a href="./prepare-to-deploy.html#moving-apps">Cloud Foundry Updates and Your Application</a> section of the _Considerations for Designing and Running an Application in the Cloud_ topic explains why your application should handle a `termination signal` during Cloud Foundry updates. 
-Without an <code>exec</code> statement, the parent process remains as the implied bash process, and does not propagate signals to your application process.
+An app needs to catch [termination signals](./manifest.html#moving-apps) and clean itself up appropriately. Because of the way that shells manage process trees, the use of custom composite shell commands, particularly those that create child processes using `&`, `&&`, `||`, etc., can prevent your app from receiving signals that are sent to the top level bash process.
 
-For example, both of the following composite start commands run database migrations when the first instance of the app starts, then start the app to serve requests, but they behave differently on graceful shutdown. 
+To resolve this issue, you can use `exec` to replace the bash process with your own process. For example:
 
-* `bin/rake cf:on_first_instance db:migrate && bin/rails server -p $PORT -e $RAILS_ENV`: The process tree is `bash -> ruby`, so on graceful shutdown only the `bash` process receives the TERM signal, and not the `ruby` process.
+  * `bin/rake cf:on_first_instance db:migrate && bin/rails server -p $PORT -e $RAILS_ENV` The process tree is bash -> ruby, so on graceful shutdown only the bash process receives the TERM signal, not the ruby process.
 
-* `bin/rake cf:on_first_instance db:migrate && exec bin/rails server -p $PORT -e $RAILS_ENV`: Because of the `exec` prefix on the final command, the `ruby` process invoked by `rails` takes over the `bash` process managing the execution of the composite command. The process tree is only `ruby`, so the ruby web server receives the TERM signal can shutdown gracefully for 10 seconds.
+  * `bin/rake cf:on_first_instance db:migrate && exec bin/rails server -p $PORT -e $RAILS_ENV` Because of the `exec` prefix included on the final command, the ruby process invoked by rails takes over the bash process managing the execution of the composite command. The process tree is only ruby, so the ruby web server receives the TERM signal and can shutdown gracefully for 10 seconds.
+
+In more complex situations, like making a custom buildpack, you may want to use bash `trap`, `wait`, and backgrounded processes to manage your process tree and shut down apps gracefully. In most situations, however, a well-placed `exec` should be sufficient.
 
 ###<a id='disk-quota'></a>The disk quota attribute ###
 

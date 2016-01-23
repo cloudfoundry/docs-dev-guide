@@ -4,19 +4,7 @@ title: Getting Started with the cf CLI
 
 <strong><%= modified_date %></strong>
 
-_This guide introduces cf CLI v5 users to what is new in cf CLI v6._
-
-The Cloud Foundry command line interface (cf CLI) v6 is simpler, faster and more powerful than v5.
-Consider these key differences:
-
-* The cf CLI has been completely re-written in Go, and is more performant than previous versions, which were written in Ruby.
-* There are now native installers for all major operating systems.
-* Commands behave consistently and logically: required arguments never have flags; optional arguments always have flags.
-* Command names are shorter, yet more communicative, and most have single-letter aliases.
-* While many cf CLI v5 commands read manifests, only the push command in cf CLI v6 reads manifests.
-* While cf CLI v5 used interactive prompts widely, cf CLI v6 uses interactive prompts only for login and optionally for creating user-provided services (you can also create user-provided services non-interactively).
-
-In the guided tour of the cf CLI v6 which follows, we highlight new and improved features and how to use them.
+This topic covers information that you need to execute and configure the cf CLI. This page assumes you have the latest version of the cf CLI. See the [Getting Started with the cf CLI](./install-go-cli.html) topic for installation instructions.
 
 <p class="note"><strong>Note</strong>: You cannot perform certain tasks in the CLI because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands:
 
@@ -24,44 +12,36 @@ In the guided tour of the cf CLI v6 which follows, we highlight new and improved
 
 </p>
 
-## <a id='install'></a>Installation ##
-
-cf CLI v6 installs with a simple point-and-click, and you no longer need to install Ruby on your system first (or ever).
-You can use new binaries or new native installers. See [Install cf CLI Version 6](./install-go-cli.html).
-
-We recommend that you watch our [tools page](https://console.run.pivotal.io/tools) to learn when updates are released, and download a new binary or a new installer when you want to update.
-
 ##<a id='i18n'></a>Localization ##
 
-The cf CLI translates terminal output into the language that you select.
-
-<p class='note'><strong>Note</strong>: Localization affects only messages that the cf CLI generates. </p>
-
-Run <code>cf config --locale YOUR_LANGUAGE </code> to set the language. The default language is <code>en\_US</code>. For example:
+The cf CLI translates terminal output into the language that you select. The default language is <code>en\_US</code>. Run <code>cf config --locale YOUR_LANGUAGE </code> to set the language.  For example:
 
 <pre class="terminal">
 cf config --locale pt_BR
 </pre>
 
-The CLI currently supports eight languages:
+The CLI currently supports the following languages:
 
-*  German: <code>de\_DE</code>
+*  Chinese (simplified): <code>zh\_Hans</code>
+*  Chinese (traditional): <code>zh\_Hant</code>
 *  English: <code>en\_US</code>
-*  Spanish: <code>es\_ES</code>
 *  French: <code>fr\_FR</code>
+*  German: <code>de\_DE</code>
 *  Italian: <code>it\_IT</code>
 *  Japanese: <code>ja\_JP</code>
+*  Korean: <code>ko\_KR</code>
 *  Portuguese (Brazil): <code>pt\_BR</code>
-*  Chinese (simplified): <code>zh\_Hans</code>
+*  Spanish: <code>es\_ES</code>
 
-
+<p class='note'><strong>Note</strong>: Localization affects only messages that the cf CLI generates. </p>
 
 ## <a id='login'></a>Login ##
 
-The `login` command in the cf CLI v6 has expanded functionality. In addition to your username and password, you can provide a target API endpoint, organization, and space.
+The `cf login` command allows you to specify a target API endpoint, [organization](#domains-etc), and [space](#domains-etc):
 
-
-If not specified on the command line, the cf CLI prompts for:
+<pre class="terminal">
+$ cf login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE]
+</pre>
 
 * **API endpoint**: This is <%=vars.api_endpoint%>.
 * **Username**: Your username.
@@ -69,115 +49,41 @@ If not specified on the command line, the cf CLI prompts for:
 * **Org**: The organization where you want to deploy your application.
 * **Space**: The space in the organization where you want to deploy your application.
 
-If you have only one organization and one space, you can omit them because `cf login` targets them automatically. Usage:
-
-<pre class="terminal">
-$ cf login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE]
-</pre>
+If you have only one organization and one space, you can omit them because `cf login` targets them automatically.
 
 Alternatively, you can write a script to log in and set your target, using the non-interactive `cf api`, `cf auth`, and `cf target` commands.
 
-Upon successful login, the cf CLI v6 saves a `config.json` file containing your API endpoint, organization, space values, and access token. If you change these settings, the `config.json` file is updated accordingly.
+Upon successful login, the cf CLI saves a `config.json` file containing your API endpoint, organization, space values, and access token. If you change these settings, the `config.json` file is updated accordingly.
 
-By default, `config.json` is located in your `~/.cf` directory. The new `CF_HOME` environment variable allows you to locate the `config.json` file wherever you like.
+By default, `config.json` is located in your `~/.cf` directory. The `CF_HOME` environment variable allows you to locate the `config.json` file wherever you like.
 
-## <a id='push'></a>Push ##
+## <a id='user-roles'></a> Users and Roles ##
 
-In cf CLI v6, `push` is simpler to use and faster.
+Commands for listing users:
 
-* `APP`, the name of the application to push, is the only required argument, and the only argument that has no flag. Even `APP` can be omitted when you provide the application name in a manifest.
-* Many command line options are now one character long. For example, `-n` is now the flag for hostname or subdomain, replacing ``--host``.
-* There is no longer an interactive mode.
-* You no longer create manifests interactively. See [Deploying with Application Manifests](../deploy-apps/manifest.html).
-* You no longer create services with push interactively or in a manifest. See [User-Provided Services](#user-provided) to learn about new commands for creating services.
-* The `-m` (memory limit) option now requires a unit of measurement: `M`,`MB`,`G`, or `GB`, in upper case or lower case.
+* `cf org-users` --- List users in the organization by role.
+* `cf space-users` --- List users in the space by role.
 
-The cf CLI v6 has expanded capabilities in the form of four new options.
+Commands for managing roles (admin-only):
 
-* `-t` (timeout) allows you to give your application more time to start, up to 180 seconds.
-* `--no-manifest` forces the cf CLI to ignore any existing manifest.
-* `--no-hostname` makes it possible to specify a route with a domain but no hostname.
-* `--no-route` removes existing and suppresses new external routes to your application. Use this flag when pushing worker apps.
-
-Usage:
-
-<pre class="terminal">
-$ cf push APP [-b URL] [-c COMMAND] [-d DOMAIN] [-i NUM_INSTANCES] [-m MEMORY] /
-[-n HOST] [-p PATH] [-s STACK] [--no-hostname] [--no-route] [--no-start]
-</pre>
-
-Optional arguments include:
-
-* `-b` --- Custom buildpack URL, for example, https://github.com/heroku/heroku-buildpack-play.git or https://github.com/heroku/heroku-buildpack-play.git#stable to select `stable` branch
-* `-c` --- Start command for the application.
-* `-d` --- Domain, for example, example.com.
-* `-f` --- replaces `--manifest`
-* `-i` --- Number of instances of the application to run.
-* `-m` --- Memory limit, for example, 256, 1G, 1024M, and so on.
-* `-n` --- Hostname, for example, `my-subdomain`.
-* `-p` --- Path to application directory or archive.
-* `-s` --- Stack to use.
-* `-t` --- Timeout to start in seconds.
-* `--no-hostname` --- Map the root domain to this application (NEW).
-* `--no-manifest` --- Ignore manifests if they exist.
-* `--no-route` --- Do not map a route to this application (NEW).
-* `--no-start` --- Do not start the application after pushing.
-
-<p class='note'><strong>Note</strong>: The `--no-route` option also removes existing routes from previous pushes of this app.</p>
-
-## <a id='user-provided'></a> User-Provided Service Instances ##
-
-The cf CLI v6 has new commands for creating and updating user-provided service instances. You have the choice of three ways to use these commands: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, the cf CLI sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
-
-Once created, user-provided service instances can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
-
-### <a id='user-cups'></a>The cf create-user-provided-service Command ###
-
-The alias for `create-user-provided-service` is `cups`.
-
-To create a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names.
-The cf CLI then prompts you for each parameter in turn.
-
-  `cf cups SERVICE_INSTANCE -p "host, port, dbname, username, password"`
-
-To create a service instance non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
-
-  `cf cups SERVICE_INSTANCE -p '{"username":"admin","password":"pa55woRD"}'`
-
-To create a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
-
-  `cf cups SERVICE_INSTANCE -l syslog://example.com:514`
-
-### <a id='user-uups'></a> The cf update-user-provided-service Command ###
-
-The alias for `update-user-provided-service` is `uups`.
-You can use `cf update-user-provided-service` to update one or more of the attributes for a user-provided service instance.
-Attributes that you do not supply are not updated.
-
-To update a service instance non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
-
-  `cf uups SERVICE_INSTANCE -p '{"username":"USERNAME","password":"PASSWORD"}'`
-
-To update a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
-
-  `cf uups SERVICE_INSTANCE -l syslog://example.com:514`
+* `cf set-org-role` --- Assign an organization role to a user. The available roles are "OrgManager", "BillingManager", and "OrgAuditor".
+* `cf unset-org-role` --- Remove an organization role from a user.
+* `cf set-space-role` --- Assign a space role to a user. The available roles are "SpaceManager", "SpaceDeveloper", and "SpaceAuditor".
+* `cf unset-space-role` --- Remove a space role from a user.
 
 ## <a id='domains-etc'></a> Domains, Routes, Organizations, and Spaces ##
 
-The relationships between domains, routes, organizations, and spaces have been simplified in cf CLI v6.
+cf CLI treats domains, routes, organizations, and spaces such that:
 
-* All domains are now mapped to an org.
-* Routes are (still) scoped to spaces and apps.
+* All domains are mapped to an org.
+* Routes are scoped to spaces and apps.
 
-As before, a route is a URL of the form `HOSTNAME.DOMAIN`.
+A route is a URL of the form `HOSTNAME.DOMAIN`.
 If you do not provide a hostname (also known as subdomain), the URL takes the form `APPNAME.DOMAIN`.
 
-The cf CLI v6 has improved separation between management of private domains and management of shared domains.
-Only administrators can manage shared domains.
+The cf CLI separates between management of private domains and management of shared domains. Only administrators can manage shared domains.
 
-In terms of domains, cf CLI v6 is designed to work with both new and older versions of `cf_release`.
-
-<p class="note"><strong>Note</strong>: The <code>map-domain</code> and <code>unmap-domain</code> commands no longer exist.</p>
+In terms of domains, cf CLI is designed to work with both new and older versions of `cf_release`.
 
 Commands for managing domains:
 
@@ -195,68 +101,91 @@ Commands for managing routes:
 
 ### <a id='domains-example'></a> Mapping a Route ###
 
-1. Use `cf create-domain` to create a domain in the desired organization, unless the domain already exists in (or has been shared with) the organization.
-1. Use `cf map-route` to map the domain to an application. Use the `-n HOSTNAME` option to specify a unique hostname for each route that uses the same domain.
+1. Create a domain in the desired organization using `cf create-domain`, unless the domain already exists in (or has been shared with) the organization.
+1. Map the domain to an application using `cf map-route`. Specify a unique hostname for each route that uses the same domain with `-n HOSTNAME`.
 
 <p class ="note"><strong>Note</strong>: You can map a single route to multiple applications in the same space.
 See <a href="../deploy-apps/blue-green.html">Blue-Green Deployment</a> to learn about an important extension of this technique.</p>
 
-## <a id='user-roles'></a> Users and Roles ##
+## <a id='push'></a>Push ##
 
-Commands for listing users:
+The `cf push` command allows you to push an app or sync changes to an existing app:
 
-* `cf org-users` --- List users in the organization by role.
-* `cf space-users` --- List users in the space by role.
+<pre class="terminal">
+$ cf push APP [-b URL] [-c COMMAND] [-d DOMAIN] [-i NUM_INSTANCES] [-m MEMORY] /
+[-n HOST] [-p PATH] [-s STACK] [--no-hostname] [--no-route] [--no-start]
+</pre>
 
-Commands for managing roles (admin-only):
+* `APP`, the name of the application to push, is the only required argument, and the only argument that has no flag. Even `APP` can be omitted when you provide the application name in a manifest.
 
-* `cf set-org-role` --- Assign an organization role to a user. The available roles are "OrgManager", "BillingManager", and "OrgAuditor".
-* `cf unset-org-role` --- Remove an organization role from a user.
-* `cf set-space-role` --- Assign a space role to a user. The available roles are "SpaceManager", "SpaceDeveloper", and "SpaceAuditor".
-* `cf unset-space-role` --- Remove a space role from a user.
+* `-b` - Custom buildpack by name (e.g. `my-buildpack`), Git URL (For example, https://github.com/cloudfoundry/java-buildpack.git), or Git URL with a branch or tag: https://github.com/cloudfoundry/java-buildpack.git#v3.3.0 to select `v3.3.0`.
 
-## <a id='easy'></a> Consistent Behavior to Help You Work Efficiently  ##
+* `-m` -- Memory limit requires a unit of measurement: `M`,`MB`,`G`, or `GB`, in upper case or lower case.
+* `-t` -- Timeout allows you to give your application more time to start, up to 180 seconds.
+* `--no-manifest` forces the cf CLI to ignore any existing manifest.
+* `--no-hostname` makes it possible to specify a route with a domain but no hostname.
+* `--no-route` removes existing and suppresses new external routes to your application. Use this flag when pushing worker apps.
 
-We have focused on building clear principles into the cf CLI v6 to help operators and developers work efficiently and comfortably.
+Other arguments include:
 
-The cf CLI v6 commands behave consistently and logically:
+* `-c` --- Start command for the application.
+* `-d` --- Domain, for example, example.com.
+* `-f` --- replaces `--manifest`
+* `-i` --- Number of instances of the application to run.
+* `-m` --- Memory limit, for example, 256, 1G, 1024M, and so on.
+* `-n` --- Hostname, for example, `my-subdomain`.
+* `-p` --- Path to application directory or archive.
+* `-s` --- Stack to use.
+* `-t` --- Timeout to start in seconds.
+* `--no-hostname` --- Map the root domain to this application.
+* `--no-manifest` --- Ignore manifests if they exist.
+* `--no-route` --- Do not map a route to this application, also removes existing routes from previous pushes of this app.
+* `--no-start` --- Do not start the application after pushing.
 
-* Required arguments never have flags.
-* Optional arguments always have flags.
-* When there is more than one required argument, their order matters.
-* Optional arguments can be provided in any order.
+<p class ="note"><strong>Note</strong>: To push a sample app, see the <a href="../../buildpacks/">Buildpacks</a> topic and choose either a Java or Ruby sample app to deploy.</p>
 
-For example, `cf create-service`, which has three required arguments and you must provide them in order: `SERVICE`, `PLAN`, and `SERVICE_INSTANCE`.
-On the other hand, `cf push` has one required argument and several optional arguments. You can provide the optional arguments in any order.
+## <a id='user-provided'></a> User-Provided Service Instances ##
 
-Command names have been made more specific and explicit to communicate what they do as clearly as possible.
-For example:
+The cf CLI has three ways of creating and updating user-provided service instances: interactively, non-interactively, and in conjunction with third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, the cf CLI sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
 
-* `cf map-route` replaces `cf map`.
-* `cf marketplace` replaces `cf m`.
+Once created, user-provided service instances can be bound to an application with `cf bind-service`, unbound with `cf unbind-service`, renamed with `cf rename-service`, and deleted with `cf delete-service`.
 
-One improvement mainly of interest to developers is that `cf curl` is easier to use cf CLI v6.
+### <a id='user-cups'></a>The cf create-user-provided-service Command ###
 
-* `curl` automatically uses the identity with which you are logged in.
-* `curl` usage has been simplified to closely resemble the familiar UNIX pattern.
+The alias for `create-user-provided-service` is `cups`.
 
-### <a id='aliases'></a> New Aliases and Command Line Help Conventions ###
+To create a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names.
+The cf CLI then prompts you for each parameter in turn.
 
-The cf CLI v6 command aliases and command line help feature improved consistency and convenience.
+  <pre class="terminal">cf cups SERVICE_INSTANCE -p host, port, dbname, username, password</pre>
 
-The cf CLI v6 introduces single-letter aliases for commonly used commands.
-For example:
+To create a service instance non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
 
-* `cf p` is the alias for `cf push`.
-* `cf t` is the alias for `cf target`.
+  <pre class="terminal">cf cups SERVICE_INSTANCE -p '{"username":"admin","password":"pa55woRD"}'</pre>
 
-The cf CLI v6 command line help introduces streamlined style conventions:
+To create a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
 
-* User input is capitalized, as in `cf push APP`.
-* Optional user input is designated with a flag and brackets, as in `cf create-route SPACE DOMAIN [-n HOSTNAME]`.
+  <pre class="terminal">cf cups SERVICE_INSTANCE -l syslog://example.com:514</pre>
+
+### <a id='user-uups'></a> The cf update-user-provided-service Command ###
+
+The alias for `update-user-provided-service` is `uups`.
+Use `cf update-user-provided-service` to update one or more of the attributes for a user-provided service instance.
+Attributes that you do not supply are not updated.
+
+To update a service instance non-interactively, use the `-p` option with a JSON hash of parameter keys and values.
+
+  <pre class="terminal">cf uups SERVICE_INSTANCE -p '{"username":"USERNAME","password":"PASSWORD"}'</pre>
+
+To update a service instance that drains information to third-party log management software, use the `-l SYSLOG_DRAIN_URL` option.
+
+  <pre class="terminal">cf uups SERVICE_INSTANCE -l syslog://example.com:514</pre>
+
+
+## <a id='help'></a> Run cf help ##
 
 Run `cf help` to view a list of all cf CLI commands and a brief description of each.
-Run `cf COMMAND -h` to view detailed help, including any alias, for any command. For example:
+Run `cf COMMAND -h` to view detailed help, including any alias, for any command. For example, the output below shows all the commands related to `push`:
 
 <pre class="terminal">
 	$ cf p -h

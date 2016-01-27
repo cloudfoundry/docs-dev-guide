@@ -4,13 +4,7 @@ title: Getting Started with the cf CLI
 
 <strong><%= modified_date %></strong>
 
-This topic covers information that you need to execute and configure the cf CLI. This page assumes you have the latest version of the cf CLI. See the [Getting Started with the cf CLI](./install-go-cli.html) topic for installation instructions.
-
-<p class="note"><strong>Note</strong>: You cannot perform certain tasks in the CLI because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands:
-
-<code>error code: 10003, message: You are not authorized to perform the requested action</code>
-
-</p>
+This topic covers information that you need to execute and configure the cf CLI. This page assumes you have the latest version of the cf CLI. See the [Installing the cf Command Line Interface](./install-go-cli.html) topic for installation instructions.
 
 ##<a id='i18n'></a>Localization ##
 
@@ -57,7 +51,14 @@ Upon successful login, the cf CLI saves a `config.json` file containing your API
 
 By default, `config.json` is located in your `~/.cf` directory. The `CF_HOME` environment variable allows you to locate the `config.json` file wherever you like.
 
+
 ## <a id='user-roles'></a> Users and Roles ##
+
+<p class="note"><strong>Note</strong>: You cannot perform certain tasks in the CLI because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands:
+
+<code>error code: 10003, message: You are not authorized to perform the requested action</code>
+
+</p>
 
 Commands for listing users:
 

@@ -15,6 +15,8 @@ To install the cf CLI on Windows:
 1. Unpack the zip file.
 1. Double click the `cf CLI` executable.
 1. When prompted, click **Install**, then **Close**.
+1. To verify your installation, open a terminal window and type `cf`.
+If your installation was successful, the cf CLI help listing appears.
 
 ### <a id="nixlike"></a>Mac OS X and Linux Installation###
 
@@ -22,10 +24,12 @@ To install the cf CLI on Windows:
 1. In the installer wizard, click **Continue**.
 1. Select an install destination and click **Continue**.
 1. When prompted, click **Install**.
+1. To verify your installation, open a terminal window and type `cf`.
+If your installation was successful, the cf CLI help listing appears.
+
+We recommend that you review our [tools page](https://console.run.pivotal.io/tools) to learn when updates are released, and download a new binary or a new installer when you want to update. See [Getting Started with cf CLI](./getting-started.html) for more information about how to use the cf CLI.
 
 ## <a id="uninstall-gem"></a>Uninstall cf CLI ##
-
-<p class="note"><strong>Note</strong>: To ensure that your Ruby environment manager registers the change, close and reopen your terminal.</p>
 
 ### <a id="installer"></a>Installer###
 
@@ -33,9 +37,9 @@ If you previously downloaded and installed a cf CLI installer:
 
 * For Mac OS, delete the binary `/usr/local/bin/cf`, and the directory `/usr/local/share/doc/cf-cli`.
 
-* For Windows Installer, navigate to the Control Panel, click Programs, select the `cf-cli-installer_VERSION.zip` and click Uninstall.
+* For Windows, navigate to the **Control Panel**, click **Programs and Features**, select `Cloud Foundry VERSION CLI` and click **Uninstall**.
 
-* For the Linux deb package, run `dpkg -r cf-cli-installer_VERSION.deb`.
+* For the Linux debian package, run `dpkg -r cf-cli-installer_VERSION.deb`.
 
 * For the Linux rpm, run `rpm -e cf-cli-installer_VERSION.rpm`.
 
@@ -47,8 +51,6 @@ If you previously downloaded and installed a cf CLI binary, remove the binary fr
 
 To uninstall, run `gem uninstall cf`.
 
-## <a id="next-steps"></a>Next Steps ##
-To verify your installation, open a terminal window and type `cf`.
-If your installation was successful, the cf CLI help listing appears.
+<p class="note"><strong>Note</strong>: To ensure that your Ruby environment manager registers the change, close and reopen your terminal.</p>
 
-For more information about cf CLI version, see [Getting Started with cf CLI](./whats-new-v6.html).
+

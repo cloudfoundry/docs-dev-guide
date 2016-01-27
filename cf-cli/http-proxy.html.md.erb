@@ -1,39 +1,39 @@
 ---
-title: Using the cf CLI with an HTTP Proxy Server
+title: Using the cf CLI with an HTTPS Proxy Server
 ---
 
 <strong><%= modified_date %></strong>
 
-If you have an HTTP proxy server on your network between a host running the cf CLI and your Cloud Foundry API endpoint, you must set HTTP\_PROXY with the hostname or IP address of the proxy server.
+If you have an https proxy server on your network between a host running the cf CLI and your Cloud Foundry API endpoint, you must set `https_proxy` with the hostname or IP address of the proxy server.
 
-The HTTP\_PROXY environment variable holds the hostname or IP address of your
+The `https_proxy` environment variable holds the hostname or IP address of your
 proxy server.
 
-HTTP\_Proxy is a standard environment variable.
+`https_proxy` is a standard environment variable.
 Like any environment variable, the specific steps you use to set it depends on
 your operating system.
 
-## <a id="format"></a>Format of HTTP_PROXY ##
+## <a id="format"></a>Format of https_proxy ##
 
-HTTP\_PROXY is set with hostname or IP address of the proxy server in URL
-format: `http_proxy=http://proxy.example.com`
+`https_proxy` is set with hostname or IP address of the proxy server in URL
+format: `https_proxy=http://proxy.example.com`
 
 If the proxy server requires a user name and password, include the credentials:
-`http_proxy=http://username:password@proxy.example.com`
+`https_proxy=http://username:password@proxy.example.com`
 
 If the proxy server uses a port other than 80, include the port number:
-`http_proxy=http://username:password@proxy.example.com:8080`
+`https_proxy=http://username:password@proxy.example.com:8080`
 
 
-## <a id="mac-linux"></a>Setting HTTP_PROXY in Mac OS or Linux ##
+## <a id="mac-linux"></a>Setting https_proxy in Mac OS or Linux ##
 
-Set the HTTP\_PROXY environment variable using the command specific to your
+Set the `https_proxy` environment variable using the command specific to your
 shell.
 For example, in bash, use the `export` command.
 
 Example:
 <pre class=terminal>
-$ export HTTP_PROXY=http:/<span>/</span>my.proxyserver.com:8080
+$ export https_proxy=http:/<span>/</span>my.proxyserver.com:8080
 </pre>
 
 To make this change persistent, add the command to the appropriate profile file
@@ -42,11 +42,11 @@ For example, in bash, add a line like the following to your `.bash_profile` or
 `.bashrc` file:
 
 <pre class="detect-script"t>
-  http_proxy=http://username:password@hostname:port;
-  export $HTTP_PROXY
+  https_proxy=http://username:password@hostname:port;
+  export $https_proxy
 </pre>
 
-## <a id="windows"></a>Setting HTTP_PROXY in Windows ##
+## <a id="windows"></a>Setting https_proxy in Windows ##
 
 1. Open the Start menu. Right-click **Computer** and select **Properties**.
 
@@ -65,7 +65,7 @@ For example, in bash, add a line like the following to your `.bash_profile` or
 
     <%= image_tag("../images/proxy/new.png") %>
 
-1. In the Variable name field, input `HTTP_PROXY`.
+1. In the Variable name field, input `https_proxy`.
 In the Variable value field, input your proxy server information.
 
     <%= image_tag("../images/proxy/proxy.png") %>

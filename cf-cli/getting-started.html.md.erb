@@ -4,7 +4,7 @@ title: Getting Started with the cf CLI
 
 <strong><%= modified_date %></strong>
 
-This topic covers information that you need to execute and configure the cf CLI. This page assumes you have the latest version of the cf CLI. See the [Installing the cf Command Line Interface](./install-go-cli.html) topic for installation instructions.
+This topic covers how to get started with and configure the cf CLI. This page assumes you have the latest version of the cf CLI. See the [Installing the cf Command Line Interface](./install-go-cli.html) topic for installation instructions.
 
 ##<a id='i18n'></a>Localization ##
 
@@ -14,7 +14,7 @@ The cf CLI translates terminal output into the language that you select. The def
 cf config --locale pt_BR
 </pre>
 
-The CLI currently supports the following languages:
+The cf CLI currently supports the following languages:
 
 *  Chinese (simplified): <code>zh\_Hans</code>
 *  Chinese (traditional): <code>zh\_Hant</code>
@@ -117,15 +117,15 @@ $ cf push APP [-b URL] [-c COMMAND] [-d DOMAIN] [-i NUM_INSTANCES] [-m MEMORY] /
 [-n HOST] [-p PATH] [-s STACK] [--no-hostname] [--no-route] [--no-start]
 </pre>
 
-* `APP`, the name of the application to push, is the only required argument, and the only argument that has no flag. Even `APP` can be omitted when you provide the application name in a manifest.
+* `APP` --- the name of the application to push, is the only required argument, and the only argument that has no flag. Even `APP` can be omitted when you provide the application name in a manifest.
 
-* `-b` - Custom buildpack by name (e.g. `my-buildpack`), Git URL (For example, https://github.com/cloudfoundry/java-buildpack.git), or Git URL with a branch or tag: https://github.com/cloudfoundry/java-buildpack.git#v3.3.0 to select `v3.3.0`.
+* `-b` --- Custom buildpack by name (e.g. `my-buildpack`), Git URL (For example, https://github.com/cloudfoundry/java-buildpack.git), or Git URL with a branch or tag: https://github.com/cloudfoundry/java-buildpack.git#v3.3.0 to select `v3.3.0`.
 
-* `-m` -- Memory limit requires a unit of measurement: `M`,`MB`,`G`, or `GB`, in upper case or lower case.
-* `-t` -- Timeout allows you to give your application more time to start, up to 180 seconds.
-* `--no-manifest` forces the cf CLI to ignore any existing manifest.
-* `--no-hostname` makes it possible to specify a route with a domain but no hostname.
-* `--no-route` removes existing and suppresses new external routes to your application. Use this flag when pushing worker apps.
+* `-m` --- Memory limit requires a unit of measurement: `M`,`MB`,`G`, or `GB`, in upper case or lower case.
+* `-t` --- Timeout allows you to give your application more time to start, up to 180 seconds.
+* `--no-manifest` -- Forces the cf CLI to ignore any existing manifest.
+* `--no-hostname` -- Makes it possible to specify a route with a domain but no hostname.
+* `--no-route` -- Removes existing and suppresses new external routes to your application. Use this flag when pushing worker apps.
 
 Other arguments include:
 
@@ -143,7 +143,7 @@ Other arguments include:
 * `--no-route` --- Do not map a route to this application, also removes existing routes from previous pushes of this app.
 * `--no-start` --- Do not start the application after pushing.
 
-<p class ="note"><strong>Note</strong>: To push a sample app, see the <a href="../../buildpacks/">Buildpacks</a> topic and choose either a Java or Ruby sample app to deploy.</p>
+<p class ="note"><strong>Note</strong>: To push a sample app, see the <a href="../../buildpacks/">Buildpacks</a> topic and choose to deploy a Java or Ruby sample app.</p>
 
 ## <a id='user-provided'></a> User-Provided Service Instances ##
 
@@ -183,10 +183,17 @@ To update a service instance that drains information to third-party log manageme
   <pre class="terminal">cf uups SERVICE_INSTANCE -l syslog://example.com:514</pre>
 
 
+## <a id='return-codes'></a> cf CLI Return Codes ##
+
+The cf CLI uses exit codes which is helpful for scripting, and for confirming that a command has run successfully. For example, run `echo $?` in the terminal and if the return code is `0`, the command was successful. 
+
+See [AWS CLI Return Codes](http://docs.aws.amazon.com/cli/latest/topic/return-codes.html) for more information. 
+
+
 ## <a id='help'></a> Run cf help ##
 
 Run `cf help` to view a list of all cf CLI commands and a brief description of each.
-Run `cf COMMAND -h` to view detailed help, including any alias, for any command. For example, the output below shows all the commands related to `push`:
+Run `cf COMMAND -h` to view detailed help, including any alias, for any command. For example, the output below shows all the commands, and the alias, related to `push`:
 
 <pre class="terminal">
 	$ cf p -h

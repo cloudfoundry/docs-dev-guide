@@ -157,7 +157,15 @@ If it exceeds the limit, modify the app to use less memory.
 
 ### <a id='routing-conflict'></a>Routing Conflict ###
 
-<%= partial 'routing_conflict' %>
+<%= partial 'routing_conflict' %> 
+
+If you suspect a routing conflict, run `cf routes` to check the routes in your installation.
+
+If two apps share a route outside of a Blue-Green deploy strategy, choose one app to re-assign to a different route and follow the procedure below:
+
+1. Run `cf unmap-route YOUR-APP-NAME OLD-ROUTE` to remove the existing route from that app.
+
+1. Run `cf map-route YOUR-APP-NAME NEW-ROUTE` to map the app to a new, unique route.
 
 ## <a id='info'></a>Gathering Diagnostic Information ##
 

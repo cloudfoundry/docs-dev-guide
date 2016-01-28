@@ -183,9 +183,9 @@ When you create or edit the manifest for an application, you can use the `host` 
 
 #### <a id='map-route-to-multiple-apps'></a>Map a Route to Multiple Apps ####
 
-<%=vars.product_short%> allows multiple apps, or versions of the same app, to be mapped to the same route. This feature enables Blue-Green deployment. For more information see [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).
+<%= partial 'routing_conflict' %>
 
-Routing multiple apps to the same route may cause undesirable behavior in some situations by routing incoming requests randomly to one of the apps on the shared route. See [Routing Conflicts](./troubleshoot-app-health.html#routing-conflict) for more information about troubleshooting this problem.
+See [Routing Conflicts](./troubleshoot-app-health.html#routing-conflict) for more information about troubleshooting this problem.
 
 ### <a id='unmap-route'></a>Unmap a Route ###
 

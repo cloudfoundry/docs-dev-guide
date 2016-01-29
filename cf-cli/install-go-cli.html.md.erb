@@ -4,7 +4,7 @@ title: Installing the cf Command Line Interface
 
 <strong><%= modified_date %></strong>
 
-To install the Cloud Foundry command line interface (cf CLI), download it from <%=vars.cli_download%> and follow the instructions for your operating system. If you previously used the cf CLI v5 Ruby gem, [uninstall](#uninstall-gem) this gem before installing the most up-to-date version.
+To install the Cloud Foundry command line interface (cf CLI), download it from <%=vars.cli_download%> and follow the instructions for your operating system. If you previously used the cf CLI v5 Ruby gem, [uninstall](#uninstall-gem) this gem first.
 
 ## <a id="install-gem"></a>Install cf CLI ##
 
@@ -31,7 +31,7 @@ If your installation was successful, the cf CLI help listing appears.
 
 See [Getting Started with cf CLI](./getting-started.html) for more information about how to use the cf CLI.
 
-We recommend that you review our [tools page](https://console.run.pivotal.io/tools) to learn when updates are released, and download a new binary or a new installer when you want to update to the latest version. 
+We recommend that you review our [CLI releases page](https://github.com/cloudfoundry/cli/releases) to learn when updates are released, and download a new binary or a new installer when you want to update to the latest version. 
 
 ## <a id="uninstall-gem"></a>Uninstall cf CLI ##
 
@@ -42,10 +42,6 @@ If you previously downloaded and installed a cf CLI installer:
 * For Mac OS, delete the binary `/usr/local/bin/cf`, and the directory `/usr/local/share/doc/cf-cli`.
 
 * For Windows, navigate to the **Control Panel**, click **Programs and Features**, select `Cloud Foundry VERSION CLI` and click **Uninstall**.
-
-* For the Linux debian package, run `dpkg -r cf-cli-installer_VERSION.deb`.
-
-* For the Linux rpm, run `rpm -e cf-cli-installer_VERSION.rpm`.
 
 ### <a id="binary"></a>Binary###
 

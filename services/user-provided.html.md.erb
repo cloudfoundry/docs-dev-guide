@@ -46,6 +46,6 @@ cf cups SERVICE_INSTANCE -l syslog://example.log-aggregator.com
 
 ## <a id='update'></a> Update a User-provided Service Instance ###
 
-You can use `cf update-user-provided-service` to update one or more of the same attributes provided when the user-provided service instance was created. Attributes not provided are not updated.
+You can use `cf update-user-provided-service` to a user-provided service instance's attributes. New credentials overwrite old credentials: parameters not provided are deleted.
 
 The alias for `update-user-provided-service` is `uups`.

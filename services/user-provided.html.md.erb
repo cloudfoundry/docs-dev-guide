@@ -6,7 +6,7 @@ title: User-Provided Service Instances
 
 _This page assumes you are using cf CLI v6._
 
-User-provided service instances enable developers to use services not available in the marketplace with their applications running on Cloud Foundry.
+User-provided service instances enable developers to use services that not available in the marketplace with their applications running on Cloud Foundry.
 
 User-provided service instances can be used to deliver service credentials to an application, and/or to trigger streaming of application logs to a syslog compatible consumer. These two functions can be used alone or at the same time.
 
@@ -46,6 +46,6 @@ cf cups SERVICE_INSTANCE -l syslog://example.log-aggregator.com
 
 ## <a id='update'></a> Update a User-provided Service Instance ###
 
-You can use `cf update-user-provided-service` to a user-provided service instance's attributes. New credentials overwrite old credentials: parameters not provided are deleted.
+You can use `cf update-user-provided-service` to update the attributes of an instance of a user-provided service. New credentials overwrite old credentials, and parameters not provided are deleted.
 
 The alias for `update-user-provided-service` is `uups`.

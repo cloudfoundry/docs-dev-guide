@@ -1,0 +1,210 @@
+---
+title: Accessing Apps with Diego SSH
+---
+
+<strong><%= modified_date %></strong>
+
+This page assumes you are using cf CLI v6.13.0 or later.
+
+This topic describes how to SSH into a Cloud Foundry deployed application instance. You can start an SSH session to an app instance from the CLI. You can also enable, disable, and check SSH permission for an app from the CLI. 
+
+## <a id="ssh-commands"></a>cf CLI SSH Commands
+
+### <a id="enable-disable-ssh"></a>Enabling and Disabling SSH Access to Apps
+The CLI supports enabling and disabling SSH access to applications. Run `cf enable` to allow SSH access to all instances of the app, or `cf disable` to disallow access.
+<pre class="terminal">
+$ cf enable <MY-AWESOME-APP>
+</pre>
+
+<pre class="terminal">
+$ cf disable <MY-AWESOME-APP>
+</pre>
+
+### <a id="report-ssh-app-status"></a>Checking SSH Permission for Apps
+To check whether you can access an app with SSH, run `cf ssh-enabled`.
+
+<pre class="terminal">
+$ cf ssh-enabled <MY-AWESOME-APP>
+ssh support is disabled for '<span><</span>MY-AWESOME-APP>'
+</pre>
+
+### <a id="ssh-command"></a>The SSH Command
+If your app is running on Diego with SSH enabled and your operator has configured SSH access to be publicly routable, run `cf ssh <APP-NAME>` in the terminal to start an interactive SSH session in instance index 0 of your app.
+<pre class='terminal'>
+$ cf ssh <MY-AWESOME-APP>
+</pre>
+
+To target a different instance index with `cf ssh`, supply it via the `-i` flag.
+
+The `cf ssh` command also supports executing commands inside the app instance and forwarding local ports to it via the `-L` flag.
+
+### <a id="configure-ssh-access-spaces"></a> Enabling and Disabling SSH Access for Spaces
+In addition to configuring SSH access to applications, you can also enable and disable SSH access at the space level. 
+
+Allow SSH access for the space
+<pre class="terminal">
+$ cf allow-space-ssh <SPACE-NAME>
+</pre>
+
+Disallow SSH access for the space
+<pre class="terminal">
+$ cf disallow-space-ssh <SPACE-NAME>
+</pre>
+
+### <a id="report-ssh-space-status"></a>Checking SSH Permission for Spaces
+You can check whether SSH access for the space is allowed
+<pre class="terminal">
+$ cf space-ssh-allowed <SPACE-NAME>
+</pre>
+
+### <a id="ssh-auth-code"></a>Get SSH Code for Proxy Authentication
+This command can be used to obtain a one-time authorization code that can be used as an SSH password with either the cf CLI or another SSH client
+<pre class="terminal">
+$ cf ssh-code
+</pre>
+
+## <a id="other-ssh-access"></a>SSH Access without cf CLI
+
+You can connect to your SSH-enabled app instance via other SSH clients provided that deployment allows SSH access at the platform, space and app level. The Cloud Controller `/v2/info` endpoint contains an `app_ssh_endpoint` field with the domain name and port for the externally available SSH endpoint, and an `app_ssh_host_key_fingerprint` field with the fingerprint of the host key for the deployment. 
+
+To connect to a particular instance of your app, run `ssh -p SSH-PORT cf:APP-GUID/APP-INSTANCE-INDEX@SSH-DOMAIN`.
+
+To transfer files with `scp`, run `ssh -P SSH-PORT -o User=cf:APP-GUID/APP-INSTANCE-INDEX SSH-DOMAIN:REMOTE-FILE-TO-RETRIEVE LOCAL-FILE-DESTINATION`
+
+## <a id="proxy-authentication"></a>Diego SSH Proxy Authentication and Daemon Discovery
+
+Clients authenticate with the proxy using a specially formed user name that
+describes the `cf` authentication domain and target container and a password that
+contains the appropriate credentials for the domain.
+
+The proxy supports authentication against a `cf` domain and can be enabled independently with
+command line arguments.
+
+### Authentication via Cloud Controller and UAA
+
+For authentication to Cloud Foundry, the user is of the form `cf:APP-GUID/INSTANCE` and the
+password must be an authorization code that the SSH proxy server can exchange
+for an authorization token. The SSH proxy must be configured to use an OAuth
+client id that has been defined in the UAA. The client id used by the proxy
+must be advertised in the `/v2/info` endpoint under the `app_ssh_oauth_client`
+key.  Please see the [UAA](https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-APIs.rst#api-authorization-requests-code-get-oauth-authorize-non-standard-oauth-authorize) documentation for details on how to allocate an authorization code.
+
+The proxy will contact the Cloud Controller as the user to determine if the
+policy allows the user to access application containers via SSH.
+
+Client example:
+<pre class='terminal'>
+$ curl -k -v -H "Authorization: $(cf oauth-token | tail -1)" \
+    https://uaa.bosh-lite.com/oauth/authorize \
+    --data-urlencode  "client_id=$(cf curl /v2/info | jq -r .app_ssh_oauth_client)" \
+    --data-urlencode 'response_type=code' 2>&1 | \
+    grep Location: | \
+    cut -f2 -d'?' | \
+    cut -f2 -d'=' | \
+    pbcopy # paste authorization code when prompted for password
+</pre>
+
+The cf CLI can also be used for the SSH code.
+<pre class='terminal'>
+$ cf ssh-code | pbcopy # paste authorization code when prompted for password
+</pre>
+The authorization code can then be used as the password:
+
+<pre class='terminal'>
+$ ssh -p 2222 cf:$(cf app app-name --guid)/0@ssh.bosh-lite.com
+$ scp -P 2222 -oUser=cf:$(cf app app-name --guid)/0 my-local-file.json ssh.bosh-lite.com:my-remote-file.json
+</pre>
+
+Cloud Foundry `cf` client example that uses the `ssh` command:
+<pre class='terminal'>
+$ cf install-plugin https://github.com/cloudfoundry-incubator/diego-ssh/releases/download/${version}/ssh-plugin-${platform}-${arch}
+$ cf ssh app-name
+</pre>
+
+This support is enabled with the `--enableCFAuth` flag.
+
+### Proxy to Container Authentication
+
+When the proxy attempts to handshake with the SSH daemon inside the target
+container, it will use the information associated with the `diego-ssh` key in
+the LRP routes.
+
+#### container_port (required)
+`container_port` indicates which port inside the container the ssh daemon is
+listening on. The proxy will attempt to connect to host side mapping of this
+port after authenticating the client.
+
+#### host_fingerprint (optional)
+When present, `host_fingerprint` declares the expected fingerprint of the SSH
+daemon's host public key. When the fingerprint of the actual target's host key
+does not match the expected fingerprint, the connection is terminated. The
+fingerprint should only contain the hex string generated by `ssh-keygen -l`.
+
+#### user (optional)
+`user` declares the user ID to use during authentication with the container's
+SSH daemon. While it's not a required part of the routing data, it is required
+for password authentication and may be required for public key authentication.
+
+#### password (optional)
+`password` declares the password to use during password authentication with
+the container's ssh daemon.
+
+#### private_key (optional)
+`private_key` declares the private key to use when authenticating with the
+container's SSH daemon. If present, the key must be a PEM encoded RSA or DSA
+public key.
+
+#### Example LRP
+```json
+{
+  "process_guid": "ssh-process-guid",
+  "domain": "ssh-experiments",
+  "rootfs": "preloaded:cflinuxfs2",
+  "instances": 1,
+  "start_timeout": 30,
+  "setup": {
+    "download": {
+      "artifact": "diego-sshd",
+      "from": "http://file-server.service.cf.internal:8080/v1/static/diego-sshd/diego-sshd.tgz",
+      "to": "/tmp",
+      "cache_key": "diego-sshd"
+    }
+  },
+  "action": {
+    "run": {
+      "path": "/tmp/diego-sshd",
+      "args": [
+          "-address=0.0.0.0:2222",
+          "-authorizedKey=ssh-rsa ..."
+      ],
+      "env": [],
+      "resource_limits": {}
+    }
+  },
+  "ports": [ 2222 ],
+  "routes": {
+    "diego-ssh": {
+      "container_port": 2222,
+      "private_key": "PEM encoded PKCS#1 private key"
+    }
+  }
+}
+```
+
+### Daemon discovery
+
+To be accessible via the SSH proxy, containers must host an SSH daemon, expose
+it via a mapped port, and advertise the port in a `diego-ssh` route. The proxy
+will fail end user authentication if the target LRP or a route is not found.
+
+```
+  "routes": {
+    "diego-ssh": { "container_port": 2222 }
+  }
+```
+
+The Diego system will generate the appropriate LRP definitions for Cloud Foundry applications which reflect the policies that are in effect.
+
+See the [Diego-SSH README](https://github.com/cloudfoundry-incubator/diego-ssh/blob/master/README.md#cloud-foundry-via-cloud-controller-and-uaa) for more details on the CF Authenticator.
+
+More details on the CF Authenticator can be found in the [Diego-SSH README](https://github.com/cloudfoundry-incubator/diego-ssh/blob/master/README.md#cloud-foundry-via-cloud-controller-and-uaa).

@@ -117,7 +117,7 @@ $ cf push APP [-b URL] [-c COMMAND] [-d DOMAIN] [-i NUM_INSTANCES] [-m MEMORY] /
 [-n HOST] [-p PATH] [-s STACK] [--no-hostname] [--no-route] [--no-start]
 </pre>
 
-* `APP` --- the name of the application to push, is the only required argument, and the only argument that has no flag. Even `APP` can be omitted when you provide the application name in a manifest.
+* `APP` --- The name of the application to push is the only required argument, and the only argument that has no flag. Even `APP` can be omitted when you provide the application name in a manifest.
 
 * `-b` --- Custom buildpack by name (e.g. `my-buildpack`), Git URL (For example, https://github.com/cloudfoundry/java-buildpack.git), or Git URL with a branch or tag: https://github.com/cloudfoundry/java-buildpack.git#v3.3.0 to select `v3.3.0`.
 
@@ -131,7 +131,7 @@ Other arguments include:
 
 * `-c` --- Start command for the application.
 * `-d` --- Domain, for example, example.com.
-* `-f` --- replaces `--manifest`
+* `-f` --- Path to manifest. 
 * `-i` --- Number of instances of the application to run.
 * `-m` --- Memory limit, for example, 256, 1G, 1024M, and so on.
 * `-n` --- Hostname, for example, `my-subdomain`.
@@ -140,10 +140,10 @@ Other arguments include:
 * `-t` --- Timeout to start in seconds.
 * `--no-hostname` --- Map the root domain to this application.
 * `--no-manifest` --- Ignore manifests if they exist.
-* `--no-route` --- Do not map a route to this application, also removes existing routes from previous pushes of this app.
+* `--no-route` --- Do not map a route to this application. Also removes existing routes from previous pushes of this app.
 * `--no-start` --- Do not start the application after pushing.
 
-<p class ="note"><strong>Note</strong>: To push a sample app, see the <a href="../../buildpacks/">Buildpacks</a> topic and choose to deploy a Java or Ruby sample app.</p>
+<p class ="note"><strong>Note</strong>: To push a sample app, see the <a href="../../buildpacks/">Buildpacks</a> topic.</p>
 
 ## <a id='user-provided'></a> User-Provided Service Instances ##
 
@@ -185,10 +185,7 @@ To update a service instance that drains information to third-party log manageme
 
 ## <a id='return-codes'></a> cf CLI Return Codes ##
 
-The cf CLI uses exit codes which is helpful for scripting, and for confirming that a command has run successfully. For example, run `echo $?` in the terminal and if the return code is `0`, the command was successful. 
-
-See [AWS CLI Return Codes](http://docs.aws.amazon.com/cli/latest/topic/return-codes.html) for more information. 
-
+The cf CLI uses exit codes, which is helpful for scripting and for confirming that a command has run successfully. For example, run `echo $?` in the terminal. If the return code is `0`, the command was successful. 
 
 ## <a id='help'></a> Run cf help ##
 
@@ -214,7 +211,7 @@ Run `cf COMMAND -h` to view detailed help, including any alias, for any command.
 
 	OPTIONS:
 	   -b             Custom buildpack by name (e.g. my-buildpack) or GIT URL
-	                  (e.g. https://github.com/heroku/heroku-buildpack-play.git)
+	                  (e.g. https://github.com/cloudfoundry/java-buildpack.git)
 	   -c             Startup command, set to null to reset to default start command
 	   -d             Domain (e.g. example.com)
 	   -f             Path to manifest

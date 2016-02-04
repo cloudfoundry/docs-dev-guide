@@ -13,25 +13,25 @@ This topic describes how to SSH into a Cloud Foundry deployed application instan
 ### <a id="enable-disable-ssh"></a>Enabling and Disabling SSH Access to Apps
 The CLI supports enabling and disabling SSH access to applications. Run `cf enable` to allow SSH access to all instances of the app, or `cf disable` to disallow access.
 <pre class="terminal">
-$ cf enable <MY-AWESOME-APP>
+$ cf enable MY-AWESOME-APP
 </pre>
 
 <pre class="terminal">
-$ cf disable <MY-AWESOME-APP>
+$ cf disable MY-AWESOME-APP
 </pre>
 
 ### <a id="report-ssh-app-status"></a>Checking SSH Permission for Apps
 To check whether you can access an app with SSH, run `cf ssh-enabled`.
 
 <pre class="terminal">
-$ cf ssh-enabled <MY-AWESOME-APP>
-ssh support is disabled for '<span><</span>MY-AWESOME-APP>'
+$ cf ssh-enabled MY-AWESOME-APP
+ssh support is disabled for 'MY-AWESOME-APP'
 </pre>
 
 ### <a id="ssh-command"></a>The SSH Command
 If your app is running on Diego with SSH enabled and your operator has configured SSH access to be publicly routable, run `cf ssh <APP-NAME>` in the terminal to start an interactive SSH session in instance index 0 of your app.
 <pre class='terminal'>
-$ cf ssh <MY-AWESOME-APP>
+$ cf ssh MY-AWESOME-APP
 </pre>
 
 To target a different instance index with `cf ssh`, supply it via the `-i` flag.
@@ -43,18 +43,18 @@ In addition to configuring SSH access to applications, you can also enable and d
 
 Allow SSH access for the space
 <pre class="terminal">
-$ cf allow-space-ssh <SPACE-NAME>
+$ cf allow-space-ssh SPACE-NAME
 </pre>
 
 Disallow SSH access for the space
 <pre class="terminal">
-$ cf disallow-space-ssh <SPACE-NAME>
+$ cf disallow-space-ssh SPACE-NAME
 </pre>
 
 ### <a id="report-ssh-space-status"></a>Checking SSH Permission for Spaces
 You can check whether SSH access for the space is allowed
 <pre class="terminal">
-$ cf space-ssh-allowed <SPACE-NAME>
+$ cf space-ssh-allowed SPACE-NAME
 </pre>
 
 ### <a id="ssh-auth-code"></a>Get SSH Code for Proxy Authentication

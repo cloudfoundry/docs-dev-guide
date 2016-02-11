@@ -44,6 +44,22 @@ Create the user-provided service instance, specifying the URL of the service wit
 cf cups SERVICE_INSTANCE -l syslog://example.log-aggregator.com
 </pre>
 
+## <a id='route-service'></a> Proxy Application Requests to a Route Service ##
+User-Provided Services can also be used to create [Route Services](./index.html#route-services) by specifying the route service url.
+
+<pre class="terminal">
+$ cf create-user-provided-service my-user-provided-route-service -r https://my-route-service.example.com
+Creating user provided service my-user-provided-route-service in org my-org / space my-space as user@example.com...
+OK
+</pre>
+
+<p class="note">
+<strong>Note</strong>: The Route Service URL specified when creating the user-provided service must be https.
+</p>
+
+In order to proxy requests to the user-provided route service, you will need to bind the service instance to the route.
+For more information, see [Manage Application Requests with Route Services](./route-binding.html).
+
 ## <a id='update'></a> Update a User-provided Service Instance ###
 
 You can use `cf update-user-provided-service` to update the attributes of an instance of a user-provided service. New credentials overwrite old credentials, and parameters not provided are deleted.

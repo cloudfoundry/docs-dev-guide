@@ -40,6 +40,18 @@ To learn how your application logs can be streamed to third-party log management
 
 User-provided service instances can be used to drain applications logs to a service not available in the marketplace. This is also known as setting up a syslog drain. We've documented instructions for a few providers in the [Service-Specific Instructions for Streaming Application Logs](./log-management-thirdparty-svc.html) topic.
 
+## <a id='route-services'></a>Manage Application Requests with Route Services ##
+
+Route services can be used to perform various types of filters or content transformations for applications, such as rate limiting, authorization and caching.
+Requests to an application with a registered route service, will be preprocessed by the route service, which may choose to respond immediately or forward the original request to the corresponding application.
+
+### <a id='create-route-services'></a>Creating Route Services ###
+Route service instances can be created using marketplace services, see [Managing Services](./managing-services.html) or created using [User-provided Service Instances](./user-provided.html).
+
+### <a id='bind-route-services'></a>Binding Route Services ###
+Once the service instance is created it can be bound to a route, for more information see [Manage Application Requests with Route Services](./route-binding.html).
+
+
 ## <a id='migrating'></a>Database Migrations ##
 
 If your application relies on a relational database, you will need to apply schema changes periodically. For guidance on how to do database migrations on Cloud Foundry-managed services, see [Migrating a Database in Cloud Foundry](./migrate-db.html).

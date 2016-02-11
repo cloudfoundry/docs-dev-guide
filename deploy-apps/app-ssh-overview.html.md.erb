@@ -1,0 +1,32 @@
+---
+title: Application SSH Overview
+---
+
+<strong><%= modified_date %></strong>
+
+This topic introduces SSH configuration for applications in a <%= vars.product_full %> deployment. 
+
+If you need to troubleshoot an instance of an app, you can gain SSH access to the app using the SSH proxy and daemon. 
+
+For example, one of your app instances may be unresponsive, or the log output from the app may be inconsistent or incomplete. You can SSH into the individual VM that runs the problem instance in order to troubleshoot, while `cf restage YOUR-APP` may only repeat the same problem in a new instance.
+
+Operators, administrators, and developers can independently configure SSH access for <%= vars.product_short %>, spaces, and apps, respectively. The image below illustrates the hierarchy of control for SSH access in an example deployment for which:
+
+- Susie Operator sets the deployment to allow SSH access to all apps 
+- Annie Admin sets space "A" and "B" to allow SSH access, and disallows access to space "C" 
+- Donnie Developer sets apps "Foo", "Bar", and "Baz" to enable SSH access 
+
+As a result, only apps "Foo", "Bar", and "Baz" accept SSH requests.
+
+<p class="note"><strong>Note</strong>: Operators, administrators, and developers must each configure SSH access at their respective level in order to make an application accessible with SSH.</p>
+
+<%= image_tag("../images/ssh-app-access.png") %>
+
+## <a id='app-ssh-config'></a>SSH Access for Apps and Spaces
+Administrators and application developers can configure SSH access from the command line. The cf CLI also includes commands to return the value of the SSH access setting. See the [Accessing Apps with Diego SSH](./ssh-apps.html) topic to use and configure SSH at both the application-level and space-level. 
+
+## <a id="platform-ssh-config"></a> Configuring SSH Access for <%= vars.product_full %> 
+<%= vars.platform_ssh_configuration %>
+
+## <a id="diego-ssh-concepts"></a> Understanding SSH Access
+The SSH system components includes the SSH proxy and daemon, two types of authentication, and load balancing of incoming SSH traffic. The [Understanding  SSH](../../concepts/diego/ssh-conceptual.html) topic provides a conceptual overview of those SSH components.

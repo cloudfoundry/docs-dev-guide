@@ -9,22 +9,7 @@ _This page assumes you are using cf CLI v6._
 This topic describes how to bind a route service instance to an application route for the purpose of providing filters or content transformations to applications.
 When binding a route service instance, Cloud Foundry may proxy requests to the app to the service instance, or configure a network component already in the request path.
 
-Route service instances must first be created, for example:
-
-<pre class="terminal">
-$ cf create-service route-service route-service-plan my-route-service
-Creating service instance my-route-service in org my-org / space my-space as user@example.com...
-OK
-</pre>
-
-
-For more information, see [Managing Services](./managing-services.html).
-
-Route services that are not available in the marketplace can be used as well, by using [User-provided Service Instances](./user-provided.html).
-
-
-## <a id='bind'></a>Bind a Route to a Service Instance ##
-The follow describes how to bind a route to a service instance.
+After creating a Service Instance from the services available in the Marketplace (see [Managing Services](./managing-services.html)), or from a [User-provided Service](./user-provided.html), you can bind a route to a service instance using a command like this.
 
 <pre class="terminal">
 $ cf bind-route-service <%=vars.app_domain%> my-route-service --hostname my-app

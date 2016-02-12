@@ -4,72 +4,91 @@ title: Accessing Apps with Diego SSH
 
 <strong><%= modified_date %></strong>
 
-This page assumes you are using cf CLI v6.13.0 or later.
+<i>This page assumes you are using cf CLI v6.13.0 or later.</i>
 
-This topic describes how to SSH into a Cloud Foundry deployed application instance. You can start an SSH session to an app instance from the CLI. You can also enable, disable, and check SSH permission for an app from the CLI. 
+This topic describes how to SSH into a <%=vars.product_full%> deployed application instance. From the CLI, you can start an SSH session with an app instance running on a remote host VM. You can also enable, disable, and check SSH permissions for hosted apps. 
 
 ## <a id="ssh-commands"></a>cf CLI SSH Commands
 
-### <a id="enable-disable-ssh"></a>Enabling and Disabling SSH Access to Apps
-The CLI supports enabling and disabling SSH access to applications. Run `cf enable` to allow SSH access to all instances of the app, or `cf disable` to disallow access.
+### <a id="enable-disable-ssh"></a>Enabling and Disabling SSH Access
+
+The CLI supports enabling and disabling SSH access to specific applications, or to all applications running within a space.
+
+#### <a id="configure-ssh-access-apps"></a>Configuring SSH Access at the App Level
+`cf enable-ssh` allows SSH access to all instances of an app:
 <pre class="terminal">
-$ cf enable MY-AWESOME-APP
+$ cf enable-ssh MY-AWESOME-APP
 </pre>
 
+`cf disable-ssh` prohibits SSH access to all instances of an app:
 <pre class="terminal">
-$ cf disable MY-AWESOME-APP
+$ cf disable-ssh MY-AWESOME-APP
 </pre>
 
-### <a id="report-ssh-app-status"></a>Checking SSH Permission for Apps
-To check whether you can access an app with SSH, run `cf ssh-enabled`.
+#### <a id="configure-ssh-access-spaces"></a>Configuring SSH Access at the Space Level
+Space administrators can blanket enable and disable SSH access to all apps running within a space.
 
-<pre class="terminal">
-$ cf ssh-enabled MY-AWESOME-APP
-ssh support is disabled for 'MY-AWESOME-APP'
-</pre>
-
-### <a id="ssh-command"></a>The SSH Command
-If your app is running on Diego with SSH enabled and your operator has configured SSH access to be publicly routable, run `cf ssh <APP-NAME>` in the terminal to start an interactive SSH session in instance index 0 of your app.
-<pre class='terminal'>
-$ cf ssh MY-AWESOME-APP
-</pre>
-
-To target a different instance index with `cf ssh`, supply it via the `-i` flag.
-
-The `cf ssh` command also supports executing commands inside the app instance and forwarding local ports to it via the `-L` flag.
-
-### <a id="configure-ssh-access-spaces"></a> Enabling and Disabling SSH Access for Spaces
-In addition to configuring SSH access to applications, you can also enable and disable SSH access at the space level. 
-
-Allow SSH access for the space
+`cf allow-space-ssh` allows SSH access into all apps in a space:
 <pre class="terminal">
 $ cf allow-space-ssh SPACE-NAME
 </pre>
 
-Disallow SSH access for the space
+`cf disallow-space-ssh` prohibits SSH access into all apps in a space:
 <pre class="terminal">
 $ cf disallow-space-ssh SPACE-NAME
 </pre>
 
-### <a id="report-ssh-space-status"></a>Checking SSH Permission for Spaces
-You can check whether SSH access for the space is allowed
+### <a id="report-ssh-status"></a>Checking SSH Permissions
+
+`cf ssh-enabled` checks whether an app is accessible with SSH:
+<pre class="terminal">$ cf ssh-enabled MY-AWESOME-APP
+ssh support is disabled for 'MY-AWESOME-APP'
+</pre>
+
+`cf space-ssh-allowed` checks whether all apps within a space are accessible with SSH:
 <pre class="terminal">
 $ cf space-ssh-allowed SPACE-NAME
 </pre>
 
+### <a id="ssh-command"></a>The cf SSH Command
+If your app is running on Diego with SSH enabled and your operator has configured SSH access to be publicly routable, run `cf ssh APP-NAME` in the terminal to start an interactive SSH session with the instance of your app with index 0.
+<pre class='terminal'>
+$ cf ssh MY-AWESOME-APP
+</pre>
+
+#### <a id="ssh-common-flags"></a>Common cf SSH Flags
+To target a specific instance with `cf ssh`, supply its index after the `-i` flag.
+<pre class='terminal'>
+$ cf ssh MY-AWESOME-APP -i 2
+</pre>
+
+The `cf ssh` command also lets you bind local ports to host ports with the `-L` flag. Pass the application VM port, your local host and port number, colon delimited, after the after the `-L` flag.
+<pre class='terminal'>
+$ cf ssh MY-AWESOME-APP -L PORT:HOST-NAME:HOST-PORT-NUMBER
+</pre>
+ 
 ### <a id="ssh-auth-code"></a>Get SSH Code for Proxy Authentication
-This command can be used to obtain a one-time authorization code that can be used as an SSH password with either the cf CLI or another SSH client
+
+To authenticate incoming SSH requests, a remote SSH daemon requires a specially formed user name that
+includes the authentication domain, target container, and a password. This string can exceed the character limit of `ssh` and other commands, so you can use the `cf ssh-code` command to obtain a one-time authorization code that substitutes for an SSH password:
 <pre class="terminal">
 $ cf ssh-code
 </pre>
 
 ## <a id="other-ssh-access"></a>SSH Access without cf CLI
 
-You can connect to your SSH-enabled app instance via other SSH clients provided that deployment allows SSH access at the platform, space and app level. The Cloud Controller `/v2/info` endpoint contains an `app_ssh_endpoint` field with the domain name and port for the externally available SSH endpoint, and an `app_ssh_host_key_fingerprint` field with the fingerprint of the host key for the deployment. 
+In addition to `cf ssh`, you can use other SSH clients such as `ssh`, `scp`, or `sftp` to access your application, as long as you have SSH access at the platform, space, and app level. The Cloud Controller `/v2/info` endpoint contains an `app_ssh_endpoint` field with the domain name and port for the externally available SSH endpoint, and an `app_ssh_host_key_fingerprint` field with the fingerprint of the host key for the deployment. 
 
-To connect to a particular instance of your app, run `ssh -p SSH-PORT cf:APP-GUID/APP-INSTANCE-INDEX@SSH-DOMAIN`.
+To connect to a particular instance of your app, run:
+<pre class="terminal">
+$ ssh -p SSH-PORT cf:APP-GUID/APP-INSTANCE-INDEX@SSH-DOMAIN
+</pre>
 
-To transfer files with `scp`, run `ssh -P SSH-PORT -o User=cf:APP-GUID/APP-INSTANCE-INDEX SSH-DOMAIN:REMOTE-FILE-TO-RETRIEVE LOCAL-FILE-DESTINATION`
+To transfer files with `scp`, run:
+
+<pre class="terminal">
+$ ssh -P SSH-PORT -o User=cf:APP-GUID/APP-INSTANCE-INDEX SSH-DOMAIN:REMOTE-FILE-TO-RETRIEVE LOCAL-FILE-DESTINATION
+</pre>
 
 ## <a id="proxy-authentication"></a>Diego SSH Proxy Authentication and Daemon Discovery
 
@@ -82,7 +101,7 @@ command line arguments.
 
 ### Authentication via Cloud Controller and UAA
 
-For authentication to Cloud Foundry, the user is of the form `cf:APP-GUID/INSTANCE` and the
+For authentication to <%=vars.product_full%>, the user is of the form `cf:APP-GUID/INSTANCE` and the
 password must be an authorization code that the SSH proxy server can exchange
 for an authorization token. The SSH proxy must be configured to use an OAuth
 client id that has been defined in the UAA. The client id used by the proxy
@@ -92,19 +111,7 @@ key.  Please see the [UAA](https://github.com/cloudfoundry/uaa/blob/master/docs/
 The proxy will contact the Cloud Controller as the user to determine if the
 policy allows the user to access application containers via SSH.
 
-Client example:
-<pre class='terminal'>
-$ curl -k -v -H "Authorization: $(cf oauth-token | tail -1)" \
-    https://uaa.bosh-lite.com/oauth/authorize \
-    --data-urlencode  "client_id=$(cf curl /v2/info | jq -r .app_ssh_oauth_client)" \
-    --data-urlencode 'response_type=code' 2>&1 | \
-    grep Location: | \
-    cut -f2 -d'?' | \
-    cut -f2 -d'=' | \
-    pbcopy # paste authorization code when prompted for password
-</pre>
-
-The cf CLI can also be used for the SSH code.
+You can use the cf CLI to obtain the SSH code.
 <pre class='terminal'>
 $ cf ssh-code | pbcopy # paste authorization code when prompted for password
 </pre>
@@ -203,8 +210,6 @@ will fail end user authentication if the target LRP or a route is not found.
   }
 ```
 
-The Diego system will generate the appropriate LRP definitions for Cloud Foundry applications which reflect the policies that are in effect.
+The Diego system will generate the appropriate LRP definitions for <%=vars.product_full%> applications which reflect the policies that are in effect.
 
 See the [Diego-SSH README](https://github.com/cloudfoundry-incubator/diego-ssh/blob/master/README.md#cloud-foundry-via-cloud-controller-and-uaa) for more details on the CF Authenticator.
-
-More details on the CF Authenticator can be found in the [Diego-SSH README](https://github.com/cloudfoundry-incubator/diego-ssh/blob/master/README.md#cloud-foundry-via-cloud-controller-and-uaa).

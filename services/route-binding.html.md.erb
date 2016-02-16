@@ -6,22 +6,24 @@ title: Manage Application Requests with Route Services
 
 _This page assumes you are using cf CLI v6._
 
-This topic describes how to bind a route service instance to an application route for the purpose of providing filters or content transformations to applications.
-When binding a route service instance, Cloud Foundry may proxy requests to the app to the service instance, or configure a network component already in the request path.
+This topic describes how to bind a service instance to a route for the purpose of adding preprocessing to application requests.
 
-After creating a Service Instance from the services available in the Marketplace (see [Managing Services](./managing-services.html)), or from a [User-provided Service](./user-provided.html), you can bind a route to a service instance using a command like this.
+Route services are class of marketplace service that perform filtering or content transformation on applications requests, removing the burden on developers to implement these functions themselves. Popular use cases for route services include rate limiting, authorization, and caching. Requests for a route that is bound to a route service instance will be preprocessed by the route service, which may choose to respond immediately or forward the request to mapped applications.
+
+Developers wishing to leverage route services should first create a service instance, choosing from compatible marketplace services (see [Managing Services](./managing-services.html)) or using [User-provided Service Instances](./user-provided.html). This service instance is then bound to a route (not to an app!); all requests for the route will then be preprocessed by the service instance.
+
+Binding a route to a service instance can be accomplished using the following CLI command:
 
 <pre class="terminal">
 $ cf bind-route-service <%=vars.app_domain%> my-route-service --hostname my-app
 
 Binding may cause requests for route my-app.<%=vars.app_domain%> to be altered by service instance my-route-service. Do you want to proceed?> yes
 
-Binding route my-app.<%=vars.app_domain%> to service instance my-route-service in org my-org / space my-space as admin...
+Binding route my-app.<%=vars.app_domain%> to service instance my-route-service in org my-org / space my-space as jane...
 
 OK
 </pre>
 
 <p class="note">
-<strong>Note</strong>: Once a route is bound to a route service instance, requests to the application will be first routed through the route service.
+<strong>Note</strong>: When binding a service instance to a route, Cloud Foundry may proxy requests for the route to the service instance, or configure a network component already in the request path.
 </p>
-

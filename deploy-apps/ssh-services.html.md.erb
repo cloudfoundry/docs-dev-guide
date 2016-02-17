@@ -31,7 +31,7 @@ To push an app that will act as the host for the SSH tunnel, push any app that w
 <pre class="terminal">$ cf push YOUR-HOST-APP</pre>
 1. Enable SSH for your app.
 <pre class="terminal">$ cf enable-ssh YOUR-HOST-APP</pre>
-<p class="note"><strong>Note</strong>: In order to enable SSH access to your app, SSH access must also be enabled for both the space that contains the app and <%= vars.product_full %>. See the [Diego SSH Overview](./diego-ssh-overview.html) topic for further details.</p>
+<p class="note"><strong>Note</strong>: In order to enable SSH access to your app, SSH access must also be enabled for both the space that contains the app and <%= vars.product_full %>. See the [Application SSH Overview](./app-ssh-overview.html) topic for further details.</p>
 
 ##<a id="bind-app"></a>Creating Your Service Key##
 To establish SSH access to your service instance, you need to create a service key that contains critical information for configuring your SSH tunnel.

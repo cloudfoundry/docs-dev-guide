@@ -54,7 +54,7 @@ Getting key EXTERNAL-ACCESS-KEY for service instance MY-DB as user<span>@</span>
 
 ##<a id="ssh-tunnel"></a>Configuring Your SSH Tunnel 
 
-Set up an SSH tunnel to your service instance using `cf ssh APP-NAME`. Tailor the example command below with information from your service key.
+Configure an SSH tunnel to your service instance using `cf ssh APP-NAME`. Tailor the example command below with information from your service key.
 <pre class="terminal">$ cf ssh -N -L 63306:us-cdbr-iron-east-03.p-mysql.net:3306 YOUR-HOST-APP</pre>
 
   * Replace `us-cdbr-iron-east-03.p-mysql.net` with the address provided under `hostname` in the service key retrieved above.

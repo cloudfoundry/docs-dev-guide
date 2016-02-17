@@ -1,0 +1,54 @@
+---
+title: Application SSH Overview
+---
+
+<strong><%= modified_date %></strong>
+
+This topic introduces SSH configuration for applications in your <%= vars.product_full %> deployment. 
+
+If you need to troubleshoot an instance of an app, you can gain SSH access to the app using the SSH proxy and daemon. 
+
+For example, one of your app instances may be unresponsive, or the log output from the app may be inconsistent or incomplete. You can SSH into the individual VM that runs the problem instance in order to troubleshoot.
+
+## <a id="ssh-access-control-hierarchy"></a>SSH Access Control Hierarchy
+
+Operators, space administrators, and developers can configure SSH access for <%= vars.product_short %>, spaces, and apps as described in this table:
+
+<table id='TK-NAME' border="1" class="nice" >
+  <tr>
+    <th><strong>User Role</strong></th>
+    <th><strong>Scope of SSH Permissions Control</strong></th>
+    <th><strong>How They Define SSH Permissions</strong></th>
+  </tr><tr>
+    <td>Operator</td>
+    <td>Entire deployment</td>
+    <td>Configure the deployment to allow or prohibit SSH access (one-time)</td>
+  </tr><tr>
+    <td>Space Administrator</td>
+    <td>Space</td>
+    <td>cf CLI <code>allow-space-ssh</code> and <code>disallow-space-ssh</code> commands</td>
+  </tr><tr>
+    <td>Developer</td>
+    <td>Application</td>
+    <td>cf CLI <code>enable-ssh</code> and <code>disable-ssh</code> commands</td>
+  </tr>
+</table>
+
+An application is SSH-accessible only if operators, space administrators, and developers all grant SSH access at their respective levels. For example, the image below shows a deployment where:
+
+* An operator allowed SSH access at the deployment level.
+* A space administrator allowed SSH access for applications running in spaces "A" and "B" but not "C." 
+* A developer enabled SSH access for applications that include "Foo," "Bar," and "Baz."
+
+As a result, apps "Foo," "Bar," and "Baz" accept SSH requests.
+
+<%= image_tag("../images/ssh-app-access.png") %>
+
+## <a id='app-ssh-config'></a>SSH Access for Apps and Spaces
+Administrators and application developers can configure SSH access from the command line. The cf CLI also includes commands to return the value of the SSH access setting. See the [Accessing Apps with Diego SSH](./ssh-apps.html) topic to use and configure SSH at both the application level and the space level. 
+
+## <a id="platform-ssh-config"></a> Configuring SSH Access for <%= vars.product_full %> 
+<%= vars.platform_ssh_configuration %>
+
+## <a id="diego-ssh-concepts"></a> Understanding SSH Access
+The SSH system components include the SSH proxy and daemon, and the system also supports authentication, and load balancing of incoming SSH traffic. The [Understanding  SSH](../../concepts/diego/ssh-conceptual.html) topic provides a conceptual overview.

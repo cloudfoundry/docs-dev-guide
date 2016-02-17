@@ -59,9 +59,9 @@ Configure an SSH tunnel to your service instance using `cf ssh APP-NAME`. Tailor
 ##<a id="access-service"></a> Accessing Your Service Instance##
 To establish direct command-line access to your service instance, use the relevant command line tool for that service. This example uses the MySQL command line client to access the <%= vars.ssh_service %> service instance. 
 
-<pre class="terminal">$ mysql -u <%= vars.ssh_service_user %> -h 0 -p -D <%= vars.ssh_service_db %> -P 63306</pre>
-  * Replace `<%= vars.ssh_service_user %>` with the username provided under `username` in your service key.
+<pre class="terminal">$ mysql -u b5136e448be920 -h 0 -p -D ad_b2fca6t49704585d -P 63306</pre>
+  * Replace `b5136e448be920` with the username provided under `username` in your service key.
   * `-h 0` indicates to `mysql` to connect to your local machine.
   * `-p` indicates to `mysql` to prompt for a password. When prompted, use the password provided under `password` in your service key.
-  * Replace `<%= vars.ssh_service_db %>` with the database name provided under `name` in your service key.
+  * Replace `ad_b2fca6t49704585d` with the database name provided under `name` in your service key.
   * `-P 63306` indicates to `mysql` to connect on port 63306.

@@ -6,20 +6,20 @@ title: Accessing Services with SSH
 
 This page assumes you are using [cf CLI v6.15.0](https://github.com/cloudfoundry/cli/releases) or later. 
 
-This topic describes how to utilize the SSH capacity of an app to gain direct command line access to your Cloud Foundry deployed service instance. For example, you may need access to your database to execute raw SQL commands to edit the schema, import and export data, or debug application data issues. 
+This topic describes how to gain direct command line access to your Cloud Foundry deployed service instance. For example, you may need access to your database to execute raw SQL commands to edit the schema, import and export data, or debug application data issues. 
 
-To access services with SSH, you deploy a host app and leverage its SSH and port forwarding features to communicate with the service instance through the app container. The technique outlined below works with any TCP service, such as MySQL or Redis. 
+To establish direct command line access to a service, you deploy a host app and utilize its SSH and port forwarding features to communicate with the service instance through the app container. The technique outlined below works with any TCP service, such as MySQL or Redis. 
 
 ##<a id="create-instance"></a>Creating a Service Instance##
 
 In your terminal window, login to your Cloud Foundry deployment with `cf login`. 
 
-1. List the marketplace services installed as product tiles on your PCF Ops Manager. See <a href="../../customizing/add-delete.html">Adding and Deleting Products</a> if you need to add the service as a tile. In this example, we create a p-mysql service instance.
+1. <%= vars.ssh_marketplace_step %>
 <pre class="terminal">$ cf marketplace
-p-mysql	100mb	MySQL databases on demand
+<%=vars.ssh_marketplace_output %>
 </pre>
 1. Create your service instance. As part of the `create-service` command, indicate the service name, the service plan, and the name you choose for your service instance.
-<pre class="terminal">$ cf create-service p-mysql 100mb MY-DB</pre>
+<pre class="terminal">$ cf create-service <%=vars.ssh_service %> <%=vars.ssh_service_plan %> MY-DB  </pre>
 
 ##<a id="push-app"></a>Pushing Your Host App##
 
@@ -31,7 +31,7 @@ To push an app that will act as the host for the SSH tunnel, push any app that w
 <pre class="terminal">$ cf push YOUR-HOST-APP</pre>
 1. Enable SSH for your app.
 <pre class="terminal">$ cf enable-ssh YOUR-HOST-APP</pre>
-<p class="note"><strong>Note</strong>: In order to enable SSH access to your app, SSH access must also be enabled for the space that contains the app, and Elastic Runtime. See the [Diego SSH Overview](./diego-ssh-overview.html) topic for further details.</p>
+<p class="note"><strong>Note</strong>: In order to enable SSH access to your app, SSH access must also be enabled for both the space that contains the app and <%= vars.product_full %>. See the [Diego SSH Overview](./diego-ssh-overview.html) topic for further details.</p>
 
 ##<a id="bind-app"></a>Creating Your Service Key##
 To establish SSH access to your service instance, you need to create a service key that contains critical information for configuring your SSH tunnel.
@@ -41,23 +41,15 @@ To establish SSH access to your service instance, you need to create a service k
 1. Retrieve your new service key.
 <pre class="terminal">$ cf service-key MY-DB EXTERNAL-ACCESS-KEY
 Getting key EXTERNAL-ACCESS-KEY for service instance MY-DB as user<span>@</span>pivotal.io...
-{
- "hostname": "us-cdbr-iron-east-01.p-mysql.net",
- "jdbcUrl": "jdbc:mysql://us-cdbr-iron-east-03.p-mysql.net/ad\_b2fca6t49704585d?user=b5136e448be920\u0026password=231f435o05",
- "name": "ad\_b2fca6t49704585d",
- "password": "231f435o05",
- "port": "3306",
- "uri": "mysql://b5136e448be920:231f435o05<span>@</span>us-cdbr-iron-east-03.p-mysql.net:3306/ad\_b2fca6t49704585d?reconnect=true",
- "username": "b5136e448be920"
-}
+<%= vars.ssh_service_access_key %>
 </pre>
 
 ##<a id="ssh-tunnel"></a>Configuring Your SSH Tunnel 
 
 Configure an SSH tunnel to your service instance using `cf ssh APP-NAME`. Tailor the example command below with information from your service key.
-<pre class="terminal">$ cf ssh -N -L 63306:us-cdbr-iron-east-03.p-mysql.net:3306 YOUR-HOST-APP</pre>
+<pre class="terminal">$ cf ssh -N -L 63306:<%= vars.ssh_service_host %>:3306 YOUR-HOST-APP</pre>
 
-  * Replace `us-cdbr-iron-east-03.p-mysql.net` with the address provided under `hostname` in the service key retrieved above.
+  * Replace `<%= vars.ssh_service_host %>` with the address provided under `hostname` in the service key retrieved above.
   * Replace `3306` with the port provided under `port` above.
   * Use any available local port for port forwarding. For example, `63306`.
   * `-N` tells `cf ssh` not to execute a remote command.
@@ -65,11 +57,11 @@ Configure an SSH tunnel to your service instance using `cf ssh APP-NAME`. Tailor
 <p class="note"><strong>Note</strong>: Because the SSH tunnel may timeout, Pivotal recommends that you run <code>cf ssh</code> in the foreground and restart it if it exits. </p>
 
 ##<a id="access-service"></a> Accessing Your Service Instance##
-To establish direct command-line access to your service instance, use the relevant command line tool for that service. This example uses the MySQL command line client to access the p-mysql service instance. 
+To establish direct command-line access to your service instance, use the relevant command line tool for that service. This example uses the MySQL command line client to access the <%= vars.ssh_service %> service instance. 
 
-<pre class="terminal">$ mysql -u b5136e448be920 -h 0 -p -D ad_b2fca6t49704585d -P 63306</pre>
-  * Replace `b5136e448be920` with the username provided under `username` in your service key.
+<pre class="terminal">$ mysql -u <%= vars.ssh_service_user %> -h 0 -p -D <%= vars.ssh_service_db %> -P 63306</pre>
+  * Replace `<%= vars.ssh_service_user %>` with the username provided under `username` in your service key.
   * `-h 0` indicates to `mysql` to connect to your local machine.
   * `-p` indicates to `mysql` to prompt for a password. When prompted, use the password provided under `password` in your service key.
-  * Replace `ad_b2fca6t49704585d` with the database name provided under `name` in your service key.
+  * Replace `<%= vars.ssh_service_db %>` with the database name provided under `name` in your service key.
   * `-P 63306` indicates to `mysql` to connect on port 63306.

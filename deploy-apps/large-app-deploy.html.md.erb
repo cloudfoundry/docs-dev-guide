@@ -48,7 +48,7 @@ To deploy large apps to <%=vars.product_short%>, ensure the following:
   * `CF_STARTUP_TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to start. Value set in minutes.
   * `cf push -t TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to start. When you use this flag, the cf CLI ignores any app start timeout value set in the manifest or in the `CF_STARTUP_TIMEOUT` environment variable. Value set in seconds.
 
-    For more information about using the cf CLI to deploy apps, refer to the [Push section](../cf-cli/getting-started.html#push) of the _Getting Started with the cf CLI_ topic.
+    For more information about using the cf CLI to deploy apps, refer to the [Push section](../../cf-cli/getting-started.html#push) of the _Getting Started with the cf CLI_ topic.
 
     <p class="note"><strong>Note</strong>: Changing the timeout setting for the cf CLI does not change the timeout limit for Cloud Foundry server-side jobs such as staging or starting applications. Server-side timeouts must be changed in the manifest. Because of the differences between the Cloud Foundry and cf CLI timeout values, your app might successfully start even though the cf CLI reports <code>App failed</code>. Run <code>cf apps APP_NAME</code> to review the actual status of your app.</p>
 

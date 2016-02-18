@@ -1,0 +1,1008 @@
+---
+title: Cloud Foundry CLI Reference Guide
+---
+
+## <a id='name'></a> Name
+<p>cf - A command line tool to interact with Cloud Foundry</p>
+
+## <a id='usage'></a> Usage
+<p>[environment variables] cf [global options] command [arguments...] [command options]</p>
+
+## <a id='version'></a> Version
+<p>6.15.0+fa1bfe2-2016-01-13</p>
+
+## <a id='getting-started'></a> Getting Started
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>help</td>
+      <td>Show help</td>
+    </tr>
+    <tr>
+      <td>login</td>
+      <td>Log user in</td>
+    </tr>
+    <tr>
+      <td>logout</td>
+      <td>Log user out</td>
+    </tr>
+    <tr>
+      <td>passwd</td>
+      <td>Change user password</td>
+    </tr>
+    <tr>
+      <td>target</td>
+      <td>Set or view the targeted org or space</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>api</td>
+      <td>Set or view target api url</td>
+    </tr>
+    <tr>
+      <td>auth</td>
+      <td>Authenticate user non-interactively</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='apps'></a> Apps
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>apps</td>
+      <td>List all apps in the target space</td>
+    </tr>
+    <tr>
+      <td>app</td>
+      <td>Display health and status for app</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>push</td>
+      <td>Push a new app or sync changes to an existing app</td>
+    </tr>
+    <tr>
+      <td>scale</td>
+      <td>Change or view the instance count, disk space limit, and memory limit for an app</td>
+    </tr>
+    <tr>
+      <td>delete</td>
+      <td>Delete an app</td>
+    </tr>
+    <tr>
+      <td>rename</td>
+      <td>Rename an app</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>start</td>
+      <td>Start an app</td>
+    </tr>
+    <tr>
+      <td>stop</td>
+      <td>Stop an app</td>
+    </tr>
+    <tr>
+      <td>restart</td>
+      <td>Restart an app</td>
+    </tr>
+    <tr>
+      <td>restage</td>
+      <td>Restage an app</td>
+    </tr>
+    <tr>
+      <td>restart-app-instance</td>
+      <td>Terminate the running application Instance at the given index and instantiate a new instance of the application with the same index</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>events</td>
+      <td>Show recent app events</td>
+    </tr>
+    <tr>
+      <td>files</td>
+      <td>Print out a list of files in a directory or the contents of a specific file of an app running on the DEA backend</td>
+    </tr>
+    <tr>
+      <td>logs</td>
+      <td>Tail or show recent logs for an app</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>env</td>
+      <td>Show all env variables for an app</td>
+    </tr>
+    <tr>
+      <td>set-env</td>
+      <td>Set an env variable for an app</td>
+    </tr>
+    <tr>
+      <td>unset-env</td>
+      <td>Remove an env variable</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>stacks</td>
+      <td>List all stacks (a stack is a pre-built file system, including an operating system, that can run apps)</td>
+    </tr>
+    <tr>
+      <td>stack</td>
+      <td>Show information for a stack (a stack is a pre-built file system, including an operating system, that can run apps)</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>copy-source</td>
+      <td>Make a copy of app source code from one application to another.  Unless overridden, the copy-source command will restart the application.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>create-app-manifest</td>
+      <td>Create an app manifest for an app that has been pushed successfully.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>get-health-check</td>
+      <td>get the health_check_type value of an app</td>
+    </tr>
+    <tr>
+      <td>set-health-check</td>
+      <td>set health_check_type flag to either 'port' or 'none'</td>
+    </tr>
+    <tr>
+      <td>enable-ssh</td>
+      <td>enable ssh for the application</td>
+    </tr>
+    <tr>
+      <td>disable-ssh</td>
+      <td>disable ssh for the application</td>
+    </tr>
+    <tr>
+      <td>ssh-enabled</td>
+      <td>Reports whether SSH is enabled on an application container instance</td>
+    </tr>
+    <tr>
+      <td>ssh</td>
+      <td>SSH to an application container instance</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='services'></a> Services
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>marketplace</td>
+      <td>List available offerings in the marketplace</td>
+    </tr>
+    <tr>
+      <td>services</td>
+      <td>List all service instances in the target space</td>
+    </tr>
+    <tr>
+      <td>service</td>
+      <td>Show service instance info</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>create-service</td>
+      <td>Create a service instance</td>
+    </tr>
+    <tr>
+      <td>update-service</td>
+      <td>Update a service instance</td>
+    </tr>
+    <tr>
+      <td>delete-service</td>
+      <td>Delete a service instance</td>
+    </tr>
+    <tr>
+      <td>rename-service</td>
+      <td>Rename a service instance</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>create-service-key</td>
+      <td>Create key for a service instance</td>
+    </tr>
+    <tr>
+      <td>service-keys</td>
+      <td>List keys for a service instance</td>
+    </tr>
+    <tr>
+      <td>service-key</td>
+      <td>Show service key info</td>
+    </tr>
+    <tr>
+      <td>delete-service-key</td>
+      <td>Delete a service key</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>bind-service</td>
+      <td>Bind a service instance to an app</td>
+    </tr>
+    <tr>
+      <td>unbind-service</td>
+      <td>Unbind a service instance from an app</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>create-user-provided-service</td>
+      <td>Make a user-provided service instance available to cf apps</td>
+    </tr>
+    <tr>
+      <td>update-user-provided-service</td>
+      <td>Update user-provided service instance name value pairs</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='orgs'></a> Orgs
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>orgs</td>
+      <td>List all orgs</td>
+    </tr>
+    <tr>
+      <td>org</td>
+      <td>Show org info</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>create-org</td>
+      <td>Create an org</td>
+    </tr>
+    <tr>
+      <td>delete-org</td>
+      <td>Delete an org</td>
+    </tr>
+    <tr>
+      <td>rename-org</td>
+      <td>Rename an org</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='spaces'></a> Spaces
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>spaces</td>
+      <td>List all spaces in an org</td>
+    </tr>
+    <tr>
+      <td>space</td>
+      <td>Show space info</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>create-space</td>
+      <td>Create a space</td>
+    </tr>
+    <tr>
+      <td>delete-space</td>
+      <td>Delete a space</td>
+    </tr>
+    <tr>
+      <td>rename-space</td>
+      <td>Rename a space</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>allow-space-ssh</td>
+      <td>Allow SSH access for the space</td>
+    </tr>
+    <tr>
+      <td>disallow-space-ssh</td>
+      <td>Disallow SSH access for the space</td>
+    </tr>
+    <tr>
+      <td>space-ssh-allowed</td>
+      <td>Reports whether SSH is allowed in a space</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='domains'></a> Domains
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>domains</td>
+      <td>List domains in the target org</td>
+    </tr>
+    <tr>
+      <td>create-domain</td>
+      <td>Create a domain in an org for later use</td>
+    </tr>
+    <tr>
+      <td>delete-domain</td>
+      <td>Delete a domain</td>
+    </tr>
+    <tr>
+      <td>create-shared-domain</td>
+      <td>Create a domain that can be used by all orgs (admin-only)</td>
+    </tr>
+    <tr>
+      <td>delete-shared-domain</td>
+      <td>Delete a shared domain</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='routes'></a> Routes
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>routes</td>
+      <td>List all routes in the current space or the current organization</td>
+    </tr>
+    <tr>
+      <td>create-route</td>
+      <td>Create a url route in a space for later use</td>
+    </tr>
+    <tr>
+      <td>check-route</td>
+      <td>Perform a simple check to determine whether a route currently exists or not.</td>
+    </tr>
+    <tr>
+      <td>map-route</td>
+      <td>Add a url route to an app</td>
+    </tr>
+    <tr>
+      <td>unmap-route</td>
+      <td>Remove a url route from an app</td>
+    </tr>
+    <tr>
+      <td>delete-route</td>
+      <td>Delete a route</td>
+    </tr>
+    <tr>
+      <td>delete-orphaned-routes</td>
+      <td>Delete all orphaned routes (e.g.: those that are not mapped to an app)</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='router-groups'></a> Router Groups
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>router-groups</td>
+      <td>List router groups</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='buildpacks'></a> Buildpacks
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>buildpacks</td>
+      <td>List all buildpacks</td>
+    </tr>
+    <tr>
+      <td>create-buildpack</td>
+      <td>Create a buildpack</td>
+    </tr>
+    <tr>
+      <td>update-buildpack</td>
+      <td>Update a buildpack</td>
+    </tr>
+    <tr>
+      <td>rename-buildpack</td>
+      <td>Rename a buildpack</td>
+    </tr>
+    <tr>
+      <td>delete-buildpack</td>
+      <td>Delete a buildpack</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='user-admin'></a> User Admin
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>create-user</td>
+      <td>Create a new user</td>
+    </tr>
+    <tr>
+      <td>delete-user</td>
+      <td>Delete a user</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>org-users</td>
+      <td>Show org users by role</td>
+    </tr>
+    <tr>
+      <td>set-org-role</td>
+      <td>Assign an org role to a user</td>
+    </tr>
+    <tr>
+      <td>unset-org-role</td>
+      <td>Remove an org role from a user</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>space-users</td>
+      <td>Show space users by role</td>
+    </tr>
+    <tr>
+      <td>set-space-role</td>
+      <td>Assign a space role to a user</td>
+    </tr>
+    <tr>
+      <td>unset-space-role</td>
+      <td>Remove a space role from a user</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='org-admin'></a> Org Admin
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>quotas</td>
+      <td>List available usage quotas</td>
+    </tr>
+    <tr>
+      <td>quota</td>
+      <td>Show quota info</td>
+    </tr>
+    <tr>
+      <td>set-quota</td>
+      <td>Assign a quota to an org</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>create-quota</td>
+      <td>Define a new resource quota</td>
+    </tr>
+    <tr>
+      <td>delete-quota</td>
+      <td>Delete a quota</td>
+    </tr>
+    <tr>
+      <td>update-quota</td>
+      <td>Update an existing resource quota</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>share-private-domain</td>
+      <td>Share a private domain with an org</td>
+    </tr>
+    <tr>
+      <td>unshare-private-domain</td>
+      <td>Unshare a private domain with an org</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='space-admin'></a> Space Admin
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>space-quotas</td>
+      <td>List available space resource quotas</td>
+    </tr>
+    <tr>
+      <td>space-quota</td>
+      <td>Show space quota info</td>
+    </tr>
+    <tr>
+      <td>create-space-quota</td>
+      <td>Define a new space resource quota</td>
+    </tr>
+    <tr>
+      <td>update-space-quota</td>
+      <td>update an existing space quota</td>
+    </tr>
+    <tr>
+      <td>delete-space-quota</td>
+      <td>Delete a space quota definition and unassign the space quota from all spaces</td>
+    </tr>
+    <tr>
+      <td>set-space-quota</td>
+      <td>Assign a space quota definition to a space</td>
+    </tr>
+    <tr>
+      <td>unset-space-quota</td>
+      <td>Unassign a quota from a space</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='service-admin'></a> Service Admin
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>service-auth-tokens</td>
+      <td>List service auth tokens</td>
+    </tr>
+    <tr>
+      <td>create-service-auth-token</td>
+      <td>Create a service auth token</td>
+    </tr>
+    <tr>
+      <td>update-service-auth-token</td>
+      <td>Update a service auth token</td>
+    </tr>
+    <tr>
+      <td>delete-service-auth-token</td>
+      <td>Delete a service auth token</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>service-brokers</td>
+      <td>List service brokers</td>
+    </tr>
+    <tr>
+      <td>create-service-broker</td>
+      <td>Create a service broker</td>
+    </tr>
+    <tr>
+      <td>update-service-broker</td>
+      <td>Update a service broker</td>
+    </tr>
+    <tr>
+      <td>delete-service-broker</td>
+      <td>Delete a service broker</td>
+    </tr>
+    <tr>
+      <td>rename-service-broker</td>
+      <td>Rename a service broker</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>migrate-service-instances</td>
+      <td>Migrate service instances from one service plan to another</td>
+    </tr>
+    <tr>
+      <td>purge-service-offering</td>
+      <td>Recursively remove a service and child objects from Cloud Foundry database without making requests to a service broker</td>
+    </tr>
+    <tr>
+      <td>purge-service-instance</td>
+      <td>Recursively remove a service instance and child objects from Cloud Foundry database without making requests to a service broker</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>service-access</td>
+      <td>List service access settings</td>
+    </tr>
+    <tr>
+      <td>enable-service-access</td>
+      <td>Enable access to a service or service plan for one or all orgs</td>
+    </tr>
+    <tr>
+      <td>disable-service-access</td>
+      <td>Disable access to a service or service plan for one or all orgs</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='security-group'></a> Security Group
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>security-group</td>
+      <td>Show a single security group</td>
+    </tr>
+    <tr>
+      <td>security-groups</td>
+      <td>List all security groups</td>
+    </tr>
+    <tr>
+      <td>create-security-group</td>
+      <td>Create a security group</td>
+    </tr>
+    <tr>
+      <td>update-security-group</td>
+      <td>Update a security group</td>
+    </tr>
+    <tr>
+      <td>delete-security-group</td>
+      <td>Deletes a security group</td>
+    </tr>
+    <tr>
+      <td>bind-security-group</td>
+      <td>Bind a security group to a space</td>
+    </tr>
+    <tr>
+      <td>unbind-security-group</td>
+      <td>Unbind a security group from a space</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>bind-staging-security-group</td>
+      <td>Bind a security group to the list of security groups to be used for staging applications</td>
+    </tr>
+    <tr>
+      <td>staging-security-groups</td>
+      <td>List security groups in the staging set for applications</td>
+    </tr>
+    <tr>
+      <td>unbind-staging-security-group</td>
+      <td>Unbind a security group from the set of security groups for staging applications</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>bind-running-security-group</td>
+      <td>Bind a security group to the list of security groups to be used for running applications</td>
+    </tr>
+    <tr>
+      <td>running-security-groups</td>
+      <td>List security groups in the set of security groups for running applications</td>
+    </tr>
+    <tr>
+      <td>unbind-running-security-group</td>
+      <td>Unbind a security group from the set of security groups for running applications</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='environment-variable-groups'></a> Environment Variable Groups
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>running-environment-variable-group</td>
+      <td>Retrieve the contents of the running environment variable group</td>
+    </tr>
+    <tr>
+      <td>staging-environment-variable-group</td>
+      <td>Retrieve the contents of the staging environment variable group</td>
+    </tr>
+    <tr>
+      <td>set-staging-environment-variable-group</td>
+      <td>Pass parameters as JSON to create a staging environment variable group</td>
+    </tr>
+    <tr>
+      <td>set-running-environment-variable-group</td>
+      <td>Pass parameters as JSON to create a running environment variable group</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='feature-flags'></a> Feature Flags
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>feature-flags</td>
+      <td>Retrieve list of feature flags with status of each flag-able feature</td>
+    </tr>
+    <tr>
+      <td>feature-flag</td>
+      <td>Retrieve an individual feature flag with status</td>
+    </tr>
+    <tr>
+      <td>enable-feature-flag</td>
+      <td>Enable the use of a feature so that users have access to and can use the feature.</td>
+    </tr>
+    <tr>
+      <td>disable-feature-flag</td>
+      <td>Disable the use of a feature so that users have access to and can use the feature.</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='advanced'></a> Advanced
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>curl</td>
+      <td>Executes a raw request, content-type set to application/json by default</td>
+    </tr>
+    <tr>
+      <td>config</td>
+      <td>write default values to the config</td>
+    </tr>
+    <tr>
+      <td>oauth-token</td>
+      <td>Retrieve and display the OAuth token for the current session</td>
+    </tr>
+    <tr>
+      <td>ssh-code</td>
+      <td>Get a one time password for ssh clients</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='add/remove-plugin-repository'></a> Add/remove Plugin Repository
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>add-plugin-repo</td>
+      <td>Add a new plugin repository</td>
+    </tr>
+    <tr>
+      <td>remove-plugin-repo</td>
+      <td>Remove a plugin repository</td>
+    </tr>
+    <tr>
+      <td>list-plugin-repos</td>
+      <td>list all the added plugin repository</td>
+    </tr>
+    <tr>
+      <td>repo-plugins</td>
+      <td>List all available plugins in all added repositories</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='add/remove-plugin'></a> Add/remove Plugin
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>plugins</td>
+      <td>list all available plugin commands</td>
+    </tr>
+    <tr>
+      <td>install-plugin</td>
+      <td>Install the plugin defined in command argument</td>
+    </tr>
+    <tr>
+      <td>uninstall-plugin</td>
+      <td>Uninstall the plugin defined in command argument</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='environment-variables'></a> Environment Variables
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CF_COLOR=false</td>
+      <td>Do not colorize output</td>
+    </tr>
+    <tr>
+      <td>CF_HOME=path/to/dir/</td>
+      <td>Override path to default config directory</td>
+    </tr>
+    <tr>
+      <td>CF_PLUGIN_HOME=path/to/dir/</td>
+      <td>Override path to default plugin config directory</td>
+    </tr>
+    <tr>
+      <td>CF_STAGING_TIMEOUT=15</td>
+      <td>Max wait time for buildpack staging, in minutes</td>
+    </tr>
+    <tr>
+      <td>CF_STARTUP_TIMEOUT=5</td>
+      <td>Max wait time for app instance startup, in minutes</td>
+    </tr>
+    <tr>
+      <td>CF_TRACE=true</td>
+      <td>Print API request diagnostics to stdout</td>
+    </tr>
+    <tr>
+      <td>CF_TRACE=path/to/trace.log</td>
+      <td>Append API request diagnostics to a log file</td>
+    </tr>
+    <tr>
+      <td>HTTP_PROXY=proxy.example.com:8080</td>
+      <td>Enable HTTP proxying for API requests</td>
+    </tr>
+  </tbody>
+</table>
+
+## <a id='global-options'></a> Global Options
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>--version, -v</td>
+      <td>Print the version</td>
+    </tr>
+    <tr>
+      <td>--build, -b</td>
+      <td>Print the version of Go the CLI was built against</td>
+    </tr>
+    <tr>
+      <td>--help, -h</td>
+      <td>Show help</td>
+    </tr>
+  </tbody>
+</table>

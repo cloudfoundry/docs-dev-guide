@@ -45,7 +45,7 @@ cf cups SERVICE_INSTANCE -l syslog://example.log-aggregator.com
 </pre>
 
 ### <a id='route-service'></a> Proxy Application Requests to a Route Service ###
-User-Provided Services can also be used to proxy application requests to [Route Services](./index.html#route-services) for preprocessing. To create a user-provided service instance for a Route Service, specify the url for the route service using the `-r` option.
+User-provided services proxy application requests to [route services](./index.html#route-services) for preprocessing. To create a user-provided service instance for a route service, specify the url for the route service using the `-r` option.
 
 <pre class="terminal">
 $ cf create-user-provided-service my-user-provided-route-service -r https://my-route-service.example.com
@@ -54,7 +54,7 @@ OK
 </pre>
 
 <p class="note">
-<strong>Note</strong>: The Route Service URL specified when creating the user-provided service must be https.
+<strong>Note</strong>: When creating the user-provided service, the route service url specified must be https.
 </p>
 
 In order to proxy requests to the user-provided route service, you will need to bind the service instance to the route.

@@ -4,22 +4,22 @@ title: Manage Application Requests with Route Services
 
 <strong><%= modified_date %></strong>
 
-_This page assumes you are using cf CLI v6._
+_This page assumes you are using cf CLI v6 or greater._
 
 This topic describes how to bind a service instance to a route for the purpose of adding preprocessing to application requests.
 
-Route services are class of marketplace service that perform filtering or content transformation on applications requests, removing the burden on developers to implement these functions themselves. Popular use cases for route services include rate limiting, authorization, and caching. Requests for a route that is bound to a route service instance will be preprocessed by the route service, which may choose to respond immediately or forward the request to mapped applications.
+Route services are a class of [marketplace services](../../managing-services.html) that perform filtering or content transformation on applications requests. This helps to remove the burden on developers who would otherwise have to implement these functions themselves. Popular use cases for route services include rate limiting, authorization, and caching. The route service preprocesses requests for a route that is bound to a route service instance by either choosing to respond immediately or forwarding the request to mapped applications.
 
-Developers wishing to leverage route services should first create a service instance, choosing from compatible marketplace services (see [Managing Services](./managing-services.html)) or using [User-provided Service Instances](./user-provided.html). This service instance is then bound to a route (not to an app!); all requests for the route will then be preprocessed by the service instance.
+Developers wishing to leverage route services should first create a service instance, choosing from compatible marketplace services (see [Managing Services](./managing-services.html)) or using [User-provided Service Instances](./user-provided.html). This service instance is then bound to a route instead of an app; all requests for the route will then be preprocessed by the service instance.
 
-Binding a route to a service instance can be accomplished using the following CLI command:
+Binding a route to a service instance can be accomplished using the following cf CLI command:
 
 <pre class="terminal">
 $ cf bind-route-service <%=vars.app_domain%> my-route-service --hostname my-app
 
 Binding may cause requests for route my-app.<%=vars.app_domain%> to be altered by service instance my-route-service. Do you want to proceed?> yes
 
-Binding route my-app.<%=vars.app_domain%> to service instance my-route-service in org my-org / space my-space as jane...
+Binding route my-app.<%=vars.app_domain%> to service instance my-route-service in org my-org / space my-space as developer...
 
 OK
 </pre>

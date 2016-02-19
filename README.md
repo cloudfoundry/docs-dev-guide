@@ -12,10 +12,6 @@ See the [docs-book-cloudfoundry](http://github.com/cloudfoundry/docs-book-cloudf
 repo for the complete list of open source documentation repositories, as well as
 information about the publishing process.
 
-docs-dev-guide/cf-cli subdirectory:
-cf Command Line Interface
-Direct a CF deployment from your local command line.
-
 docs-dev-guide/deploy-apps subdirectory:
 Develop and Manage Applications
 Develop and run applications in the cloud.
@@ -23,3 +19,6 @@ Develop and run applications in the cloud.
 docs-dev-guide/services subdirectory:
 Custom Services
 Create and publish free or metered services for Cloud Foundry apps.
+
+This repo used to contain the subdirectory docs-dev-guide/cf-cli, documenting the cf Command Line Interface. The content from this subdirectory has been moved to its own repo, [docs-cf-cli](http://github.com/cloudfoundry/docs-cf-cli).
+

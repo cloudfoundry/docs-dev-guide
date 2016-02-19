@@ -17,30 +17,25 @@ at once.
 
 By default, the `cf push` command deploys an application using a `manifest.yml`
 file in the current working directory.
-Use the `-f` option to provide a non-standard manifest location or filename.
-
-To use `cf push` without an `-f` option, you must provide a manifest named
-`manifest.yml` in the current working directory.
 
 <pre class="terminal">
 $ cf push
 Using manifest file /path_to_working_directory/manifest.yml
 </pre>
 
-With the `-f` option, a path with no filename means that the filename must be
-`manifest.yml`.
-
-<pre class="terminal">
-$ cf push -f ./some_directory/some_other_directory/
-Using manifest file /path_to_working_directory/manifest.yml
-</pre>
-
-If the manifest is named something other than `manifest.yml`, use the `-f`
-option. You must include both the path and the filename with the `-f` option.
+If your manifest is located elsewhere, use the `-f` option to provide the path to the filename. 
 
 <pre class="terminal">
 $ cf push -f ./some_directory/some_other_directory/alternate_manifest.yml
 Using manifest file /path_to_working_directory/some_directory/some_other_directory/alternate_manifest.yml
+</pre>
+
+If you provide a path with no filename, the filename must be
+`manifest.yml`.
+
+<pre class="terminal">
+$ cf push -f ./some_directory/some_other_directory/
+Using manifest file /path_to_working_directory/some_directory/some_other_directory/manifest.yml
 </pre>
 
 ##<a id='minimal-manifest'></a>Example Manifest ##
@@ -69,19 +64,14 @@ A minimal manifest requires only an application `name`.
 To create a valid minimal manifest, remove the `memory` and `host` properties
 from this example.
 
-Place your `manifest.yml` in the directory that contains the application files
-that you want to push and run `cf push`.
-`cf push` searches the current directory for a manifest unless you specify
-another path with the `-p` option.
-
 ##<a id='name'></a>Always Provide an Application Name to cf push ##
 
 `cf push` requires an application name, which you provide either in a manifest
 or at the command line.
 
 As described in [How cf push Finds the Manifest](#find-manifest) above, the
-command `cf push` works when the `manifest.yml` file is in the current working
-directory.
+command `cf push` locates the `manifest.yml` in the current working
+directory by default, or in the path provided by the `-f` option.
 
 If you do not use a manifest, the minimal push command looks like this:
 

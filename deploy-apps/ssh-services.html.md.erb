@@ -6,13 +6,13 @@ title: Accessing Services with SSH
 
 This page assumes you are using [cf CLI v6.15.0](https://github.com/cloudfoundry/cli/releases) or later. 
 
-This topic describes how to gain direct command line access to your Cloud Foundry deployed service instance. For example, you may need access to your database to execute raw SQL commands to edit the schema, import and export data, or debug application data issues. 
+This topic describes how to gain direct command line access to your deployed service instance. For example, you may need access to your database to execute raw SQL commands to edit the schema, import and export data, or debug application data issues. 
 
 To establish direct command line access to a service, you deploy a host app and utilize its SSH and port forwarding features to communicate with the service instance through the app container. The technique outlined below works with any TCP service, such as MySQL or Redis. 
 
-##<a id="create-instance"></a>Creating a Service Instance##
+##<a id="create-instance"></a>Create a Service Instance##
 
-In your terminal window, login to your Cloud Foundry deployment with `cf login`. 
+In your terminal window, login to your deployment with `cf login`. 
 
 1. <%= vars.ssh_marketplace_step %>
 <pre class="terminal">$ cf marketplace
@@ -21,9 +21,9 @@ In your terminal window, login to your Cloud Foundry deployment with `cf login`.
 1. Create your service instance. As part of the `create-service` command, indicate the service name, the service plan, and the name you choose for your service instance.
 <pre class="terminal">$ cf create-service <%=vars.ssh_service %> <%=vars.ssh_service_plan %> MY-DB  </pre>
 
-##<a id="push-app"></a>Pushing Your Host App##
+##<a id="push-app"></a>Push Your Host App##
 
-To push an app that will act as the host for the SSH tunnel, push any app that will successfully deploy to Elastic Runtime. 
+To push an app that will act as the host for the SSH tunnel, push any app that will successfully deploy to <%= vars.product_full %>. 
 <p class="note"><strong>Note</strong>: Your app must be prepared before you push it. See the <a href="deploy-app.html">Deploy an Application</a> topic for details on preparing apps for deployment.
 </p>
 
@@ -33,7 +33,7 @@ To push an app that will act as the host for the SSH tunnel, push any app that w
 <pre class="terminal">$ cf enable-ssh YOUR-HOST-APP</pre>
 <p class="note"><strong>Note</strong>: In order to enable SSH access to your app, SSH access must also be enabled for both the space that contains the app and <%= vars.product_full %>. See the [Application SSH Overview](./app-ssh-overview.html) topic for further details.</p>
 
-##<a id="bind-app"></a>Creating Your Service Key##
+##<a id="bind-app"></a>Create Your Service Key##
 To establish SSH access to your service instance, you need to create a service key that contains critical information for configuring your SSH tunnel.
 
 1. Create a service key for your service instance.
@@ -44,7 +44,7 @@ Getting key EXTERNAL-ACCESS-KEY for service instance MY-DB as user<span>@</span>
 <%= vars.ssh_service_access_key %>
 </pre>
 
-##<a id="ssh-tunnel"></a>Configuring Your SSH Tunnel 
+##<a id="ssh-tunnel"></a>Configure Your SSH Tunnel 
 
 Configure an SSH tunnel to your service instance using `cf ssh APP-NAME`. Tailor the example command below with information from your service key.
 <pre class="terminal">$ cf ssh -N -L 63306:<%= vars.ssh_service_host %>:3306 YOUR-HOST-APP</pre>
@@ -54,9 +54,9 @@ Configure an SSH tunnel to your service instance using `cf ssh APP-NAME`. Tailor
   * Use any available local port for port forwarding. For example, `63306`.
   * `-N` tells `cf ssh` not to execute a remote command.
 
-<p class="note"><strong>Note</strong>: Because the SSH tunnel may timeout, Pivotal recommends that you run <code>cf ssh</code> in the foreground and restart it if it exits. </p>
+<p class="note"><strong>Note</strong>: Because the SSH tunnel may timeout, run <code>cf ssh</code> in the foreground and restart it if it exits. </p>
 
-##<a id="access-service"></a> Accessing Your Service Instance##
+##<a id="access-service"></a>Access Your Service Instance##
 To establish direct command-line access to your service instance, use the relevant command line tool for that service. This example uses the MySQL command line client to access the <%= vars.ssh_service %> service instance. 
 
 <pre class="terminal">$ mysql -u b5136e448be920 -h 0 -p -D ad_b2fca6t49704585d -P 63306</pre>

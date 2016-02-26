@@ -12,7 +12,7 @@ To establish direct command line access to a service, you deploy a host app and 
 
 ##<a id="create-instance"></a>Create a Service Instance##
 
-In your terminal window, login to your deployment with `cf login`. 
+In your terminal window, log in to your deployment with `cf login`. 
 
 1. <%= vars.ssh_marketplace_step %>
 <pre class="terminal">$ cf marketplace
@@ -47,12 +47,12 @@ Getting key EXTERNAL-ACCESS-KEY for service instance MY-DB as user<span>@</span>
 ##<a id="ssh-tunnel"></a>Configure Your SSH Tunnel 
 
 Configure an SSH tunnel to your service instance using `cf ssh APP-NAME`. Tailor the example command below with information from your service key.
-<pre class="terminal">$ cf ssh -N -L 63306:<%= vars.ssh_service_host %>:3306 YOUR-HOST-APP</pre>
+<pre class="terminal">$ cf ssh -N -L 63306:<%= vars.ssh_service_host %>:3306 spring-music</pre>
 
+  * Use any available local port for port forwarding. For example, `63306`.
   * Replace `<%= vars.ssh_service_host %>` with the address provided under `hostname` in the service key retrieved above.
   * Replace `3306` with the port provided under `port` above.
-  * Use any available local port for port forwarding. For example, `63306`.
-  * `-N` tells `cf ssh` not to execute a remote command.
+  * Replace `spring-music` with the name of your host app. 
 
 <p class="note"><strong>Note</strong>: Because the SSH tunnel may timeout, run <code>cf ssh</code> in the foreground and restart it if it exits. </p>
 

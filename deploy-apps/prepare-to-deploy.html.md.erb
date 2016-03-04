@@ -1,5 +1,6 @@
 ---
 title: Considerations for Designing and Running an Application in the Cloud
+owner: Runtime
 ---
 
 <strong><%= modified_date %></strong>
@@ -64,11 +65,11 @@ There are several open source projects that share sessions in a data service.
 
 For application management purposes, Cloud Foundry may need to stop and restart your application instances. If this occurs, Cloud Foundry performs the following steps:
 
-1. Cloud Foundry sends a single <code>termination signal</code> to the root process that your start command invokes. 
+1. Cloud Foundry sends a single <code>termination signal</code> to the root process that your start command invokes.
 
-1. Cloud Foundry waits 10 seconds to allow your application to cleanly shut down any child processes and handle any open connections. 
+1. Cloud Foundry waits 10 seconds to allow your application to cleanly shut down any child processes and handle any open connections.
 
-1. After 10 seconds, Cloud Foundry forcibly shuts down your application. 
+1. After 10 seconds, Cloud Foundry forcibly shuts down your application.
 
 Your application should accept and handle the termination signal to ensure that it shuts down gracefully.
 

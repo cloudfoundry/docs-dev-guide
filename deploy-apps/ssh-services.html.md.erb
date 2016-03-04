@@ -1,18 +1,19 @@
 ---
 title: Accessing Services with SSH
+owner: Core Services
 ---
 
 <strong><%= modified_date %></strong>
 
-This page assumes you are using [cf CLI v6.15.0](https://github.com/cloudfoundry/cli/releases) or later. 
+This page assumes you are using [cf CLI v6.15.0](https://github.com/cloudfoundry/cli/releases) or later.
 
-This topic describes how to gain direct command line access to your deployed service instance. For example, you may need access to your database to execute raw SQL commands to edit the schema, import and export data, or debug application data issues. 
+This topic describes how to gain direct command line access to your deployed service instance. For example, you may need access to your database to execute raw SQL commands to edit the schema, import and export data, or debug application data issues.
 
-To establish direct command line access to a service, you deploy a host app and utilize its SSH and port forwarding features to communicate with the service instance through the app container. The technique outlined below works with any TCP service, such as MySQL or Redis. 
+To establish direct command line access to a service, you deploy a host app and utilize its SSH and port forwarding features to communicate with the service instance through the app container. The technique outlined below works with any TCP service, such as MySQL or Redis.
 
 ##<a id="create-instance"></a>Create a Service Instance##
 
-In your terminal window, log in to your deployment with `cf login`. 
+In your terminal window, log in to your deployment with `cf login`.
 
 1. <%= vars.ssh_marketplace_step %>
 <pre class="terminal">$ cf marketplace
@@ -23,11 +24,11 @@ In your terminal window, log in to your deployment with `cf login`.
 
 ##<a id="push-app"></a>Push Your Host App##
 
-To push an app that will act as the host for the SSH tunnel, push any app that will successfully deploy to <%= vars.product_full %>. 
+To push an app that will act as the host for the SSH tunnel, push any app that will successfully deploy to <%= vars.product_full %>.
 <p class="note"><strong>Note</strong>: Your app must be prepared before you push it. See the <a href="deploy-app.html">Deploy an Application</a> topic for details on preparing apps for deployment.
 </p>
 
-1. Push your app. 
+1. Push your app.
 <pre class="terminal">$ cf push YOUR-HOST-APP</pre>
 1. Enable SSH for your app.
 <pre class="terminal">$ cf enable-ssh YOUR-HOST-APP</pre>
@@ -44,7 +45,7 @@ Getting key EXTERNAL-ACCESS-KEY for service instance MY-DB as user<span>@</span>
 <%= vars.ssh_service_access_key %>
 </pre>
 
-##<a id="ssh-tunnel"></a>Configure Your SSH Tunnel 
+##<a id="ssh-tunnel"></a>Configure Your SSH Tunnel
 
 Configure an SSH tunnel to your service instance using `cf ssh APP-NAME`. Tailor the example command below with information from your service key.
 <pre class="terminal">$ cf ssh -N -L 63306:<%= vars.ssh_service_host %>:3306 spring-music</pre>
@@ -52,12 +53,12 @@ Configure an SSH tunnel to your service instance using `cf ssh APP-NAME`. Tailor
   * Use any available local port for port forwarding. For example, `63306`.
   * Replace `<%= vars.ssh_service_host %>` with the address provided under `hostname` in the service key retrieved above.
   * Replace `3306` with the port provided under `port` above.
-  * Replace `spring-music` with the name of your host app. 
+  * Replace `spring-music` with the name of your host app.
 
 <p class="note"><strong>Note</strong>: Because the SSH tunnel may timeout, run <code>cf ssh</code> in the foreground and restart it if it exits. </p>
 
 ##<a id="access-service"></a>Access Your Service Instance##
-To establish direct command-line access to your service instance, use the relevant command line tool for that service. This example uses the MySQL command line client to access the <%= vars.ssh_service %> service instance. 
+To establish direct command-line access to your service instance, use the relevant command line tool for that service. This example uses the MySQL command line client to access the <%= vars.ssh_service %> service instance.
 
 <pre class="terminal">$ mysql -u b5136e448be920 -h 0 -p -D ad_b2fca6t49704585d -P 63306</pre>
   * Replace `b5136e448be920` with the username provided under `username` in your service key.

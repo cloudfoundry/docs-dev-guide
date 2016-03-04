@@ -1,12 +1,13 @@
 ---
 title: Application SSH Overview
+owner: Diego
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic introduces SSH configuration for applications in your <%= vars.product_full %> deployment. 
+This topic introduces SSH configuration for applications in your <%= vars.product_full %> deployment.
 
-If you need to troubleshoot an instance of an app, you can gain SSH access to the app using the SSH proxy and daemon. 
+If you need to troubleshoot an instance of an app, you can gain SSH access to the app using the SSH proxy and daemon.
 
 For example, one of your app instances may be unresponsive, or the log output from the app may be inconsistent or incomplete. You can SSH into the individual VM that runs the problem instance in order to troubleshoot.
 
@@ -37,7 +38,7 @@ Operators, space administrators, and developers can configure SSH access for <%=
 An application is SSH-accessible only if operators, space administrators, and developers all grant SSH access at their respective levels. For example, the image below shows a deployment where:
 
 * An operator allowed SSH access at the deployment level.
-* A space administrator allowed SSH access for applications running in spaces "A" and "B" but not "C." 
+* A space administrator allowed SSH access for applications running in spaces "A" and "B" but not "C."
 * A developer enabled SSH access for applications that include "Foo," "Bar," and "Baz."
 
 As a result, apps "Foo," "Bar," and "Baz" accept SSH requests.
@@ -45,9 +46,9 @@ As a result, apps "Foo," "Bar," and "Baz" accept SSH requests.
 <%= image_tag("../images/ssh-app-access.png") %>
 
 ## <a id='app-ssh-config'></a>SSH Access for Apps and Spaces
-Administrators and application developers can configure SSH access from the command line. The cf CLI also includes commands to return the value of the SSH access setting. See the [Accessing Apps with Diego SSH](./ssh-apps.html) topic to use and configure SSH at both the application level and the space level. 
+Administrators and application developers can configure SSH access from the command line. The cf CLI also includes commands to return the value of the SSH access setting. See the [Accessing Apps with Diego SSH](./ssh-apps.html) topic to use and configure SSH at both the application level and the space level.
 
-## <a id="platform-ssh-config"></a> Configuring SSH Access for <%= vars.product_full %> 
+## <a id="platform-ssh-config"></a> Configuring SSH Access for <%= vars.product_full %>
 <%= vars.platform_ssh_configuration %>
 
 ## <a id="diego-ssh-concepts"></a> Understanding SSH Access

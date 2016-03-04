@@ -1,5 +1,8 @@
 ---
 title: Troubleshooting Application Deployment and Health
+owner:
+  - Routing
+  - Runtime
 ---
 
 <strong><%= modified_date %></strong>
@@ -157,7 +160,7 @@ If it exceeds the limit, modify the app to use less memory.
 
 ### <a id='routing-conflict'></a>Routing Conflict ###
 
-<%= partial 'routing_conflict' %> 
+<%= partial 'routing_conflict' %>
 
 If you suspect a routing conflict, run `cf routes` to check the routes in your installation.
 
@@ -295,5 +298,5 @@ logs.
 The <code>cf logs</code> command also returns messages from any <a href="http://logging.apache.org/log4j/">log4j</a> facility that you configure to send logs to STDOUT.</p>
 
 ## <a id='ssh'></a>Accessing Apps with SSH ##
-If you need to troubleshoot an instance of an app, you can gain SSH access to the app with the Diego proxy and daemon. See the Diego SSH topic for details on [SSH configuration and procedures](./app-ssh-overview.html). 
+If you need to troubleshoot an instance of an app, you can gain SSH access to the app with the Diego proxy and daemon. See the Diego SSH topic for details on [SSH configuration and procedures](./app-ssh-overview.html).
 

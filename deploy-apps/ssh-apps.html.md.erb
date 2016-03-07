@@ -141,7 +141,7 @@ E1x89n
 1. Run your `ssh` or other command to connect to the application instance. For the username, use a string of the form cf:APP-GUID/APP-INSTANCE-INDEX@SSH-ENDPOINT, where APP-GUID and SSH-ENDPOINT come from the previous steps. For the port number, pass in the SSH-PORT  also recorded above. APP-INSTANCE-INDEX is the index of the instance you want to access.
 <br/><br/>With the above example, you `ssh` into the container hosting the first instance of your app by running:
 <pre class="terminal">
-$ ssh -p 2222 cf:d0a2e11d-e6ca-4120-b32d-140c356906a5/0@ssh.MY-DOMAIN.com
+$ ssh -p 2222 cf:d0a2e11d-e6ca-4120-b32d-140c356906a5/0<span>@</span>ssh.MY-DOMAIN.com
 </pre>
 <br/>Or you can use `scp` to transfer files by running:
 <pre class="terminal">
@@ -150,12 +150,12 @@ $ scp -P 2222 -o User=cf:d0a2e11d-e6ca-4120-b32d-140c356906a5/0 ssh.MY-DOMAIN.co
 
 1. When the SSH proxy reports its RSA fingerprint, confirm that it matches the `app_ssh_host_key_fingerprint` recorded above. When prompted for a password, paste in the authorization code that `cf ssh-code` returned.
 <pre class="terminal">
-$ ssh -p 2222 cf:d0a2e11d-e6ca-4120-b32d-140c356906a5/0@ssh.MY-DOMAIN.com
+$ ssh -p 2222 cf:d0a2e11d-e6ca-4120-b32d-140c356906a5/0<span>@</span>ssh.MY-DOMAIN.com
 The authenticity of host '[ssh.MY-DOMAIN.com]:2222 ([52.12.144.5]:2222)' can't be established.
 RSA key fingerprint is a6:14:c0:ea:42:07:b2:f7:53:2c:0b:60:e0:00:21:6c.
 Are you sure you want to continue connecting (yes/no)? yes
 Warning: Permanently added '[ssh.MY-DOMAIN.com]:2222 [52.12.144.5]:2222' (RSA) to the list of known hosts.
-cf:d0a2e11d-e6ca-4120-b32d-140@ssh.ketchup.cf-app.com's password:
+cf:d0a2e11d-e6ca-4120-b32d-140<span>@</span>ssh.ketchup.cf-app.com's password:
 vcap@ce4l5164kws:~$
 </pre>
 

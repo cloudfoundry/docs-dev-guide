@@ -1,0 +1,14 @@
+---
+title: Cloud Foundry Application Trusted System Certificates (Diego Specific)
+---
+
+<strong><%= modified_date %></strong>
+
+The Cloud Foundry Administrator can deploy a set of trusted system certificates 
+that will be made available in Linux application containers, both cflinuxfs2 as well 
+as Docker containers.
+
+The application developer can access the set of trusted system certifcates in the 
+container in `/etc/cf-system-certificates`.  This will be a read-only directory 
+containing individual certificate files i.e. `certificate.crt`
+

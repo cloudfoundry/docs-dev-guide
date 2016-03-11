@@ -93,9 +93,10 @@ The external IP address of the host running the app instance.
 `CF_INSTANCE_IP=1.2.3.4`
 
 ### <a id='CF-INSTANCE-PORT'></a>CF\_INSTANCE\_PORT ###
-Same as the [PORT](#PORT) of the app instance.
 
-`CF_INSTANCE_PORT=5678`
+The external (host-side) port corresponding to the internal (container-side) port with value [PORT](#PORT). For instances on Diego, this value is generally **not** the same as the [PORT](#PORT) of the app instance.
+
+`CF_INSTANCE_PORT=61045`
 
 ### <a id='CF-INSTANCE-PORTS'></a>CF\_INSTANCE\_PORTS ###
 

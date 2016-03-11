@@ -109,6 +109,27 @@ $ cf ssh MY-AWESOME-APP -L [LOCAL-NETWORK-INTERFACE:]LOCAL-PORT:REMOTE-HOST-NAME
 
 * The `-t`, `-tt`, and `-T` flags let you run an SSH session in pseudo-tty mode rather than generate terminal line output.
 
+## <a id="ssh-env"></a>SSH Session Environment
+
+If you want the environment of your interactive SSH session to match the environment of your buildpack-based app, with the same environment variables and working directory, run the following after starting the session:
+
+```
+export HOME=/home/vcap/app
+export TMPDIR=/home/vcap/tmp
+cd /home/vcap/app
+```
+
+Before running the next command, check the contents of the files in the `/home/vcap/app/.profile.d` directory to make sure they will not perform any actions that are undesireable for your running app.
+
+```
+source /home/vcap/app/.profile.d/*.sh
+```
+
+If the `.profile.d` scripts do alter your instance in undesireable ways, you should use discretion in running only the commands from them that you need for environmental setup.
+
+Note also that even after running the above commands, the value of the `VCAP_APPLICATION` environment variable will differ slightly from its value in the environment of the app process, as it will not have the `host`, `instance_id`, `instance_index`, or `port` fields set. These fields are available in other environment variables, as described in the <a href="environment-variable.html#VCAP-APPLICATION">VCAP_APPLICATION</a> documentation.
+
+
 ## <a id="other-ssh-access"></a>Application SSH Access without cf CLI
 
 In addition to `cf ssh`, you can use other SSH clients such as `ssh`, `scp`, or `sftp` to access your application, as long as you have SSH permissions.
@@ -159,17 +180,8 @@ cf:d0a2e11d-e6ca-4120-b32d-140<span>@</span>ssh.ketchup.cf-app.com's password:
 vcap@ce4l5164kws:~$
 </pre>
 
-1. That's it. You're in! If you want the container environment to match the environment of your app (that is, to contain the same environment variables) you need to set up the following:
+1. That's it. You're in!
 
-```
-export HOME=/home/vcap/app
-export TMPDIR=/home/vcap/tmp
-```
-
-Before running the next line, double-check the contents of files in the `profile.d` directory to make sure they will not perform any destructive actions.
-```
-source /home/vcap/app/.profile.d/*
-```
 
 ## <a id="proxy-to-container-auth"></a>Proxy to Container Authentication
 

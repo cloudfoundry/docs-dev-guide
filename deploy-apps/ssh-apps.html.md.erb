@@ -159,7 +159,17 @@ cf:d0a2e11d-e6ca-4120-b32d-140<span>@</span>ssh.ketchup.cf-app.com's password:
 vcap@ce4l5164kws:~$
 </pre>
 
-1. That's it. You're in!
+1. That's it. You're in! If you want the container environment to match the environment of your app (that is, to contain the same environment variables) you need to set up the following:
+
+```
+export HOME=/home/vcap/app
+export TMPDIR=/home/vcap/tmp
+```
+
+Before running the next line, double-check the contents of files in the `profile.d` directory to make sure they will not perform any destructive actions.
+```
+source /home/vcap/app/.profile.d/*
+```
 
 ## <a id="proxy-to-container-auth"></a>Proxy to Container Authentication
 

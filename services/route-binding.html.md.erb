@@ -13,6 +13,8 @@ Route services are a class of [marketplace services](../services/managing-servic
 
 Developers wishing to leverage route services should first create a service instance, choosing from compatible marketplace services (see [Managing Services](../services/managing-services.html) or using [User-provided Service Instances](./user-provided.html). This service instance is then bound to a route; all requests for the route will then be preprocessed by the service instance. Note that some services may support instances being bound to both routes and apps, however these operations have different effects. For application requests and responses to be routed through a route service, the service instance must be bound to the route.
 
+## <a id='bind'></a> Bind a Route to a Service Instance ##
+
 Binding a route to a service instance can be accomplished using the following cf CLI command:
 
 <pre class="terminal">
@@ -21,10 +23,39 @@ $ cf bind-route-service <%=vars.app_domain%> my-route-service --hostname my-app
 Binding may cause requests for route my-app.<%=vars.app_domain%> to be altered by service instance my-route-service. Do you want to proceed?> yes
 
 Binding route my-app.<%=vars.app_domain%> to service instance my-route-service in org my-org / space my-space as developer...
-
 OK
 </pre>
 
 <p class="note">
 <strong>Note</strong>: When binding a service instance to a route, Cloud Foundry may proxy requests for the route to the service instance, or configure a network component already in the request path.
 </p>
+
+### <a id='bind-arbitrary-parameters'></a>
+
+Some services support additional configuration parameters with the bind request. These parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
+
+<pre class="terminal">
+$ cf bind-route-service <%=vars.app_domain%> my-route-service --hostname my-app -c '{"rate_limit_threshold_rps":10000}'
+
+Binding service my-db to app rails-sample in org console / space development as user@example.com...
+OK
+</pre>
+
+<pre class="terminal">
+$ cf bind-route-service <%=vars.app_domain%> my-route-service --hostname my-app -c /tmp/config.json
+
+Binding may cause requests for route my-app.<%=vars.app_domain%> to be altered by service instance my-route-service. Do you want to proceed?> yes
+
+Binding route my-app.<%=vars.app_domain%> to service instance my-route-service in org my-org / space my-space as developer...
+OK
+</pre>
+
+## <a id='unbind'></a> Unbind a Route from a Service Instance ##
+
+<pre class="terminal">
+$ cf unbind-route-service <%=vars.app_domain%> my-route-service --hostname my-app
+
+Unbinding may leave apps mapped to route myapp.superman.cf-app.com vulnerable; e.g. if service instance myspringlogger provides authentication. Do you want to proceed?> y
+Unbinding route my-app.<%=vars.app_domain%> from service instance my-route-service in org my-org / space my-space as developer...
+OK
+</pre>

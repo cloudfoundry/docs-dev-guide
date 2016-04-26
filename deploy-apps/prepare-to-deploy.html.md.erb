@@ -57,6 +57,14 @@ that needs to be shared by all instances of an application, should be stored in
 a Cloud Foundry service.
 There are several open source projects that share sessions in a data service.
 
+### <a id="http-headers"></a>HTTP Headers
+
+HTTP traffic passed from the Cloud Foundry router to an app includes the the following HTTP headers: 
+
+* `X-Forwarded-Proto` gives the scheme of the HTTP request from the client. The scheme is HTTP if the client made an insecure request or HTTPS if the client made a secure request. Developers can configure their apps to reject insecure requests by inspecting the HTTP headers of incoming traffic and rejecting traffic that includes `X-Forwarded-Proto` with the scheme of HTTP. 
+
+* `X-Forwarded-For` gives the IP address of the client originating the request.
+
 ### <a id="ports"></a>Port Limitations ###
 
 <%=vars.port_limitations%>

@@ -60,9 +60,9 @@ $ cf create-route my-space foo.<%=vars.app_domain%> --hostname *
 
 An application mapped to a wildcard route acts as a fallback app for route requests if the requested route does not exist. For example, if a client sends a request to `http://app.foo.<%=vars.app_domain%>` by accident, meaning to reach `myapp.foo.<%=vars.app_domain%>`, the request will be routed to the application mapped to the route `*.foo.<%=vars.app_domain%>`.
 
-Nb: wildcard routes on shared domains can only be managed by admins (i.e. with `cloudcontroller.admin` scope), while wildcard routes on private domains can be managed by space developers. 
+<p class="note"><strong>Note</strong>: Wildcard routes on shared domains can only  be managed by administrators, those with <code>cloudcontroller.admin</code> scope. Wildcard routes on private domains can be managed by space developers.</p>
 
-#### <a id='create-route-with-path'></a>Create a Route with a Path####
+###<a id='create-route-with-path'></a>Create a Route with a Path 
 
 Paths can be used to route requests for the same hostname and domain to different apps.
 

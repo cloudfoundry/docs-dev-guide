@@ -255,6 +255,21 @@ The default memory limit is 1G. You might want to specify a smaller limit to con
 
 The command line option that overrides this attribute is `-m`.
 
+
+
+###<a id='health-check-type'></a>The health-check-type attribute ###
+
+Use the `health-check-type` attribute to set the `health_check_type` flag to either `port` or `none`. If you do not provide a `health-check-type` attibute, 
+it defaults to `port`.
+
+<pre>
+---
+  ...
+  health-check-type: none
+</pre>
+
+The command line option that overrides this attribute is `-u`.
+
 ###<a id='host'></a>The host attribute ###
 
 Use the `host` attribute to provide a hostname, or subdomain, in the form of a string. This segment of a route helps to ensure that the route is unique. If you do not provide a hostname, the URL for the app takes the form of `APP-NAME.DOMAIN`.

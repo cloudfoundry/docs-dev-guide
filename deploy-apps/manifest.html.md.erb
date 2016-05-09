@@ -365,18 +365,18 @@ You can use the `no-route` attribute with a value of `true` to prevent a route f
 </pre>
 The command line option that corresponds to this attribute is `--no-route`.
 
-In the new Diego architecture, `no-route` skips creating and binding a route for the app, but does not tell Diego which type of health check to perform. If your app does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check and Diego marks it as crashed. To prevent this, disable the port-based health check with `cf set-health-check APP_NAME none`.
+In the newer Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check and Cloud Foundry marks it as crashed. To prevent this, disable the port-based health check with `cf set-health-check APP_NAME none`.
 
 In the older Droplet Execution Agent (DEA) architecture, `cf set-health-check APP_NAME none` is unnecessary because `no-route` causes the DEAs to skip the port health-check on app startup.
 
-If you find that an app which should not have a route does have one:
+To remove a route from an existing app, perform the following steps:
 
 1. Remove the route using the `cf unmap-route` command.
 1. Push the app again with the `no-route: true` attribute in the manifest or the `--no-route` command line option.
 
-For more about these situations, see [Describing Multiple Applications with One Manifest](#multi-apps) below.
+For more information, see [Describing Multiple Applications with One Manifest](#multi-apps) below.
 
-###<a id='env-block'></a>Environment variables ###
+###<a id='env-block'></a>Environment Variables ###
 
 The `env` block consists of a heading, then one or more environment variable/value pairs.
 

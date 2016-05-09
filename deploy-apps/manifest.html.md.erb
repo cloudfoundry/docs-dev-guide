@@ -354,19 +354,22 @@ The command line option that overrides the timeout attribute is `-t`.
 
 ###<a id='no-route'></a>The no-route attribute ###
 
-By default, `cf push` assigns a route to every application. But some applications process data while running in the background, and should not be assigned routes.
+By default, `cf push` assigns a route to every app. But, some apps process data while running in the background and should not be assigned routes.
 
-You can use the `no-route` attribute with a value of `true` to prevent a route from being created for your application.
+You can use the `no-route` attribute with a value of `true` to prevent a route from being created for your app.
 
 <pre>
 ---
   ...
   no-route: true
 </pre>
-
 The command line option that corresponds to this attribute is `--no-route`.
 
-If you find that an application which should not have a route does have one:
+In the new Diego architecture, `no-route` skips creating and binding a route for the app, but does not tell Diego which type of health check to perform. If your app does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check and Diego marks it as crashed. To prevent this, disable the port-based health check with `cf set-health-check APP_NAME none`.
+
+In the older Droplet Execution Agent (DEA) architecture, `cf set-health-check APP_NAME none` is unnecessary because `no-route` causes the DEAs to skip the port health-check on app startup.
+
+If you find that an app which should not have a route does have one:
 
 1. Remove the route using the `cf unmap-route` command.
 1. Push the app again with the `no-route: true` attribute in the manifest or the `--no-route` command line option.

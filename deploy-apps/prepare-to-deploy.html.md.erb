@@ -36,34 +36,20 @@ In an environment with shared domains, cookies might be accessible across applic
 
 Consider whether you want your applications or tools that use cookies to set and store the cookies at the highest available domain.
 
-### <a id="sessions"></a>HTTP Sessions Not Persisted or Replicated ###
+### <a id="sessions"></a>Sticky Sessions ###
 
-Cloud Foundry supports session affinity or sticky sessions for incoming HTTP
-requests to applications if a JSESSIONID cookie is used. 
+Cloud Foundry supports session affinity or "sticky sessions" for incoming HTTP
+requests to compatible applications. 
 
-If multiple instances of an application are running on Cloud Foundry, all
-requests from a given client will be routed to the same application instance.
-This allows application containers and frameworks to store session data specific
-to each user session.
+Sticky sessions means that when multiple instances of an application are running on Cloud Foundry, requests from a particular client always reach the same application instance. This allows applications to store session data specific to a user session.
 
-During an initial request, JSESSIONIDs are returned.  They are opaque to the router.  VCAPIDs are appended by the router, and contain an `CF_INSTANCE_GUID`, which is a global, unique identifier for the container and host import. During subsequent requests, if the router cannot recall the initial instance, it will retry another instance.  This results in a new sticky session with a new application instance. 
+Sticky sessions require applications to support returning a JSESSIONID cookie in responses. 
 
+If an application returns a `JSESSIONID` cookie to a client request, the Cloud Foundry routing tier appends a second cookie, called `VCAP_ID`. On subsequent requests, the client must provide both the `JSESSIONID` and `VCAP_ID` cookies. The Cloud Foundry routing tier uses the `VCAP_ID` to forward client requests to the same application instance every time. 
 
-<p class="note">
-	<strong>Note</strong>: Application clients must support returning both the `JSESSIONID` and `VCAPID` cookies. 
+If the application instance identified by the `VCAP_ID` crashes, the router attempts to route the request to a different instance of the application. If the router finds a healthy instance of the application, it initiates a new sticky session. 
 
-<p class="note">
-	<strong>Note</strong>: Cloud Foundry does not persist or replicate HTTP session data.
-If an instance of an application crashes or is stopped, any data stored for HTTP
-sessions that were sticky to that instance are lost.
-When a user session that was sticky to a crashed or stopped instance makes
-another HTTP request, the request is routed to another instance of the
-application.
-
-Session data that must be available after an application crashes or stops, or
-that needs to be shared by all instances of an application, should be stored in
-a Cloud Foundry service.
-There are several open source projects that share sessions in a data service.
+<p class="note">Cloud Foundry does not persist or replicate HTTP session data across application instances. If an instance of an application crashes or is stopped, session data for that instance is lost. If you require session data to persist across crashed or stopped instances, or to be shared by all instances of an application, store session data in a Cloud Foundry marketplace service that offers data persistence.</p> 
 
 ### <a id="http-headers"></a>HTTP Headers
 

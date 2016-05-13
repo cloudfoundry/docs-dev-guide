@@ -39,13 +39,21 @@ Consider whether you want your applications or tools that use cookies to set and
 ### <a id="sessions"></a>HTTP Sessions Not Persisted or Replicated ###
 
 Cloud Foundry supports session affinity or sticky sessions for incoming HTTP
-requests to applications if a jsessionid cookie is used.
+requests to applications if a JSESSIONID cookie is used. 
+
 If multiple instances of an application are running on Cloud Foundry, all
 requests from a given client will be routed to the same application instance.
 This allows application containers and frameworks to store session data specific
 to each user session.
 
-Cloud Foundry does not persist or replicate HTTP session data.
+During an initial request, JSESSIONIDs are returned.  They are opaque to the router.  VCAPIDs are appended by the router, and contain an `CF_INSTANCE_GUID`, which is a global, unique identifier for the container and host import. During subsequent requests, if the router cannot recall the initial instance, it will retry another instance.  This results in a new sticky session with a new application instance. 
+
+
+<p class="note">
+	<strong>Note</strong>: Application clients must support returning both the `JSESSIONID` and `VCAPID` cookies. 
+
+<p class="note">
+	<strong>Note</strong>: Cloud Foundry does not persist or replicate HTTP session data.
 If an instance of an application crashes or is stopped, any data stored for HTTP
 sessions that were sticky to that instance are lost.
 When a user session that was sticky to a crashed or stopped instance makes

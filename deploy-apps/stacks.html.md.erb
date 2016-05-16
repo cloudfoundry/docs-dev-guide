@@ -1,0 +1,65 @@
+---
+title: Stacks
+owner:
+  - Buildpacks & Stacks
+  - Diego
+  - Runtime OG
+---
+
+<strong><%= modified_date %></strong>
+
+A stack is a prebuilt root filesystem (rootfs) that supports a specific operating system. For example, Linux-based systems need `/usr` and `/bin` directories at their root and Windows needs `\windows`. The stack works in tandem with a buildpack to support applications running in compartments. Under Diego architecture, cell VMs can support multiple stacks.
+
+<p class="note"><strong>Note</strong>: You must ensure compatibility for buildpacks on the stacks they are running against.</p>
+
+<p class="note"><strong>Note</strong>: Docker apps do not use stacks.</p>
+
+##<a id='available-stacks'></a>Available Stacks ##
+
+* The Linux `cflinuxfs2` stack is derived from Ubuntu Trusty 14.04. Refer to the Github stacks page for supported [libraries](https://github.com/cloudfoundry/stacks/blob/master/cflinuxfs2/cflinuxfs2_receipt).
+
+* The Windows stack `windows2012R2` supports .NET apps.
+
+<%= vars.custom_stack %>
+
+##<a id='cli-commands'></a>Restaging Applications on a New Stack ##
+
+For security, stacks receive regular updates to address Common Vulnerabilities and Exposures ([CVEs](http://www.ubuntu.com/usn/)). Apps pick up on these stack changes through new releases of <%= vars.product_short %>. However, if your app links statically to a library provided in the rootfs, you may have to manually restage it to pick up the changes.
+
+It can be difficult to know what libraries an app statically links to, and it depends on the languages you are using. One example is an app that uses a Ruby or Python binary, and links out to part of the C standard library. If the C library requires an update, you may need to recompile the app and restage it as follows:
+
+1. Use the `cf stacks` command to list the stacks available in a deployment. 
+
+    <pre class='terminal'>
+    $ cf stacks
+    Getting stacks in org MY-ORG / space development as developer@example<span>.</span>com...
+    OK
+
+    name            description
+    cflinuxfs2      Cloud Foundry Linux-based filesystem
+    windows2012R2   Windows Server 2012 R2
+    </pre>
+
+1. Use the `cf push APPNAME -s STACKNAME` to change your stack and restage your application. `-s STACKNAME` specifies a stack for your application. For example, specifying `-s windows2012R2` ensures that Windows-based applications deploy to a Windows-based cell. The default stack is `cflinuxfs2`. Running the following command restages the app `MY-APP` on the default stack:
+
+    <pre class='terminal'>
+    $ cf push MY-APP
+    Using stack cflinuxfs2...
+    OK
+    Creating app MY-APP in org MY-ORG / space development as developer@example<span>.</span>com...
+    OK
+
+    ...
+    
+    requested state: started
+    instances: 1/1
+    usage: 1G x 1 instances
+    urls: MY-APP.cfapps.io
+    last uploaded: Wed Apr 8 23:40:57 UTC 2015
+        state    since                    cpu    memory        disk
+    #0  running  2015-04-08 04:41:54 PM   0.0%   57.3M of 1G   128.8M of 1G
+    </pre>
+
+      For API information, review the Stacks section of the [Cloud Foundry API Documentation](http://apidocs.cloudfoundry.org).
+
+  

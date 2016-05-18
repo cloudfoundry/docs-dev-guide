@@ -7,25 +7,26 @@ owner: Core Services
 
 _This page assumes you are using cf CLI v6._
 
-This topic describes generation of credentials for service instances for use by external or local clients. For an overview of services, and documentation on other service management operations, see the [Services Overview](index.html) topic. <%= vars.custom_services %>
+This topic describes managing service instance credentials manually with service keys. You can use service keys to connect to a service instance from a local client, or from an app that is not deployed by Cloud Foundry. Create, list, retrieve, and delete service keys using the Cloud Foundry Command Line Interface (cf CLI). 
 
-<p class='note'><strong>Note:</strong> Not all services support automated generation of credentials. Some services support credentials through application binding only.</p>
+
+<p class='note'><strong>Note:</strong> Not all services support service keys. Some services support credentials through <a href="/devguide/services/application-binding.html">application binding</a> only.</p>
 
 ## <a id='create'></a> Create a Service Key ##
 
 Generates credentials for a service instance.
 
 <pre class="terminal">
-$ cf create-service-key myservice mykey
-Creating service key mykey for service instance myservice as me@example.com...
+$ cf create-service-key MY-SERVICE MY-KEY
+Creating service key MY-KEY for service instance myservice as me@example.com...
 OK
 </pre>
 
 ## <a id='list'></a> List Service Keys for a Service Instance ##
 
 <pre class="terminal">
-$ cf service-keys myservice
-Getting service keys for service instance myservice as me@example.com...
+$ cf service-keys MY-SERVICE
+Getting service keys for service instance MY-SERVICE as me@example.com...
 
 name
 mykey1
@@ -36,8 +37,8 @@ mykey2
 ## <a id='detail'></a>Get Credentials for a Service Key ##
 
 <pre class="terminal">
-$ cf service-key myservice mykey
-Getting key mykey for service instance myservice as me@example.com...
+$ cf service-key MY-SERVICE MY-KEY
+Getting key MY-KEY for service instance MY-SERVICE as me@example.com...
 
 {
   uri: foo://user2:pass2@example.com/mydb,
@@ -48,8 +49,8 @@ Getting key mykey for service instance myservice as me@example.com...
 `--guid` can be provided to display the API guid for the service key.
 
 <pre class="terminal">
-$ cf service-key --guid myservice mykey
-Getting key mykey for service instance myservice as me@example.com...
+$ cf service-key --guid MY-SERVICE MY-KEY
+Getting key MY-KEY for service instance MY-SERVICE as me@example.com...
 
 e3696fcb-7a8f-437f-8692-436558e45c7b
 
@@ -59,10 +60,10 @@ OK
 ## <a id='delete'></a>Delete Service Key ##
 
 <pre class="terminal">
-$ cf delete-service-key myservice mykey
+$ cf delete-service-key MY-SERVICE MY-KEY
 
-Are you sure you want to delete the service key mykey ? y
-Deleting service key mykey for service instance myservice as me@example.com...
+Are you sure you want to delete the service key MY-KEY ? y
+Deleting service key MY-KEY for service instance MY-SERVICE as me@example.com...
 
 OK
 </pre>
@@ -70,9 +71,9 @@ OK
 Add option `-f` to force deletion without confirmation.
 
 <pre class="terminal">
-$ cf delete-service-key -f myservice mykey
+$ cf delete-service-key -f MY-SERVICE MY-KEY
 
-Deleting service key mykey for service instance myservice as me@example.com...
+Deleting service key MY-KEY for service instance MY-SERVICE as me@example.com...
 
 OK
 </pre>

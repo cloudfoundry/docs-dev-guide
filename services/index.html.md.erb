@@ -9,7 +9,7 @@ This documentation is intended for end users of Cloud Foundry and covers provisi
 
 ## <a id='instances'></a>Services and Service Instances ##
 
-Cloud Foundry offers a marketplace of services, from which users can provision reserved resources on-demand. Examples of resources services provide include databases on a shared or dedicated server, or accounts on a SaaS application. These resources are known as Service Instances and the systems that deliver and operate these resources are known as Services. Think of a service as a factory that delivers service instances.
+Cloud Foundry offers a marketplace of services, from which users can provision reserved resources on-demand. Examples of resources services provide include databases on a shared or dedicated server, or accounts on a SaaS application. These resources are known as service instances and the systems that deliver and operate these resources are known as Services. Think of a service as a factory that delivers service instances.
 
 For documentation on provisioning service instances and other lifecycle operations, see [Managing Service Instances](./managing-services.html).
 
@@ -21,19 +21,20 @@ Cloud Foundry enables users to integrate services that are not available in the 
 
 ## <a id='credentials'></a>Service Instance Credentials ##
 
-Cloud Foundry enables users to automatically provision credentials needed to reach a service instance. These credentials can be managed automatically for use by applications on Cloud Foundry, or managed manually for use by external and local clients.
+Cloud Foundry enables users to provision credentials needed to reach a service instance. You can use application binding to automatically deliver these credentials to your Cloud Foundry app. For external and local clients, you can use service keys to communicate with a service instance. 
 
-<p class='note'><strong>Note:</strong> Not all services support automated generation of credentials. Some services support credentials through application binding only.</p>
 
 ### <a id='application-binding'></a>Application Binding ###
 
 Service instance credentials can be delivered automatically to applications running on Cloud Foundry in an environment variable. For more information, see [Delivering Service Credentials to an Application](./application-binding.html).
 
-For details on binding specific to your application development framework, refer to the Service Binding section in the documentation for [your framework's buildpack](../../buildpacks/).
+For details on binding to a specific application development framework, refer to the Service Binding section in the documentation for [your framework's buildpack](../../buildpacks/).
 
 ### <a id='service-keys'></a>Service Keys ###
 
-Credentials managed manually are known as **Service Keys**. For more information, see [Managing Service Keys](./service-keys.html).
+Credentials managed manually are known as service keys. Use service keys when you want an additional set of credentials to use outside of the service binding use case. You can also service keys for applications not deployed with Cloud Foundry. For more information, see [Managing Service Keys](./service-keys.html).
+
+<p class='note'><strong>Note:</strong> Not all services support service keys. Some services support credentials through application binding only.</p>
 
 ## <a id='log-management'></a>Streaming Applications Logs to Log Management Services ##
 

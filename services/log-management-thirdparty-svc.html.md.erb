@@ -144,14 +144,19 @@ load. Currently, we do not recommend using Logentries as it does not support mul
 
 From your Sematext account:
 
-1. Click the [Create App / Logsene App](https://apps.sematext.com/logsene-reports/registerApplication.do) menu item. Enter a name and click to the "Add Application" button to create the Logsene App. 
+1. Click the [Create App / Logsene App](https://apps.sematext.com/logsene-reports/registerApplication.do) menu item. Enter a name and click the "Add Application" button to create the Logsene App. 
 
 1. Create the log drain service in Cloud Foundry using the displayed URL.
 
-    `$ cf cups logsene-log-drain -l https://logsene-cf-receiver.sematext.com/YOUR_LOGSENE_TOKEN`
+    <pre class='terminal'>    
+    $ cf cups logsene-log-drain -l https://logsene-cf-receiver.sematext.com/YOUR_LOGSENE_TOKEN
+    </pre>
 
 1. Bind the log drain to an app. You could optionally bind multiple apps to one log drain.
-	`$cf bind-service YOUR-CF-APP-NAME logsene-log-drain`
+	
+    <pre class='terminal'> 
+    $cf bind-service YOUR-CF-APP-NAME logsene-log-drain
+    </pre>
 
-1. Restage or push the app using either the `cf restage YOUR-CF-APP-NAME` or `cf push YOUR-CF-APP-NAME` command. After a short delay, logs begin to flow automatically and appear in the [Logsene UI](https://apps.sematext.com/users-web/services.do#logsene).
+1. Restage or push the app using either: <pre class='terminal'>cf restage YOUR-CF-APP-NAME</pre> or <pre class='terminal'>cf push YOUR-CF-APP-NAME</pre> After a short delay, logs begin to flow automatically and appear in the [Logsene UI](https://apps.sematext.com/users-web/services.do#logsene).
 

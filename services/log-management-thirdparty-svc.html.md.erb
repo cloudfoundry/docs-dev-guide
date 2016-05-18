@@ -137,3 +137,21 @@ search query.
 
 Cloud Foundry distributes log messages over multiple servers in order to handle
 load. Currently, we do not recommend using Logentries as it does not support multiple syslog sources.
+
+## <a id='logsene'></a>Sematext Logsene ##
+
+<p class="note"><strong>Note</strong>: Logsene uses HTTPS for communication. HTTPS is supported in Cloud Foundry v158 and above.</p>
+
+From your Sematext account:
+
+1. Click the [Create App / Logsene App](https://apps.sematext.com/logsene-reports/registerApplication.do) menu item and enter a name to create a Logsene App. Logsene displays then the instructions to create the log drain service in the section "Cloud Foundry". The command includes the URL with the given Logsene App-Token. 
+
+1. Create the log drain service in Cloud Foundry using the displayed URL.
+
+    `$ cf cups logsene-log-drain -l https://logsene-cf-receiver.sematext.com/YOUR_LOGSENE_TOKEN`
+
+1. Bind the log drain to an app. You could optionally bind multiple apps to one log drain.
+	`$cf bind-service YOUR-CF-APP-NAME logsene-log-drain`
+
+1. Restage or push the app using either the `cf restage YOUR-CF-APP-NAME` or `cf push YOUR-CF-APP-NAME` command. After a short delay, logs begin to flow automatically and appear in the [Logsene UI](https://apps.sematext.com/users-web/services.do#logsene).
+

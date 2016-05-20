@@ -1,0 +1,10 @@
+---
+title: Pre-runtime Hooks
+owner: Diego
+---
+
+<strong><%= modified_date %></strong>
+
+If an application includes a `.profile` script, then this script will be executed after all the scripts in `.profile.d/`, immediately before the application instance starts.
+
+This can be used to perform application specific initialization tasks that are not provided for by the buildpack itself. The `.profile` script can make use of the language runtime environment setup by the buildpack as the `.profile.d/` scripts have already been executed and all environment variables should have their expected values.

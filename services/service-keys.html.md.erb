@@ -14,7 +14,7 @@ This topic describes managing service instance credentials manually with service
 
 ## <a id='create'></a> Create a Service Key ##
 
-Generates credentials for a service instance.
+To generate credentials for a service instance, use the `cf create-service-key` command:
 
 <pre class="terminal">
 $ cf create-service-key MY-SERVICE MY-KEY
@@ -22,7 +22,27 @@ Creating service key MY-KEY for service instance myservice as me@example.com...
 OK
 </pre>
 
+Use the `-c` flag to provide service-specific configuration parameters in a valid JSON object, either in-line or in a file. 
+
+To provide the JSON object in-line, use the following format:
+
+<pre class="terminal">
+$ cf create-service-key MY-SERVICE MY-KEY -c '{"permissions":"read-only"}'
+Creating service key MY-KEY for service instance myservice as me@example.com...
+OK
+</pre>
+
+To provide the JSON object as a file, give the absolute or relative path to your JSON file:
+
+<pre class="terminal">
+$ cf create-service-key MY-SERVICE MY-KEY -c PATH-TO-JSON-FILE
+Creating service key MY-KEY for service instance myservice as me@example.com...
+OK
+</pre>
+
 ## <a id='list'></a> List Service Keys for a Service Instance ##
+
+To list service keys for a service instance, use the `cf service-keys` command:
 
 <pre class="terminal">
 $ cf service-keys MY-SERVICE
@@ -36,6 +56,8 @@ mykey2
 
 ## <a id='detail'></a>Get Credentials for a Service Key ##
 
+To retrieve credentials for a service key, use the `cf service-key` command:
+
 <pre class="terminal">
 $ cf service-key MY-SERVICE MY-KEY
 Getting key MY-KEY for service instance MY-SERVICE as me@example.com...
@@ -46,7 +68,7 @@ Getting key MY-KEY for service instance MY-SERVICE as me@example.com...
 }
 </pre>
 
-`--guid` can be provided to display the API guid for the service key.
+Use the `--guid` flag to display the API GUID for the service key:
 
 <pre class="terminal">
 $ cf service-key --guid MY-SERVICE MY-KEY
@@ -58,6 +80,8 @@ OK
 </pre>
 
 ## <a id='delete'></a>Delete Service Key ##
+
+To delete a service key, use the `cf delete-service-key` command:
 
 <pre class="terminal">
 $ cf delete-service-key MY-SERVICE MY-KEY

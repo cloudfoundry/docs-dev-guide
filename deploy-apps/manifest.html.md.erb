@@ -122,7 +122,11 @@ This section explains how to describe optional application attributes in manifes
 
 ###<a id='buildpack'></a>The buildpack attribute ###
 
-If your application requires a custom buildpack, you can use the `buildpack` attribute to specify it by name (`MY-BUILDPACK`), Git URL (`https://github.com/cloudfoundry/java-buildpack.git`), or Git URL with a branch or tag (`https://github.com/cloudfoundry/java-buildpack.git#v3.3.0` for `v3.3.0` tag).
+If your application requires a custom buildpack, you can use the `buildpack` attribute to specify it in one of three ways:
+
+* By name: `MY-BUILDPACK`. 
+* By GitHub URL: `https://github.com/cloudfoundry/java-buildpack.git`. 
+* By GitHub URL with a branch or tag: `https://github.com/cloudfoundry/java-buildpack.git#v3.3.0` for the `v3.3.0` tag.
 
 <pre>
 ---

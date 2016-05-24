@@ -18,7 +18,7 @@ To generate credentials for a service instance, use the `cf create-service-key` 
 
 <pre class="terminal">
 $ cf create-service-key MY-SERVICE MY-KEY
-Creating service key MY-KEY for service instance myservice as me@example.com...
+Creating service key MY-KEY for service instance MY as me@example.com...
 OK
 </pre>
 
@@ -28,7 +28,7 @@ To provide the JSON object in-line, use the following format:
 
 <pre class="terminal">
 $ cf create-service-key MY-SERVICE MY-KEY -c '{"permissions":"read-only"}'
-Creating service key MY-KEY for service instance myservice as me@example.com...
+Creating service key MY-KEY for service instance MY-SERVICE as me@example.com...
 OK
 </pre>
 
@@ -36,7 +36,7 @@ To provide the JSON object as a file, give the absolute or relative path to your
 
 <pre class="terminal">
 $ cf create-service-key MY-SERVICE MY-KEY -c PATH-TO-JSON-FILE
-Creating service key MY-KEY for service instance myservice as me@example.com...
+Creating service key MY-KEY for service instance MY-SERVICE as me@example.com...
 OK
 </pre>
 

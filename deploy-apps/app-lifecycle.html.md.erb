@@ -1,0 +1,34 @@
+---
+title: Application Container Lifecycle
+owner: Diego
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes the lifecycle of an application container for Cloud Foundry (CF) deployments running on the Diego architecture.
+
+##<a id="deployment"></a> Deployment
+
+The application deployment process involves uploading, staging, and starting the app in a container. Your app must successfully complete each of these phases within certain time limits. The default time limits for the phases are as follows:
+
+* Upload: 15 minutes
+* Stage: 15 minutes
+* Start: 60 seconds
+
+You can change these defaults through your app manifest or on the command line. For more information, see [The timeout attribute](manifest.html#timeout) section of the Deploying with Application Manifests topic.
+
+##<a id="running"></a> Running
+
+The Diego architecture distinguishes between two kinds of jobs: Tasks and Long-Running Processes (LRPs). Tasks run once, for a finite amount of time. LRPs run continuously, for an indefinite amount of time. See the [Tasks and Long-Running Processes](../concepts/diego/diego-auction.html#processes) section of the How the Diego Auction Allocates Jobs topic for more information.
+
+Because Tasks run once, CF does not restart them. Once they finish running in a container, CF marks them as complete and shuts down the container.
+
+Because LRPs run continuously, CF automatically restarts an LRP instance if it crashes. Additionally, the [Diego Cells](../concepts/diego/diego-architecture.html#cell-components) that contain the app containers periodically heartbeat their presence. If a Cell fails to report in time, CF considers it lost and reschedules its LRPs onto other Cells. 
+
+##<a id="evacuation"></a> Evacuation
+
+TK
+
+##<a id="shutdown"></a> Shutdown
+
+When CF requests a shutdown of your app instance, either in response to the command `cf scale APPNAME -i NUMBER-OF-INSTANCES` or because of a system event, CF sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, CF sends a SIGKILL.

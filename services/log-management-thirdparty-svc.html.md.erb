@@ -133,11 +133,6 @@ search query.
 
     <%= image_tag("../images/third-party-logs/sumologic-10.png") %>
 
-## <a id='logentries'></a>Logentries is Not Supported ##
-
-Cloud Foundry distributes log messages over multiple servers in order to handle
-load. Currently, we do not recommend using Logentries as it does not support multiple syslog sources.
-
 ## <a id='logsene'></a>Logsene ##
 
 <p class="note"><strong>Note</strong>: Logsene uses HTTPS for communication. HTTPS is supported in Cloud Foundry v158 and above.</p>
@@ -159,4 +154,9 @@ From your Sematext account:
     </pre>
 
 1. Restage or push the app using either: <pre class='terminal'>cf restage YOUR-CF-APP-NAME</pre> or <pre class='terminal'>cf push YOUR-CF-APP-NAME</pre> After a short delay, logs begin to flow automatically and appear in the [Logsene UI](https://apps.sematext.com/users-web/services.do#logsene).
+
+## <a id='logentries'></a>Logentries is Not Supported ##
+
+Cloud Foundry distributes log messages over multiple servers in order to handle
+load. Currently, we do not recommend using Logentries as it does not support multiple syslog sources.
 

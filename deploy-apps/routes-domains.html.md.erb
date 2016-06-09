@@ -5,9 +5,6 @@ owner: Routing
 
 <strong><%= modified_date %></strong>
 
-<% $this_topic = 'routes-domains' %>
-
-_This page assumes you are using cf CLI v6._
 
 <p class="note">
 	<strong>Note</strong>: The term <em>domain</em> in this topic differs from its common use and is specific to <%=vars.product_full%>. Likewise, <em>shared domain</em> and <em>private domain</em> refer to resources with specific meaning in <%=vars.product_short%>. The use of <em>domain name</em>, <em>root domain</em>, and <em>subdomain</em> refers to DNS records.
@@ -211,6 +208,8 @@ $ cf delete-route <%=vars.private_app_domain%> --hostname myapp --path mypath
 ## <a id='domains'></a>Domains ##
 
 Domains in <%=vars.product_short%> provide a namespace from which to create routes. The presence of a domain in <%=vars.product_short%> indicates to a developer that requests for any route created from the domain will be routed to <%=vars.product_short%>. This provision requires DNS to be configured out-of-band to resolve the domain name to the IP address of a load balancer configured to forward requests to the CF routers.
+
+<%= vars.product_short %> distinguishes between management of private domains and management of shared domains. Only administrators can manage shared domains.
 
 ### <a id='list-domains'></a>List Domains for an Org ###
 

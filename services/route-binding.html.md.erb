@@ -5,8 +5,6 @@ owner: Routing
 
 <strong><%= modified_date %></strong>
 
-_This page assumes you are using cf CLI v6 or greater._
-
 This topic describes how to bind a service instance to a route for the purpose of adding preprocessing to application requests.
 
 Route services are a class of [marketplace services](../services/managing-services.html) that perform filtering or content transformation on application requests and responses. This helps to remove the burden on developers who would otherwise have to implement these functions themselves. Popular use cases for route services include rate limiting, authorization, and caching. A route service may reject requests or after some transformation pass the request on to applications.

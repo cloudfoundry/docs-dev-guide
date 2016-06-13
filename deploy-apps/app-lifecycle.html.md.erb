@@ -5,7 +5,7 @@ owner: Diego
 
 <strong><%= modified_date %></strong>
 
-This topic describes the lifecycle of an application container for Cloud Foundry (CF) deployments running on the Diego architecture.
+This topic describes the lifecycle of an application container for <%= vars.product_full %> deployments running on the Diego architecture.
 
 ##<a id="deployment"></a> Deployment
 
@@ -15,20 +15,20 @@ The application deployment process involves uploading, staging, and starting the
 * Stage: 15 minutes
 * Start: 60 seconds
 
-You can change these defaults through your app manifest or on the command line. For more information, see [The timeout attribute](manifest.html#timeout) section of the Deploying with Application Manifests topic.
+<p class="note"><strong>Note</strong>: Your administrator can change these defaults. Check with your administrator for the actual time limits set for app deployment.</p>
 
-##<a id="running"></a> Running
+Developers can change the time limit for starting apps through an application manifest or on the command line. For more information, see [The timeout attribute](manifest.html#timeout) section of the Deploying with Application Manifests topic.
 
-The Diego architecture distinguishes between two kinds of jobs: Tasks and Long-Running Processes (LRPs). Tasks run once, for a finite amount of time. LRPs run continuously, for an indefinite amount of time. See the [Tasks and Long-Running Processes](../concepts/diego/diego-auction.html#processes) section of the How the Diego Auction Allocates Jobs topic for more information.
+##<a id="crash-events"></a>Crash Events
 
-Because Tasks run once, CF does not restart them. Once they finish running in a container, CF marks them as complete and shuts down the container.
-
-Because LRPs run continuously, CF automatically restarts an LRP instance if it crashes. Additionally, the [Diego Cells](../concepts/diego/diego-architecture.html#cell-components) that contain the app containers periodically heartbeat their presence. If a Cell fails to report in time, CF considers it lost and reschedules its LRPs onto other Cells. 
+If an app instance crashes, <%= vars.product_name %> automatically restarts it by rescheduling the instance on another container three times. After three failed restarts, <%= vars.product_name %> waits thirty seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.product_name %> stops trying to restart the app instance.
 
 ##<a id="evacuation"></a> Evacuation
 
-TK
+Certain operator actions require restarting VMs with containers hosting app instances. For example, an operator who updates stemcells or installs a new version of <%= vars.product_name %> must restart all the VMs in a deployment. <%= vars.product_name %> automatically relocates the instances on VMs that are shutting down through a process called evacuation. <%= vars.product_name %> recreates the app instances on another VM, waits until they are healthy, and then shuts down the old instances. During an evacuation, developers may see their app instances in a duplicated state for a brief period.
 
 ##<a id="shutdown"></a> Shutdown
 
-When CF requests a shutdown of your app instance, either in response to the command `cf scale APPNAME -i NUMBER-OF-INSTANCES` or because of a system event, CF sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, CF sends a SIGKILL.
+When <%=vars.product_name%> requests a shutdown of your app instance, either in response to the command `cf scale APPNAME -i NUMBER-OF-INSTANCES` or because of a system event, <%= vars.product_name %> sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, <%= vars.product_name %> sends a SIGKILL.
+
+Apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before <%= vars.product_name %> terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests. 

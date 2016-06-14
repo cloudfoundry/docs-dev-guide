@@ -21,14 +21,14 @@ Developers can change the time limit for starting apps through an application ma
 
 ##<a id="crash-events"></a>Crash Events
 
-If an app instance crashes, <%= vars.product_name %> automatically restarts it by rescheduling the instance on another container three times. After three failed restarts, <%= vars.product_name %> waits thirty seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.product_name %> stops trying to restart the app instance.
+If an app instance crashes, <%= vars.product_full %> automatically restarts it by rescheduling the instance on another container three times. After three failed restarts, <%= vars.product_full %> waits thirty seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.product_full %> stops trying to restart the app instance.
 
 ##<a id="evacuation"></a> Evacuation
 
-Certain operator actions require restarting VMs with containers hosting app instances. For example, an operator who updates stemcells or installs a new version of <%= vars.product_name %> must restart all the VMs in a deployment. <%= vars.product_name %> automatically relocates the instances on VMs that are shutting down through a process called evacuation. <%= vars.product_name %> recreates the app instances on another VM, waits until they are healthy, and then shuts down the old instances. During an evacuation, developers may see their app instances in a duplicated state for a brief period.
+Certain operator actions require restarting VMs with containers hosting app instances. For example, an operator who updates stemcells or installs a new version of <%= vars.product_full %> must restart all the VMs in a deployment. <%= vars.product_full %> automatically relocates the instances on VMs that are shutting down through a process called evacuation. <%= vars.product_full %> recreates the app instances on another VM, waits until they are healthy, and then shuts down the old instances. During an evacuation, developers may see their app instances in a duplicated state for a brief period.
 
 ##<a id="shutdown"></a> Shutdown
 
-When <%=vars.product_name%> requests a shutdown of your app instance, either in response to the command `cf scale APPNAME -i NUMBER-OF-INSTANCES` or because of a system event, <%= vars.product_name %> sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, <%= vars.product_name %> sends a SIGKILL.
+When <%=vars.product_name%> requests a shutdown of your app instance, either in response to the command `cf scale APPNAME -i NUMBER-OF-INSTANCES` or because of a system event, <%= vars.product_full %> sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, <%= vars.product_full %> sends a SIGKILL.
 
-Apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before <%= vars.product_name %> terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests. 
+Apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before <%= vars.product_full %> terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests. 

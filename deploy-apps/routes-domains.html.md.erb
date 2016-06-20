@@ -11,6 +11,8 @@ _This page assumes you are using cf CLI v6._
 
 This topic describes how routes and domains work in <%=vars.product_full%>, and how developers and administrators configure routes and domains for their applications using the cf Command Line Interface (CLI).
 
+<p class="note"><strong>Note</strong>: The term domain in this topic differs from its common use and is specific to Cloud Foundry. Likewise, shared domain and private domain refer to resources with specific meaning in Cloud Foundry. The use of domain name, root domain, and subdomain refers to DNS records.</p>
+
 ## <a id='routes'></a>Routes ##
 
 The <%=vars.product_short%> router routes requests to applications by associating an app with an address, known as a route. This association is called a mapping: for example, the cf CLI command for associating an app and route is `map-route`.
@@ -221,7 +223,7 @@ Route store.<%=vars.app_domain%>/products does exist
 
 For an app to receive requests to a route, developers must map the route to the app with the `cf map-route` command. If the route does not already exist, this command creates it.
 
-Developers can create and reserve routes for later use by following the steps in the <a href="map-route-manually">Manually Map a Route</a> section. Or they can map routes to their app immediately as part of a push by following the steps in the <a href="#map-route-on-push">Map a Route with Application Push</a> section.
+Developers can create and reserve routes for later use by following the steps in the <a href="#map-route-manually">Manually Map a Route</a> section. Or they can map routes to their app immediately as part of a push by following the steps in the <a href="#map-route-on-push">Map a Route with Application Push</a> section.
 
 <%=vars.map_route%>
 

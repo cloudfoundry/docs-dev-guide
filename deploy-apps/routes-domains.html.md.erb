@@ -11,8 +11,6 @@ _This page assumes you are using cf CLI v6._
 
 This topic describes how routes and domains work in <%=vars.product_full%>, and how developers and administrators configure routes and domains for their applications using the cf Command Line Interface (CLI).
 
-<p class="note"><strong>Note</strong>: The term domain in this topic differs from its common use and is specific to Cloud Foundry. Likewise, shared domain and private domain refer to resources with specific meaning in Cloud Foundry. The use of domain name, root domain, and subdomain refers to DNS records.</p>
-
 ## <a id='routes'></a>Routes ##
 
 The <%=vars.product_short%> router routes requests to applications by associating an app with an address, known as a route. This association is called a mapping: for example, the cf CLI command for associating an app and route is `map-route`.
@@ -333,18 +331,9 @@ To delete a TCP route, identify the route using the domain and port.
 $ cf delete-route tcp.<%=vars.private_app_domain%> --port 60000
 </pre>
 
----
-title: Domains
-owner: Routing
----
-
-<strong><%= modified_date %></strong>
-
-<p class="note">
-	<strong>Note</strong>: The term <em>domain</em> in this topic differs from its common use and is specific to <%=vars.product_short%>. Likewise, <em>shared domain</em> and <em>private domain</em> refer to resources with specific meaning in <%=vars.product_short%>. The use of <em>domain name</em>, <em>root domain</em>, and <em>subdomain</em> refer to DNS records.
-</p>
-
 ## <a id='domains'></a>Domains ##
+
+<p class="note"><strong>Note</strong>: The term domain in this topic differs from its common use and is specific to Cloud Foundry. Likewise, shared domain and private domain refer to resources with specific meaning in Cloud Foundry. The use of domain name, root domain, and subdomain refers to DNS records.</p>
 
 The presence of a domain in <%=vars.product_short%> indicates to a developer that requests for any route created from the domain will be routed to <%=vars.product_short%>. This provision requires DNS to be configured out-of-band to resolve the domain name to the IP address of a load balancer configured to forward requests to the CF routers. For more information on configuring DNS, see the [DNS for Domains](#domains-dns) section.
 

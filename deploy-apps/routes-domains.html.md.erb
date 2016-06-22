@@ -7,8 +7,6 @@ owner: Routing
 
 <% $this_topic = 'routes-domains' %>
 
-_This page assumes you are using cf CLI v6._
-
 This topic describes how routes and domains work in <%=vars.product_full%>, and how developers and administrators configure routes and domains for their applications using the cf Command Line Interface (CLI).
 
 ## <a id='routes'></a>Routes ##
@@ -95,7 +93,7 @@ This command instructs <%=vars.product_short%> to only route requests to apps ma
 
 #### <a id='create-route-without-hostname'></a>Create an HTTP Route without Hostname ####
 
-This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see the Private Domains(#private-domains) section.
+This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see the [Private Domains](#private-domains) section.
 
 A developer can create a route in space `my-space` from the domain `<%=vars.private_app_domain%>` with no hostname with the following command:
 

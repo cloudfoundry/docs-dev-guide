@@ -5,8 +5,6 @@ owner: CAPI
 
 <strong><%= modified_date %></strong>
 
-_This page assumes that you are using cf CLI v6._
-
 <p class="note"><strong>Note:</strong> See the <a href="../../buildpacks/">buildpacks</a> documentation for complete deployment guides specific to your application language or framework, such as the <a href="../../buildpacks/ruby/gsg-ror.html">Getting Started Deploying Ruby on Rails Apps</a> guide.</p>
 
 ## <a id='intro'></a>Overview of Deployment Process ##
@@ -21,6 +19,8 @@ Between the time that you run `push` and the time that the application is availa
 * Creates a "droplet" (the Cloud Foundry unit of execution) for the application
 * Selects an appropriate droplet execution agent (DEA) to run the droplet
 * Starts the application
+
+For more information on the lifecycle of an app, see the <a href="app-lifecycle.html">Application Container Lifecycle</a> topic.
 
 An application that uses services, such as a database, messaging, or email
 server, is not fully functional until you provision the service and, if
@@ -151,22 +151,15 @@ For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-
 
 For more information about the manifest file, see the [Deploying with Application Manifests](./manifest.html) topic.
 
-### <a id='profiled'></a>Set Environment Variables ###
+### <a id='profile'></a>Configure Pre-Runtime Hooks ###
 
-Environment variables are key-value pairs defined at the operating system level.
-These key-value pairs provide a way to configure the applications running on a
-system.
-For example, any application can access the **LANG** environment variable to
-determine which language to use for error messages and instructions, collating
-sequences, and date formats.
+To configure pre-runtime hooks, create a file named `.profile` and place it in the root of your application directory. If the directory includes a `.profile` script, then Cloud Foundry executes it immediately before each instance of your application starts. Because the `.profile` script executes after the buildpack, the script has access to the language runtime environment created by the buildpack.
 
-To set an environment variable, add a bash script to the `.profile.d` directory
-in the source code of your application.
-Cloud Foundry runs this script when deploying each instance of your application.
+<p class="note"><strong>Note</strong>: Your application root directory may also include a <code>.profile.d</code> directory that contains bash scripts that perform initialization tasks for the buildpack. Developers should not edit these scripts unless they are using a <a href="../../buildpacks/custom.html">custom buildpack</a>.</p>
 
-<p class='note'><strong>Note</strong>: You must give your shell scripts a <code>.sh</code> extension.</p>
+You can use the `.profile` script to perform application-specific initialization tasks, such as setting custom environment variables. Environment variables are key-value pairs defined at the operating system level. These key-value pairs provide a way to configure the applications running on a system. For example, any application can access the LANG environment variable to determine which language to use for error messages and instructions, collating sequences, and date formats.
 
-Example `.profile.d/setenv.sh` script:
+To set an environment variable, add the appropriate bash commands to your `.profile` file. See the example below.
 
 ~~~bash
 # Set the Java environment path for your applications

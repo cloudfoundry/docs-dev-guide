@@ -151,22 +151,15 @@ For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-
 
 For more information about the manifest file, see the [Deploying with Application Manifests](./manifest.html) topic.
 
-### <a id='profiled'></a>Set Environment Variables ###
+### <a id='profile'></a>Configure Pre-Runtime Hooks ###
 
-Environment variables are key-value pairs defined at the operating system level.
-These key-value pairs provide a way to configure the applications running on a
-system.
-For example, any application can access the **LANG** environment variable to
-determine which language to use for error messages and instructions, collating
-sequences, and date formats.
+To configure pre-runtime hooks, create a file named `.profile` and place it in the root of your application directory. If the directory includes a `.profile` script, then Cloud Foundry executes it immediately before each instance of your application starts. Because the `.profile` script executes after the buildpack, the script has access to the language runtime environment created by the buildpack.
 
-To set an environment variable, add a bash script to the `.profile.d` directory
-in the source code of your application.
-Cloud Foundry runs this script when deploying each instance of your application.
+<p class="note"><strong>Note</strong>: Your application root directory may also include a <code>.profile.d</code> directory that contains bash scripts that perform initialization tasks for the buildpack. Developers should not edit these scripts unless they are using a <a href="../../buildpacks/custom.html">custom buildpack</a>.</p>
 
-<p class='note'><strong>Note</strong>: You must give your shell scripts a <code>.sh</code> extension.</p>
+You can use the `.profile` script to perform application-specific initialization tasks, such as setting custom environment variables. Environment variables are key-value pairs defined at the operating system level. These key-value pairs provide a way to configure the applications running on a system. For example, any application can access the LANG environment variable to determine which language to use for error messages and instructions, collating sequences, and date formats.
 
-Example `.profile.d/setenv.sh` script:
+To set an environment variable, add the appropriate bash commands to your `.profile` file. See the example below.
 
 ~~~bash
 # Set the Java environment path for your applications

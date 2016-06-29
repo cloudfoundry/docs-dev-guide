@@ -155,7 +155,6 @@ For more information about the manifest file, see the [Deploying with Applicatio
 
 Pre-runtime hooks can be executed by inserting a `.profile` file into the root of your application directory. This file should contain `bash` script. When a container starts up a `bash` shell will execute the `.profile` file after sourcing an application's config vars. To have the config vars take precedence, use a technique expressed in the below example:
 
-
 ~~~bash
 # Set the Java environment path for your applications
 export JAVA_HOME=/usr/lib/jvm/jdk1.7.0

@@ -153,13 +153,8 @@ For more information about the manifest file, see the [Deploying with Applicatio
 
 ### <a id='profile'></a>Configure Pre-Runtime Hooks ###
 
-To configure pre-runtime hooks, create a file named `.profile` and place it in the root of your application directory. If the directory includes a `.profile` script, then Cloud Foundry executes it immediately before each instance of your application starts. Because the `.profile` script executes after the buildpack, the script has access to the language runtime environment created by the buildpack.
+Pre-runtime hooks can be executed by inserting a `.profile` file into the root of your application directory. This file should contain `bash` script. When a container starts up a `bash` shell will execute the `.profile` file after sourcing an application's config vars. To have the config vars take precedence, use a technique expressed in the below example:
 
-<p class="note"><strong>Note</strong>: Your application root directory may also include a <code>.profile.d</code> directory that contains bash scripts that perform initialization tasks for the buildpack. Developers should not edit these scripts unless they are using a <a href="../../buildpacks/custom.html">custom buildpack</a>.</p>
-
-You can use the `.profile` script to perform application-specific initialization tasks, such as setting custom environment variables. Environment variables are key-value pairs defined at the operating system level. These key-value pairs provide a way to configure the applications running on a system. For example, any application can access the LANG environment variable to determine which language to use for error messages and instructions, collating sequences, and date formats.
-
-To set an environment variable, add the appropriate bash commands to your `.profile` file. See the example below.
 
 ~~~bash
 # Set the Java environment path for your applications
@@ -169,6 +164,12 @@ export PATH=$PATH:$JAVA_HOME/bin
 # Set the default LANG for your applications
 export LANG=en_US.UTF-8
 ~~~
+
+In the use case of using a `.profile` file for variable assignment, config vars are more convenient and flexible than `.profile`. You need not push new code to edit config vars, whereas .profile is part of your source tree and must be edited and deployed like any code change. 
+
+Because the `.profile` script executes after the buildpack, the script has access to the language runtime environment created by the buildpack. 
+
+<p class="note"><strong>Note</strong>: Your application root directory may also include a <code>.profile.d</code> directory that contains bash scripts that perform initialization tasks for the buildpack. Developers should not edit these scripts unless they are using a <a href="../../buildpacks/custom.html">custom buildpack</a>.</p>
 
 ## <a id='push'></a>Step 5: Push the Application ##
 

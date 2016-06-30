@@ -153,26 +153,35 @@ For more information about the manifest file, see the [Deploying with Applicatio
 
 ### <a id='set-env'></a>Set Environment Variables
 
-Environment variables are key-value pairs defined at the operating system level. These key-value pairs provide a way to configure the applications running on a system. For example, any application can access the LANG environment variable to determine which language to use for error messages and instructions, collating sequences, and date formats.
+Environment variables are key-value pairs defined at the operating system level. These key-value pairs provide a way to configure the applications running on a system. 
+For example, any application can access the LANG environment variable to determine which language to use for error messages and instructions, collating sequences, and date formats.
 
-To set an environment variable for an application, use the following command:
+You can set environment variables for an application in one of three ways:
 
-<pre class='terminal'>
-$ cf set-env APP-NAME ENV-VAR-NAME ENV-VAR-VALUE
-Setting env variable 'ENV-VAR-NAME' to 'ENV-VAR-VALUE' for app spring-music in org example / space development as user@example.com...
-OK
-TIP: Use 'cf restage' to ensure your env variable changes take effect
-</pre>
+* Using the cf CLI. See the following example:
 
-You can also set environment variables in the application manifest by following the steps in the <a href="manifest.html#env-block">Environment Variables</a> section of the Deploying with Environment Variables topic.
+	<pre class='terminal'>
+	$ cf set-env APP-NAME ENV-VAR-NAME ENV-VAR-VALUE
+	Setting env variable 'ENV-VAR-NAME' to 'ENV-VAR-VALUE' for app spring-music in org example / space development as user@example.com...
+	OK
+	TIP: Use 'cf restage' to ensure your env variable changes take effect
+	</pre>
 
-### <a id='profile'></a>Configure Pre-Runtime Hooks ###
+	<p class="note"><strong>Note</strong>: The cf CLI offers the most convenient and flexible way to set environment variables.</p> 
 
-To execute pre-runtime hooks, insert a `.profile` file into the root of your application directory. In the `.profile` file, enter `bash` script that performs application-specific initialization tasks. 
+* In an application manifest. See the <a href="manifest.html#env-block">Environment Variables</a> section of the Deploying with Environment Variables topic.
 
-Because the `.profile` script executes after the buildpack, the script has access to the language runtime environment created by the buildpack. 
+* In a `.profile` file. See the <a href="#profile">Configure Runtime Hooks</a> section below.
 
-<p class="note"><strong>Note</strong>: Do not use the <code>.profile</code> file to set environment variables for your application. Instead, set environment variables on the command line by following the instructions in the <a href="#set-env">Set Environment Variables</a> section above.</p>
+Cloud Foundry sources environment variables in the following order: the application manifest, then the cf CLI, and finally the `.profile` file. 
+For example, an environment variable set in the `.profile` file overwrites an environment variable set in the application manifest and the cf CLI.
+
+### <a id='profile'></a>Configure Runtime Hooks ###
+
+To execute runtime hooks, insert a `.profile` file into the root of your application directory. This file should contain `bash` script that performs application-specific initialization tasks. 
+
+When an application container starts, a `bash` shell executes the `.profile` file after sourcing the application's environment variables from the application manifest and the cf CLI. 
+Because the `.profile` script executes after the buildpack, the script also has access to the language runtime environment created by the buildpack. 
 
 <p class="note"><strong>Note</strong>: Your application root directory may also include a <code>.profile.d</code> directory that contains bash scripts that perform initialization tasks for the buildpack. Developers should not edit these scripts unless they are using a <a href="../../buildpacks/custom.html">custom buildpack</a>.</p>
 

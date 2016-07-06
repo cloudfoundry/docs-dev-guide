@@ -170,7 +170,7 @@ A developer can create a TCP route for `tcp.<%=vars.app_domain%>` on an arbitrar
 
 <pre class="terminal">
 $ cf create-route tcp.<%=vars.app_domain%> --random-port
-Creating route tcp.<%=vars.app_domain%> for org my-org / space my-space as user@mydomain.com...
+Creating route tcp.<%=vars.app_domain%> for org my-org / space my-space as user@example.com...
 OK
 Route tcp.<%=vars.app_domain%>:60034 has been created
 </pre>
@@ -341,7 +341,7 @@ Use the `cf domains` command to view a list of available domains for the targete
 
 <pre class="terminal">
 $ cf domains
-Getting domains in org my-org as user@mydomain.com... OK
+Getting domains in org my-org as user@example.com... OK
 name                     status   type
 <%=vars.app_domain%>        shared
 tcp.<%=vars.app_domain%>    shared   tcp
@@ -370,7 +370,7 @@ $ cf create-shared-domain <%=vars.app_domain%>
 Admins can delete a shared domain from <%=vars.product_short%> with the `cf delete-shared-domain` command:
 
 <pre class="terminal">
-$ cf delete-shared-domain mydomain.com
+$ cf delete-shared-domain example.com
 </pre>
 
 ### <a id='private-domains'></a>Private Domains ###
@@ -450,7 +450,7 @@ To use a subdomain of your registered domain name with apps on <%=vars.product_s
 
 #### <a id='root-domain-dns'></a>Configuring DNS for Your Registered Root Domain ####
 
-To use your root domain (for example, `mydomain.com`) for apps on <%=vars.product_short%> you can either use custom DNS record types like ALIAS and ANAME, if your DNS provider offers them, or subdomain redirection.
+To use your root domain (for example, `example.com`) for apps on <%=vars.product_short%> you can either use custom DNS record types like ALIAS and ANAME, if your DNS provider offers them, or subdomain redirection.
 
 <p class="note"><strong>Note</strong>: Root domains are also called zone apex domains.</p>
 

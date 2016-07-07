@@ -16,30 +16,30 @@ The <%=vars.product_short%> router routes requests to applications by associatin
 The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the router would make the following matches for the two routes `myapp.<%=vars.app_domain%>` and `myapp.<%=vars.app_domain%>/products`:
 
 <table border="1" class="nice" >
-	<tr>
-		<th>Request</th>
-		<th>Matched Route</th>
-	</tr>
-	<tr>
+    <tr>
+        <th>Request</th>
+        <th>Matched Route</th>
+    </tr>
+    <tr>
     <td>http://myapp.<%=vars.app_domain%></td>
-		<td>myapp.<%=vars.app_domain%></td>
-	</tr>
-	<tr>
+        <td>myapp.<%=vars.app_domain%></td>
+    </tr>
+    <tr>
     <td>http://myapp.<%=vars.app_domain%>/contact</td>
-		<td>myapp.<%=vars.app_domain%></td>
-	</tr>
-	<tr>
+        <td>myapp.<%=vars.app_domain%></td>
+    </tr>
+    <tr>
     <td>http://myapp.<%=vars.app_domain%>/products</td>
-		<td>myapp.<%=vars.app_domain%>/products</td>
-	</tr>
-	<tr>
+        <td>myapp.<%=vars.app_domain%>/products</td>
+    </tr>
+    <tr>
     <td>http://myapp.<%=vars.app_domain%>/products/123</td>
-		<td>myapp.<%=vars.app_domain%>/products</td>
-	</tr>
-	<tr>
+        <td>myapp.<%=vars.app_domain%>/products</td>
+    </tr>
+    <tr>
     <td>http://products.<%=vars.app_domain%></td>
-		<td>No match; 404</td>
-	</tr>
+        <td>No match; 404</td>
+    </tr>
 </table>
 
 The router does not use a route to match requests until it is mapped to an app. In the above example, `products.<%=vars.app_domain%>` is a route, but until it is mapped to an app, requests for it receive a 404.
@@ -157,11 +157,11 @@ If the developer maps the first route with path `products` to the `products` app
 <%=vars.product_short%> attempts to match routes with a path first, and then attempts to match host and domain.
 
 <p class="note">
-	<strong>Note</strong>: Routes with the same domain and hostname but different paths can only be created in the same space. Private domains do not have this limitation.
+    <strong>Note</strong>: Routes with the same domain and hostname but different paths can only be created in the same space. Private domains do not have this limitation.
 </p>
 
 <p class="note">
-	<strong>Note</strong>: <%=vars.product_short%> does not route requests for routes with a path to the root context of a mapped application. As a result, an application mapped to a route with a path must be able to respond to that path.
+    <strong>Note</strong>: <%=vars.product_short%> does not route requests for routes with a path to the root context of a mapped application. As a result, an application mapped to a route with a path must be able to respond to that path.
 </p>
 
 #### <a id='create-route-with-port'></a>Create a TCP Route with a Port
@@ -191,13 +191,13 @@ Developers can list routes for the current space with the `cf routes` command. A
 $ cf routes
 Getting routes as user@<%=vars.private_app_domain%> ...
 
-space      host     domain              port   path       type	apps
-my-space   myapp    <%=vars.app_domain%>						    myapp
-my-space   myapp    <%=vars.private_app_domain%>						    myapp
-my-space   store    <%=vars.app_domain%>		   /products   	    products
-my-space   store    <%=vars.app_domain%>		   /orders     	    orders
-my-space   store    <%=vars.app_domain%>                	        storefront
-my-space		    <%=vars.app_domain%>	60000 			  tcp   tcp-app
+space      host     domain              port   path       type    apps
+my-space   myapp    <%=vars.app_domain%>                            myapp
+my-space   myapp    <%=vars.private_app_domain%>                            myapp
+my-space   store    <%=vars.app_domain%>           /products           products
+my-space   store    <%=vars.app_domain%>           /orders             orders
+my-space   store    <%=vars.app_domain%>                            storefront
+my-space            <%=vars.app_domain%>    60000               tcp   tcp-app
 </pre>
 
 Developers can only see routes in spaces where they are members. 
@@ -228,26 +228,26 @@ Developers can create and reserve routes for later use by following the steps in
 Given the following routes and applications:
 
 <table border="1" class="nice" >
-	<tr>
-		<th>Route</th>
-		<th>Application</th>
-	</tr>
-	<tr>
+    <tr>
+        <th>Route</th>
+        <th>Application</th>
+    </tr>
+    <tr>
     <td>store.<%=vars.app_domain%>/products</td>
-		<td>products</td>
-	</tr>
-	<tr>
+        <td>products</td>
+    </tr>
+    <tr>
     <td>store.<%=vars.app_domain%>/orders</td>
-		<td>orders</td>
-	</tr>
-	<tr>
+        <td>orders</td>
+    </tr>
+    <tr>
     <td>store.<%=vars.app_domain%></td>
-		<td>storefront</td>
-	</tr>
-	<tr>
+        <td>storefront</td>
+    </tr>
+    <tr>
     <td>tcp.<%=vars.app_domain%>:60000</td>
-		<td>tcp-app</td>
-	</tr>
+        <td>tcp-app</td>
+    </tr>
 </table>
 
 The following commands map the above routes to their respective apps. Developers use hostname, domain, and path to uniquely identify a route to map their apps to.
@@ -428,24 +428,24 @@ The domain `foo.myapp.<%=vars.app_domain%>` is the child subdomain of `myapp.<%=
 To use a subdomain of your registered domain name with apps on <%=vars.product_short%>, configure the subdomain as CNAME record with your DNS provider, pointing at any shared domain offered in <%=vars.product_short%>.
 
 <table border="1" class="nice" >
-	<tr>
-		<th>Record</th>
-		<th>Name</th>
-		<th>Target</th>
-		<th>Note</th>
-	</tr>
-	<tr>
-		<td>CNAME</td>
-		<td>myapp</td>
-		<td>myapp.<%=vars.app_domain%>.</td>
-		<td>Refer to your DNS provider documentation to determine whether the trailing <code>.</code> is required.</td>
-	</tr>
-	<tr>
-		<td>Wildcard CNAME</td>
-		<td>*</td>
-		<td>foo.myapp.<%=vars.app_domain%>.</td>
-		<td>You can use the wildcard in the CNAME record to point all of your subdomains to your parent domain. Each separately configured subdomain has priority over the wildcard configuration. </td>
-	</tr>
+    <tr>
+        <th>Record</th>
+        <th>Name</th>
+        <th>Target</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>CNAME</td>
+        <td>myapp</td>
+        <td>myapp.<%=vars.app_domain%>.</td>
+        <td>Refer to your DNS provider documentation to determine whether the trailing <code>.</code> is required.</td>
+    </tr>
+    <tr>
+        <td>Wildcard CNAME</td>
+        <td>*</td>
+        <td>foo.myapp.<%=vars.app_domain%>.</td>
+        <td>You can use the wildcard in the CNAME record to point all of your subdomains to your parent domain. Each separately configured subdomain has priority over the wildcard configuration. </td>
+    </tr>
 </table>
 
 #### <a id='root-domain-dns'></a>Configuring DNS for Your Registered Root Domain ####
@@ -457,18 +457,18 @@ To use your root domain (for example, `example.com`) for apps on <%=vars.product
 If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider to point at a shared domain in <%=vars.product_short%>.
 
 <table border="1" class="nice" >
-	<tr>
-		<th>Record</th>
-		<th>Name</th>
-		<th>Target</th>
-		<th>Note</th>
-	</tr>
-	<tr>
-		<td>ALIAS or ANAME</td>
-		<td>empty or @</td>
-		<td><%=vars.private_app_domain%>.</td>
-		<td>Refer to your DNS provider documentation to determine whether to use an empty or @ value for the Name entry.</td>
-	</tr>
+    <tr>
+        <th>Record</th>
+        <th>Name</th>
+        <th>Target</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>ALIAS or ANAME</td>
+        <td>empty or @</td>
+        <td><%=vars.private_app_domain%>.</td>
+        <td>Refer to your DNS provider documentation to determine whether to use an empty or @ value for the Name entry.</td>
+    </tr>
 </table>
 
 If your DNS provider does not support ANAME or ALIAS records you can use subdomain redirection, also known as domain forwarding, to redirect requests for your root domain to a subdomain configured as a CNAME.
@@ -479,22 +479,22 @@ If your DNS provider does not support ANAME or ALIAS records you can use subdoma
 Configure the root domain to point at a subdomain (`www`), and configure the subdomain as a CNAME record pointing at a shared domain in <%=vars.product_short%>.
 
 <table border="1" class="nice" >
-	<tr>
-		<th>Record</th>
-		<th>Name</th>
-		<th>Target</th>
-		<th>Note</th>
-	</tr>
-	<tr>
-		<td>URL or Forward</td>
-		<td><%=vars.private_app_domain%></td>
-		<td>www.<%=vars.private_app_domain%></td>
-		<td>This method results in a <code>301 permanent redirect</code> to the subdomain you configure.</td>
-	</tr>
-	<tr>
-		<td>CNAME</td>
-		<td>www</td>
-		<td>myapp.<%=vars.app_domain%></td>
-		<td></td>
-	</tr>
+    <tr>
+        <th>Record</th>
+        <th>Name</th>
+        <th>Target</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>URL or Forward</td>
+        <td><%=vars.private_app_domain%></td>
+        <td>www.<%=vars.private_app_domain%></td>
+        <td>This method results in a <code>301 permanent redirect</code> to the subdomain you configure.</td>
+    </tr>
+    <tr>
+        <td>CNAME</td>
+        <td>www</td>
+        <td>myapp.<%=vars.app_domain%></td>
+        <td></td>
+    </tr>
 </table>

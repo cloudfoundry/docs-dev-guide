@@ -221,20 +221,20 @@ To explore all logs available in the container, first view the log filenames, th
 
 <pre class="terminal">
 $ cf files my-app logs/
-	Getting files for app my-app in org my-org / space development as a.user@example.com...
-	OK
+    Getting files for app my-app in org my-org / space development as a.user@example.com...
+    OK
 
-	staging_task.log                          844B
-	stderr.log                                182B
-	stdout.log                                  0B
+    staging_task.log                          844B
+    stderr.log                                182B
+    stdout.log                                  0B
 
 $ cf files my-app logs/stderr.log
-	Getting files for app my-app in org my-org / space development as a.user@example.com...
-	OK
+    Getting files for app my-app in org my-org / space development as a.user@example.com...
+    OK
 
-	[2014-01-27 20:21:58] INFO  WEBrick 1.3.1
-	[2014-01-27 20:21:58] INFO  ruby 1.9.3 (2013-11-22) [x86_64-linux]
-	[2014-01-27 20:21:58] INFO  WEBrick::HTTPServer#start: pid=31 port=64391
+    [2014-01-27 20:21:58] INFO  WEBrick 1.3.1
+    [2014-01-27 20:21:58] INFO  ruby 1.9.3 (2013-11-22) [x86_64-linux]
+    [2014-01-27 20:21:58] INFO  WEBrick::HTTPServer#start: pid=31 port=64391
 </pre>
 
 ### <a id='trace'></a>Tracing Cloud Controller REST API Calls ###

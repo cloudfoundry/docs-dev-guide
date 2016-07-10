@@ -239,20 +239,20 @@ $ cf files my-app logs/stderr.log
 
 ### <a id='trace'></a>Tracing Cloud Controller REST API Calls ###
 
-If a command fails or produces unexpected results, re-run it with `CF_TRACE`
+If a command fails or produces unexpected results, re-run it with HTTP tracing
 enabled to view requests and responses between the cf CLI and the Cloud Controller REST API.
 
 For example:
 
-* Re-run `cf push` with `CF_TRACE` enabled:
+* Re-run `cf push` with `-v`:
 
-    `CF_TRACE=true cf push APP-NAME`
+    `cf push APP-NAME -v`
 
 * Re-run `cf push` while appending API request diagnostics to a log file:
 
     `CF_TRACE=PATH-TO-TRACE.LOG cf push APP-NAME`
 
-These examples enable `CF_TRACE` for a single command only.
+These examples enable HTTP tracing for a single command only.
 To enable it for an entire shell session, set the variable first:
 
   `export CF_TRACE=true`

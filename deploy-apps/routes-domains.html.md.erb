@@ -191,13 +191,13 @@ Developers can list routes for the current space with the `cf routes` command. A
 $ cf routes
 Getting routes as user@<%=vars.private_app_domain%> ...
 
-space      host     domain                       port   path       type    apps
-my-space   myapp    <%=vars.app_domain%>                                   myapp
-my-space   myapp    <%=vars.private_app_domain%>                           myapp
-my-space   store    <%=vars.app_domain%>                /products          products
-my-space   store    <%=vars.app_domain%>                /orders            orders
-my-space   store    <%=vars.app_domain%>                                   storefront
-my-space            <%=vars.app_domain%>         60000              tcp    tcp-app
+space      host     domain              		port   path       type	apps
+my-space   myapp    <%=vars.app_domain%>						    myapp
+my-space   myapp    <%=vars.private_app_domain%>						    myapp
+my-space   store    <%=vars.app_domain%>		   /products   	    products
+my-space   store    <%=vars.app_domain%>		   /orders     	    orders
+my-space   store    <%=vars.app_domain%>                	        storefront
+my-space		    <%=vars.app_domain%>	60000 			  tcp   tcp-app
 </pre>
 
 Developers can only see routes in spaces where they are members. 

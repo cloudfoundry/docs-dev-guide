@@ -13,12 +13,10 @@ Developers wishing to leverage route services should first create a service inst
 
 ## <a id='bind'></a> Bind a Route to a Service Instance ##
 
-Binding a route to a service instance can be accomplished using the following cf CLI command:
+Binding a route to a service instance can be accomplished using the [cf bind-route-service](http://cli.cloudfoundry.org/en-US/cf/bind-route-service.html) command:
 
 <pre class="terminal">
 $ cf bind-route-service <%=vars.app_domain%> my-route-service --hostname my-app
-
-Binding may cause requests for route my-app.<%=vars.app_domain%> to be altered by service instance my-route-service. Do you want to proceed?> yes
 
 Binding route my-app.<%=vars.app_domain%> to service instance my-route-service in org my-org / space my-space as developer...
 OK
@@ -39,13 +37,13 @@ OK
 <pre class="terminal">
 $ cf bind-route-service <%=vars.app_domain%> my-route-service --hostname my-app -c /tmp/config.json
 
-Binding may cause requests for route my-app.<%=vars.app_domain%> to be altered by service instance my-route-service. Do you want to proceed?> yes
-
 Binding route my-app.<%=vars.app_domain%> to service instance my-route-service in org my-org / space my-space as developer...
 OK
 </pre>
 
 ## <a id='unbind'></a> Unbind a Route from a Service Instance ##
+
+Unbinding a route to a service instance from an application can be accomplished using the [cf unbind-route-service](http://cli.cloudfoundry.org/en-US/cf/unbind-route-service.html) command:
 
 <pre class="terminal">
 $ cf unbind-route-service <%=vars.app_domain%> my-route-service --hostname my-app

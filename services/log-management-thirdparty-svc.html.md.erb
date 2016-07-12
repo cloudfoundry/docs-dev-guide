@@ -10,6 +10,30 @@ services.
 
 Once you have configured a service, refer to the [Third-Party Log Management Services](./log-management.html) topic for instructions on binding your application to the service.
 
+## <a id='logit'></a>Logit.io ##
+
+From your Logit.io dashboard.
+
+1. Identify the Logit stack you wish use.
+
+1. Click Logstash **Configuration**.
+
+1. Note your Logstash **ENDPOINT**.
+
+1. Note your TCP or UDP **PORT** (**not** the syslog port).
+
+1. Create the log drain service in Cloud Foundry.
+
+    `$ cf cups logit-drain -l syslog://ENDPOINT:PORT`
+
+1. Bind the service to an app.
+
+    <pre class='terminal'> 
+    $cf bind-service YOUR-CF-APP-NAME logit-drain
+    </pre>
+
+1. Restage or push the app using either: <pre class='terminal'>cf restage YOUR-CF-APP-NAME</pre> or <pre class='terminal'>cf push YOUR-CF-APP-NAME</pre> After a short delay, logs begin to flow automatically and appear in Kibana.
+
 ## <a id='papertrail'></a>Papertrail ##
 
 From your Papertrail account:

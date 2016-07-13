@@ -176,7 +176,7 @@ You can set environment variables for an application in one of three ways:
 Cloud Foundry sources environment variables in the following order: the application manifest, then the cf CLI, and finally the `.profile` file. 
 For example, an environment variable set in the `.profile` file overwrites an environment variable set in the application manifest and the cf CLI.
 
-### <a id='profile'></a>Configure Runtime Hooks ###
+### <a id='profile'></a>Configure Runtime Hooks <span style="font-size:1rem">(available in Diego <a href="https://github.com/cloudfoundry/cf-release/releases/tag/v238">cf-release v238</a>)</span> ###
 
 To execute runtime hooks, insert a `.profile` file into the root of your application directory. This file should contain `bash` script that performs application-specific initialization tasks. 
 

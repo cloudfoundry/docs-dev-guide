@@ -14,6 +14,8 @@ deployment to Cloud Foundry and other cloud platforms.
 
 The following guidelines represent best practices for developing modern applications for cloud platforms. For more detailed reading about good app design for the cloud, see [The Twelve-Factor App](http://www.12factor.net).
 
+For more information on features of HTTP routing handled by the Cloud Foundry router, see the [HTTP Routing](../../concepts/http-routing.html) topic. For more information on the lifecycle of application containers, see the [Application Container Lifecycle](app-lifecycle.html) topic.
+
 ### <a id="filesystem"></a>Avoid Writing to the Local File System ###
 
 Applications running on Cloud Foundry should not write files to the local file
@@ -35,29 +37,6 @@ In an environment with shared domains, cookies might be accessible across applic
 <%= vars.cookies_shared_domain_1 %> Many tracking tools such as Google Analytics and Mixpanel use the highest available domain to set their cookies. <%= vars.cookies_shared_domain_2 %> For example, an application at <code>my-app.<%= vars.app_domain %></code> might be able to access the cookies for an application at <code>your-app.<%= vars.app_domain %></code>.
 
 Consider whether you want your applications or tools that use cookies to set and store the cookies at the highest available domain.
-
-### <a id="sessions"></a>Sticky Sessions ###
-
-Cloud Foundry supports session affinity or "sticky sessions" for incoming HTTP
-requests to compatible applications. 
-
-Sticky sessions means that when multiple instances of an application are running on Cloud Foundry, requests from a particular client always reach the same application instance. This allows applications to store session data specific to a user session.
-
-Sticky sessions require applications to support returning a `JSESSIONID` cookie in responses. 
-
-If an application returns a `JSESSIONID` cookie to a client request, the Cloud Foundry routing tier appends a second cookie, called `VCAP_ID`. On subsequent requests, the client must provide both the `JSESSIONID` and `VCAP_ID` cookies. The Cloud Foundry routing tier uses the `VCAP_ID` to forward client requests to the same application instance every time. 
-
-If the application instance identified by the `VCAP_ID` crashes, the router attempts to route the request to a different instance of the application. If the router finds a healthy instance of the application, it initiates a new sticky session. 
-
-<p class="note"><strong>Note</strong>: Cloud Foundry does not persist or replicate HTTP session data across application instances. If an instance of an application crashes or is stopped, session data for that instance is lost. If you require session data to persist across crashed or stopped instances, or to be shared by all instances of an application, store session data in a Cloud Foundry marketplace service that offers data persistence.</p> 
-
-### <a id="http-headers"></a>HTTP Headers
-
-HTTP traffic passed from the Cloud Foundry router to an app includes the the following HTTP headers: 
-
-* `X-Forwarded-Proto` gives the scheme of the HTTP request from the client. The scheme is HTTP if the client made an insecure request or HTTPS if the client made a secure request. Developers can configure their apps to reject insecure requests by inspecting the HTTP headers of incoming traffic and rejecting traffic that includes `X-Forwarded-Proto` with the scheme of HTTP. 
-
-* `X-Forwarded-For` gives the IP address of the client originating the request.
 
 ### <a id="ports"></a>Port Limitations ###
 
@@ -102,8 +81,8 @@ named `.cfignore`, in the root of your application directory structure.
 For example, these lines exclude the "tmp" and "log" directories.
 
 <pre class="terminal">
-	tmp/
-	log/
+    tmp/
+    log/
 </pre>
 
 The file types you will want to exclude vary, based on the application

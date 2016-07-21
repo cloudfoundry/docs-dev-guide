@@ -5,8 +5,6 @@ owner: Core Services
 
 <strong><%= modified_date %></strong>
 
-_This page assumes you are using cf CLI v6._
-
 User-provided service instances enable developers to use services that are not available in the marketplace with their applications running on Cloud Foundry.
 
 User-provided service instances can be used to deliver service credentials to an application, and/or to trigger streaming of application logs to a syslog compatible consumer. These two functions can be used alone or at the same time.
@@ -15,7 +13,7 @@ Once created, user-provided service instances behave like service instances crea
 
 ## <a id='create'></a>Create a User-Provided Service Instance ##
 
-The alias for `cf create-user-provided-service` is `cf cups`.
+The alias for [cf create-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/create-user-provided-service.html) is `cf cups`.
 
 ### <a id='credentials'></a>Deliver Service Credentials to an Application ###
 
@@ -63,6 +61,6 @@ For more information, see [Manage Application Requests with Route Services](./ro
 
 ## <a id='update'></a> Update a User-provided Service Instance ###
 
-You can use `cf update-user-provided-service` to update the attributes of an instance of a user-provided service. New credentials overwrite old credentials, and parameters not provided are deleted.
+You can use [cf update-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/update-user-provided-service.html) to update the attributes of an instance of a user-provided service. New credentials overwrite old credentials, and parameters not provided are deleted.
 
 The alias for `update-user-provided-service` is `uups`.

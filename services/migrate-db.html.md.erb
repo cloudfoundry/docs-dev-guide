@@ -5,8 +5,6 @@ owner: Core Services
 
 <strong><%= modified_date %></strong>
 
-_This page assumes you are using cf CLI v6._
-
 Application development and maintenance often requires changing a database schema, known as migrating the database. This topic describes three ways to migrate a database on Cloud Foundry.
 
 ## <a id='single-migration'></a>Migrate Once ##
@@ -36,7 +34,7 @@ The timeout defaults to 60 seconds, but you can extend it up to 180 seconds with
             "plan": "basic",
             "credentials" : {
               "jdbcUrl": "jdbcmysql://aa11:2b@cdbr-05.example.net:3306/ad_01",
-              "uri": "mysql://aa11:2b@cdbr-05.example.net:	34/ad_01?reconnect=true",
+              "uri": "mysql://aa11:2b@cdbr-05.example.net:    34/ad_01?reconnect=true",
               "name": "ad_01",
               "hostname": "cdbr-05.example.net",
               "port": "1234",

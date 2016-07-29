@@ -11,7 +11,7 @@ This topic describes how routes and domains work in <%=vars.product_full%>, and 
 
 ## <a id='routes'></a>Routes ##
 
-The <%=vars.product_short%> router routes requests to applications by associating an app with an address, known as a route. This association is called a mapping: for example, the cf CLI command for associating an app and route is `map-route`.
+The <%=vars.product_short%> router routes requests to applications by associating an app with an address, known as a route. This association is called a mapping: for example, the cf CLI command for associating an app and route is [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html).
 
 The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the router would make the following matches for the two routes `myapp.<%=vars.app_domain%>` and `myapp.<%=vars.app_domain%>/products`:
 
@@ -71,7 +71,7 @@ HTTP routes and TCP routes have several important differences.
 
 When a developer creates a route using the cf CLI, <%=vars.product_short%> determines whether the route is an HTTP or a TCP route based on the domain. To create a HTTP route, a developer must choose a HTTP domain. To create a TCP route, a developer must choose a TCP domain.
 
-Domains in <%=vars.product_short%> provide a namespace from which to create routes. To list available domains for a targeted organization, use the `cf domains` command. For more information about domains, see the <a href="#domains">Domains</a> section. 
+Domains in <%=vars.product_short%> provide a namespace from which to create routes. To list available domains for a targeted organization, use the [cf domains](http://cli.cloudfoundry.org/en-US/cf/domains.html) command. For more information about domains, see the <a href="#domains">Domains</a> section. 
 
 The following sections describe how developers can create HTTP and TCP routes for different use cases.
 
@@ -79,10 +79,13 @@ The following sections describe how developers can create HTTP and TCP routes fo
 
 In <%=vars.product_short%>, a hostname is the domain name label that indicates a subdomain of the domain associated with the route. 
 
-A developer can create the route `myapp.<%=vars.app_domain%>` in space `my-space` by specifying the hostname `myapp` and the domain `shared-domain.com` in the following command: 
+A developer can create the route `myapp.<%=vars.app_domain%>` in space `my-space` by specifying the hostname `myapp` and the domain `<%=vars.app_domain%>` in the [cf create-route](http://cli.cloudfoundry.org/en-US/cf/create-route.html) command: 
 
 <pre class="terminal">
 $ cf create-route my-space <%=vars.app_domain%> --hostname myapp
+Creating route myapp.<%=vars.app_domain%> for org my-org / space my-space as username<span>@</span>example.com...
+OK
+
 </pre>
 
 This command instructs <%=vars.product_short%> to only route requests to apps mapped to this route from the following URLs: 
@@ -95,10 +98,13 @@ This command instructs <%=vars.product_short%> to only route requests to apps ma
 
 This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see the [Private Domains](#private-domains) section.
 
-A developer can create a route in space `my-space` from the domain `<%=vars.private_app_domain%>` with no hostname with the following command:
+A developer can create a route in space `my-space` from the domain `<%=vars.private_app_domain%>` with no hostname with the [cf create-route](http://cli.cloudfoundry.org/en-US/cf/create-route.html) command:
 
 <pre class="terminal">
 $ cf create-route my-space <%=vars.private_app_domain%>
+Creating route <%=vars.private_app_domain%> for org my-org / space my-space as username<span>@</span>example.com...
+OK
+
 </pre>
 
 If DNS has been configured correctly, this command instructs <%=vars.product_short%> to route requests to apps mapped to this route from the following URLs: 
@@ -113,6 +119,9 @@ A developer can also create routes for subdomains with no hostnames. The followi
 
 <pre class="terminal">
 $ cf create-route my-space foo.<%=vars.private_app_domain%>
+Creating route foo.<%=vars.private_app_domain%> for org my-org / space my-space as username<span>@</span>example.com...
+OK
+
 </pre>
 
 Assuming DNS has been configured for this subdomain, this command instructs <%=vars.product_short%> to route requests to apps mapped to this route from the following URLs: 
@@ -129,6 +138,9 @@ A developer can create a wildcard route in space `my-space` from the domain `foo
 
 <pre class="terminal">
 $ cf create-route my-space foo.<%=vars.app_domain%> --hostname *
+Creating route *.foo.<%=vars.app_domain%> for org my-org / space my-space as username<span>@</span>example.com...
+OK
+
 </pre>
 
 If a client sends a request to `http://app.foo.<%=vars.app_domain%>` by accident, attempting to reach `myapp.foo.<%=vars.app_domain%>`, <%=vars.product_short%> routes the request to the app mapped to the route `*.foo.<%=vars.app_domain%>`.
@@ -141,8 +153,17 @@ A developer can create three routes using the same hostname and domain in the sp
 
 <pre class="terminal">
 $ cf create-route my-space <%=vars.app_domain%> --hostname store --path products
+Creating route store.<%=vars.app_domain%>/products for org my-org / space my-space as username<span>@</span>example.com...
+OK
+
 $ cf create-route my-space <%=vars.app_domain%> --hostname store --path orders
+Creating route store.<%=vars.app_domain%>/orders for org my-org / space my-space as username<span>@</span>example.com...
+OK
+
 $ cf create-route my-space <%=vars.app_domain%> --hostname store
+Creating route store.<%=vars.app_domain%> for org my-org / space my-space as username<span>@</span>example.com...
+OK
+
 </pre>
 
 The developer can then map the the new routes to different apps by following the steps in the <a href="#map-route">Map a Route to your Application</a> section below.
@@ -181,11 +202,14 @@ To request a specific port, a developer can use the `--port` flag, so long as th
 
 <pre class="terminal">
 $ cf create-route tcp.<%=vars.app_domain%> --port 60035
+Creating route tcp.<%=vars.app_domain%>:60035 for org my-org / space my-space as user@example.com...
+OK
+
 </pre>
 
 ### <a id='list-routes'></a>List Routes ###
 
-Developers can list routes for the current space with the `cf routes` command. A route is uniquely identified by the combination of hostname, domain, and path.
+Developers can list routes for the current space with the [cf routes](http://cli.cloudfoundry.org/en-US/cf/routes.html) command. A route is uniquely identified by the combination of hostname, domain, port, and path.
 
 <pre class="terminal">
 $ cf routes
@@ -204,7 +228,7 @@ Developers can only see routes in spaces where they are members.
 
 ### <a id='check-routes'></a>Check Routes
 
-Developers cannot create a route that is already taken. To check whether a route is available, developers can use the `cf check-route` command.
+Developers cannot create a route that is already taken. To check whether a route is available, developers can use the [cf check-route](http://cli.cloudfoundry.org/en-US/cf/check-route.html) command.
 
 The following command checks whether a route with the hostname `store` and the domain `<%=vars.app_domain%>` and the path `products` exists:
 
@@ -217,7 +241,7 @@ Route store.<%=vars.app_domain%>/products does exist
 
 ### <a id='map-route'></a>Map a Route to your Application ###
 
-For an app to receive requests to a route, developers must map the route to the app with the `cf map-route` command. If the route does not already exist, this command creates it.
+For an app to receive requests to a route, developers must map the route to the app with the [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html) command. If the route does not already exist, this command creates it.
 
 Developers can create and reserve routes for later use by following the steps in the <a href="#map-route-manually">Manually Map a Route</a> section. Or they can map routes to their app immediately as part of a push by following the steps in the <a href="#map-route-on-push">Map a Route with Application Push</a> section.
 

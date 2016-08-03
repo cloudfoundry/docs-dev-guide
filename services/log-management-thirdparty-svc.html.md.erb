@@ -63,7 +63,7 @@ From your Papertrail account:
 
 1. Create the log drain service in Cloud Foundry.
 
-    `$ cf cups my-logs -l syslog+tls://logs.papertrailapp.com:PORT`
+    `$ cf cups my-logs -l syslog-tls://logs.papertrailapp.com:PORT`
 
 1. Bind the service to an app with `cf bind-service APPLICATION-NAME my-logs`. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
 

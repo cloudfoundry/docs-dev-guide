@@ -33,11 +33,11 @@ From your Logit.io dashboard:
     $ cf bind-service YOUR-CF-APP-NAME logit-drain
     </pre>
 
-1. Restage or push the app using one of the following commands: 
+1. Restage or push the app using one of the following commands:
 
     <pre class='terminal'>$ cf restage YOUR-CF-APP-NAME</pre>
 
-    <pre class='terminal'>$ cf push YOUR-CF-APP-NAME</pre> 
+    <pre class='terminal'>$ cf push YOUR-CF-APP-NAME</pre>
 
     After a short delay, logs begin to appear in Kibana.
 
@@ -65,7 +65,7 @@ From your Papertrail account:
 
     `$ cf cups my-logs -l syslog://logs.papertrailapp.com:PORT`
 
-1. Bind the service to an app. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
+1. Bind the service to an app with `cf bind APPLICATION-NAME my-logs`. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
 
 1. Once Papertrail starts receiving log entries, the view automatically updates
 to the logs viewing page.
@@ -105,7 +105,7 @@ assigns to outbound traffic. <%= vars.log_management %>
 
     `$ cf cups my-logs -l syslog://HOST:PORT`
 
-1. Bind the service to an app. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
+1. Bind the service to an app with `cf bind APPLICATION-NAME my-logs`. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
 
 1. Wait for some events to appear, then click **Data Summary**.
 
@@ -150,7 +150,7 @@ source.
 
     `$ cf cups my-logs -l HTTP-SOURCE-URL`
 
-1. Bind the service to an app. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
+1. Bind the service to an app with `cf bind APPLICATION-NAME my-logs`. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
 
 1. In the SumoLogic dashboard, click **Manage**, then click **Status** to see a
 view of log messages received over time.
@@ -169,17 +169,17 @@ search query.
 
 From your Sematext account:
 
-1. Click the [Create App / Logsene App](https://apps.sematext.com/logsene-reports/registerApplication.do) menu item. Enter a name and click the **Add Application** button to create the Logsene App. 
+1. Click the [Create App / Logsene App](https://apps.sematext.com/logsene-reports/registerApplication.do) menu item. Enter a name and click the **Add Application** button to create the Logsene App.
 
 1. Create the log drain service in Cloud Foundry using the displayed URL.
 
-    <pre class='terminal'>    
+    <pre class='terminal'>
     $ cf cups logsene-log-drain -l https://logsene-cf-receiver.sematext.com/YOUR_LOGSENE_TOKEN
     </pre>
 
 1. Bind the log drain to an app. You could optionally bind multiple apps to one log drain.
-    
-    <pre class='terminal'> 
+
+    <pre class='terminal'>
     $cf bind-service YOUR-CF-APP-NAME logsene-log-drain
     </pre>
 
@@ -189,4 +189,3 @@ From your Sematext account:
 
 Cloud Foundry distributes log messages over multiple servers in order to handle
 load. Currently, we do not recommend using Logentries as it does not support multiple syslog sources.
-

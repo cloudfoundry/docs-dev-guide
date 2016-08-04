@@ -6,56 +6,52 @@ owner: Logging and Metrics
 <strong><%= modified_date %></strong>
 
 [Fluentd](http://www.fluentd.org) is an open source log collector that allows
-you implement unified logging layers. With the help of Fluentd, you can stream
-your application logs to different backends or services like Elasticsearch, HDFS and
-Amazon S3 within others.
+you to implement unified logging layers. With Fluentd, you can stream application logs to different backends or services like Elasticsearch, HDFS and
+Amazon S3. This topic explains how to integrate Fluentd with Cloud Foundry applications.
 
-## <a id='drain'></a> 1. Create a Cloud Foundry Syslog Drain for Fluentd ##
+## <a id='drain'></a> Step 1: Create a Cloud Foundry Syslog Drain for Fluentd ##
 
-In Cloud Foundry, create a syslog drain user-provided service instance as
+1. In Cloud Foundry, create a syslog drain user-provided service instance as
 described in [Using Third-Party Log Management Services](./log-management.html).
 
-Choose one or more applications whose logs you want to drain to Fluentd
+1. Choose one or more applications whose logs you want to drain to Fluentd
 through the service.
 
-Bind each app to the service instance and restart the app.
+1. Bind each app to the service instance, and restart the app.
 
-Note the GUID for each app, the IP address of the Loggregator host, and the
+1. Note the GUID for each app, the IP address of the Loggregator host, and the
 port number for the service.
-Locate the port number in the syslog URL.
+
+1. Locate the port number in the syslog URL.
 For example:
 
-  `syslog://logs.example.com:5140`
+	`syslog://logs.example.com:5140`
 
-## <a id='prep'></a>2. Fluentd setup for Cloud Foundry ##
+## <a id='config'></a>Step 2: Set up Fluentd for Cloud Foundry ##
 
-The following section assumes you have an active Fluentd instance running, if that is
+This section assumes you have an active Fluentd instance running. If that is
 not the case, please refer to the [Fluentd Documentation/Install]
 (http://docs.fluentd.org/categories/installation) steps for more details.
 
-### <a id='config'></a>Configuring Syslog Input ###
+Fluentd comes with native support for syslog protocol. To set up Fluentd for Cloud Foundry, configure the syslog input of Fluentd as follows.
 
-Fluentd comes with native support for Syslog protocol, so in your main configuration
-file add the following _source_ entry:
+1. In your main Fluentd configuration file, add the following `source` entry:
 
-```
-<source>
-  @type syslog
-  port 5140
-  bind 0.0.0.0
-  tag cf.app
-  protocol_type udp
-</source>
-```
+	```
+	<source>
+	  @type syslog
+	  port 5140
+	  bind 0.0.0.0
+	  tag cf.app
+	  protocol_type udp
+	</source>
+	```
+1. Restart the Fluentd service.
 
-then please restart the Fluentd service.
-
->Note that Fluentd syslog input plugin supports _udp_ and _tcp_ options, make sure to use
->the same transport than Cloud Foundry is using.
+<p class="note"><strong>Note</strong>: The Fluentd syslog input plugin supports <code>udp</code> and <code>tcp</code> options. Make sure to use the same transport that Cloud Foundry is using.</p>
 
 Fluentd will start listening for Syslog message on port 5140 and tagging the messages
-with _cf.app_ which can be used later for data routing. For more details about the full
-setup for the service, please refer to the [Config File]
+with `cf.app`, which can be used later for data routing. For more details about the full setup for the service, please refer to the [Config File]
 (http://docs.fluentd.org/articles/config-file) article.
 
 If your goal is to use a Elasticsearch or Amazon S3 backend, read the following guide:

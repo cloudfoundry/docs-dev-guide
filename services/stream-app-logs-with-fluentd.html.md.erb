@@ -29,8 +29,7 @@ For example:
 
 ## <a id='config'></a>Step 2: Set up Fluentd for Cloud Foundry ##
 
-This section assumes you have an active Fluentd instance running. If that is
-not the case, please refer to the [Fluentd Documentation/Install]
+This section assumes you have an active Fluentd instance running. If you do not have an active Fluentd instance, refer to the [Fluentd Documentation/Install]
 (http://docs.fluentd.org/categories/installation) steps for more details.
 
 Fluentd comes with native support for syslog protocol. To set up Fluentd for Cloud Foundry, configure the syslog input of Fluentd as follows.
@@ -50,10 +49,6 @@ Fluentd comes with native support for syslog protocol. To set up Fluentd for Clo
 
 <p class="note"><strong>Note</strong>: The Fluentd syslog input plugin supports <code>udp</code> and <code>tcp</code> options. Make sure to use the same transport that Cloud Foundry is using.</p>
 
-Fluentd will start listening for Syslog message on port 5140 and tagging the messages
-with `cf.app`, which can be used later for data routing. For more details about the full setup for the service, please refer to the [Config File]
-(http://docs.fluentd.org/articles/config-file) article.
+Fluentd will start listening for Syslog message on port 5140 and tagging the messages with `cf.app`, which can be used later for data routing. For more details about the full setup for the service, refer to the [Config File](http://docs.fluentd.org/articles/config-file) article.
 
-If your goal is to use a Elasticsearch or Amazon S3 backend, read the following guide:
-
-http://www.fluentd.org/guides/recipes/elasticsearch-and-s3
+If your goal is to use an Elasticsearch or Amazon S3 backend, read the following guide: [http://www.fluentd.org/guides/recipes/elasticsearch-and-s3](http://www.fluentd.org/guides/recipes/elasticsearch-and-s3)

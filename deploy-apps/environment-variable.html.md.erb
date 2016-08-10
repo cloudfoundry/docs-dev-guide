@@ -5,8 +5,6 @@ owner: CAPI
 
 <strong><%= modified_date %></strong>
 
-_This page assumes you are using cf CLI v6._
-
 Environment variables are the means by which the Cloud Foundry runtime
 communicates with a deployed application about its environment.
 This page describes the environment variables that the runtime
@@ -18,10 +16,10 @@ the Application Manifests topic.
 
 ## <a id='view-env'></a>View Environment Variables ##
 
-Use the `cf env` command to view the Cloud Foundry environment variables for your application. `cf env` displays the following environment variables:
+Use the [cf env](http://cli.cloudfoundry.org/en-US/cf/env.html) command to view the Cloud Foundry environment variables for your application. `cf env` displays the following environment variables:
 
 * The `VCAP_APPLICATION` and `VCAP_SERVICES` variables provided in the container environment
-* The user-provided variables set using the `cf set-env` command
+* The user-provided variables set using the [cf set-env](http://cli.cloudfoundry.org/en-US/cf/set-env.html) command
 
 <pre class="terminal">
 $ cf env my-app
@@ -36,7 +34,7 @@ System-Provided:
   "application_id": "fa05c1a9-0fc1-4fbd-bae1-139850dec7a3",
   "application_name": "my-app",
   "application_uris": [
-    "my-app.10.244.0.34.xip.io"
+    "my-app.192.0.2.34.xip.io"
   ],
   "application_version": "fb8fbcc6-8d58-479e-bcc7-3b4ce5a7f0ca",
   "limits": {
@@ -48,7 +46,7 @@ System-Provided:
   "space_id": "06450c72-4669-4dc6-8096-45f9777db68a",
   "space_name": "my-space",
   "uris": [
-    "my-app.10.244.0.34.xip.io"
+    "my-app.192.0.2.34.xip.io"
   ],
   "users": null,
   "version": "fb8fbcc6-8d58-479e-bcc7-3b4ce5a7f0ca"
@@ -326,7 +324,7 @@ VCAP_SERVICES=
       ],
       "plan": "turtle",
       "credentials": {
-        "uri": "postgres://seilbmbd:ABcdEF@babar.elephantsql.com:5432/seilbmbd"
+        "uri": "postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampleuser"
       }
     }
   ],
@@ -395,14 +393,14 @@ Retrieving the contents of the running environment variable group as
 sampledeveloper@example.com...
 OK
 Variable Name   Assigned Value
-HTTP Proxy      87.226.68.130
+HTTP Proxy      198.51.100.130
 
 $ cf sevg
 Retrieving the contents of the staging environment variable group as
 sampledeveloper@example.com...
 OK
 Variable Name   Assigned Value
-HTTP Proxy      27.145.145.105
+HTTP Proxy      203.0.113.105
 EXAMPLE-GROUP   2001
 
 $ cf apps
@@ -444,25 +442,25 @@ System-Provided:
 }
 
 Running Environment Variable Groups:
-HTTP Proxy: 87.226.68.130
+HTTP Proxy: 198.51.100.130
 
 Staging Environment Variable Groups:
 EXAMPLE-GROUP: 2001
-HTTP Proxy: 27.145.145.105
+HTTP Proxy: 203.0.113.105
 </pre>
 
 The following examples demonstrate how to set environment variables:
 
 <pre class="terminal">
-$ cf ssevg '{"test":"87.226.68.130","test2":"27.145.145.105"}'
+$ cf ssevg '{"test":"198.51.100.130","test2":"203.0.113.105"}'
 Setting the contents of the staging environment variable group as admin...
 OK
 $ cf sevg
 Retrieving the contents of the staging environment variable group as admin...
 OK
 Variable Name   Assigned Value
-test            87.226.68.130
-test2           27.145.145.105
+test            198.51.100.130
+test2           203.0.113.105
 
 $ cf srevg '{"test3":"2001","test4":"2010"}'
 Setting the contents of the running environment variable group as admin...

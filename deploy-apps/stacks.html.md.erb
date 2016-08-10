@@ -1,5 +1,5 @@
 ---
-title: Using Stacks
+title: Changing Stacks
 owner:
   - Buildpacks & Stacks
   - Diego
@@ -26,7 +26,7 @@ For security, stacks receive regular updates to address Common Vulnerabilities a
 
 It can be difficult to know what libraries an app statically links to, and it depends on the languages you are using. One example is an app that uses a Ruby or Python binary, and links out to part of the C standard library. If the C library requires an update, you may need to recompile the app and restage it as follows:
 
-1. Use the `cf stacks` command to list the stacks available in a deployment. 
+1. Use the [cf stacks](http://cli.cloudfoundry.org/en-US/cf/stacks.html) command to list the stacks available in a deployment. 
 
     <pre class='terminal'>
     $ cf stacks
@@ -38,7 +38,7 @@ It can be difficult to know what libraries an app statically links to, and it de
     windows2012R2   Windows Server 2012 R2
     </pre>
 
-1. To change your stack and restage your application, use the `cf push` command. For example, to restage your app on the default stack `cflinuxfs2` you can run `cf push MY-APP`:
+1. To change your stack and restage your application, use the [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command. For example, to restage your app on the default stack `cflinuxfs2` you can run `cf push MY-APP`:
     <pre class='terminal'>
     $ cf push MY-APP
     Using stack cflinuxfs2...

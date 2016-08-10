@@ -7,8 +7,6 @@ owner:
 
 <strong><%= modified_date %></strong>
 
-_This page assumes that you are using cf CLI v6._
-
 Application manifests tell `cf push` what to do with applications.
 This includes everything from how many instances to create and how much memory
 to allocate to what services applications should use.
@@ -321,6 +319,57 @@ By default, if you do not provide a hostname, the URL for the app takes the form
 
 The command line option that corresponds to this attribute is `--no-hostname`.
 
+###<a id='routes'></a>The routes attribute ###
+
+Use the `routes` attribute to provide multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
+
+This attribute is a combination of `push` options that include `--hostname`, `-d`, and `--route-path`.
+
+<pre>
+---
+  ...
+  routes:
+  - route: example.com
+  - route: www.example.com/foo
+  - route: tcp-example.com:1234
+</pre>
+
+#### Manifest Attributes
+The `routes` attribute cannot be used in conjunction with the following attributes: `host`, `hosts`, `domain`, `domains`, and `no-hostname`. An error will result.
+
+#### Push Flag Options
+This attribute has unique interactions with different command line options.
+<table border="1" class="nice" >
+<tr>
+<th>Push Flag Option</th>
+<th>Resulting Behaviour</th>
+</tr>
+<tr>
+<td><code>--no-route</code></td>
+<td>All declared routes are ignored.</td>
+</tr>
+<td><code>-d</code></td>
+<td>Overrides DOMAIN part of all declared HTTP and TCP routes.</td>
+</tr>
+<tr>
+<td><code>--hostname, -n</code></td>
+<td>Sets or overrides HOSTNAME in all HTTP routes. <br />
+It has no impact on TCP routes.</td>
+</tr>
+<tr>
+<td><code>--route-path</code></td>
+<td>Sets or overrides the PATH in all HTTP routes.<br />
+It has no impact on TCP routes.</td>
+</tr>
+<tr>
+<td><code>--random-route</code></td>
+<td>Sets or overrides the HOSTNAME in all HTTP routes.<br />
+Sets or overrides the PORT in all TCP routes.<br />
+The PORT and HOSTNAME will be randomly generated.</td>
+</tr>
+<tr>
+</table>
+
 ###<a id='random-route'></a>The random-route attribute ###
 
 Use the `random-route` attribute to create a URL that includes the app name and
@@ -405,11 +454,11 @@ For example:
 
 `cf push` deploys the application to a container on the server. The variables belong to the container environment.
 
-While the application is running, Cloud Foundry allows you to operate on environment variables.
+While the application is running, you can modify environment variables.
 
 * View all variables: `cf env my-app`
-* Set an individual variable: `cf set-env my-variable_name my-variable_value`
-* Unset an individual variable: `cf unset-env my-variable_name my-variable_value`
+* Set an individual variable: `cf set-env my-app my-variable_name my-variable_value`
+* Unset an individual variable: `cf unset-env my-app my-variable_name my-variable_value`
 
 Environment variables interact with manifests in the following ways:
 
@@ -556,8 +605,8 @@ Every child manifest must contain an “inherit” line that points to the paren
 
 <pre>
 ---
-  ...
-  inherit: base-manifest.yml
+inherit: base-manifest.yml
+...
 </pre>
 
 You do not need to add anything to the parent manifest.

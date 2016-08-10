@@ -5,10 +5,8 @@ owner: PCF Metrics
 
 <strong><%= modified_date %></strong>
 
-_This page assumes you are using cf CLI v6._
-
 Loggregator, the Cloud Foundry component responsible for logging, provides a
-stream of log output from your application and from Cloud Foundry system
+stream of log output from your app and from Cloud Foundry system
 components that interact with your app during updates and execution.
 
 By default, Loggregator streams logs to your terminal.
@@ -20,7 +18,7 @@ See [Third-Party Log Management Services](../services/log-management.html).
 Cloud Foundry gathers and stores logs in a best-effort manner.
 If a client is unable to consume log lines quickly enough, the Loggregator
 buffer may need to overwrite some lines before the client has consumed them.
-A syslog drain or a CLI tail can usually keep up with the flow of application
+A syslog drain or a CLI tail can usually keep up with the flow of app
 logs.
 
 ## <a id='types'></a>Contents of a Log Line ##
@@ -35,51 +33,103 @@ Every log line contains four fields:
 Loggregator assigns the timestamp when it receives log data.
 The log data is opaque to Loggregator, which simply puts it in the message field
 of the log line.
-Applications or system components sending log data to Loggregator may include
+Apps or system components sending log data to Loggregator may include
 their own timestamps, which then appear in the message field.
 
 Origin codes distinguish the different log types.
 Origin codes from system components have three letters.
-The application origin code is `APP` followed by slash and a digit that
-indicates the application instance.
+The app origin code is `APP` followed by slash and a digit that
+indicates the app instance.
 
-Many frameworks write to an application log that is separate from STDOUT and
+Many frameworks write to an app log that is separate from STDOUT and
 STDERR.
 This is not supported by Loggregator.
-Your application must write to STDOUT or STDERR for its logs to be included in
+Your app must write to STDOUT or STDERR for its logs to be included in
 the Loggregator stream.
-Check the buildpack your application uses to determine whether it automatically
-insures that your application correctly writes logs to STDOUT and STDERR only.
+Check the buildpack your app uses to determine whether it automatically
+insures that your app correctly writes logs to STDOUT and STDERR only.
 Some buildpacks do this, and some do not.
 
 ## <a id='format'></a>Log Types and Their Messages ##
 
 Different types of logs have different message formats, as shown in the examples
 below.
+The digit appended to the code indicates the instance index: 0 is the first instance, 1 is the second, and so on.
 
 ### <a id='api'></a>API ###
 
-Users make API calls to request changes in application state. Cloud Controller,
+Users make API calls to request changes in app state. Cloud Controller,
 the Cloud Foundry component responsible for the API, logs the actions that Cloud
 Controller takes in response.
 
 For example:
 
 <pre class="terminal">
-2014-02-13T11:44:52.11-0800 [API]     OUT Updated app with guid e1ca6390-cf78-4fc7-9d86-5b7ed01e9c28 ({"instances"=>2})
+2016-06-14T14:10:05.36-0700 [API/0]      OUT Updated app with guid cdabc600-0b73-48e1-b7d2-26af2c63f933 ({"name"=>"spring-music", "instances"=>1, "memory"=>512, "environment_json"=>"PRIVATE DATA HIDDEN"})
 </pre>
 
 ### <a id='stg'></a>STG ###
 
-The Droplet Execution Agent emits STG logs when staging or restaging an app.
+The Diego cell or the Droplet Execution Agent emits STG logs when staging or restaging an app.
 These actions implement the desired state requested by the user.
-Once the droplet has been uploaded, STG messages end and DEA messages begin.
+After the droplet has been uploaded, STG messages end and CELL or DEA messages begin.
+For STG, the instance index is almost always 0.
 
 For example:
 
 <pre class="terminal">
-2014-02-07T10:54:36.80-0800 [STG]     OUT -----> Downloading and installing node
+2016-06-14T14:10:27.91-0700 [STG/0]      OUT Staging...
 </pre>
+
+### <a id='rtr'></a>RTR ###
+
+The Router emits RTR logs when it routes HTTP requests to the app.
+Router messages include the app name followed by a Router timestamp and
+then selections from the HTTP request.
+
+For example:
+
+<pre class="terminal">
+2016-06-14T10:51:32.51-0700 [RTR/1]      OUT www.example.com - [14/06/2016:17:51:32.459 +0000] "GET /user/ HTTP/1.1" 200 0 103455 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.123 Safari/537.30" 192.0.2.132:46359 x_forwarded_for:"198.51.100.120" x_forwarded_proto:"http" vcap_request_id:9365d216-623a-45cb-6ef6-eba495c19fa8 response_time:0.059468637 app_id:79cc58aa-3737-43ae-ac71-39a2843b5178
+</pre>
+
+### <a id='lgr'></a>LGR ###
+
+Loggregator emits LGR to indicate problems with the logging process.
+Examples include "can't reach syslog drain url" and "dropped log messages due to high rate."
+
+### <a id='app'></a>APP ###
+
+Every app emits logs according to choices by the developer.
+
+For example:
+
+<pre class="terminal">
+2016-06-14T14:10:15.18-0700 [APP/0]      OUT Exit status 0
+</pre>
+
+### <a id="ssh"></a>SSH ###
+
+The Diego cell emits SSH logs when a user accesses an application container through SSH by using the [cf ssh](http://cli.cloudfoundry.org/en-US/cf/ssh.html) command.
+
+For example:
+
+<pre class="terminal">
+2016-06-14T14:16:11.49-0700 [SSH/0]      OUT Successful remote access by 192.0.2.33:7856
+</pre>
+
+### <a id='cell'></a>CELL ###
+
+The Diego cell emits CELL logs when it starts or stops the
+app. These actions implement the desired state requested by the user.
+The Diego cell also emits messages when an app crashes.
+
+For example:
+
+<pre class="terminal">
+2016-06-14T13:44:38.14-0700 [CELL/0]     OUT Successfully created container
+</pre>
+
 
 ### <a id='dea'></a>DEA ###
 
@@ -94,51 +144,20 @@ For example:
 2014-02-13T11:44:52.07-0800 [DEA]     OUT Starting app instance (index 1) with guid e1ca6390-cf78-4fc7-9d86-5b7ed01e9c28
 </pre>
 
-### <a id='rtr'></a>RTR ###
 
-The Router emits RTR logs when it routes HTTP requests to the application.
-Router messages include the application name followed by a Router timestamp and
-then selections from the HTTP request.
+## <a id='writing'></a>Writing to the Log from Your App ##
 
-For example:
-
-<pre class="terminal">
-2014-02-13T11:42:31.96-0800 [RTR]     OUT nifty-gui.<%=vars.app_domain%> - [13/02/2014:19:42:31 +0000]
-"GET /favicon.ico HTTP/1.1" 404 23 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36
-(KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36" 10.10.2.142:6609 response_time:0.004092262
-app_id:e1ca6390-cf78-4fc7-9d86-5b7ed01e9c28
-</pre>
-
-### <a id='lgr'></a>LGR ###
-
-Loggregator emits LGR to indicate problems with the logging process.
-Examples include "can't reach syslog drain url" and "dropped log messages due to high rate."
-
-### <a id='app'></a>APP ###
-
-Every application emits logs according to choices by the developer.
-The digit appended to the code indicates app instance: 0 is the first instance,
-1 is the second, and so on.
-
-For example:
-
-<pre class="terminal">
-2014-02-13T11:44:27.71-0800 [App/0]   OUT Express server started
-</pre>
-
-## <a id='writing'></a>Writing to the Log from your Application ##
-
-Your application must write logs to `STDERR` or `STDOUT`.
+Your app must write logs to `STDERR` or `STDOUT`.
 Both are typically buffered, and you should flush the buffer before delivering
 the message to Loggregator.
 
 Alternatively, you can write log messages to `STDERR` or `STDOUT` synchronously.
-This approach is mainly used for debugging because it may affect application
+This approach is mainly used for debugging because it may affect app
 performance.
 
 ## <a id='view'></a>Viewing Logs in the Command Line Interface ##
 
-You view logs in the CLI using the `cf logs` command.
+You view logs in the CLI using the [cf logs](http://cli.cloudfoundry.org/en-US/cf/logs.html) command.
 You can tail, dump, or filter log output.
 
 ### <a id="tail-log"></a>Tailing Logs ###
@@ -148,18 +167,13 @@ You can tail, dump, or filter log output.
 For example:
 
 <pre class="terminal">
-$ cf logs nifty-gui
-	Connected, tailing logs for app nifty-gui in org janclouduser / space jancloudspace as admin...
-	2014-02-06T12:00:19.44-0800 [API]
-		OUT Updated app with guid c8612fc2-85b1-464c-92f5-d4a1156eacbf
-		({"route"=>"2ef5796b-475a-4615-9c71-75bbe277022e"})
-	2014-02-06T12:00:27.54-0800 [DEA]
-		OUT Got staging request for app with id
-		c8612fc2-85b1-464c-92f5-d4a1156eacbf
-	2014-02-06T12:00:28.51-0800 [API]
-		OUT Updated app with guid c8612fc2-85b1-464c-92f5-d4a1156eacbf
-		({"state"=>"STARTED"})
-	...
+$ cf logs spring-music
+Connected, tailing logs for app spring-music in org example / space development as admin@example.com...
+
+2016-06-14T15:16:12.70-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:16:12.582 +0000] "GET / HTTP/1.1" 200 0 103455 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:27743 x_forwarded_for:"203.0.113.222" x_forwarded_proto:"http" vcap_request_id:bd3e6ed1-5dd0-43ab-70ed-5d232b577b09 response_time:0.12050583 app_id:79bb58ab-3737-43be-ac70-39a2843b5177
+2016-06-14T15:16:20.06-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:16:20.034 +0000] "GET /test/ HTTP/1.1" 200 0 6879 "http://www.example.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:2228 x_forwarded_for:"203.0.113.222" x_forwarded_proto:"http" vcap_request_id:a31f0b1d-3827-4b8f-57e3-6f42d189f025 response_time:0.033311281 app_id:79bb58aa-3747-43be-ac70-39a3843b5178
+2016-06-14T15:16:22.44-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:17:22.415 +0000] "GET /test5/ HTTP/1.1" 200 0 5461 "http://www.example.com/test5" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:2228 x_forwarded_for:"203.0.113.322" x_forwarded_proto:"http" vcap_request_id:5d6855a2-4a79-4432-7927-de8215f5a2c7 response_time:0.029211609 app_id:79bb58aa-3737-43bb-ac70-39a2943b5178
+    ...
 </pre>
 
 Use **Ctrl-C** (^C) to exit the real-time stream.
@@ -175,23 +189,12 @@ commands of your choice.
 In the example below, `grep -v` excludes all Router logs:
 
 <pre class="terminal">
-$ cf logs nifty-gui --recent | grep -v RTR
-	Connected, dumping recent logs for app nifty-gui in org jancloudspace-org / space development
-	as jancloudspace@<%=vars.app_domain%>...
-	2014-02-07T10:54:40.41-0800 [STG]
-		OUT -----> Uploading droplet (5.6M)
-	2014-02-07T10:54:44.44-0800 [DEA]
-		OUT Starting app instance (index 0) with guid
-		4d397313-20e0-478a-9a74-307446eb7640
-	2014-02-07T10:54:46.31-0800 [App/0]
-		OUT Express server started
-	2014-02-07T10:57:53.60-0800 [API]
-		OUT Updated app with guid 4d397313-20e0-478a-9a74-307446eb7640
-		({"instances"=>2})
-	2014-02-07T10:57:53.64-0800 [DEA]
-		OUT Starting app instance (index 1) with guid
-		4d397313-20e0-478a-9a74-307446eb7640
-	2014-02-07T10:57:55.88-0800 [App/1]
-		OUT Express server started
-	...
+$ cf logs spring-music --recent | grep -v RTR
+2016-06-14T14:10:05.36-0700 [API/0]      OUT Updated app with guid cdabc604-0b73-47e1-a7d5-24af2c63f723 ({"name"=>"spring-music", "instances"=>1, "memory"=>512, "environment_json"=>"PRIVATE DATA HIDDEN"})
+2016-06-14T14:10:14.52-0700 [APP/0]      OUT - Gracefully stopping, waiting for requests to finish
+2016-06-14T14:10:14.52-0700 [CELL/0]     OUT Exit status 0
+2016-06-14T14:10:14.54-0700 [APP/0]      OUT === puma shutdown: 2016-06-14 21:10:14 +0000 ===
+2016-06-14T14:10:14.54-0700 [APP/0]      OUT - Goodbye!
+2016-06-14T14:10:14.56-0700 [CELL/0]     OUT Creating container
+    ...
 </pre>

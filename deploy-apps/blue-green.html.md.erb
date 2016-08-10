@@ -5,8 +5,6 @@ owner: Routing
 
 <strong><%= modified_date %></strong>
 
-_This page assumes you are using cf CLI v6._
-
 Blue-green deployment is a release technique that reduces downtime and risk by
 running two identical production environments called Blue and Green.
 
@@ -25,6 +23,8 @@ This technique can eliminate downtime due to application deployment.
 In addition, blue-green deployment reduces risk: if something unexpected happens
 with your new release on Green, you can immediately roll back to the last
 version by switching back to Blue.
+
+<p class="note"><strong>Note</strong>: If your app uses a relational database, blue-green deployment can lead to discrepancies between your Green and Blue databases during an update. To maximize data integrity, configure a single database for backward and forward compatibility.</p>
 
 <p class="note"><strong>Note</strong>: You can adjust the route mapping pattern to display a static maintenance page during a maintenance window for time-consuming tasks, such as migrating a database. In this scenario, the router switches all incoming requests from Blue to Maintenance to Green.
 </p>
@@ -76,7 +76,7 @@ The router now also sends any traffic for `demo-time-temp.example.com` to Green.
 Now that both apps are up and running, switch the router so all incoming
 requests go to the Green app *and* the Blue app.
 Do this by mapping the original URL route (`demo-time.example.com`) to the Green
-application.
+application using the [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html) command.
 
 <pre class="terminal">
 $ cf map-route Green example.com -n demo-time
@@ -94,7 +94,7 @@ After the `cf map-route` command :
 ### <a id='unmap-blue'></a>Step 4: Unmap Route to Blue ###
 
 Once you verify Green is running as expected, stop routing requests to Blue
-using the `cf unmap-route` command:
+using the [cf unmap-route](http://cli.cloudfoundry.org/en-US/cf/unmap-route.html) command:
 
 <pre class="terminal">
 $ cf unmap-route Blue example.com -n demo-time

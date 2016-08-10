@@ -10,6 +10,37 @@ services.
 
 Once you have configured a service, refer to the [Third-Party Log Management Services](./log-management.html) topic for instructions on binding your application to the service.
 
+## <a id='logit'></a>Logit.io ##
+
+From your Logit.io dashboard:
+
+1. Identify the Logit stack you want to use.
+
+1. Click Logstash **Configuration**.
+
+1. Note your Logstash **Endpoint**.
+
+1. Note your TCP or UDP **Port** (not the syslog port).
+
+1. Create the log drain service in Cloud Foundry.
+    <pre class='terminal'>
+    $ cf cups logit-drain -l syslog://ENDPOINT:PORT
+    </pre>
+
+1. Bind the service to an app.
+
+    <pre class='terminal'>
+    $ cf bind-service YOUR-CF-APP-NAME logit-drain
+    </pre>
+
+1. Restage or push the app using one of the following commands:
+
+    <pre class='terminal'>$ cf restage YOUR-CF-APP-NAME</pre>
+
+    <pre class='terminal'>$ cf push YOUR-CF-APP-NAME</pre>
+
+    After a short delay, logs begin to appear in Kibana.
+
 ## <a id='papertrail'></a>Papertrail ##
 
 From your Papertrail account:
@@ -32,9 +63,9 @@ From your Papertrail account:
 
 1. Create the log drain service in Cloud Foundry.
 
-    `$ cf cups my-logs -l syslog://logs.papertrailapp.com:PORT`
+    `$ cf cups my-logs -l syslog-tls://logs.papertrailapp.com:PORT`
 
-1. Bind the service to an app. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
+1. Bind the service to an app with `cf bind-service APPLICATION-NAME my-logs`. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
 
 1. Once Papertrail starts receiving log entries, the view automatically updates
 to the logs viewing page.
@@ -62,8 +93,7 @@ From your Splunk Storm account:
     <%= image_tag("../images/third-party-logs/splunkstorm-04.png") %>
 
 1. Manually enter the external IP addresses your Cloud Foundry administrator
-assigns to outbound traffic.
-If you are using Pivotal Web Services, refer to the [Externally Visible IP Addresses](http://docs.run.pivotal.io/marketplace/external-ips.html) topic.
+assigns to outbound traffic. <%= vars.log_management %>
 
     <%= image_tag("../images/third-party-logs/splunkstorm-05.png") %>
 
@@ -75,7 +105,7 @@ If you are using Pivotal Web Services, refer to the [Externally Visible IP Addre
 
     `$ cf cups my-logs -l syslog://HOST:PORT`
 
-1. Bind the service to an app. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
+1. Bind the service to an app with `cf bind-service APPLICATION-NAME my-logs`. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
 
 1. Wait for some events to appear, then click **Data Summary**.
 
@@ -106,7 +136,7 @@ link.
 
     <%= image_tag("../images/third-party-logs/sumologic-04.png") %>
 
-1. Select **HTTP** source and fill in the details.
+1. Select **HTTP** source and fill in the details. Note that you'll be provided an HTTPS url
 
     <%= image_tag("../images/third-party-logs/sumologic-05.png") %>
 
@@ -118,9 +148,9 @@ source.
 
 1. Create the log drain service in Cloud Foundry using the displayed URL.
 
-    `$ cf cups my-logs -l HTTP-SOURCE-URL`
+    `$ cf cups my-logs -l HTTPS-SOURCE-URL`
 
-1. Bind the service to an app. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
+1. Bind the service to an app with `cf bind-service APPLICATION-NAME my-logs`. Restage or push the app using either the `cf restage APPLICATION-NAME` or `cf push APPLICATION-NAME` command. After a short delay, logs begin to flow automatically.
 
 1. In the SumoLogic dashboard, click **Manage**, then click **Status** to see a
 view of log messages received over time.
@@ -133,25 +163,29 @@ search query.
 
     <%= image_tag("../images/third-party-logs/sumologic-10.png") %>
 
-## <a id='logentries'></a>Logentries is Not Supported ##
-
-Cloud Foundry distributes log messages over multiple servers in order to handle
-load. Currently, we do not recommend using Logentries as it does not support multiple syslog sources.
-
 ## <a id='logsene'></a>Logsene ##
 
 <p class="note"><strong>Note</strong>: Logsene uses HTTPS for communication. HTTPS is supported in Cloud Foundry v158 and above.</p>
 
 From your Sematext account:
 
-1. Click the [Create App / Logsene App](https://apps.sematext.com/logsene-reports/registerApplication.do) menu item. Enter a name and click to the "Add Application" button to create the Logsene App. 
+1. Click the [Create App / Logsene App](https://apps.sematext.com/logsene-reports/registerApplication.do) menu item. Enter a name and click the **Add Application** button to create the Logsene App.
 
 1. Create the log drain service in Cloud Foundry using the displayed URL.
 
-    `$ cf cups logsene-log-drain -l https://logsene-cf-receiver.sematext.com/YOUR_LOGSENE_TOKEN`
+    <pre class='terminal'>
+    $ cf cups logsene-log-drain -l https://logsene-cf-receiver.sematext.com/YOUR_LOGSENE_TOKEN
+    </pre>
 
 1. Bind the log drain to an app. You could optionally bind multiple apps to one log drain.
-	`$cf bind-service YOUR-CF-APP-NAME logsene-log-drain`
 
-1. Restage or push the app using either the `cf restage YOUR-CF-APP-NAME` or `cf push YOUR-CF-APP-NAME` command. After a short delay, logs begin to flow automatically and appear in the [Logsene UI](https://apps.sematext.com/users-web/services.do#logsene).
+    <pre class='terminal'>
+    $cf bind-service YOUR-CF-APP-NAME logsene-log-drain
+    </pre>
 
+1. Restage or push the app using either: <pre class='terminal'>cf restage YOUR-CF-APP-NAME</pre> or <pre class='terminal'>cf push YOUR-CF-APP-NAME</pre> After a short delay, logs begin to flow automatically and appear in the [Logsene UI](https://apps.sematext.com/users-web/services.do#logsene).
+
+## <a id='logentries'></a>Logentries is Not Supported ##
+
+Cloud Foundry distributes log messages over multiple servers in order to handle
+load. Currently, we do not recommend using Logentries as it does not support multiple syslog sources.

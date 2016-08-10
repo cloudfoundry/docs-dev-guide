@@ -17,11 +17,11 @@ For documentation on provisioning service instances and other lifecycle operatio
 
 ### <a id='user-provided-services'></a>User-Provided Service Instances ###
 
-Cloud Foundry enables users to integrate services that are not available in the marketplace with their applications using a feature called [User-Provided Service Instances](./user-provided.html) (UPSI).
+Cloud Foundry enables users to leverage services that are not available in the marketplace using a feature called [User-Provided Service Instances](./user-provided.html) (UPSI).
 
 ## <a id='credentials'></a>Service Instance Credentials ##
 
-Cloud Foundry enables users to provision credentials needed to reach a service instance. You can use application binding to automatically deliver these credentials to your Cloud Foundry app. For external and local clients, you can use service keys to communicate with a service instance. 
+Cloud Foundry enables users to provision credentials needed to interface with a service instance. You can use [application binding](#application-binding) to automatically deliver these credentials to your Cloud Foundry app or for external and local clients, you can use [service keys](#service-keys) to generate credentials to communicate directly with a service instance.
 
 
 ### <a id='application-binding'></a>Application Binding ###
@@ -32,7 +32,7 @@ For details on binding to a specific application development framework, refer to
 
 ### <a id='service-keys'></a>Service Keys ###
 
-Credentials managed manually are known as service keys. Use service keys when you want an additional set of credentials to use outside of the service binding use case. You can also service keys for applications not deployed with Cloud Foundry. For more information, see [Managing Service Keys](./service-keys.html).
+Credentials managed manually are known as service keys. Use service keys when you want a set of credentials for use by clients other than the application in the same space; maybe you would like to connect to service instance from a local client, or from an application in another space (create a  [User-Provided Service Instance](./user-provided.html) with the service key credentials), or from outside Cloud Foundry. For more information, see [Managing Service Keys](./service-keys.html).
 
 <p class='note'><strong>Note:</strong> Not all services support service keys. Some services support credentials through application binding only.</p>
 

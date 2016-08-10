@@ -9,7 +9,9 @@ This topic describes how to bind a service instance to a route for the purpose o
 
 Route services are a class of [marketplace services](../services/managing-services.html) that perform filtering or content transformation on application requests and responses. This helps to remove the burden on developers who would otherwise have to implement these functions themselves. Popular use cases for route services include rate limiting, authorization, and caching. A route service may reject requests or after some transformation pass the request on to applications.
 
-Developers wishing to leverage route services should first create a service instance, choosing from compatible marketplace services (see [Managing Services](../services/managing-services.html) or using [User-provided Service Instances](./user-provided.html). This service instance is then bound to a route; all requests for the route will then be preprocessed by the service instance. Note that some services may support instances being bound to both routes and apps, however these operations have different effects. For application requests and responses to be routed through a route service, the service instance must be bound to the route.
+Developers wishing to leverage route services should first create a service instance, choosing from compatible marketplace services (see [Managing Services](../services/managing-services.html) or [User-provided Service Instances](./user-provided.html)). This service instance is then bound to a route; all requests for the route will then be preprocessed by the service instance. Note that some services may support instances being bound to both routes and apps, however these operations have different effects. For application requests and responses to be routed through a route service, the service instance must be bound to the route.
+
+A video demonstrating use of a sample route service can be found on [Youtube](https://youtu.be/VaaZJE2E4jI).
 
 ## <a id='bind'></a> Bind a Route to a Service Instance ##
 

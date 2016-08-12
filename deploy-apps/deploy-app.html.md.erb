@@ -185,7 +185,7 @@ Because the `.profile` script executes after the buildpack, the script also has 
 
 <p class="note"><strong>Note</strong>: Your application root directory may also include a <code>.profile.d</code> directory that contains bash scripts that perform initialization tasks for the buildpack. Developers should not edit these scripts unless they are using a <a href="../../buildpacks/custom.html">custom buildpack</a>.</p>
 
-<p class="note"><strong>Warning for PHP buildpack v4.3.18 and before</strong>: The PHP Buildpack will not execute your PHP app's <code>`.profile`</code> script. Also, your PHP app will host the <code>.profile</code> script's contents.</p>
+<p class="note"><strong>Note</strong>: If you are using the PHP buildpack v4.3.18 or earlier, the buildpack will not execute your PHP app's <code>`.profile`</code> script. Your PHP app will host the <code>.profile</code> script's contents.</p>
 
 ## <a id='push'></a>Step 5: Push the Application ##
 

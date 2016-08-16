@@ -1,5 +1,5 @@
 ---
-title: Using Log Management Services
+title: Streaming Application Logs to Log Management Services
 owner: PCF Metrics
 ---
 
@@ -9,26 +9,30 @@ This topic describes how to drain logs from Cloud Foundry to a third party log m
 
 Cloud Foundry aggregates logs for all instances of your applications as well as for requests made to your applications through internal components of Cloud Foundry. For example, when the Cloud Foundry Router forwards a request to an application, the Router records that event in the log stream for that app. Run the following command to access the log stream for an app in the terminal:
 
-<pre class='terminal'>cf logs YOUR-APP-NAME</pre>
+<pre class='terminal'>$ cf logs YOUR-APP-NAME</pre>
 
 If you want to persist more than the limited amount of logging information that Cloud Foundry can buffer, drain these logs to a log management service.
 
 For more information about the systems responsible for log aggregation and streaming in Cloud Foundry, see [Application Logging in Cloud Foundry](../deploy-apps/streaming-logs.html).
 
-## <a id='other-selected'></a>Using Services from the Cloud Foundry Marketplace
+## <a id='marketplace-services'></a>Using Services from the Cloud Foundry Marketplace
 
-The Cloud Foundry marketplace offers several log management services. To use one of these services, create an instance of the service and bind it to your application. See the following topics for more information:
+Your Cloud Foundry marketplace may offer one or more log management services. To use one of these services, create an instance of the service and bind it to your application.
 
-- [Service-Specific Instructions for Streaming Application Logs](log-management-thirdparty-svc.html) to learn how to stream application logs to specific services including Papertrail, Splunk, and SumoLogic.
-- [Managing Service Instances](managing-services.html) to learn about creating and binding service instances.
+<pre class='terminal'>
+$ cf create-service SERVICE PLAN SERVICE-INSTANCE
+$ cf bind-service myapp mylogstore
+</pre>
+
+For more information on service instance lifecycle management, see [Managing Service Instances](managing-services.html).
 
 <p class='note'><strong>Note:</strong> Not all marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that enables automated streaming of application syslogs. <%= vars.custom_services %></p>
 
-## <a id='other'></a>Using Other Services
+## <a id='user-provided'></a>Using Services Not Available in your Marketplace
 
-If a compatible log management service is not available in your Cloud Foundry marketplace, use the following procedure to stream your logs to a service of your choice.
+If a compatible log management service is not available in your Cloud Foundry marketplace, [User-provided Service Instances](./user-provided.html#syslog) can be used to stream application logs to a service of your choice.
 
-<p class='note'><strong>Note</strong>: Only use this procedure if the service that you want to use is not covered in the <a href='log-management-thirdparty-svc.html'>Service-Specific Instructions for Streaming Application Logs</a> topic.</p>
+Your service may require some preparation before application logs can be streamed to it from Cloud Foundry. Specific instructions for several popular services can be found at [Service-Specific Instructions for Streaming Application Logs](./log-management-thirdparty-svc.html). If your service isn't covered there, the following generic instructions can be used.
 
 ### Step 1: Configure the Log Management Service
 
@@ -39,7 +43,6 @@ Complete the following steps to set up a communication channel between the log m
 1. Provide these IP addresses to the log management service.
 The specific steps to configure a third-party log management service depend on
 the service.
-See the [Service-Specific Instructions for Streaming Application Logs](log-management-thirdparty-svc.html) topic for more information.
 
 1. Whitelist these IP addresses to ensure unrestricted log routing to your log management service.
 
@@ -71,9 +74,13 @@ Refer to [User-Provided Service Instances](./user-provided.html) for more inform
 You have two options for binding the service instance to an application:
 
 * Run `cf push` with a manifest. The services block in the manifest must specify the service instance that you want to bind.
-* Run `cf bind-service`. After a short delay, logs begin to flow automatically.
+* Run `cf bind-service`
 
-Refer to [Delivering Service Credentials to an Application](./application-binding.html) for more information.
+<pre class="terminal">
+$ cf bind-service YOUR-APP-NAME SERVICE-INSTANCE
+</pre>
+
+After a short delay, logs begin to flow automatically. Refer to [Managing Service Instances with the CLI](./managing-services.html) for more information.
 
 ### Step 4: Verify Logs are Draining
 

@@ -106,6 +106,114 @@ Started: 2015-05-08T22:59:07Z
 Updated: 2015-05-18T22:01:26Z
 </pre>
 
+## <a id='bind'></a>Bind a Service Instance ##
+
+Depending on the service, service instances may be bound to applications and/or routes.
+
+Not all services support binding, as some services deliver value to users directly without integration with Cloud Foundry (e.g. SaaS applications).
+
+### <a id='app-binding'></a>Bind a Service Instance to an Application ###
+
+Depending on the service, binding a service instance to your application deliver credentials for the service instance to the application (see [Delivering Service Credentials to an Application](application-binding.html)), or it may trigger application logs to be streamed to the service instance (see [Streaming Application Logs to Log Management Services](log-management.html)).
+
+<pre class="terminal">
+$ cf bind-service my-app mydb
+Binding service mydb to my-app in org my-org / space test as me@example.com...
+OK
+TIP: Use 'cf push' to ensure your env variable changes take effect
+
+$ cf restart my-app
+</pre>
+
+<p class='note'><strong>Note:</strong> You must restart or in some cases re-push your application for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the application to recognize these changes.</p>
+
+#### <a id='bind-with-manifest'></a> Binding with Application Manifest ####
+
+As an alternative to binding a service instance to an application after pushing an application, you can use the application manifest to bind the service instance during push. As of cf CLI v6.12.1, [Arbitrary Parameters](#arbitrary-params-binding) are not supported in application manifests. Using the manifest to bind service instances to routes is also not supported.
+
+The following excerpt from an application manifest would bind a service instance called `test-mysql-01` to the application on push.
+
+```
+services:
+ - test-mysql-01
+```
+
+The following excerpt from the `cf push` command and response demonstrates that the cf CLI reads the manifest and binds the service instance to an app called `test-msg-app`.
+
+<pre class="terminal">
+$ cf push
+Using manifest file /Users/Bob/test-apps/test-msg-app/manifest.yml
+
+...
+
+Binding service test-mysql-01 to test-msg-app in org My-Org / space development as Bob@example.com
+OK
+</pre>
+
+For more information about application manifests, see [Deploying with Application Manifests](../deploy-apps/manifest.html#services-block).
+
+### <a id='app-binding'></a>Bind a Service Instance to a Route ###
+
+Binding a service instance to a route will cause application requests and responses to be proxied through the service instance, where it may be used to transform or intermediate requests. For more information, see [Manage Application Requests with Route Services](./route-binding.html).
+
+<pre class="terminal">
+$ cf bind-route-service <%=vars.app_domain%> --hostname my-app my-service-instance
+Binding route my-app.<%=vars.app_domain%> to service instance my-service-instance in org my-org / space test as me@example.com...
+OK
+</pre>
+
+Restaging your application is not required.
+
+### <a id='arbitrary-params-binding'></a> Arbitrary Parameters  ###
+
+_Arbitrary parameters require cf CLI v6.12.1+_
+
+Some services support additional configuration parameters with the bind request. These parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
+
+<pre class="terminal">
+$ cf bind-service rails-sample my-db -c '{"role":"read-only"}'
+
+Binding service my-db to app rails-sample in org console / space development as user@example.com...
+OK
+</pre>
+
+<pre class="terminal">
+$ cf bind-service rails-sample my-db -c /tmp/config.json
+
+Binding service my-db to app rails-sample in org console / space development as user@example.com... OK
+</pre>
+
+## <a id='unbind'></a>Unbind a Service Instance ##
+
+### <a id='app-unbinding'></a>Unbind a Service Instance from an Application ###
+
+Unbinding a service instance from an applicatino removes the credentials created for your application from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
+
+<pre class="terminal">
+$ cf unbind-service my-app mydb
+Unbinding app my-app from service mydb in org my-org / space test as me@example.com...
+OK
+</pre>
+
+<p class='note'><strong>Note:</strong> You must restart or in some cases re-push your application for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the application to recognize these changes.</p>
+
+### <a id='route-unbinding'></a>Unbind a Service Instance from a Route ###
+
+Unbinding a service instance from a route will result in requests and responses no longer being proxied through the service instance. For more information, see [Manage Application Requests with Route Services](./route-binding.html).
+
+<p class='note'><strong>Note:</strong> If your bound service instance is providing security features, like authorization, unbinding the service instance may leave your application vulnerable.</p>
+
+<pre class="terminal">
+$ cf unbind-route-service <%=vars.app_domain%> --hostname my-app my-service-instance
+
+Unbinding may leave apps mapped to route my-app.<%=vars.app_domain%> vulnerable; e.g. if service instance my-service-instance provides authentication. Do you want to proceed?> y
+
+Unbinding route my-app.<%=vars.app_domain%> from service instance my-service-instance n org my-org / space test as me@example.com...
+OK
+</pre>
+
+Restaging your application is not required.
+
 ## <a id='rename_service'></a>Rename a Service Instance ##
 
 You can change the name given to a service instance. Keep in mind that upon restarting any bound applications, the name of the instance will change in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your application depends on the instance name for discovering credentials, changing the name could break your applications use of the service instance.

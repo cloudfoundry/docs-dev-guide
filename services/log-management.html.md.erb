@@ -17,11 +17,11 @@ For more information about the systems responsible for log aggregation and strea
 
 ## <a id='marketplace-services'></a>Using Services from the Cloud Foundry Marketplace
 
-Your Cloud Foundry marketplace may offer one or more log management services. To use one of these services, create an instance of the service and bind it to your application.
+Your Cloud Foundry marketplace may offer one or more log management services. To use one of these services, create an instance of the service and bind it to your application with the following commands:
 
 <pre class='terminal'>
 $ cf create-service SERVICE PLAN SERVICE-INSTANCE
-$ cf bind-service myapp mylogstore
+$ cf bind-service YOUR-APP YOUR-LOG-STORE
 </pre>
 
 For more information on service instance lifecycle management, see [Managing Service Instances](managing-services.html).
@@ -30,9 +30,9 @@ For more information on service instance lifecycle management, see [Managing Ser
 
 ## <a id='user-provided'></a>Using Services Not Available in your Marketplace
 
-If a compatible log management service is not available in your Cloud Foundry marketplace, [User-provided Service Instances](./user-provided.html#syslog) can be used to stream application logs to a service of your choice.
+If a compatible log management service is not available in your Cloud Foundry marketplace, you can use [User-provided Service Instances](./user-provided.html#syslog) to stream application logs to a service of your choice.
 
-Your service may require some preparation before application logs can be streamed to it from Cloud Foundry. Specific instructions for several popular services can be found at [Service-Specific Instructions for Streaming Application Logs](./log-management-thirdparty-svc.html). If your service isn't covered there, the following generic instructions can be used.
+Your service may require some preparation before application logs can be streamed to it from Cloud Foundry. For specific instructions for several popular services, see [Service-Specific Instructions for Streaming Application Logs](./log-management-thirdparty-svc.html). If you cannot find instructions for your service, follow the generic instructions below.
 
 ### Step 1: Configure the Log Management Service
 

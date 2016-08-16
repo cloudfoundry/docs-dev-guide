@@ -21,8 +21,7 @@ Cloud Foundry enables users to leverage services that are not available in the m
 
 ## <a id='credentials'></a>Service Instance Credentials ##
 
-Cloud Foundry enables users to provision credentials needed to interface with a service instance. You can use [application binding](#application-binding) to automatically deliver these credentials to your Cloud Foundry app or for external and local clients, you can use [service keys](#service-keys) to generate credentials to communicate directly with a service instance.
-
+Cloud Foundry enables users to provision credentials needed to interface with a service instance. You can use [application binding](#application-binding) to automatically deliver these credentials to your Cloud Foundry app. For external and local clients, you can use [service keys](#service-keys) to generate credentials to communicate directly with a service instance.
 
 ### <a id='application-binding'></a>Application Binding ###
 
@@ -32,13 +31,15 @@ For details on binding to a specific application development framework, refer to
 
 ### <a id='service-keys'></a>Service Keys ###
 
-Credentials managed manually are known as service keys. Use service keys when you want a set of credentials for use by clients other than the application in the same space; maybe you would like to connect to service instance from a local client, or from an application in another space (create a  [User-Provided Service Instance](./user-provided.html) with the service key credentials), or from outside Cloud Foundry. For more information, see [Managing Service Keys](./service-keys.html).
+Credentials managed manually are known as service keys. Use service keys when you want a set of credentials for use by clients other than the application in the same space. For instance, you can use service keys to connect to a service instance from a local client, or from an application in another space, or even from outside of Cloud Foundry. 
+
+For more information about creating a user-provided  service instance with service keys see the [User-Provided Service Instances](./user-provided.html) topic. For more information about service keys, see the [Managing Service Keys](./service-keys.html) topic.
 
 <p class='note'><strong>Note:</strong> Not all services support service keys. Some services support credentials through application binding only.</p>
 
 ## <a id='log-management'></a>Streaming Applications Logs to Log Management Services ##
 
-To learn how your application logs can be streamed to third-party log management services, see [Log Management Services](./log-management.html).
+To learn how your application logs can be streamed to third-party log management services, see [Streaming Application Logs to Log Management Services](./log-management.html).
 
 User-provided service instances can be used to drain applications logs to a service not available in the marketplace. This is also known as setting up a syslog drain. We've documented instructions for a few providers in the [Service-Specific Instructions for Streaming Application Logs](./log-management-thirdparty-svc.html) topic.
 

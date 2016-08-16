@@ -108,13 +108,13 @@ Updated: 2015-05-18T22:01:26Z
 
 ## <a id='bind'></a>Bind a Service Instance ##
 
-Depending on the service, service instances may be bound to applications and/or routes.
+Depending on the service, you can bound service instances to applications and/or routes.
 
-Not all services support binding, as some services deliver value to users directly without integration with Cloud Foundry (e.g. SaaS applications).
+Not all services support binding, as some services deliver value to users directly without integration with Cloud Foundry, such as SaaS applications.
 
 ### <a id='app-binding'></a>Bind a Service Instance to an Application ###
 
-Depending on the service, binding a service instance to your application deliver credentials for the service instance to the application (see [Delivering Service Credentials to an Application](application-binding.html)), or it may trigger application logs to be streamed to the service instance (see [Streaming Application Logs to Log Management Services](log-management.html)).
+Depending on the service, binding a service instance to your application may deliver credentials for the service instance to the application. See the [Delivering Service Credentials to an Application](application-binding.html) topic for more information. Binding a service instance to an application may also trigger application logs to be streamed to the service instance. For more information, see [Streaming Application Logs to Log Management Services](log-management.html).
 
 <pre class="terminal">
 $ cf bind-service my-app mydb
@@ -131,7 +131,7 @@ $ cf restart my-app
 
 As an alternative to binding a service instance to an application after pushing an application, you can use the application manifest to bind the service instance during push. As of cf CLI v6.12.1, [Arbitrary Parameters](#arbitrary-params-binding) are not supported in application manifests. Using the manifest to bind service instances to routes is also not supported.
 
-The following excerpt from an application manifest would bind a service instance called `test-mysql-01` to the application on push.
+The following excerpt from an application manifest binds a service instance called `test-mysql-01` to the application on push.
 
 ```
 services:
@@ -187,7 +187,7 @@ Binding service my-db to app rails-sample in org console / space development as 
 
 ### <a id='app-unbinding'></a>Unbind a Service Instance from an Application ###
 
-Unbinding a service instance from an applicatino removes the credentials created for your application from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
+Unbinding a service instance from an application removes the credentials created for your application from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
 
 <pre class="terminal">
 $ cf unbind-service my-app mydb
@@ -216,7 +216,7 @@ Restaging your application is not required.
 
 ## <a id='rename_service'></a>Rename a Service Instance ##
 
-You can change the name given to a service instance. Keep in mind that upon restarting any bound applications, the name of the instance will change in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your application depends on the instance name for discovering credentials, changing the name could break your applications use of the service instance.
+You can change the name given to a service instance. Keep in mind that upon restarting any bound applications, the name of the instance will change in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your application depends on the instance name for discovering credentials, changing the name could break your application's use of the service instance.
 
 <pre class="terminal">
 $ cf rename-service mydb mydb1
@@ -229,7 +229,7 @@ OK
 ### Upgrade/Downgrade Service Plan
 _Changing a plan requires cf CLI v6.7+ and cf-release v192+_
 
-By updating the service plan for an instance, users can effectively upgrade and downgrade their service instance to other service plans. Though the platform and CLI now support this feature, services must expressly implement support for it so not all services will. Further, a service might support updating between some plans but not others (e.g., a service might support updating a plan where only a logical change is required, but not where data migration is necessary). In either case, users can expect to see a meaningful error when plan update is not supported.
+By updating the service plan for an instance, users can effectively upgrade and downgrade their service instance to other service plans. Though the platform and CLI now support this feature, services must expressly implement support for it so not all services will. Further, a service might support updating between some plans but not others. For instance, a service might support updating a plan where only a logical change is required, but not where data migration is necessary. In either case, users can expect to see a meaningful error when plan update is not supported.
 
 <pre class="terminal">
 $ cf update-service mydb -p new-plan
@@ -269,7 +269,7 @@ OK
 
 ## <a id='delete'></a>Delete a Service Instance ##
 
-Deleting a service instance deprovisions the service instance and deletes *all data* associated with the service instance.
+Deleting a service instance deprovisions the service instance and deletes all data associated with the service instance.
 
 <pre class="terminal">
 $ cf delete-service mydb

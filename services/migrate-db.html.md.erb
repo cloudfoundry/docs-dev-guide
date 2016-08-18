@@ -88,8 +88,8 @@ This option takes the most effort to implement, but becomes more efficient with 
         For example, this code uses Ruby to extract the `instance_index` from `VCAP_APPLICATION`:
 
         `instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"]`
-    - Determines whether or not the `instance_index` is “0”.
-    - If and only if the `instance_index` is “0”, runs a script or uses an existing command to migrate the database. The script or command must be idempotent.
+    - Determines whether or not the `instance_index` is "0".
+    - If and only if the `instance_index` is "0", runs a script or uses an existing command to migrate the database. The script or command must be idempotent.
 
 2. Create a manifest that provides:
    - The application name

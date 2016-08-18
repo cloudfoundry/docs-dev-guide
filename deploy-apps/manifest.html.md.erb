@@ -561,7 +561,7 @@ There are only two narrow exceptions:
 
 In manifests where multiple applications share settings or services, you begin to see content duplicated. While the manifests still work, duplication increases the risk of typographical errors which cause deployment to fail.
 
-The cure for this problem is to “promote” the duplicate content—that is, to move it up above the applications block, where it need appear only once. The promoted content applies to all applications described in the manifest. Note that content _in_ the applications block overrides content _above_ the applications block, if the two conflict.
+The cure for this problem is to "promote" the duplicate content—that is, to move it up above the applications block, where it need appear only once. The promoted content applies to all applications described in the manifest. Note that content _in_ the applications block overrides content _above_ the applications block, if the two conflict.
 
 The manifest becomes shorter, more readable, and more maintainable.
 
@@ -599,9 +599,9 @@ This technique helps in these and other scenarios:
 
 * An application is packaged with a basic configuration described by a parent manifest. Users can extend the basic configuration by creating child manifests that add new properties or override those in the parent manifest.
 
-The benefits of multiple manifests with inheritance are similar to those of minimizing duplicated content within single manifests. With inheritance, though, we “promote” content by placing it in the parent manifest.
+The benefits of multiple manifests with inheritance are similar to those of minimizing duplicated content within single manifests. With inheritance, though, we "promote" content by placing it in the parent manifest.
 
-Every child manifest must contain an “inherit” line that points to the parent manifest. Place the inherit line immediately after the three dashes at the top of the child manifest. For example, every child of a parent manifest called `base-manifest.yml` begins like this:
+Every child manifest must contain an "inherit" line that points to the parent manifest. Place the inherit line immediately after the three dashes at the top of the child manifest. For example, every child of a parent manifest called `base-manifest.yml` begins like this:
 
 <pre>
 ---

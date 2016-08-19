@@ -54,7 +54,7 @@ Routes belong to a space, so that developers can only map apps to a route in the
 
 <%=vars.tcp_routing%>
 
-<p class="note"><strong>Note:</strong> By default, <%=vars.product_short%> only supports routing of HTTP requests to applications. To support routing of non-HTTP protocols to applications, operators should follow the instructions at <a href="/adminguide/enabling-tcp-routing.html">Enabling TCP Routing</a>.</p>
+<p class="note"><strong>Note:</strong> By default, <%=vars.product_short%> only supports routing of HTTP requests to applications. </p>
 
 Routes are considered HTTP if they are created from HTTP domains, and TCP if the are created from TCP domains. See [HTTP vs TCP Shared Domains](#http-vs-tcp-shared-domains).
 
@@ -375,9 +375,9 @@ This example displays three available domains: a shared HTTP domain `<%=vars.app
 
 HTTP domains indicate to a developer that only requests using the HTTP protocol will be routed to applications mapped to routes created from the domain. Routing for HTTP domains is layer 7 and offers features like custom hostnames, sticky sessions, and TLS termination.
 
-TCP domains indicate to a developer that requests over any TCP protocol, including HTTP, will be routed to applications mapped to routes created from the domain. Routing for TCP domains is layer 4 and protocol agnostic, so many features available to HTTP routing are not available for TCP routing. TCP domains are defined as being associated with the TCP Router Group. The TCP Router Group defines the range of ports available to be reserved with TCP Routes. For more information, see [Enabling TCP Routing](/adminguide/enabling-tcp-routing.html). Currently, only Shared Domains can be TCP.
+TCP domains indicate to a developer that requests over any TCP protocol, including HTTP, will be routed to applications mapped to routes created from the domain. Routing for TCP domains is layer 4 and protocol agnostic, so many features available to HTTP routing are not available for TCP routing. TCP domains are defined as being associated with the TCP Router Group. The TCP Router Group defines the range of ports available to be reserved with TCP Routes. Currently, only Shared Domains can be TCP.
 
-<p class="note"><strong>Note:</strong> By default, <%=vars.product_short%> only supports routing of HTTP requests to applications. To support routing of non-HTTP protocols to applications, operators should follow the instructions at <a href="/adminguide/enabling-tcp-routing.html">Enabling TCP Routing</a>.</p>
+<p class="note"><strong>Note:</strong> By default, <%=vars.product_short%> only supports routing of HTTP requests to applications. </p>
 
 ### <a id='shared-domains'></a>Shared Domains ###
 

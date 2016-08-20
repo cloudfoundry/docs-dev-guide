@@ -401,7 +401,7 @@ Getting router groups as admin ...
 
 name          type
 default-tcp   tcp
-
+</pre>
 Then create the shared domain using the `--router-group` option to associate the domain with the TCP router group.
 <pre class="terminal">
 $ cf create-shared-domain tcp.<%=vars.app_domain%> --router-group default-tcp

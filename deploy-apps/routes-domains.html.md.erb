@@ -59,12 +59,14 @@ Routes belong to a space, so that developers can only map apps to a route in the
 Routes are considered HTTP if they are created from HTTP domains, and TCP if the are created from TCP domains. See [HTTP vs TCP Shared Domains](#http-vs-tcp-shared-domains).
 
 HTTP routes include a domain, an optional hostname, and an optional context path. `<%=vars.app_domain%>`, `myapp.<%=vars.app_domain%>`, and `myapp.<%=vars.app_domain%>/products` are all examples of HTTP routes.
-    * Requests to HTTP routes must be sent to ports 80 or 443.
-    * Ports cannot be reserved for HTTP routes.
+
+* Requests to HTTP routes must be sent to ports 80 or 443.
+* Ports cannot be reserved for HTTP routes.
 
 TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an application pushed to Cloud Foundry listens on; applications should listen to the port defined by the `$PORT` environment variable; 8080 on Diego. `tcp.<%=vars.app_domain%>:60000` is an example of a TCP route.
-    * Once a port is reserved for a route, it cannot be reserved for another route.
-    * Hostname and path are not supported for TCP routes.
+
+* Once a port is reserved for a route, it cannot be reserved for another route.
+* Hostname and path are not supported for TCP routes.
 
 ### <a id='create-route'></a>Create a Route ###
 

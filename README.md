@@ -20,5 +20,5 @@ docs-dev-guide/services subdirectory:
 Custom Services
 Create and publish free or metered services for Cloud Foundry apps.
 
-This repo used to contain the subdirectory docs-dev-guide/cf-cli, documenting the cf Command Line Interface. The content from this subdirectory has been moved to its own repo, [docs-cf-cli](http://github.com/cloudfoundry/docs-cf-cli).
+This repo used to contain the subdirectory docs-dev-guide/cf-cli, documenting the Cloud Foundry Command Line Interface (cf CLI). The content from this subdirectory has been moved to its own repo, [docs-cf-cli](http://github.com/cloudfoundry/docs-cf-cli).
 

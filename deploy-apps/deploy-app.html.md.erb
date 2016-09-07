@@ -10,8 +10,8 @@ owner: CAPI
 ## <a id='intro'></a>Overview of Deployment Process ##
 
 You deploy an application to Cloud Foundry by running a `push` command from a
-Cloud Foundry command line interface (CLI).
-Refer to the [Installing the cf Command Line Interface](../../cf-cli/install-go-cli.html) topic for more information.
+Cloud Foundry Command Line Interface (cf CLI).
+Refer to the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic for more information.
 Between the time that you run `push` and the time that the application is available, Cloud Foundry performs the following tasks:
 
 * Uploads and stores application files
@@ -169,6 +169,8 @@ export PATH=$PATH:$JAVA_HOME/bin
 # Set the default LANG for your applications
 export LANG=en_US.UTF-8
 ~~~
+
+<p class="note"><strong>Note</strong>: If you are using a PHP buildpack version prior to v4.3.18, the buildpack will not execute your PHP app's <code>.profile</code> script. Your PHP app will host the <code>.profile</code> script's contents. This means that any PHP app staged using the affected PHP Buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
 ## <a id='push'></a>Step 5: Push the Application ##
 

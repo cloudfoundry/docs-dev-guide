@@ -40,7 +40,11 @@ Consider whether you want your applications or tools that use cookies to set and
 
 ### <a id="ports"></a>Port Limitations ###
 
-<%=vars.port_limitations%>
+Clients connect to applications running on Cloud Foundry by making requests to URLs associated with the application. Cloud Foundry allows HTTP requests to applications on ports 80 and 443. For more information, see the [Routes and Domains](routes-domains.html) topic.  
+
+Cloud Foundry also supports WebSocket handshake requests over HTTP containing the `Upgrade` header. Applications running on Cloud Foundry neither receive the WebSocket handshake request nor handle the upgrade to a WebSocket connection. Instead, the Cloud Foundry router completes the WebSocket handshake and initiates a TCP connection to the application to form a WebSocket connection. 
+
+<%= vars.port_limitations %>
 
 ### <a id="moving-apps"></a> Cloud Foundry Updates and Your Application ###
 

@@ -219,6 +219,8 @@ $ cf env my-app
 
 To explore all logs available in the container, use the `cf files` command to view the log filenames, then view the log that interests you.
 
+<p class="note"><strong>Note</strong>: Diego does not support the <code>cf files</code> command. For apps deployed to Diego, use the <code>cf ssh APP-NAME</code> command to list files in your application instances.</p>
+
 <pre class="terminal">
 $ cf files my-app logs/
     Getting files for app my-app in org my-org / space development as a.user@example.com...
@@ -236,8 +238,6 @@ $ cf files my-app logs/stderr.log
     [2014-01-27 20:21:58] INFO  ruby 1.9.3 (2013-11-22) [x86_64-linux]
     [2014-01-27 20:21:58] INFO  WEBrick::HTTPServer#start: pid=31 port=64391
 </pre>
-
-<p class="note"><strong>Note</strong>: Diego does not support the <code>cf files</code> command. For apps deployed to Diego, use the <code>cf ssh APP-NAME</code> command to list files in your application instances.</p>
 
 ### <a id='trace'></a>Tracing Cloud Controller REST API Calls ###
 

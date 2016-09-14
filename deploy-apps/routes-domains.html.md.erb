@@ -352,6 +352,14 @@ To delete a TCP route, identify the route using the domain and port.
 $ cf delete-route tcp.<%=vars.private_app_domain%> --port 60000
 </pre>
 
+### <a id='surgical-routing'></a>Routing Requests to a specific App Instance ###
+
+Users can route HTTP requests to a specific application instance using the header `X-CF-APP-INSTANCE`. The format of the header should be `X-Cf-App-Instance: APP_GUID:APP_INDEX`. If the instance cannot be found or the format is wrong, a 404 status code is returned.
+
+<pre class="terminal">
+$ curl -H"X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9" example.<%=vars.private_app_domain%>
+</pre>
+
 ## <a id='domains'></a>Domains ##
 
 <p class="note"><strong>Note</strong>: The term domain in this topic differs from its common use and is specific to Cloud Foundry. Likewise, shared domain and private domain refer to resources with specific meaning in Cloud Foundry. The use of domain name, root domain, and subdomain refers to DNS records.</p>

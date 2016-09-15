@@ -110,9 +110,9 @@ For any production application, we recommend a minimum of two instances.
 application can consume.
 If an instance exceeds this limit, Cloud Foundry restarts the instance.
     <p class='note'><strong>Note</strong>: Initially, Cloud Foundry immediately
-    restarts any instances that exceed the memory limit. If an instance
-    repeatedly exceeds the memory limit in a short period of time, Cloud Foundry
-    delays restarting the instance.</p>
+	restarts any instances that exceed the memory limit. If an instance
+	repeatedly exceeds the memory limit in a short period of time, Cloud Foundry
+	delays restarting the instance.</p>
 * **Start Command**: This is the command that Cloud Foundry uses to start each
 instance of your application.
 This start command varies by application framework.
@@ -151,39 +151,24 @@ For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-
 
 For more information about the manifest file, see the [Deploying with Application Manifests](./manifest.html) topic.
 
-### <a id='set-env'></a>Set Environment Variables
+### <a id='profile'></a>Configure Pre-Runtime Hooks ###
 
-Environment variables are key-value pairs defined at the operating system level. These key-value pairs provide a way to configure the applications running on a system. 
-For example, any application can access the LANG environment variable to determine which language to use for error messages and instructions, collating sequences, and date formats.
-
-You can set environment variables for an application in one of three ways:
-
-* Using the cf CLI. See the following example:
-
-    <pre class='terminal'>
-    $ cf set-env APP-NAME ENV-VAR-NAME ENV-VAR-VALUE
-    Setting env variable 'ENV-VAR-NAME' to 'ENV-VAR-VALUE' for app spring-music in org example / space development as user@example.com...
-    OK
-    TIP: Use 'cf restage' to ensure your env variable changes take effect
-    </pre>
-
-    <p class="note"><strong>Note</strong>: The cf CLI offers the most convenient and flexible way to set environment variables.</p> 
-
-* In an application manifest. See the <a href="manifest.html#env-block">Environment Variables</a> section of the Deploying with Environment Variables topic.
-
-* In a `.profile` file. See the <a href="#profile">Configure Runtime Hooks</a> section below.
-
-Cloud Foundry sources environment variables in the following order: the application manifest, then the cf CLI, and finally the `.profile` file. 
-For example, an environment variable set in the `.profile` file overwrites an environment variable set in the application manifest and the cf CLI.
-
-### <a id='profile'></a>Configure Runtime Hooks <span style="font-size:1rem">(available in Diego <a href="https://github.com/cloudfoundry/cf-release/releases/tag/v238">cf-release v238</a>)</span> ###
-
-To execute runtime hooks, insert a `.profile` file into the root of your application directory. This file should contain `bash` script that performs application-specific initialization tasks. 
-
-When an application container starts, a `bash` shell executes the `.profile` file after sourcing the application's environment variables from the application manifest and the cf CLI. 
-Because the `.profile` script executes after the buildpack, the script also has access to the language runtime environment created by the buildpack. 
+To configure pre-runtime hooks, create a file named `.profile` and place it in the root of your application directory. If the directory includes a `.profile` script, then Cloud Foundry executes it immediately before each instance of your application starts. Because the `.profile` script executes after the buildpack, the script has access to the language runtime environment created by the buildpack.
 
 <p class="note"><strong>Note</strong>: Your application root directory may also include a <code>.profile.d</code> directory that contains bash scripts that perform initialization tasks for the buildpack. Developers should not edit these scripts unless they are using a <a href="../../buildpacks/custom.html">custom buildpack</a>.</p>
+
+You can use the `.profile` script to perform application-specific initialization tasks, such as setting custom environment variables. Environment variables are key-value pairs defined at the operating system level. These key-value pairs provide a way to configure the applications running on a system. For example, any application can access the LANG environment variable to determine which language to use for error messages and instructions, collating sequences, and date formats.
+
+To set an environment variable, add the appropriate bash commands to your `.profile` file. See the example below.
+
+~~~bash
+# Set the Java environment path for your applications
+export JAVA_HOME=/usr/lib/jvm/jdk1.7.0
+export PATH=$PATH:$JAVA_HOME/bin
+
+# Set the default LANG for your applications
+export LANG=en_US.UTF-8
+~~~
 
 <p class="note"><strong>Note</strong>: If you are using a PHP buildpack version prior to v4.3.18, the buildpack will not execute your PHP app's <code>.profile</code> script. Your PHP app will host the <code>.profile</code> script's contents. This means that any PHP app staged using the affected PHP Buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
@@ -209,51 +194,51 @@ to application when given a `cf push` command.
 <p class ="note"><strong>Note</strong>: When deploying your own apps, avoid generic names like <code>my-app</code>. Cloud Foundry uses the app name to compose the route to the app, and deployment fails unless the app has a globally unique route.</p>
 
 <pre class="terminal">
-    $ cf push my-app
-    Creating app my-app in org example-org / space development as a.user@<%=vars.app_domain%>...
-    OK
+	$ cf push my-app
+	Creating app my-app in org example-org / space development as a.user@<%=vars.app_domain%>...
+	OK
 
-    Creating route my-app.<%=vars.app_domain%>...
-    OK
+	Creating route my-app.<%=vars.app_domain%>...
+	OK
 
-    Binding my-app.<%=vars.app_domain%> to my-app...
-    OK
+	Binding my-app.<%=vars.app_domain%> to my-app...
+	OK
 
-    Uploading my-app...
-    Uploading app: 560.1K, 9 files
-    OK
+	Uploading my-app...
+	Uploading app: 560.1K, 9 files
+	OK
 
-    Starting app my-app in org example-org / space development as a.user@<%= vars.app_domain %>...
-    -----> Downloaded app package (552K)
-    OK
-    -----> Using Ruby version: ruby-1.9.3
-    -----> Installing dependencies using Bundler version 1.3.2
-           Running: bundle install --without development:test --path
-             vendor/bundle --binstubs vendor/bundle/bin --deployment
-           Installing rack (1.5.1)
-           Installing rack-protection (1.3.2)
-           Installing tilt (1.3.3)
-           Installing sinatra (1.3.4)
-           Using bundler (1.3.2)
-           Updating files in vendor/cache
-           Your bundle is complete! It was installed into ./vendor/bundle
-           Cleaning up the bundler cache.
-    -----> Uploading droplet (23M)
+	Starting app my-app in org example-org / space development as a.user@<%= vars.app_domain %>...
+	-----> Downloaded app package (552K)
+	OK
+	-----> Using Ruby version: ruby-1.9.3
+	-----> Installing dependencies using Bundler version 1.3.2
+	       Running: bundle install --without development:test --path
+	         vendor/bundle --binstubs vendor/bundle/bin --deployment
+	       Installing rack (1.5.1)
+	       Installing rack-protection (1.3.2)
+	       Installing tilt (1.3.3)
+	       Installing sinatra (1.3.4)
+	       Using bundler (1.3.2)
+	       Updating files in vendor/cache
+	       Your bundle is complete! It was installed into ./vendor/bundle
+	       Cleaning up the bundler cache.
+	-----> Uploading droplet (23M)
 
-    1 of 1 instances running
+	1 of 1 instances running
 
-    App started
+	App started
 
-    Showing health and status for app my-app in org example-org / space development as a.user@<%=vars.app_domain%>...
-    OK
+	Showing health and status for app my-app in org example-org / space development as a.user@<%=vars.app_domain%>...
+	OK
 
-    requested state: started
-    instances: 1/1
-    usage: 1G x 1 instances
-    urls: my-app.<%=vars.app_domain%>
+	requested state: started
+	instances: 1/1
+	usage: 1G x 1 instances
+	urls: my-app.<%=vars.app_domain%>
 
-         state     since                    cpu    memory        disk
-    #0   running   2014-01-24 05:07:18 PM   0.0%   18.5M of 1G   52.5M of 1G
+	     state     since                    cpu    memory        disk
+	#0   running   2014-01-24 05:07:18 PM   0.0%   18.5M of 1G   52.5M of 1G
 
 </pre>
 

@@ -356,20 +356,22 @@ $ cf delete-route tcp.<%=vars.private_app_domain%> --port 60000
 
 Users can route HTTP requests to a specific application instance using the header `X-CF-APP-INSTANCE`. The format of the header should be `X-CF-APP-INSTANCE: APP_GUID:APP_INDEX`.
 
-`APP_GUID` is an internal identifier for your application. To get it, developers needs to use application name.
+`APP_GUID` is an internal identifier for your application. To get it, developers can use the following CLI command.
 
 <pre class="terminal">
 $ cf myapp --guid
 </pre>
 
-`APP_INDEX` (e.g. 0, 1, 2) is an identifier for a particular app instance. Developers will get statistics on each instance of a particular app.
+`APP_INDEX` (e.g. 0, 1, 2) is an identifier for a particular app instance. Developers can use the CLI command `cf app APP` to get statistics on each instance of a particular app.
 
 <pre class="terminal">
 $ cf app myapp
 </pre>
 
+In the following example, a request is made to instance #9 of the application with GUID `5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e` which is mapped to route example.<%=vars.private_app_domain%>.
+
 <pre class="terminal">
-$ curl -H"X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9" example.<%=vars.private_app_domain%>
+$ curl example.<%=vars.private_app_domain%> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9" 
 </pre>
 
 If the instance cannot be found or the format is wrong, a 404 status code is returned.

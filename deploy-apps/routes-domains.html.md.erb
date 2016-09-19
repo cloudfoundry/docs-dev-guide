@@ -368,10 +368,10 @@ $ cf myapp --guid
 $ cf app myapp
 </pre>
 
-In the following example, a request is made to instance #9 of the application with GUID `5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e` which is mapped to route example.<%=vars.private_app_domain%>.
+In the following example, a request is made to instance #9 of the application with GUID `5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e` which is mapped to route myapp.<%=vars.private_app_domain%>.
 
 <pre class="terminal">
-$ curl example.<%=vars.private_app_domain%> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9" 
+$ curl myapp.<%=vars.private_app_domain%> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9" 
 </pre>
 
 If the instance cannot be found or the format is wrong, a 404 status code is returned.

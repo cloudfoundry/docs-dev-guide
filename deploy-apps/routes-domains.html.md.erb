@@ -11,7 +11,7 @@ This topic describes how routes and domains work in <%=vars.product_full%>, and 
 
 ## <a id='routes'></a>Routes ##
 
-The <%=vars.product_short%> router routes requests to applications by associating an app with an address, known as a route. This association is called a mapping: for example, the cf CLI command for associating an app and route is [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html).
+The <%=vars.product_short%> router routes requests to applications by associating an app with an address, known as a route. We call this association a **mapping**. The cf CLI command for associating an app and route is [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html).
 
 The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the router would make the following matches for the two routes `myapp.<%=vars.app_domain%>` and `myapp.<%=vars.app_domain%>/products`:
 
@@ -42,35 +42,37 @@ The routing tier compares each request with a list of all the routes mapped to a
     </tr>
 </table>
 
-The router does not use a route to match requests until it is mapped to an app. In the above example, `products.<%=vars.app_domain%>` may have been created as a route in Cloud Foundry, but until it is mapped to an app, requests for it receive a 404.
+The router does not use a route to match requests until it is mapped to an app. In the above example, `products.<%=vars.app_domain%>` may have been created as a route in Cloud Foundry, but until it is mapped to an app, requests for it receive a `404`.
 
-The routing tier knows the location of instances for apps mapped to routes. Once the routing tier determines a route as the best match for a request, it makes a load-balancing calculation using the round-robin algorithm, and forwards the request to an instance of the mapped app.
+The routing tier knows the location of instances for apps mapped to routes. Once the routing tier determines a route as the best match for a request, it makes a load-balancing calculation using a round-robin algorithm, and forwards the request to an instance of the mapped app.
 
 Developers can map many apps to a single route, resulting in load-balanced requests for the route across all instances of all mapped apps. This approach enables the blue/green zero-downtime deployment strategy. Developers can also map an individual app to multiple routes, enabling access to the app from many URLs.
 
-Routes belong to a space, so that developers can only map apps to a route in the same space. Routes are globally unique, so that developers in one space cannot create a route with the same URL as developers in another space, regardless of which orgs control these spaces.
+Routes belong to a space, and developers can only map apps to a route in the same space. 
 
-### <a id='http-vs-tcp-routes'></a>HTTP vs TCP Routes
+<p class="note"><strong>Note</strong>: Routes are globally unique. Developers in one space cannot create a route with the same URL as developers in another space, regardless of which orgs control these spaces.</p>
+
+### <a id='http-vs-tcp-routes'></a>HTTP vs. TCP Routes
 
 <%=vars.tcp_routing%>
 
 <p class="note"><strong>Note:</strong> By default, <%=vars.product_short%> only supports routing of HTTP requests to applications. </p>
 
-Routes are considered HTTP if they are created from HTTP domains, and TCP if the are created from TCP domains. See [HTTP vs TCP Shared Domains](#http-vs-tcp-shared-domains).
+Routes are considered HTTP if they are created from HTTP domains, and TCP if the are created from TCP domains. See [HTTP vs. TCP Shared Domains](#http-vs-tcp-shared-domains).
 
 HTTP routes include a domain, an optional hostname, and an optional context path. `<%=vars.app_domain%>`, `myapp.<%=vars.app_domain%>`, and `myapp.<%=vars.app_domain%>/products` are all examples of HTTP routes.
 
 * Requests to HTTP routes must be sent to ports 80 or 443.
 * Ports cannot be reserved for HTTP routes.
 
-TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an application pushed to Cloud Foundry listens on; applications should listen to the port defined by the `$PORT` environment variable; 8080 on Diego. `tcp.<%=vars.app_domain%>:60000` is an example of a TCP route.
+TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an application pushed to Cloud Foundry listens on. Applications should listen to the port defined by the `$PORT` environment variable, `8080` on Diego. `tcp.<%=vars.app_domain%>:60000` is an example of a TCP route.
 
 * Once a port is reserved for a route, it cannot be reserved for another route.
 * Hostname and path are not supported for TCP routes.
 
 ### <a id='create-route'></a>Create a Route ###
 
-When a developer creates a route using the cf CLI, <%=vars.product_short%> determines whether the route is an HTTP or a TCP route based on the domain. To create a HTTP route, a developer must choose a HTTP domain. To create a TCP route, a developer must choose a TCP domain.
+When a developer creates a route using the cf CLI, <%=vars.product_short%> determines whether the route is an HTTP or a TCP route based on the domain. To create a HTTP route, a developer must choose an HTTP domain. To create a TCP route, a developer must choose a TCP domain.
 
 Domains in <%=vars.product_short%> provide a namespace from which to create routes. To list available domains for a targeted organization, use the [cf domains](http://cli.cloudfoundry.org/en-US/cf/domains.html) command. For more information about domains, see the <a href="#domains">Domains</a> section.
 
@@ -78,13 +80,12 @@ The following sections describe how developers can create HTTP and TCP routes fo
 
 #### <a id='create-route-with-hostname'></a>Create an HTTP Route with Hostname ####
 
-In <%=vars.product_short%>, a hostname is the label that indicates a subdomain of the domain associated with the route. Given a domain `<%=vars.app_domain%>`, a developer can create the route `myapp.<%=vars.app_domain%>` in space `my-space` by specifying the hostname `myapp` with the [cf create-route](http://cli.cloudfoundry.org/en-US/cf/create-route.html) command:
+In <%=vars.product_short%>, a hostname is the label that indicates a subdomain of the domain associated with the route. Given a domain `<%=vars.app_domain%>`, a developer can create the route `myapp.<%=vars.app_domain%>` in space `my-space` by specifying the hostname `myapp` with the [cf create-route](http://cli.cloudfoundry.org/en-US/cf/create-route.html) command as shown in this example:
 
 <pre class="terminal">
 $ cf create-route my-space <%=vars.app_domain%> --hostname myapp
 Creating route myapp.<%=vars.app_domain%> for org my-org / space my-space as username<span>@</span>example.com...
 OK
-
 </pre>
 
 This command instructs <%=vars.product_short%> to only route requests to apps mapped to this route for the following URLs:
@@ -103,7 +104,6 @@ A developer can create a route in space `my-space` from the domain `<%=vars.priv
 $ cf create-route my-space <%=vars.private_app_domain%>
 Creating route <%=vars.private_app_domain%> for org my-org / space my-space as username<span>@</span>example.com...
 OK
-
 </pre>
 
 If DNS has been configured correctly, this command instructs <%=vars.product_short%> to route requests to apps mapped to this route from the following URLs:
@@ -120,7 +120,6 @@ A developer can also create routes for subdomains with no hostnames. The followi
 $ cf create-route my-space foo.<%=vars.private_app_domain%>
 Creating route foo.<%=vars.private_app_domain%> for org my-org / space my-space as username<span>@</span>example.com...
 OK
-
 </pre>
 
 Assuming DNS has been configured for this subdomain, this command instructs <%=vars.product_short%> to route requests to apps mapped to this route from the following URLs:
@@ -139,7 +138,6 @@ A developer can create a wildcard route in space `my-space` from the domain `foo
 $ cf create-route my-space foo.<%=vars.app_domain%> --hostname *
 Creating route *.foo.<%=vars.app_domain%> for org my-org / space my-space as username<span>@</span>example.com...
 OK
-
 </pre>
 
 If a client sends a request to `http://app.foo.<%=vars.app_domain%>` by accident, attempting to reach `myapp.foo.<%=vars.app_domain%>`, <%=vars.product_short%> routes the request to the app mapped to the route `*.foo.<%=vars.app_domain%>`.
@@ -162,12 +160,11 @@ OK
 $ cf create-route my-space <%=vars.app_domain%> --hostname store
 Creating route store.<%=vars.app_domain%> for org my-org / space my-space as username<span>@</span>example.com...
 OK
-
 </pre>
 
-The developer can then map the the new routes to different apps by following the steps in the <a href="#map-route">Map a Route to your Application</a> section below.
+The developer can then map the the new routes to different apps by following the steps in the <a href="#map-route">Map a Route to Your Application</a> section below.
 
-If the developer maps the first route with path `products` to the `products` app, the second route with path `orders` to the `orders` app, and the last route to the `storefront` app, then:
+If the developer maps the first route with path `products` to the `products` app, the second route with path `orders` to the `orders` app, and the last route to the `storefront` app. After this, the following occurs:
 
 - <%=vars.product_short%> routes requests to `http://store.<%=vars.app_domain%>/products` to the `products` app.
 - <%=vars.product_short%> routes requests to `http://store.<%=vars.app_domain%>/orders` to the `orders` app.
@@ -195,7 +192,7 @@ OK
 Route tcp.<%=vars.app_domain%>:60034 has been created
 </pre>
 
-In this example, <%=vars.product_short%> routes requests to tcp.<%=vars.app_domain%>:60034 to apps mapped to this route.
+In this example, <%=vars.product_short%> routes requests to `tcp.<%=vars.app_domain%>:60034` to apps mapped to this route.
 
 To request a specific port, a developer can use the `--port` flag, so long as the port is not reserved for another space. The following command creates a TCP route for `tcp.<%=vars.app_domain%>` on port 60035:
 
@@ -203,7 +200,6 @@ To request a specific port, a developer can use the `--port` flag, so long as th
 $ cf create-route tcp.<%=vars.app_domain%> --port 60035
 Creating route tcp.<%=vars.app_domain%>:60035 for org my-org / space my-space as user@example.com...
 OK
-
 </pre>
 
 ### <a id='list-routes'></a>List Routes ###
@@ -238,7 +234,7 @@ OK
 Route store.<%=vars.app_domain%>/products does exist
 </pre>
 
-### <a id='map-route'></a>Map a Route to your Application ###
+### <a id='map-route'></a>Map a Route to Your Application ###
 
 For an app to receive requests to a route, developers must map the route to the app with the [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html) command. If the route does not already exist, this command creates it.
 
@@ -352,29 +348,29 @@ To delete a TCP route, identify the route using the domain and port.
 $ cf delete-route tcp.<%=vars.private_app_domain%> --port 60000
 </pre>
 
-### <a id='surgical-routing'></a>Routing Requests to a specific App Instance ###
+### <a id='surgical-routing'></a>Routing Requests to a Specific App Instance ###
 
 Users can route HTTP requests to a specific application instance using the header `X-CF-APP-INSTANCE`. The format of the header should be `X-CF-APP-INSTANCE: APP_GUID:APP_INDEX`.
 
-`APP_GUID` is an internal identifier for your application. To get it, developers can use the following CLI command.
+`APP_GUID` is an internal identifier for your application. Use the `cf APP-NAME --guid` command to discover the `APP_GUID` for your application.
 
 <pre class="terminal">
 $ cf myapp --guid
 </pre>
 
-`APP_INDEX` (e.g. 0, 1, 2) is an identifier for a particular app instance. Developers can use the CLI command `cf app APP` to get statistics on each instance of a particular app.
+`APP_INDEX`, for example `1`, `2`, or `3`, is an identifier for a particular app instance. Use the CLI command `cf app APP-NAME` to get statistics on each instance of a particular app.
 
 <pre class="terminal">
 $ cf app myapp
 </pre>
 
-In the following example, a request is made to instance #9 of the application with GUID `5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e` which is mapped to route myapp.<%=vars.private_app_domain%>.
+The following example shows a request made to instance `9` of an application with GUID `5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e` and mapped to route myapp.<%=vars.private_app_domain%>.
 
 <pre class="terminal">
 $ curl myapp.<%=vars.private_app_domain%> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9" 
 </pre>
 
-If the instance cannot be found or the format is wrong, a 404 status code is returned.
+If the cf CLI cannot find the instance the format is incorrect, a `404` status code is returned.
 
 ## <a id='domains'></a>Domains ##
 
@@ -397,7 +393,7 @@ tcp.<%=vars.app_domain%>    shared   tcp
 
 This example displays three available domains: a shared HTTP domain `<%=vars.app_domain%>`, a shared TCP domain `tcp.<%=vars.app_domain%>`, and a private domain `<%=vars.private_app_domain%>`. See [Shared Domains](#shared-domains) and [Private Domains](#private-domains).
 
-### <a id='http-vs-tcp-shared-domains'></a>HTTP vs TCP Domains ###
+### <a id='http-vs-tcp-shared-domains'></a>HTTP vs. TCP Domains ###
 
 HTTP domains indicate to a developer that only requests using the HTTP protocol will be routed to applications mapped to routes created from the domain. Routing for HTTP domains is layer 7 and offers features like custom hostnames, sticky sessions, and TLS termination.
 
@@ -424,7 +420,6 @@ To create a TCP shared domain, first discover the name of the TCP Router Group.
 <pre class="terminal">
 $ cf router-groups
 Getting router groups as admin ...
-
 name          type
 default-tcp   tcp
 </pre>

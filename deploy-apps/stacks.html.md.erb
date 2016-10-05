@@ -8,15 +8,13 @@ owner:
 
 <strong><%= modified_date %></strong>
 
-A stack is a prebuilt root filesystem (rootfs) that supports a specific operating system. For example, Linux-based systems need `/usr` and `/bin` directories at their root and Windows needs `\windows`. The stack works in tandem with a buildpack to support applications running in compartments. Under Diego architecture, cell VMs can support multiple stacks.
+A stack is a prebuilt root filesystem (rootfs) that supports a specific operating system. For example, Linux-based systems need `/usr` and `/bin` directories at their root. The stack works in tandem with a buildpack to support applications running in compartments. Under Diego architecture, cell VMs can support multiple stacks.
 
 <p class="note"><strong>Note</strong>: Docker apps do not use stacks.</p>
 
 ##<a id='available-stacks'></a>Available Stacks ##
 
 * The Linux `cflinuxfs2` stack is derived from Ubuntu Trusty 14.04. Refer to the Github stacks page for supported [libraries](https://github.com/cloudfoundry/stacks/blob/master/cflinuxfs2/cflinuxfs2_receipt).
-
-* The Windows stack `windows2012R2` supports .NET apps.
 
 <%= vars.custom_stack %>
 
@@ -35,7 +33,6 @@ It can be difficult to know what libraries an app statically links to, and it de
 
     name            description
     cflinuxfs2      Cloud Foundry Linux-based filesystem
-    windows2012R2   Windows Server 2012 R2
     </pre>
 
 1. To change your stack and restage your application, use the [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command. For example, to restage your app on the default stack `cflinuxfs2` you can run `cf push MY-APP`:
@@ -43,7 +40,7 @@ It can be difficult to know what libraries an app statically links to, and it de
     $ cf push MY-APP
     Using stack cflinuxfs2...
     OK
-    Creating app MY-WIN-APP in org MY-ORG / space development as developer@example<span>.</span>com...
+    Creating app MY-APP in org MY-ORG / space development as developer@example<span>.</span>com...
     OK
     ...
     requested state: started
@@ -55,7 +52,7 @@ It can be difficult to know what libraries an app statically links to, and it de
     \#0  running  2015-04-08 04:41:54 PM   0.0%   57.3M of 1G   128.8M of 1G
     </pre>
 
-    To specify a different stack, append `-s STACKNAME` to the command. For example, you can ensure that Windows application MY-WIN-APP deploys to a Windows-based cell by running `cf push MY-WIN-APP -s windows2012R2`.
+    To specify a different stack, append `-s STACKNAME` to the command.
 
 
 ##<a id='stacks-api'></a>Stacks API ##

@@ -260,8 +260,8 @@ with deployment options, including the name, current state, number of instances,
 memory and disk allocations, and URLs of each application.
 
 * `cf app APP-NAME`: Returns the health and status of each instance of a specific application in the current space, including instance ID number, current
-state, how long it has been running, and how much CPU, memory, and disk it is using.  
-CPU values returned by `cf app` show the total usage of each app instance on all CPU cores on the host VM, where each core contributes 100%. For example, the CPU of a single-threaded app instance on a Diego cell with one core cannot exceed 100%, and four instances sharing the cell cannot exceed an average CPU of 25%. But a multi-threaded app instance running alone on a cell with eight cores can theoretically draw up to 800% CPU.
+state, how long it has been running, and how much CPU, memory, and disk it is using.
+<p class="note"><strong>Note</strong>: CPU values returned by <code>cf app</code> show the total usage of each app instance on all CPU cores on a host VM, where each core contributes 100%. For example, the CPU of a single-threaded app instance on a Diego cell with one core cannot exceed 100%, and four instances sharing the cell cannot exceed an average CPU of 25%. A multi-threaded app instance running alone on a cell with eight cores can draw up to 800% CPU.</p>
 
 * `cf env APP-NAME`: Returns environment variables set using `cf set-env` and variables existing in the container environment.
 

@@ -96,8 +96,8 @@ https://github.com/github/gitignore, are a useful starting point.
 
 ## <a id="increase-availability"></a>Run Multiple Instances to Increase Availability ##
 
-When a DEA is upgraded, the applications running on it are shut down gracefully,
-then restarted on another DEA. To avoid the risk of an application being unavailable
+When a Diego cell <%= vars.buildpacks_index_dea %> is upgraded, the applications running on it are shut down gracefully,
+then restarted on another Diego cell <%= vars.buildpacks_index_dea %>. To avoid the risk of an application being unavailable
 during a Cloud Foundry upgrade processes, you should run more than one instance of the
 application.
 
@@ -106,6 +106,6 @@ application.
 A buildpack consists of bundles of detection and configuration scripts that
 provide framework and runtime support for your applications.
 When you deploy an application that needs a buildpack, Cloud Foundry installs
-the buildpack on the Droplet Execution Agent (DEA) where the application runs.
+the buildpack on the Diego cell <%= vars.buildpacks_index_dea %> where the application runs.
 
 For more information, see the [Buildpacks](../../buildpacks/) topic.

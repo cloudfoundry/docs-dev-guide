@@ -6,21 +6,19 @@ owner: CAPI
 <strong><%= modified_date %></strong>
 
 This topic describes constraints and recommended settings for deploying
-applications between 750 MB and 1 GB to <%=vars.product_full%>.
+applications above 750 MB.
 
 ## <a id="consid_limits"></a>Deployment Considerations and Limitations ##
-
-<%=vars.product_short%> supports application uploads up to 1 GB.
 
 The deployment process involves uploading, staging, and starting the app. See the <a href="app-lifecycle.html#deployment">Deployment</a> section of the Application Container Lifecycle topic for more information on the default time limits for uploading, staging, and starting an app.
 
 To deploy large apps to <%=vars.product_short%>, ensure the following:
 
+* The total size of the files to upload for your app does not exceed <%= vars.max_app_size %>.
+
 * Your network connection speed is sufficient to upload your app within the 15 minute limit. We recommends a minimum speed of 874 KB/s.
 
     <p class="note"><strong>Note</strong>: <%=vars.product_short%> provides an authorization token that is valid for a minimum of 20 minutes.</p>
-
-* The total size of the files to upload for your app does not exceed 1 GB.
 
 * You allocate enough memory for all instances of your app. Use either the `-m` flag with `cf push` or set an app memory value in your `manifest.yml` file.
 
@@ -55,7 +53,7 @@ This table provides summary information of constraints and default settings to c
 </tr>
 <tr>
 <td>App Package Size</td>
-<td>Maximum: 1 GB</td>
+<td>Maximum: <%= vars.max_app_size_table %></td>
 </tr>
 <td>Authorization Token Grace Period</td>
 <td>Default: 20 minutes, minimum</td>

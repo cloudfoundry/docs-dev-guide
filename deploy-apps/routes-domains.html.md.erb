@@ -11,9 +11,9 @@ This topic describes how routes and domains work in <%=vars.product_full%>, and 
 
 ## <a id='routes'></a>Routes ##
 
-The <%=vars.product_short%> router routes requests to applications by associating an app with an address, known as a route. We call this association a **mapping**. The cf CLI command for associating an app and route is [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html).
+The <%=vars.product_short%> Gorouter routes requests to applications by associating an app with an address, known as a route. We call this association a **mapping**. The cf CLI command for associating an app and route is [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html).
 
-The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the router would make the following matches for the two routes `myapp.<%=vars.app_domain%>` and `myapp.<%=vars.app_domain%>/products`:
+The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the Gorouter would make the following matches for the two routes `myapp.<%=vars.app_domain%>` and `myapp.<%=vars.app_domain%>/products`:
 
 <table border="1" class="nice" >
     <tr>
@@ -42,7 +42,7 @@ The routing tier compares each request with a list of all the routes mapped to a
     </tr>
 </table>
 
-The router does not use a route to match requests until it is mapped to an app. In the above example, `products.<%=vars.app_domain%>` may have been created as a route in Cloud Foundry, but until it is mapped to an app, requests for it receive a `404`.
+The Gorouter does not use a route to match requests until the route is mapped to an app. In the above example, `products.<%=vars.app_domain%>` may have been created as a route in Cloud Foundry, but until it is mapped to an app, requests for the route receive a `404`.
 
 The routing tier knows the location of instances for apps mapped to routes. Once the routing tier determines a route as the best match for a request, it makes a load-balancing calculation using a round-robin algorithm, and forwards the request to an instance of the mapped app.
 
@@ -489,30 +489,73 @@ The domain `foo.myapp.<%=vars.app_domain%>` is the child subdomain of `myapp.<%=
 
 ### <a id='domains-dns'></a>DNS for Domains ###
 
-#### <a id='subdomain-dns'></a>Configuring DNS for a Subdomain of your Registered Domain ####
+To create customized access to your apps, you can map specific or wildcarded domains in <%=vars.product_short%> to your customized domains by using your DNS provider.
 
-To use a subdomain of your registered domain name with apps on <%=vars.product_short%>, configure the subdomain as CNAME record with your DNS provider, pointing at any shared domain offered in <%=vars.product_short%>.
+#### <a id='subdomain-dns'></a>Mapping Domains to Your Custom Domain ####
+
+To associate a registered domain name with a domain on <%=vars.product_short%>, configure a CNAME record with your DNS provider, pointing at any shared domain offered in <%=vars.product_short%>.
+
+##### <a id='single-mapping'></a>Mapping a Single Domain to Your Custom Domain
+
+To map a single domain to a custom domain to <%=vars.product_short%>, configure a CNAME record with your DNS provider. 
+
+The following table provides some example CNAME record mappings.
 
 <table border="1" class="nice" >
     <tr>
-        <th>Record</th>
-        <th>Name</th>
-        <th>Target</th>
-        <th>Note</th>
+        <th>Record Set in Custom Domain</th>
+        <th>Type</th>
+        <th>Target in <%=vars.product_short%></th>
     </tr>
     <tr>
+        <td>myapp.yourcustomdomain.com.</td>
         <td>CNAME</td>
-        <td>myapp</td>
-        <td>myapp.<%=vars.app_domain%>.</td>
-        <td>Refer to your DNS provider documentation to determine whether the trailing <code>.</code> is required.</td>
+        <td>myapp.<%=vars.app_domain%></td>
     </tr>
     <tr>
-        <td>Wildcard CNAME</td>
-        <td>*</td>
-        <td>foo.myapp.<%=vars.app_domain%>.</td>
-        <td>You can use the wildcard in the CNAME record to point all of your subdomains to your parent domain. Each separately configured subdomain has priority over the wildcard configuration. </td>
+        <td>www.yourcustomdomain.com.</td>
+        <td>CNAME</td>
+        <td>myapp.<%=vars.app_domain%></td>
     </tr>
 </table>
+
+After you create the CNAME mapping, your DNS provider routes your custom domain to `myapp.<%=vars.app_domain%>`. 
+
+<p class="note"><strong>Note:</strong> Refer to your DNS provider documentation to determine whether the trailing <code>.</code> is required.</p>
+
+##### <a id='wildcard-mapping'></a>Mapping Multiple Subdomains to Your Custom Domain 
+
+Use a wildcard CNAME record to point all of the subdomains in your custom domain to <%=vars.app_domain%>. 
+
+Each separately configured subdomain has priority over the wildcard configuration.
+
+The following table provides some example wildcard CNAME record mappings.
+
+<table border="1" class="nice" >
+    <tr>
+        <th>Record Set in Custom Domain</th>
+        <th>Type</th>
+        <th>Target in <%=vars.product_short%></th>
+    </tr>
+    <tr>
+        <td>*.yourcustomdomain.com.</td>
+        <td>CNAME</td>
+        <td>*.<%=vars.app_domain%></td>
+    </tr>
+    <tr>
+        <td>*.yourcustomdomain.com.</td>
+        <td>CNAME</td>
+        <td>*.myapp.<%=vars.app_domain%></td>
+    </tr>
+</table>
+ 
+If you use a wildcard as the subdomain name, then your DNS provider can route from `*.YOURCUSTOMDOMAIN` to any of the following:
+
+- `*.<%=vars.app_domain%>`
+- `foo.myapp.<%=vars.app_domain%>`
+- `bar.foo.myapp.<%=vars.app_domain%>`
+
+<%=vars.dns_warning%>
 
 #### <a id='root-domain-dns'></a>Configuring DNS for Your Registered Root Domain ####
 

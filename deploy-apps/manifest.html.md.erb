@@ -387,15 +387,19 @@ The command line option that corresponds to this attribute is `--random-route`.
 
 ###<a id='path'></a>The path attribute
 
-You can use the `path` attribute to tell Cloud Foundry where to find your application. This is generally not necessary when you run `cf push` from the directory where an application is located.
+You can use the `path` attribute to tell Cloud Foundry the directory location where it can find your application. 
+
+The directory specified as the `path`, either as an attribute or as a parameter on the command line, becomes the location where the buildpack 'Detect' script executes.
+
+The command line option that overrides this attribute is `-p`.
 
 <pre>
 ---
   ...
-  path: path_to_application_bits
+  path: /path/to/application/bits
 </pre>
 
-The command line option that overrides this attribute is `-p`.
+For more information, see the [How cf push Finds the Application](#find-app) topic.
 
 ###<a id='timeout'></a>The timeout attribute ###
 

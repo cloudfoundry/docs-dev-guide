@@ -462,7 +462,8 @@ While the application is running, you can modify environment variables.
 
 Environment variables interact with manifests in the following ways:
 
-* When you deploy an application for the first time, Cloud Foundry reads the variables described in the environment block of the manifest, and adds them to both the environment of the container where the application is staged and the environment of the container where the application is deployed.
+* When you deploy an application for the first time, Cloud Foundry reads the variables described in the environment block of the manifest and adds them to 
+the environment of the container where the application is staged, and the environment of the container where the application is deployed.
 
 * When you stop and then restart an application, its environment variables persist.
 
@@ -652,4 +653,4 @@ applications:
    path: ./december/target/december-weather.war
 </pre>
 
-<class='note'><strong>Note</strong>: Inheritance can add an additional level of complexity to manifest creation and maintenance. Comments that precisely explain how the child manifest extends or overrides the descriptions in the parent manifest can alleviate this complexity.</p>
+<p class='note'><strong>Note</strong>: Inheritance can add an additional level of complexity to manifest creation and maintenance. Comments that precisely explain how the child manifest extends or overrides the descriptions in the parent manifest can alleviate this complexity.</p>

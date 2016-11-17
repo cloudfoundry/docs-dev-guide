@@ -73,7 +73,7 @@ Restarting your application stops your application and restarts it with the alre
 
 The Diego [cell](../../concepts/architecture/index.html#diego-cell) unpacks, compiles, and runs a droplet on a container.
 
-Restart your application to refresh the application's environment, such as after setting an environment variable. However, if your environment variable is consumed by the buildpack in addition to the application, then you must [restage](#restage) the application for the change to take effect.
+Restart your application to refresh the application's environment after actions such as binding a new service to the application or setting an environment variable that only the application consumes. However, if your environment variable is consumed by the buildpack in addition to the application, then you must [restage](#restage) the application for the change to take effect.
 
 ##<a id='restage'></a>Restage Your Application
 
@@ -85,4 +85,4 @@ Restaging your application stops your application and restages it, by compiling 
 
 Restage your application if you have changed the environment in a way that affects your staging process, such as setting an environment variable that the buildpack consumes. The staging process has access to environment variables, so the environment can affect the contents of the droplet. 
 
-Restaging your application compiles a new droplet from your application without updating your application source. If you need to update your application source, re-push your application by following the steps [above](#start).
+Restaging your application compiles a new droplet from your application without updating your application source. If you need to update your application source, re-push your application by following the steps in the section [above](#start).

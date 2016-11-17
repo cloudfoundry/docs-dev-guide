@@ -5,41 +5,47 @@ owner: CLI
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to start, restart, and restage applications using the Cloud Foundry CLI (cf CLI).
+This topic describes how to start, restart, and restage applications in Cloud Foundry.
 
 ##<a id='start'></a>Start Your Application
 
-`cf push` starts your application with a command from one of three sources:
+To start your application, run the following command from your application root directory:
 
-1. The `-c` command-line option, for example:
+<pre class="terminal">$ cf push YOUR-APP</pre>
 
-    ``$ cf push my-app -c "node my-app.js"``
+For more information about deploying applications, see the [Deploy an Application](deploy-app.html) topic.
 
-1. The `command` attribute in the application manifest, for example:
+Cloud Foundry determines the start command for your application from one of three sources:
 
-    `command: node my-app.js`
+1. The `-c` command-line option in the cf Command Line Interface (CLI). See the following example:
+
+    <pre class="terminal">$ cf push YOUR-APP -c "node YOUR-APP.js"</pre>
+
+1. The `command` attribute in the application manifest. See the following example:
+
+    `command: node YOUR-APP.js`
 
 1. The buildpack, which provides a start command appropriate for a particular type of application.
 
-The source that the cf CLI uses depends on factors explained below.
+The source that Cloud Foundry uses depends on factors explained below.
 
-###<a id='first-time'></a>How cf push Determines its Default Start Command ##
+###<a id='first-time'></a>How Cloud Foundry Determines its Default Start Command ##
 
 The first time you deploy an application, `cf push` uses the buildpack start command by default.
 After that, `cf push` defaults to whatever start command was used for the previous push.
 
 To override these defaults, provide the `-c` option, or the command attribute in the manifest.
-When you provide start commands _both_ at the command line and in the manifest, `cf push` ignores the command in the manifest.
+When you provide start commands both at the command line and in the manifest, `cf push` ignores the command in the manifest.
 
-###<a id='revert'></a>Forcing cf push to use the Buildpack Start Command ##
+###<a id='revert'></a>Forcing Cloud Foundry To Use the Buildpack Start Command ##
 
-To force the cf CLI to use the buildpack start command, specify a start command of `null`.
+To force Cloud Foundry to use the buildpack start command, specify a start command of `null`.
 
 You can specify a null start command in one of two ways.
 
-1. Using the `-c` command-line option:
+1. Using the `-c` command-line option in the cf CLI:
 
-    ``$ cf push my-app -c "null"``
+    <pre class="terminal">$ cf push YOUR-APP -c "null"</pre>
 
 1. Using the `command` attribute in the application manifest:
 
@@ -49,11 +55,34 @@ This can be helpful after you have deployed while providing a start command at t
 At this point, a command that you provided, rather than the buildpack start command, has become the default start command.
 In this situation, if you decide to deploy using the buildpack start command, the `null` command makes that easy.
 
-###<a id='databases'></a>Start Commands when Migrating a Database ##
+###<a id='databases'></a>Start Commands When Migrating a Database ##
 
-Start commands are used in special ways when you migrate a database as part of an application deployment. See [Migrating a Database in Cloud Foundry](../services/migrate-db.html).
+Start commands are used in special ways when you migrate a database as part of an application deployment. See the [Migrating a Database in Cloud Foundry](../services/migrate-db.html) topic for more information.
 
 ##<a id='restart'></a>Restart Your Application
 
+To restart your application, run the following command: 
+
+<pre class="terminal">$ cf restart YOUR-APP</pre>
+
+Restarting your application stops your application and restarts it with the already compiled droplet. A droplet is a tarball that includes: 
+
+* stack
+* [buildpack](../../buildpacks/index.html)
+* application source code
+
+The Diego [cell](../../concepts/architecture/index.html#diego-cell) unpacks, compiles, and runs a droplet on a container.
+
+Restart your application to refresh the application's environment, such as after setting an environment variable. However, if your environment variable is consumed by the buildpack in addition to the application, then you must [restage](#restage) the application for the change to take effect.
 
 ##<a id='restage'></a>Restage Your Application
+
+To restage your application, run the following command: 
+
+<pre class="terminal">$ cf restage YOUR-APP</pre>
+
+Restaging your application stops your application and restages it, by compiling a new droplet and starting it. 
+
+Restage your application if you have changed the environment in a way that affects your staging process, such as setting an environment variable that the buildpack consumes. The staging process has access to environment variables, so the environment can affect the contents of the droplet. 
+
+Restaging your application compiles a new droplet from your application without updating your application source. If you need to update your application source, re-push your application by following the steps [above](#start).

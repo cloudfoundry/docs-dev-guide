@@ -15,17 +15,17 @@ To start your application, run the following command from your application root 
 
 For more information about deploying applications, see the [Deploy an Application](deploy-app.html) topic.
 
-Cloud Foundry determines the start command for your application from one of three sources:
+Cloud Foundry determines the start command for your application from one of the three following sources:
 
-1. The `-c` command-line option in the cf Command Line Interface (CLI). See the following example:
+* The `-c` command-line option in the Cloud Foundry Command Line Interface (cf CLI). See the following example:
 
     <pre class="terminal">$ cf push YOUR-APP -c "node YOUR-APP.js"</pre>
 
-1. The `command` attribute in the application manifest. See the following example:
+* The `command` attribute in the application manifest. See the following example:
 
     `command: node YOUR-APP.js`
 
-1. The buildpack, which provides a start command appropriate for a particular type of application.
+* The buildpack, which provides a start command appropriate for a particular type of application.
 
 The source that Cloud Foundry uses depends on factors explained below.
 
@@ -43,11 +43,11 @@ To force Cloud Foundry to use the buildpack start command, specify a start comma
 
 You can specify a null start command in one of two ways.
 
-1. Using the `-c` command-line option in the cf CLI:
+* Using the `-c` command-line option in the cf CLI:
 
     <pre class="terminal">$ cf push YOUR-APP -c "null"</pre>
 
-1. Using the `command` attribute in the application manifest:
+* Using the `command` attribute in the application manifest:
 
     `command: null`
 

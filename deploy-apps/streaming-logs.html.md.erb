@@ -95,7 +95,7 @@ For example:
 
 #### <a id="traceid"></a> Zipkin Trace Logging
 
-When the [Zipkin feature is enabled in Cloud Foundry](../../adminguide/zipkin_tracing.html), the Gorouter examines the HTTP request headers and performs the following:
+<%= vars.zipkin_enable_link %>
 
 * If the `X-B3-TraceId` and `X-B3-SpanId` HTTP headers are not present in the request, the Gorouter generates values for these and inserts the headers into the request forwarded to an application. These values are also found in the router access log message for the request: `x_b3_traceid` and `x_b3_spanid)`.
 * If both `X-B3-TraceId` and `X-B3-SpanId` HTTP headers are present in the request, the Gorouter forwards the same value for `X-B3-TraceId`, generates a new value for `X-B3-SpanId`, and adds the `X-B3-ParentSpan` header, and sets to the value of the span id in the request. In addition to these trace and span ids, the router access log message for the request includes all include `x_b3_parentspanid`.

@@ -50,7 +50,7 @@ Unbinding a route to a service instance from an application can be accomplished 
 <pre class="terminal">
 $ cf unbind-route-service <%=vars.app_domain%> my-route-service --hostname my-app
 
-Unbinding may leave apps mapped to route myapp.superman.cf-app.com vulnerable; e.g. if service instance myspringlogger provides authentication. Do you want to proceed?> y
+Unbinding may leave apps mapped to route my-app.<%=vars.app_domain%> vulnerable; e.g. if service instance my-route-service provides authentication. Do you want to proceed?> y
 Unbinding route my-app.<%=vars.app_domain%> from service instance my-route-service in org my-org / space my-space as developer...
 OK
 </pre>

@@ -95,12 +95,15 @@ For example:
 
 #### <a id="traceid"></a> Zipkin Trace Logging
 
-<%= vars.zipkin_enable_link_2 %>
+If Zipkin trace logging is enabled in Cloud Foundry, then Gorouter access log messages contain Zipkin HTTP headers. 
 
-* If the `X-B3-TraceId` and `X-B3-SpanId` HTTP headers are not present in the request, the Gorouter generates values for these and inserts the headers into the request forwarded to an application. These values are also found in the router access log message for the request: `x_b3_traceid` and `x_b3_spanid)`.
-* If both `X-B3-TraceId` and `X-B3-SpanId` HTTP headers are present in the request, the Gorouter forwards the same value for `X-B3-TraceId`, generates a new value for `X-B3-SpanId`, and adds the `X-B3-ParentSpan` header, and sets to the value of the span id in the request. In addition to these trace and span ids, the router access log message for the request includes all include `x_b3_parentspanid`.
+The following is an example access log message containing Zipkin headers:
 
-To trace app requests and responses in Cloud Foundry, apps must also log Zipkin headers. After adding Zipkin HTTP headers to app logs, developers can use `cf logs myapp` to correlate the trace and span ids logged by the Gorouter with the trace ids logged by their app. To correlate trace ids for a request through multiple apps, each app must forward appropriate values for the headers with requests to other applications.
+<pre class="terminal">
+2016-11-23T16:04:01.49-0800 [RTR/0]      OUT www.example.com - [24/11/2016:00:04:01.227 +0000] "GET / HTTP/1.1" 200 0 109 "-" "curl/7.43.0" 10.0.2.150:4070 10.0.48.66:60815 x_forwarded_for:"198.51.100.120" x_forwarded_proto:"http" vcap_request_id:87f9d899-c7a4-46cd-7b76-4ec35ce9921b response_time:0.263000966 app_id:8e5d6451-b369-4423-bce8-3a7a9e479dbb app_index:0 x_b3_traceid:"2d5610bf5e0f7241" x_b3_spanid:"2d5610bf5e0f7241" x_b3_parentspanid:"-"
+</pre>
+
+For more information on Zipkin tracing, see the [Zipkin Tracking in HTTP Headers](../../concepts/http-routing.html#zipkin-headers) topic.
 
 ### <a id='lgr'></a>LGR ###
 

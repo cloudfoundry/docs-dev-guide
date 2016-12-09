@@ -1,0 +1,93 @@
+---
+title: Running One-Off Tasks
+owner: CAPI
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to run one-off tasks in Cloud Foundry. Cloud Foundry enables you to run tasks, which are one-off processes that exit cleanly and use minimal resources.
+
+In contrast to a long running process (LRP), tasks run for a finite amout of time and then stop. After a task excutes a job, the task removes itself.
+
+You can use the cf CLI to run a task in the context of an application. In other words, the task is a process run against a droplet.
+
+Additional functional characteristics of tasks include:
+* A task is only run at most once
+* A task has the status: FAILED, SUCCEEDED, RUNNING
+* A task includes the command to start the process, disk size, and memory allocation
+* A task inherits environment variables, service bindings and security groups bound to the application
+* A task is a single-use object which can be checked for state and success/failure message
+* To re-execute a task, a new task must be created
+* A task is cancellable
+* A syslog drain attached to an app will receive task log output
+* Stdout/stderr from the task will be available on the app’s firehose logs
+* Tasks are always executed asynchronously
+* Tasks respect app, space, and organization level memory quotas
+* Task execution history is retained for one month
+* **Cannot SSH into a running task**
+
+##<a id="use-cases"></a> Use Cases for Tasks
+
+Tasks can be used to perform one-off jobs. For example, you can use a task to:
+
+* Migrate a database
+* Send an email
+* Run a batch job
+* Run a data processing script
+* Optimize a search index
+* Upload data
+* Download content
+
+
+To support running and managing tasks, the cf CLI supports the following commands:
+
+<table>
+	<tr>
+		<td>run-task</td>
+		<td>Run a one-off task on an app</td>
+	</tr>
+	<tr>
+		<td>tasks</td>
+		<td>List tasks of an app</td>
+	</tr>
+	<tr>
+		<td>terminate-task</td>
+		<td>Terminate a running task of an app</td>
+	</tr>
+</table>
+
+* <strong>Comment</strong> I think it would be nice to include more how tasks are run. Is there a queue? Is the task run in a separate container?
+* provide "architectural" information about how tasks work. For example, are they run in a separate container.
+* different container, same code
+
+For example, if you run cf run-task spring-music "echo blah", CF submits the task for execution and displays:
+
+<code>
+Creating task for app spring-music in org sleslie_pivotal / space development as sleslie@pivotal.io...
+OK
+
+Task 0 has been submitted successfully for execution.
+</code>
+
+To view the tasks running on an application:
+
+cf tasks spring-music
+
+id   name       state       start time                      command
+0    e4d3c654   SUCCEEDED   Tue, 15 Nov 2016 19:25:55 UTC   echo blah
+
+## About Tasks
+
+* Describe the purpose of tasks
+* short lived on-off tasks that can run in a finite time.
+* fails or not
+* replaces worker lrps with one off tasks
+* still a use case for workers
+
+Cloud Foundry
+
+
+
+## Sample Application
+
+The <strong>github_link_to_example</strong> application demonstrates ...

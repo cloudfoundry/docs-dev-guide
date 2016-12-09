@@ -5,26 +5,40 @@ owner: CAPI
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to run one-off tasks in Cloud Foundry. Cloud Foundry enables you to run tasks, which are one-off processes that exit cleanly and use minimal resources.
+This topic describes how to run one-off tasks in Cloud Foundry. Cloud Foundry enables you to run tasks. 
 
-In contrast to a long running process (LRP), tasks run for a finite amout of time and then stop. After a task excutes a job, the task removes itself.
+## <a id='about_tasks'></a> About Tasks
 
-You can use the cf CLI to run a task in the context of an application. In other words, the task is a process run against a droplet.
+Tasks are processes that are executed one time in the context of a given application. A task is only run at most once.
 
-Additional functional characteristics of tasks include:
-* A task is only run at most once
-* A task has the status: FAILED, SUCCEEDED, RUNNING
+In contrast to a long running process (LRP), tasks run for a finite amout of time and then stop. After the task executes, the task exits cleanly and removes itself.
+
+Tasks are designed to use minimal resources.
+
+A task has the status of FAILED, SUCCEEDED, RUNNING
+
+### How Tasks Are Run
+
+1. cf create-task appname
+1. stage task / queue
+1. Create container
+1. Run task
+1. Destroy container
+
+
 * A task includes the command to start the process, disk size, and memory allocation
 * A task inherits environment variables, service bindings and security groups bound to the application
 * A task is a single-use object which can be checked for state and success/failure message
-* To re-execute a task, a new task must be created
-* A task is cancellable
+
+* Tasks respect app, space, and organization level memory quotas
+
+<p class="note"><strong>Note</strong>: You cannot SSH into a running task.</p>
+
+### Task Logging and Execution History
+
+* Task execution history is retained for one month
 * A syslog drain attached to an app will receive task log output
 * Stdout/stderr from the task will be available on the app’s firehose logs
-* Tasks are always executed asynchronously
-* Tasks respect app, space, and organization level memory quotas
-* Task execution history is retained for one month
-* **Cannot SSH into a running task**
 
 ##<a id="use-cases"></a> Use Cases for Tasks
 
@@ -34,10 +48,20 @@ Tasks can be used to perform one-off jobs. For example, you can use a task to:
 * Send an email
 * Run a batch job
 * Run a data processing script
+* Process images
 * Optimize a search index
 * Upload data
+* Backup data
 * Download content
 
+## <a id='run-task'></a> Managing Tasks
+
+You can use the cf CLI to run a task in the context of an application. 
+
+* To re-execute a task, a new task must be created
+* A task is cancellable
+
+* Tasks are always executed asynchronously
 
 To support running and managing tasks, the cf CLI supports the following commands:
 
@@ -76,13 +100,7 @@ cf tasks spring-music
 id   name       state       start time                      command
 0    e4d3c654   SUCCEEDED   Tue, 15 Nov 2016 19:25:55 UTC   echo blah
 
-## About Tasks
 
-* Describe the purpose of tasks
-* short lived on-off tasks that can run in a finite time.
-* fails or not
-* replaces worker lrps with one off tasks
-* still a use case for workers
 
 Cloud Foundry
 

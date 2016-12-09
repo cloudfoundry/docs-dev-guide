@@ -172,7 +172,7 @@ If you override the start command for a Buildpack application, Linux uses
 If you override the start command for a Docker application, Linux uses <code>sh -c YOUR-COMMAND</code> to invoke your application.
 Because of this, if you override a start command, you should prefix <code>exec</code> to the final command in your custom composite start command.
 
-An app needs to catch [termination signals](./manifest.html#moving-apps) and clean itself up appropriately. Because of the way that shells manage process trees, the use of custom composite shell commands, particularly those that create child processes using `&`, `&&`, `||`, etc., can prevent your app from receiving signals that are sent to the top level bash process.
+An app needs to catch termination signals and clean itself up appropriately. Because of the way that shells manage process trees, the use of custom composite shell commands, particularly those that create child processes using `&`, `&&`, `||`, etc., can prevent your app from receiving signals that are sent to the top level bash process.
 
 To resolve this issue, you can use `exec` to replace the bash process with your own process. For example:
 

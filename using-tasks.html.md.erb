@@ -31,18 +31,22 @@ Tasks are used to perform one-off jobs. For example, you can use a task to:
 
 ###<a id="task-proceses"></a> How Tasks Are Run
 
-* A task includes the command to start the process, disk size, and memory allocation
-* A task inherits environment variables, service bindings and security groups bound to the application
-* Tasks respect app, space, and organization level memory quotas
-* Tasks have a memory limit and a disk limit (global cloud foundry defaults for app memory in your bosh manifest or in ERT Application Developer Controls) 
-
 The life-cycle of a task is:
 
-1. A user initiates a task using the `cf run-task APPNAME TASK` command.
+1. A user initiates a task in Cloud Foundry. A user can initiate a task in CF by using one of the following mechanisms:
+   *  `cf run-task APPNAME TASK` command
+   * Cloud Controler v3 API call. See the [Tasks](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#tasks) API reference page.
+   * Cloud Foundry Java Client. See 
+
 1. Cloud Foundry creates container specifically for the task.
 1. Cloud Foundry runs the task on the container using the value provided to the `cf run-task` command
 1. Cloud Foundry destroys container
 
+* A task includes the command to start the process, disk size, and memory allocation
+* A task inherits environment variables, service bindings and security groups bound to the application
+* Tasks respect app, space, and organization level memory quotas
+* Tasks have a memory limit and a disk limit (global cloud foundry defaults for app memory in your bosh manifest or in ERT Application Developer Controls) 
+* Tasks are always executed asynchronously
 
 <p class="note"><strong>Note</strong>: You cannot SSH into a running task.</p>
 
@@ -51,8 +55,6 @@ The life-cycle of a task is:
 * Task execution history is retained for one month. 
 * A syslog drain attached to an app will receive task log output
 * Stdout/stderr from the task will be available on the app’s firehose logs
-
-
 
 ## <a id='run-task'></a> Managing Tasks
 
@@ -65,13 +67,16 @@ Tasks have the following states:
 * FAILED: the task did not complete. This state occurs when a task does not work correctly or a user cancels the task.
 * SUCCEEDED: the task completed successfully.
 
-
-You can use the cf CLI to run a task in the context of an application. 
-
 * To re-execute a task, you must create it as a new task.
 * A task is cancellable
 
-* Tasks are always executed asynchronously
+### CF CLI Support
+
+You can use the cf CLI to run a task in the context of an application. 
+
+
+
+
 
 To support running and managing tasks, the cf CLI supports the following commands:
 

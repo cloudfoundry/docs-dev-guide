@@ -1,48 +1,23 @@
 ---
-title: Running One-Off Tasks
+title: Running Tasks
 owner: CAPI
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to run one-off tasks in Cloud Foundry. Cloud Foundry enables you to run tasks. 
-
-## <a id='about_tasks'></a> About Tasks
+This topic describes how to run tasks in Cloud Foundry. 
 
 Tasks are processes that are executed one time in the context of a given application. A task is only run at most once.
 
-In contrast to a long running process (LRP), tasks run for a finite amout of time and then stop. After the task executes, the task exits cleanly and removes itself.
+## <a id='about-tasks'></a> About Tasks
 
-Tasks are designed to use minimal resources.
+In contrast to a long running process (LRP), tasks run for a finite amout of time, then stop. Tasks run in their own containers and are designed to use minimal resources. After the task runs, Cloud Foundry destroys the container running the task.
 
-A task has the status of FAILED, SUCCEEDED, RUNNING
+As a single-use object, a task can be checked for its state and for a success or failure message.
 
-### How Tasks Are Run
+### <a id="use-cases"></a> Use Cases for Tasks
 
-1. cf create-task appname
-1. stage task / queue
-1. Create container
-1. Run task
-1. Destroy container
-
-
-* A task includes the command to start the process, disk size, and memory allocation
-* A task inherits environment variables, service bindings and security groups bound to the application
-* A task is a single-use object which can be checked for state and success/failure message
-
-* Tasks respect app, space, and organization level memory quotas
-
-<p class="note"><strong>Note</strong>: You cannot SSH into a running task.</p>
-
-### Task Logging and Execution History
-
-* Task execution history is retained for one month
-* A syslog drain attached to an app will receive task log output
-* Stdout/stderr from the task will be available on the app’s firehose logs
-
-##<a id="use-cases"></a> Use Cases for Tasks
-
-Tasks can be used to perform one-off jobs. For example, you can use a task to:
+Tasks are used to perform one-off jobs. For example, you can use a task to:
 
 * Migrate a database
 * Send an email
@@ -54,11 +29,46 @@ Tasks can be used to perform one-off jobs. For example, you can use a task to:
 * Backup data
 * Download content
 
+###<a id="task-proceses"></a> How Tasks Are Run
+
+* A task includes the command to start the process, disk size, and memory allocation
+* A task inherits environment variables, service bindings and security groups bound to the application
+* Tasks respect app, space, and organization level memory quotas
+* Tasks have a memory limit and a disk limit (global cloud foundry defaults for app memory in your bosh manifest or in ERT Application Developer Controls) 
+
+The life-cycle of a task is:
+
+1. A user initiates a task using the `cf run-task APPNAME TASK` command.
+1. Cloud Foundry creates container specifically for the task.
+1. Cloud Foundry runs the task on the container using the value provided to the `cf run-task` command
+1. Cloud Foundry destroys container
+
+
+<p class="note"><strong>Note</strong>: You cannot SSH into a running task.</p>
+
+### Task Logging and Execution History
+
+* Task execution history is retained for one month. 
+* A syslog drain attached to an app will receive task log output
+* Stdout/stderr from the task will be available on the app’s firehose logs
+
+
+
 ## <a id='run-task'></a> Managing Tasks
+
+* Admins can use the CAPI API to view all the tasks that are running in and org or space. (link to API docs)
+* Admins can set memory usage on a global level (link)
+
+Tasks have the following states:
+
+* RUNNING: the task is currently in progress.
+* FAILED: the task did not complete. This state occurs when a task does not work correctly or a user cancels the task.
+* SUCCEEDED: the task completed successfully.
+
 
 You can use the cf CLI to run a task in the context of an application. 
 
-* To re-execute a task, a new task must be created
+* To re-execute a task, you must create it as a new task.
 * A task is cancellable
 
 * Tasks are always executed asynchronously

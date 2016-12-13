@@ -29,6 +29,8 @@ Tasks are used to perform one-off jobs, which can include:
 
 ###<a id="task-proceses"></a> How Tasks Are Run
 
+Tasks are always executed asynchronously, meaning that they run independently from the parent application or other tasks that run on the same application.
+
 The life-cycle of a task is:
 
 1. A user initiates a task in Cloud Foundry using one of the following mechanisms:
@@ -38,11 +40,11 @@ The life-cycle of a task is:
 
 1. Cloud Foundry creates a container specifically for the task.
 1. Cloud Foundry runs the task on the container using the value passed to the `cf run-task` command.
-1. Cloud Foundry destroys container.
+1. Cloud Foundry destroys the container.
 
-When creating the container, Cloud Foundry uses the disk size and memory allocation specified for the parent application. The new container respects app, space, and organization-level memory quotas. The container also inherits environment variables, service bindings and security groups bound to the application. Tasks have a memory limit and a disk limit (global cloud foundry defaults for app memory in your bosh manifest or in ERT Application Developer Controls).
+When creating the container, Cloud Foundry uses the disk size and memory allocation specified for the parent application. The new container for the task also respects app, space, and organization-level memory quotas. 
 
-Tasks are always executed asynchronously, meaning that they run independently from the parent application or other tasks run on the same application.
+The container also inherits environment variables, service bindings and security groups bound to the application. 
 
 <p class="note"><strong>Note</strong>: You cannot SSH into the container running a task.</p>
 
@@ -54,9 +56,12 @@ The task execution history is retained for one month.
 
 ## <a id='manage-tasks'></a> Manage Tasks
 
-* Admins can use the Cloud Controller v3 API to view all the tasks that are running in an org or space. See http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#list-tasks
+From a system-level point of view, a user with admin-level privileges can use the Cloud Controller v3 API to view all tasks that are running within an org or space. For more information, see the documentation for the [Cloud Controller v3 API](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#list-tasks).
 
-* Admins can set memory usage on a global level (link)
+In addition, admins can set the default memory and disk usage quotas for tasks on a global level. Tasks use the same memory and disk usage defaults as applications.
+
+partialize this-->
+These defaults are located in the BOSH manifest or in the Application Developer Controls configuraiton screen of the Elastic Runtime.
 
 ## <a id='run-tasks'></a> Run a Task on an Application
 

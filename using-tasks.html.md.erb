@@ -34,9 +34,9 @@ Tasks are used to perform one-off jobs. For example, you can use a task to:
 The life-cycle of a task is:
 
 1. A user initiates a task in Cloud Foundry. A user can initiate a task in CF by using one of the following mechanisms:
-   *  `cf run-task APPNAME TASK` command
-   * Cloud Controler v3 API call. See the [Tasks](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#tasks) API reference page.
-   * Cloud Foundry Java Client. See 
+   *  `cf run-task APPNAME TASK` command. See 			
+   * Cloud Controller v3 API call. See the [Tasks](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#tasks) API reference page.
+   * Cloud Foundry Java Client. See [Cloud Foundry Java Client Library](../buildpacks/java/java-client.html) and [Cloud Foundry Java Client](https://github.com/cloudfoundry/cf-java-client).
 
 1. Cloud Foundry creates container specifically for the task.
 1. Cloud Foundry runs the task on the container using the value provided to the `cf run-task` command
@@ -56,44 +56,60 @@ The life-cycle of a task is:
 * A syslog drain attached to an app will receive task log output
 * Stdout/stderr from the task will be available on the app’s firehose logs
 
-## <a id='run-task'></a> Managing Tasks
+## <a id='manage-tasks'></a> Managing Tasks
 
-* Admins can use the CAPI API to view all the tasks that are running in and org or space. (link to API docs)
+* Admins can use the Cloud Controller v3 API to view all the tasks that are running in an org or space. See http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#list-tasks
+
 * Admins can set memory usage on a global level (link)
 
-Tasks have the following states:
-
-* RUNNING: the task is currently in progress.
-* FAILED: the task did not complete. This state occurs when a task does not work correctly or a user cancels the task.
-* SUCCEEDED: the task completed successfully.
-
-* To re-execute a task, you must create it as a new task.
-* A task is cancellable
-
-### CF CLI Support
+## <a id='run-tasks'></a> Running Tasks
 
 You can use the cf CLI to run a task in the context of an application. 
 
+<p class="note"><strong>Note</strong>: To run tasks with the cf CLI, you must install the cf CLI v6.23 (?) or later. See the <a href="../cf-cli/install-go-cli.html">Installing the Cloud Foundry Command Line Interface</a> topic for information about downloading, installing, and uninstalling the cf CLI.</p>
 
+To run a task on an application, first push your application. Then use the `cf run-task APPNAME TASK` command on your deployed application. For example:
 
+<pre class="terminal">
+$ cf run-task my-app "bin/rails db:migrate"
+Creating task for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
+OK
+Task 1 has been submitted successfully for execution.
+</pre>
+
+To re-run a task, you must create it as a new task.
+
+## <a id='list-tasks'></a> Listing Tasks
+
+Tasks have the following states:
+
+<table class="nice" border="1">
+    <tr>
+       <th>State</th>
+       <th>Description</th>
+	</tr>
+	<tr>
+		<td>RUNNING</td>
+		<td>The task is currently in progress.</td>
+	</tr>
+	<tr>
+		<td>FAILED</td>
+		<td>The task did not complete. This state occurs when a task does not work correctly or a user cancels the task.</td>
+	</tr>
+	<tr>
+		<td>SUCCEEDED</td>
+		<td>The task completed successfully.</td>
+	</tr>
+</table>
+
+## <a id='cancel-task'></a>
+
+* A task is cancellable
 
 
 To support running and managing tasks, the cf CLI supports the following commands:
 
-<table>
-	<tr>
-		<td>run-task</td>
-		<td>Run a one-off task on an app</td>
-	</tr>
-	<tr>
-		<td>tasks</td>
-		<td>List tasks of an app</td>
-	</tr>
-	<tr>
-		<td>terminate-task</td>
-		<td>Terminate a running task of an app</td>
-	</tr>
-</table>
+
 
 * <strong>Comment</strong> I think it would be nice to include more how tasks are run. Is there a queue? Is the task run in a separate container?
 * provide "architectural" information about how tasks work. For example, are they run in a separate container.

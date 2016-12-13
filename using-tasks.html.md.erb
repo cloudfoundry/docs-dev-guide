@@ -60,8 +60,11 @@ From a system-level point of view, a user with admin-level privileges can use th
 
 In addition, admins can set the default memory and disk usage quotas for tasks on a global level. Tasks use the same memory and disk usage defaults as applications.
 
-partialize this-->
-These defaults are located in the BOSH manifest or in the Application Developer Controls configuraiton screen of the Elastic Runtime.
+<% if vars.product_name == 'CF' %>
+<%= partial 'tasks_rec_alloc_oss' %>
+<% else %>
+<%= partial '../opsguide/tasks_rec_alloc_pcf' %>
+<% end %>
 
 ## <a id='run-tasks'></a> Run a Task on an Application
 

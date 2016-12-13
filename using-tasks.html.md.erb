@@ -86,13 +86,12 @@ To list the tasks for a given application, run the `cf tasks APP-NAME`. For exam
 
 <pre class="terminal">
 $ cf tasks my-app
-Getting tasks for app sl-rails-blog in org cf-docs-sandbox / space development as sleslie@pivotal.io...
+Getting tasks for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
 OK
 
 id   name       state       start time                      command
-3    ec964e1a   SUCCEEDED   Fri, 09 Dec 2016 23:14:58 UTC   ./tasks/hello_world.sh
-2    b84302eb   SUCCEEDED   Fri, 09 Dec 2016 23:09:11 UTC   ./tasks/hello_world.sh
-1    491c8a57   SUCCEEDED   Fri, 09 Dec 2016 23:08:44 UTC   ./tasks/hello_world.sh
+2    339044ef   FAILED      Wed, 23 Nov 2016 21:52:52 UTC   echo foo; sleep 100; echo bar
+1    8d0618cf   SUCCEEDED   Wed, 23 Nov 2016 21:37:28 UTC   bin/rails db:migrate
 </pre>
 
 Each task has one of the following states:
@@ -118,7 +117,14 @@ Each task has one of the following states:
 
 ## <a id='cancel-task'></a> Cancel a Task
 
-After running a task, you may be able to cancel it before it finishes. To cancel a running task, use the `cf terminate-task APP-NAME TASK-ID` command.
+After running a task, you may be able to cancel it before it finishes. To cancel a running task, use the `cf terminate-task APP-NAME TASK-ID` command. For example:
+
+<pre class="terminal">
+$ cf terminate-task my-app 2
+Terminating task 2 of app my-app in org jdoe-org / space development as jdoe@pivotal.io...
+OK
+
+</pre>
 
 ## Sample Application
 

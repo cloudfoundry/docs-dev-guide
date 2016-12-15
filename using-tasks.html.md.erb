@@ -1,0 +1,127 @@
+---
+title: Running Tasks
+owner: CAPI
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to run tasks in Cloud Foundry. A task is an application or script whose code is included as part of a deployed application, but runs independently in its own container.
+
+## <a id='about-tasks'></a> About Tasks
+
+In contrast to a long running process (LRP), tasks run for a finite amout of time, then stop. Tasks run in their own containers and are designed to use minimal resources. After a task runs, Cloud Foundry destroys the container running the task.
+
+As a single-use object, a task can be checked for its state and for a success or failure message.
+
+### <a id="use-cases"></a> Use Cases for Tasks
+
+Tasks are used to perform one-off jobs, which can include:
+
+* Migrating a database
+* Sending an email
+* Running a batch job
+* Running a data processing script
+* Processing images
+* Optimizing a search index
+* Uploading data
+* Backing-up data
+* Downloading content
+
+###<a id="task-proceses"></a> How Tasks Are Run
+
+Tasks are always executed asynchronously, meaning that they run independently from the parent application or other tasks that run on the same application.
+
+The life-cycle of a task is:
+
+1. A user initiates a task in Cloud Foundry using one of the following mechanisms:
+   *  `cf run-task APPNAME "TASK"` command. See [Running Tasks](#run-tasks)			
+   * Cloud Controller v3 API call. See the [Tasks](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#tasks) API reference page.
+   * Cloud Foundry Java Client. See [Cloud Foundry Java Client Library](../buildpacks/java/java-client.html) and [Cloud Foundry Java Client](https://github.com/cloudfoundry/cf-java-client).
+
+1. Cloud Foundry creates a container specifically for the task.
+1. Cloud Foundry runs the task on the container using the value passed to the `cf run-task` command.
+1. Cloud Foundry destroys the container. 
+
+The container also inherits environment variables, service bindings and security groups bound to the application. 
+
+<p class="note"><strong>Note</strong>: You cannot SSH into the container running a task.</p>
+
+### Task Logging and Execution History
+
+Any data or messages the task outputs to STDOUT or STDERR is be available on the app’s firehose logs. A syslog drain attached to the app receives the task log output.
+
+The task execution history is retained for one month. 
+
+## <a id='manage-tasks'></a> Manage Tasks
+
+At the system level, a user with admin-level privileges can use the Cloud Controller v3 API to view all tasks that are running within an org or space. For more information, see the documentation for the [Cloud Controller v3 API](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#list-tasks).
+
+In addition, admins can set the default memory and disk usage quotas for tasks on a global level. Initially, tasks use the same memory and disk usage defaults as applications. However, the default memory and disk allocations for tasks can be defined separately from the default app memory and disk allocations.
+
+<% if vars.product_name == 'CF' %>
+<%= partial 'tasks_rec_alloc_oss' %>
+<% else %>
+<%= partial '../opsguide/tasks_rec_alloc_pcf' %>
+<% end %>
+
+## <a id='run-tasks'></a> Run a Task on an Application
+
+You can use the cf CLI to run a task in the context of an application. 
+
+<p class="note"><strong>Note</strong>: To run tasks with the cf CLI, you must install the cf CLI v6.23.0 or later. See the <a href="../cf-cli/install-go-cli.html">Installing the Cloud Foundry Command Line Interface</a> topic for information about downloading, installing, and uninstalling the cf CLI.</p>
+
+To run a task on an application, first push your application. Then, use the `cf run-task APP-NAME TASK` command on your deployed application. For example:
+
+<pre class="terminal">
+$ cf run-task my-app "bin/rails db:migrate"
+Creating task for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
+OK
+Task 1 has been submitted successfully for execution.
+</pre>
+
+To re-run a task, you must run it as a new task using the above command.
+
+## <a id='list-tasks'></a> List Tasks Running on an Application
+
+To list the tasks for a given application, run the `cf tasks APP-NAME`. For example:
+
+<pre class="terminal">
+$ cf tasks my-app
+Getting tasks for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
+OK
+
+id   name       state       start time                      command
+2    339044ef   FAILED      Wed, 23 Nov 2016 21:52:52 UTC   echo foo; sleep 100; echo bar
+1    8d0618cf   SUCCEEDED   Wed, 23 Nov 2016 21:37:28 UTC   bin/rails db:migrate
+</pre>
+
+Each task has one of the following states:
+
+<table class="nice" border="1">
+    <tr>
+       <th>State</th>
+       <th>Description</th>
+	</tr>
+	<tr>
+		<td>RUNNING</td>
+		<td>The task is currently in progress.</td>
+	</tr>
+	<tr>
+		<td>FAILED</td>
+		<td>The task did not complete. This state occurs when a task does not work correctly or a user cancels the task.</td>
+	</tr>
+	<tr>
+		<td>SUCCEEDED</td>
+		<td>The task completed successfully.</td>
+	</tr>
+</table>
+
+## <a id='cancel-task'></a> Cancel a Task
+
+After running a task, you may be able to cancel it before it finishes. To cancel a running task, use the `cf terminate-task APP-NAME TASK-ID` command. For example:
+
+<pre class="terminal">
+$ cf terminate-task my-app 2
+Terminating task 2 of app my-app in org jdoe-org / space development as jdoe@pivotal.io...
+OK
+</pre>

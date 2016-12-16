@@ -9,13 +9,13 @@ This topic describes how to run tasks in Cloud Foundry. A task is an application
 
 ## <a id='about-tasks'></a> About Tasks
 
-In contrast to a long running process (LRP), tasks run for a finite amout of time, then stop. Tasks run in their own containers and are designed to use minimal resources. After a task runs, Cloud Foundry destroys the container running the task.
+In contrast to a long running process (LRP), tasks run for a finite amount of time, then stop. Tasks run in their own containers and are designed to use minimal resources. After a task runs, Cloud Foundry destroys the container running the task.
 
 As a single-use object, a task can be checked for its state and for a success or failure message.
 
 ### <a id="use-cases"></a> Use Cases for Tasks
 
-Tasks are used to perform one-off jobs, which can include:
+Tasks are used to perform one-off jobs, which include the following: 
 
 * Migrating a database
 * Sending an email
@@ -31,24 +31,24 @@ Tasks are used to perform one-off jobs, which can include:
 
 Tasks are always executed asynchronously, meaning that they run independently from the parent application or other tasks that run on the same application.
 
-The life-cycle of a task is:
+The life-cycle of a task is as follows:
 
 1. A user initiates a task in Cloud Foundry using one of the following mechanisms:
-   *  `cf run-task APPNAME "TASK"` command. See [Running Tasks](#run-tasks)			
-   * Cloud Controller v3 API call. See the [Tasks](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#tasks) API reference page.
-   * Cloud Foundry Java Client. See [Cloud Foundry Java Client Library](../buildpacks/java/java-client.html) and [Cloud Foundry Java Client](https://github.com/cloudfoundry/cf-java-client).
+   *  `cf run-task APPNAME "TASK"` command. See the [Running Tasks](#run-tasks) section of this topic for more information.
+   * Cloud Controller v3 API call. See the [Tasks](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#tasks) API reference page for more information.
+   * Cloud Foundry Java Client. See the [Cloud Foundry Java Client Library](../buildpacks/java/java-client.html) and [Cloud Foundry Java Client](https://github.com/cloudfoundry/cf-java-client) topics for more information.
 
 1. Cloud Foundry creates a container specifically for the task.
 1. Cloud Foundry runs the task on the container using the value passed to the `cf run-task` command.
 1. Cloud Foundry destroys the container. 
 
-The container also inherits environment variables, service bindings and security groups bound to the application. 
+The container also inherits environment variables, service bindings, and security groups bound to the application. 
 
 <p class="note"><strong>Note</strong>: You cannot SSH into the container running a task.</p>
 
 ### Task Logging and Execution History
 
-Any data or messages the task outputs to STDOUT or STDERR is be available on the app’s firehose logs. A syslog drain attached to the app receives the task log output.
+Any data or messages the task outputs to STDOUT or STDERR is available on the app's firehose logs. A syslog drain attached to the app receives the task log output.
 
 The task execution history is retained for one month. 
 
@@ -66,9 +66,9 @@ In addition, admins can set the default memory and disk usage quotas for tasks o
 
 ## <a id='run-tasks'></a> Run a Task on an Application
 
-You can use the cf CLI to run a task in the context of an application. 
+You can use the Cloud Foundry Command Line Interface (cf CLI) to run a task in the context of an application. 
 
-<p class="note"><strong>Note</strong>: To run tasks with the cf CLI, you must install the cf CLI v6.23.0 or later. See the <a href="../cf-cli/install-go-cli.html">Installing the Cloud Foundry Command Line Interface</a> topic for information about downloading, installing, and uninstalling the cf CLI.</p>
+<p class="note"><strong>Note</strong>: To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. See the <a href="../cf-cli/install-go-cli.html">Installing the Cloud Foundry Command Line Interface</a> topic for information about downloading, installing, and uninstalling the cf CLI.</p>
 
 To run a task on an application, first push your application. Then, use the `cf run-task APP-NAME TASK` command on your deployed application. For example:
 

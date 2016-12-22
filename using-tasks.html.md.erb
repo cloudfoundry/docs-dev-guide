@@ -73,13 +73,27 @@ You can use the Cloud Foundry Command Line Interface (cf CLI) to run a task in t
 To run a task on an application, first push your application. Then, use the `cf run-task APP-NAME TASK` command on your deployed application. For example:
 
 <pre class="terminal">
-$ cf run-task my-app "bin/rails db:migrate"
+$ cf run-task my-app "bin/rails db:migrate" --name my-task
 Creating task for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
 OK
 Task 1 has been submitted successfully for execution.
 </pre>
 
 To re-run a task, you must run it as a new task using the above command.
+
+Use the `cf logs APP-NAME` command to display the logs of the app and all its tasks.
+
+<pre class="terminal">
+$ cf logs my-app
+2016-12-14T11:09:26.09-0800 [APP/TASK/my-task/0]OUT Creating container
+2016-12-14T11:09:28.43-0800 [APP/TASK/my-task/0]OUT Successfully created container
+2016-12-14T11:09:28.85-0800 [APP/TASK/my-task/0]ERR bash: bin/rails: command not found
+2016-12-14T11:09:28.85-0800 [APP/TASK/my-task/0]OUT Exit status 127
+2016-12-14T11:09:28.89-0800 [APP/TASK/my-task/0]OUT Destroying container
+2016-12-14T11:09:30.50-0800 [APP/TASK/my-task/0]OUT Successfully destroyed container
+</pre>
+
+If your task name is unique, you can grep this command's output on the task name to view task-specific logs.
 
 ## <a id='list-tasks'></a> List Tasks Running on an Application
 

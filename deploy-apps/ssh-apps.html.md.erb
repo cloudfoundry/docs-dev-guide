@@ -7,7 +7,7 @@ owner: Diego
 
 <i>This page assumes you are using cf CLI v6.13.0 or later.</i>
 
-The Cloud Foundry Command Line Interface (cf CLI) lets you securely log into remote host VMs running <%=vars.product_full%> application instances. This topic describes the commands that enable SSH access to applications, and enable, disable, and check permissions for such access.
+The Cloud Foundry Command Line Interface (cf CLI) lets you securely log into remote host virtual machines (VMs) running <%=vars.product_full%> application instances. This topic describes the commands that enable SSH access to applications, and enable, disable, and check permissions for such access.
 
 The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controller `/v2/info` endpoint, and uses this identifier it to query the UAA server for an SSH authorization code. On the target VM side, the SSH proxy contacts the Cloud Controller through the `app_ssh_endpoint` listed in `/v2/info` to confirm permission for SSH access.
 
@@ -48,7 +48,7 @@ The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controlle
 
 A cloud operator can deploy <%=vars.product_full%> to either allow or prohibit Application SSH across the entire deployment.
 
-Within a deployment that permits SSH access to applications, space developers can enable or disable SSH access to individual applications. Space managers can blanket allow or disallow SSH access to all apps running within a space.
+Within a deployment that permits SSH access to applications, Space Developers can enable or disable SSH access to individual applications, and Space Managers can enable or disable SSH access to all apps running within a space.
 
 ### <a id="configure-ssh-access-apps"></a>Configuring SSH Access at the Application Level
 [cf enable-ssh](http://cli.cloudfoundry.org/en-US/cf/enable-ssh.html) enables SSH access to all instances of an app:

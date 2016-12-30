@@ -250,7 +250,7 @@ Do not confuse <code>CF_TRACE</code> with the <a href="#env">variables in the co
 
 ### <a id='zipkin_trace'></a>Analyze Zipkin Trace IDs
 
-When the Zipkin feature is enabled in Cloud Foundry, the Gorouter adds or forwards Zipkin trace IDs and span IDs to HTTP headers. For more information on what the Gorouter provides in the HTTP header, see [HTTP Headers](../../concepts/http-routing.html#http-headers).
+When the Zipkin feature is enabled in Cloud Foundry, the Gorouter adds or forwards Zipkin trace IDs and span IDs to HTTP headers. For more information about what the Gorouter provides in the HTTP header, see the [HTTP Headers](../../concepts/http-routing.html#http-headers) section of the _HTTP Routing_ topic.
 
 After adding Zipkin HTTP headers to app logs, developers can use `cf logs myapp` to correlate the trace and span ids logged by the Gorouter with the trace ids logged by their app. To correlate trace ids for a request through multiple apps, each app must forward appropriate values for the headers with requests to other applications.
 

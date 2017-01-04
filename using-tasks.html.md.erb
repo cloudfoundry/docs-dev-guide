@@ -70,7 +70,14 @@ You can use the Cloud Foundry Command Line Interface (cf CLI) to run a task in t
 
 <p class="note"><strong>Note</strong>: To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. See the <a href="../cf-cli/install-go-cli.html">Installing the Cloud Foundry Command Line Interface</a> topic for information about downloading, installing, and uninstalling the cf CLI.</p>
 
-To run a task on an application, first push your application. Then, use the `cf run-task APP-NAME TASK` command on your deployed application. For example:
+To run a task on an application, perform the following steps:
+
+1. Push your application:
+	<pre class="terminal">$ cf push APP-NAME</pre>
+1. Run your task on the deployed application:
+	<pre class="terminal">$ cf run-task APP-NAME "TASK" --name TASK-NAME</pre>
+
+The following example runs a database migration as a task on the `my-app` application:
 
 <pre class="terminal">
 $ cf run-task my-app "bin/rails db:migrate" --name my-task
@@ -79,12 +86,31 @@ OK
 Task 1 has been submitted successfully for execution.
 </pre>
 
-To re-run a task, you must run it as a new task using the above command.
+<p class="note"><strong>Note</strong>: To re-run a task, you must run it as a new task using the above command.</p>
 
-Use the `cf logs APP-NAME` command to display the logs of the app and all its tasks.
+Use the `cf logs APP-NAME --recent` command to display the recent logs of the application and all its tasks.
+
+The following example shows the logs a successful task:
 
 <pre class="terminal">
-$ cf logs my-app
+2017-01-03T15:58:06.57-0800 [APP/TASK/my-task/0]OUT Creating container
+2017-01-03T15:58:08.45-0800 [APP/TASK/my-task/0]OUT Successfully created container
+2017-01-03T15:58:13.32-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.322258 #7] DEBUG -- :    (15.9ms)  CREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)
+2017-01-03T15:58:13.33-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.337723 #7] DEBUG -- :    (11.9ms)  CREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)
+2017-01-03T15:58:13.34-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.340234 #7] DEBUG -- :    (1.6ms)  SELECT pg_try_advisory_lock(3720865444824511725);
+2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.351853 #7] DEBUG -- :   ActiveRecord::SchemaMigration Load (0.7ms)  SELECT "schema_migrations".* FROM "schema_migrations"
+2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT I, [2017-01-03T23:58:13.357294 #7]  INFO -- : Migrating to CreateArticles (20161118225627)
+2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.359565 #7] DEBUG -- :    (0.5ms)  BEGIN
+2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT == 20161118225627 CreateArticles: migrating ===================================
+2017-01-03T15:58:13.50-0800 [APP/TASK/my-task/0]OUT Exit status 0
+2017-01-03T15:58:13.56-0800 [APP/TASK/my-task/0]OUT Destroying container
+2017-01-03T15:58:15.65-0800 [APP/TASK/my-task/0]OUT Successfully destroyed container
+</pre>
+
+The following example shows the logs a failed task:
+
+<pre class="terminal">
+$ cf logs my-app --recent
 2016-12-14T11:09:26.09-0800 [APP/TASK/my-task/0]OUT Creating container
 2016-12-14T11:09:28.43-0800 [APP/TASK/my-task/0]OUT Successfully created container
 2016-12-14T11:09:28.85-0800 [APP/TASK/my-task/0]ERR bash: bin/rails: command not found
@@ -93,7 +119,7 @@ $ cf logs my-app
 2016-12-14T11:09:30.50-0800 [APP/TASK/my-task/0]OUT Successfully destroyed container
 </pre>
 
-If your task name is unique, you can grep this command's output on the task name to view task-specific logs.
+If your task name is unique, you can `grep` the output of the `cf logs` command for the task name to view task-specific logs.
 
 ## <a id='list-tasks'></a> List Tasks Running on an Application
 

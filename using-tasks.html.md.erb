@@ -93,6 +93,7 @@ Use the `cf logs APP-NAME --recent` command to display the recent logs of the ap
 The following example displays the logs of a successful task:
 
 <pre class="terminal">
+$ cf logs my-app --recent
 2017-01-03T15:58:06.57-0800 [APP/TASK/my-task/0]OUT Creating container
 2017-01-03T15:58:08.45-0800 [APP/TASK/my-task/0]OUT Successfully created container
 2017-01-03T15:58:13.32-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.322258 #7] DEBUG -- :    (15.9ms)  CREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)

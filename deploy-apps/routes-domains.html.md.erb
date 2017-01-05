@@ -185,7 +185,7 @@ If the developer maps the first route with path `products` to the `products` app
 
 #### <a id='create-route-with-port'></a>Create a TCP Route with a Port
 
-A developer can create a TCP route for `tcp.<%=vars.app_domain%>` on an arbitrary port with the following command. If the clients of the app can accommodate addressing an arbitrary port, then developers should use the `--random-port` to instruct <%=vars.product_short%> pick a port for your route.
+A developer can create a TCP route for `tcp.<%=vars.app_domain%>` on an arbitrary port with the following command. If the clients of the app can accommodate addressing an arbitrary port, then developers should use the `--random-port` to instruct <%=vars.product_short%> to pick a port for your route.
 
 <pre class="terminal">
 $ cf create-route tcp.<%=vars.app_domain%> --random-port

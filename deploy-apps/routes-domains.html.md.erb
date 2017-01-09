@@ -13,35 +13,35 @@ For more information about routing capabilities in <%=vars.product_short%>, see 
 
 ## <a id='routes'></a>Routes ##
 
-The <%=vars.product_short%> Gorouter routes requests to applications by associating an app with an address, known as a route. We call this association a **mapping**. The cf CLI command for associating an app and route is [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html).
+The <%=vars.product_short%> Gorouter routes requests to applications by associating an app with an address, known as a route. We call this association a **mapping**. Use the cf CLI [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html) command to associate an app and route.
 
 The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the Gorouter would make the following matches for the two routes `myapp.<%=vars.app_domain%>` and `myapp.<%=vars.app_domain%>/products`:
 
 <table border="1" class="nice" >
-    <tr>
-        <th>Request</th>
-        <th>Matched Route</th>
-    </tr>
-    <tr>
+  <tr>
+    <th>Request</th>
+    <th>Matched Route</th>
+  </tr>
+  <tr>
     <td>http://myapp.<%=vars.app_domain%></td>
-        <td>myapp.<%=vars.app_domain%></td>
-    </tr>
-    <tr>
+    <td>myapp.<%=vars.app_domain%></td>
+  </tr>
+  <tr>
     <td>http://myapp.<%=vars.app_domain%>/contact</td>
-        <td>myapp.<%=vars.app_domain%></td>
-    </tr>
-    <tr>
+    <td>myapp.<%=vars.app_domain%></td>
+  </tr>
+  <tr>
     <td>http://myapp.<%=vars.app_domain%>/products</td>
-        <td>myapp.<%=vars.app_domain%>/products</td>
-    </tr>
-    <tr>
+    <td>myapp.<%=vars.app_domain%>/products</td>
+  </tr>
+  <tr>
     <td>http://myapp.<%=vars.app_domain%>/products/123</td>
-        <td>myapp.<%=vars.app_domain%>/products</td>
-    </tr>
-    <tr>
+    <td>myapp.<%=vars.app_domain%>/products</td>
+  </tr>
+  <tr>
     <td>http://products.<%=vars.app_domain%></td>
-        <td>No match; 404</td>
-    </tr>
+    <td>No match; 404</td>
+  </tr>
 </table>
 
 The Gorouter does not use a route to match requests until the route is mapped to an app. In the above example, `products.<%=vars.app_domain%>` may have been created as a route in Cloud Foundry, but until it is mapped to an app, requests for the route receive a `404`.
@@ -249,26 +249,26 @@ Developers can create and reserve routes for later use by following the steps in
 Given the following routes and applications:
 
 <table border="1" class="nice" >
-    <tr>
-        <th>Route</th>
-        <th>Application</th>
-    </tr>
-    <tr>
+  <tr>
+    <th>Route</th>
+    <th>Application</th>
+  </tr>
+  <tr>
     <td>store.<%=vars.app_domain%>/products</td>
-        <td>products</td>
-    </tr>
-    <tr>
+    <td>products</td>
+  </tr>
+  <tr>
     <td>store.<%=vars.app_domain%>/orders</td>
-        <td>orders</td>
-    </tr>
-    <tr>
+    <td>orders</td>
+  </tr>
+  <tr>
     <td>store.<%=vars.app_domain%></td>
-        <td>storefront</td>
-    </tr>
-    <tr>
+    <td>storefront</td>
+  </tr>
+  <tr>
     <td>tcp.<%=vars.app_domain%>:60000</td>
-        <td>tcp-app</td>
-    </tr>
+    <td>tcp-app</td>
+  </tr>
 </table>
 
 The following commands map the above routes to their respective apps. Developers use hostname, domain, and path to uniquely identify a route to map their apps to.
@@ -441,9 +441,9 @@ $ cf delete-shared-domain example.com
 
 ### <a id='private-domains'></a>Private Domains ###
 
-Org Managers can add private domains (or custom domains) and give members of the org permission to create routes for privately registered domain names. Private domains can be shared with other orgs, enabling users of those orgs to create routes from the domain.
+Org Managers can add private domains, or custom domains, and give members of the org permission to create routes for privately registered domain names. Private domains can be shared with other orgs, enabling users of those orgs to create routes from the domain.
 
-Private domains can be HTTP/HTTPS only; TCP Routing is supported for Shared Domains only.
+Private domains can be HTTP or HTTPS only. TCP Routing is supported for Shared Domains only.
 
 #### <a id='create-private-domain'></a>Create a Private Domain ####
 
@@ -504,21 +504,21 @@ To map a single domain to a custom domain to <%=vars.product_short%>, configure 
 The following table provides some example CNAME record mappings.
 
 <table border="1" class="nice" >
-    <tr>
-        <th>Record Set in Custom Domain</th>
-        <th>Type</th>
-        <th>Target in <%=vars.product_short%></th>
-    </tr>
-    <tr>
-        <td>myapp.yourcustomdomain.com.</td>
-        <td>CNAME</td>
-        <td>myapp.<%=vars.app_domain%></td>
-    </tr>
-    <tr>
-        <td>www.yourcustomdomain.com.</td>
-        <td>CNAME</td>
-        <td>myapp.<%=vars.app_domain%></td>
-    </tr>
+  <tr>
+    <th>Record Set in Custom Domain</th>
+    <th>Type</th>
+    <th>Target in <%=vars.product_short%></th>
+  </tr>
+  <tr>
+    <td>myapp.yourcustomdomain.com.</td>
+    <td>CNAME</td>
+    <td>myapp.<%=vars.app_domain%></td>
+  </tr>
+  <tr>
+    <td>www.yourcustomdomain.com.</td>
+    <td>CNAME</td>
+    <td>myapp.<%=vars.app_domain%></td>
+  </tr>
 </table>
 
 After you create the CNAME mapping, your DNS provider routes your custom domain to `myapp.<%=vars.app_domain%>`. 
@@ -534,21 +534,21 @@ Each separately configured subdomain has priority over the wildcard configuratio
 The following table provides some example wildcard CNAME record mappings.
 
 <table border="1" class="nice" >
-    <tr>
-        <th>Record Set in Custom Domain</th>
-        <th>Type</th>
-        <th>Target in <%=vars.product_short%></th>
-    </tr>
-    <tr>
-        <td>*.yourcustomdomain.com.</td>
-        <td>CNAME</td>
-        <td>*.<%=vars.app_domain%></td>
-    </tr>
-    <tr>
-        <td>*.yourcustomdomain.com.</td>
-        <td>CNAME</td>
-        <td>*.myapp.<%=vars.app_domain%></td>
-    </tr>
+  <tr>
+    <th>Record Set in Custom Domain</th>
+    <th>Type</th>
+    <th>Target in <%=vars.product_short%></th>
+  </tr>
+  <tr>
+    <td>*.yourcustomdomain.com.</td>
+    <td>CNAME</td>
+    <td>*.<%=vars.app_domain%></td>
+  </tr>
+  <tr>
+    <td>*.yourcustomdomain.com.</td>
+    <td>CNAME</td>
+    <td>*.myapp.<%=vars.app_domain%></td>
+  </tr>
 </table>
  
 If you use a wildcard as the subdomain name, then your DNS provider can route from `*.YOURCUSTOMDOMAIN` to any of the following:
@@ -568,18 +568,18 @@ To use your root domain (for example, `example.com`) for apps on <%=vars.product
 If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider to point at a shared domain in <%=vars.product_short%>.
 
 <table border="1" class="nice" >
-    <tr>
-        <th>Record</th>
-        <th>Name</th>
-        <th>Target</th>
-        <th>Note</th>
-    </tr>
-    <tr>
-        <td>ALIAS or ANAME</td>
-        <td>empty or @</td>
-        <td><%=vars.private_app_domain%>.</td>
-        <td>Refer to your DNS provider documentation to determine whether to use an empty or @ value for the Name entry.</td>
-    </tr>
+  <tr>
+    <th>Record</th>
+    <th>Name</th>
+    <th>Target</th>
+    <th>Note</th>
+  </tr>
+  <tr>
+    <td>ALIAS or ANAME</td>
+    <td>empty or @</td>
+    <td><%=vars.private_app_domain%>.</td>
+    <td>Refer to your DNS provider documentation to determine whether to use an empty or @ value for the Name entry.</td>
+  </tr>
 </table>
 
 If your DNS provider does not support ANAME or ALIAS records you can use subdomain redirection, also known as domain forwarding, to redirect requests for your root domain to a subdomain configured as a CNAME.
@@ -587,25 +587,25 @@ If your DNS provider does not support ANAME or ALIAS records you can use subdoma
 <p class="note"><strong>Note</strong>: If you use domain forwarding, SSL requests to the root domain may fail if the SSL certificate only matches the subdomain.
 </p>
 
-Configure the root domain to point at a subdomain (`www`), and configure the subdomain as a CNAME record pointing at a shared domain in <%=vars.product_short%>.
+Configure the root domain to point at a subdomain such as `www`, and configure the subdomain as a CNAME record pointing at a shared domain in <%=vars.product_short%>.
 
 <table border="1" class="nice" >
-    <tr>
-        <th>Record</th>
-        <th>Name</th>
-        <th>Target</th>
-        <th>Note</th>
-    </tr>
-    <tr>
-        <td>URL or Forward</td>
-        <td><%=vars.private_app_domain%></td>
-        <td>www.<%=vars.private_app_domain%></td>
-        <td>This method results in a <code>301 permanent redirect</code> to the subdomain you configure.</td>
-    </tr>
-    <tr>
-        <td>CNAME</td>
-        <td>www</td>
-        <td>myapp.<%=vars.app_domain%></td>
-        <td></td>
-    </tr>
+  <tr>
+    <th>Record</th>
+    <th>Name</th>
+    <th>Target</th>
+    <th>Note</th>
+  </tr>
+  <tr>
+    <td>URL or Forward</td>
+    <td><%=vars.private_app_domain%></td>
+    <td>www.<%=vars.private_app_domain%></td>
+    <td>This method results in a <code>301 permanent redirect</code> to the subdomain you configure.</td>
+  </tr>
+  <tr>
+    <td>CNAME</td>
+    <td>www</td>
+    <td>myapp.<%=vars.app_domain%></td>
+    <td></td>
+  </tr>
 </table>

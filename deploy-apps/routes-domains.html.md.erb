@@ -188,7 +188,7 @@ If the developer maps the first route with path `products` to the `products` app
 A developer can create a TCP route for `tcp.<%=vars.app_domain%>` on an arbitrary port with the following command. If the clients of the app can accommodate addressing an arbitrary port, then developers should use the `--random-port` to instruct <%=vars.product_short%> to pick a port for your route.
 
 <pre class="terminal">
-$ cf create-route tcp.<%=vars.app_domain%> --random-port
+$ cf create-route my-space tcp.<%=vars.app_domain%> --random-port
 Creating route tcp.<%=vars.app_domain%> for org my-org / space my-space as user@example.com...
 OK
 Route tcp.<%=vars.app_domain%>:60034 has been created
@@ -199,7 +199,7 @@ In this example, <%=vars.product_short%> routes requests to `tcp.<%=vars.app_dom
 To request a specific port, a developer can use the `--port` flag, so long as the port is not reserved for another space. The following command creates a TCP route for `tcp.<%=vars.app_domain%>` on port 60035:
 
 <pre class="terminal">
-$ cf create-route tcp.<%=vars.app_domain%> --port 60035
+$ cf create-route my-space tcp.<%=vars.app_domain%> --port 60035
 Creating route tcp.<%=vars.app_domain%>:60035 for org my-org / space my-space as user@example.com...
 OK
 </pre>

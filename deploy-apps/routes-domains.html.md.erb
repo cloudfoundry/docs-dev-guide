@@ -62,12 +62,12 @@ Routes belong to a space, and developers can only map apps to a route in the sam
 
 Routes are considered HTTP if they are created from HTTP domains, and TCP if the are created from TCP domains. See [HTTP vs. TCP Shared Domains](#http-vs-tcp-shared-domains).
 
-HTTP routes include a domain, an optional hostname, and an optional context path. `<%=vars.app_domain%>`, `myapp.<%=vars.app_domain%>`, and `myapp.<%=vars.app_domain%>/products` are all examples of HTTP routes.
+HTTP routes include a domain, an optional hostname, and an optional context path. `<%=vars.app_domain%>`, `myapp.<%=vars.app_domain%>`, and `myapp.<%=vars.app_domain%>/products` are all examples of HTTP routes. Applications should listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. As an example, requests to `myapp.<%=vars.app_domain%>` would be routed to the application container at `localhost:8080`.
 
 * Requests to HTTP routes must be sent to ports 80 or 443.
 * Ports cannot be reserved for HTTP routes.
 
-TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an application pushed to Cloud Foundry listens on. Applications should listen to the port defined by the `$PORT` environment variable, `8080` on Diego. `tcp.<%=vars.app_domain%>:60000` is an example of a TCP route.
+TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an application pushed to Cloud Foundry listens on. `tcp.shared-domain.example.com:60000` is an example of a TCP route. Just as for HTTP routes, applications should listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. As an example, requests to `tcp.shared-domain.example.com:60000` would be routed to the application container at `localhost:8080`.
 
 * Once a port is reserved for a route, it cannot be reserved for another route.
 * Hostname and path are not supported for TCP routes.

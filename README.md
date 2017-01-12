@@ -16,9 +16,13 @@ docs-dev-guide/deploy-apps subdirectory:
 Develop and Manage Applications
 Develop and run applications in the cloud.
 
+docs-dev-guide/capi subdirectory:
+Manage resources via the Cloud Foundry API
+
 docs-dev-guide/services subdirectory:
 Custom Services
 Create and publish free or metered services for Cloud Foundry apps.
+
 
 This repo used to contain the subdirectory docs-dev-guide/cf-cli, documenting the Cloud Foundry Command Line Interface (cf CLI). The content from this subdirectory has been moved to its own repo, [docs-cf-cli](http://github.com/cloudfoundry/docs-cf-cli).
 

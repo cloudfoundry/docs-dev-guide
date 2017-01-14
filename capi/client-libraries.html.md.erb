@@ -3,29 +3,34 @@ title: Cloud Controller API Client Libraries
 owner: CAPI
 ---
 
-<strong><%= modified_date %></strong>
+This topic describes the client libraries available for developers who want to consume the Cloud Controller API (CAPI).
 
-The CAPI API is the entry point for most operations within the Cloud Foundry
-platform. It can be used to mananage Organizations, Spaces and Applications, as
-well as user roles and permissions withing those. It is also used to manage all
-the Services provided by the platform, including provisioning, creating and
-binding them to applications.
+## Overview
 
-While one can develop programs that consume the CAPI API by talking to it
-directly using the API documentation, it is sometimes simpler to use an
-existing client library.
+CAPI is the entry point for most operations within the Cloud Foundry (CF)
+platform. You can use it to manage orgs, spaces, and apps, which includes user roles and permissions. You can also use CAPI to manage the services provided by your CF deployment, including provisioning, creating, and binding them to apps.
 
-Currently the following API Clients are *supported*:
+### Client Libraries
 
-* Java: https://github.com/cloudfoundry/cf-java-client
-* Scripting (via the CF CLI): http://cli.cloudfoundry.org/en-US/cf/curl.html
+While you can develop apps that consume CAPI by calling it directly as in the API documentation, you may want to use an existing client library. See the available client libraries below.
 
-The following clients are *experimental* and a work in progress:
+#### Supported 
 
-* Golang: https://godoc.org/github.com/cloudfoundry/cli/api/cloudcontroller
+CF currently supports the following clients for CAPI:
 
-The following clients are unofficial and may supported by third-parties:
+* [Java](https://github.com/cloudfoundry/cf-java-client)
+* [Scripting](http://cli.cloudfoundry.org/en-US/cf/curl.html) with the cf CLI
 
-* Golang: https://github.com/guidowb/cf-go-client
-* Golang: https://github.com/cloudfoundry-community/go-cfclient
-* Node.js: https://github.com/prosociallearnEU/cf-nodejs-client
+#### Experimental
+
+The following client is experimental and a work in progress:
+
+* [Golang](https://godoc.org/github.com/cloudfoundry/cli/api/cloudcontroller)
+
+#### Unofficial
+
+CF does not support the following clients, but they may be supported by third-parties:
+
+* [Golan](https://github.com/guidowb/cf-go-client)
+* [Golang](https://github.com/cloudfoundry-community/go-cfclient)
+* [Node.js](https://github.com/prosociallearnEU/cf-nodejs-client)

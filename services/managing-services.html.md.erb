@@ -28,9 +28,10 @@ p-riakcs              developer              An S3-compatible object store
 You can create a service instance with the following command: `cf create-service SERVICE PLAN SERVICE_INSTANCE`
 
 Use the information in the list below to replace `SERVICE`, `PLAN`, and `SERVICE_INSTANCE` with appropriate values.
-  * `SERVICE`: The name of the service you want to create an instance of.
-  * `PLAN`: The name of a plan that meets your needs. Service providers use **plans** to offer varying levels of resources or features for the same service. 
-  * `SERVICE_INSTANCE`: The name you provide for your service instance. You use this name to refer to your service instance with other commands. Service instance names can include alpha-numeric characters, hyphens, and underscores, and you can rename the service instance at any time.
+
+   * `SERVICE`: The name of the service you want to create an instance of.
+   * `PLAN`: The name of a plan that meets your needs. Service providers use **plans** to offer varying levels of resources or features for the same service. 
+   * `SERVICE_INSTANCE`: The name you provide for your service instance. You use this name to refer to your service instance with other commands. Service instance names can include alpha-numeric characters, hyphens, and underscores, and you can rename the service instance at any time.
 
 <pre class="terminal">
 $ cf create-service rabbitmq small-plan my-rabbitmq

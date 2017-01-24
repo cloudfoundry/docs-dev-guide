@@ -122,27 +122,24 @@ Cells they may differ.
 
 ### <a id='DATABASE-URL'></a>DATABASE\_URL ###
 
-At runtime, Cloud Foundry creates a `DATABASE_URL` environment variable
-for every application based on the [VCAP_SERVICES](#VCAP-SERVICES) environment variable.
+At runtime, CF creates a `DATABASE_URL` environment variable
+for every app based on the [VCAP_SERVICES](#VCAP-SERVICES) environment variable.
 
-Cloud Foundry uses the structure of the `VCAP_SERVICES` environment
+CF uses the structure of the `VCAP_SERVICES` environment
 variable to populate `DATABASE_URL`.
-Any service containing a JSON object with the following form will be recognized
-by Cloud Foundry as a candidate for `DATABASE_URL`:
+CF recognizes any service containing a JSON object with the following form as a candidate for `DATABASE_URL` and uses the first candidate it finds.
 
     {
       "some-service": [
         {
           "credentials": {
-            "uri": "<some database URL>"
+            "uri": "SOME-DATABASE-URL"
           }
         }
       ]
     }
 
-Cloud Foundry uses the first candidate found to populate `DATABASE_URL`.
-
-Example VCAP_SERVICES:
+For example, consider the following `VCAP_SERVICES`:
 
     VCAP_SERVICES =
     {
@@ -157,7 +154,7 @@ Example VCAP_SERVICES:
       ]
     }
 
-Based on this `VCAP_SERVICES`, Cloud Foundry creates the following
+Based on this `VCAP_SERVICES`, CF creates the following
 `DATABASE_URL` environment variable:
 
     DATABASE_URL = postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb

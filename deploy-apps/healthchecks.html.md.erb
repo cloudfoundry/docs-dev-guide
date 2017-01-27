@@ -11,7 +11,7 @@ owner:
 
 An application health check is a monitoring process that continually checks the status of a running Cloud Foundry application from inside the container.
 
-When deploying an app, a developer can set the type (port, process or HTTP), timeout, and endpoint (for HTTP only) for the application health check.
+When deploying an app, a developer can set the health check type (port, process, or HTTP), timeout, and endpoint (for HTTP only) for the application health check.
 
 Application health checks function as part of the app lifecycle managed by [Diego architecture](../concepts/architecture/#app-lifecycle).
 
@@ -56,12 +56,12 @@ The following table describes how application health checks work in Cloud Foundr
     </tr>
     <tr>
 		<td>7</td>
-		<td>After the app <b>and all its instances?</b> are declared healthy, the health check runs every 30 seconds <b>for each instance?</b>. Each health check has a TCP connection or HTTP connection timeout of 1 second.
+		<td>After the app <b>and all of its instances?</b> are declared healthy, the health check runs every 30 seconds <b>for each instance?</b>. Each health check has a TCP connection or HTTP connection timeout of 1 second.
 		</td>
 	</tr>
 	<tr>
 		<td>8</td>
-		<td>If a previously healthy app instance fails a health check, then Diego immediately considers that particular instance unhealthy. Diego stops that instance, tears down the container, and reschedules the instance. The teardown of the container is reported back to the Cloud Controller as a crash event. When an app instance crashes, Diego immediately attempts to restart the app instance several times (<b>three times?</b>). If the app instance continues to crash, then an exponential back off is applied.</td>
+		<td>If a previously healthy app instance fails a health check, Diego then considers that particular instance to be unhealthy. As a result, Diego stops that instance, tears down the container, and reschedules the instance. The teardown of the container is reported back to the Cloud Controller as a crash event. When an app instance crashes, Diego immediately attempts to restart the app instance several times (<b>three times?</b>). If the app instance continues to crash, then an exponential back off is applied.</td>
 	</tr>
 </table>
 
@@ -80,20 +80,19 @@ The following table describes the types of health checks available for apps and 
 <th>And follow these configuration steps:</th>	
 </tr>
 <tr>
-<td></td>
-<td><code>http</code>. The HTTP health check does a GET request to the configured HTTP endpoint. When the health check receives a 200 reponse, the app is declared healthy. </td>
+<td><code>http</code></td>
+<td>The HTTP health check does a GET request to the configured HTTP endpoint. When the health check receives a 200 reponse, the app is declared healthy. </td>
 <td><a href="#http_health_checks">Set up an HTTP Health Check</a></td>
 </tr>
 <tr>
-<td></td>
-<td><code>process</code>. The process health check ensures that the process is running. [How? Additional info needed]</td>
+<td><code>process</code></td>
+<td>The process health check ensures that the process is running. [How? Additional info needed]</td>
 <td><a href="#process_health_checks">Set up a Process Health Check</a></td>
 </tr>
 <tr>
+<td><code>port</code></td>
 <td>
-</td>
-<td>
-<code>port</code> A port health check makes a TCP connection to the app. If you do not specify a health check type, then port is used. Default port is 8080?</code>
+A port health check makes a TCP connection to the app. If you do not specify a health check type, then port is used. Default port is 8080?</code>
 </td>
 <td>
 <a href="#port_health_check">Set up a Port Health Check</a>
@@ -116,7 +115,7 @@ Only used by `http` type, this configuration specifies the path portion of a URI
 
 ## <a id="setting_health_checks"></a> Set up a Health Check for Your Application
 
-You can configure a health check for your application is by using the [Cloud Controller API](https://apidocs.cloudfoundry.org/251/apps/creating_an_app.html) or by specifying values in your application manifest.
+You can configure a health check for your application by using the [Cloud Controller API](https://apidocs.cloudfoundry.org/251/apps/creating_an_app.html) or by specifying values in your application manifest.
 
 ### <a id="http_health_checks"></a> Set up an HTTP Health Check 
 

@@ -270,16 +270,18 @@ The command line option that overrides this attribute is `-m`.
 
 ###<a id='health-check-type'></a>The health-check-type attribute ###
 
-Use the `health-check-type` attribute to set the `health_check_type` flag to either `port` or `none`. If you do not provide a `health-check-type` attribute, 
+Use the `health-check-type` attribute to set the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type` attribute, 
 it defaults to `port`.
 
 <pre>
 ---
   ...
-  health-check-type: none
+  health-check-type: port
 </pre>
 
 The command line option that overrides this attribute is `-u`.
+
+The value of `none` is deprecated. If `none` is specified, then the `health-check-type` defaults to `port`.
 
 ###<a id='host'></a>The host attribute ###
 

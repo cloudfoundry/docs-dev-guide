@@ -5,13 +5,13 @@ owner: CAPI
 
 <strong><%= modified_date %></strong>
 
-Environment variables are the means by which the Cloud Foundry runtime
+Environment variables are the means by which the Cloud Foundry (CF) runtime
 communicates with a deployed application about its environment.
 This page describes the environment variables that the runtime and buildpacks
 set for applications.
 
 For information about setting your own application-specific environment
-variables, refer to the [Set Environment Variable in a Manifest](./manifest.html#env-block) section in the Application Manifests topic.
+variables, see the [Environment Variable](./manifest.html#env-block) section of the _Deploying with Application Manifests_ topic.
 
 ## <a id='view-env'></a>View Environment Variables ##
 
@@ -77,48 +77,45 @@ The [CF\_INSTANCE\_IP](#CF-INSTANCE-IP) and
 [CF\_INSTANCE\_PORT](#CF-INSTANCE-PORT) of the app instance in the format
 `IP:PORT`.
 
-`CF_INSTANCE_ADDR=1.2.3.4:5678`
+Example: `CF_INSTANCE_ADDR=1.2.3.4:5678`
 
 ### <a id='CF-INSTANCE-GUID'></a>CF\_INSTANCE\_GUID ###
 The UUID of the particular instance of the app. Available only to instances on Diego Cells.
 
-`CF_INSTANCE_GUID=41653aa4-3a3a-486a-4431-ef258b39f042`
+Example: `CF_INSTANCE_GUID=41653aa4-3a3a-486a-4431-ef258b39f042`
 
 ### <a id='CF-INSTANCE-INDEX'></a>CF\_INSTANCE\_INDEX ###
 The index number of the app instance.
 
-`CF_INSTANCE_INDEX=0`
+Example: `CF_INSTANCE_INDEX=0`
 
 ### <a id='CF-INSTANCE-IP'></a>CF\_INSTANCE\_IP ###
 The external IP address of the host running the app instance.
 
-`CF_INSTANCE_IP=1.2.3.4`
+Example: `CF_INSTANCE_IP=1.2.3.4`
 
 ### <a id='CF-INSTANCE-INTERNAL-IP'></a>CF\_INSTANCE\_INTERNAL_IP ###
 The internal IP address of the container running the app instance.
 
-`CF_INSTANCE_INTERNAL_IP=1.2.3.4`
+Example: `CF_INSTANCE_INTERNAL_IP=1.2.3.4`
 
 ### <a id='CF-INSTANCE-PORT'></a>CF\_INSTANCE\_PORT ###
 
-The external (host-side) port corresponding to the internal (container-side)
-port with value [PORT](#PORT).
+The external, or *host-side*, port corresponding to the internal, or *container-side*, port with value [PORT](#PORT).
 For instances on Diego, this value is generally different from the
 [PORT](#PORT) of the app instance.
 
-`CF_INSTANCE_PORT=61045`
+Example: `CF_INSTANCE_PORT=61045`
 
 ### <a id='CF-INSTANCE-PORTS'></a>CF\_INSTANCE\_PORTS ###
 
-The list of mappings between internal (container-side) and external (host-side)
-ports allocated to the instance's container.
+The list of mappings between internal, or *container-side*, and external, or *host-side*, ports allocated to the instance's container.
 Not all of the internal ports are necessarily available for the application to
 bind to, as some of them may be used by system-provided services that also run
 inside the container.
-On the DEAs, these internal and external values are the same, but on Diego
-Cells they may differ.
+On DEAs, these internal and external values are the same, but on Diego Cells they may differ.
 
-`CF_INSTANCE_PORTS=[{external:61045,internal:5678},{external:61046,internal:2222}]`
+Example: `CF_INSTANCE_PORTS=[{external:61045,internal:5678},{external:61046,internal:2222}]`
 
 ### <a id='DATABASE-URL'></a>DATABASE\_URL ###
 
@@ -162,7 +159,7 @@ Based on this `VCAP_SERVICES`, CF creates the following
 ### <a id='HOME'></a>HOME ###
 Root folder for the deployed application.
 
-`HOME=/home/vcap/app`
+Example: `HOME=/home/vcap/app`
 
 ### <a id='memory'></a>MEMORY_LIMIT ###
 The maximum amount of memory that each instance of the application can consume.
@@ -170,42 +167,42 @@ You specify this value in an application manifest or with the cf CLI when
 pushing an application.
 The value is limited by space and org quotas.
 
-If an instance goes over the maximum limit, it will be restarted.
-If it has to be restarted too often, it will be terminated.
+If an instance exceeds the maximum limit, it will be restarted.
+If Cloud Foundry is asked to restart an instance too frequently, the instance will instead be terminated.
 
-`MEMORY_LIMIT=512m`
+Example: `MEMORY_LIMIT=512M`
 
 ### <a id='PORT'></a>PORT ###
 
-The port on which the application should listen for requests.
+The port on which the app should listen for requests.
 The Cloud Foundry runtime allocates a port dynamically for each instance of the
-application, so code that obtains or uses the application port should refer to
+application, so code that obtains or uses the app port should refer to
 it using the `PORT` environment variable.
 
-`PORT=61857`
+Example: `PORT=61857`
 
 ### <a id='PWD'></a>PWD ###
 Identifies the present working directory, where the buildpack that processed
 the application ran.
 
-`PWD=/home/vcap/app`
+Example: `PWD=/home/vcap/app`
 
 ### <a id='TMPDIR'></a>TMPDIR###
 Directory location where temporary and staging files are stored.
 
-`TMPDIR=/home/vcap/tmp`
+Example: `TMPDIR=/home/vcap/tmp`
 
 ### <a id='USER'></a>USER###
 The user account under which the application runs.
 
-`USER=vcap`
+Example: `USER=vcap`
 
 ### <a id='VCAP-APP-HOST'></a>VCAP\_APP\_HOST
 
 The IP address of the host. Deprecated: the DEAs set this to be `0.0.0.0`, and
 Diego Cells do not provide this environment variable.
 
-`VCAP_APP_HOST=0.0.0.0`
+Example: `VCAP_APP_HOST=0.0.0.0`
 
 
 ### <a id='VCAP-APP-PORT'></a>VCAP\_APP\_PORT ###

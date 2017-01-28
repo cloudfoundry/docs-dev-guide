@@ -9,7 +9,7 @@ owner:
 
 ## <a id="about_health_checks"></a> About Application Health Checks
 
-An application health check is a monitoring process that continually checks the status of a running Cloud Foundry application from inside the container.
+An application health check is a monitoring process that continually checks the status of a running Cloud Foundry application.
 
 When deploying an app, a developer can configure the health check type (port, process, or HTTP), a timeout for starting the application, and an endpoint (for HTTP only) for the application health check.
 
@@ -40,18 +40,18 @@ The following table describes how application health checks work in Cloud Foundr
 	</tr>
 	<tr>
 		<td>4</td>
-		<td>Based on the type specified for the app, Cloud Controller configures a health check that runs periodically inside the container.
+		<td>Based on the type specified for the app, Cloud Controller configures a health check that runs periodically for the application instance.
 		</td>
 	</tr>
 	<tr>
 		<td>5</td>
-		<td>When Diego starts an app instance in a container, the application health check runs every 2 seconds until a response indicates that the app instance is healthy or that the health check timeout has elapsed. 
+		<td>When Diego starts an app instance, the application health check runs every 2 seconds until a response indicates that the app instance is healthy or that the health check timeout has elapsed. 
 		</td>
 
 	</tr>
 	<tr>
 	   <td>6</td>
-		<td>The health check monitors each app instance running in a separate container. When an app instance becomes healthy, its route is advertised, if applicable.
+		<td>The health check continues to monitor each running app instance. When an app instance becomes healthy, its route is advertised, if applicable.
 		</td>
     </tr>
     <tr>
@@ -61,7 +61,7 @@ The following table describes how application health checks work in Cloud Foundr
 	</tr>
 	<tr>
 		<td>8</td>
-		<td>If a previously healthy app instance fails a health check, Diego then considers that particular instance to be unhealthy. As a result, Diego stops that instance, tears down the container, and reschedules the instance. The teardown of the container is reported back to the Cloud Controller as a crash event. When an app instance crashes, Diego immediately attempts to restart the app instance several times. If the app instance continues to crash, then an exponential back off is applied to the restart attempts.</td>
+		<td>If a previously healthy app instance fails a health check, Diego then considers that particular instance to be unhealthy. As a result, Diego stops that instance, tears down the instance, and then reschedules it. The teardown of the app instance is reported back to the Cloud Controller as a crash event. When an app instance crashes, Diego immediately attempts to restart the app instance several times. If the app instance continues to crash, then an exponential back off is applied to the restart attempts.</td>
 	</tr>
 </table>
 

@@ -86,7 +86,7 @@ If you see a buildpack that you believe should support your app, refer to the [b
 
 If you do not see a buildpack for your app, you may still be able to push your application with a [custom buildpack](../../buildpacks/custom.html) using `cf push -b` with a path to your buildpack.
 
-### App Deploy Fails ###
+### <a id='deploy_fail'></a> App Deploy Fails ###
 Even when the deploy fails, the app might exist on <%=vars.product_short%>.
 Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
 
@@ -95,7 +95,7 @@ Common reasons deploying an app fails include the following:
 * You did not successfully create and bind a needed service instance to the app, such as a PostgreSQL or MongoDB service instance. Refer to Step 3: Create and Bind a Service Instance for a RoR Application.
 * You did not successfully create a unique URL for the app. Refer to the troubleshooting tip App Requires Unique URL.
 
-### App Requires Unique URL ###
+### <a id='unique_url'></a> App Requires Unique URL ###
 <%=vars.product_short%> requires that each app that you deploy has a unique URL. Otherwise, the new app URL collides with an existing app URL and <%=vars.product_short%> cannot successfully deploy the app. You can resolve this issue by running `cf push` with either of the following flags to create a unique URL:
 
 * `-n` to assign a different HOST name for the app.
@@ -118,26 +118,26 @@ Start unsuccessful
 
 If this happens, try the following:
 
-**Find the reason app is failing and modify your code.**
-Run `cf events APP-NAME` and `cf logs APP-NAME --recent` and look for
+  * **Find the reason app is failing and modify your code.**
+    Run `cf events APP-NAME` and `cf logs APP-NAME --recent` and look for
 messages similar to this:
-
-  `2014-04-29T17:52:34.00-0700   app.crash          index: 0, reason: CRASHED, exit_description: app instance exited, exit_status: 1`
-
-These messages may identify a memory or port issue.
-If they do, take that as a starting point when you re-examine and fix your
+  <pre class="terminal">
+  2014-04-29T17:52:34.00-0700   app.crash          index: 0, reason: CRASHED,
+  exit\_description: app instance exited, exit\_status: 1
+  </pre>
+  These messages may identify a memory or port issue.
+  If they do, take that as a starting point when you re-examine and fix your
 application code.
 
   * **Make sure your application code uses the `PORT` environment variable.**
 Your application may be failing because it is listening on the wrong port.
 Instead of hard coding the port on which your application listens, use the `PORT` environment variable.
-
-For example, this Ruby snippet assigns the port value to the `listen_here`
+    
+    For example, this Ruby snippet assigns the port value to the `listen_here`
 variable:
-
-  `listen_here = ENV['PORT']`
-
-For more examples specific to your application framework, see the
+     `listen_here = ENV['PORT']`
+   
+    For more examples specific to your application framework, see the
 appropriate [buildpacks documentation](../../buildpacks/) for your app's language.
 
   * **Make sure your app adheres to the principles of the
@@ -146,8 +146,27 @@ appropriate [buildpacks documentation](../../buildpacks/) for your app's languag
 These texts explain how to prevent situations where your app builds locally but
 fails to build in the cloud.
 
-  * **Verify the timeout configuration of your app.** Application health checks use
-a timeout setting when an app starts up for the first time. See [Using Application Health Checks](./healthchecks.html)
+  * **Verify the timeout configuration of your app.** Application health checks use a timeout setting when an app starts up for the first time. See [Using Application Health Checks](./healthchecks.html). If an application fails to start up due to health check timeout, you might see messages in the logs similar to the following:
+    <pre class="terminal">
+  2017-01-30T14:07:20.39-0800 [CELL/0]     OUT Creating container
+2017-01-30T14:07:20.65-0800 [CELL/0]     OUT Successfully created container
+2017-01-30T14:07:22.30-0800 [CELL/0]     OUT Starting health monitoring of container
+2017-01-30T14:08:23.52-0800 [CELL/0]     ERR Timed out after 1m0s: 
+health check never passed.
+2017-01-30T14:08:23.57-0800 [CELL/0]     OUT Destroying container
+2017-01-30T14:08:23.59-0800 [API/0]      OUT Process has crashed with type: "web"
+2017-01-30T14:08:23.59-0800 [CELL/0]     OUT Creating container
+2017-01-30T14:08:23.60-0800 [API/0]      OUT App instance exited with guid 91086440-bac0-44f0-808f-a034a1ec2ed0 
+payload: {"instance"=>"", "index"=>0, "reason"=>"CRASHED",
+"exit\_description"=>"2 error(s) occurred:\n\n* 1 error(s) 
+occurred:\n\n* Exited with status 6\n* 2 error(s) 
+occurred:\n\n* cancelled\n* cancelled", "crash\_count"=>1,
+"crash_timestamp"=>1485814103565763172,
+"version"=>"3e6e4232-7e19-4168-9583-1176833d2c71"}
+2017-01-30T14:08:23.83-0800 [CELL/0]     OUT Successfully destroyed container
+2017-01-30T14:08:23.84-0800 [CELL/0]     OUT Successfully created container
+2017-01-30T14:08:25.41-0800 [CELL/0]     OUT Starting health monitoring of container
+    </pre>
 
 ### <a id='out-of-memory'></a>App consumes too much memory, then crashes ###
 

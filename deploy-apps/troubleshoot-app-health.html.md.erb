@@ -146,6 +146,9 @@ appropriate [buildpacks documentation](../../buildpacks/) for your app's languag
 These texts explain how to prevent situations where your app builds locally but
 fails to build in the cloud.
 
+  * **Verify the timeout configuration of your app.** Application health checks use
+a timeout setting when an app starts up for the first time. See [Using Application Health Checks](./healthchecks.html)
+
 ### <a id='out-of-memory'></a>App consumes too much memory, then crashes ###
 
 An app that `cf push` has uploaded and started can crash later if it uses

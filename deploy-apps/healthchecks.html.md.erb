@@ -35,33 +35,28 @@ The following table describes how application health checks work in Cloud Foundr
 	</tr>
 	<tr>
 		<td>3</td>
-		<td>Cloud Controller stages, starts, and runs the app. 
+		<td>Cloud Controller stages, starts, and runs the app.
 		</td>
 	</tr>
 	<tr>
 		<td>4</td>
-		<td>Based on the type specified for the app, Cloud Controller configures a health check that runs periodically for the application instance.
+		<td>Based on the type specified for the app, Cloud Controller configures a health check that runs periodically for each application instance.
 		</td>
 	</tr>
 	<tr>
 		<td>5</td>
-		<td>When Diego starts an app instance, the application health check runs every 2 seconds until a response indicates that the app instance is healthy or that the health check timeout has elapsed. 
+		<td>When Diego starts an app instance, the application health check runs every 2 seconds until a response indicates that the app instance is healthy or until the health check timeout has elapsed.
 		</td>
 
 	</tr>
 	<tr>
 	   <td>6</td>
-		<td>The health check continues to monitor each running app instance. When an app instance becomes healthy, its route is advertised, if applicable.
+		<td>When an app instance becomes healthy, its route is advertised, if applicable. Subsequent health checks are run every 30 seconds once the app becomes healthy.
 		</td>
-    </tr>
-    <tr>
-		<td>7</td>
-		<td>After an app instance is declared healthy, the health check runs every 30 seconds. Each health check has a TCP connection or HTTP connection timeout of 1 second.
-		</td>
-	</tr>
+        </tr>
 	<tr>
-		<td>8</td>
-		<td>If a previously healthy app instance fails a health check, Diego then considers that particular instance to be unhealthy. As a result, Diego stops that instance, tears down the instance, and then reschedules it. The teardown of the app instance is reported back to the Cloud Controller as a crash event. When an app instance crashes, Diego immediately attempts to restart the app instance several times. If the app instance continues to crash, then an exponential back off is applied to the restart attempts.</td>
+		<td>7</td>
+		<td>If a previously healthy app instance fails a health check, Diego then considers that particular instance to be unhealthy. As a result, Diego tears down the instance, and then reschedules it. The teardown of the app instance is reported back to the Cloud Controller as a crash event. When an app instance crashes, Diego immediately attempts to restart the app instance several times. If the app instance continues to crash, then an exponential back off is applied to the restart attempts.</td>
 	</tr>
 </table>
 
@@ -80,13 +75,13 @@ The following table describes the types of health checks available for apps and 
 </tr>
 <tr>
 <td>can provide an <code>HTTP 200</code> response</td>
-<td><code>http</code>. The HTTP health check does a GET request to the configured HTTP endpoint. When the health check receives an <code>HTTP 200</code> reponse, the app is declared healthy. If possible, HTTP is the recommended health check mechanism. The advantage of using an HTTP health check is that a healthy HTTP response ensures that the web app is ready to serve HTTP requests. </td>
+<td><code>http</code>. The HTTP health check does a GET request to the configured HTTP endpoint. When the health check receives an <code>HTTP 200</code> reponse, the app is declared healthy. If possible, HTTP is the recommended health check mechanism. The advantage of using an HTTP health check is that a healthy HTTP response ensures that the web app is ready to serve HTTP requests. The configured endpoint must respond within 1 second to be considered healthy.</td>
 </tr>
 <tr>
 <td>can receive TCP connections (including HTTP web applications)
 </td>
 <td>
-<code>port</code>. A port health check makes a TCP connection to the port or ports configured for the application. For applications with multiple ports, a health check monitors each port. If you do not specify a health check type for your application, then <code>port</code> is used.</code>
+<code>port</code>. A port health check makes a TCP connection to the port or ports configured for the application. For applications with multiple ports, a health check monitors each port. If you do not specify a health check type for your application, then <code>port</code> is used. The TCP connection must be established within 1 second to be considered healthy.</code>
 </td>
 </tr>
 <tr>
@@ -97,7 +92,7 @@ The following table describes the types of health checks available for apps and 
 
 ### <a id="health_check_timeout"></a> Health Check Timeouts
 
-The value configured for the health check timeout is the amount of time allowed to elapse between starting up an app and the first healthy response from the app. If the health check does not receive a healthy response within the configured timeout, then the app is declared unhealthy. 
+The value configured for the health check timeout is the amount of time allowed to elapse between starting up an app and the first healthy response from the app. If the health check does not receive a healthy response within the configured timeout, then the app is declared unhealthy.
 
 <%=vars.app_healthcheck_timeout%>
 
@@ -107,12 +102,7 @@ Only used by `http` type, this configuration specifies the path portion of a URI
 
 ## <a id="setting_health_checks"></a> How to Configure the Health Check for Your Application
 
-You can configure a health check type, application start timeout and HTTP endpoint for your application by using the [Cloud Controller API](https://apidocs.cloudfoundry.org/251/apps/creating_an_app.html). 
+You can configure a health check type, application start timeout and HTTP endpoint for your application by using the [Cloud Controller API](https://apidocs.cloudfoundry.org/251/apps/creating_an_app.html).
 
 To set the type of health check for your application, you can specify a value in the `health-check-type` field of your [application manifest](./manifest.html#health-check-type) file.
-
-
-
-
-
 

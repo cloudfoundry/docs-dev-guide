@@ -45,18 +45,22 @@ The following table describes how application health checks work in Cloud Foundr
 	</tr>
 	<tr>
 		<td>5</td>
-		<td>When Diego starts an app instance, the application health check runs every 2 seconds until a response indicates that the app instance is healthy or until the health check timeout has elapsed.
+		<td>When Diego starts an app instance, the application health check runs every 2 seconds until a response indicates that the app instance is healthy or until the health check timeout has elapsed. The 2-second health check interval is not configurable.
 		</td>
 
 	</tr>
 	<tr>
 	   <td>6</td>
-		<td>When an app instance becomes healthy, its route is advertised, if applicable. Subsequent health checks are run every 30 seconds once the app becomes healthy.
+		<td>When an app instance becomes healthy, its route is advertised, if applicable. Subsequent health checks are run every 30 seconds once the app becomes healthy. The 30-second health check interval is not configurable.
 		</td>
         </tr>
 	<tr>
 		<td>7</td>
-		<td>If a previously healthy app instance fails a health check, Diego then considers that particular instance to be unhealthy. As a result, Diego tears down the instance, and then reschedules it. The teardown of the app instance is reported back to the Cloud Controller as a crash event. When an app instance crashes, Diego immediately attempts to restart the app instance several times. If the app instance continues to crash, then an exponential back off is applied to the restart attempts.</td>
+		<td>If a previously healthy app instance fails a health check, Diego then considers that particular instance to be unhealthy. As a result, Diego tears down the instance, and then reschedules it. The teardown of the app instance is reported back to the Cloud Controller as a crash event.</td>
+	</tr>
+	<tr>
+	   <td>8</td>
+		<td>When an app instance crashes, Diego immediately attempts to restart the app instance several times. After three failed restarts, CF waits thirty seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, CF stops trying to restart the app instance.</td>
 	</tr>
 </table>
 
@@ -86,7 +90,7 @@ The following table describes the types of health checks available for apps and 
 </tr>
 <tr>
 <td>does not support TCP connections (for example, a worker)</td>
-<td><code>process</code>. The process health check ensures that the process is running.</td>
+<td><code>process</code>. For a process health check, Diego ensures that any process declared for the app stays running. If the process exits, Diego tears down the app instance.</td>
 </tr>
 </table>
 
@@ -106,3 +110,4 @@ You can configure a health check type, application start timeout and HTTP endpoi
 
 To set the type of health check for your application, you can specify a value in the `health-check-type` field of your [application manifest](./manifest.html#health-check-type) file.
 
+You can change the health check configuration of a deployed app, but you must restart the app for the changes to take effect.

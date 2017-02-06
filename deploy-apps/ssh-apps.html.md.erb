@@ -124,7 +124,7 @@ Before running commands below, verify that the contents of the files in both the
 If the `profile` and `.profile.d` scripts would alter your instance in undesirable ways, only run the commands in them that you need for environmental setup.
 
 <pre class="terminal">
-for f in /home/vcap/app/.profile.d/*.sh; do source "$f"; done
+[ -d /home/vcap/app/.profile.d ] && for f in /home/vcap/app/.profile.d/*.sh; do source "$f"; done
 source /home/vcap/app/.profile
 </pre>
 

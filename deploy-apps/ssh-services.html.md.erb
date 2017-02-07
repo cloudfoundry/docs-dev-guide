@@ -55,7 +55,7 @@ Configure an SSH tunnel to your service instance using [cf ssh](http://cli.cloud
   * Replace `3306` with the port provided under `port` above.
   * Replace `spring-music` with the name of your host app.
 
-<p class="note"><strong>Note</strong>: Because the SSH tunnel may time out, run <code>cf ssh</code> in the foreground and restart it if it exits. </p>
+The `cf ssh` command runs in the foreground and does not return a value. After you enter the command, open another terminal window and perform the steps below in [Access Your Service Instance](#access-service).
 
 ##<a id="access-service"></a>Access Your Service Instance##
 To establish direct command-line access to your service instance, use the relevant command line tool for that service. This example uses the MySQL command line client to access the <%= vars.ssh_service %> service instance.

@@ -65,7 +65,7 @@ After this push:
 
 * Two instances of our application are now running on Cloud Foundry: the
 original Blue and the updated Green.
-* The CF Router still sends all traffic for `demo-time.example.com` traffic to
+* The CF Router continues sending all traffic for `demo-time.example.com` to
 Blue.
 The router now also sends any traffic for `demo-time-temp.example.com` to Green.
 
@@ -85,8 +85,8 @@ Binding demo-time.example.com to Green... OK
 
 After the `cf map-route` command :
 
-* The CF Router continues to send traffic for `demo-time-temp.example.com` to Green.
-* The CF Router immediately begins to load balance traffic for
+* The CF Router continues sending traffic for `demo-time-temp.example.com` to Green.
+* Within a few seconds, the CF Router begins load balancing traffic for
 `demo-time.example.com` between Blue and Green.
 
 <%= image_tag("../images/blue-green/map.png") %>
@@ -104,20 +104,18 @@ Unbinding demo-time.example.com from blue... OK
 After `cf unmap-route` command:
 
 * The CF Router stops sending traffic to Blue.
-Instead, it routes all traffic to `demo-time.example.com` to Green:
+Now all traffic for `demo-time.example.com` is sent to Green:
 
 <%= image_tag("../images/blue-green/unmap.png") %>
 
 ### <a id='remove-temp-route'></a>Step 5: Remove Temporary Route to Green ###
 
-You can now use `cf unmap-route` to remove the route to `demo-time-temp.example.com`.
-You can also decommission Blue, or keep it in case you need to roll back your
-changes.
+You can now use `cf unmap-route` to remove the route `demo-time-temp.example.com` from Green. The route can be deleted using `cf delete-route` or reserved for later use. You can also decommission Blue, or keep it in case you need to roll back your changes.
 
 <%= image_tag("../images/blue-green/green.png") %>
 
 ## <a id='implementations'></a>Implementations
- 
+
 Cloud Foundry community members have written plugins to automate the blue-green
 release process. These include:
 

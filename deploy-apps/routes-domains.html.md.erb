@@ -9,7 +9,7 @@ owner: Routing
 
 This topic describes how routes and domains work in <%=vars.product_full%>, and how developers and administrators configure routes and domains for their applications using the Cloud Foundry Command Line Interface (cf CLI).
 
-For more information about routing capabilities in <%=vars.product_short%>, see the [HTTP Routing](../../concepts/http-routing.html) topic. 
+For more information about routing capabilities in <%=vars.product_short%>, see the [HTTP Routing](../../concepts/http-routing.html) topic.
 
 ## <a id='routes'></a>Routes ##
 
@@ -50,7 +50,7 @@ The routing tier knows the location of instances for apps mapped to routes. Once
 
 Developers can map many apps to a single route, resulting in load-balanced requests for the route across all instances of all mapped apps. This approach enables the blue/green zero-downtime deployment strategy. Developers can also map an individual app to multiple routes, enabling access to the app from many URLs.
 
-Routes belong to a space, and developers can only map apps to a route in the same space. 
+Routes belong to a space, and developers can only map apps to a route in the same space.
 
 <p class="note"><strong>Note</strong>: Routes are globally unique. Developers in one space cannot create a route with the same URL as developers in another space, regardless of which orgs control these spaces.</p>
 
@@ -242,7 +242,7 @@ For an app to receive requests to a route, developers must map the route to the 
 
 Developers can create and reserve routes for later use by following the steps in the <a href="#map-route-manually">Manually Map a Route</a> section. Or they can map routes to their app immediately as part of a push by following the steps in the <a href="#map-route-on-push">Map a Route with Application Push</a> section.
 
-<%=vars.map_route%>
+<p class="note"><strong>Note</strong>: Changes to route mappings are executed asynchronously. On startup, an application will be accessible at its route within a few seconds. Similarly, upon mapping a new route to a running app, the app will be accessible at this route within a few seconds of the CLI exiting successfully.</p>
 
 #### <a id='map-route-manually'></a>Manually Map a Route ####
 
@@ -290,7 +290,7 @@ $ cf map-route myfallbackapp foo.<%=vars.app_domain%> --hostname *
 
 Developers can map a route to their app with the `cf push` command.
 
-If a domain or hostname is not specified, then a route will be created using the app name and the default shared domain (see [Shared Domains](#shared-domains)).  The following command pushes the app `myapp`, creating the `myapp.<%=vars.app_domain%>` route with the default shared domain `<%=vars.app_domain%>`. If the route has not already been created in another space this command also maps it to the app.
+If a domain or hostname is not specified, then a route will be created using the app name and the default shared domain (see [Shared Domains](#shared-domains)).  The following command pushes the app `myapp`, creating the route `myapp.<%=vars.app_domain%>` from the default shared domain `<%=vars.app_domain%>`. If the route has not already been created in another space this command also maps it to the app.
 
 <pre class="terminal">
 $ cf push myapp
@@ -369,7 +369,7 @@ $ cf app myapp
 The following example shows a request made to instance `9` of an application with GUID `5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e` and mapped to route myapp.<%=vars.private_app_domain%>.
 
 <pre class="terminal">
-$ curl myapp.<%=vars.private_app_domain%> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9" 
+$ curl myapp.<%=vars.private_app_domain%> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9"
 </pre>
 
 If the cf CLI cannot find the instance the format is incorrect, a `404` status code is returned.
@@ -499,7 +499,7 @@ To associate a registered domain name with a domain on <%=vars.product_short%>, 
 
 ##### <a id='single-mapping'></a>Mapping a Single Domain to Your Custom Domain
 
-To map a single domain to a custom domain to <%=vars.product_short%>, configure a CNAME record with your DNS provider. 
+To map a single domain to a custom domain to <%=vars.product_short%>, configure a CNAME record with your DNS provider.
 
 The following table provides some example CNAME record mappings.
 
@@ -521,13 +521,13 @@ The following table provides some example CNAME record mappings.
   </tr>
 </table>
 
-After you create the CNAME mapping, your DNS provider routes your custom domain to `myapp.<%=vars.app_domain%>`. 
+After you create the CNAME mapping, your DNS provider routes your custom domain to `myapp.<%=vars.app_domain%>`.
 
 <p class="note"><strong>Note:</strong> Refer to your DNS provider documentation to determine whether the trailing <code>.</code> is required.</p>
 
-##### <a id='wildcard-mapping'></a>Mapping Multiple Subdomains to Your Custom Domain 
+##### <a id='wildcard-mapping'></a>Mapping Multiple Subdomains to Your Custom Domain
 
-Use a wildcard CNAME record to point all of the subdomains in your custom domain to <%=vars.app_domain%>. 
+Use a wildcard CNAME record to point all of the subdomains in your custom domain to <%=vars.app_domain%>.
 
 Each separately configured subdomain has priority over the wildcard configuration.
 
@@ -550,7 +550,7 @@ The following table provides some example wildcard CNAME record mappings.
     <td>*.myapp.<%=vars.app_domain%></td>
   </tr>
 </table>
- 
+
 If you use a wildcard as the subdomain name, then your DNS provider can route from `*.YOURCUSTOMDOMAIN` to any of the following:
 
 - `*.<%=vars.app_domain%>`

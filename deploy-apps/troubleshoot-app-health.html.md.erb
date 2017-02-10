@@ -191,7 +191,7 @@ If two apps share a route outside of a Blue-Green deploy strategy, choose one ap
 
 1. Run `cf map-route YOUR-APP-NAME NEW-ROUTE` to map the app to a new, unique route.
 
-## <a id='info'></a>Gathering Diagnostic Information ##
+## <a id='info'></a>Gather Diagnostic Information ##
 
 Use the techniques in this section to gather diagnostic information and troubleshoot app deployment issues.
 
@@ -276,7 +276,7 @@ When the Zipkin feature is enabled in Cloud Foundry, the Gorouter adds or forwar
 
 After adding Zipkin HTTP headers to app logs, developers can use `cf logs myapp` to correlate the trace and span ids logged by the Gorouter with the trace ids logged by their app. To correlate trace ids for a request through multiple apps, each app must forward appropriate values for the headers with requests to other applications.
 
-## <a id='cf-commands'></a>cf Troubleshooting Commands ##
+## <a id='cf-commands'></a>Use Troubleshooting Commands ##
 
 You can investigate app deployment and health using the cf CLI.
 
@@ -311,6 +311,12 @@ logs.
 <p class="note"><strong>Note</strong>: Your application should direct its logs to STDOUT and STDERR.
 The <code>cf logs</code> command also returns messages from any <a href="http://logging.apache.org/log4j/">log4j</a> facility that you configure to send logs to STDOUT.</p>
 
-## <a id='ssh'></a>Accessing Apps with SSH ##
-If you need to troubleshoot an instance of an app, you can gain SSH access to the app with the Diego proxy and daemon. See the Diego SSH topic for details on [SSH configuration and procedures](./app-ssh-overview.html).
+## <a id='ssh'></a>Access Apps with SSH ##
+
+If you need to troubleshoot an instance of an app, you can gain SSH access to the app with the SSH proxy and daemon. See the [Application SSH Overview](./app-ssh-overview.html) topic for more information.
+
+## <a id='request-to-instance'></a>Send Requests to App Instance ##
+
+To obtain debug data without SSH, you can make HTTP requests to a specific instance of an app by using the `X-CF-APP-INSTANCE` HTTP header. See the [App Instance Routing](../../concepts/http-routing.html#app-instance-routing) section of the <em>HTTP Routing</em> topic for more information.
+
 

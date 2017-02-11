@@ -283,6 +283,18 @@ The command line option that overrides this attribute is `-u`.
 
 The value of `none` is deprecated in favor of `process`.
 
+###<a id='health-check-http-endpoint'></a>The health-check-http-endpoint attribute ###
+
+Use the `health-check-http-endpoint` attribute to customize the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint` attribute, 
+it uses endpoint '/'.
+
+<pre>
+---
+  ...
+  health-check-type: http
+  health-check-http-endpoint: /health
+</pre>
+
 ###<a id='host'></a>The host attribute ###
 
 Use the `host` attribute to provide a hostname, or subdomain, in the form of a string. This segment of a route helps to ensure that the route is unique. If you do not provide a hostname, the URL for the app takes the form of `APP-NAME.DOMAIN`.

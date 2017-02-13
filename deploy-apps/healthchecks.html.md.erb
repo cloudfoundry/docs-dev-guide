@@ -85,7 +85,7 @@ The following table describes the types of health checks available for apps and 
 <td>Can receive TCP connections (including HTTP web applications)
 </td>
 <td>
-<code>port</code>: A health check makes a TCP connection to the port or ports configured for the app. For applications with multiple ports, a health check monitors each port. If you do not specify a health check type for your app, then the monitoring process defaults to a <code>port</code> health check. The TCP connection must be established within 1 second to be considered healthy.</code>
+<code>port</code>: A health check makes a TCP connection to the port or ports configured for the app. For applications with multiple ports, a health check monitors each port. If you do not specify a health check type for your app, then the monitoring process defaults to a <code>port</code> health check. The TCP connection must be established within 1 second to be considered healthy.
 </td>
 </tr>
 <tr>
@@ -108,6 +108,7 @@ Only used by `http` type, this configuration specifies the path portion of a URI
 
 Use the [Cloud Controller API](https://apidocs.cloudfoundry.org/251/apps/creating_an_app.html) to configure a health check type, application start timeout, and HTTP endpoint for your app. 
 
-To set the type of health check for your application, you can specify a value in the `health-check-type` field of your [application manifest](./manifest.html#health-check-type) file.
+Use the cf CLI [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command to configure the health check type while creating or updating an application, or [cf set-health-check](http://cli.cloudfoundry.org/en-US/cf/set-health-check.html) to configure an existing application.
+With `cf push`, use command line options `-u` to set the health check type and `-t` to configure the timeout. Alternatively, you can specify the type in the `health-check-type` field of your [application manifest](./manifest.html#health-check-type) file, and in case of the <code>http</code> health check type, the endpoint in the `health-check-http-endpoint` field.
 
 You can change the health check configuration of a deployed app, but you must restart the app for the changes to take effect.

@@ -118,7 +118,7 @@ In general, you can think of manifests as just another input to `cf push`, to be
 
 This section explains how to describe optional application attributes in manifests. Each of these attributes can also be specified by a command line option. Command line options override the manifest.
 
-###<a id='buildpack'></a>The buildpack attribute ###
+###<a id='buildpack'></a>buildpack ###
 
 If your application requires a custom buildpack, you can use the `buildpack` attribute to specify it in one of three ways:
 
@@ -136,7 +136,7 @@ If your application requires a custom buildpack, you can use the `buildpack` att
 
 The command line option that overrides this attribute is `-b`.
 
-###<a id='start-commands'></a>The command attribute ###
+###<a id='start-commands'></a>command ###
 
 Some languages and frameworks require that you provide a custom command to start an application. Refer to the [buildpack](../../buildpacks/index.html) documentation to determine if you need to provide a custom start command.
 
@@ -182,7 +182,7 @@ To resolve this issue, you can use `exec` to replace the bash process with your 
 
 In more complex situations, like making a custom buildpack, you may want to use bash `trap`, `wait`, and backgrounded processes to manage your process tree and shut down apps gracefully. In most situations, however, a well-placed `exec` should be sufficient.
 
-###<a id='disk-quota'></a>The disk quota attribute ###
+###<a id='disk-quota'></a>disk_quota ###
 
 Use the `disk_quota` attribute to allocate the disk space for your app instance. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case.
 
@@ -194,7 +194,7 @@ Use the `disk_quota` attribute to allocate the disk space for your app instance.
 
 The command line option that overrides this attribute is `-k`.
 
-###<a id='domain'></a>The domain attribute ###
+###<a id='domain'></a>domain ###
 
 Every `cf push` deploys applications to one particular Cloud Foundry instance.
 Every Cloud Foundry instance may have a shared domain set by an admin.
@@ -210,7 +210,7 @@ You can use the `domain` attribute when you want your application to be served f
 
 The command line option that overrides this attribute is `-d`.
 
-###<a id='domains'></a>The domains attribute ###
+###<a id='domains'></a>domains ###
 
 Use the `domains` attribute to provide multiple domains. If you define both `domain` and `domains` attributes, Cloud Foundry creates routes for domains defined in both of these fields.
 
@@ -224,51 +224,19 @@ Use the `domains` attribute to provide multiple domains. If you define both `dom
 
 The command line option that overrides this attribute is `-d`.
 
-###<a id='stack'></a>The stack attribute ###
+###<a id='health-check-http-endpoint'></a>health-check-http-endpoint ###
 
-Use the `stack` attribute to specify which stack to deploy your application to.
-
-To see a list of available stacks, run `cf stacks` from the cf cli.
-
-<pre>
----
-  ...
-  stack: cflinuxfs2
-</pre>
-
-The command line option that overrides this attribute is `-s`.
-
-###<a id='instances'></a>The instances attribute ###
-
-Use the `instances` attribute to specify the number of app instances that you want to start upon push:
+Use the `health-check-http-endpoint` attribute to customize the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint` attribute, 
+it uses endpoint '/'.
 
 <pre>
 ---
   ...
-  instances: 2
+  health-check-type: http
+  health-check-http-endpoint: /health
 </pre>
 
-We recommend that you run at least two instances of any apps for which fault tolerance matters.
-
-The command line option that overrides this attribute is `-i`.
-
-###<a id='memory'></a>The memory attribute ###
-
-Use the `memory` attribute to specify the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case. For example:
-
-<pre>
----
-  ...
-  memory: 1024M
-</pre>
-
-The default memory limit is 1G. You might want to specify a smaller limit to conserve <%=vars.quota_resource%> if you know that your app instances do not require 1G of memory.
-
-The command line option that overrides this attribute is `-m`.
-
-
-
-###<a id='health-check-type'></a>The health-check-type attribute ###
+###<a id='health-check-type'></a>health-check-type ###
 
 Use the `health-check-type` attribute to set the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type` attribute, 
 it defaults to `port`.
@@ -283,19 +251,7 @@ The command line option that overrides this attribute is `-u`.
 
 The value of `none` is deprecated in favor of `process`.
 
-###<a id='health-check-http-endpoint'></a>The health-check-http-endpoint attribute ###
-
-Use the `health-check-http-endpoint` attribute to customize the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint` attribute, 
-it uses endpoint '/'.
-
-<pre>
----
-  ...
-  health-check-type: http
-  health-check-http-endpoint: /health
-</pre>
-
-###<a id='host'></a>The host attribute ###
+###<a id='host'></a>host ###
 
 Use the `host` attribute to provide a hostname, or subdomain, in the form of a string. This segment of a route helps to ensure that the route is unique. If you do not provide a hostname, the URL for the app takes the form of `APP-NAME.DOMAIN`.
 
@@ -307,7 +263,7 @@ Use the `host` attribute to provide a hostname, or subdomain, in the form of a s
 
 The command line option that overrides this attribute is `-n`.
 
-###<a id='hosts'></a>The hosts attribute ###
+###<a id='hosts'></a>hosts ###
 
 Use the `hosts` attribute to provide multiple hostnames, or subdomains. Each hostname generates a unique route for the app. `hosts` can be used in conjunction with `host`. If you define both attributes, Cloud Foundry creates routes for hostnames defined in both `host` and `hosts`.
 
@@ -321,7 +277,35 @@ Use the `hosts` attribute to provide multiple hostnames, or subdomains. Each hos
 
 The command line option that overrides this attribute is `-n`.
 
-###<a id='nohosts'></a>The no-hostname attribute ###
+###<a id='instances'></a>instances ###
+
+Use the `instances` attribute to specify the number of app instances that you want to start upon push:
+
+<pre>
+---
+  ...
+  instances: 2
+</pre>
+
+We recommend that you run at least two instances of any apps for which fault tolerance matters.
+
+The command line option that overrides this attribute is `-i`.
+
+###<a id='memory'></a>memory ###
+
+Use the `memory` attribute to specify the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case. For example:
+
+<pre>
+---
+  ...
+  memory: 1024M
+</pre>
+
+The default memory limit is 1G. You might want to specify a smaller limit to conserve <%=vars.quota_resource%> if you know that your app instances do not require 1G of memory.
+
+The command line option that overrides this attribute is `-m`.
+
+###<a id='nohosts'></a>no-hostname ###
 
 By default, if you do not provide a hostname, the URL for the app takes the form of `APP-NAME.DOMAIN`. If you want to override this and map the root domain to this app then you can set no-hostname as true.
 
@@ -333,7 +317,61 @@ By default, if you do not provide a hostname, the URL for the app takes the form
 
 The command line option that corresponds to this attribute is `--no-hostname`.
 
-###<a id='routes'></a>The routes attribute ###
+###<a id='no-route'></a>no-route ###
+
+By default, `cf push` assigns a route to every app. But, some apps process data while running in the background and should not be assigned routes.
+
+You can use the `no-route` attribute with a value of `true` to prevent a route from being created for your app.
+
+<pre>
+---
+  ...
+  no-route: true
+</pre>
+The command line option that corresponds to this attribute is `--no-route`.
+
+In the newer Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check and Cloud Foundry marks it as crashed. To prevent this, disable the port-based health check with `cf set-health-check APP_NAME none`.
+
+In the older Droplet Execution Agent (DEA) architecture, `cf set-health-check APP_NAME none` is unnecessary because `no-route` causes the DEAs to skip the port health-check on app startup.
+
+To remove a route from an existing app, perform the following steps:
+
+1. Remove the route using the `cf unmap-route` command.
+1. Push the app again with the `no-route: true` attribute in the manifest or the `--no-route` command line option.
+
+For more information, see [Describing Multiple Applications with One Manifest](#multi-apps) below.
+
+###<a id='path'></a>path
+
+You can use the `path` attribute to tell Cloud Foundry the directory location where it can find your application. 
+
+The directory specified as the `path`, either as an attribute or as a parameter on the command line, becomes the location where the buildpack `Detect` script executes.
+
+The command line option that overrides this attribute is `-p`.
+
+<pre>
+---
+  ...
+  path: /path/to/application/bits
+</pre>
+
+For more information, see the [How cf push Finds the Application](#find-app) topic.
+
+###<a id='random-route'></a>random-route ###
+
+Use the `random-route` attribute to create a URL that includes the app name and
+random words.
+Use this attribute to avoid URL collision when pushing the same app to multiple spaces, or to avoid managing app URLs.
+
+The command line option that corresponds to this attribute is `--random-route`.
+
+<pre>
+---
+  ...
+  random-route: true
+</pre>
+
+###<a id='routes'></a>routes ###
 
 Use the `routes` attribute to provide multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
 
@@ -384,38 +422,21 @@ The PORT and HOSTNAME will be randomly generated.</td>
 <tr>
 </table>
 
-###<a id='random-route'></a>The random-route attribute ###
+###<a id='stack'></a>stack ###
 
-Use the `random-route` attribute to create a URL that includes the app name and
-random words.
-Use this attribute to avoid URL collision when pushing the same app to multiple spaces, or to avoid managing app URLs.
+Use the `stack` attribute to specify which stack to deploy your application to.
 
-The command line option that corresponds to this attribute is `--random-route`.
+To see a list of available stacks, run `cf stacks` from the cf cli.
 
 <pre>
 ---
   ...
-  random-route: true
+  stack: cflinuxfs2
 </pre>
 
+The command line option that overrides this attribute is `-s`.
 
-###<a id='path'></a>The path attribute
-
-You can use the `path` attribute to tell Cloud Foundry the directory location where it can find your application. 
-
-The directory specified as the `path`, either as an attribute or as a parameter on the command line, becomes the location where the buildpack `Detect` script executes.
-
-The command line option that overrides this attribute is `-p`.
-
-<pre>
----
-  ...
-  path: /path/to/application/bits
-</pre>
-
-For more information, see the [How cf push Finds the Application](#find-app) topic.
-
-###<a id='timeout'></a>The timeout attribute ###
+###<a id='timeout'></a>timeout ###
 
 The `timeout` attribute defines the number of seconds that Cloud Foundry allocates for starting your application.
 
@@ -432,31 +453,7 @@ You can increase the timeout length for very large apps that require more time t
 
 The command line option that overrides the timeout attribute is `-t`.
 
-###<a id='no-route'></a>The no-route attribute ###
-
-By default, `cf push` assigns a route to every app. But, some apps process data while running in the background and should not be assigned routes.
-
-You can use the `no-route` attribute with a value of `true` to prevent a route from being created for your app.
-
-<pre>
----
-  ...
-  no-route: true
-</pre>
-The command line option that corresponds to this attribute is `--no-route`.
-
-In the newer Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check and Cloud Foundry marks it as crashed. To prevent this, disable the port-based health check with `cf set-health-check APP_NAME none`.
-
-In the older Droplet Execution Agent (DEA) architecture, `cf set-health-check APP_NAME none` is unnecessary because `no-route` causes the DEAs to skip the port health-check on app startup.
-
-To remove a route from an existing app, perform the following steps:
-
-1. Remove the route using the `cf unmap-route` command.
-1. Push the app again with the `no-route: true` attribute in the manifest or the `--no-route` command line option.
-
-For more information, see [Describing Multiple Applications with One Manifest](#multi-apps) below.
-
-###<a id='env-block'></a>Environment Variables ###
+##<a id='env-block'></a>Environment Variables ###
 
 The `env` block consists of a heading, then one or more environment variable/value pairs.
 
@@ -485,7 +482,7 @@ the environment of the container where the application is staged, and the enviro
 
 * When you stop and then restart an application, its environment variables persist.
 
-###<a id='services-block'></a>Services ###
+##<a id='services-block'></a>Services ###
 
 Applications can bind to services such as databases, messaging, and key-value stores.
 

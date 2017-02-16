@@ -283,7 +283,7 @@ $ cf map-route tcp-app tcp.<%=vars.app_domain%> --port 60000
 The following command maps the wildcard route `*.foo.<%=vars.app_domain%>` to the app `myfallbackapp`.
 
 <pre class="terminal">
-$ cf map-route myfallbackapp foo.<%=vars.app_domain%> --hostname *
+$ cf map-route myfallbackapp foo.<%=vars.app_domain%> --hostname '*'
 </pre>
 
 #### <a id='map-route-on-push'></a>Map a Route with Application Push ####

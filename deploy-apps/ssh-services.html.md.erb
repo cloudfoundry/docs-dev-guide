@@ -48,14 +48,14 @@ Getting key EXTERNAL-ACCESS-KEY for service instance MY-DB as user<span>@</span>
 ##<a id="ssh-tunnel"></a>Configure Your SSH Tunnel
 
 Configure an SSH tunnel to your service instance using [cf ssh](http://cli.cloudfoundry.org/en-US/cf/ssh.html). Tailor the example command below with information from your service key.
-<pre class="terminal">$ cf ssh -N -L 63306:<%= vars.ssh_service_host %>:3306 YOUR-HOST-APP</pre>
+<pre class="terminal">$ cf ssh -L 63306:<%= vars.ssh_service_host %>:3306 YOUR-HOST-APP</pre>
 
   * Use any available local port for port forwarding. For example, `63306`.
   * Replace `<%= vars.ssh_service_host %>` with the address provided under `hostname` in the service key retrieved above.
   * Replace `3306` with the port provided under `port` above.
   * Replace `YOUR-HOST-APP` with the name of your host app.
 
-The `cf ssh` command runs in the foreground and does not return a value. After you enter the command, open another terminal window and perform the steps below in [Access Your Service Instance](#access-service).
+After you enter the command, open another terminal window and perform the steps below in [Access Your Service Instance](#access-service).
 
 ##<a id="access-service"></a>Access Your Service Instance##
 To establish direct command-line access to your service instance, use the relevant command line tool for that service. This example uses the MySQL command line client to access the <%= vars.ssh_service %> service instance.

@@ -1,0 +1,112 @@
+---
+title: Administering CF Networking
+owner: CF Networking
+---
+
+This topic describes how to enable and use the CF Networking feature. For an overview of how CF Networking works, see the [Understanding CF Networking](../concepts/understand-cf-networking.html) topic. 
+
+<% if vars.product_name == 'CF' ||  vars.product_name == 'PCF'%>
+##<a id="enable"></a>Enable CF Networking
+<% end %>
+
+<% if vars.product_name == 'CF' %>
+ <%= partial 'c2c_oss_enable' %>
+<% elsif vars.product_name == 'PCF' %>
+ <%= partial "../../customizing/c2c_pcf_enable" %>
+<% else %>
+<% end %>
+
+##<a id="create-policies"></a>Create Policies for CF Networking
+
+This section describes how to create and modify CF Networking policies using a plugin for the CF CLI.
+
+<% if vars.product_name == 'PWS'%>
+<%= partial '../../appsman-services/c2c_pws_create' %>
+<% else %>
+
+To use the plugin, you must have the `network.admin` UAA scope. This scope gives you the right to create a policy between any two apps in your CF deployment. 
+Depending on the security structure of your organization, you can either assign this scope to developers
+so that they can create their own policies or you can have your developers send you requests.
+For more information, see [Creating and Managing Users with the UAA CLI (UAAC)](./uaa-user-management.html).
+
+<% end %>
+### Install the Plugin
+
+Follow these steps to download and install the Network Policy plugin for the CF CLI:
+
+1. Download the `network-policy-plugin` for your operating system from the 
+   [CF Networking Release repository](https://github.com/cloudfoundry-incubator/cf-networking-release/releases).
+
+1. To change the permissions of the plugin file and complete the installation, enter the following commands:
+
+    <pre class="terminal">
+    $ chmod +x ~/Downloads/network-policy-plugin
+    $ cf install-plugin ~/Downloads/network-policy-plugin
+    </pre>
+
+### Create a Policy
+
+To create a policy that allows direct network traffic from one app to another, enter the following command:
+
+<pre class="terminal">
+$ cf allow-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORT
+</pre>
+
+Replace the placeholders in the above command as follows:
+
+* `SOURCE-APP` is the name of the app that will be sending traffic.<br>
+* `DESTINATION-APP` is the name of the app that will be receiving traffic.<br>
+* `PROTOCOL` is one of the following: `tcp` or `udp`.<br>
+* `PORT` is the port at which to connect to the destination app. The allowed range is 1 to 65535.<br>
+
+The following example command allows access from the `frontend` app to the `backend` app over TCP at port 8080:
+
+<pre class="terminal">
+$ cf allow-access frontend backend --protocol tcp --port 8080
+Allowing traffic from frontend to backend as admin...
+OK 
+</pre>
+
+### List Policies
+
+You can list all the policies in your deployment or just the policies for which a single app is 
+either the source or the destination:
+
++ To list the all the policies in your deployment, enter the following command:
+
+    <pre class="terminal">
+    $ cf list-access
+    </pre>
++ To list the policies for an app, enter the following command:
+
+    <pre class="terminal">
+    $ cf list-access --app MY-APP
+    </pre>
+
+    The following example command lists policies for the app `frontend`:
+    
+    <pre class="terminal">
+    $ cf list-access --app frontend
+    Listing policies as admin...
+    OK
+    
+    Source    Destination    Protocol    Port
+    frontend  backend        tcp         8080
+    </pre>
+
+### Delete a Policy
+
+To delete a policy that allows direct network traffic from one app to another, enter the following command:
+
+<pre class="terminal">
+$ cf remove-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORT
+</pre>
+
+For example,
+<pre class="terminal">
+$ cf remove-access frontend backend --protocol tcp --port 8080
+Denying traffic from frontend to backend as admin...
+OK 
+</pre>
+
+

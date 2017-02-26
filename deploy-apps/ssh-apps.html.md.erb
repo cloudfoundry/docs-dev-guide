@@ -107,7 +107,7 @@ $ cf ssh MY-AWESOME-APP -L [LOCAL-NETWORK-INTERFACE:]LOCAL-PORT:REMOTE-HOST-NAME
 
 * The `-N` flag skips returning a command prompt on the remote machine. This sets up local port forwarding if you do not need to execute commands on the host VM.
 
-* The `-t`, `-tt`, and `-T` flags let you run an SSH session in pseudo-tty mode rather than generate terminal line output.
+* The `--request-pseudo-tty` and `--force-pseudo-tty ` flags let you run an SSH session in pseudo-tty mode rather than generate terminal line output.
 
 ## <a id="ssh-env"></a>SSH Session Environment
 

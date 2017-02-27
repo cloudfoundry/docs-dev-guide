@@ -5,7 +5,7 @@ owner: CF Networking
 
 This topic describes how to enable and use the CF Networking feature. For an overview of how CF Networking works, see the [Understanding CF Networking](../../concepts/understand-cf-networking.html) topic. 
 
-<% if vars.product_name == 'CF' ||  vars.product_name == 'PCF'%>
+<% if vars.product_name == 'CF' || vars.product_name == 'PCF'%>
 ##<a id="enable"></a>Enable CF Networking
 <% end %>
 
@@ -20,16 +20,20 @@ This topic describes how to enable and use the CF Networking feature. For an ove
 
 This section describes how to create and modify CF Networking policies using a plugin for the CF CLI.
 
-<% if vars.product_name == 'PWS'%>
+<% if vars.product_name == 'PWS' %>
 <%= partial '../../appsman-services/c2c_pws_create' %>
 <% else %>
 
 To use the plugin, you must have the `network.admin` UAA scope. This scope gives you the right to create a policy between any two apps in your CF deployment. 
 Depending on the security structure of your organization, you can either assign this scope to developers
 so that they can create their own policies or you can have your developers send you requests.
-For more information, see [Creating and Managing Users with the UAA CLI (UAAC)](../../adminguide/uaa-user-management.html).
-
+ <% if vars.product_name == 'CF' || vars.product_name == 'PCF' %>
+  <%= vars.uaa_cli %>
+ <% else %>
+For more information, see [Creating and Managing Users with the UAA CLI (UAAC)](https://docs.cloudfoundry.org/adminguide/uaa-user-management.html).
+ <% end %>
 <% end %>
+
 ### Install the Plugin
 
 Follow these steps to download and install the Network Policy plugin for the CF CLI:

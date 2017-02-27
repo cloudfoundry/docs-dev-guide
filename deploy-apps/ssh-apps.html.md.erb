@@ -9,7 +9,7 @@ owner: Diego
 
 The Cloud Foundry Command Line Interface (cf CLI) lets you securely log into remote host virtual machines (VMs) running <%=vars.product_full%> application instances. This topic describes the commands that enable SSH access to applications, and enable, disable, and check permissions for such access.
 
-The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controller `/v2/info` endpoint, and uses this identifier it to query the UAA server for an SSH authorization code. On the target VM side, the SSH proxy contacts the Cloud Controller through the `app_ssh_endpoint` listed in `/v2/info` to confirm permission for SSH access.
+The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controller `/v2/info` endpoint, and uses this identifier to query the UAA server for an SSH authorization code. On the target VM side, the SSH proxy contacts the Cloud Controller through the `app_ssh_endpoint` listed in `/v2/info` to confirm permission for SSH access.
 
 ## <a id="ssh-commands"></a>Application SSH Commands
 
@@ -107,7 +107,7 @@ $ cf ssh MY-AWESOME-APP -L [LOCAL-NETWORK-INTERFACE:]LOCAL-PORT:REMOTE-HOST-NAME
 
 * The `-N` flag skips returning a command prompt on the remote machine. This sets up local port forwarding if you do not need to execute commands on the host VM.
 
-* The `-t`, `-tt`, and `-T` flags let you run an SSH session in pseudo-tty mode rather than generate terminal line output.
+* The `--request-pseudo-tty` and `--force-pseudo-tty ` flags let you run an SSH session in pseudo-tty mode rather than generate terminal line output.
 
 ## <a id="ssh-env"></a>SSH Session Environment
 
@@ -124,7 +124,7 @@ Before running commands below, verify that the contents of the files in both the
 If the `profile` and `.profile.d` scripts would alter your instance in undesirable ways, only run the commands in them that you need for environmental setup.
 
 <pre class="terminal">
-source /home/vcap/app/.profile.d/*.sh
+[ -d /home/vcap/app/.profile.d ] && for f in /home/vcap/app/.profile.d/*.sh; do source "$f"; done
 source /home/vcap/app/.profile
 </pre>
 

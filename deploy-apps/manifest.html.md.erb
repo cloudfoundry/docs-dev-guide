@@ -359,11 +359,15 @@ For more information, see the [How cf push Finds the Application](#find-app) top
 
 ###<a id='random-route'></a>random-route ###
 
-Use the `random-route` attribute to create a URL that includes the app name and
+Use the `random-route` attribute to do the following:
+
+* Create a URL that includes the app name and
 random words.
-Use this attribute to avoid URL collision when pushing the same app to multiple spaces, or to avoid managing app URLs.
-The `random-route` option is ignored if a `host` property is given. It can be used, however, in conjunction with `routes`.
-In this case a `random-route` is created while all other `routes` are ignored.
+* Avoid URL collision when pushing the same app to multiple spaces.
+* Avoid managing app URLs.
+
+The cf CLI ignores the `random-route` option if the command entered contains a `host` property. You can use the `random-route` option with the `routes` command, however.
+In this case, the cf CLI creates a `random-route` and ignores all other routes.
 
 The command line option that corresponds to this attribute is `--random-route`.
 

@@ -315,7 +315,7 @@ By default, if you do not provide a hostname, the URL for the app takes the form
   no-hostname: true
 </pre>
 
-The command line option that corresponds to this attribute is `--no-hostname`.
+The command line option that overrides this attribute is `--no-hostname`.
 
 ###<a id='no-route'></a>no-route ###
 
@@ -328,7 +328,7 @@ You can use the `no-route` attribute with a value of `true` to prevent a route f
   ...
   no-route: true
 </pre>
-The command line option that corresponds to this attribute is `--no-route`.
+The command line option that overrides this attribute is `--no-route`.
 
 In the newer Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check and Cloud Foundry marks it as crashed. To prevent this, disable the port-based health check with `cf set-health-check APP_NAME none`.
 
@@ -374,7 +374,7 @@ See the following example use cases:
 
 <p class="note"><strong>Note</strong>: The cf CLI ignores <code>random-route</code> if the app manifest contains the <code>host</code> attribute. You can use <code>random-route</code> with the <code>routes</code> attribute, however. In this case, the cf CLI creates a random route and ignores all other routes.</p>
 
-The command line option that corresponds to this attribute is `--random-route`.
+The command line option that overrides this attribute is `--random-route`.
 
 <pre>
 ---

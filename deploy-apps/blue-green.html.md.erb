@@ -5,14 +5,14 @@ owner: Routing
 
 <strong><%= modified_date %></strong>
 
-Blue-green deployment is a release technique that reduces downtime and risk by
-running two identical production environments called Blue and Green.
+Blue-green deployment is a technique that reduces downtime and risk by running 
+two identical production environments called Blue and Green.
 
 At any time, only one of the environments is live, with the live environment
 serving all production traffic.
 For this example, Blue is currently live and Green is idle.
 
-As you prepare a new release of your software, deployment and the final stage of
+As you prepare a new version of your software, deployment and the final stage of
 testing takes place in the environment that is *not* live: in this example,
 Green.
 Once you have deployed and fully tested the software in Green, you switch the
@@ -21,7 +21,7 @@ Green is now live, and Blue is idle.
 
 This technique can eliminate downtime due to application deployment.
 In addition, blue-green deployment reduces risk: if something unexpected happens
-with your new release on Green, you can immediately roll back to the last
+with your new version on Green, you can immediately roll back to the last
 version by switching back to Blue.
 
 <p class="note"><strong>Note</strong>: If your app uses a relational database, blue-green deployment can lead to discrepancies between your Green and Blue databases during an update. To maximize data integrity, configure a single database for backward and forward compatibility.</p>
@@ -117,7 +117,7 @@ You can now use `cf unmap-route` to remove the route `demo-time-temp.example.com
 ## <a id='implementations'></a>Implementations
 
 Cloud Foundry community members have written plugins to automate the blue-green
-release process. These include:
+deployment process. These include:
 
 * [Autopilot](https://github.com/contraband/autopilot): Autopilot is a Cloud Foundry Go plugin that provides a subcommand, `zero-downtime-push`, for hands-off, zero-downtime application deploys.
 * [BlueGreenDeploy](https://github.com/bluemixgaragelondon/cf-blue-green-deploy): cf-blue-green-deploy is a plugin, written in Go, for the Cloud Foundry Command Line Interface (cf CLI) that automates a few steps involved in zero-downtime deploys.

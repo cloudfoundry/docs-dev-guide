@@ -362,7 +362,7 @@ For more information, see the [How cf push Finds the Application](#find-app) top
 If you push your app without specifying any route-related CLI options or app manifest flags, the cf CLI attempts to generate a route based on the app name, which can cause collisions. 
 
 You can use the `random-route` attribute to generate a unique route and avoid name collisions.  
-When you use `random-route`, the cf CLI generates an HTTP route with a random host (if `host` not set) or a TCP route with an unused port number.
+When you use `random-route`, the cf CLI generates an HTTP route with a random host (if `host` is not set) or a TCP route with an unused port number.
 
 See the following example use cases:
 

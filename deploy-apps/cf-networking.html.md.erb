@@ -1,12 +1,12 @@
 ---
-title: Administering CF Networking
-owner: CF Networking
+title: Administering Container-to-Container Networking
+owner: Container-to-Container Networking
 ---
 
-This topic describes how to enable and use the CF Networking feature. For an overview of how CF Networking works, see the [Understanding CF Networking](../../concepts/understand-cf-networking.html) topic. 
+This topic describes how to enable and use the Container-to-Container Networking feature. For an overview of how Container-to-Container Networking works, see the [Understanding Container-to-Container Networking](../../concepts/understand-cf-networking.html) topic. 
 
 <% if vars.product_name == 'CF' || vars.product_name == 'PCF'%>
-##<a id="enable"></a>Enable CF Networking
+##<a id="enable"></a>Enable Container-to-Container Networking
 <% end %>
 
 <% if vars.product_name == 'CF' %>
@@ -16,9 +16,9 @@ This topic describes how to enable and use the CF Networking feature. For an ove
 <% else %>
 <% end %>
 
-##<a id="create-policies"></a>Create Policies for CF Networking
+##<a id="create-policies"></a>Create Policies for Container-to-Container Networking
 
-This section describes how to create and modify CF Networking policies using a plugin for the CF CLI.
+This section describes how to create and modify Container-to-Container Networking policies using a plugin for the CF CLI.
 
 <% if vars.product_name == 'PWS' %>
 <%= partial '../../appsman-services/c2c_pws_create' %>
@@ -38,7 +38,7 @@ so that they can create their own policies or you can have your developers send 
 Follow these steps to download and install the Network Policy plugin for the CF CLI:
 
 1. Download the `network-policy-plugin` for your operating system from the 
-   [CF Networking Release repository](https://github.com/cloudfoundry-incubator/cf-networking-release/releases).
+   [Container-to-Container Networking Release repository](https://github.com/cloudfoundry-incubator/cf-networking-release/releases).
 
 1. To change the permissions of the plugin file and complete the installation, enter the following commands:
 

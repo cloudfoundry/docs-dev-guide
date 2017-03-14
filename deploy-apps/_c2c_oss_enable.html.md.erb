@@ -1,4 +1,4 @@
-This section presents two procedures for enabling CF Networking.
+This section presents two procedures for enabling Container-to-Container Networking.
 See the table below and choose the procedure that corresponds with your use case. 
 
 <table>
@@ -18,7 +18,7 @@ See the table below and choose the procedure that corresponds with your use case
 
 ###<a id="iaas"></a>Enable on an IaaS
 
-If your CF deployment runs on an IaaS, follow these steps to enable CF Networking.
+If your CF deployment runs on an IaaS, follow these steps to enable Container-to-Container Networking.
 
 <ol>
     <li>Ensure that you have a database ready. To complete this procedure, you need a v5.7 or later MySQL database, or a PostgreSQL database. 
@@ -66,7 +66,7 @@ clients:
         </li>
     </ol>
     </li>
-    <li>Create a CF Networking stub file <code>stubs/cf-networking/stub.yml</code> and paste in the template below:
+    <li>Create a Container-to-Container Networking stub file <code>stubs/cf-networking/stub.yml</code> and paste in the template below:
 
 <pre>
 ---
@@ -181,12 +181,12 @@ config_from_cf: (( merge ))
 
 <li>Edit the stub file using the table below as a guide:
 <p class="note"><strong>Note</strong>: For a test environment, you can use a script such as the one in the 
-<a href="https://github.com/cloudfoundry-incubator/cf-networking-release/blob/develop/scripts/generate-certs">CF Networking Release repository</a> 
+<a href="https://github.com/cloudfoundry-incubator/cf-networking-release/blob/develop/scripts/generate-certs">Container-to-Container Networking Release repository</a> 
 to generate the certificates and keys required for the stub. 
 For a production deployment, use certificates signed by a Certificate Authority (CA).</p>
 <table border="1" class="nice">
   <tr>
-    <th style="width:35%">CF Networking Stub Contents</th>
+    <th style="width:35%">Container-to-Container Networking Stub Contents</th>
     <th>Editing Instructions</th>
   </tr>
   <tr>
@@ -297,7 +297,7 @@ popd
 </pre>
 Replace the variables as follows:<br>
 <ul>
-<li><code>STUBS-DIRECTORY</code>:  The directory containing your stubs for CF, Diego, and CF Networking.</li>
+<li><code>STUBS-DIRECTORY</code>:  The directory containing your stubs for CF, Diego, and Container-to-Container Networking.</li>
 <li><code>MANIFEST-DIRECTORY</code>: The directory where you want the manifest created.</li>
 <li><code>LOCAL-DIEGO-REPO</code>: The directory of the local copy of the <code>diego-release</code> repository.</li>
 </ul>
@@ -338,15 +338,15 @@ Enter the following command to deploy Diego.
 <pre class="terminal">$ bosh deploy</pre>
 </li>
 <li>(Optional) Try out the <a href="https://github.com/cloudfoundry-incubator/cf-networking-release/tree/develop/src/example-apps/cats-and-dogs">Cats and Dogs</a> 
-     example in the CF Networking Release repository. 
-     In this tutorial, you deploy two apps and create a CF Networking policy that 
+     example in the Container-to-Container Networking Release repository. 
+     In this tutorial, you deploy two apps and create a Container-to-Container Networking policy that 
      allows them to communicate directly with each other. 
  </li>
 </ol>
 
 ###<a id="lite"></a>Enable on BOSH-Lite
 
-If your CF deployment runs on BOSH-Lite, follow these steps to enable CF Networking. 
+If your CF deployment runs on BOSH-Lite, follow these steps to enable Container-to-Container Networking. 
 <ol>
   <li> Ensure your BOSH-Lite version is `9000.131.0` or later. If you need to upgrade, follow the instructions for [Upgrading the BOSH-Lite VM](https://github.com/cloudfoundry/bosh-lite/blob/master/README.md#upgrading-the-bosh-lite-vm). 
   </li>
@@ -355,7 +355,7 @@ If your CF deployment runs on BOSH-Lite, follow these steps to enable CF Network
   </li>
   <li> To enable <a href="http://ebtables.netfilter.org/documentation/bridge-nf.html">bridge-netfilter</a> on the VM running BOSH-Lite, run the following command:
       <pre class="terminal">$ vagrant ssh -c 'sudo modprobe br_netfilter'</pre>
-    <br>CF Networking on BOSH-Lite requires this Linux kernel feature to enforce network policy. 
+    <br>Container-to-Container Networking on BOSH-Lite requires this Linux kernel feature to enforce network policy. 
   </li>
 
 <li> Upload the latest BOSH-Lite stemcell:
@@ -363,11 +363,11 @@ If your CF deployment runs on BOSH-Lite, follow these steps to enable CF Network
   </li>
   <li>To clone the required CF release repos to your workspace, enter the following commands:<br>
   <pre class="terminal">$ git clone https<span>:</span>//github.com/cloudfoundry/diego-release<br>$ git clone https<span>:</span>//github.com/cloudfoundry/cf-release<br>$ git clone https<span>:</span>//github.com/cloudfoundry-incubator/cf-networking-release</pre></li>
-  <li>To enable CF Networking on BOSH-Lite, change directories into `cf-networking-release` and run the deploy script:<br>
+  <li>To enable Container-to-Container Networking on BOSH-Lite, change directories into `cf-networking-release` and run the deploy script:<br>
   <pre class="terminal">$ cd ~/workspace/cf-networking-release<br>$ ./scripts/deploy-to-bosh-lite</pre></li>
  <li>(Optional) Try out the <a href="https://github.com/cloudfoundry-incubator/cf-networking-release/tree/develop/src/example-apps/cats-and-dogs">Cats and Dogs</a> 
-     example in the CF Networking Release repository. 
-     In this tutorial, you deploy two apps and create a CF Networking policy that 
+     example in the Container-to-Container Networking Release repository. 
+     In this tutorial, you deploy two apps and create a Container-to-Container Networking policy that 
      allows them to communicate directly with each other. 
  </li>
 </ol>

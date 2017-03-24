@@ -36,11 +36,8 @@ To use a volume service deployed by <%= vars.admin %>, you must first create an 
 1. Run `cf bind-service YOUR-APP SERVICE-NAME -c GID-AND-UID-JSON MOUNT-PATH-JSON` to bind your service instance to an app. Replace the following with the specified values:
   * `YOUR-APP`: The name of the <%= vars.product_name %> app for which you want to use the volume service. 
   * `SERVICE-NAME`: The name of the volume service instance you created in the previous step.
-  
-  The following are additional parameters that may be specified with the `-c` flag and a JSON string, in-line or from a file.
-  * `GID-AND-UID-JSON` (NFS only): If you bind an instance of the NFS volume service, you must supply two extra parameters, `gid` and `uid`. This parameter specifies the `gid` and `uid` to use when mounting the share to the app. 
-  * `MOUNT-PATH` (Optional): If you require the volume to be mounted at a particular path within your app instead of the default path, you can supply the `mount` parameter.
-    <p class="note"><strong>Note</strong>: As of this writing aufs used by Garden is not capable of creating new root level folders.  As a result, you must choose a path with a root level folder that already exists in the container.  (`/home`, `/usr` or `/var` are good choices.)  If you require a path that does not already exist in the container it is currently only possible if you upgrade your Diego deployment to use <a href="https://github.com/cloudfoundry/grootfs-release">GrootFS</a> with Garden. For details on how to generate a Diego manifest using GrootFS see <a href="https://github.com/cloudfoundry/diego-release/blob/develop/docs/manifest-generation.md#experimental--g-opt-into-using-grootfs-for-garden">this note</a>.  Eventually, GrootFS will become the standard file system for CF containers, and this limitation will disappear.</p>
+  * `GID-AND-UID-JSON` (NFS only): If you bind an instance of the NFS volume service, you must supply two extra parameters, `gid` and `uid`. You can specify these parameters with the `-c` flag and a JSON string, in-line or from a file. This parameter specifies the `gid` and `uid` to use when mounting the share to the app.
+  * `MOUNT-PATH` (Optional): To mount the volume to a particular path within your app rather than the default path, you supply the `mount` parameter. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
 
     The following example shows binding `my-app` to the `nfs_service_instance` and specifying the volume to be mounted to `/var/volume1`,
     passing an in-line JSON string:

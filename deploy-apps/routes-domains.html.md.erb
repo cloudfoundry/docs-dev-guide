@@ -352,6 +352,8 @@ $ cf delete-route tcp.<%=vars.private_app_domain%> --port 60000
 
 ### <a id='surgical-routing'></a>Routing Requests to a Specific App Instance ###
 
+<p class="note"><strong>Note</strong>: Usage of <code>`X-CF-APP-INSTANCE`</code> is supported only for Diego.</p>
+
 Users can route HTTP requests to a specific application instance using the header `X-CF-APP-INSTANCE`. The format of the header should be `X-CF-APP-INSTANCE: APP_GUID:APP_INDEX`.
 
 `APP_GUID` is an internal identifier for your application. Use the `cf APP-NAME --guid` command to discover the `APP_GUID` for your application.

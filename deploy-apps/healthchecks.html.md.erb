@@ -79,7 +79,7 @@ The following table describes the types of health checks available for apps and 
 </tr>
 <tr>
 <td>can provide an <code>HTTP 200</code> response</td>
-<td><code>http</code>. The HTTP health check does a GET request to the configured HTTP endpoint. When the health check receives an <code>HTTP 200</code> reponse, the app is declared healthy. If possible, HTTP is the recommended health check mechanism. The advantage of using an HTTP health check is that a healthy HTTP response ensures that the web app is ready to serve HTTP requests. The configured endpoint must respond within 1 second to be considered healthy.</td>
+<td><code>http</code>. The HTTP health check does a GET request to the configured HTTP endpoint. When the health check receives an <code>HTTP 200</code> response, the app is declared healthy. If possible, HTTP is the recommended health check mechanism. The advantage of using an HTTP health check is that a healthy HTTP response ensures that the web app is ready to serve HTTP requests. The configured endpoint must respond within 1 second to be considered healthy.</td>
 </tr>
 <tr>
 <td>can receive TCP connections (including HTTP web applications)

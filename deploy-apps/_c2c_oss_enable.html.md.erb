@@ -54,7 +54,7 @@ clients:
   cf:
     scope: cloud_controller.read,&nbsp;[...]&nbsp;routing.router_groups.read,<strong>network.admin</strong></pre>
         <li><a name="uaa-secret"></a>Under <code>clients</code>, add a <code>network-policy</code> 
-        client as follows and replace <code>REPLACE_WITH_UAA_CLIENT_SECRET</code> with a secure password of your choosing. 
+        client as follows and replace <code>REPLACE-WITH-UAA-CLIENT-SECRET</code> with a secure password of your choosing. 
         <pre>
 clients:
   cf:
@@ -62,11 +62,11 @@ clients:
   <strong>network-policy:
     authorities: uaa.resource,cloud_controller.admin_read_only
     authorized-grant-types: client_credentials,refresh_token
-    secret: REPLACE_WITH_UAA_CLIENT_SECRET</strong></pre> 
+    secret: REPLACE-WITH-UAA-CLIENT-SECRET</strong></pre> 
         </li>
     </ol>
     </li>
-    <li>Create a Container-to-Container Networking stub file <code>stubs/cf-networking/stub.yml</code> and paste in the template below:
+    <li>Create a Container-to-Container Networking stub file <code>stubs/cf-networking/stub.yml</code> and copy in the template below:
 
 <pre>
 ---
@@ -89,15 +89,15 @@ cf_networking_overrides:
         policy_server_url: https://policy-server.service.cf.internal:4003
         ca_cert: |
           -----BEGIN CERTIFICATE-----
-          REPLACE_WITH_CA_CERT
+          REPLACE-WITH-CA-CERTIFICATE
           -----END CERTIFICATE-----
         client_cert: |
           -----BEGIN CERTIFICATE-----
-          REPLACE_WITH_CLIENT_CERT
+          REPLACE-WITH-CLIENT-CERTIFICATE
           -----END CERTIFICATE-----
         client_key: |
           -----BEGIN RSA PRIVATE KEY-----
-          REPLACE_WITH_CLIENT_KEY
+          REPLACE-WITH-CLIENT-KEY
           -----END RSA PRIVATE KEY-----
       garden_external_networker:
         cni_plugin_dir: /var/vcap/packages/flannel/bin
@@ -110,26 +110,26 @@ cf_networking_overrides:
         etcd_ca_cert: (( config_from_cf.etcd.ca_cert ))
       policy_server:
         database:
-          type: REPLACE_WITH_DB_TYPE
-          username: REPLACE_WITH_USERNAME
-          password: REPLACE_WITH_PASSWORD
-          host: REPLACE_WITH_DB_HOSTNAME
-          port: REPLACE_WITH_DB_PORT
-          name: REPLACE_WITH_DB_NAME
+          type: REPLACE-WITH-DB-TYPE
+          username: REPLACE-WITH-USERNAME
+          password: REPLACE-WITH-PASSWORD
+          host: REPLACE-WITH-DB-HOSTNAME
+          port: REPLACE-WITH-DB-PORT
+          name: REPLACE-WITH-DB-NAME
         skip_ssl_validation: true
-        uaa_client_secret: REPLACE_WITH_UAA_CLIENT_SECRET
+        uaa_client_secret: REPLACE-WITH-UAA-CLIENT-SECRET
         uaa_url: (( "https://uaa." config_from_cf.system_domain ))
         ca_cert: |
           -----BEGIN CERTIFICATE-----
-          REPLACE_WITH_CA_CERT
+          REPLACE-WITH-CA-CERTIFICATE
           -----END CERTIFICATE-----
         server_cert: |
           -----BEGIN CERTIFICATE-----
-          REPLACE_WITH_SERVER_CERT
+          REPLACE-WITH-SERVER-CERT
           -----END CERTIFICATE-----
         server_key: |
           -----BEGIN RSA PRIVATE KEY-----
-          REPLACE_WITH_SERVER_KEY
+          REPLACE-WITH-SERVER-KEY
           -----END RSA PRIVATE KEY-----
   garden_properties:
     network_plugin: /var/vcap/packages/runc-cni/bin/garden-external-networker
@@ -197,17 +197,17 @@ properties:
       policy_server_url: [...]
       ca_cert: |
         -----BEGIN CERTIFICATE-----
-        REPLACE_WITH_CA_CERT
+        REPLACE-WITH-CA-CERTIFICATE
         -----END CERTIFICATE-----
       client_cert: |
         -----BEGIN CERTIFICATE-----
-        REPLACE_WITH_CLIENT_CERT
+        REPLACE-WITH-CLIENT-CERTIFICATE
         -----END CERTIFICATE-----
       client_key: |
         -----BEGIN RSA PRIVATE KEY-----
-        REPLACE_WITH_CLIENT_KEY
+        REPLACE-WITH-CLIENT-KEY
         -----END RSA PRIVATE KEY-----</code></pre></td>
-    <td>Paste in certificates and keys for the policy agent. 
+    <td>Copy in certificates and keys for the policy agent. 
         The policy agent communicates with the policy server through TLS. 
         See the <a href="#architecture">Architecture</a> section for more information.
     </td>
@@ -215,20 +215,20 @@ properties:
   <tr>
     <td><pre><code>
 policy_server:
-  uaa_client_secret: REPLACE_WITH_UAA_CLIENT_SECRET
+  uaa_client_secret: REPLACE-WITH-UAA-CLIENT-SECRET
     </code></pre></td>
-    <td>Paste in the same value you used in the step <a href="#uaa-secret">above</a>.
+    <td>Copy in the same value you used in the step <a href="#uaa-secret">above</a>.
     </td>
   </tr>
   <tr>
     <td><pre><code>
 database:
-  type: REPLACE_WITH_DB_TYPE 
-  username: REPLACE_WITH_USERNAME
-  password: REPLACE_WITH_PASSWORD
-  host: REPLACE_WITH_DB_HOSTNAME
-  port: REPLACE_WITH_DB_PORT 
-  name: REPLACE_WITH_DB_NAME 
+  type: REPLACE-WITH-DB-TYPE 
+  username: REPLACE-WITH-USERNAME
+  password: REPLACE-WITH-PASSWORD
+  host: REPLACE-WITH-DB-HOSTNAME
+  port: REPLACE-WITH-DB-PORT 
+  name: REPLACE-WITH-DB-NAME 
    </code></pre></td>
     <td>
     Supply the details for the database from <a href="#enable">step 1</a>.<br>
@@ -243,22 +243,22 @@ database:
     <td><pre><code>
   ca_cert: |
     -----BEGIN CERTIFICATE-----
-    REPLACE_WITH_CA_CERT
+    REPLACE-WITH-CA-CERTIFICATE
     -----END CERTIFICATE-----
   server_cert: |
     -----BEGIN CERTIFICATE-----
-    REPLACE_WITH_SERVER_CERT
+    REPLACE-WITH-SERVER-CERT
     -----END CERTIFICATE-----
   server_key: |
     -----BEGIN RSA PRIVATE KEY-----
-    REPLACE_WITH_SERVER_KEY
+    REPLACE-WITH-SERVER-KEY
     -----END RSA PRIVATE KEY-----
 garden_external_networker:
   cni_plugin_dir: /var/vcap/packages/flannel/bin
   cni_config_dir: /var/vcap/jobs/cni-flannel/config/cni
     </code></pre></td>
     <td>
-    Paste in the certificates and keys for the policy server. 
+    Copy in the certificates and keys for the policy server. 
     The policy server communicates with the policy agent through TLS. 
     See the <a href="#architecture">Architecture</a> section for more information.
     </td>

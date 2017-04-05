@@ -211,6 +211,41 @@ properties:
         The policy agent communicates with the policy server through TLS. 
         See the <a href="#architecture">Architecture</a> section for more information.
     </td>
+   <tr>
+    <td><pre><code>
+vxlan_policy_agent:
+  debug_server_port: REPLACE-WITH-LISTEN-PORT
+
+policy_server:
+  debug_server_port: REPLACE-WITH-LISTEN-PORT
+</code></pre></td>
+    <td>By default, the Policy Server and VXLAN Policy Agent listen on port 22222.<br>(Optional) Change these port numbers by adding the <code>debug_server_port</code> key pair to the stub file. 
+    <br>
+    Replace <code>REPLACE-WITH-LISTEN-PORT</code> with a port number.<br><br>
+    For more information, see <a href="#debug-logging">Manage Debug Logging</a> below.
+    </td>
+    <tr>
+    <td><pre><code>
+vxlan_policy_agent:
+  iptables_c2c_logging: true  
+</code></pre></td>
+    <td>The default value for <code>iptables_c2c_logging</code> is <code>false</code>.
+    <br><br>
+    (Optional) Change the value to <code>true</code> to enable logging for Container-to-Container policy iptables rules.
+    </td>
+   <tr>
+    <td><pre><code>
+garden_external_networker:
+  iptables_asg_logging: true
+    </code></pre></td>
+    <td>
+    The default value for <code>iptables_asg_logging</code> is <code>false</code>.
+    <br><br>
+    (Optional) Change the value to <code>true</code> to enable
+    logging for Application Security Group (ASG) iptables rules.
+    </td>
+  </tr>
+  </tr>
   </tr>
   <tr>
     <td><pre><code>
@@ -372,3 +407,71 @@ If your CF deployment runs on BOSH-Lite, follow these steps to enable Container-
  </li>
 </ol>
  
+##<a id="logging"></a>Manage Logging for Container-to-Container Networking
+
+###<a id="debug-logging"></a>Change Log Level for Debugging
+
+By default, the Policy Server and VXLAN Policy Agent log events at the `INFO` level.
+You can capture more information about events by increasing the log level to `DEBUG`. 
+
+To change the log level, follow the steps below:
+
+1. SSH to a VXLAN Policy Server or Policy Agent VM.
+
+2. To change the log level, run the following command:
+
+    <pre>
+    curl -X POST -d 'LOG-LEVEL' localhost:PORT-NUMBER/log-level
+    </pre>
+
+    The `LOG-LEVEL` is `DEBUG` or `INFO`. The `PORT-NUMBER` is `22222` unless you specified a different number when you edited the stub file in [Enable on an IaaS](#iaas) above.
+    <br><br>
+    Examples are as follows: 
+
+    <pre class="terminal">
+    $ curl -X POST -d 'DEBUG' localhost:22222/log-level
+    </pre>
+
+    <pre class="terminal">
+    $ curl -X POST -d 'INFO' localhost:22222/log-level
+    </pre>
+
+4. Find the logs on the Policy Server VM in `/var/vcap/sys/log/policy-server/policy-server.stdout.log`.
+
+###<a id="iptables-logging"></a>Enable Logging for Container-to-Container Networking Policies
+
+By default, CF does not log events about iptable policy rules. 
+
+To enable logging for iptable policy rules for container-to-container networking, follow the steps below:
+
+1. SSH to a VXLAN Policy Agent VM.
+
+2. To change the log level, run the following command:
+
+    <pre>
+    curl -X PUT -d '{"enabled": BOOLEAN}' localhost:PORT-NUMBER/iptables-c2c-logging
+    </pre>
+
+    The `BOOLEAN` is `true` or `false`. The `PORT-NUMBER` is `22222` unless you specified a different number when you edited the stub file in [Enable on an IaaS](#iaas) above.
+    <br><br>
+    Examples are as follows: 
+
+    <pre class="terminal">
+    $ curl -X PUT -d '{"enabled": true}' localhost:22222/iptables-c2c-logging
+    </pre>
+
+    <pre class="terminal">
+    $ curl -X PUT -d '{"enabled": false}' localhost:22222/iptables-c2c-logging
+    </pre>
+
+4. Find the logs on the  VXLAN Policy Agent VM in `/var/log/kern.log`.
+
+###<a id="metrics"></a>Use Metrics to Consume Logs
+
+You can stream container-to-container networking component metrics with the [Loggregator Firehose](../../loggregator/architecture.html#firehose).
+
+Container-to-container networking logs include the following prefixes:
+
+* `netmon`
+* `vxlan_policy_agent`
+* `policy_server`

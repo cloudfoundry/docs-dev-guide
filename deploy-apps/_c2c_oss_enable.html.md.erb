@@ -207,9 +207,43 @@ properties:
         -----BEGIN RSA PRIVATE KEY-----
         REPLACE-WITH-CLIENT-KEY
         -----END RSA PRIVATE KEY-----</code></pre></td>
-    <td>Copy in certificates and keys for the policy agent. 
-        The policy agent communicates with the policy server through TLS. 
+    <td>Copy in certificates and keys for the policy agent.
+        The policy agent communicates with the policy server through TLS.
         See the <a href="#architecture">Architecture</a> section for more information.
+    </td>
+  <tr>
+    <td><pre><code>
+policy_server:
+  debug_server_port: REPLACE-WITH-LISTEN-PORT
+
+vxlan_policy_agent:
+  debug_server_port: REPLACE-WITH-LISTEN-PORT
+</code></pre></td>
+    <td>By default, the Policy Server and VXLAN Policy Agent listen on port 22222.<br><br>
+    (Optional) Change these port numbers by adding the <code>debug_server_port</code> key pair to the stub file.
+    <br>
+    Replace <code>REPLACE-WITH-LISTEN-PORT</code> with a port number.<br><br>
+    For more information, see <a href="#debug-logging">Manage Debug Logging</a> below.
+    </td>
+    <tr>
+    <td><pre><code>
+vxlan_policy_agent:
+  iptables_c2c_logging: true
+</code></pre></td>
+    <td>The default value for <code>iptables_c2c_logging</code> is <code>false</code>.
+    <br><br>
+    (Optional) Change the value to <code>true</code> to enable logging for Container-to-Container policy iptables rules.
+    </td>
+  <tr>
+    <td><pre><code>
+garden_external_networker:
+  iptables_asg_logging: true
+    </code></pre></td>
+    <td>
+    The default value for <code>iptables_asg_logging</code> is <code>false</code>.
+    <br><br>
+    (Optional) Change the value to <code>true</code> to enable
+    logging for Application Security Group (ASG) iptables rules.
     </td>
   </tr>
   <tr>
@@ -223,23 +257,23 @@ policy_server:
   <tr>
     <td><pre><code>
 database:
-  type: REPLACE-WITH-DB-TYPE 
+  type: REPLACE-WITH-DB-TYPE
   username: REPLACE-WITH-USERNAME
   password: REPLACE-WITH-PASSWORD
   host: REPLACE-WITH-DB-HOSTNAME
-  port: REPLACE-WITH-DB-PORT 
-  name: REPLACE-WITH-DB-NAME 
+  port: REPLACE-WITH-DB-PORT
+  name: REPLACE-WITH-DB-NAME
    </code></pre></td>
     <td>
     Supply the details for the database from <a href="#enable">step 1</a>.<br>
     The database type must be <code>postgres</code> or <code>mysql</code>.<br>
-    Choose a username and password. 
-    <br>For <code>host</code>, enter the IP address of the database instance. 
+    Choose a username and password.
+    <br>For <code>host</code>, enter the IP address of the database instance.
     <br>Supply a port; for MySQL a typical port is <code>3360</code>.
     <br>Supply the name of the database.
     </td>
   </tr>
-<tr>
+  <tr>
     <td><pre><code>
   ca_cert: |
     -----BEGIN CERTIFICATE-----
@@ -372,3 +406,82 @@ If your CF deployment runs on BOSH-Lite, follow these steps to enable Container-
  </li>
 </ol>
  
+##<a id="logging"></a>Manage Logging for Container-to-Container Networking
+
+For debugging purposes, you can adjust the logging level on the Policy Server and VXLAN Policy Agent to generate more logs.
+
+You can enable logging for iptables policy rules by editing the manifest in [Enable on an IaaS](#iaas) above or by making a request to the VXLAN Policy Agent from the Diego cell.
+
+Container-to-container networking components can send metrics to the [Loggregator Firehose](../../loggregator/architecture.html#firehose).
+
+###<a id="debug-logging"></a>Change Log Level for Debugging
+
+By default, the Policy Server logs events at the `INFO` level.
+You can capture more information about events by increasing the log level to `DEBUG`. 
+
+To change the log level, follow the steps below:
+
+1. SSH to either the Policy Server or the VXLAN Policy Agent.
+    * **Policy Server**: SSH directly to the Policy Server VM.
+    * **VXLAN Policy Agent**: SSH to the Diego cell that runs the VXLAN Policy Agent.
+
+1. To change the log level, run the following command:
+
+    <pre>
+    curl -X POST -d 'LOG-LEVEL' localhost:PORT-NUMBER/log-level
+    </pre>
+
+    The `LOG-LEVEL` is `DEBUG` or `INFO`. The `PORT-NUMBER` is `22222` unless you specified a different number when you edited the stub file in [Enable on an IaaS](#iaas) above.
+    <br><br>
+
+    The following command increases the log level to `DEBUG`:
+    <pre class="terminal">
+    $ curl -X POST -d 'DEBUG' localhost:22222/log-level
+    </pre>
+
+    The following command decreases the log level to `INFO`:
+    <pre class="terminal">
+    $ curl -X POST -d 'INFO' localhost:22222/log-level
+    </pre>
+
+1. Find the logs in the following locations:
+     * **Policy Server**: `/var/vcap/sys/log/policy-server/policy-server.stdout.log`
+     * **VXLAN Policy Agent**: `/var/vcap/sys/log/vxlan-policy-agent/vxlan-policy-agent.stdout.log`
+
+###<a id="iptables-logging"></a>Enable Logging for Container-to-Container Networking Policies
+
+By default, CF does not log iptables policy rules for container-to-container network traffic. You can enable logging for iptables policy rules
+in the manifest in [Enable on an IaaS](#iaas) above, or follow the steps below:
+
+1. SSH to the Diego cell that runs the VXLAN Policy Agent.
+
+1. To change the log level, run the following command:
+
+    <pre>
+    curl -X PUT -d '{"enabled": BOOLEAN}' localhost:PORT-NUMBER/iptables-c2c-logging
+    </pre>
+
+    The `BOOLEAN` is `true` or `false`. The `PORT-NUMBER` is `22222` unless you specified a different number when you edited the stub file in [Enable on an IaaS](#iaas) above.
+    <br><br>
+
+    The following command enables logging for iptables policy rules:
+    <pre class="terminal">
+    $ curl -X PUT -d '{"enabled": true}' localhost:22222/iptables-c2c-logging
+    </pre>
+
+    The following command disables logging for iptables policy rules:
+    <pre class="terminal">
+    $ curl -X PUT -d '{"enabled": false}' localhost:22222/iptables-c2c-logging
+    </pre>
+
+1. Find the logs in `/var/log/kern.log`.
+
+###<a id="metrics"></a>Use Metrics to Consume Logs
+
+You can stream container-to-container networking component metrics with the [Loggregator Firehose](../../loggregator/architecture.html#firehose).
+
+Container-to-container networking logs include the following prefixes:
+
+* `netmon`
+* `vxlan_policy_agent`
+* `policy_server`

@@ -24,13 +24,32 @@ This section describes how to create and modify Container-to-Container Networkin
 <%= partial '../../appsman-services/c2c_pws_create' %>
 <% else %>
 
-To use the plugin, you must have the `network.admin` UAA scope. This scope gives you the right to create a policy between any two apps in your CF deployment. 
-Depending on the security structure of your organization, you can either assign this scope to developers
-so that they can create their own policies or you can have your developers send you requests.
- <% if vars.product_name == 'CF' || vars.product_name == 'PCF' %>
+To use the plugin, you must have either the `network.write` or `network.admin` UAA scope.
+
+<table>
+  <tr>
+    <th>UAA Scope</th>
+    <th>Suitable for&hellip;</th>
+    <th>Allows users to create policies&hellip;</th>
+  </tr>
+  <tr>
+    <td><code>network.admin</code></td>
+    <td>operators</td>
+    <td>for any apps in the CF deployment</td>
+  </tr>
+  <tr>
+    <td><code>network.write</code></td>
+    <td>developers</td>
+    <td>for apps in spaces that they can access</td>
+   </tr>
+</table>
+
+If you are a CF admin, you already have the `network.admin` scope. An admin can also grant the `network.admin` scope to a space developer.
+
+<% if vars.product_name == 'CF' || vars.product_name == 'PCF' %>
   <%= vars.uaa_cli %>
- <% else %>
- <% end %>
+<% else %>
+  <% end %>
 <% end %>
 
 ### Install the Plugin
@@ -51,8 +70,8 @@ Follow these steps to download and install the Network Policy plugin for the CF 
 
 To create a policy that allows direct network traffic from one app to another, enter the following command:
 
-<pre class="terminal">
-$ cf allow-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORT
+<pre>
+cf allow-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORT
 </pre>
 
 Replace the placeholders in the above command as follows:
@@ -82,8 +101,8 @@ either the source or the destination:
     </pre>
 + To list the policies for an app, enter the following command:
 
-    <pre class="terminal">
-    $ cf list-access --app MY-APP
+    <pre>
+    cf list-access --app MY-APP
     </pre>
 
     The following example command lists policies for the app `frontend`:
@@ -100,16 +119,14 @@ either the source or the destination:
 ### Delete a Policy
 
 To delete a policy that allows direct network traffic from one app to another, enter the following command:
-
-<pre class="terminal">
-$ cf remove-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORT
+<pre>
+cf remove-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORT
 </pre>
 
-For example,
+The following command deletes the policy that allowed the `frontend` app to communicate with the `backend` app over TCP on port 8080:
 <pre class="terminal">
 $ cf remove-access frontend backend --protocol tcp --port 8080
 Denying traffic from frontend to backend as admin...
 OK 
 </pre>
-
 

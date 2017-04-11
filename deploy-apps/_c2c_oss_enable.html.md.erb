@@ -23,6 +23,7 @@ If your CF deployment runs on an IaaS, follow these steps to enable Container-to
 <ol>
     <li>Ensure that you have a database ready. To complete this procedure, you need a v5.7 or later MySQL database, or a PostgreSQL database. 
 You can use a database within your Cloud Controller database instance or create a different instance, such as Amazon RDS.</li>
+
     <li>Target your BOSH Director using the BOSH CLI:<br>
     <pre class="terminal">$ bosh target BOSH-DIRECTOR-IP </pre>
     </li>
@@ -209,7 +210,7 @@ properties:
         -----END RSA PRIVATE KEY-----</code></pre></td>
     <td>Copy in certificates and keys for the policy agent.
         The policy agent communicates with the policy server through TLS.
-        See the <a href="#architecture">Architecture</a> section for more information.
+        See the <a href="../../concepts/understand-cf-networking.html#architecture">Architecture</a> section for more information.
     </td>
   <tr>
     <td><pre><code>
@@ -294,7 +295,26 @@ garden_external_networker:
     <td>
     Copy in the certificates and keys for the policy server. 
     The policy server communicates with the policy agent through TLS. 
-    See the <a href="#architecture">Architecture</a> section for more information.
+    See the <a href="../../concepts/understand-cf-networking.html#architecture">Architecture</a> section for more information.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+properties:
+  cf_networking:
+    network: REPLACE-WITH-OVERLAY-NETWORK-CIDR
+    </code></td>
+    <td>(Optional) Enter an IP range in for the overlay network. The CIDR must specify an RFC 1918 range.<br><br>
+    If you do not set a custom range, the deployment uses 10.255.0.0/16.
+    </td></pre></code>
+  </tr>
+  <tr>
+    <td><pre><code>
+properties:
+  cf_networking:
+    mtu: REPLACE-WITH-MTU
+    </code></pre></code>
+    <td>(Optional) You can manually configure the Maximum Transmission Unit (MTU) value to support additional encapsulation overhead.
     </td>
   </tr>
 </table>
@@ -408,16 +428,13 @@ If your CF deployment runs on BOSH-Lite, follow these steps to enable Container-
  
 ##<a id="logging"></a>Manage Logging for Container-to-Container Networking
 
-For debugging purposes, you can adjust the logging level on the Policy Server and VXLAN Policy Agent to generate more logs.
-
-You can enable logging for iptables policy rules by editing the manifest in [Enable on an IaaS](#iaas) above or by making a request to the VXLAN Policy Agent from the Diego cell.
-
-Container-to-container networking components can send metrics to the [Loggregator Firehose](../../loggregator/architecture.html#firehose).
+This section describes how to configure logging for Container-to-Container Networking events by making requests to the running VMs.
+You can also enable logging for iptables policy rules by editing the manifest in [Enable on an IaaS](#iaas).
 
 ###<a id="debug-logging"></a>Change Log Level for Debugging
 
 By default, the Policy Server logs events at the `INFO` level.
-You can capture more information about events by increasing the log level to `DEBUG`. 
+You can capture more information about events by increasing the log level to `DEBUG`.
 
 To change the log level, follow the steps below:
 

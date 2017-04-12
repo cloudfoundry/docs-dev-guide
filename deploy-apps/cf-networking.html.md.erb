@@ -3,6 +3,24 @@ title: Administering Container-to-Container Networking
 owner: Container-to-Container Networking
 ---
 
+<% if vars.product_name  == 'PCF'%>
+<style>
+    .note.warning {
+        background-color: #fdd;
+        border-color: #fbb
+    }
+
+    .note.warning:before {
+        color: #f99;
+     }
+</style>
+
+<p class="note warning">
+<strong>WARNING: </strong>
+Container-to-Container Networking for PCF is currently in beta and is intended for evaluation and test purposes only. Do not use this product in a PCF production environment.
+</p>
+<% end %>
+
 This topic describes how to enable and use the Container-to-Container Networking feature. For an overview of how Container-to-Container Networking works, see the [Understanding Container-to-Container Networking](../../concepts/understand-cf-networking.html) topic. 
 
 <% if vars.product_name == 'CF' || vars.product_name == 'PCF'%>

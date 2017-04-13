@@ -36,7 +36,7 @@ This topic describes how to enable and use the Container-to-Container Networking
 
 ##<a id="create-policies"></a>Create Policies for Container-to-Container Networking
 
-This section describes how to create and modify Container-to-Container Networking policies using a plugin for the CF CLI.
+This section describes how to create and modify Container-to-Container Networking policies using a plugin for the Cloud Foundry Command Line Interface (cf CLI).
 
 <% if vars.product_name == 'PWS' %>
 <%= partial '../../appsman-services/c2c_pws_create' %>
@@ -72,10 +72,9 @@ If you are a CF admin, you already have the `network.admin` scope. An admin can 
 
 ### Install the Plugin
 
-Follow these steps to download and install the Network Policy plugin for the CF CLI:
+Follow these steps to download and install the Network Policy plugin for the cf CLI:
 
-1. Download the `network-policy-plugin` for your operating system from the 
-   [Container-to-Container Networking Release repository](https://github.com/cloudfoundry-incubator/cf-networking-release/releases).
+1. Download the `network-policy-plugin` for your operating system from the [Container-to-Container Networking Release repository](https://github.com/cloudfoundry-incubator/cf-networking-release/releases).
 
 1. To change the permissions of the plugin file and complete the installation, enter the following commands:
 
@@ -88,16 +87,16 @@ Follow these steps to download and install the Network Policy plugin for the CF 
 
 To create a policy that allows direct network traffic from one app to another, enter the following command:
 
-<pre>
-cf allow-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORT
+<pre class="terminal">
+$ cf allow-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORT
 </pre>
 
 Replace the placeholders in the above command as follows:
 
-* `SOURCE-APP` is the name of the app that will be sending traffic.<br>
-* `DESTINATION-APP` is the name of the app that will be receiving traffic.<br>
+* `SOURCE-APP` is the name of the app that will send traffic.<br>
+* `DESTINATION-APP` is the name of the app that will receive traffic.<br>
 * `PROTOCOL` is one of the following: `tcp` or `udp`.<br>
-* `PORT` is the port at which to connect to the destination app. The allowed range is 1 to 65535.<br>
+* `PORT` is the port at which to connect to the destination app. The allowed range is from `1` to `65535`.<br>
 
 The following example command allows access from the `frontend` app to the `backend` app over TCP at port 8080:
 
@@ -109,8 +108,7 @@ OK
 
 ### List Policies
 
-You can list all the policies in your deployment or just the policies for which a single app is 
-either the source or the destination:
+You can list all the policies in your deployment or just the policies for which a single app is either the source or the destination:
 
 + To list the all the policies in your deployment, enter the following command:
 
@@ -119,7 +117,7 @@ either the source or the destination:
     </pre>
 + To list the policies for an app, enter the following command:
 
-    <pre>
+    <pre class="terminal">
     cf list-access --app MY-APP
     </pre>
 
@@ -137,8 +135,8 @@ either the source or the destination:
 ### Delete a Policy
 
 To delete a policy that allows direct network traffic from one app to another, enter the following command:
-<pre>
-cf remove-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORT
+<pre class="terminal">
+$ cf remove-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORT
 </pre>
 
 The following command deletes the policy that allowed the `frontend` app to communicate with the `backend` app over TCP on port 8080:
@@ -147,4 +145,3 @@ $ cf remove-access frontend backend --protocol tcp --port 8080
 Denying traffic from frontend to backend as admin...
 OK 
 </pre>
-

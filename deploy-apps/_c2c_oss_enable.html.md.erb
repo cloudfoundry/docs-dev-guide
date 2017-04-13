@@ -18,7 +18,7 @@ See the table below and choose the procedure that corresponds with your use case
 
 ###<a id="iaas"></a>Enable on an IaaS
 
-If your CF deployment runs on an IaaS, follow these steps to enable Container-to-Container Networking.
+If your Cloud Foundry (CF) deployment runs on an IaaS, follow these steps to enable Container-to-Container Networking.
 
 <ol>
     <li>Ensure that you have a database ready. To complete this procedure, you need a v5.7 or later MySQL database, or a PostgreSQL database. 
@@ -32,7 +32,7 @@ You can use a database within your Cloud Controller database instance or create 
     <pre class="terminal">$ bosh upload stemcell URL-OF-STEMCELL </pre>
     </li>
 
-    <li>Open the CF properties stub that you created in when <a href="../../deploying/index.html">deploying Cloud Foundry</a>
+    <li>Open the CF properties stub that you created when <a href="../../deploying/index.html">deploying Cloud Foundry</a>
         and do the following:
     <ol type="a">
         <li>Under <code>properties</code> > <code>uaa</code> > <code>scim</code> > <code>users</code> > <code>name: admin</code> > <code>groups</code> 
@@ -252,7 +252,7 @@ garden_external_networker:
 policy_server:
   uaa_client_secret: REPLACE-WITH-UAA-CLIENT-SECRET
     </code></pre></td>
-    <td>Copy in the same value you used in the step <a href="#uaa-secret">above</a>.
+    <td>Copy in the <code>REPLACE-WITH-UAA-CLIENT-SECRET</code> value you used in the step <a href="#uaa-secret">above</a>.
     </td>
   </tr>
   <tr>
@@ -270,7 +270,7 @@ database:
     The database type must be <code>postgres</code> or <code>mysql</code>.<br>
     Choose a username and password.
     <br>For <code>host</code>, enter the IP address of the database instance.
-    <br>Supply a port; for MySQL a typical port is <code>3360</code>.
+    <br>Supply a port. For MySQL, a typical port is <code>3360</code>.
     <br>Supply the name of the database.
     </td>
   </tr>
@@ -303,10 +303,10 @@ garden_external_networker:
 properties:
   cf_networking:
     network: REPLACE-WITH-OVERLAY-NETWORK-CIDR
-    </code></td>
+    </code></pre></td>
     <td>(Optional) Enter an IP range for the overlay network. The CIDR must specify an RFC 1918 range.<br><br>
-    If you do not set a custom range, the deployment uses 10.255.0.0/16.
-    </td></pre></code>
+    If you do not set a custom range, the deployment uses <code>10.255.0.0/16</code>.
+    </td>
   </tr>
   <tr>
     <td><pre><code>
@@ -351,7 +351,7 @@ popd
 </pre>
 Replace the variables as follows:<br>
 <ul>
-<li><code>STUBS-DIRECTORY</code>:  The directory containing your stubs for CF, Diego, and Container-to-Container Networking.</li>
+<li><code>STUBS-DIRECTORY</code>: The directory containing your stubs for CF, Diego, and Container-to-Container Networking.</li>
 <li><code>MANIFEST-DIRECTORY</code>: The directory where you want the manifest created.</li>
 <li><code>LOCAL-DIEGO-REPO</code>: The directory of the local copy of the <code>diego-release</code> repository.</li>
 </ul>
@@ -391,10 +391,7 @@ $ bosh deployment ${output_path}/diego.yml
 Enter the following command to deploy Diego.
 <pre class="terminal">$ bosh deploy</pre>
 </li>
-<li>(Optional) Try out the <a href="https://github.com/cloudfoundry-incubator/cf-networking-release/tree/develop/src/example-apps/cats-and-dogs">Cats and Dogs</a> 
-     example in the Container-to-Container Networking Release repository. 
-     In this tutorial, you deploy two apps and create a Container-to-Container Networking policy that 
-     allows them to communicate directly with each other. 
+<li>(Optional) Try the <a href="https://github.com/cloudfoundry-incubator/cf-networking-release/tree/develop/src/example-apps/cats-and-dogs">Cats and Dogs</a> example in the Container-to-Container Networking Release repository. In this tutorial, you deploy two apps and create a Container-to-Container Networking policy that allows them to communicate directly with each other. 
  </li>
 </ol>
 
@@ -417,18 +414,15 @@ If your CF deployment runs on BOSH-Lite, follow these steps to enable Container-
   </li>
   <li>To clone the required CF release repos to your workspace, enter the following commands:<br>
   <pre class="terminal">$ git clone https<span>:</span>//github.com/cloudfoundry/diego-release<br>$ git clone https<span>:</span>//github.com/cloudfoundry/cf-release<br>$ git clone https<span>:</span>//github.com/cloudfoundry-incubator/cf-networking-release</pre></li>
-  <li>To enable Container-to-Container Networking on BOSH-Lite, change directories into `cf-networking-release` and run the deploy script:<br>
+  <li>To enable Container-to-Container Networking on BOSH-Lite, navigate to the `cf-networking-release` directory and run the deploy script:<br>
   <pre class="terminal">$ cd ~/workspace/cf-networking-release<br>$ ./scripts/deploy-to-bosh-lite</pre></li>
- <li>(Optional) Try out the <a href="https://github.com/cloudfoundry-incubator/cf-networking-release/tree/develop/src/example-apps/cats-and-dogs">Cats and Dogs</a> 
-     example in the Container-to-Container Networking Release repository. 
-     In this tutorial, you deploy two apps and create a Container-to-Container Networking policy that 
-     allows them to communicate directly with each other. 
+ <li>(Optional) Try the <a href="https://github.com/cloudfoundry-incubator/cf-networking-release/tree/develop/src/example-apps/cats-and-dogs">Cats and Dogs</a> example in the Container-to-Container Networking Release repository. In this tutorial, you deploy two apps and create a Container-to-Container Networking policy that allows them to communicate directly with each other. 
  </li>
 </ol>
  
 ##<a id="logging"></a>Manage Logging for Container-to-Container Networking
 
-This section describes how to configure logging for Container-to-Container Networking events by making requests to the running VMs.
+This section describes how to configure logging for Container-to-Container Networking events by making requests to the running virtual machines (VMs).
 You can also enable logging for iptables policy rules by editing the manifest in [Enable on an IaaS](#iaas).
 
 ###<a id="debug-logging"></a>Change Log Level for Debugging
@@ -444,7 +438,7 @@ To change the log level, follow the steps below:
 
 1. To change the log level, run the following command:
 
-    <pre>
+    <pre class="terminal">
     curl -X POST -d 'LOG-LEVEL' localhost:PORT-NUMBER/log-level
     </pre>
 
@@ -467,14 +461,14 @@ To change the log level, follow the steps below:
 
 ###<a id="iptables-logging"></a>Enable Logging for Container-to-Container Networking Policies
 
-By default, CF does not log iptables policy rules for container-to-container network traffic. You can enable logging for iptables policy rules
+By default, CF does not log iptables policy rules for Container-to-Container network traffic. You can enable logging for iptables policy rules
 in the manifest in [Enable on an IaaS](#iaas) above, or follow the steps below:
 
 1. SSH to the Diego cell that runs the VXLAN Policy Agent.
 
 1. To change the log level, run the following command:
 
-    <pre>
+    <pre class="terminal">
     curl -X PUT -d '{"enabled": BOOLEAN}' localhost:PORT-NUMBER/iptables-c2c-logging
     </pre>
 
@@ -495,9 +489,9 @@ in the manifest in [Enable on an IaaS](#iaas) above, or follow the steps below:
 
 ###<a id="metrics"></a>Use Metrics to Consume Logs
 
-You can stream container-to-container networking component metrics with the [Loggregator Firehose](../../loggregator/architecture.html#firehose).
+You can stream Container-to-Container Networking component metrics with the [Loggregator Firehose](../../loggregator/architecture.html#firehose).
 
-Container-to-container networking logs include the following prefixes:
+Container-to-Container Networking logs include the following prefixes:
 
 * `netmon`
 * `vxlan_policy_agent`

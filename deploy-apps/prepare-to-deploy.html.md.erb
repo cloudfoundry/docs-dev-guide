@@ -30,6 +30,8 @@ Foundry service such as the MongoDB document database or a relational database l
 Another option is to use cloud storage providers such as [Amazon S3](http://aws.amazon.com/s3/), [Google Cloud Storage](https://cloud.google.com/products/cloud-storage), [Dropbox](https://www.dropbox.com/developers), or [Box](http://developers.box.com/).
 If your application needs to communicate across different instances of itself, consider a cache like Redis or a messaging-based architecture with RabbitMQ.
 
+If you must use a file system for your application because for example, your application interacts with other applications through a network attached file system, or because your application is based on legacy code that you cannot rewite, consider using [Volume Services](../services/using-vol-services.html) to bind a network attached file system to your application.
+
 ### <a id="shared-cookies"></a>Cookies Accessible across Applications ###
 
 In an environment with shared domains, cookies might be accessible across applications.

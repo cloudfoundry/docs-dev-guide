@@ -38,6 +38,15 @@ service keys, see the [User-Provided Service Instances](./user-provided.html) to
 
 <p class='note'><strong>Note:</strong> Not all services support service keys. Some services support credentials through application binding only.</p>
 
+## <a id='external-ip'></a>Outbound IP Addresses ###
+
+To allow an app to communicate with a service external to <%= vars.product_short %>, you may need to configure the service to accept connections from your app based on its outbound IP address.
+
+In your external service configuration, you must do one of the following:
+
+* Whitelist the entire IP range for the Diego cell where the app is deployed.
+* Derive the app IP address from its DNS name using a command-line tool such as `dig`, `host`, or `nslookup`. In your external service configuration, whitelist the IP address or range of the app instance.
+
 ## <a id='log-management'></a>Streaming Applications Logs to Log Management Services ##
 
 To learn how your application logs can be streamed to third-party log management services, see [Streaming Application Logs to Log Management Services](./log-management.html).

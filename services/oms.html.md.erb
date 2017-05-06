@@ -1,0 +1,156 @@
+---
+title: Streaming Application Logs to Azure OMS Log Analytics
+owner: Logging and Metrics
+---
+
+<p class="note warning">
+<strong>WARNING: </strong>
+The OMS Log Analytics Firehose Nozzle is currently intended for evaluation and test purposes only. Do not use this product in a production environment.
+</p>
+
+<strong><%= modified_date %></strong>
+
+This topic explains how to integrate your Cloud Foundry (CF) apps with [OMS Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/).
+
+Operations Management Suite (OMS) Log Analytics is a monitoring service for Microsoft Azure.
+The OMS Log Analytics Firehose Nozzle is a CF component that forwards metrics from the Loggregator Firehose to OMS Log Analytics.
+
+This topic assumes you have a working <%= vars.product_full %> deployment on Azure.
+<%= vars.azure_deploy %>
+
+## <a id='config'></a>Step 1: Create an OMS Workspace in Azure
+
+See [Get started with Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-get-started) to create an OMS workspace.
+
+## <a id='deploy'></a>Step 2: Deploy the Nozzle to Cloud Foundry
+
+1. Use the cf CLI to authenticate to your CF instance:
+
+    <pre>
+    cf login -a https://api.${API-ENDPOINT} -u ${USERNAME} --skip-ssl-validation
+    </pre>
+
+    Replace the following text in the above command with the following values:
+    * `API-ENDPOINT`: the API endpoint for your CF deployment
+    * `USERNAME`: your CF username
+[//]: # (How would someone find the endpoint?)
+[//]: # (Any specific permissions required for this user?)
+
+1. Create a Cloud Foundry user and grant it access to the Loggregator Firehose by entering the following commands:
+[//]: # (What's an example? Is this obvious to an admin?)
+
+    1. Target the UAA endpoint. In the example below, replace `UAA-ENDPOINT` with
+    the UAA endpoint for your CF deployment:
+      <pre>uaac target https<span>:</span>//uaa.${UAA-ENDPOINT} --skip-ssl-validation</pre>
+    1. Retrieve the UAA admin token:
+      <pre>uaac token client get admin</pre>
+    1. Create a CF user with access to the Loggregator Firehose. Replace `FIREHOSE-USER` with
+    the username you want to give this user, and replace `FIREHOSE-PASSWORD` with
+    a password:
+      <pre>cf create-user ${FIREHOSE-USER} ${FIREHOSE-PASSWORD}</pre>
+    1. Grant the new user admin permissions. Replace `FIREHOSE-USER` with the username
+    you specified in the previous step:
+      <pre>uaac member add cloud_controller.admin ${FIREHOSE-USER}</pre>
+    1. Grant the new user permission for Doppler. Replace `FIREHOSE-USER` with
+    the username you specified above:
+      <pre>uaac member add doppler.firehose ${FIREHOSE_USER}</pre>
+
+1. Download the OMS Log Analytics Firehose Nozzle BOSH release from [Github](https://github.com/Azure/oms-log-analytics-firehose-nozzle).
+
+    1. Clone the OMS Log Analytics Firehose Nozzle repository:
+       <pre class="terminal">
+       $ git clone https<span>:</span>//github.com/Azure/oms-log-analytics-firehose-nozzle.git
+       </pre>
+    1. Navigate to the `oms-log-analytics-firehose-nozzle` directory:
+       <pre class="terminal">
+       $ cd oms-log-analytics-firehose-nozzle
+       </pre>
+
+1.  Set the following environment variables in the [OMS Log Analytics Firehose Nozzle manifest](https://github.com/Azure/oms-log-analytics-firehose-nozzle/blob/master/manifest.yml):
+
+[//]: # (Different for PCF?)
+    <table>
+      <tr>
+        <th>Environment Variable</th>
+        <th>Description</th>
+      </tr><tr>
+        <td><pre>
+        applications:
+        - name: oms_nozzle
+        ...
+        env:
+          OMS_WORKSPACE: YOUR-WORKSPACE-ID
+          OMS_KEY: YOUR-OMS-KEY</pre></td>
+        <td>Enter the ID and key value for your OMS workspace.</td>
+      </tr><tr>
+        <td><pre>
+        OMS_POST_TIMEOUT: 10s</pre></td>
+        <td>(Optional) Set the HTTP post timeout for sending events to OMS Log
+        Analytics. The default value is 10 seconds.</td>
+      </tr><tr>
+        <td><pre>
+        OMS_BATCH_TIME: 10s</pre></td>
+        <td>(Optional) Set the interval for posting a batch to OMS. The default
+        value is 10 seconds.</td>
+      </tr><tr>
+        <td><pre>
+        OMS_MAX_MSG_NUM_PER_BATCH: 1000</pre></td>
+        <td>(Optional) Set the maximum number of messages to include in an OMS
+        batch. The default amount is 1000.</td>
+      </tr><tr>
+        <td><pre>
+        FIREHOSE_USER: YOUR-FIREHOSE-USER
+        FIREHOSE_USER_PASSWORD: YOUR-FIREHOSE-PASSWORD</pre></td>
+        <td>Enter the username and password for the Firehose user you created
+        in Step 2c.</td>
+      </tr><tr>
+        <td><pre>
+        API_ADDR: https://api.YOUR-DOMAIN</pre></td>
+        <td>Enter the URL of your API endpoint.</td>
+      </tr><tr>
+        <td><pre>
+        DOPPLER_ADDR: wss://doppler.YOUR-DOMAIN:443</pre></td>
+        <td>Enter the URL of your deployment for Loggregator's traffic controller URL.</td>
+      </tr><tr>
+        <td><pre>
+        EVENT_FILTER: YOUR-LIST</pre></td>
+        <td>(Optional) Enter the event types you want to filter out in a comma-separated list.
+        The valid event types are <code>METRIC</code>, <code>LOG</code>, and <code>HTTP</code>.</td>
+      </tr><tr>
+        <td><pre>
+        IDLE_TIMEOUT: 60s</pre></td>
+        <td>(Optional) Set the duration for the Firehose keepalive connection.
+        The default time is 60 seconds.</td>
+      </tr><tr>
+        <td><pre>
+        SKIP_SSL_VALIDATION: TRUE-OR-FALSE</pre></td>
+        <td>Set this value to <code>true</code> to allow insecure connections to the UAA and the traffic controller. To block insecure connections to the UAA and traffic controller,
+        set this value to <code>false</code>.</td>
+      </tr><tr>
+        <td><pre>
+        LOG_LEVEL: INFO</pre></td>
+        <td>(Optional) Change this value to increase or decrease the amount of
+        logs. Valid log levels in increasing order include <code>INFO</code>,
+        <code>ERROR</code>, and <code>DEBUG</code>. The default value is <code>INFO</code>.</td>
+      </tr><tr>
+        <td><pre>
+        LOG_EVENT_COUNT: TRUE-OR-FALSE</pre></td>
+        <td>Set this value to <code>true</code> to log the total count of events
+        that the nozzle has sent and received. OMS logs this value as CounterEvents.</td>
+      </tr><tr>
+        <td><pre>
+        LOG_EVENT_COUNT_INTERVAL: 60s</pre></td>
+        <td>(Optional) Set the time interval for logging the event count to OMS.
+        The default interval is 60 seconds.</td>
+      </tr>
+    </table>
+
+1. Push the app.
+
+    <pre class="terminal">
+    $ cf push
+    </pre>
+
+## <a id='additional-logging'></a> (Optional) Step 3: Configure Additional Logging
+
+## <a id='scaling'></a> (Optional) Step 4: Scale 

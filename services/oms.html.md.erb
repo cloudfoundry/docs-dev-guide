@@ -44,7 +44,7 @@ using the UAA CLI (UAAC). See
     with `uaac member add doppler.firehose USERNAME`:
       <pre class="terminal">$ uaac member add doppler.firehose firehose-user</pre>
 
-1. Download the OMS Log Analytics Firehose Nozzle BOSH release from [Github](https://github.com/Azure/oms-log-analytics-firehose-nozzle).
+1. Download the [OMS Log Analytics Firehose Nozzle BOSH release](https://github.com/Azure/oms-log-analytics-firehose-nozzle) from Github.
 
     1. Clone the OMS Log Analytics Firehose Nozzle repository:
        <pre class="terminal">
@@ -55,7 +55,7 @@ using the UAA CLI (UAAC). See
        $ cd oms-log-analytics-firehose-nozzle
        </pre>
 
-1.  Set the following environment variables in the [OMS Log Analytics Firehose Nozzle manifest](https://github.com/Azure/oms-log-analytics-firehose-nozzle/blob/master/manifest.yml):
+1. Set the following environment variables in the [OMS Log Analytics Firehose Nozzle manifest](https://github.com/Azure/oms-log-analytics-firehose-nozzle/blob/master/manifest.yml):
 
     <table>
       <tr>
@@ -79,12 +79,16 @@ using the UAA CLI (UAAC). See
         <td><pre>
         OMS_BATCH_TIME: 10s</pre></td>
         <td>(Optional) Set the interval for posting a batch to OMS. The default
-        value is 10 seconds.</td>
+        value is 10 seconds.
+        <br><br>
+        For more information, see the <a href="#events">Configure Additional Logging</a> section below.</td>
       </tr><tr>
         <td><pre>
         OMS_MAX_MSG_NUM_PER_BATCH: 1000</pre></td>
         <td>(Optional) Set the maximum number of messages to include in an OMS
-        batch. The default amount is 1000.</td>
+        batch. The default amount is 1000.
+        <br><br>
+        For more information, see the <a href="#events">Configure Additional Logging</a> section below.</td>
       </tr><tr>
         <td><pre>
         FIREHOSE_USER: YOUR-FIREHOSE-USER
@@ -112,8 +116,8 @@ using the UAA CLI (UAAC). See
       </tr><tr>
         <td><pre>
         SKIP_SSL_VALIDATION: TRUE-OR-FALSE</pre></td>
-        <td>Set this value to <code>true</code> to allow insecure connections to the UAA and the traffic controller. To block insecure connections to the UAA and traffic controller,
-        set this value to <code>false</code>.</td>
+        <td>Set this value to <code>TRUE</code> to allow insecure connections to the UAA and the traffic controller. To block insecure connections to the UAA and traffic controller,
+        set this value to <code>FALSE</code>.</td>
       </tr><tr>
         <td><pre>
         LOG_LEVEL: INFO</pre></td>
@@ -123,13 +127,17 @@ using the UAA CLI (UAAC). See
       </tr><tr>
         <td><pre>
         LOG_EVENT_COUNT: TRUE-OR-FALSE</pre></td>
-        <td>Set this value to <code>true</code> to log the total count of events
-        that the nozzle has sent and received. OMS logs this value as CounterEvents.</td>
+        <td>Set this value to <code>TRUE</code> to log the total count of events
+        that the nozzle has sent, received, and lost. OMS logs this value as <code>CounterEvents</code>.
+        <br><br>
+        For more information, see the <a href="#events">Configure Additional Logging</a> section below.</td>
       </tr><tr>
         <td><pre>
         LOG_EVENT_COUNT_INTERVAL: 60s</pre></td>
         <td>(Optional) Set the time interval for logging the event count to OMS.
-        The default interval is 60 seconds.</td>
+        The default interval is 60 seconds.
+        <br><br>
+	For more information, see the <a href="#events">Configure Additional Logging</a> section below.</td>
       </tr>
     </table>
 
@@ -141,102 +149,126 @@ using the UAA CLI (UAAC). See
 
 ## <a id='oms-portal'></a> Step 3: View Logs in OMS Portal
 
+Import the Cloud Foundry OMS view to your OMS Portal to view visualized logs and metrics. You can also create alert rules for specific events.
+
 <p class="note"><strong>Note</strong>: The OMS view of Cloud Foundry is not yet available in the OMS Solutions Gallery. You can add it manually to view your logs in OMS Portal.</p>
+
+### <a id='import-view'></a> Import the OMS View
 
 1. From the main OMS Overview page, navigate to **View Designer**.
 1. Click **Import**.
 1. Click **Browse**.
-1. Select the `Cloud Foundry (Preview).omsview` file.
+1. Select the **Cloud Foundry (Preview).omsview** file.
 1. Save the view. The main OMS Overview page displays the **Tile**.
 1. Click the **Tile** to view visualized metrics.
 
-See the [Log Analytics View Designer documentation](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-view-designer) for more information.
-
+See the [OMS Log Analytics View Designer documentation](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-view-designer) for more information.
 
 ### <a id='alert'></a> Create Alert Rules
-Operators can follow [this page](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-alerts) to create Alert rules in OMS Portal.
 
-### <a id='queries'></a> Sample Alert Queries
+See [Understanding alerts in Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-alerts) for more information about OMS Log Analytics alerts.
 
-1. slowConsumerAlert
-```
-Type=CF_ValueMetric_CL Name_s=slowConsumerAlert
-```
+### <a id='queries'></a> Set Alert Queries
 
-2. Loggregator emits **LGR** to indicate problems with the logging process, e.g. when log message output is too high
-```
-Type=CF_LogMessage_CL SourceType_s=LGR MessageType_s=ERR
-```
+This section includes example queries that operators can set in the OMS Portal.
 
-3. When the number of lost events reaches a threshold (set the threshold value in OMS Portal)
-```
-Type=CF_CounterEvent_CL Job_s=nozzle Name_s=eventsLost
-```
+* The following query alerts the operator when the nozzle sends a `slowConsumerAlert` to OMS:
 
-4. When the nozzle receives `TruncatingBuffer.DroppedMessages` CounterEvent
-```
-Type=CF_CounterEvent_CL Name_s="TruncatingBuffer.DroppedMessages"
-```
+    ```
+    Type=CF_ValueMetric_CL Name_s=slowConsumerAlert
+    ```
 
-### <a id='test'></a> Test
-You need [ginkgo](https://github.com/onsi/ginkgo) to run the test. Run the following command to execute test:
-```
-ginkgo -r
-```
+* The following query alerts the operator when Loggregator sends an `LGR` to indicate problems with the logging process:
 
-## <a id='oms-api'></a> Use the OMS Client API
+    ```
+    Type=CF_LogMessage_CL SourceType_s=LGR MessageType_s=ERR
+    ```
 
-This is a sample of using the OMS API for log ingestion.
+* The following query alerts the operator when the number of lost events reaches a certain threshold, specified in the OMS Portal:
 
-<p class="note warning">
-<strong>WARNING: </strong>
-The OMS Client API is in beta and is intended for evaluation and test purposes only. Do not use this product in a production environment.
-</p>
+    ```
+    Type=CF_CounterEvent_CL Job_s=nozzle Name_s=eventsLost
+    ```
 
+* The following query alerts the operator when the nozzle receives the `TruncatingBuffer.DroppedMessages` **CounterEvent**:
 
-The required parameters to construct a client are:
-
-* Workspace ID
-* Workspace key
-
-You can get the workspace id and key from the OMS portal.
-
+    ```
+    Type=CF_CounterEvent_CL Name_s="TruncatingBuffer.DroppedMessages"
+    ```
 
 ## <a id='additional-logging'></a> (Optional) Step 4: Configure Additional Logging
 
-For the most part, the oms-log-analytics-firehose-nozzle forwards metrics from the loggregator firehose to OMS without too much processing. In a few cases the nozzle might push some additional metrics to OMS.
+OMS Log Analytics Firehose Nozzle forwards metrics from the Loggregator Firehose to OMS with minimal processing,
+but the nozzle can push additional metrics to OMS.
 
-### eventsReceived, eventsSent and eventsLost
-If `LOG_EVENT_COUNT` is set to true, the nozzle will periodically send to OMS the count of received events, sent events and lost events, at intervals of `LOG_EVENT_COUNT_INTERVAL`.
+### <a id='events'></a> Log Sent, Received, and Lost Events
 
-The statistic count is sent as a CounterEvent, with CounterKey of one of **`nozzle.stats.eventsReceived`**, **`nozzle.stats.eventsSent`** and **`nozzle.stats.eventsLost`**. Each CounterEvent contains the value of delta count during the interval, and the total count from the beginning. **`eventsReceived`** counts all the events that the nozzle received from firehose, **`eventsSent`** counts all the events that the nozzle sent to OMS successfully, **`eventsLost`** counts all the events that the nozzle tried to send to OMS but failed after 4 attempts.
+If you set the `LOG_EVENT_COUNT` environment variable to `TRUE` in the [manifest](#deploy), the nozzle periodically sends
+the count of sent, received, and lost events to OMS. The value you set for the `LOG_EVENT_COUNT_INTERVAL` determines how
+frequently the nozzle sends the count.
 
-These CounterEvents themselves are not counted in the received, sent or lost count.
+<p class="note"><strong>Note</strong>: The nozzle does not count <strong>CounterEvents</strong> themselves in the sent, received, or lost event count.</p>
 
-In normal cases, the total count of eventsSent plus eventsLost is less than total eventsReceived at the same time, as the nozzle buffers some messages and then post them in a batch to OMS. Operator can adjust the buffer size by changing the configurations `OMS_BATCH_TIME` and `OMS_MAX_MSG_NUM_PER_BATCH`.
+The nozzle sends the count as a **CounterEvent** with a **CounterKey** of one of the following:
 
-### slowConsumerAlert
-When the nozzle receives slow consumer alert from loggregator in two ways:
+<table>
+  <tr>
+    <th>CounterEvent</th>
+    <th>CounterKey</th>
+  </tr><tr>
+    <td><code>nozzle.stats.eventsReceived</td>
+    <td>The number of events the Firehose has received during the interval</td>
+  </tr><tr>
+    <td><code>nozzle.stats.eventsSent</code></td>
+    <td>The number of events the nozzle has successfully sent to OMS during the interval</td>
+  </tr><tr>
+    <td><code>nozzle.stats.eventsLost</code></td>
+    <td>The number of events the nozzle has tried to send to OMS during the interval, but failed to send after 4 attempts</td>
+  </tr>
+</table>
 
-1. the nozzle receives a WebSocket close error with error code `ClosePolicyViolation (1008)`
+In most cases, the total count of `eventsSent` plus `eventsLost` is less than the total `eventsReceived` at the same time.
+The nozzle buffers some messages and posts them in a batch to OMS. Operators can adjust the buffer size by adjusting
+the `OMS_BATCH_TIME` and `OMS_MAX_MSG_NUM_PER_BATCH` environment variables in the [manifest](#deploy).
 
-2. the nozzle receives a CounterEvent with the name `TruncatingBuffer.DroppedMessages`
+### <a id='slow-consumer'></a> Log Slow Consumer Alerts
 
-the nozzle will send a slowConsumerAlert as a ValueMetric to OMS, with MetricKey **`nozzle.alert.slowConsumerAlert`** and value **`1`**.
+<p class="note"><strong>Note</strong>: The nozzle does not count <strong>ValueMetrics</strong> in the sent, received, or lost event count.</p>
 
-This ValueMetric is not counted in the above statistic received, sent or lost count.
+Loggregator sends the nozzle a `slowConsumerAlert` in the following situations:
 
-## <a id='scaling'></a> (Optional) Step 5: Scale 
+* WebSocket sends the error code `ClosePolicyViolation (1008)`
+* The nozzle receives a **CounterEvent** with the value `TruncatingBuffer.DroppedMessages`
 
-### Scaling Nozzle
-Operators should run at least two instances of the nozzle to reduce message loss. The Firehose will evenly distribute events across all instances of the nozzle.
+In either case, the nozzle sends the `slowConsumerAlert` event to OMS as the following **ValueMetric**:
 
-When the nozzle couldn't keep up with processing the logs from firehose, Loggregator alerts the nozzle and then the nozzle logs slowConsumerAlert message to OMS. Operator can [create Alert rule](#alert) for this slowConsumerAlert message in OMS Log Analytics, and when the alert is triggered, the operator should scale up the nozzle to minimize the loss of data.
+<table>
+  <tr>
+    <th>ValueMetric</th>
+    <th>MetricKey</th>
+  </tr><tr>
+    <td><code>nozzle.alert.slowConsumerAlert</code></td>
+    <td>1</td>
+  </tr>
+</table>
 
-We did some workload test against the nozzle and got a few data for operaters' reference:
-* In our test, the size of each log and metric sent to OMS is around 550 bytes, suggest each nozzle instance should handle no more than **300000** such messages per minute. Under such workload, the CPU usage of each instance is around 40%, and the memory usage of each instance is around 80M.
+See the _Slow Nozzle Alerts_ section of the [Loggregator Guide for Cloud Foundry Operators](../../loggregator/log-ops-guide.html#slow-noz) for more information.
 
+## <a id='scaling'></a> (Optional) Step 5: Scale the Deployment
 
-### Scaling Loggregator
-Loggregator emits **LGR** log message to indicate problems with the logging process. When operaters see this message in OMS, they might need to [scale Loggregator](https://docs.cloudfoundry.org/running/managing-cf/logging-config.html#scaling).
+### <a id='scale-nozzle'></a> Scale the Nozzle
 
+If the nozzle is unable to keep up with processing logs from the Firehose, Loggregator alerts the nozzle.
+When the nozzle receives the alert, it sends a `slowConsumerAlert` to OMS. If this happens, scaling up the nozzle minimizes data loss.
+
+If an operator chooses to scale up their deployment, the Firehose evenly distributes events across all instances of the nozzle.
+See the _Scaling Nozzles_ section of the [Loggregator Guide for Cloud Foundry Operators](../../loggregator/log-ops-guide.html#scaling-nozzles) for more information.
+
+Operators can [create an alert rule](#alert) for the `slowConsumerAlert` message.
+
+### <a id='scale-loggregator'></a> Scale Loggregator
+
+Loggregator sends `LGR` log messages to indicate problems with the logging process.
+See the _Scaling Loggregator_ section of the [Loggregator Guide for Cloud Foundry Operators](../../loggregator/log-ops-guide.html#scaling) for more information.
+
+Operators can [create an alert rule](#alert) for the `LGR` message.

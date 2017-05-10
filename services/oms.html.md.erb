@@ -24,36 +24,25 @@ See [Get started with Log Analytics](https://docs.microsoft.com/en-us/azure/log-
 
 ## <a id='deploy'></a>Step 2: Deploy the Nozzle to Cloud Foundry
 
-1. Use the cf CLI to authenticate to your CF instance:
+1. Use `cf login -a https://api.YOUR-DOMAIN -u YOUR-USERNAME --skip-ssl-validation` to
+authenticate to your CF instance:
+    <pre class="terminal">$ cf login -a https<span>:</span>//api.example.com -u admin --skip-ssl-validation</pre>
 
-    <pre>
-    cf login -a https://api.${API-ENDPOINT} -u ${USERNAME} --skip-ssl-validation
-    </pre>
+1. Create a new Cloud Foundry user and grant it access to the Loggregator Firehose
+using the UAA CLI (UAAC). See
+[Creating and Managing Users with the UAA CLI](../../adminguide/uaa-user-management.html) for more information.
 
-    Replace the following text in the above command with the following values:
-    * `API-ENDPOINT`: the API endpoint for your CF deployment
-    * `USERNAME`: your CF username
-[//]: # (How would someone find the endpoint?)
-[//]: # (Any specific permissions required for this user?)
-
-1. Create a Cloud Foundry user and grant it access to the Loggregator Firehose by entering the following commands:
-[//]: # (What's an example? Is this obvious to an admin?)
-
-    1. Target the UAA endpoint. In the example below, replace `UAA-ENDPOINT` with
-    the UAA endpoint for your CF deployment:
-      <pre>uaac target https<span>:</span>//uaa.${UAA-ENDPOINT} --skip-ssl-validation</pre>
-    1. Retrieve the UAA admin token:
-      <pre>uaac token client get admin</pre>
-    1. Create a CF user with access to the Loggregator Firehose. Replace `FIREHOSE-USER` with
-    the username you want to give this user, and replace `FIREHOSE-PASSWORD` with
-    a password:
-      <pre>cf create-user ${FIREHOSE-USER} ${FIREHOSE-PASSWORD}</pre>
-    1. Grant the new user admin permissions. Replace `FIREHOSE-USER` with the username
-    you specified in the previous step:
-      <pre>uaac member add cloud_controller.admin ${FIREHOSE-USER}</pre>
-    1. Grant the new user permission for Doppler. Replace `FIREHOSE-USER` with
-    the username you specified above:
-      <pre>uaac member add doppler.firehose ${FIREHOSE_USER}</pre>
+    1. Use `uaac target uaa.YOUR-DOMAIN` to target your UAA server:
+      <pre class="terminal">$ uaac target uaa.example.com --skip-ssl-validation</pre>
+    1. Run the following command to obtain an access token for the admin client:
+      <pre class="terminal">$ uaac token client get admin</pre>
+    1. Create a new user with `cf create-user USERNAME PASSWORD`:
+      <pre class="terminal">$ cf create-user firehose-user firehose-password</pre>
+    1. Grant the new user admin permissions with `uaac member add cloud_controller.admin USERNAME`:
+      <pre class="terminal">$ uaac member add cloud_controller.admin firehose-user</pre>
+    1. Grant the new user permission to read logs from the Loggregator Firehose endpoint
+    with `uaac member add doppler.firehose USERNAME`:
+      <pre class="terminal">$ uaac member add doppler.firehose firehose-user</pre>
 
 1. Download the OMS Log Analytics Firehose Nozzle BOSH release from [Github](https://github.com/Azure/oms-log-analytics-firehose-nozzle).
 
@@ -68,7 +57,6 @@ See [Get started with Log Analytics](https://docs.microsoft.com/en-us/azure/log-
 
 1.  Set the following environment variables in the [OMS Log Analytics Firehose Nozzle manifest](https://github.com/Azure/oms-log-analytics-firehose-nozzle/blob/master/manifest.yml):
 
-[//]: # (Different for PCF?)
     <table>
       <tr>
         <th>Environment Variable</th>
@@ -151,6 +139,104 @@ See [Get started with Log Analytics](https://docs.microsoft.com/en-us/azure/log-
     $ cf push
     </pre>
 
-## <a id='additional-logging'></a> (Optional) Step 3: Configure Additional Logging
+## <a id='oms-portal'></a> Step 3: View Logs in OMS Portal
 
-## <a id='scaling'></a> (Optional) Step 4: Scale 
+<p class="note"><strong>Note</strong>: The OMS view of Cloud Foundry is not yet available in the OMS Solutions Gallery. You can add it manually to view your logs in OMS Portal.</p>
+
+1. From the main OMS Overview page, navigate to **View Designer**.
+1. Click **Import**.
+1. Click **Browse**.
+1. Select the `Cloud Foundry (Preview).omsview` file.
+1. Save the view. The main OMS Overview page displays the **Tile**.
+1. Click the **Tile** to view visualized metrics.
+
+See the [Log Analytics View Designer documentation](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-view-designer) for more information.
+
+
+### <a id='alert'></a> Create Alert Rules
+Operators can follow [this page](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-alerts) to create Alert rules in OMS Portal.
+
+### <a id='queries'></a> Sample Alert Queries
+
+1. slowConsumerAlert
+```
+Type=CF_ValueMetric_CL Name_s=slowConsumerAlert
+```
+
+2. Loggregator emits **LGR** to indicate problems with the logging process, e.g. when log message output is too high
+```
+Type=CF_LogMessage_CL SourceType_s=LGR MessageType_s=ERR
+```
+
+3. When the number of lost events reaches a threshold (set the threshold value in OMS Portal)
+```
+Type=CF_CounterEvent_CL Job_s=nozzle Name_s=eventsLost
+```
+
+4. When the nozzle receives `TruncatingBuffer.DroppedMessages` CounterEvent
+```
+Type=CF_CounterEvent_CL Name_s="TruncatingBuffer.DroppedMessages"
+```
+
+### <a id='test'></a> Test
+You need [ginkgo](https://github.com/onsi/ginkgo) to run the test. Run the following command to execute test:
+```
+ginkgo -r
+```
+
+## <a id='oms-api'></a> Use the OMS Client API
+
+This is a sample of using the OMS API for log ingestion.
+
+<p class="note warning">
+<strong>WARNING: </strong>
+The OMS Client API is in beta and is intended for evaluation and test purposes only. Do not use this product in a production environment.
+</p>
+
+
+The required parameters to construct a client are:
+
+* Workspace ID
+* Workspace key
+
+You can get the workspace id and key from the OMS portal.
+
+
+## <a id='additional-logging'></a> (Optional) Step 4: Configure Additional Logging
+
+For the most part, the oms-log-analytics-firehose-nozzle forwards metrics from the loggregator firehose to OMS without too much processing. In a few cases the nozzle might push some additional metrics to OMS.
+
+### eventsReceived, eventsSent and eventsLost
+If `LOG_EVENT_COUNT` is set to true, the nozzle will periodically send to OMS the count of received events, sent events and lost events, at intervals of `LOG_EVENT_COUNT_INTERVAL`.
+
+The statistic count is sent as a CounterEvent, with CounterKey of one of **`nozzle.stats.eventsReceived`**, **`nozzle.stats.eventsSent`** and **`nozzle.stats.eventsLost`**. Each CounterEvent contains the value of delta count during the interval, and the total count from the beginning. **`eventsReceived`** counts all the events that the nozzle received from firehose, **`eventsSent`** counts all the events that the nozzle sent to OMS successfully, **`eventsLost`** counts all the events that the nozzle tried to send to OMS but failed after 4 attempts.
+
+These CounterEvents themselves are not counted in the received, sent or lost count.
+
+In normal cases, the total count of eventsSent plus eventsLost is less than total eventsReceived at the same time, as the nozzle buffers some messages and then post them in a batch to OMS. Operator can adjust the buffer size by changing the configurations `OMS_BATCH_TIME` and `OMS_MAX_MSG_NUM_PER_BATCH`.
+
+### slowConsumerAlert
+When the nozzle receives slow consumer alert from loggregator in two ways:
+
+1. the nozzle receives a WebSocket close error with error code `ClosePolicyViolation (1008)`
+
+2. the nozzle receives a CounterEvent with the name `TruncatingBuffer.DroppedMessages`
+
+the nozzle will send a slowConsumerAlert as a ValueMetric to OMS, with MetricKey **`nozzle.alert.slowConsumerAlert`** and value **`1`**.
+
+This ValueMetric is not counted in the above statistic received, sent or lost count.
+
+## <a id='scaling'></a> (Optional) Step 5: Scale 
+
+### Scaling Nozzle
+Operators should run at least two instances of the nozzle to reduce message loss. The Firehose will evenly distribute events across all instances of the nozzle.
+
+When the nozzle couldn't keep up with processing the logs from firehose, Loggregator alerts the nozzle and then the nozzle logs slowConsumerAlert message to OMS. Operator can [create Alert rule](#alert) for this slowConsumerAlert message in OMS Log Analytics, and when the alert is triggered, the operator should scale up the nozzle to minimize the loss of data.
+
+We did some workload test against the nozzle and got a few data for operaters' reference:
+* In our test, the size of each log and metric sent to OMS is around 550 bytes, suggest each nozzle instance should handle no more than **300000** such messages per minute. Under such workload, the CPU usage of each instance is around 40%, and the memory usage of each instance is around 80M.
+
+
+### Scaling Loggregator
+Loggregator emits **LGR** log message to indicate problems with the logging process. When operaters see this message in OMS, they might need to [scale Loggregator](https://docs.cloudfoundry.org/running/managing-cf/logging-config.html#scaling).
+

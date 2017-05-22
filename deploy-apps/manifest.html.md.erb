@@ -263,6 +263,8 @@ Use the `host` attribute to provide a hostname, or subdomain, in the form of a s
 
 The command line option that overrides this attribute is `-n`.
 
+<p class="note"><strong>Note</strong>: To specify a <a href="./routes-domains.html#create-route-with-wildcard-hostname">wildcard hostname</a>, make sure to use quotes as in `host: '*'`</p>
+
 ###<a id='hosts'></a>hosts ###
 
 Use the `hosts` attribute to provide multiple hostnames, or subdomains. Each hostname generates a unique route for the app. `hosts` can be used in conjunction with `host`. If you define both attributes, Cloud Foundry creates routes for hostnames defined in both `host` and `hosts`.

@@ -7,12 +7,9 @@ owner:
 
 <strong><%= modified_date %></strong>
 
-Application manifests tell `cf push` what to do with applications.
-This includes everything from how many instances to create and how much memory
-to allocate to what services applications should use.
+You use the Cloud Foundry Command Line Interface tool (cf CLI) `cf push` command to deploy apps. `cf push` deploys apps with a default number of instances, disk limit, memory limit, etc. You can override the default values by invoking `cf push` with flags and values, or by specifying key-value pairs in a manifest file.
 
-A manifest can help you automate deployment, especially of multiple applications
-at once.
+Manifests provide consistency and reproducibility, and can help you automate deployment, especially of multiple applications at once.
 
 ##<a id='find-manifest'></a>How cf push Finds the Manifest ##
 
@@ -263,11 +260,11 @@ Use the `host` attribute to provide a hostname, or subdomain, in the form of a s
 
 The command line option that overrides this attribute is `-n`.
 
-<p class="note"><strong>Note</strong>: To specify a <a href="./routes-domains.html#create-route-with-wildcard-hostname">wildcard hostname</a>, make sure to use quotes as in `host: '*'`</p>
+<p class="note"><strong>Note</strong>: To specify a <a href="./routes-domains.html#create-route-with-wildcard-hostname">wildcard hostname</a>, place quotes around the asterisk. Example: <code>host: '*'</code>.</p>
 
 ###<a id='hosts'></a>hosts ###
 
-Use the `hosts` attribute to provide multiple hostnames, or subdomains. Each hostname generates a unique route for the app. `hosts` can be used in conjunction with `host`. If you define both attributes, Cloud Foundry creates routes for hostnames defined in both `host` and `hosts`.
+Use the `hosts` attribute to provide multiple hostnames, or subdomains. Each hostname generates a unique route for the app. You can use `hosts` conjunction with `host`. If you define both attributes, Cloud Foundry creates routes for hostnames defined in both `host` and `hosts`.
 
 <pre>
 ---
@@ -626,7 +623,7 @@ This technique helps in these and other scenarios:
 
 The benefits of multiple manifests with inheritance are similar to those of minimizing duplicated content within single manifests. With inheritance, though, we "promote" content by placing it in the parent manifest.
 
-Every child manifest must contain an "inherit" line that points to the parent manifest. Place the inherit line immediately after the three dashes at the top of the child manifest. For example, every child of a parent manifest called `base-manifest.yml` begins like this:
+Every child manifest must contain an "inherit" line that points to the parent manifest. Place the inherit line immediately after the three dashes at the top of the child manifest. For example, every child of a parent manifest named `base-manifest.yml` begins as follows:
 
 <pre>
 ---

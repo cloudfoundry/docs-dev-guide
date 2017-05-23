@@ -7,15 +7,24 @@ owner: Routing
 
 <% $this_topic = 'routes-domains' %>
 
-This topic describes how routes and domains work in <%=vars.product_full%>, and how developers and administrators configure routes and domains for their applications using the Cloud Foundry Command Line Interface (cf CLI).
+This topic describes how routes and domains work in <%=vars.product_full%>, and 
+how developers and administrators configure routes and domains for their 
+applications using the Cloud Foundry Command Line Interface (cf CLI).
 
-For more information about routing capabilities in <%=vars.product_short%>, see the [HTTP Routing](../../concepts/http-routing.html) topic.
+For more information about routing capabilities in <%=vars.product_short%>, see 
+the [HTTP Routing](../../concepts/http-routing.html) topic.
 
 ## <a id='routes'></a>Routes ##
 
-The <%=vars.product_short%> Gorouter routes requests to applications by associating an app with an address, known as a route. We call this association a **mapping**. Use the cf CLI [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html) command to associate an app and route.
+The <%=vars.product_short%> Gorouter routes requests to applications by associating 
+an app with an address, known as a route. We call this association a **mapping**. 
+Use the cf CLI [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html) 
+command to associate an app and route.
 
-The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the Gorouter would make the following matches for the two routes `myapp.<%=vars.app_domain%>` and `myapp.<%=vars.app_domain%>/products`:
+The routing tier compares each request with a list of all the routes mapped to apps 
+and attempts to find the best match. For example, the Gorouter would make the 
+following matches for the two routes `myapp.<%=vars.app_domain%>` and 
+`myapp.<%=vars.app_domain%>/products`:
 
 <table border="1" class="nice" >
   <tr>

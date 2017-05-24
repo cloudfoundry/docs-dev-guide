@@ -112,8 +112,7 @@ Example: `CF_INSTANCE_PORT=61045`
 The list of mappings between internal, or *container-side*, and external, or *host-side*, ports allocated to the instance's container.
 Not all of the internal ports are necessarily available for the application to
 bind to, as some of them may be used by system-provided services that also run
-inside the container.
-On DEAs, these internal and external values are the same, but on Diego Cells they may differ.
+inside the container. These internal and external values may differ.
 
 Example: `CF_INSTANCE_PORTS=[{external:61045,internal:5678},{external:61046,internal:2222}]`
 
@@ -196,14 +195,6 @@ Example: `TMPDIR=/home/vcap/tmp`
 The user account under which the application runs.
 
 Example: `USER=vcap`
-
-### <a id='VCAP-APP-HOST'></a>VCAP\_APP\_HOST
-
-The IP address of the host. Deprecated: the DEAs set this to be `0.0.0.0`, and
-Diego Cells do not provide this environment variable.
-
-Example: `VCAP_APP_HOST=0.0.0.0`
-
 
 ### <a id='VCAP-APP-PORT'></a>VCAP\_APP\_PORT ###
 

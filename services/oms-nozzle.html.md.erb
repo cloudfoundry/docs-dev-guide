@@ -29,8 +29,7 @@ and `YOUR-USERNAME` with your CF username, to authenticate to your CF instance. 
     <pre class="terminal">$ cf login -a https<span>:</span>//api.example.com -u admin --skip-ssl-validation</pre>
 
 1. Follow the steps below to create a new Cloud Foundry user and grant it access to the Loggregator Firehose
-using the UAA CLI (UAAC). See
-[Creating and Managing Users with the UAA CLI](../../adminguide/uaa-user-management.html) for more information.
+using the UAA CLI (UAAC). <%= vars.uaa_cli %>
 
     1. Use `uaac target uaa.YOUR-DOMAIN` to target your UAA server:
       <pre class="terminal">$ uaac target uaa.example.com --skip-ssl-validation</pre>

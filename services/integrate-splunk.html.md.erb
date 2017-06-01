@@ -72,20 +72,20 @@ Your Cloud Foundry syslog drain service is now integrated with Splunk.
 
 Use Splunk to execute a query of the form:
 
-  `sourcetype=rfc5424_syslog index=<the_index_you_created> appname=<app_guid>`
+  `sourcetype=rfc5424_syslog index=-THE-INDEX-YOU-CREATED appname=APP-GUID`
 
 To view logs from all apps at once, you can omit the `appname` field.
 
 Verify that results rows contain the three Cloud Foundry-specific fields:
 
-* **appname** — the GUID for the Cloud Foundry application
-* **host** — the IP address of the Loggregator host
-* **procid** — the Cloud Foundry component emitting the log
+* **appname**: The GUID for the Cloud Foundry application
+* **host**: The IP address of the Loggregator host
+* **procid**: The Cloud Foundry component emitting the log
 
 If the Cloud Foundry-specific fields appear in the log search results,
 integration is successful.
 
-If logs from an app are missing, make sure that:
+If logs from an app are missing, make sure that the following are true:
 
 * The app is bound to the service and was restarted after binding
 * The service port number matches the TCP port number in Splunk

@@ -134,7 +134,7 @@ TIP: Use 'cf push' to ensure your env variable changes take effect
 $ cf restart my-app
 </pre>
 
-<p class='note'><strong>Note:</strong> You must restart or in some cases re-push your application for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the application to recognize these changes.</p>
+<p class='note'><strong>Note</strong>: You must restart or in some cases re-push your application for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the application to recognize these changes.</p>
 
 #### <a id='bind-with-manifest'></a> Binding with Application Manifest ####
 
@@ -204,13 +204,13 @@ Unbinding app my-app from service mydb in org my-org / space test as user@exampl
 OK
 </pre>
 
-<p class='note'><strong>Note:</strong> You must restart or in some cases re-push your application for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the application to recognize these changes.</p>
+<p class='note'><strong>Note</strong>: You must restart or in some cases re-push your application for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the application to recognize these changes.</p>
 
 ### <a id='route-unbinding'></a>Unbind a Service Instance from a Route ###
 
 Unbinding a service instance from a route will result in requests and responses no longer being proxied through the service instance. For more information, see [Manage Application Requests with Route Services](./route-binding.html).
 
-<p class='note'><strong>Note:</strong> If your bound service instance is providing security features, like authorization, unbinding the service instance may leave your application vulnerable.</p>
+<p class='note'><strong>Note</strong>: If your bound service instance is providing security features, like authorization, unbinding the service instance may leave your application vulnerable.</p>
 
 <pre class="terminal">
 $ cf unbind-route-service <%=vars.app_domain%> --hostname my-app my-service-instance

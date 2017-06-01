@@ -65,7 +65,7 @@ Routes belong to a space, and developers can only map apps to a route in the sam
 
 ### <a id='http-vs-tcp-routes'></a>HTTP vs. TCP Routes
 
-<p class="note"><strong>Note:</strong> By default, <%=vars.product_short%> only supports routing of HTTP requests to applications. </p>
+<p class="note"><strong>Note</strong>: By default, <%=vars.product_short%> only supports routing of HTTP requests to applications. </p>
 
 Routes are considered HTTP if they are created from HTTP domains, and TCP if the are created from TCP domains. See [HTTP vs. TCP Shared Domains](#http-vs-tcp-shared-domains).
 
@@ -410,7 +410,7 @@ HTTP domains indicate to a developer that only requests using the HTTP protocol 
 
 TCP domains indicate to a developer that requests over any TCP protocol, including HTTP, will be routed to applications mapped to routes created from the domain. Routing for TCP domains is layer 4 and protocol agnostic, so many features available to HTTP routing are not available for TCP routing. TCP domains are defined as being associated with the TCP Router Group. The TCP Router Group defines the range of ports available to be reserved with TCP Routes. Currently, only Shared Domains can be TCP.
 
-<p class="note"><strong>Note:</strong> By default, <%=vars.product_short%> only supports routing of HTTP requests to applications. </p>
+<p class="note"><strong>Note</strong>: By default, <%=vars.product_short%> only supports routing of HTTP requests to applications. </p>
 
 ### <a id='shared-domains'></a>Shared Domains ###
 
@@ -532,7 +532,7 @@ The following table provides some example CNAME record mappings.
 
 After you create the CNAME mapping, your DNS provider routes your custom domain to `myapp.<%=vars.app_domain%>`.
 
-<p class="note"><strong>Note:</strong> Refer to your DNS provider documentation to determine whether the trailing <code>.</code> is required.</p>
+<p class="note"><strong>Note</strong>: Refer to your DNS provider documentation to determine whether the trailing <code>.</code> is required.</p>
 
 ##### <a id='wildcard-mapping'></a>Mapping Multiple Subdomains to Your Custom Domain
 

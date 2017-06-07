@@ -72,6 +72,159 @@ For more information, refer to the buildpack documentation for
 [Node.js](../../buildpacks/node/node-tips.html#env-var), and
 [Ruby](../../buildpacks/ruby/ruby-tips.html#env-var).
 
+<table border="1" class="nice">
+  <tr>
+    <th>Env Var</th>
+    <th>Running</th>
+    <th>Staging</th>
+    <th>Task</th>
+  </tr>
+  <tr>
+    <td><code>BUILDPACK_DIR</code></td>
+    <td></td>
+    <td>x</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>CF_INSTANCE_ADDR</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>CF_INSTANCE_GUID</code></td>
+    <td>x</td>
+    <td></td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>CF_INSTANCE_INDEX</code></td>
+    <td>x</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>CF_INSTANCE_INTERNAL_IP</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>CF_INSTANCE_IP</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>CF_INSTANCE_PORT</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>CF_INSTANCE_PORTS</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>CF_STACK</code></td>
+    <td></td>
+    <td>x</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>DATABASE_URL</code></td>
+    <td>x</td>
+    <td></td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>HOME</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>INSTANCE_GUID</code></td>
+    <td>x</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>INSTANCE_INDEX</code></td>
+    <td>x</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>LANG</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>MEMORY_LIMIT</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>PATH</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>PORT</code></td>
+    <td>x</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>PWD</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>TMPDIR</code></td>
+    <td>x</td>
+    <td></td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>USER</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>VCAP_APP_HOST</code></td>
+    <td>x</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>VCAP_APP_PORT</code></td>
+    <td>x</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>VCAP_APPLICATION</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td><code>VCAP_SERVICES</code></td>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+</table>
+
 ### <a id='CF-INSTANCE-ADDR'></a>CF\_INSTANCE\_ADDR ###
 The [CF\_INSTANCE\_IP](#CF-INSTANCE-IP) and
 [CF\_INSTANCE\_PORT](#CF-INSTANCE-PORT) of the app instance in the format
@@ -80,7 +233,7 @@ The [CF\_INSTANCE\_IP](#CF-INSTANCE-IP) and
 Example: `CF_INSTANCE_ADDR=1.2.3.4:5678`
 
 ### <a id='CF-INSTANCE-GUID'></a>CF\_INSTANCE\_GUID ###
-The UUID of the particular instance of the app. Available only to instances on Diego Cells.
+The UUID of the particular instance of the app.
 
 Example: `CF_INSTANCE_GUID=41653aa4-3a3a-486a-4431-ef258b39f042`
 
@@ -102,7 +255,7 @@ Example: `CF_INSTANCE_INTERNAL_IP=1.2.3.4`
 ### <a id='CF-INSTANCE-PORT'></a>CF\_INSTANCE\_PORT ###
 
 The external, or *host-side*, port corresponding to the internal, or *container-side*, port with value [PORT](#PORT).
-For instances on Diego, this value is generally different from the
+This value is generally different from the
 [PORT](#PORT) of the app instance.
 
 Example: `CF_INSTANCE_PORT=61045`
@@ -159,6 +312,11 @@ Based on this `VCAP_SERVICES`, CF creates the following
 Root folder for the deployed application.
 
 Example: `HOME=/home/vcap/app`
+
+### <a id='LANG'></a>LANG ###
+LANG is required by buildpacks to ensure consistent script load order.
+
+Example: `LANG=en_US.UTF-8`
 
 ### <a id='memory'></a>MEMORY_LIMIT ###
 The maximum amount of memory that each instance of the application can consume.
@@ -233,7 +391,7 @@ The table below lists the attributes that are returned.
   </tr>
   <tr>
     <td><code>instance_id</code></td>
-    <td>Unique ID that identifies the application instance. For instances running on Diego, this is identical to the <a href="#CF-INSTANCE-GUID">CF_INSTANCE_GUID</a> variable.</td>
+    <td>Unique ID that identifies the application instance. This is identical to the <a href="#CF-INSTANCE-GUID">CF_INSTANCE_GUID</a> variable.</td>
   </tr>
   <tr>
     <td><code>instance_index</code></td>

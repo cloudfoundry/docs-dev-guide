@@ -67,7 +67,7 @@ Routes belong to a space, and developers can only map apps to a route in the sam
 
 <p class="note"><strong>Note</strong>: By default, <%=vars.product_short%> only supports routing of HTTP requests to applications. </p>
 
-Routes are considered HTTP if they are created from HTTP domains, and TCP if the are created from TCP domains. See [HTTP vs. TCP Shared Domains](#http-vs-tcp-shared-domains).
+Routes are considered HTTP if they are created from HTTP domains, and TCP if they are created from TCP domains. See [HTTP vs. TCP Shared Domains](#http-vs-tcp-shared-domains).
 
 HTTP routes include a domain, an optional hostname, and an optional context path. `<%=vars.app_domain%>`, `myapp.<%=vars.app_domain%>`, and `myapp.<%=vars.app_domain%>/products` are all examples of HTTP routes. Applications should listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. As an example, requests to `myapp.<%=vars.app_domain%>` would be routed to the application container at `localhost:8080`.
 

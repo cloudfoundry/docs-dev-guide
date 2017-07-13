@@ -1,0 +1,102 @@
+---
+title: Deploy an App with Docker
+owner: Diego
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to use the 
+[Cloud Foundry Command Line Interface (cf CLI)](../cf-cli/install-go-cli.html) to push an app with a new or updated Docker image. Cloud Foundry then uses the Docker image to create containers for the app.
+
+See the [Using Docker in Cloud Foundry](../../adminguide/docker.html) topic for an explanation of how Docker works in Cloud Foundry.
+
+##<a id='requirements'></a>Requirements
+
+Pushing apps with docker requires:
+
+* A Cloud Foundry (CF) deployment that has Docker support [enabled](../../adminguide/docker.html#enable).
+
+* The location of a Docker image on [Docker Hub](https://hub.docker.com) or another Docker registry. <% vars.docker_auth1 %> 
+
+* A registry that:
+  - Supports the [Docker Registry API V2](https://docs.docker.com/registry/spec/api/)
+  - Presents a valid certificate for HTTPS traffic
+
+##<a id='public'></a>Push a Docker Image Using Docker Hub
+
+To deploy a Docker image from a Docker Hub repo, run the following command:
+
+<pre class='terminal'>$ cf push APP-NAME --docker-image REPO/IMAGE</pre>
+
+Replace the following values in the command above:
+
+* `APP-NAME`: the name of the app being pushed
+* `REPO`: the name of the repository where the image is stored
+* `IMAGE`: the name of an image from Docker Hub
+
+For example, the following command pushes the `my-image` image from Docker Hub to a Cloud Foundry app:
+
+<pre class='terminal'>$ cf push my-app --docker-image cloudfoundry/my-image</pre>
+
+##<a id='private'></a>Push a Docker Image from Another Registry
+
+As an alternative to Docker Hub, you can use any Docker image registry that presents a valid certificate for HTTPS traffic.
+
+To deploy a Docker image using a specified Docker registry, run the following command:
+
+<pre class='terminal'>$ cf push APP-NAME --docker-image MY-PRIVATE-REGISTRY.DOMAIN:PORT/REPO/IMAGE:TAG
+</pre>
+
+Replace the following values in the command above:
+
+* `APP-NAME`: the name of the app being pushed
+* `MY-PRIVATE-REGISTRY.DOMAIN`: the path to the Docker registry
+* `PORT`: the port where the registry serves traffic
+* `REPO`: the name of the repository where the image is stored
+* `IMAGE`: the name of the image being pushed
+* `TAG`: the tag or version for the image
+
+For example:
+ 
+<pre class='terminal'>$ cf push my-app --docker-image internal-registry.example.com:5000/my-repo/my-image:v2
+</pre>
+
+##<a id='private-repo'></a>Push a Private Docker Image
+
+Most Docker registries support authentication mechanisms in order to control access to Docker images.
+
+To deploy a Private Docker image, run the following command:
+
+<pre class='terminal'>$ cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username USER
+</pre>
+
+Replace the following values in the command above:
+
+* `APP-NAME`: the name of the app being pushed
+* `REPO`: the name of the repository where the image is stored
+* `IMAGE`: the name of the image being pushed
+* `USER`: the username that should be used for the authentication with the registry
+* `TAG`: the tag or version for the image
+
+A password for `USER` must also be provided by specifying the `CF_DOCKER_PASSWORD` environment variable. 
+For example:
+
+<pre class='terminal'>$ export CF_DOCKER_PASSWORD=yourpassword</pre>
+
+To deploy a private Docker image using a specified Docker registry, run the following command:
+
+<pre class='terminal'>$ cf push APP-NAME --docker-image MY-PRIVATE-REGISTRY.DOMAIN:PORT/REPO/IMAGE:TAG --docker-username USER
+</pre>
+
+See [the previous section](#private) for replacing `MY-PRIVATE-REGISTRY.DOMAIN` and `PORT` with the appropriate values.
+
+<% if vars.product_name == 'CF' %>
+<% else %>
+<%= partial '../../opsguide/push_docker_auth' %>
+<% end %>
+
+##<a id='volume'></a> Docker Volume Support
+
+Diego supports Docker volumes. 
+For more information about enabling volume support, see the [Using an External File System (Volume Services)](../services/using-vol-services.html) topic.
+For information about the limitations of NFS volumes, see the [NFS Bosh Volume Release](https://github.com/cloudfoundry-incubator/nfs-volume-release#special-notes-for-docker-image-based-apps).

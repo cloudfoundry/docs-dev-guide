@@ -70,46 +70,18 @@ For example:
 
 Many Docker registries control access to Docker images by authenticating with a username and password. To deploy a Docker image with registry authentication:
 
-1. Set the `CF_DOCKER_PASSWORD` environment variable to the Docker registry user password:
-  <pre class='terminal'>$ export CF\_DOCKER\_PASSWORD=yourpassword</pre>
-
-1. Run `cf push` with `--docker-image` and `--docker-username`:
-  <pre class='terminal'>$ cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username USER
+1. With the `CF_DOCKER_PASSWORD` environment variable set to the Docker registry user password, run `cf push` with `--docker-image` and `--docker-username`:
+  <pre class='terminal'>$ CF\_DOCKER\_PASSWORD=YOUR-PASSWORD cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username USER
 </pre>
   Replace values in the command above as follows:  
+  - `YOUR-PASSWORD`: The password to use for authentication with the registry
   - `APP-NAME`: The name of the app being pushed
   - `REPO`: The repository where the image is stored:
       - For Docker Hub, this is just the repository name
       - For a private registry, this includes the registry address and port, as described in [Push a Docker Image from a Private Registry](#private): `MY-PRIVATE-REGISTRY.DOMAIN:PORT/REPO`
   - `IMAGE`: The name of the image being pushed
-  - `USER`: The username that should be used for the authentication with the registry
   - `TAG`: (Optional) The tag or version for the image
-
-### <a id='docker-auth'></a> Use cf curl to Push a Docker Image with Authentication
-
-As an alternative to the `cf push` method [above](#private-repo), you can use `cf curl` to push a Docker image from a registry that requires authentication:
-
-1. Target the endpoint of your Cloud Controller.
-  <pre class='terminal'>$ cf api api.YOUR-DOMAIN</a>
-1. Log in with your credentials.
-  <pre class="terminal">$ cf login -u YOUR-USERNAME</pre>
-1. Push your Docker image with `curl`:
-  <pre class='terminal'>
-  $ cf curl /v2/apps -d '{ \
-    "name": "APP-NAME", \
-    "space\_guid": "YOUR-SPACE-GUID", \
-    "docker\_image": "YOUR-DOCKER-IMAGE", \
-    "docker\_credentials": { \
-      "username": "YOUR-REGISTRY-USERNAME", \
-      "password": "YOUR-REGISTRY-PASSWORD" \
-      } \
-    }
-  </pre>
-  Replace values in the command above as follows:
-  * `APP-NAME`: The name of your application in PCF.
-  * `YOUR-SPACE-GUID`: The GUID of the space where you want to push your application. To retrieve the GUID of a space, run `cf space YOUR-SPACE --guid`.
-  * `YOUR-DOCKER-IMAGE`: The location of your Docker image, in the format `REPO/IMAGE:TAG` for Docker Hub or `MY-PRIVATE-REGISTRY.DOMAIN:PORT/REPO/IMAGE:TAG` for a private registry.
-  * `YOUR-REGISTRY-USERNAME` and `YOUR-REGISTRY-PASSWORD`: The credentials to authenticate with your Docker registry.
+  - `USER`: The username to use for authentication with the registry
 
 ##<a id='volume'></a> Docker Volume Support
 

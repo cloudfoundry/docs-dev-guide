@@ -1,13 +1,16 @@
 ---
-title: Stopping and deleting apps
+title: Stopping and Deleting Apps
 owner: CLI
 ---
 
-<strong><%= modified_date %></strong>
+This topic explains how to stop and delete apps. 
 
-It’s important to know that when you perform a `cf push` command, there are three things that happen:
+To run the commands in this topic, you must first install the Cloud Foundry Command Line Interface (cf CLI). See the [Cloud Foundry Command Line Interface](../../cf-cli/index.html) topics for more information.
 
-1. your code is uploaded, after which a buildpack converts it to a single container, called a 'droplet', that can be run on Cloud Foundry as an app
+When you run a `cf push` command, the following things happen:
+
+1. The cf CLI uploads your code
+1. A buildpack converts it to a single container, called a 'droplet', that can be run on Cloud Foundry as an app
 2. the droplet is used to start the requested number of instances of that app
 3. a route is created, connecting your app to the internet
 
@@ -15,49 +18,59 @@ When deleting apps you need to remember aspects 1 and 3.
 
 Services have a different lifecycle and need to be removed separately.
 
-### Stopping and starting apps ###
 
-If you temporarily want to stop your app, freeing up memory from your quota, you can use the command
 
-<pre class="terminal">cf stop APP_NAME</pre>
+## <a id="stop-start"></a> Stop and Start an App
 
-This will stop the app running (although databases and other provisioned services will still be running and chargeable). Users visiting your app's URL will get the error:
+You can stop an app for many reasons. For example, stopping an app frees the memory from your quota. 
 
-<pre>
-404 Not Found: Requested route ('APP_NAME.applications-domain.example.com') does not exist.
-</pre>
+To stop an app, run `cf stop APP-NAME`. Replace `APP-NAME` with the name of the app you want to stop.
 
-You can start a stopped app with
+Example: 
+<pre class="terminal">$ cf stop my-example-app</pre>
 
-<pre class="terminal">cf start APP_NAME</pre>
+Running this commands stops the app, but databases and other provisioned services still run and consume resources. Users visiting the URL of a stopped app see a `404` error message like the following:
 
-### Deleting apps ###
+`404 Not Found: Requested route ('my-example-app.example.com') does not exist.`
 
-<p class='note'><strong>Note</strong>: This is irreversible. We strongly recommend running the `cf target` command before you start: check you *are* where you think you are, and working on what you think you are working on.</p>
+To start an app, run `cf start APP-NAME`. Replace `APP-NAME` with the name of the app you want to stop.
 
-If you want to remove your app completely it’s tempting to jump in with the `cf delete` command, but there are a few things to beware of:
+Example:
+<pre class="terminal">$ cf start my-example-app</pre>
 
-* Services that are used by apps do not automatically get deleted
-* Routes between the internet and your apps need to be explicitly removed.
+## <a id="delete"></a> Delete an App
 
-If you have a simple app without any services the best way to delete it is
+<p class='note'><strong>Note</strong>: Deleting an app is irreversible. We strongly recommend running that you run <code>cf target</code> before you start to confirm you are deleting the app from the correct org and space.</p>
 
+Many apps use services and routes. Deleting an app does not delete the services used by the app, and you must explicitly remove routes between your app and the Internet.
+ 
+## <a id="delete-with-service"></a> Delete an App with Services
+
+To delete an app with the services you have provisioned for it, delete the services first. 
+
+1. Run `cf services` to view all active services in the current space.
+
+1. Examine the list to determine which services are bound to your app. Record the name of the service instance bound to the app. If the list shows a service instance bound to any apps besides the app you want to delete, do not delete the service instance. If you delete a service instance bound to more than one app, you deletes the service instance from all of those apps.
+
+1. Run `cf delete-service SERVICE-INSTANCE` to delete the service instance. Replace `SERVICE-INSTANCE` with the name of the service instance bound to your app.
+
+Example: 
+<pre class="terminal">$ cf delete-service my-example-service-instance</pre>
+
+## <a id="delete-no-service"></a> Delete an App with No Services
+
+To delete an app with no services, run `cf delete -r APP-NAME`. Replace `APP-NAME` with the name of the app. The `-r` option instructs the cf CLI to removes routes associated with the app.
+
+Example:
 <pre class="terminal">cf delete -r APP_NAME</pre>
 
-which will delete the app and its routes in one go. If your app does have services, please [delete them first](#deleting-services).
+If you delete an app without the `r` option, you can delete the route manually. 
 
-If you accidentally delete your app without the `r` option, you can delete the route manually. First confirm the details of the orphaned route by typing the `cf routes` command, to get a list of all active routes in the current space. This will list the space, the hostname, the overall domain, port, path, type and any bound apps or services. You will see your hostname listed but without an associated app. Use this information to populate the following command:
+Follow the steps below to delete the route for an app manually. 
 
-<pre class="terminal">cf delete-route DOMAIN_NAME --hostname HOSTNAME</pre>
+1. Run `cf routes` to confirm the details of the orphaned route. The `cf routes` command returns a list of all active routes in the current space. This list includes the space, hostname, domain, port, path, type, and any bound apps or services. 
 
-###<a id='deleting-services'></a> Deleting services ###
+1. Find the orphaned route in the list. The orphaned route displays as a hostname without an associated app. 
 
-Before deleting your app, you will need to delete any services you have provisioned for it.
+1. Run `cf delete-route DOMAIN-NAME --hostname HOSTNAME` to delete the orphaned route. Replace `DOMAIN-NAME` and `HOSTNAME` with the domain and hostname of the app you deleted.
 
-You can check the details of these by using the `cf services` command to see all active services in the current space. You will be able to see which services are bound *only* to your app.
-
-You can then use this information to run
-
-<pre class="terminal">cf delete-service SERVICE_INSTANCE</pre>
-
-When all services are removed you can then delete your app, as above.

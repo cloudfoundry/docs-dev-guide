@@ -7,19 +7,6 @@ This topic explains how to stop and delete apps.
 
 To run the commands in this topic, you must first install the Cloud Foundry Command Line Interface (cf CLI). See the [Cloud Foundry Command Line Interface](../../cf-cli/index.html) topics for more information.
 
-When you run a `cf push` command, the following things happen:
-
-1. The cf CLI uploads your code
-1. A buildpack converts it to a single container, called a 'droplet', that can be run on Cloud Foundry as an app
-2. the droplet is used to start the requested number of instances of that app
-3. a route is created, connecting your app to the internet
-
-When deleting apps you need to remember aspects 1 and 3.
-
-Services have a different lifecycle and need to be removed separately.
-
-
-
 ## <a id="stop-start"></a> Stop and Start an App
 
 You can stop an app for many reasons. For example, stopping an app frees the memory from your quota. 
@@ -62,7 +49,7 @@ Example:
 To delete an app with no services, run `cf delete -r APP-NAME`. Replace `APP-NAME` with the name of the app. The `-r` option instructs the cf CLI to removes routes associated with the app.
 
 Example:
-<pre class="terminal">cf delete -r APP_NAME</pre>
+<pre class="terminal">$ cf delete -r my-example-app</pre>
 
 If you delete an app without the `r` option, you can delete the route manually. 
 
@@ -74,3 +61,5 @@ Follow the steps below to delete the route for an app manually.
 
 1. Run `cf delete-route DOMAIN-NAME --hostname HOSTNAME` to delete the orphaned route. Replace `DOMAIN-NAME` and `HOSTNAME` with the domain and hostname of the app you deleted.
 
+Example:
+<pre class="terminal">$ cf delete-route my-domain.com --hostname my-example-app</pre>

@@ -27,7 +27,6 @@ $ cf env my-app
 Getting env variables for app my-app in org my-org / space my-space as
 admin...
 OK
-
 System-Provided:
 
 {
@@ -38,10 +37,11 @@ System-Provided:
     "my-app.192.0.2.34.xip.io"
   ],
   "application_version": "fb8fbcc6-8d58-479e-bcc7-3b4ce5a7f0ca",
+  "cf_api": "https://api.example.com",
   "limits": {
-  "disk": 1024,
-  "fds": 16384,
-  "mem": 256
+    "disk": 1024,
+    "fds": 16384,
+    "mem": 256
   },
   "name": "my-app",
   "space_id": "06450c72-4669-4dc6-8096-45f9777db68a",
@@ -380,32 +380,28 @@ The table below lists the attributes that are returned.
     <td>GUID identifying a version of the application. Each time an application is pushed or restarted, this value is updated.</td>
   </tr>
   <tr>
+    <td><code>cf_api</code></td>
+    <td>The API endpoint you targeted when you logged into the cf CLI.</td>
+  </tr>
+  <tr>
     <td><code>host</code></td>
     <td>Deprecated. IP address of the application instance. </td>
   </tr>
   <tr>
-    <td><code>instance_id</code></td>
-    <td>Unique ID that identifies the application instance. This is identical to the <a href="#CF-INSTANCE-GUID">CF_INSTANCE_GUID</a> variable.</td>
-  </tr>
-  <tr>
-    <td><code>instance_index</code></td>
-    <td>Index number of the instance. Identical to the <a href="#CF-INSTANCE-INDEX">CF_INSTANCE_INDEX</a> variable.</td>
-  </tr>
-  <tr>
     <td><code>limits</code></td>
-    <td>The memory, disk, and number of files permitted to the instance. Memory and disk limits are supplied when the application is deployed, either on the command line or in the application manifest. The number of files allowed is operator-defined.</td>
+    <td>The limits to disk space, number of files, and memory permitted to the app. Memory and disk space limits are supplied when the application is deployed, either on the command line or in the application manifest. The number of files allowed is operator-defined.</td>
   </tr>
   <tr>
     <td><code>name</code></td>
     <td>Identical to <code>application_name</code>.</td>
   </tr>
   <tr>
-    <td><code>port</code></td>
-    <td>Port of the application instance. Identical to the <a href="#PORT">PORT</a> variable.</td>
-  </tr>
-  <tr>
     <td><code>space_id</code></td>
     <td>GUID identifying the application's space.</td>
+  </tr>
+  <tr>
+    <td><code>space_name</code></td>
+    <td>Human-readable name of the space where the app is deployed.</td>
   </tr>
   <tr>
     <td><code>start</code></td>

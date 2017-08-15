@@ -34,7 +34,14 @@ cf cups SERVICE_INSTANCE -p '{"username":"admin","password":"pa55woRD"}'
 To create a service instance in interactive mode, use the `-p` option with a comma-separated list of parameter names. The cf CLI will prompt you for each parameter value.
 
 <pre class="terminal">
-cf cups SERVICE_INSTANCE -p "host, port, dbname, username, password"
+$ cf cups my-user-provided-route-service -p "host, port"
+
+host> rdb.local
+
+port> 5432
+
+Creating user provided service my-user-provided-route-service in org my-org / space my-space as user@example.com...
+OK
 </pre>
 
 Once the user-provided service instance is created, to deliver the credentials to one or more applications see [Application Binding](application-binding.html).

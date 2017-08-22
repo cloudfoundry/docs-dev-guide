@@ -56,21 +56,22 @@ If you are a CF admin, you already have the `network.admin` scope. An admin can 
 
 Follow these steps to download and install the Network Policy plugin for the cf CLI:
 
-1. Download the `network-policy-plugin` for your operating system from the [Container-to-Container Networking Release repository](https://github.com/cloudfoundry-incubator/cf-networking-release/releases).
-
-1. To change the permissions of the plugin file and complete the installation, enter the following commands:
-
-    <pre class="terminal">
-    $ chmod +x ~/Downloads/network-policy-plugin
-    $ cf install-plugin ~/Downloads/network-policy-plugin
-    </pre>
+1. Ensure that you are using the cf CLI v6.28 or higher:
+  <pre class="terminal">
+  $ cf version
+  </pre>
+  For more information about updating the cf CLI, see the [Installing the cf CLI](../../cf-cli/install-g-cli.html) topic.
+1. Install the plugin from the [Cloud Foundry Community Plugins Repository](https://plugins.cloudfoundry.org/):
+  <pre class="terminal">
+  $ cf install-plugin -r CF-Community network-policy
+  </pre>
 
 ### Create a Policy
 
 To create a policy that allows direct network traffic from one app to another, enter the following command:
 
 <pre class="terminal">
-$ cf allow-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORT
+$ cf allow-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORTS
 </pre>
 
 Replace the placeholders in the above command as follows:
@@ -78,7 +79,7 @@ Replace the placeholders in the above command as follows:
 * `SOURCE-APP` is the name of the app that will send traffic.<br>
 * `DESTINATION-APP` is the name of the app that will receive traffic.<br>
 * `PROTOCOL` is one of the following: `tcp` or `udp`.<br>
-* `PORT` is the port at which to connect to the destination app. The allowed range is from `1` to `65535`.<br>
+* `PORTS` are the ports at which to connect to the destination app. The allowed range is from `1` to `65535`. You can specify a single port, such as `8080`, or a range of ports, such as `8080-8090`.<br>
 
 The following example command allows access from the `frontend` app to the `backend` app over TCP at port 8080:
 
@@ -118,7 +119,7 @@ You can list all the policies in your deployment or just the policies for which 
 
 To delete a policy that allows direct network traffic from one app to another, enter the following command:
 <pre class="terminal">
-$ cf remove-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORT
+$ cf remove-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORTS
 </pre>
 
 The following command deletes the policy that allowed the `frontend` app to communicate with the `backend` app over TCP on port 8080:

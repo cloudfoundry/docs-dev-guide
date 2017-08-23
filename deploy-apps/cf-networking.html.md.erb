@@ -5,14 +5,12 @@ owner: Container-to-Container Networking
 
 This topic describes how to configure the Container-to-Container Networking feature. For an overview of how Container-to-Container Networking works, see the [Understanding Container-to-Container Networking](../../concepts/understand-cf-networking.html) topic.
 
-<% if vars.product_name == 'CF' || vars.product_name == 'PCF'%>
+<% if vars.product_name == 'CF' %>
 ##<a id="enable"></a>Enable Container-to-Container Networking
 <% end %>
 
 <% if vars.product_name == 'CF' %>
  <%= partial 'c2c_oss_enable' %>
-<% elsif vars.product_name == 'PCF' %>
- <%= partial "../../customizing/c2c_pcf_enable" %>
 <% else %>
 <% end %>
 

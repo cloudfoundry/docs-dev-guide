@@ -83,36 +83,45 @@ Many Docker registries control access to Docker images by authenticating with a 
   - `TAG`: (Optional) The tag or version for the image
   - `USER`: The username to use for authentication with the registry
 
+##<a id='gcr'></a>Push a Docker Image From Google Container Registry (GCR)
+
+<%= vars.product_name %> supports pushing apps from images hosted on Google Container Registry (GCR) service. This feature requires that you use [json_key based authentication](https://cloud.google.com/container-registry/docs/advanced-authentication#using_a_json_key_file).
+
+### Step 1: Authenticate with GCR
+
+To authenticate with GCR using <%= vars.product_name %>, you must create a JSON key file and associate it with your project:
+
+1. Create a GCP service account:
+  <pre class="terminal">
+  $ gcloud iam service-accounts create MY-ACCOUNT --display-name "MY DISPLAY NAME"
+  </pre>
+
+2. Create a JSON key file and associate it with the service account:
+  <pre class="terminal">
+    $ gcloud iam service-accounts keys create key.json --iam-account=MY-ACCOUNT<span>@</span>MY-PROJECT.gserviceaccount.com
+  </pre>
+
+3. Set your project ID:
+  <pre class="terminal">
+  $ gcloud config set project MY-PROJECT
+  </pre>
+4. Add the IAM policy binding for your project and service account:
+  <pre class="terminal">
+  gcloud projects add-iam-policy-binding MY-PROJECT --member serviceAccount:MY-ACCOUNT<span>@</span>appspot.gserviceaccount.com --role roles/storage.objectViewer
+  </pre>
+
+### Step 2: Push an App
+
+Push your GCR image using the cf CLI:
+
+<pre class="terminal">$ CF_DOCKER_PASSWORD="$(cat key.json)" cf push APP-NAME --docker-image docker://eu.gcr.io/MY-PROJECT/private --docker-username _json_key
+</pre>
+
+<p class="note"><b>Note</b>: The <code>key.json</code> file must point to the file you created in the previous step.</p>
+
+
 ##<a id='volume'></a> Docker Volume Support
 
 Diego supports Docker volumes. 
 For more information about enabling volume support, see the [Using an External File System (Volume Services)](../services/using-vol-services.html) topic.
 For information about the limitations of NFS volumes, see the [NFS Bosh Volume Release](https://github.com/cloudfoundry-incubator/nfs-volume-release#special-notes-for-docker-image-based-apps).
-
-##<a id='gcr'></a>Push a Docker Image From Google Container Registry (GCR)
-
-CloudFoundry supports pushing apps from images hosted on Google Container Registry service,
-but only when using [json_key based authentication](https://cloud.google.com/container-registry/docs/advanced-authentication#using_a_json_key_file).
-
-To authenticate with GCR using CloudFoundry, first you'll need to create a json key file and give associate it with your project:
-1. Create a GCP service account. The account will look like `my-account@appspot.gserviceaccount.com`
-2. Create a json key file and associate it with the service account:
-  ```
-  gcloud iam service-accounts keys create key.json --iam-account=my-account@appspot.gserviceaccount.com
-  ```
-3. Set your project id:
-  ```
-  gcloud config set project my-project
-  ```
-4. Add the IAM policy binding for your project and service account:
-  ```
-  gcloud projects add-iam-policy-binding my-project --member serviceAccount:my-account@appspot.gserviceaccount.com --role roles/storage.objectViewer
-  ```
-
-Once you have done that, you can push your GCR image with using the CloudFoundry cli:
-
-```
-CF_DOCKER_PASSWORD="$(cat key.json)" cf push APP-NAME --docker-image docker://eu.gcr.io/my-project/private --docker-username _json_key
-```
-
-Note that `key.json` should point to the file you created on the step 2 above.

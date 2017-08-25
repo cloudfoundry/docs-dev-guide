@@ -112,7 +112,7 @@ To authenticate with GCR using <%= vars.product_name %>, you must create a JSON 
 
 ### Step 2: Push an App
 
-Push your GCR image using the cf CLI:
+Push your GCR image using the cf CLI. See the following example: 
 
 <pre class="terminal">$ CF_DOCKER_PASSWORD="$(cat key.json)" cf push APP-NAME --docker-image docker://eu.gcr.io/MY-PROJECT/private --docker-username _json_key
 </pre>

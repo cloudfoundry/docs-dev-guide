@@ -91,23 +91,23 @@ Many Docker registries control access to Docker images by authenticating with a 
 
 To authenticate with GCR using <%= vars.product_name %>, you must create a JSON key file and associate it with your project:
 
-1. Create a GCP service account:
+1. Create a GCP service account. See [Creating and Enabling Service Accounts for Instances](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances).
   <pre class="terminal">
   $ gcloud iam service-accounts create MY-ACCOUNT --display-name "MY DISPLAY NAME"
   </pre>
 
 2. Create a JSON key file and associate it with the service account:
   <pre class="terminal">
-    $ gcloud iam service-accounts keys create key.json --iam-account=MY-ACCOUNT<span>@</span>MY-PROJECT.gserviceaccount.com
+    $ gcloud iam service-accounts keys create key.json --iam-account=MY-ACCOUNT<span>@</span>MY-PROJECT-ID.iam.gserviceaccount.com
   </pre>
 
 3. Set your project ID:
   <pre class="terminal">
-  $ gcloud config set project MY-PROJECT
+  $ gcloud config set project MY-PROJECT-ID
   </pre>
 4. Add the IAM policy binding for your project and service account:
   <pre class="terminal">
-  gcloud projects add-iam-policy-binding MY-PROJECT --member serviceAccount:MY-ACCOUNT<span>@</span>appspot.gserviceaccount.com --role roles/storage.objectViewer
+  gcloud projects add-iam-policy-binding MY-PROJECT --member serviceAccount:MY-ACCOUNT<span>@</span>MY-PROJECT-ID.iam.gserviceaccount.com --role roles/storage.objectViewer
   </pre>
 
 ### Step 2: Push an App

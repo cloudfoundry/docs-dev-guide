@@ -12,27 +12,23 @@ See the [Using Docker in Cloud Foundry](../../adminguide/docker.html) topic for 
 
 ##<a id='requirements'></a>Requirements
 
-Pushing apps with Docker requires:
-
-* A Cloud Foundry (CF) deployment that has Docker support [enabled](../../adminguide/docker.html#enable).
+Pushing apps with Docker requires the following:
+ 
+* A Cloud Foundry (CF) deployment that has Docker support enabled. To enable Docker support, see the [Enable Docker](../../adminguide/docker.html#enable) section of _Using Docker in Cloud Foundry_.
 
 * The location of a Docker image on [Docker Hub](https://hub.docker.com) or another Docker registry. <% vars.docker_auth1 %> 
 
-* A registry that:
-  - Supports the [Docker Registry HTTP API V2](https://docs.docker.com/registry/spec/api/).
-  - Presents a valid certificate for HTTPS traffic.
+* A registry that supports the [Docker Registry HTTP API V2](https://docs.docker.com/registry/spec/api/).
 
-* That these port numbers match:
+* A registry that presents a valid certificate for HTTPS traffic.
+
+* That the following port numbers match:
   - The [EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) port, set in the image's Dockerfile, for the container to expose.
-  - The [PORT](./environment-variable.html#PORT) environment variable set for the app to listen on. If the app does not specify a `PORT`, Cloud Foundry defaults it to `8080`.
+  - The [PORT](./environment-variable.html#PORT) environment variable set for the app to listen on. If the app does not specify a `PORT`, Cloud Foundry uses the default port `8080`.
 
 ##<a id='public'></a>Push a Docker Image From Docker Hub
 
-To deploy a Docker image from a Docker Hub repo, run:
-
-<pre class='terminal'>$ cf push APP-NAME --docker-image REPO/IMAGE:TAG</pre>
-
-Replace the following values in the command above:
+To deploy a Docker image from a Docker Hub repo, run `cf push APP-NAME --docker-image REPO/IMAGE:TAG`. Replace the placeholder values in the command as follows:
 
 * `APP-NAME`: The name of the app being pushed
 * `REPO`: The name of the repository where the image is stored
@@ -47,12 +43,7 @@ For example, the following command pushes the `my-image` image from Docker Hub t
 
 As an alternative to Docker Hub, you can use any Docker image registry that presents a valid certificate for HTTPS traffic, such as a company-internal Docker registry.
 
-To deploy a Docker image using a specified Docker registry, run:
-
-<pre class='terminal'>$ cf push APP-NAME --docker-image MY-PRIVATE-REGISTRY.DOMAIN:PORT/REPO/IMAGE:TAG
-</pre>
-
-Replace values in the command above as follows:
+To deploy a Docker image using a specified Docker registry, run `cf push APP-NAME --docker-image MY-PRIVATE-REGISTRY.DOMAIN:PORT/REPO/IMAGE:TAG`. Replace the placeholder values in the command as follows:
 
 * `APP-NAME`: The name of the app being pushed
 * `MY-PRIVATE-REGISTRY.DOMAIN`: The path to the Docker registry
@@ -61,24 +52,23 @@ Replace values in the command above as follows:
 * `IMAGE`: The name of the image being pushed
 * `TAG`: (Optional) The tag or version for the image
 
-For example:
- 
+For example, the following command pushes the `v2` version of the `my-image` image from the `my-repo` repository of the `internal-registry.example.com` registry on port `5000`:
+
 <pre class='terminal'>$ cf push my-app --docker-image internal-registry.example.com:5000/my-repo/my-image:v2
 </pre>
 
 ##<a id='private-repo'></a>Push a Docker Image From a Registry with Authentication
 
-Many Docker registries control access to Docker images by authenticating with a username and password. To deploy a Docker image with registry authentication:
+Many Docker registries control access to Docker images by authenticating with a username and password. Follow the steps below to deploy a Docker image with registry authentication:
 
-1. With the `CF_DOCKER_PASSWORD` environment variable set to the Docker registry user password, run `cf push` with `--docker-image` and `--docker-username`:
-  <pre class='terminal'>$ CF\_DOCKER\_PASSWORD=YOUR-PASSWORD cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username USER
-</pre>
-  Replace values in the command above as follows:  
+1. Make sure the `CF_DOCKER_PASSWORD` environment variable is set to the Docker registry user password.
+1. Run the following command: `$ CF_DOCKER_PASSWORD=YOUR-PASSWORD cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username USER` 
+<br>Replace the placeholder values in the command as follows:
   - `YOUR-PASSWORD`: The password to use for authentication with the registry
   - `APP-NAME`: The name of the app being pushed
   - `REPO`: The repository where the image is stored:
       - For Docker Hub, this is just the repository name
-      - For a private registry, this includes the registry address and port, as described in [Push a Docker Image from a Private Registry](#private): `MY-PRIVATE-REGISTRY.DOMAIN:PORT/REPO`
+      - For a private registry, this includes the registry address and port, as described in [Push a Docker Image from a Private Registry](#private), in the format: `MY-PRIVATE-REGISTRY.DOMAIN:PORT/REPO`
   - `IMAGE`: The name of the image being pushed
   - `TAG`: (Optional) The tag or version for the image
   - `USER`: The username to use for authentication with the registry
@@ -91,7 +81,7 @@ Many Docker registries control access to Docker images by authenticating with a 
 
 To authenticate with GCR using <%= vars.product_name %>, you must create a JSON key file and associate it with your project:
 
-1. Create a GCP service account. See [Creating and Enabling Service Accounts for Instances](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances).
+1. Create a GCP service account. See [Creating and Enabling Service Accounts for Instances](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances). 
   <pre class="terminal">
   $ gcloud iam service-accounts create MY-ACCOUNT --display-name "MY DISPLAY NAME"
   </pre>
@@ -110,18 +100,20 @@ To authenticate with GCR using <%= vars.product_name %>, you must create a JSON 
   gcloud projects add-iam-policy-binding MY-PROJECT --member serviceAccount:MY-ACCOUNT<span>@</span>MY-PROJECT-ID.iam.gserviceaccount.com --role roles/storage.objectViewer
   </pre>
 
-### Step 2: CF Push
+### Step 2: Deploy the GCP Image
 
-Push your GCR image using the cf CLI: 
+Run the following command to deploy your GCR image using the cf CLI: 
+`CF_DOCKER_PASSWORD="$(cat key.json)" cf push APP-NAME --docker-image docker://MY-REGISTRY-URL/MY-PROJECT/MY-IMAGE-NAME --docker-username _json_key`
+<br>Replace the placeholder values in the command as follows:
 
-<pre class="terminal">$ CF_DOCKER_PASSWORD="$(cat key.json)" cf push APP-NAME --docker-image docker://MY-REGISTRY-URL/MY-PROJECT/MY-IMAGE-NAME --docker-username _json_key
-</pre>
+- `APP-NAME`: The name of the app being pushed
+- `MY-REGISTRY-URL`: The URL of your registry
+- `MY-PROJECT`: The name of your project
+- `MY-IMAGE-NAME`: The name of your image
 
 <p class="note"><b>Note</b>: The <code>key.json</code> file must point to the file you created in the previous step.</p>
 
-<p class="note"><b>Note</b>: For information on specifying <code>MY-REGISTRY-URL</code>, see <a href="https://cloud.google.com/container-registry/docs/pushing-and-pulling">Pushing and Pulling Images</a>.</p>
-
-
+<p class="note"><b>Note</b>: For information about specifying <code>MY-REGISTRY-URL</code>, see <a href="https://cloud.google.com/container-registry/docs/pushing-and-pulling">Pushing and Pulling Images</a> on the Google Cloud documentation.</p>
 
 ##<a id='volume'></a> Docker Volume Support
 

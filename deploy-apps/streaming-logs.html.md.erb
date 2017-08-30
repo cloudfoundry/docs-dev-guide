@@ -27,7 +27,7 @@ Every log line contains four fields:
 
 1. Timestamp
 1. Log type (origin code)
-1. Channel: either `STDOUT` or `STDERR`
+1. Channel: either `OUT` (logs emitted on `stdout`) or `ERR` (logs emitted on `stderr`)
 1. Message
 
 Loggregator assigns the timestamp when it receives log data.
@@ -144,11 +144,11 @@ For example:
 
 ## <a id='writing'></a>Writing to the Log from Your App ##
 
-Your app must write logs to `STDERR` or `STDOUT`.
+Your app must write logs to `stderr` or `stdout`.
 Both are typically buffered, and you should flush the buffer before delivering
 the message to Loggregator.
 
-Alternatively, you can write log messages to `STDERR` or `STDOUT` synchronously.
+Alternatively, you can write log messages to `stderr` or `stdout` synchronously.
 This approach is mainly used for debugging because it may affect app
 performance.
 

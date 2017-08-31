@@ -1,0 +1,113 @@
+---
+title: Using Experimental cf CLI Commands
+owner: CF CLI
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to use the experimental Cloud Foundry Command Line Interface (cf CLI) commands offered by the Cloud Controller V3 APIs. 
+
+These commands provide developers with the ability to better orchestrate app deployment workflows. New features include the deployment and management of apps with multiple processes, staging apps with multiple buildpacks, and uploading and staging multiple versions of a single app.
+
+To use the commands described in this topic, you must download the latest version of the cf CLI.
+
+For more information about cf CLI commands, see the [Cloud Foundry CLI Reference Guide](../cf-cli/cf-help.html). For more information about the Cloud Controller V3 API, see the [API documentation](http://v3-apidocs.cloudfoundry.org/version/3.29.0/index.html).
+
+<p class="note"><strong>Note</strong>: Because these commands are experimental, they are not guaranteed to be available or compatible in subsequent cf CLI releases.</p>
+
+##<a id='overview'></a> Overview
+
+The new commands include a `v3-` prefix. Some commands are mostly equivalent to existing commands, but call the V3 APIs, or expose new flags to unlock additional features. Other commands expose the new primitives of apps, such as by performing operations on an app's packages and droplets.
+
+In the V2 APIs, running and staging an app are tightly coupled operations. As a result, an app cannot be staging and running at the same time. The V3 APIs offer developers more granular control over the uploading, staging, and running of an app. 
+
+##<a id='commands'></a> Commands
+
+Consult the following table for a description of the experimental commands.
+
+<table>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>v3-app</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-list-droplets</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-set-health-check</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-apps</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-list-packages</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-stage</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-create-app</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-push</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-start</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-create-package</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-restart</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-stop</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-delete</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-restart-app-instance</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-get-health-check</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>v3-set-droplet</code></td>
+<td></td>
+</tr>
+</table>
+        
+##<a id='considerations'></a> Considerations
+
+Keep in mind the following considerations when using the experimental commands:
+
+* `v3-push` supports only a subset of features of `push`. In particular, it does not support app manifests.  
+* For some commands, such as `set-env`, `ssh`, and `bind-service`, no new V3 version exists. In those cases, use the old commands.  
+* You can use V3 and old commands together, but some combinations may give unexpected results. For example, if you use V3 commands to create an app with a package but it is not staged, or you use `v3-push` to push an app but it fails to stage, the old `apps` command does not return the app.
+
+##<a id='procfile'></a> Using a Procfile
+
+Developers can supply a Procfile with their app in order to run multiple long-lived processes using a single codebase. 
+
+To use a Procfile, include it in the root of your application directory and push your application.
+
+For more information about Procfiles, see the [About Procfiles](../buildpacks/prod-server.html#procfile) section of the <em>Production Server Configuration</em> topic.

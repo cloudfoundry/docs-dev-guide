@@ -22,13 +22,19 @@ This topic describes how to configure the Container-to-Container Networking feat
 
 ##<a id="create-policies"></a>Create Policies for Container-to-Container Networking
 
-This section describes how to create and modify Container-to-Container Networking policies using a plugin for the Cloud Foundry Command Line Interface (cf CLI).
+This section describes how to create and modify Container-to-Container Networking policies using the Cloud Foundry Command Line Interface (cf CLI).
+
+Ensure that you are using cf CLI v6.30 or higher:
+  <pre class="terminal">
+  $ cf version
+  </pre>
+  For more information about updating the cf CLI, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
 
 <% if vars.product_name == 'PWS' %>
 <%= partial '../../appsman-services/c2c_pws_create' %>
 <% else %>
 
-To use the plugin, you must have either the `network.write` or `network.admin` UAA scope.
+To use the commands, you must have either the `network.write` or `network.admin` UAA scope.
 
 <table>
   <tr>
@@ -56,80 +62,65 @@ If you are a CF admin, you already have the `network.admin` scope. An admin can 
   <% end %>
 <% end %>
 
-### Install the Plugin
+### Add a Network Policy
 
-Follow these steps to download and install the Network Policy plugin for the cf CLI:
-
-1. Ensure that you are using the cf CLI v6.28 or higher:
-  <pre class="terminal">
-  $ cf version
-  </pre>
-  For more information about updating the cf CLI, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
-1. Install the plugin from the [Cloud Foundry Community Plugins Repository](https://plugins.cloudfoundry.org/):
-  <pre class="terminal">
-  $ cf install-plugin -r CF-Community network-policy
-  </pre>
-
-### Create a Policy
-
-To create a policy that allows direct network traffic from one app to another, run `cf allow-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORTS`.
+To add a policy that allows direct network traffic from one app to another, run `cf add-network-policy SOURCE_APP --destination-app DESTINATION_APP --protocol (tcp | udp) --port RANGE`.
 
 Replace the placeholders in the above command as follows:
 
-* `SOURCE-APP` is the name of the app that sends traffic.
-* `DESTINATION-APP` is the name of the app that will receive traffic.
+* `SOURCE_APP` is the name of the app that sends traffic.
+* `DESTINATION_APP` is the name of the app that will receive traffic.
 * `PROTOCOL` is one of the following: `tcp` or `udp`.
-* `PORTS` are the ports at which to connect to the destination app. The allowed range is from `1` to `65535`. You can specify a single port, such as `8080`, or a range of ports, such as `8080-8090`.
+* `RANGE` are the ports at which to connect to the destination app. The allowed range is from `1` to `65535`. You can specify a single port, such as `8080`, or a range of ports, such as `8080-8090`.
 
 The following example command allows access from the `frontend` app to the `backend` app over TCP at port 8080:
 
 <pre class="terminal">
-$ cf allow-access frontend backend --protocol tcp --port 8080
-Allowing traffic from frontend to backend as admin...
-OK 
+$ cf add-network-policy frontend --destination-app backend --protocol tcp --port 8080
+Adding network policy to app frontend in org my-org / space dev as admin...
+OK
 </pre>
 
 ### List Policies
 
-You can list all the policies in your deployment or just the policies for which a single app is either the source or the destination:
+You can list all the policies in your space, or just the policies for which a single app is the source:
 
-+ To list the all the policies in your deployment, run `cf list-access`.    
++ To list the all the policies in your space, run `cf network-policies`.
 
     <pre class="terminal">
-    $ cf list-access
+    $ cf network-policies
     </pre>
 
-+ To list the policies for an app, run `cf list-access --app MY-APP`. Replace `MY-APP` with the name of your app. 
++ To list the policies for an app, run `cf network-policies --source MY-APP`. Replace `MY-APP` with the name of your app. 
 
     <pre class="terminal">
-    $ cf list-access --app example-app
+    $ cf network-policies --source example-app
     </pre>
 
     The following example command lists policies for the app `frontend`:
     
     <pre class="terminal">
-    $ cf list-access --app frontend
-    Listing policies as admin...
-    OK
-    
-    Source    Destination    Protocol    Port
-    frontend  backend        tcp         8080
+    $ cf network-policies --source frontend
+    Listing network policies in org my-org / space dev as admin...
+
+    source      destination   protocol   ports
+    frontend    backend       tcp        8080
     </pre>
 
-### Delete a Policy
+### Remove a Network Policy
 
-To delete a policy that allows direct network traffic from one app to another, run `cf remove-access SOURCE-APP DESTINATION-APP --protocol PROTOCOL --port PORTS`. 
+To remove a policy that allows direct network traffic from an app, run `cf remove-network-policy SOURCE_APP --destination-app DESTINATION_APP --protocol PROTOCOL --port RANGE`.
 
-Replace the placeholders in the above command as follows:
+Replace the placeholders in the above command to match an existing policy, as follows:
 
-* `SOURCE-APP` is the name of the app that sends traffic.
-* `DESTINATION-APP` is the name of the app that receives traffic.
+* `SOURCE_APP` is the name of the app that sends traffic.
+* `DESTINATION_APP` is the name of the app that receives traffic.
 * `PROTOCOL` is either `tcp` or `udp`.
 * `PORTS` are the ports connecting the apps. The allowed range is from `1` to `65535`. You can specify a single port, such as `8080`, or a range of ports, such as `8080-8090`.
 
 The following command deletes the policy that allowed the `frontend` app to communicate with the `backend` app over TCP on port 8080:
 <pre class="terminal">
-$ cf remove-access frontend backend --protocol tcp --port 8080
-Denying traffic from frontend to backend as admin...
-OK 
+$ cf remove-network-policy frontend --destination-app backend --protocol tcp --port 8080
+Removing network policy to app frontend in org my-org / space dev as admin...
+OK
 </pre>

@@ -9,7 +9,7 @@ This topic describes how to use the experimental Cloud Foundry Command Line Inte
 
 These commands provide developers with the ability to better orchestrate app deployment workflows. New features include the deployment and management of apps with multiple processes, staging apps with multiple buildpacks, and uploading and staging multiple versions of a single app.
 
-To use the commands described in this topic, you must download the latest version of the cf CLI.
+<%= vars.v3_cli_versions %>
 
 For more information about cf CLI commands, see the [Cloud Foundry CLI Reference Guide](../cf-cli/cf-help.html). For more information about the Cloud Controller V3 API, see the [API documentation](http://v3-apidocs.cloudfoundry.org/version/3.29.0/index.html).
 
@@ -32,67 +32,67 @@ Consult the following table for a description of the experimental commands.
 </tr>
 <tr>
 <td><code>v3-app</code></td>
-<td></td>
+<td>Retrieves and display an app's GUID, suppressing all other health and status output</td>
 </tr>
 <tr>
-<td><code>v3-list-droplets</code></td>
-<td></td>
+<td><code>v3-droplets</code></td>
+<td>Lists droplets of an app</td>
 </tr>
 <tr>
 <td><code>v3-set-health-check</code></td>
-<td></td>
+<td>Changes type of health check performed on an app's process</td>
 </tr>
 <tr>
 <td><code>v3-apps</code></td>
-<td></td>
+<td>Lists all apps in the target space</td>
 </tr>
 <tr>
-<td><code>v3-list-packages</code></td>
-<td></td>
+<td><code>v3-packages</code></td>
+<td>Lists packages of an app</td>
 </tr>
 <tr>
 <td><code>v3-stage</code></td>
-<td></td>
+<td>Creates a new droplet for an app</td>
 </tr>
 <tr>
 <td><code>v3-create-app</code></td>
-<td></td>
+<td>Creates a V3 app</td>
 </tr>
 <tr>
 <td><code>v3-push</code></td>
-<td></td>
+<td>Pushes a new app or syncs changes to an existing app</td>
 </tr>
 <tr>
 <td><code>v3-start</code></td>
-<td></td>
+<td>Starts an app</td>
 </tr>
 <tr>
 <td><code>v3-create-package</code></td>
-<td></td>
+<td>Uploads a V3 package</td>
 </tr>
 <tr>
 <td><code>v3-restart</code></td>
-<td></td>
+<td>Stops all instances of an app and then starts them again, which may cause downtime</td>
 </tr>
 <tr>
 <td><code>v3-stop</code></td>
-<td></td>
+<td>Stops an app</td>
 </tr>
 <tr>
 <td><code>v3-delete</code></td>
-<td></td>
+<td>Deletes a V3 app</td>
 </tr>
 <tr>
 <td><code>v3-restart-app-instance</code></td>
-<td></td>
+<td>Terminates and then instantiates an app instance</td>
 </tr>
 <tr>
 <td><code>v3-get-health-check</code></td>
-<td></td>
+<td>Shows the type of health check performed on an app</td>
 </tr>
 <tr>
 <td><code>v3-set-droplet</code></td>
-<td></td>
+<td>Sets the droplet used to run an app</td>
 </tr>
 </table>
         

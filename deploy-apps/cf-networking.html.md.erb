@@ -25,10 +25,10 @@ This topic describes how to configure the Container-to-Container Networking feat
 This section describes how to create and modify Container-to-Container Networking policies using the Cloud Foundry Command Line Interface (cf CLI).
 
 Ensure that you are using cf CLI v6.30 or higher:
-  <pre class="terminal">
-  $ cf version
-  </pre>
-  For more information about updating the cf CLI, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
+<pre class="terminal">
+$ cf version
+</pre>
+For more information about updating the cf CLI, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
 
 <% if vars.product_name == 'PWS' %>
 <%= partial '../../appsman-services/c2c_pws_create' %>
@@ -64,7 +64,10 @@ If you are a CF admin, you already have the `network.admin` scope. An admin can 
 
 ### Add a Network Policy
 
-To add a policy that allows direct network traffic from one app to another, run `cf add-network-policy SOURCE_APP --destination-app DESTINATION_APP --protocol (tcp | udp) --port RANGE`.
+To add a policy that allows direct network traffic from one app to another, run the following command:
+
+```cf add-network-policy SOURCE_APP --destination-app DESTINATION_APP --protocol (tcp | udp) --port RANGE
+```
 
 Replace the placeholders in the above command as follows:
 
@@ -109,7 +112,10 @@ You can list all the policies in your space, or just the policies for which a si
 
 ### Remove a Network Policy
 
-To remove a policy that allows direct network traffic from an app, run `cf remove-network-policy SOURCE_APP --destination-app DESTINATION_APP --protocol PROTOCOL --port RANGE`.
+To remove a policy that allows direct network traffic from an app, run the following command:
+
+```cf remove-network-policy SOURCE_APP --destination-app DESTINATION_APP --protocol PROTOCOL --port RANGE
+```
 
 Replace the placeholders in the above command to match an existing policy, as follows:
 

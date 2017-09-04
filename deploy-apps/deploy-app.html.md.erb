@@ -140,11 +140,10 @@ A worst-case example would be deploying an update that involved a database
 schema migration, because instances running the old code would not work and
 users could lose data.
 
-Cloud Foundry uploads all app files except version control files with
-file extensions `.svn`, `.git`, and `.darcs`.
+Cloud Foundry uploads all app files except version control files and
+folders with names such as `.svn`, `.git`, and `.darcs`.
 To exclude other files from upload, specify them in a `.cfignore` file in the
 directory where you run the push command.
-This technique is similar to using a `.gitignore` file.
 For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section of the [Considerations for Designing and Running an Application in the Cloud](./prepare-to-deploy.html) topic.
 
 For more information about the manifest file, see the [Deploying with Application Manifests](./manifest.html) topic.

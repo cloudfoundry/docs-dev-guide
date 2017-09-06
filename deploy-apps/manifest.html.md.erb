@@ -55,11 +55,11 @@ Manifests are written in YAML. The manifest below illustrates some YAML conventi
 applications:
 - name: my-app
   memory: 512M
-  host: my-host
+  instances: 2
 </pre>
 
 A minimal manifest requires only an application `name`.
-To create a valid minimal manifest, remove the `memory` and `host` properties
+To create a valid minimal manifest, remove the `memory` and `instances` properties
 from this example.
 
 ##<a id='name'></a>Always Provide an Application Name to cf push ##

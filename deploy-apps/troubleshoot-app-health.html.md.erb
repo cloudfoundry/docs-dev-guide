@@ -38,7 +38,7 @@ To reduce the number of files you are pushing, ensure that you push only the dir
   * **Set the CF\_STAGING\_TIMEOUT and CF\_STARTUP\_TIMEOUT environment variables.**
   By default your app has 15 minutes to stage and 5 minutes to start.
 You can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`.
-Type `cf help` at the command line for more information.
+Type `cf push -h` at the command line for more information.
 
   * **If your app contains a large number of files, try pushing the app repeatedly.**
   Each push uploads a few more files.

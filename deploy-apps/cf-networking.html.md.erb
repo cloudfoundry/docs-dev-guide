@@ -12,9 +12,9 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% else %>
 <% end %>
 
+<% if vars.product_name == 'CF' %>
 ##<a id="logging"></a>Manage Logging for Container-to-Container Networking
 
-<% if vars.product_name == 'CF' %>
 <%= partial 'c2c_oss_logging' %>
 <% else %>
 <% end %>

@@ -141,7 +141,7 @@ schema migration, because instances running the old code would not work and
 users could lose data.
 
 Cloud Foundry uploads all app files except version control files and
-folders with names such as `.svn`, `.git`, and `.darcs`.
+folders with names such as `.svn`, `.git`, and `_darcs`.
 To exclude other files from upload, specify them in a `.cfignore` file in the
 directory where you run the push command.
 For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section of the [Considerations for Designing and Running an Application in the Cloud](./prepare-to-deploy.html) topic.

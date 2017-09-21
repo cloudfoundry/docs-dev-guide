@@ -7,45 +7,45 @@ owner:
 
 <strong><%= modified_date %></strong>
 
-You use the Cloud Foundry Command Line Interface tool (cf CLI) `cf push` command to deploy apps. `cf push` deploys apps with a default number of instances, disk limit, memory limit, etc. You can override the default values by invoking `cf push` with flags and values, or by specifying key-value pairs in a manifest file.
+You use the Cloud Foundry Command Line Interface tool (cf CLI) `cf push` command to deploy apps. `cf push` deploys apps with a default number of instances, disk space limit, and memory limit. You can override the default values by invoking `cf push` with flags and values, or by specifying key-value pairs in a manifest file.
 
-Manifests provide consistency and reproducibility, and can help you automate deployment, especially of multiple applications at once.
+Manifests provide consistency and reproducibility, and can help you automate deploying apps.
 
 ##<a id='find-manifest'></a>How cf push Finds the Manifest ##
 
 By default, the `cf push` command deploys an application using a `manifest.yml`
 file in the current working directory.
 
+For example: 
 <pre class="terminal">
 $ cf push
-Using manifest file /path_to_working_directory/manifest.yml
+Using manifest file /path-to-current-working-directory/manifest.yml
 </pre>
 
-If your manifest is located elsewhere, use the `-f` option to provide the path to the filename.
+If you have created your manifest in a different location, use `cf push -f PATH-TO-MANIFEST`. Replace `PATH-TO-MANIFEST` with the path to your manifest. You can include the name of your mainfest file in `PATH-TO-MANIFEST`.  
 
+For example: 
 <pre class="terminal">
-$ cf push -f ./some_directory/some_other_directory/alternate_manifest.yml
-Using manifest file /path_to_working_directory/some_directory/some_other_directory/alternate_manifest.yml
+$ cf push -f ./different-directory-1/different-directory-2/alternate_manifest.yml
+Using manifest file ./different-directory-1/different-directory-2/alternate_manifest.yml
 </pre>
 
-If you provide a path with no filename, the filename must be
-`manifest.yml`.
 
+If you provide a path with no filename, the `cf push` command requires a file named `manifest.yml`.
+
+For example:
 <pre class="terminal">
-$ cf push -f ./some_directory/some_other_directory/
-Using manifest file /path_to_working_directory/some_directory/some_other_directory/manifest.yml
+$ cf push -f ./different-directory-1/different-directory-2/
+Using manifest file ./different-directory-1/different-directory-2/manifest.yml
 </pre>
 
 ##<a id='minimal-manifest'></a>Example Manifest ##
 
-You can deploy applications without ever using a manifest.
-The benefits manifests may provide include consistency and reproducibility.
-When you want applications to be portable between different clouds, manifests
-may prove especially useful.
+Although you can deploy apps without a manifest, manifests provide consistency and reproducibility. This can be useful when when you want your apps to be portable between different clouds.
 
 Manifests are written in YAML. The manifest below illustrates some YAML conventions, as follows:
 
-* The manifest may begin with three dashes.
+* The manifest begins with three dashes.
 * The `applications` block begins with a heading followed by a colon.
 * The application `name` is preceded by a single dash and one space.
 * Subsequent lines in the block are indented two spaces to align with `name`.
@@ -59,8 +59,7 @@ applications:
 </pre>
 
 A minimal manifest requires only an application `name`.
-To create a valid minimal manifest, remove the `memory` and `instances` properties
-from this example.
+To create a valid minimal manifest, remove the `memory` and `instances` properties from this example.
 
 ##<a id='name'></a>Always Provide an Application Name to cf push ##
 
@@ -71,7 +70,7 @@ As described in [How cf push Finds the Manifest](#find-manifest) above, the
 command `cf push` locates the `manifest.yml` in the current working
 directory by default, or in the path provided by the `-f` option.
 
-If you do not use a manifest, the minimal push command looks like this:
+If you do not use a manifest, the minimal `cf push` command looks like this:
 
 <pre class="terminal">
 $ cf push my-app

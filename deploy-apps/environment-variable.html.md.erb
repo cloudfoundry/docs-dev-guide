@@ -261,7 +261,7 @@ Not all of the internal ports are necessarily available for the application to
 bind to, as some of them may be used by system-provided services that also run
 inside the container. These internal and external values may differ.
 
-Example: `CF_INSTANCE_PORTS=[{external:61045,internal:5678},{external:61046,internal:2222}]`
+Example: `CF_INSTANCE_PORTS=[{external:61045,internal:8080},{external:61046,internal:2222}]`
 
 ### <a id='DATABASE-URL'></a>DATABASE\_URL ###
 
@@ -330,7 +330,7 @@ The Cloud Foundry runtime allocates a port dynamically for each instance of the
 application, so code that obtains or uses the app port should refer to
 it using the `PORT` environment variable.
 
-Example: `PORT=61857`
+Example: `PORT=8080`
 
 ### <a id='PWD'></a>PWD ###
 Identifies the present working directory, where the buildpack that processed

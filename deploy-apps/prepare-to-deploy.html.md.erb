@@ -63,7 +63,8 @@ Your application should accept and handle the termination signal to ensure that 
 ## <a id="exclude"></a>Ignore Unnecessary Files When Pushing ##
 
 By default, when you push an application, all files in the application's project
-directory tree are uploaded to your Cloud Foundry instance, except version control or configuration files or folders with the following names:
+directory tree are uploaded to your Cloud Foundry instance, except version 
+control and configuration files or folders with the following names:
 
 * `.cfignore`
 * `_darcs`
@@ -74,8 +75,7 @@ directory tree are uploaded to your Cloud Foundry instance, except version contr
 * `manifest.yml`
 * `.svn`
 
-Also, if API request diagnostics are directed to a log file (using `cf config --trace` or the `CF_TRACE`
-environment variable) and the file is within the project directory tree, it is excluded from the upload.
+In addition to these, if API request diagnostics are directed to a log file and the file is within the project directory tree, it is excluded from the upload. You can direct these API request diagnostics to a log file using `cf config --trace` or the `CF_TRACE` environment variable.
 
 If the application directory contains other files, such as `temp` or `log`
 files, or complete subdirectories that are not required to build and run your

@@ -12,19 +12,29 @@ See the [Using Docker in Cloud Foundry](../../adminguide/docker.html) topic for 
 
 ##<a id='requirements'></a>Requirements
 
-Pushing apps with Docker requires the following:
+To push apps with Docker, you need the following:
  
 * A Cloud Foundry (CF) deployment that has Docker support enabled. To enable Docker support, see the [Enable Docker](../../adminguide/docker.html#enable) section of _Using Docker in Cloud Foundry_.
 
+* A Docker image that meets the following requirements:
+
+  * The Docker image must contain an `/etc/passwd` file with an entry for the `root` user. In addition, the home directory and the shell for that `root` user  must be present in the image filesystem.
+
+  * The total size of the Docker image filesystem layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2,048 MB per app.
+
+    <p class="note">If the total size of the Docker image filesystem layers exceeds the disk quota, the app instances do not start.</p>
+
+  * The following port numbers match:
+
+      * The [EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) port, set in the image's Dockerfile, for the container to expose.
+
+      * The [PORT](./environment-variable.html#PORT) environment variable set for the app to listen on. If the app does not specify a `PORT`, Cloud Foundry uses the default port `8080`.
+
 * The location of a Docker image on [Docker Hub](https://hub.docker.com) or another Docker registry. <% vars.docker_auth1 %> 
 
-* A registry that supports the [Docker Registry HTTP API V2](https://docs.docker.com/registry/spec/api/).
+* A registry that supports the [Docker Registry HTTP API V2](https://docs.docker.com/registry/spec/api/) and presents a valid certificate for HTTPS traffic.
 
-* A registry that presents a valid certificate for HTTPS traffic.
-
-* That the following port numbers match:
-  - The [EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) port, set in the image's Dockerfile, for the container to expose.
-  - The [PORT](./environment-variable.html#PORT) environment variable set for the app to listen on. If the app does not specify a `PORT`, Cloud Foundry uses the default port `8080`.
+<p class="note">If you want to log in to your app container using the <code>cf ssh</code> command, a shell such as <code>sh</code> or <code>bash</code> must be available in the container. The SSH server in the container looks for the following executables in absolute locations or the <code>PATH</code> environment variable: <code>/bin/bash</code>, <code>/usr/local/bin/bash</code>, <code>/bin/sh</code>, <code>bash</code>, and <code>sh</code>.</p>
 
 ##<a id='public'></a>Push a Docker Image From Docker Hub
 

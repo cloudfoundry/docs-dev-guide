@@ -20,9 +20,9 @@ To push apps with Docker, you need the following:
 
   * The Docker image must contain an `/etc/passwd` file with an entry for the `root` user. In addition, the home directory and the shell for that `root` user  must be present in the image filesystem.
 
-  * The total size of the Docker image filesystem layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2,048 MB per app.
+  * The total size of the Docker image filesystem layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2048 MB per app.
 
-    <p class="note">If the total size of the Docker image filesystem layers exceeds the disk quota, the app instances do not start.</p>
+    <p class="note"><strong>Note</strong>: If the total size of the Docker image filesystem layers exceeds the disk quota, the app instances do not start.</p>
 
   * The following port numbers match:
 
@@ -34,11 +34,11 @@ To push apps with Docker, you need the following:
 
 * A registry that supports the [Docker Registry HTTP API V2](https://docs.docker.com/registry/spec/api/) and presents a valid certificate for HTTPS traffic.
 
-<p class="note">If you want to log in to your app container using the <code>cf ssh</code> command, a shell such as <code>sh</code> or <code>bash</code> must be available in the container. The SSH server in the container looks for the following executables in absolute locations or the <code>PATH</code> environment variable: <code>/bin/bash</code>, <code>/usr/local/bin/bash</code>, <code>/bin/sh</code>, <code>bash</code>, and <code>sh</code>.</p>
+<p class="note"><strong>Note</strong>: If you want to log in to your app container using the <code>cf ssh</code> command, a shell such as <code>sh</code> or <code>bash</code> must be available in the container. The SSH server in the container looks for the following executables in absolute locations or the <code>PATH</code> environment variable: <code>/bin/bash</code>, <code>/usr/local/bin/bash</code>, <code>/bin/sh</code>, <code>bash</code>, and <code>sh</code>.</p>
 
 ##<a id='public'></a>Push a Docker Image From Docker Hub
 
-To deploy a Docker image from a Docker Hub repo, run `cf push APP-NAME --docker-image REPO/IMAGE:TAG`. Replace the placeholder values in the command as follows:
+To deploy a Docker image from a Docker Hub repository, run `cf push APP-NAME --docker-image REPO/IMAGE:TAG`. Replace the placeholder values in the command as follows:
 
 * `APP-NAME`: The name of the app being pushed
 * `REPO`: The name of the repository where the image is stored

@@ -5,9 +5,11 @@ owner: Core Services
 
 <strong><%= modified_date %></strong>
 
-This topic describes managing service instance credentials manually with service keys. You can use service keys to connect to a service instance from a local client, or from an app that is not deployed by Cloud Foundry. Create, list, retrieve, and delete service keys using the Cloud Foundry Command Line Interface (cf CLI). 
+This topic describes managing service instance credentials with service keys.
 
-<p class='note'><strong>Note</strong>: Not all services support service keys. Some services support credentials through <a href="./application-binding.html">application binding</a> only.</p>
+Service keys provide credentials for manually configuring consumers of marketplace services. Local client, apps in other spaces, or entities outside your deployment can access your service with these keys.
+
+<p class='note'><strong>Note</strong>: Some service brokers do not support service keys. If you want to build a service broker that supports service keys, see <a href="./services/index.html">Services</a>. If you want to use a service broker that does not support service keys, see <a href="./application-binding.html">Delivering Service Credentials to an Application</a>.</p>
 
 ## <a id='create'></a> Create a Service Key ##
 

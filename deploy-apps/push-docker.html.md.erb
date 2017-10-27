@@ -32,17 +32,23 @@ To push apps with Docker, you need the following:
 
 ## <a id='port_config'></a>Port Configuration
 
-By default, apps on Cloud Foundry listen for connections on port 8080.
+By default, apps listen for connections on the port specified in the 
+[PORT](environment-variable.html#PORT) 
+environment variable for the app. Cloud Foundry allocates this value dynamically.
 
-When configuring a Docker image for Cloud Foundry, you can override this default by specifying 
-the [EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) directive in the image Dockerfile. 
-If you specify the `EXPOSE` directive, then the corresponding app pushed to Cloud Foundry listens on that exposed port. For example, if you set `EXPOSE` to `7070`, then the app listens for connections on port 7070.
+When configuring a Docker image for Cloud Foundry, you can control the exposed port and 
+the corresponding value of `PORT` by specifying the 
+[EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) directive in the image Dockerfile. 
+If you specify the `EXPOSE` directive, then the corresponding app pushed to Cloud Foundry listens on that 
+exposed port. For example, if you set `EXPOSE` to `7070`, then the app listens for connections on port 7070.
 
-If you do not specify a port in the `EXPOSE` directive, then the app listens on the default port 8080.
+If you do not specify a port in the `EXPOSE` directive, then the app listens on the value of the `PORT`
+environment variable as determined by Cloud Foundry.
+ 
+If you set the `PORT` environment variable via an `ENV` directive in a Dockerfile, Cloud Foundry overrides 
+the value with the system-determined value.
 
-When specified for a Docker image app, the [PORT](./environment-variable.html#PORT) environment variable is ignored by Cloud Foundry. 
-
-Only one port can be exposed by the app. If you specify more than one port in the `EXPOSE` directive, then the app fails to start.
+Cloud Foundry supports only one exposed port on the image. 
 
 ##<a id='public'></a>Push a Docker Image From Docker Hub
 

@@ -24,17 +24,25 @@ To push apps with Docker, you need the following:
 
     <p class="note"><strong>Note</strong>: If the total size of the Docker image filesystem layers exceeds the disk quota, the app instances do not start.</p>
 
-  * The following port numbers match:
-
-      * The [EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) port, set in the image's Dockerfile, for the container to expose.
-
-      * The [PORT](./environment-variable.html#PORT) environment variable set for the app to listen on. If the app does not specify a `PORT`, Cloud Foundry uses the default port `8080`.
-
 * The location of the Docker image on [Docker Hub](https://hub.docker.com) or another Docker registry. <% vars.docker_auth1 %>
 
 * A registry that supports the [Docker Registry HTTP API V2](https://docs.docker.com/registry/spec/api/) and presents a valid certificate for HTTPS traffic.
 
 <p class="note"><strong>Note</strong>: If you want to log in to your app container using the <code>cf ssh</code> command, a shell such as <code>sh</code> or <code>bash</code> must be available in the container. The SSH server in the container looks for the following executables in absolute locations or the <code>PATH</code> environment variable: <code>/bin/bash</code>, <code>/usr/local/bin/bash</code>, <code>/bin/sh</code>, <code>bash</code>, and <code>sh</code>.</p>
+
+## <a id='port_config'></a>Port Configuration
+
+By default, apps on Cloud Foundry listen for connections on port 8080.
+
+When configuring a Docker image for Cloud Foundry, you can override this default by specifying 
+the [EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) directive in the image Dockerfile. 
+If you specify the `EXPOSE` directive, then the corresponding app pushed to Cloud Foundry listens on that exposed port. For example, if you set `EXPOSE` to `7070`, then the app listens for connections on port 7070.
+
+If you do not specify a port in the `EXPOSE` directive, then the app listens on the default port 8080.
+
+When specified for a Docker image app, the [PORT](./environment-variable.html#PORT) environment variable is ignored by Cloud Foundry. 
+
+Only one port can be exposed by the app. If you specify more than one port in the `EXPOSE` directive, then the app fails to start.
 
 ##<a id='public'></a>Push a Docker Image From Docker Hub
 

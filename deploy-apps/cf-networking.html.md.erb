@@ -3,23 +3,31 @@ title: Administering Container-to-Container Networking
 owner: Container-to-Container Networking
 ---
 
+<div class="quick-links">
+<ul>
+<% if vars.product_name == 'CF' %>
+  <li><a href="#enable">Enable Container-to-Container Networking</a>
+  <li><a href="#logging">Manage Logging for Container-to-Container Networking</a>
+<% end %>
+<li><a href="#create-policies">Create Policies for Container-to-Container Networking</a></li>
+</ul>
+</div>
+
 This topic describes how to configure the Container-to-Container Networking feature. For an overview of how Container-to-Container Networking works, see the [Understanding Container-to-Container Networking](../../concepts/understand-cf-networking.html) topic.
 
-<% if vars.product_name == 'CF' %>
-##<a id="enable"></a>Enable Container-to-Container Networking
+<%= vars.app_traffic_logging %>
 
+<% if vars.product_name == 'CF' %>
 <%= partial 'c2c_oss_enable' %>
 <% else %>
 <% end %>
 
 <% if vars.product_name == 'CF' %>
-##<a id="logging"></a>Manage Logging for Container-to-Container Networking
-
 <%= partial 'c2c_oss_logging' %>
 <% else %>
 <% end %>
 
-##<a id="create-policies"></a>Create Policies for Container-to-Container Networking
+##<a name="create-policies"></a>Create Policies for Container-to-Container Networking
 
 This section describes how to create and modify Container-to-Container Networking policies using the Cloud Foundry Command Line Interface (cf CLI).
 

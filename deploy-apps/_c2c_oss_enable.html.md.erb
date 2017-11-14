@@ -25,7 +25,7 @@ If your Cloud Foundry (CF) deployment runs on an IaaS, follow these steps to ena
 You can use a database within your Cloud Controller database instance or create a different instance, such as Amazon RDS.</li>
 
     <li>Target your BOSH Director using the BOSH CLI:<br>
-    <pre class="terminal">$ bosh target BOSH-DIRECTOR-IP </pre>
+    <pre class="terminal">$ bosh alias-env BOSH-DIRECTOR-IP </pre>
     </li>
 
     <li>If you have not already, upload a stemcell that uses Linux kernel 4.4, such as stemcell 3263.2 or later:<br>
@@ -366,15 +366,15 @@ $ ./generate_diego.sh
 <li>
 Enter the following command to target your BOSH director:
 <pre class="terminal">
-$ bosh target BOSH-DIRECTOR-IP
+$ bosh alias-env BOSH-DIRECTOR-IP
 </pre>
 For example,
-<pre class="terminal">$ bosh target 192.0.2.1</pre>
+<pre class="terminal">$ bosh alias-env 192.0.2.1</pre>
 </li>
 <li>
 Enter the following command to set your CF deployment to the manifest you generated.
 <pre class="terminal">
-$ bosh deployment ${output_path}/cf.yml
+$ bosh -e MY-ENV -d MY-DEPLOYMENT ${output_path}/cf.yml
 </pre>
 </li>
 <li>
@@ -384,7 +384,7 @@ Enter the following command to deploy CF.
 <li>
 Enter the following command to set your Diego deployment to the manifest you generated.
 <pre class="terminal">
-$ bosh deployment ${output_path}/diego.yml
+$ bosh -e MY-ENV -d MY-DEPLOYMENT ${output_path}/diego.yml
 </pre>
 </li>
 <li>

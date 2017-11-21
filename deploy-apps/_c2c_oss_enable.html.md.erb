@@ -99,9 +99,9 @@ cf_networking_overrides:
           REPLACE-WITH-CLIENT-CERTIFICATE
           -----END CERTIFICATE-----
         client_key: |
-          -----BEGIN RSA PRIVATE KEY-----
+          -----BEGIN EXAMPLE RSA PRIVATE KEY-----
           REPLACE-WITH-CLIENT-KEY
-          -----END RSA PRIVATE KEY-----
+          -----END EXAMPLE RSA PRIVATE KEY-----
       garden_external_networker:
         cni_plugin_dir: /var/vcap/packages/flannel/bin
         cni_config_dir: /var/vcap/jobs/cni-flannel/config/cni
@@ -131,9 +131,9 @@ cf_networking_overrides:
           REPLACE-WITH-SERVER-CERT
           -----END CERTIFICATE-----
         server_key: |
-          -----BEGIN RSA PRIVATE KEY-----
+          -----BEGIN EXAMPLE RSA PRIVATE KEY-----
           REPLACE-WITH-SERVER-KEY
-          -----END RSA PRIVATE KEY-----
+          -----END EXAMPLE RSA PRIVATE KEY-----
   garden_properties:
     network_plugin: /var/vcap/packages/runc-cni/bin/garden-external-networker
     network_plugin_extra_args:
@@ -207,9 +207,9 @@ properties:
         REPLACE-WITH-CLIENT-CERTIFICATE
         -----END CERTIFICATE-----
       client_key: |
-        -----BEGIN RSA PRIVATE KEY-----
+        -----BEGIN EXAMPLE RSA PRIVATE KEY-----
         REPLACE-WITH-CLIENT-KEY
-        -----END RSA PRIVATE KEY-----</code></pre></td>
+        -----END EXAMPLE RSA PRIVATE KEY-----</code></pre></td>
     <td>Copy in certificates and keys for the policy agent.
         The policy agent communicates with the policy server through TLS.
         See the <a href="../../concepts/understand-cf-networking.html#architecture">Architecture</a> section for more information.
@@ -287,9 +287,9 @@ database:
     REPLACE-WITH-SERVER-CERT
     -----END CERTIFICATE-----
   server_key: |
-    -----BEGIN RSA PRIVATE KEY-----
+    -----BEGIN EXAMPLE RSA PRIVATE KEY-----
     REPLACE-WITH-SERVER-KEY
-    -----END RSA PRIVATE KEY-----
+    -----END EXAMPLE RSA PRIVATE KEY-----
 garden_external_networker:
   cni_plugin_dir: /var/vcap/packages/flannel/bin
   cni_config_dir: /var/vcap/jobs/cni-flannel/config/cni

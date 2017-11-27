@@ -4,6 +4,12 @@ title: Trusted System Certificates
 
 <strong><%= modified_date %></strong>
 
-The Cloud Foundry Administrator can deploy a set of trusted system certificates to be made available in Linux-based application instances running on the Diego backend. Such instances include buildpack-based apps using the cflinuxfs2 stack and Docker-image-based apps. 
+A Cloud Foundry Administrator can deploy a set of trusted system certificates. These trusted certificates are available in Linux-based application instances running on the Diego backend. Such instances include buildpack-based apps using the cflinuxfs2 stack and Docker-image-based apps. 
 
-If the administrator has configured these certificates, they will be available inside the instance containers as files with extension `.crt` in the read-only `/etc/cf-system-certificates` directory. For cflinuxfs2-based apps, these certificates will also be installed directly in the `/etc/ssl/certs` directory, and so will be available automatically to libraries such as `openssl` that respect that trust store. If the administrator has configured these certificates, the location of the certificates is also provided in the environment variable `CF_SYSTEM_CERT_PATH` on the instance container.
+If the administrator configures these certificates, they are available inside the instance containers as files with extension `.crt` in the read-only `/etc/cf-system-certificates` directory. 
+
+For cflinuxfs2-based apps, these certificates are also installed directly in the `/etc/ssl/certs` directory, and are available automatically to libraries such as `openssl` that respect that trust store. If the administrator configure these certificates, the location of the certificates is provided in the environment variable `CF_SYSTEM_CERT_PATH` on the instance container.
+
+<% if vars.product_name == "CF" %>
+  <%= partial "link-configure-trusted-certificates" %>
+<% end %>

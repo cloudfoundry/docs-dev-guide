@@ -111,7 +111,7 @@ The following table describes the types of health checks available for applicati
 <tr>
 <td><code>http</code></td>
 <td>The app can provide an <code>HTTP 200</code> response.</td>
-<td>The <code>http</code> health check performs a GET request to the configured http endpoint. When the health check receives an <code>HTTP 200</code> response, the app is declared healthy. We recommend using the <code>http</code> health check type whenever possible. A healthy HTTP response ensures that the web app is ready to serve HTTP requests. The configured endpoint must respond within 1 second to be considered healthy.</td>
+<td>The <code>http</code> health check performs a GET request to the configured HTTP endpoint on the app's default port. When the health check receives an <code>HTTP 200</code> response, the app is declared healthy. We recommend using the <code>http</code> health check type whenever possible. A healthy HTTP response ensures that the web app is ready to serve HTTP requests. The configured endpoint must respond within 1 second to be considered healthy.</td>
 </tr>
 <tr>
 <td><code>port</code></td>
@@ -136,4 +136,6 @@ The value configured for the health check timeout is the amount of time allowed 
 
 Only used by `http` type, the `--endpoint` flag of the `cf set-health-check` command specifies the path portion of a URI that must be served by the app and return `HTTP 200` when the app is healthy.
 
+<p class="note"><strong>Note</strong>:This command will only check the health of the default port.</p>
 
+<p class="note"><strong>Note</strong>:For HTTP apps, we recommend setting the /health endpoint to <code>http</code> instead of a simple port check.</p>

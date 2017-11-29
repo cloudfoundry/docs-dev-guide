@@ -8,19 +8,17 @@ owner: Diego
 This topic describes how to use the 
 [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html) to push an app with a new or updated Docker image. Cloud Foundry then uses the Docker image to create containers for the app.
 
-See the [Using Docker in Cloud Foundry](../../adminguide/docker.html) topic for an explanation of how Docker works in Cloud Foundry.
-
 ##<a id='requirements'></a>Requirements
 
 To push apps with Docker, you need the following:
  
-* A Cloud Foundry (CF) deployment that has Docker support enabled. To enable Docker support, see the [Enable Docker](../../adminguide/docker.html#enable) section of _Using Docker in Cloud Foundry_.
+* A Cloud Foundry deployment with Docker support enabled. 
 
 * A Docker image that meets the following requirements:
 
   * The Docker image must contain an `/etc/passwd` file with an entry for the `root` user. In addition, the home directory and the shell for that `root` user  must be present in the image filesystem.
 
-  * The total size of the Docker image filesystem layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2048 MB per app.
+  * The total size of the Docker image filesystem layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2048&nbsp;MB per app.
 
     <p class="note"><strong>Note</strong>: If the total size of the Docker image filesystem layers exceeds the disk quota, the app instances do not start.</p>
 

@@ -327,7 +327,7 @@ set -e -x -u
 
 environment_path=STUBS-DIRECTORY
 output_path=MANIFEST-DIRECTORY
-diego_release_path=LOCAL-DIEGO-REPO
+diego_release_path=LOCAL-DIEGO-REPOSIORY
 
 pushd cf-release
   ./scripts/generate_deployment_manifest aws \
@@ -355,7 +355,7 @@ Replace the variables as follows:<br>
 <ul>
 <li><code>STUBS-DIRECTORY</code>: The directory containing your stubs for CF, Diego, and Container-to-Container Networking.</li>
 <li><code>MANIFEST-DIRECTORY</code>: The directory where you want the manifest created.</li>
-<li><code>LOCAL-DIEGO-REPO</code>: The directory of the local copy of the <code>diego-release</code> repository.</li>
+<li><code>LOCAL-DIEGO-REPOSIORY</code>: The directory of the local copy of the <code>diego-release</code> repository.</li>
 </ul>
 </li>
 <li>
@@ -402,7 +402,7 @@ If your CF deployment runs on BOSH-Lite, follow these steps to enable Container-
 <li> Upload the latest BOSH-Lite stemcell:
   <pre class="terminal">$ bosh <%= vars.bosh_upload_stemcell %> http<span>s:</span>//bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent</pre>
   </li>
-  <li>To clone the required CF release repos to your workspace, enter the following commands:<br>
+  <li>To clone the required CF release repositories to your workspace, enter the following commands:<br>
   <pre class="terminal">$ git clone https<span>:</span>//github.com/cloudfoundry/diego-release<br>$ git clone https<span>:</span>//github.com/cloudfoundry/cf-release<br>$ git clone https<span>:</span>//github.com/cloudfoundry-incubator/cf-networking-release</pre></li>
   <li>To enable Container-to-Container Networking on BOSH-Lite, navigate to the `cf-networking-release` directory and run the deploy script:<br>
   <pre class="terminal">$ cd ~/workspace/cf-networking-release<br>$ ./scripts/deploy-to-bosh-lite</pre></li>

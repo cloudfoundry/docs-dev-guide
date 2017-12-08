@@ -5,7 +5,7 @@ owner: PCF Metrics
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to drain logs from Cloud Foundry to a third party log management service.
+This topic describes how to drain logs from Cloud Foundry to a third-party log management service.
 
 Cloud Foundry aggregates logs for all instances of your applications as well as for requests made to your applications through internal components of Cloud Foundry. For example, when the Cloud Foundry Router forwards a request to an application, the Router records that event in the log stream for that app. Run the following command to access the log stream for an app in the terminal:
 
@@ -60,7 +60,7 @@ typically provide a syslog URL to use as an endpoint for incoming log data. You 
 
 ### Step 2: Create a User-provided Service Instance
 
-Create a user-provided service instance using the [cf CLI](../../cf-cli/) `create-user-provided-service` command with the `-l` flag and the syslog URL that you obtained in Step 1: Configure the Log Management Service.
+Create a user-provided service instance using the Cloud Foundry Command Line Interface (cf CLI) `create-user-provided-service` command with the `-l` flag and the syslog URL that you obtained in _Step 1: Configure the Log Management Service_.
 The `-l` flag configures the syslog drain.
 
 <pre class="terminal">

@@ -450,7 +450,7 @@ The PORT and HOSTNAME will be randomly generated.</td>
 
 Use the `stack` attribute to specify which stack to deploy your application to.
 
-To see a list of available stacks, run `cf stacks` from the cf cli.
+To see a list of available stacks, run `cf stacks` from the cf CLI.
 
 <pre>
 ---
@@ -529,7 +529,7 @@ Binding to a service instance is a special case of setting an environment variab
 
 ##<a id='multi-apps'></a>Describing Multiple Applications with One Manifest ##
 
-You can deploy multiple applications with one `cf push` command by describing them in a single manifest. In doing so, you need to pay extra attention to directory structure and path lines in the manifest.
+You can deploy multiple applications with one `cf push` command by describing the apps in a single manifest. 
 
 Suppose you want to deploy two applications called respectively spark and flame, and you want Cloud Foundry to create and start spark before flame. You accomplish this by listing spark first in the manifest.
 

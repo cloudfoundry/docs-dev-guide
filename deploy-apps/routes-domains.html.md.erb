@@ -192,22 +192,22 @@ If the developer maps the first route with path `products` to the `products` app
 
 #### <a id='create-route-with-port'></a>Create a TCP Route with a Port
 
-A developer can create a TCP route for `tcp.<%=vars.app_domain%>` on an arbitrary port with the following command. If the clients of the app can accommodate addressing an arbitrary port, then developers should use the `--random-port` to instruct <%=vars.product_short%> to pick a port for your route.
+A developer can create a TCP route for `<%=vars.tcp_app_domain%>` on an arbitrary port with the following command. If the clients of the app can accommodate addressing an arbitrary port, then developers should use the `--random-port` to instruct <%=vars.product_short%> to pick a port for your route.
 
 <pre class="terminal">
-$ cf create-route my-space tcp.<%=vars.app_domain%> --random-port
-Creating route tcp.<%=vars.app_domain%> for org my-org / space my-space as user@example.com...
+$ cf create-route my-space <%=vars.tcp_app_domain%> --random-port
+Creating route <%=vars.tcp_app_domain%> for org my-org / space my-space as user@example.com...
 OK
-Route tcp.<%=vars.app_domain%>:60034 has been created
+Route <%=vars.tcp_app_domain%>:60034 has been created
 </pre>
 
-In this example, <%=vars.product_short%> routes requests to `tcp.<%=vars.app_domain%>:60034` to apps mapped to this route.
+In this example, <%=vars.product_short%> routes requests to `<%=vars.tcp_app_domain%>:60034` to apps mapped to this route.
 
-To request a specific port, a developer can use the `--port` flag, so long as the port is not reserved for another space. The following command creates a TCP route for `tcp.<%=vars.app_domain%>` on port 60035:
+To request a specific port, a developer can use the `--port` flag, so long as the port is not reserved for another space. The following command creates a TCP route for `<%=vars.tcp_app_domain%>` on port 60035:
 
 <pre class="terminal">
-$ cf create-route my-space tcp.<%=vars.app_domain%> --port 60035
-Creating route tcp.<%=vars.app_domain%>:60035 for org my-org / space my-space as user@example.com...
+$ cf create-route my-space <%=vars.tcp_app_domain%> --port 60035
+Creating route <%=vars.tcp_app_domain%>:60035 for org my-org / space my-space as user@example.com...
 OK
 </pre>
 
@@ -273,7 +273,7 @@ Given the following routes and applications:
     <td>storefront</td>
   </tr>
   <tr>
-    <td>tcp.<%=vars.app_domain%>:60000</td>
+    <td><%=vars.tcp_app_domain%>:60000</td>
     <td>tcp-app</td>
   </tr>
 </table>
@@ -284,7 +284,7 @@ The following commands map the above routes to their respective apps. Developers
 $ cf map-route products <%=vars.app_domain%> --hostname store --path products
 $ cf map-route orders <%=vars.app_domain%> --hostname store --path orders
 $ cf map-route storefront <%=vars.app_domain%> --hostname store
-$ cf map-route tcp-app tcp.<%=vars.app_domain%> --port 60000
+$ cf map-route tcp-app <%=vars.tcp_app_domain%> --port 60000
 </pre>
 
 The following command maps the wildcard route `*.foo.<%=vars.app_domain%>` to the app `myfallbackapp`.
@@ -312,7 +312,7 @@ $ cf push myapp -d <%=vars.private_app_domain%> --hostname foo
 To map a TCP route during `push`, specify a TCP domain and request a random port using `--random-route`. To specify a port, push the app without a route, then create and map the route manually by following the steps in the [Create a TCP Route with a Port](#create-route-with-port) section.
 
 <pre class="terminal">
-$ cf push tcp-app -d tcp.<%=vars.app_domain%> --random-route
+$ cf push tcp-app -d <%=vars.tcp_app_domain%> --random-route
 </pre>
 
 #### <a id='map-route-with-manifest'></a>Map a Route Using Application Manifest ####
@@ -338,7 +338,7 @@ $ cf unmap-route tcp-app <%=vars.private_app_domain%> --hostname myapp --path my
 To unmap a TCP route from an app, identify the route using the domain and port:
 
 <pre class="terminal">
-$ cf unmap-route tcp-app tcp.<%=vars.app_domain%> --port 60000
+$ cf unmap-route tcp-app <%=vars.tcp_app_domain%> --port 60000
 </pre>
 
 ### <a id='delete-route'></a>Delete a Route ###
@@ -398,11 +398,11 @@ $ cf domains
 Getting domains in org my-org as user@example.com... OK
 name                     status   type
 <%=vars.app_domain%>        shared
-tcp.<%=vars.app_domain%>    shared   tcp
+<%=vars.tcp_app_domain%>    shared   tcp
 <%=vars.private_app_domain%>       owned
 </pre>
 
-This example displays three available domains: a shared HTTP domain `<%=vars.app_domain%>`, a shared TCP domain `tcp.<%=vars.app_domain%>`, and a private domain `<%=vars.private_app_domain%>`. See [Shared Domains](#shared-domains) and [Private Domains](#private-domains).
+This example displays three available domains: a shared HTTP domain `<%=vars.app_domain%>`, a shared TCP domain `<%=vars.tcp_app_domain%>`, and a private domain `<%=vars.private_app_domain%>`. See [Shared Domains](#shared-domains) and [Private Domains](#private-domains).
 
 ### <a id='http-vs-tcp-shared-domains'></a>HTTP vs. TCP Domains ###
 
@@ -436,7 +436,7 @@ default-tcp   tcp
 </pre>
 Then create the shared domain using the `--router-group` option to associate the domain with the TCP router group.
 <pre class="terminal">
-$ cf create-shared-domain tcp.<%=vars.app_domain%> --router-group default-tcp
+$ cf create-shared-domain <%=vars.tcp_app_domain%> --router-group default-tcp
 </pre>
 
 

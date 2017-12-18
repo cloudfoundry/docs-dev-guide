@@ -136,6 +136,6 @@ The value configured for the health check timeout is the amount of time allowed 
 
 Only used by `http` type, the `--endpoint` flag of the `cf set-health-check` command specifies the path portion of a URI that must be served by the app and return `HTTP 200` when the app is healthy.
 
-<p class="note"><strong>Note</strong>: This command will only check the health of the default port.</p>
+<p class="note"><strong>Note</strong>: This command will only check the health of the default port of the app.</p>
 
-<p class="note"><strong>Note</strong>: For HTTP apps, we recommend setting the /health endpoint to <code>http</code> instead of a simple port check.</p>
+<p class="note"><strong>Note</strong>: For HTTP apps, we recommend setting the health check type to <code>http</code> instead of a simple port check.</p>

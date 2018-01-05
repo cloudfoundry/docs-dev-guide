@@ -1,9 +1,23 @@
 ---
-title: Sharing Service Instances
+title: Sharing Service Instances (Experimental)
 owner: Core Services
 ---
 
 <strong><%= modified_date %></strong>
+
+<style>
+    .note.warning {
+        background-color: #fdd;
+        border-color: #fbb
+    }
+
+    .note.warning:before {
+        color: #f99;
+     }
+</style>
+
+<p class="note warning"><strong>WARNING</strong>: This feature is experimental and may be removed at any time without notice.
+	Use at your own risk.</p>
 
 ## <a id="overview"></a> Overview
 
@@ -38,7 +52,7 @@ $ cf enable-feature-flag service_instance_sharing
 
 ## <a id="sharing"></a> Sharing a Service Instance
 
-To share a service instance, run the command:
+To share a service instance, run the following experimental cf CLI command:
 
 <pre class="terminal">
 $ cf v3-share-service -s OTHER_SPACE [-o OTHER_ORG] SERVICE_INSTANCE
@@ -51,8 +65,8 @@ instance with the same name already exists.
 instance into a space, the space must have access to the service and service plan of the service 
 instance that you are sharing (use `cf enable-service-access`). 
 
-* If a service instance was created using a service or service plan that you no longer have access to, 
-you will still be able to share that service instance.
+* If you no longer have access to a service or service plan used to create a service instance, 
+you can no longer share that service instance. 
 
 
 ## <a id="unsharing"></a> Unsharing a Service Instance
@@ -65,7 +79,7 @@ how many bindings exist in the spaces the service instance is shared into.</p>
 
 You cannot delete or rename a service instance until it is unshared from all spaces.
 
-To unshare a service instance, run the following:
+To unshare a service instance, run the following experimental cf CLI command:
 
 <pre class="terminal">
 $ cf v3-unshare-service -s OTHER_SPACE [-o OTHER_ORG] SERVICE_INSTANCE
@@ -103,7 +117,7 @@ This will only prevent new shares from being created. To remove existing shares,
 
 The script below finds all service instances that are shared, 
 and for each space that the service instance is shared into, all service 
-bindings to that service instance are deleted, and all sharing relationships are deleted. 
+bindings to that service instance are deleted, and all shares are deleted. 
 
 If a service binding is not successfully deleted, the script continues trying to unshare subsequent service instances. 
 To use this script, you must meet all of these requirements:
@@ -117,7 +131,6 @@ as an administrator.
 Use the script at your own risk.</p>
 
 ```
-
 #!/usr/bin/env bash
 
 set -u
@@ -132,7 +145,7 @@ for instance_guid in $(cf curl /v3/service_instances | jq -r '.resources[].guid'
     echo "Unsharing service instance $instance_guid from space $space_guid"
 
     set +e
-    cf curl -X DELETE "/v3/service_instances/${instance_guid}/relationships/shared_spaces/${space_guid}"
+    cf curl -X DELETE "/v3/service_instances/$instance_guid/relationships/shared_spaces/$space_guid"
     set -e
   done
 done

@@ -132,7 +132,7 @@ for instance_guid in $(cf curl /v3/service_instances | jq -r '.resources[].guid'
     echo "Unsharing service instance $instance_guid from space $space_guid"
 
     set +e
-    cf curl -X DELETE "/v3/service_instances/${instance_guid}/relationships/shared_spaces/${space_guid}"
+    cf curl -X DELETE "/v3/service_instances/$instance_guid/relationships/shared_spaces/$space_guid"
     set -e
   done
 done

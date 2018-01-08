@@ -247,6 +247,9 @@ Route store.<%=vars.app_domain%>/products does exist
 
 For an app to receive requests to a route, developers must map the route to the app with the [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html) command. If the route does not already exist, this command creates it.
 
+<p class="note"><strong>Note</strong>: Any app that is not routed to port <code>80</code> or port <code>443</code> must be explicitly mapped using the <code>cf map-route</code> command . Otherwise, the route is automatically mapped to port <code>443</code>.
+</p>
+
 Developers can create and reserve routes for later use by following the steps in the <a href="#map-route-manually">Manually Map a Route</a> section. Or they can map routes to their app immediately as part of a push by following the steps in the <a href="#map-route-on-push">Map a Route with Application Push</a> section.
 
 <p class="note"><strong>Note</strong>: Changes to route mappings are executed asynchronously. On startup, an application will be accessible at its route within a few seconds. Similarly, upon mapping a new route to a running app, the app will be accessible at this route within a few seconds of the CLI exiting successfully.</p>

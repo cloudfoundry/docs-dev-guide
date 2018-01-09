@@ -525,6 +525,7 @@ In manifests where multiple applications share settings or services, you may see
 You can declare shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an alias.
 
 <pre>
+---
 defaults: &amp;defaults
   buildpack: staticfile_buildpack
   memory: 1G
@@ -617,7 +618,7 @@ Previously, you could manage duplicated settings in YAML files by “promoting�
 The following example illustrates how promoted content was used to manage duplicated settings.
 
 <pre>
-  ...
+---
 # all applications use these settings and services
 domain: shared-domain.example.com
 memory: 1G
@@ -638,6 +639,7 @@ Now, you can use YAML aliases instead.
 The following example illustrates how to declare shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an alias.
 
 <pre>
+---
 defaults: &amp;defaults
   buildpack: staticfile_buildpack
   memory: 1G
@@ -657,6 +659,7 @@ When pushing the app, make explicit the attributes in each app’s declaration. 
 Previously, you could specify routes by listing them all at once using the `routes` attribute, or by using their hosts and domains as shown below.
 
 <pre>
+---
 applications
 - name: webapp
   host: www
@@ -677,6 +680,7 @@ The following route component attributes have been deprecated:
 Now you can only specify routes by using the `routes` attribute:
 
 <pre>
+---
 applications
 - name: webapp
   routes:

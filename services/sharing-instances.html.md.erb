@@ -36,7 +36,7 @@ and the two applications could begin publishing and receiving messages from one 
 
 * Service instances can be shared into multiple spaces, across orgs.
 
-* Developers and administrators can share service instances between spaces
+* Developers and administrators can share and unshare service instances between spaces
 in which they have the SpaceDeveloper role. 
 
 * Developers who have a service instance shared with them can only bind and unbind to that 
@@ -52,10 +52,12 @@ $ cf enable-feature-flag service_instance_sharing
 
 ## <a id="sharing"></a> Sharing a Service Instance
 
-To share a service instance, run the following experimental cf CLI command:
+You can share a service instance in one space to another if you have the SpaceDeveloper role in both spaces.
+
+To share a service instance to another space, run the following experimental cf CLI command:
 
 <pre class="terminal">
-$ cf v3-share-service -s OTHER_SPACE [-o OTHER_ORG] SERVICE_INSTANCE
+$ cf v3-share-service SERVICE_INSTANCE -s OTHER_SPACE [-o OTHER_ORG] 
 </pre>
 
 * You cannot share a service instance into a space where a service 
@@ -77,12 +79,14 @@ This could cause applications to fail. Before unsharing a service instance,
 run <code>cf service SERVICE_INSTANCE</code> to see 
 how many bindings exist in the spaces the service instance is shared into.</p>
 
+You can unshare a service instance that has been shared from one space to another 
+if you have the SpaceDeveloper role in both spaces.
 You cannot delete or rename a service instance until it is unshared from all spaces.
 
 To unshare a service instance, run the following experimental cf CLI command:
 
 <pre class="terminal">
-$ cf v3-unshare-service -s OTHER_SPACE [-o OTHER_ORG] SERVICE_INSTANCE
+$ cf v3-unshare-service SERVICE_INSTANCE -s OTHER_SPACE [-o OTHER_ORG] 
 </pre> 
 
 ## <a id="security"></a> Security Considerations
@@ -120,11 +124,9 @@ and for each space that the service instance is shared into, all service
 bindings to that service instance are deleted, and all shares are deleted. 
 
 If a service binding is not successfully deleted, the script continues trying to unshare subsequent service instances. 
-To use this script, you must meet all of these requirements:
+To use this script, you must:
 
-* Logged in 
-as an administrator. 
-* Using a CF CLI version greater than v280 
+* Be logged in as an administrator 
 * Have jq installed
 
 <p class="note"><strong>Note</strong>: This script has been tested in macOS Sierra 10.12.4 and Ubuntu 14.04.5. 

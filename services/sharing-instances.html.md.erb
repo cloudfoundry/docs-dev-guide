@@ -36,7 +36,7 @@ and the two applications could begin publishing and receiving messages from one 
 
 * Service instances can be shared into multiple spaces, across orgs.
 
-* Developers and administrators can share and unshare service instances between spaces
+* Developers and administrators can share service instances between spaces
 in which they have the SpaceDeveloper role. 
 
 * Developers who have a service instance shared with them can only bind and unbind to that 
@@ -79,15 +79,18 @@ This could cause applications to fail. Before unsharing a service instance,
 run <code>cf service SERVICE_INSTANCE</code> to see 
 how many bindings exist in the spaces the service instance is shared into.</p>
 
-You can unshare a service instance that has been shared from one space to another 
-if you have the SpaceDeveloper role in both spaces.
+You can unshare a service instance 
+if you have the SpaceDeveloper role in the space where the original service was shared from.
+
 You cannot delete or rename a service instance until it is unshared from all spaces.
 
 To unshare a service instance, run the following experimental cf CLI command:
 
 <pre class="terminal">
-$ cf v3-unshare-service SERVICE_INSTANCE -s OTHER_SPACE [-o OTHER_ORG] 
+$ cf v3-unshare-service SERVICE_INSTANCE -s OTHER_SPACE [-o OTHER_ORG] [-f]
 </pre> 
+
+The optional `-f` flag is to force the command.
 
 ## <a id="security"></a> Security Considerations
 
@@ -112,7 +115,7 @@ see [Enabling Service Instance Sharing](../../services/enable-sharing.html).
 To disable service instance sharing, an administrator runs the following:
 
 <pre class="terminal">
-	$ cf disable-feature-flag service_instance_sharing
+$ cf disable-feature-flag service_instance_sharing
 </pre>
 
 This will only prevent new shares from being created. To remove existing shares, see [Deleting All Shares](#deleting).

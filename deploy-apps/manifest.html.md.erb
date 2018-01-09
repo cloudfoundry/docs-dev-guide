@@ -114,6 +114,8 @@ In general, you can think of manifests as just another input to `cf push`, to be
 
 This section explains how to describe optional application attributes in manifests. Each of these attributes can also be specified by a command line option. Command line options override the manifest.
 
+<p class='note'><strong>Note:</strong> The route component attributes `domain`, `domains`, `host`, `hosts`, and `no-hostname` have been deprecated in favor of the `routes` attribute. For more information, see [Deprecated App Manifest Features](#deprecated)</a>.</p>
+
 ###<a id='buildpack'></a>buildpack ###
 
 If your application requires a custom buildpack, you can use the `buildpack` attribute to specify it in one of three ways:
@@ -211,36 +213,6 @@ The manifest attribute `docker.username` is optional.  If it is used, then the p
 #### Manifest Attributes
 The `docker` attribute cannot be used in conjunction with the following attributes: `buildpack` and `path`. An error will result.
 
-###<a id='domain'></a>domain ###
-
-Every `cf push` deploys applications to one particular Cloud Foundry instance.
-Every Cloud Foundry instance may have a shared domain set by an admin.
-Unless you specify a domain, Cloud Foundry incorporates that shared domain in the route to your application.
-
-You can use the `domain` attribute when you want your application to be served from a domain other than the default shared domain.
-
-<pre>
----
-  ...
-  domain: unique-example.com
-</pre>
-
-The command line option that overrides this attribute is `-d`.
-
-###<a id='domains'></a>domains ###
-
-Use the `domains` attribute to provide multiple domains. If you define both `domain` and `domains` attributes, Cloud Foundry creates routes for domains defined in both of these fields.
-
-<pre>
----
-  ...
-  domains:
-  - domain-example1.com
-  - domain-example2.org
-</pre>
-
-The command line option that overrides this attribute is `-d`.
-
 ###<a id='health-check-http-endpoint'></a>health-check-http-endpoint ###
 
 Use the `health-check-http-endpoint` attribute to customize the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint` attribute, 
@@ -268,48 +240,6 @@ The command line option that overrides this attribute is `-u`.
 
 The value of `none` is deprecated in favor of `process`.
 
-###<a id='host'></a>host ###
-
-Use the `host` attribute to provide a hostname, or subdomain, in the form of a string. This segment of a route helps to ensure that the route is unique. If you do not provide a hostname, the URL for the app takes the form of `APP-NAME.DOMAIN`.
-
-<pre>
----
-  ...
-  host: my-app
-</pre>
-
-The command line option that overrides this attribute is `-n`.
-
-<p class="note"><strong>Note</strong>: To specify a <a href="./routes-domains.html#create-route-with-wildcard-hostname">wildcard hostname</a>, place quotes around the asterisk. Example: <code>host: '*'</code>.</p>
-
-###<a id='hosts'></a>hosts ###
-
-Use the `hosts` attribute to provide multiple hostnames, or subdomains. Each hostname generates a unique route for the app. You can use `hosts` conjunction with `host`. If you define both attributes, Cloud Foundry creates routes for hostnames defined in both `host` and `hosts`.
-
-<pre>
----
-  ...
-  hosts:
-  - app-host1
-  - app-host2
-</pre>
-
-The command line option that overrides this attribute is `-n`.
-
-###<a id='instances'></a>instances ###
-
-Use the `instances` attribute to specify the number of app instances that you want to start upon push:
-
-<pre>
----
-  ...
-  instances: 2
-</pre>
-
-We recommend that you run at least two instances of any apps for which fault tolerance matters.
-
-The command line option that overrides this attribute is `-i`.
-
 ###<a id='memory'></a>memory ###
 
 Use the `memory` attribute to specify the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case. For example:
@@ -323,18 +253,6 @@ Use the `memory` attribute to specify the memory limit for all instances of an a
 The default memory limit is 1G. You might want to specify a smaller limit to conserve <%=vars.quota_resource%> if you know that your app instances do not require 1G of memory.
 
 The command line option that overrides this attribute is `-m`.
-
-###<a id='nohosts'></a>no-hostname ###
-
-By default, if you do not provide a hostname, the URL for the app takes the form of `APP-NAME.DOMAIN`. If you want to override this and map the root domain to this app then you can set no-hostname as true.
-
-<pre>
----
-  ...
-  no-hostname: true
-</pre>
-
-The command line option that overrides this attribute is `--no-hostname`.
 
 ###<a id='no-route'></a>no-route ###
 
@@ -600,33 +518,26 @@ There are only two narrow exceptions:
 
 ##<a id='minimize-duplication'></a>Minimizing Duplication ##
 
-In manifests where multiple applications share settings or services, you begin to see content duplicated. While the manifests still work, duplication increases the risk of typographical errors which cause deployment to fail.
+<p class=“note”><strong>Note:</strong> Promoted content has been deprecated in favor of YAML anchors. For more information, see [Deprecated App Manifest Features](#deprecated).</p>
 
-The cure for this problem is to "promote" the duplicate content—that is, to move it up above the applications block, where it need appear only once. The promoted content applies to all applications described in the manifest. Note that content _in_ the applications block overrides content _above_ the applications block, if the two conflict.
+In manifests where multiple applications share settings or services, you may see duplicated content. While the manifests still work, duplication increases the risk of typographical errors, which cause deployment to fail.
 
-The manifest becomes shorter, more readable, and more maintainable.
-
-Notice how much content in the manifest below has been promoted in this way.
+You can declare shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an alias.
 
 <pre>
----
-  ...
-# all applications use these settings and services
-domain: <%=vars.app_domain%>
-memory: 1G
-instances: 1
-services:
-- clockwork-mysql
+defaults: &amp;defaults
+  buildpack: staticfile_buildpack
+  memory: 1&nbsp;G
+
 applications:
-- name: springtock
-  host: tock09876
-  path: ./spring-music/build/libs/spring-music.war
-- name: springtick
-  host: tick09875
-  path: ./spring-music/build/libs/spring-music.war
+- name: bigapp
+  &lt;&lt;: defaults
+- name: smallapp
+  &lt;&lt;: defaults
+  memory: 256&nbsp;M
 </pre>
 
-In the next section we carry this principle further by distributing content across multiple manifests.
+This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpack but with 256&nbsp;M memory for smallapp and 1&nbsp;G for bigapp.
 
 ##<a id='multi-manifests'></a>Multiple Manifests with Inheritance ##
 
@@ -694,3 +605,72 @@ applications:
 </pre>
 
 <p class='note'><strong>Note</strong>: Inheritance can add an additional level of complexity to manifest creation and maintenance. Comments that precisely explain how the child manifest extends or overrides the descriptions in the parent manifest can alleviate this complexity.</p>
+
+## <a id=‘deprecated’></a> Deprecated App Manifest Features
+
+These app manifest features have been deprecated in favor of existing options.
+
+### <a id=‘yaml-anchors’></a> YAML Anchors Replace Promoted Content
+
+Previously, you could manage duplicated settings in YAML files by “promoting” the duplicate content — that is, by moving it to above the applications block, where it need appear only once.
+
+The following example illustrates how promoted content was used to manage duplicated settings.
+
+<pre>
+  ...
+# all applications use these settings and services
+domain: shared-domain.example.com
+memory: 1G
+instances: 1
+services:
+- clockwork-mysql
+applications:
+- name: springtock
+  host: tock09876
+  path: ./spring-music/build/libs/spring-music.war
+- name: springtick
+  host: tick09875
+  path: ./spring-music/build/libs/spring-music.war
+</pre>
+
+Now, you can use YAML aliases instead.
+            
+The following example illustrates how to declare shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an alias.
+
+<pre>
+defaults: &amp;defaults
+  buildpack: staticfile_buildpack
+  memory: 1&nbsp;G
+
+applications:
+- name: bigapp
+  &lt;&lt;: defaults
+- name: smallapp
+  &lt;&lt;: defaults
+  memory: 256&nbsp;M
+</pre>
+
+When pushing the app, make explicit the attributes in each app’s declaration. To do this, assign the anchors and include the app-level attributes with YAML aliases in each app declaration.
+
+### <a id=‘route-attribute’></a> Attribute `routes` Replaces `domain`, `domains`, `host`, `hosts`, and `no-hostname`
+
+Previously, you could specify routes by listing them all at once using the `routes` attribute, or by using their host(s) and/or domain(s) as shown below.
+
+<pre>
+applications
+- name: webapp
+  host: www
+  domains:
+  - example.com
+  - example.io
+</pre>
+
+The route component attributes above are deprecated. Now you can only specify routes by using the `routes` attribute:
+
+<pre>
+applications
+- name: webapp
+  routes:
+  - route: www.example.com/foo 
+  - route: tcp.example.com:1234
+</pre>

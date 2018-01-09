@@ -606,11 +606,11 @@ applications:
 
 <p class='note'><strong>Note</strong>: Inheritance can add an additional level of complexity to manifest creation and maintenance. Comments that precisely explain how the child manifest extends or overrides the descriptions in the parent manifest can alleviate this complexity.</p>
 
-## <a id=‘deprecated’></a> Deprecated App Manifest Features
+## <a id='deprecated'></a> Deprecated App Manifest Features
 
 These app manifest features have been deprecated in favor of existing options.
 
-### <a id=‘yaml-anchors’></a> YAML Anchors Replace Promoted Content
+### <a id='yaml-anchors'></a> YAML Anchors Replace Promoted Content
 
 Previously, you could manage duplicated settings in YAML files by “promoting” the duplicate content — that is, by moving it to above the applications block, where it need appear only once.
 
@@ -640,19 +640,19 @@ The following example illustrates how to declare shared configuration using a YA
 <pre>
 defaults: &amp;defaults
   buildpack: staticfile_buildpack
-  memory: 1&nbsp;G
+  memory: 1G
 
 applications:
 - name: bigapp
   &lt;&lt;: defaults
 - name: smallapp
   &lt;&lt;: defaults
-  memory: 256&nbsp;M
+  memory: 256M
 </pre>
 
 When pushing the app, make explicit the attributes in each app’s declaration. To do this, assign the anchors and include the app-level attributes with YAML aliases in each app declaration.
 
-### <a id=‘route-attribute’></a> Attribute `routes` Replaces `domain`, `domains`, `host`, `hosts`, and `no-hostname`
+### <a id='route-attribute'></a> Attribute `routes` Replaces `domain`, `domains`, `host`, `hosts`, and `no-hostname`
 
 Previously, you could specify routes by listing them all at once using the `routes` attribute, or by using their host(s) and/or domain(s) as shown below.
 

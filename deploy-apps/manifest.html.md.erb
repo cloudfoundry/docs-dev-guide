@@ -114,7 +114,7 @@ In general, you can think of manifests as just another input to `cf push`, to be
 
 This section explains how to describe optional application attributes in manifests. Each of these attributes can also be specified by a command line option. Command line options override the manifest.
 
-<p class='note'><strong>Note:</strong> The route component attributes `domain`, `domains`, `host`, `hosts`, and `no-hostname` have been deprecated in favor of the `routes` attribute. For more information, see [Deprecated App Manifest Features](#deprecated)</a>.</p>
+<p class='note'><strong>Note:</strong> The route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>, <code>hosts</code>, and <code>no-hostname</code> have been deprecated in favor of the <code>routes</code> attribute. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
 
 ###<a id='buildpack'></a>buildpack ###
 
@@ -518,7 +518,7 @@ There are only two narrow exceptions:
 
 ##<a id='minimize-duplication'></a>Minimizing Duplication ##
 
-<p class=“note”><strong>Note:</strong> Promoted content has been deprecated in favor of YAML anchors. For more information, see [Deprecated App Manifest Features](#deprecated).</p>
+<p class='note'><strong>Note:</strong> Promoted content has been deprecated in favor of YAML anchors. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
 
 In manifests where multiple applications share settings or services, you may see duplicated content. While the manifests still work, duplication increases the risk of typographical errors, which cause deployment to fail.
 
@@ -527,17 +527,17 @@ You can declare shared configuration using a YAML anchor, which the manifest ref
 <pre>
 defaults: &amp;defaults
   buildpack: staticfile_buildpack
-  memory: 1&nbsp;G
+  memory: 1G
 
 applications:
 - name: bigapp
   &lt;&lt;: defaults
 - name: smallapp
   &lt;&lt;: defaults
-  memory: 256&nbsp;M
+  memory: 256M
 </pre>
 
-This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpack but with 256&nbsp;M memory for smallapp and 1&nbsp;G for bigapp.
+This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpack but with 256M memory for smallapp and 1G for bigapp.
 
 ##<a id='multi-manifests'></a>Multiple Manifests with Inheritance ##
 

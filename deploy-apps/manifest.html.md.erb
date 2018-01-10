@@ -542,7 +542,7 @@ This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpac
 
 ##<a id='multi-manifests'></a>Multiple Manifests with Inheritance ##
 
-**IMPORTANT** Inheritance is deprecated. See the section below on app manifest deprecations for more information.
+**IMPORTANT**: Inheritance is deprecated. See [Inheritance is Deprecated](#inheritance-deprecated') for more information.
 
 A single manifest can describe multiple applications. Another powerful technique is to create multiple manifests with inheritance. Here, manifests have parent-child relationships such that children inherit descriptions from a parent. Children can use inherited descriptions as-is, extend them, or override them.
 
@@ -692,8 +692,10 @@ applications
 
 This app manifest feature has been deprecated, and a replacement option is under consideration.
 
-### <a id='inheritance-deprecated'></a> Inheritance is deprecated
+### <a id='inheritance-deprecated'></a> Inheritance is Deprecated
 
-With inheritance, child manifests would inherit configurations from a parent manifest, and they could use inherited configurations as-is, extend them, or override them.
-The CF CLI team is considering replacing Inheritance with Value Substitution, similar to the approach that BOSH and Concourse use. 
+With inheritance, child manifests would inherit configurations from a parent manifest, and the child manifests could use inherited configurations as provided, extend them, or override them.
+
+The cf CLI team is considering replacing Inheritance with Value Substitution, similar to the approach that BOSH and Concourse use. 
+
 If you have feedback on this change, contact the team on the #cli channel on the Cloud Foundry Slack.

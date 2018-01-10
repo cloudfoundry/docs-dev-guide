@@ -542,6 +542,8 @@ This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpac
 
 ##<a id='multi-manifests'></a>Multiple Manifests with Inheritance ##
 
+**IMPORTANT** Inheritance is deprecated. See the section below on app manifest deprecations for more information.
+
 A single manifest can describe multiple applications. Another powerful technique is to create multiple manifests with inheritance. Here, manifests have parent-child relationships such that children inherit descriptions from a parent. Children can use inherited descriptions as-is, extend them, or override them.
 
 Content in the child manifest overrides content in the parent manifest, if the two conflict.

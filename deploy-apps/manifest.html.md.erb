@@ -687,3 +687,11 @@ applications
   - route: www.example.com/foo 
   - route: tcp.example.com:1234
 </pre>
+
+This app manifest feature has been deprecated, and a replacement option is under consideration.
+
+### <a id='inheritance-deprecated'></a> Inheritance is deprecated
+
+With inheritance, child manifests would inherit configurations from a parent manifest, and they could use inherited configurations as-is, extend them, or override them.
+The CF CLI team is considering replacing Inheritance with Value Substitution, similar to the approach that BOSH and Concourse use. 
+If you have feedback on this change, contact the team on the #cli channel on the Cloud Foundry Slack.

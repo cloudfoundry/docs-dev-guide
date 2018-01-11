@@ -74,7 +74,7 @@ If you are a CF admin, you already have the `network.admin` scope. An admin can 
   <% end %>
 <% end %>
 
-To grant all Space Developers permissions to configure network policies, select the **Allow Space Developers to manage network policies** checkbox in the **Application Developer Controls** tab of the PAS tile.
+To grant all Space Developers permissions to configure network policies, edit your BOSH manifest to include the `cf_networking.enable_space_developer_self_service` property and set that property to `true`.
 
 <%= image_tag("self-service.png") %>
 

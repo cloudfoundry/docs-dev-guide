@@ -532,9 +532,9 @@ defaults: &amp;defaults
 
 applications:
 - name: bigapp
-  &lt;&lt;: defaults
+  &lt;&lt;: *defaults
 - name: smallapp
-  &lt;&lt;: defaults
+  &lt;&lt;: *defaults
   memory: 256M
 </pre>
 

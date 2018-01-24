@@ -468,8 +468,16 @@ The key for each service in the JSON document is the same as the value of the
     <th>Description</th>
   </tr>
   <tr>
-    <td><code>name</code></td>
+    <td><code>binding_name</code></td>
+    <td>The name assigned to the service binding by the user.</td>
+  </tr>
+  <tr>
+    <td><code>instance_name</code></td>
     <td>The name assigned to the service instance by the user.</td>
+  </tr>
+  <tr>
+    <td><code>name</code></td>
+    <td>The `binding_name` if it exists; otherwise the `instance_name`.</td>
   </tr>
   <tr>
     <td><code>label</code></td>
@@ -500,7 +508,9 @@ VCAP_SERVICES=
 {
   "elephantsql": [
     {
-      "name": "elephantsql-c6c60",
+      "name": "elephantsql-binding-c6c60",
+      "binding_name": "elephantsql-binding-c6c60",
+      "instance_name": "elephantsql-c6c60",
       "label": "elephantsql",
       "tags": [
         "postgres",
@@ -516,6 +526,8 @@ VCAP_SERVICES=
   "sendgrid": [
     {
       "name": "mysendgrid",
+      "binding_name": null,
+      "instance_name": "mysendgrid",
       "label": "sendgrid",
       "tags": [
         "smtp"

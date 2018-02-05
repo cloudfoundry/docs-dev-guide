@@ -31,7 +31,7 @@ You can use a database within your Cloud Controller database instance or create 
     </li>
 
     <li>If you have not already, upload a stemcell that uses Linux kernel 4.4, such as stemcell 3263.2 or later:<br>
-    <pre class="terminal">$ bosh -e MY-ENV upload-stemcell <%= vars.bosh_upload_stemcell %> URL-OF-STEMCELL </pre>
+    <pre class="terminal">$ bosh -e MY-ENV upload-stemcell URL-OF-STEMCELL </pre>
     </li>
 
     <li>Open the CF properties stub that you created when <a href="../../deploying/index.html">deploying Cloud Foundry</a>
@@ -400,7 +400,7 @@ If your CF deployment runs on BOSH-Lite, follow these steps to enable Container-
   </li>
 
 <li> Upload the latest BOSH-Lite stemcell:
-  <pre class="terminal">$ bosh <%= vars.bosh_upload_stemcell %> http<span>s:</span>//bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent</pre>
+  <pre class="terminal">$ bosh -e MY-ENV upload-stemcell http<span>s:</span>//bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent</pre>
   </li>
   <li>To clone the required CF release repositories to your workspace, enter the following commands:<br>
   <pre class="terminal">$ git clone https<span>:</span>//github.com/cloudfoundry/diego-release<br>$ git clone https<span>:</span>//github.com/cloudfoundry/cf-release<br>$ git clone https<span>:</span>//github.com/cloudfoundry-incubator/cf-networking-release</pre></li>

@@ -7,14 +7,24 @@ owner: Container-to-Container Networking
 <div class="quick-links">
 <ul>
 <% if vars.product_name == 'CF' %>
-  <li><a href="#enable">Enable Container-to-Container Networking</a>
-  <li><a href="#logging">Manage Logging for Container-to-Container Networking</a>
+  <li><a href="#enable">Enable Container-to-Container Networking</a></li>
+  <li><a href="#logging">Manage Logging for Container-to-Container Networking</a></li>
 <% end %>
-<li><a href="#create-policies">Create Policies for Container-to-Container Networking</a></li>
+  <li><a href="#create-policies">Create and Manage Networking Policies</a>
+    <ul>
+      <li><a href="#prereq">Prerequisites</a></li>
+<% if vars.product_name != 'PWS' %>
+      <li><a href="#grant">Grant Permissions</a></li>
+<% end %>
+      <li><a href="#add-policy">Add a Network Policy</a></li>
+      <li><a href="#list-policies">List Network Policies</a></li>
+      <li><a href="#rm-policy">Remove a Network Policy</a></li>
+    </ul>
+  </li>
 </ul>
 </div>
 
-This topic describes how to configure the Container-to-Container Networking feature. For an overview of how Container-to-Container Networking works, see the [Understanding Container-to-Container Networking](../../concepts/understand-cf-networking.html) topic.
+This topic describes how to configure the Container-to-Container Networking feature, which allows direct network traffic between apps. For an overview of how Container-to-Container Networking works, see the [Understanding Container-to-Container Networking](../../concepts/understand-cf-networking.html) topic.
 
 <%= vars.app_traffic_logging %>
 
@@ -28,7 +38,7 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% else %>
 <% end %>
 
-##<a name="create-policies"></a>Create Policies for Container-to-Container Networking
+##<a name="create-policies"></a>Create and Manage Networking Policies
 
 This section describes how to create and modify Container-to-Container Networking policies using the Cloud Foundry Command Line Interface (cf CLI).
 The cf CLI only supports configuring policies for apps within the same space. 
@@ -36,7 +46,9 @@ To configure policies for apps in different orgs and spaces, use the [Policy Ser
 
 <p class='note'><strong>Note:</strong> With the NSX-T integration, container networking policies and ASGs continue to work as normal. Advanced ASG logging is not supported with NSX-T.</p>
 
-Ensure that you are using cf CLI v6.30 or higher:
+###<a name="prereq"></a>Prerequisites
+
+* Ensure that you are using cf CLI v6.30 or higher:
 <pre class="terminal">
 $ cf version
 </pre>
@@ -46,7 +58,9 @@ For more information about updating the cf CLI, see the [Installing the cf CLI](
 <%= partial '../../appsman-services/c2c_pws_create' %>
 <% else %>
 
-To grant specific users or groups the permissions to configure network policies, use the following UAA scopes:
+###<a name="grant"></a>Grant Permissions
+
+CF admins use the following UAA scopes to grant specific users or groups permissions to configure network policies:
 
 <table>
   <tr>
@@ -77,7 +91,7 @@ To grant all Space Developers permissions to configure network policies, edit yo
 
 <% end %>
 
-### Add a Network Policy
+###<a name="add-policy"></a>Add a Network Policy
 
 To add a policy that allows direct network traffic from one app to another, run the following command:
 
@@ -99,7 +113,7 @@ Adding network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>
 
-### List Policies
+###<a name="list-policies"></a>List Policies
 
 You can list all the policies in your space, or just the policies for which a single app is the source:
 
@@ -125,7 +139,7 @@ You can list all the policies in your space, or just the policies for which a si
     frontend    backend       tcp        8080
     </pre>
 
-### Remove a Network Policy
+###<a name="rm-policy"></a>Remove a Network Policy
 
 To remove a policy that allows direct network traffic from an app, run the following command:
 

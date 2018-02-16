@@ -20,6 +20,12 @@ owner: Container-to-Container Networking
       <li><a href="#list-policies">List Network Policies</a></li>
       <li><a href="#rm-policy">Remove a Network Policy</a></li>
     </ul>
+  <li><a href="#discovery">App Service Discovery</a>
+<% if vars.product_name != 'PWS' %>
+    <ul>
+      <li><a href="#enable-discovery">Enable App Service Discovery</a></li>
+    </ul>
+<% end %>
   </li>
 </ul>
 </div>
@@ -159,3 +165,27 @@ $ cf remove-network-policy frontend --destination-app backend --protocol tcp --p
 Removing network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>
+
+##<a name="discovery"></a>App Service Discovery
+
+When app service discovery is enabled, apps pushed to <%= vars.product_full %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front-end apps to easily connect with back-end apps.
+
+To establish container-to-container communications between a front-end and back-end app, a developer:
+
+1. Launches a back-end app that publishes a local endpoint.
+1. Maps a named route to the endpoint.
+1. Creates a network policy that allows direct traffic from the front-end to the back-end app.
+1. Launches the front-end app.
+
+
+See the [Cats and Dogs](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/cats-and-dogs-with-service-discovery) app for an example of how to connect front-end and back-end apps in the Go language.
+
+<% if vars.product_name == 'CF' || vars.product_name == 'PCF' %>
+
+###<a name="enable-discovery"></a>Enable App Service Discovery
+
+To enable app service discovery, <%=  vars.enable_c2c_discovery %>.
+
+<% else %>
+<% end %>
+

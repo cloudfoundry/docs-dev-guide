@@ -88,10 +88,7 @@ CF admins use the following UAA scopes to grant specific users or groups permiss
 
 If you are a CF admin, you already have the `network.admin` scope. An admin can also grant the `network.admin` scope to a space developer.
 
-<% if vars.product_name == 'CF' || vars.product_name == 'PCF' %>
-  <%= vars.uaa_cli %>
-<% else %>
-<% end %>
+<%= vars.uaa_cli %>
 
 To grant all Space Developers permissions to configure network policies, <%=  vars.grant_devs_c2c %>.
 

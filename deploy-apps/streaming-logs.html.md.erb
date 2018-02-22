@@ -195,3 +195,15 @@ $ cf logs spring-music --recent | grep -v RTR
 2016-06-14T14:10:14.56-0700 [CELL/0]     OUT Creating container
     ...
 </pre>
+
+### <a id=‘log-ordering’></a> Log Ordering
+
+Ensuring log ordering in drains can be an important consideration for both operators and developers. Diego uses a nanosecond-based timestamp that can be ingested properly by Splunk. For more information, see [these instructions](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html).
+
+The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are truncated. For more information, see [ELK's date type](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) and the relevant [issue](https://github.com/elastic/elasticsearch/issues/10005).
+
+### <a id=‘multi-line-stack-traces’></a> Multi-Line Stack Traces as a Single Log Entity
+
+You can see your multi-line stack traces as a single log entity instead of broken up into multiple log messages. By modifying the Java log output, you can make your app reformat your stack trace messages so any newline characters are replaced with a token, then have your log parsing code replace that token with newline characters again.
+
+For more information on how to modify your Java log output, see [Multi-line Java message workaround](https://github.com/cloudfoundry/loggregator-release/blob/develop/docs/java-multi-line-work-around.md).

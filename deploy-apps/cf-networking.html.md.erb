@@ -60,9 +60,7 @@ $ cf version
 </pre>
 For more information about updating the cf CLI, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
 
-<% if vars.product_name == 'PWS' %>
-<%= partial '../../appsman-services/c2c_pws_create' %>
-<% else %>
+<% if vars.product_name.include? "CF" %>
 
 ###<a name="grant"></a>Grant Permissions
 
@@ -92,6 +90,8 @@ If you are a CF admin, you already have the `network.admin` scope. An admin can 
 
 To grant all Space Developers permissions to configure network policies, <%=  vars.grant_devs_c2c %>.
 
+<% else %>
+<%= partial '../../appsman-services/c2c_pws_create' %>
 <% end %>
 
 ###<a name="add-policy"></a>Add a Network Policy
@@ -177,11 +177,11 @@ To establish container-to-container communications between a front-end and back-
 
 See the [Cats and Dogs](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/cats-and-dogs-with-service-discovery) app for an example of how to connect front-end and back-end apps in the Go language.
 
-<% if vars.product_name == 'CF' || vars.product_name == 'PCF' %>
+<% if vars.product_name.include? "CF" %>
 
 ###<a name="enable-discovery"></a>Enable App Service Discovery
 
-To enable app service discovery, <%=  vars.enable_c2c_discovery %>.
+To enable app service discovery, <%= vars.enable_c2c_discovery %>.
 
 <% else %>
 <% end %>

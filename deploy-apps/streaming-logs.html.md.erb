@@ -198,12 +198,21 @@ $ cf logs spring-music --recent | grep -v RTR
 
 ### <a id=‘log-ordering’></a> Log Ordering
 
-Ensuring log ordering in drains can be an important consideration for both operators and developers. Diego uses a nanosecond-based timestamp that can be ingested properly by Splunk. For more information, see [these instructions](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html).
+Ensuring log ordering in drains can be an important for both operators and developers. However, the Loggregator Firehose does not offer a deterministic routing mechanism for ordering.  
 
-The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are truncated. For more information, see [ELK's date type](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) and the relevant [issue](https://github.com/elastic/elasticsearch/issues/10005).
+For operators configuring syslog drains, it is useful to note that:
 
-### <a id=‘multi-line-stack-traces’></a> Multi-Line Stack Traces as a Single Log Entity
+* Diego uses a nanosecond-based timestamp that can be ingested properly by Splunk. For more information, see [these instructions](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html).
+* The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are truncated. For more information, see [ELK's date type](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) and the relevant [issue](https://github.com/elastic/elasticsearch/issues/10005).
 
-You can see your multi-line stack traces as a single log entity instead of broken up into multiple log messages. By modifying the Java log output, you can make your app reformat your stack trace messages so any newline characters are replaced with a token, then have your log parsing code replace that token with newline characters again.
+If you are developing a client that displays a stream of Cloud Foundry logs to users, consider ordering the logs to improve the debugging experience for your user. The following are general tips for ordering logs:
 
-For more information on how to modify your Java log output, see [Multi-line Java message workaround](https://github.com/cloudfoundry/loggregator-release/blob/develop/docs/java-multi-line-work-around.md).
+* Batch the logs and display whatever logs you have in that timeframe sorted by timestamp. This technique is good for CLIs. 
+* For web clients you can use dynamic HTML to insert older logs into the sorting as they appear. This is nice because by the time a user grabs the content for a copy paste, the logs will likely be both complete and in order. 
+* Java app developers may want to convert stack traces into a single log entity. For more information, see [Multi-Line Stack Traces as a Single Log Entity](#multi-line-stack-traces).
+
+#### <a id=‘multi-line-stack-traces’></a> Multi-Line Stack Traces as a Single Log Entity
+
+To simplify log ordering for Java apps, use the [multi-line Java message workaround](https://github.com/cloudfoundry/loggregator-release/blob/develop/docs/java-multi-line-work-around.md) to convert your multi-line stack traces into a single log entity. 
+
+By modifying the Java log output, you can make your app reformat your stack trace messages so any newline characters are replaced with a token. Then, you can make your log parsing code replace that token with newline characters again to display the logs properly in Kibana.

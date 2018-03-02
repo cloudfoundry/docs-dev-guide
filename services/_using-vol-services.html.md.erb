@@ -38,15 +38,17 @@ To use a volume service deployed by <%= vars.admin %>, you must first create an 
     service plan, passing an in-line JSON string: 
     <pre class="terminal">$ cf create-service nfs Existing nfs\_service\_instance -c '{"share": "10.10.10.10/export/myshare"}'</pre>
 
-1. Run `cf bind-service YOUR-APP SERVICE-NAME -c GID-AND-UID-JSON MOUNT-PATH-JSON` to bind your service instance to an app. Replace the following with the specified values:
+1. Run `cf bind-service YOUR-APP SERVICE-NAME -c GID-AND-UID-JSON MOUNT-PATH READ-ONLY-TRUE` to bind your service instance to an app. Replace the following with the specified values:
   * `YOUR-APP`: The name of the <%= vars.product_name %> app for which you want to use the volume service. 
   * `SERVICE-NAME`: The name of the volume service instance you created in the previous step.
   * `GID-AND-UID-JSON` (NFS only): If you bind an instance of the NFS volume service, you must supply two extra parameters, `gid` and `uid`. You can specify these parameters with the `-c` flag and a JSON string, in-line or from a file. This parameter specifies the `gid` and `uid` to use when mounting the share to the app.
   * `MOUNT-PATH` (Optional): To mount the volume to a particular path within your app rather than the default path, you supply the `mount` parameter. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
+  * `READ-ONLY-TRUE` (Optional): When you issue the `cf bind-service` command, Volume Services mounts a read-write filesystem by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string. 
+<p class='note warning'><strong>Warning</strong>: Due to an underlying kernel defect, read-only NFS mounts show as <code>"mode": "rw"</code>, not <code>"mode": "ro"</code>.</p>
 
-    The following example shows binding `my-app` to the `nfs_service_instance` and specifying the volume to be mounted to `/var/volume1`,
+    The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`,
     passing an in-line JSON string:
-    <pre class="terminal">cf bind-service my-app nfs\_service\_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1"}'</pre>
+    <pre class="terminal">$ cf bind-service my-app nfs\_service\_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1","readonly":true}'</pre>
 
 1. Run `cf restage YOUR-APP` to complete the service binding by restaging your app. Replace `YOUR-APP` with the name of your app.
   <pre class="terminal">$ cf restage my-app</pre>
@@ -81,6 +83,7 @@ To access the volume service from your app, you must know which file path to use
     ]
   }
   </pre>
+  <p class='note warning'><strong>Warning</strong>: Due to an underlying kernel defect, read-only NFS mounts show as <code>"mode": "rw"</code>, not <code>"mode": "ro"</code>.</p>
 
 2. Use the properties under `volume_mounts` for any information your app needs. Refer to the following table:
   <table>
@@ -102,6 +105,8 @@ To access the volume service from your app, you must know which file path to use
     </tr>
     <tr>
       <td><code>mode</code></td>
-      <td>String that informs what type of access your app has to NFS, either read-only, `ro`, or read and write, `rw`.</td>
+      <td>String that informs what type of access your app has to NFS, either read-only, <code>ro</code>, or read and write, <code>rw</code>.<br><br>
+		Due to an underlying kernel defect, read-only NFS mounts show as <code>"mode": "rw"</code>.
+		</td>
     </tr>
   </table>

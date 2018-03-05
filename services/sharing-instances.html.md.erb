@@ -51,7 +51,7 @@ To share a service instance to another space, run the following beta Cloud
 Foundry Command Line Interface (cf CLI) command:
 
 <pre class="terminal">
-$ cf v3-share-service SERVICE-INSTANCE -s OTHER-SPACE [-o OTHER-ORG] 
+$ cf share-service SERVICE-INSTANCE -s OTHER-SPACE [-o OTHER-ORG] 
 </pre>
 
 * You cannot share a service instance into a space where a service 
@@ -81,7 +81,7 @@ spaces.
 To unshare a service instance, run the following beta cf CLI command:
 
 <pre class="terminal">
-$ cf v3-unshare-service SERVICE-INSTANCE -s OTHER-SPACE [-o OTHER-ORG] [-f]
+$ cf unshare-service SERVICE-INSTANCE -s OTHER-SPACE [-o OTHER-ORG] [-f]
 </pre> 
 
 The optional `-f` flag forces an unshare without confirmation.

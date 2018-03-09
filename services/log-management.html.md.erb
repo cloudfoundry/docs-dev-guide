@@ -56,6 +56,8 @@ typically provide a syslog URL to use as an endpoint for incoming log data. You 
 
     `syslog://logs.example.com:1234`
 
+<%=vars.pas_ssl_note%>
+
 ### Step 2: Create a User-provided Service Instance
 
 Create a user-provided service instance using the Cloud Foundry Command Line Interface (cf CLI) `create-user-provided-service` command with the `-l` flag and the syslog URL that you obtained in _Step 1: Configure the Log Management Service_.

@@ -28,7 +28,7 @@ For more information about service instance lifecycle management, see the [Manag
 
 <p class='note'><strong>Note</strong>: Not all marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that enables automated streaming of application syslogs. <%= vars.custom_services %></p>
 
-## <a id='user-provided'></a>Using Services Not Available in your Marketplace
+## <a id='user-provided'></a>Using Services Not Available in Your Marketplace
 
 If a compatible log management service is not available in your Cloud Foundry marketplace, you can use [User-provided Service Instances](./user-provided.html#syslog) to stream application logs to a service of your choice.
 
@@ -58,7 +58,7 @@ typically provide a syslog URL to use as an endpoint for incoming log data. You 
 
 <%=vars.pas_ssl_note%>
 
-### Step 2: Create a User-provided Service Instance
+### Step 2: Create a User-Provided Service Instance
 
 Create a user-provided service instance using the Cloud Foundry Command Line Interface (cf CLI) `create-user-provided-service` command with the `-l` flag and the syslog URL that you obtained in _Step 1: Configure the Log Management Service_.
 The `-l` flag configures the syslog drain.
@@ -82,7 +82,7 @@ $ cf bind-service YOUR-APP-NAME SERVICE-INSTANCE
 
 After a short delay, logs begin to flow automatically. Refer to [Managing Service Instances with the CLI](./managing-services.html) for more information.
 
-### Step 4: Verify Logs are Draining
+### Step 4: Verify Logs Are Draining
 
 To verify that logs are draining correctly to a third-party log management service:
 

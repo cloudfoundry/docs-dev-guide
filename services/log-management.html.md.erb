@@ -82,13 +82,7 @@ $ cf bind-service YOUR-APP-NAME SERVICE-INSTANCE
 
 After a short delay, logs begin to flow automatically. Refer to [Managing Service Instances with the CLI](./managing-services.html) for more information.
 
-### Step 4: Include App Logs and Metrics in Syslog Drains
-
-By default, app logs are included in syslog drains. You can control whether app logs, app metrics, or both are sent to the syslog drain by appending `?drain-type=logs`, `?drain-type=metrics`, or `?drain-type=all` to your `cf create-user-provided-service` call. For example: 
-
-<pre class=‘term’>cf create-user-provided-service YOUR_APP_INSTANCE -l "YOUR_SYSLOG_DRAIN?drain-type=all"</pre>
-
-### Step 5: Verify Logs Are Draining
+### Step 4: Verify Logs Are Draining
 
 To verify that logs are draining correctly to a third-party log management service:
 

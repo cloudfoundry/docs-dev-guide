@@ -152,6 +152,16 @@ Alternatively, you can write log messages to `stderr` or `stdout` synchronously.
 This approach is mainly used for debugging because it may affect app
 performance.
 
+## <a id='container-metrics'></a> Including Container Metrics in Syslog Drains
+
+By default, app logs are included in syslog drains. You can control whether app logs, app metrics, or both are sent to the syslog drain by appending `?drain-type=logs`, `?drain-type=metrics`, or `?drain-type=all` to your `cf create-user-provided-service` call. For example:
+
+<pre class=‘term’>cf create-user-provided-service YOUR_APP_INSTANCE -l "YOUR_SYSLOG_DRAIN?drain-type=all"</pre>
+
+To start seeing container metrics, set the `drain-type` to `metrics`:
+
+<pre class=‘term’>cf create-user-provided-service YOUR_APP_INSTANCE -l "YOUR_SYSLOG_DRAIN?drain-type=metrics"</pre>
+
 ## <a id='view'></a>Viewing Logs in the Command Line Interface ##
 
 You view logs in the CLI using the [cf logs](http://cli.cloudfoundry.org/en-US/cf/logs.html) command.

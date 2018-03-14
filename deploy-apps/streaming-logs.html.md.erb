@@ -158,7 +158,7 @@ By default, app logs are included in syslog drains. You can control whether app 
 
 <pre class=‘term’>cf create-user-provided-service YOUR_APP_INSTANCE -l "YOUR_SYSLOG_DRAIN?drain-type=all"</pre>
 
-To start seeing container metrics, set the `drain-type` to `metrics`:
+To start seeing container metrics, you must set the `scalablesyslog.adapter.metrics_to_syslog_enabled` to `true`, then set the `drain-type` in your `cf create-user-provided-service` call to `metrics`:
 
 <pre class=‘term’>cf create-user-provided-service YOUR_APP_INSTANCE -l "YOUR_SYSLOG_DRAIN?drain-type=metrics"</pre>
 

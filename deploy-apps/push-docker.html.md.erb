@@ -18,11 +18,11 @@ To push apps with Docker, you need the following:
 
 * A Docker image that meets the following requirements:
 
-  * The Docker image must contain an `/etc/passwd` file with an entry for the `root` user. In addition, the home directory and the shell for that `root` user  must be present in the image filesystem.
+  * The Docker image must contain an `/etc/passwd` file with an entry for the `root` user. In addition, the home directory and the shell for that `root` user  must be present in the image file system.
 
-  * The total size of the Docker image filesystem layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2048 MB per app.
+  * The total size of the Docker image file system layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2048 MB per app.
 
-    <p class="note"><strong>Note</strong>: If the total size of the Docker image filesystem layers exceeds the disk quota, the app instances do not start.</p>
+    <p class="note"><strong>Note</strong>: If the total size of the Docker image file system layers exceeds the disk quota, the app instances do not start.</p>
 
 * The location of the Docker image on [Docker Hub](https://hub.docker.com) or another Docker registry. <% vars.docker_auth1 %>
 

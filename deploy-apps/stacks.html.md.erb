@@ -8,7 +8,7 @@ owner:
 
 <strong><%= modified_date %></strong>
 
-A stack is a prebuilt root filesystem (rootfs) that supports a specific operating system. For example, Linux-based systems need `/usr` and `/bin` directories at their root. The stack works in tandem with a buildpack to support applications running in compartments. Under Diego architecture, cell VMs can support multiple stacks.
+A stack is a prebuilt root file system (rootfs) that supports a specific operating system. For example, Linux-based systems need `/usr` and `/bin` directories at their root. The stack works in tandem with a buildpack to support applications running in compartments. Under Diego architecture, cell VMs can support multiple stacks.
 
 <p class="note"><strong>Note</strong>: Docker apps do not use stacks.</p>
 
@@ -32,7 +32,7 @@ It can be difficult to know what libraries an app statically links to, and it de
     OK
 
     name            description
-    cflinuxfs2      Cloud Foundry Linux-based filesystem
+    cflinuxfs2      Cloud Foundry Linux-based file system
     </pre>
 
 1. To change your stack and restage your application, use the [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command. For example, to restage your app on the default stack `cflinuxfs2` you can run `cf push MY-APP`:

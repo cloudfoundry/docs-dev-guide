@@ -154,13 +154,9 @@ performance.
 
 ## <a id='container-metrics'></a> Including Container Metrics in Syslog Drains
 
-By default, app logs are included in syslog drains. You can control whether app logs, app metrics, or both are sent to the syslog drain by appending `?drain-type=logs`, `?drain-type=metrics`, or `?drain-type=all` to your `cf create-user-provided-service` call. For example:
+By default, app logs are included in syslog drains. To include container metrics in your syslog drain, an operator must first set the `scalablesyslog.adapter.metrics_to_syslog_enabled` to `true`. Then you can include the `-metrics` option in the `cf create-drain` command, as shown below.
 
-<pre class=‘term’>cf create-user-provided-service YOUR_APP_INSTANCE -l "YOUR_SYSLOG_DRAIN?drain-type=all"</pre>
-
-To start seeing container metrics, you must set the `scalablesyslog.adapter.metrics_to_syslog_enabled` to `true`, then set the `drain-type` in your `cf create-user-provided-service` call to `metrics`:
-
-<pre class=‘term’>cf create-user-provided-service YOUR_APP_INSTANCE -l "YOUR_SYSLOG_DRAIN?drain-type=metrics"</pre>
+<pre class=‘term’>$ cf create-drain -metrics YOUR_APP_INSTANCE YOUR_SYSLOG_DRAIN SYSLOG_DRAIN_URL</pre>
 
 ## <a id='view'></a>Viewing Logs in the Command Line Interface ##
 

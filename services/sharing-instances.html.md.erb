@@ -7,25 +7,16 @@ owner: Core Services
 <p class="note warning"><strong>WARNING</strong>: Service instance sharing is a beta feature and may be removed at any time without notice.
 Use at your own risk.</p>
 
+This topic explains how to use service instance sharing.
+
+## <a id="about"></a> About Service Instance Sharing
+
 Sharing a service instance between spaces allows apps in different 
 spaces to share databases, messaging queues, and other types of services.
 This eliminates the need for development teams to use service keys and 
 user-provided services to bind their apps to the same service instance that was 
 provisioned using the `cf create-service` command.
 Sharing service instances improves security, auditing, and provides a more intuitive user experience.
-
-For example, if two development teams have apps in their own spaces,
-and both of those apps want to send messages to each other using a
-messaging queue, you can do the following:
-
-1. The development team in space A can create a new instance of
-a messaging queue service, bind it to their app, and share that service instance into space B.
-
-1. A developer in space B can then bind their app to the same service
-instance, and the two apps can begin publishing and receiving
-messages from one another.
-
-## <a id="about"></a> About Service Instance Sharing
 
 * Service instances can be shared into multiple spaces and across orgs.
 
@@ -38,6 +29,17 @@ unbind apps to that service instance. They cannot update, rename, or delete it.
 * Developers who have a service instance shared with them are able to see
 the values of any configuration parameters that were used to configure the 
 service instance when it was provisioned or updated.
+
+For example, if two development teams have apps in their own spaces,
+and both of those apps want to send messages to each other using a
+messaging queue, you can do the following:
+
+1. The development team in space A can create a new instance of
+a messaging queue service, bind it to their app, and share that service instance into space B.
+
+1. A developer in space B can then bind their app to the same service
+instance, and the two apps can begin publishing and receiving
+messages from one another.
 
 ## <a id="enabling"></a> Enabling Service Instance Sharing in Cloud Foundry
 

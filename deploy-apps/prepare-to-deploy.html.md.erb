@@ -38,7 +38,7 @@ In an environment with shared domains, cookies might be accessible across applic
 
 <%= vars.cookies_shared_domain_1 %> Many tracking tools such as Google Analytics and Mixpanel use the highest available domain to set their cookies. <%= vars.cookies_shared_domain_2 %> For example, an application at <code>my-app.<%= vars.app_domain %></code> might be able to access the cookies for an application at <code>your-app.<%= vars.app_domain %></code>.
 
-Consider whether you want your applications or tools that use cookies to set and store the cookies at the highest available domain.
+You should decide whether or not you want your applications or tools that use cookies to set and store the cookies at the highest available domain.
 
 ### <a id="ports"></a>Port Considerations ###
 
@@ -58,12 +58,21 @@ For application management purposes, Cloud Foundry may need to stop and restart 
 
 1. After 10 seconds, Cloud Foundry forcibly shuts down your application.
 
-Your application should accept and handle the termination signal to ensure that it shuts down gracefully.
+Your application should accept and handle the termination signal to ensure that it shuts down gracefully. To achieve this, the application is expected to follow the steps below when shutting down:
+
+* Application receives termination signal
+* Application closes listener so that it stops accepting new connections
+* Application finishes serving in-flight requests
+* Application closes existing connections as their requests complete
+* Application shuts down or is killed
+
+[This Sample HTTP Application](https://github.com/cloudfoundry/sample-http-app) offers a reference implementation of the expected shutdown behavior in golang.
 
 ## <a id="exclude"></a>Ignore Unnecessary Files When Pushing ##
 
-By default, when you push an application, all files in the application’s project
-directory tree are uploaded to your Cloud Foundry instance, except version control or configuration files with the following file extensions:
+By default, when you push an application, all files in the application's project
+directory tree are uploaded to your Cloud Foundry instance, except version 
+control and configuration files or folders with the following names:
 
 * `.cfignore`
 * `_darcs`
@@ -71,30 +80,24 @@ directory tree are uploaded to your Cloud Foundry instance, except version contr
 * `.git`
 * `.gitignore`
 * `.hg`
-* `/manifest.yml`
+* `manifest.yml`
 * `.svn`
 
-If the application directory contains other files (such as `temp` or `log`
-files), or complete subdirectories that are not required to build and run your
-application, the best practice is to exclude them using a `.cfignore` file.
-(`.cfignore` is similar to git’s `.gitignore`, which allows you to exclude files
-and directories from git tracking.)
-Especially with a large application, uploading unnecessary files slows down
-application deployment.
+In addition to these, if API request diagnostics are directed to a log file and the file is within the project directory tree, it is excluded from the upload. You can direct these API request diagnostics to a log file using `cf config --trace` or the `CF_TRACE` environment variable.
 
-Specify the files or file types you wish to exclude from upload in a text file,
-named `.cfignore`, in the root of your application directory structure.
-For example, these lines exclude the "tmp" and "log" directories.
+If the application directory contains other files, such as `temp` or `log`
+files, or complete subdirectories that are not required to build and run your
+application, you might want to add them to a `.cfignore` file to exclude them from upload. Especially with a large application, uploading unnecessary files can slow application deployment.
+
+To use a `.cfignore` file, create a text file named `.cfignore` in the root of your application directory structure. In this file, specify the files or file types you wish to exclude from upload. For example, these lines in a `.cfignore` file exclude the "tmp" and "log" directories.
 
 <pre class="terminal">
-    tmp/
-    log/
+    tmp
+    log
 </pre>
 
 The file types you will want to exclude vary, based on the application
-frameworks you use.
-The `.gitignore` templates for common frameworks, available at
-https://github.com/github/gitignore, are a useful starting point.
+frameworks you use. For examples of commonly-used `.gitignore` files, see [https://github.com/github/gitignore](https://github.com/github/gitignore).
 
 ## <a id="increase-availability"></a>Run Multiple Instances to Increase Availability ##
 

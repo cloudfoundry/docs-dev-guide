@@ -64,7 +64,7 @@ Your application should accept and handle the termination signal to ensure that 
 * Application closes listener so that it stops accepting new connections
 * Application finishes serving in-flight requests
 * Application closes existing connections as their requests complete
-* Application shuts down (or is KILLed)
+* Application shuts down or is killed
 
 [This Sample HTTP Application](https://github.com/cloudfoundry/sample-http-app) offers a reference implementation of the expected shutdown behavior in golang.
 

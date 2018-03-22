@@ -60,13 +60,13 @@ For application management purposes, Cloud Foundry may need to stop and restart 
 
 Your application should accept and handle the termination signal to ensure that it shuts down gracefully. To achieve this, the application is expected to follow the steps below when shutting down:
 
-* Application receives termination signal
-* Application closes listener so that it stops accepting new connections
-* Application finishes serving in-flight requests
-* Application closes existing connections as their requests complete
-* Application shuts down or is killed
+1. Application receives termination signal
+1. Application closes listener so that it stops accepting new connections
+1. Application finishes serving in-flight requests
+1. Application closes existing connections as their requests complete
+1. Application shuts down or is killed
 
-[This Sample HTTP Application](https://github.com/cloudfoundry/sample-http-app) offers a reference implementation of the expected shutdown behavior in golang.
+See the [Sample HTTP Application](https://github.com/cloudfoundry/sample-http-app) GitHub repository for an implementation of the expected shutdown behavior in Golang.
 
 ## <a id="exclude"></a>Ignore Unnecessary Files When Pushing ##
 

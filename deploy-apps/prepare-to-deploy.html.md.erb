@@ -58,7 +58,15 @@ For application management purposes, Cloud Foundry may need to stop and restart 
 
 1. After 10 seconds, Cloud Foundry forcibly shuts down your application.
 
-Your application should accept and handle the termination signal to ensure that it shuts down gracefully.
+Your application should accept and handle the termination signal to ensure that it shuts down gracefully. To achieve this, the application is expected to follow the steps below when shutting down:
+
+* Application receives termination signal
+* Application closes listener so that it stops accepting new connections
+* Application finishes serving in-flight requests
+* Application closes existing connections as their requests complete
+* Application shuts down or is killed
+
+[This Sample HTTP Application](https://github.com/cloudfoundry/sample-http-app) offers a reference implementation of the expected shutdown behavior in golang.
 
 ## <a id="exclude"></a>Ignore Unnecessary Files When Pushing ##
 
@@ -84,12 +92,12 @@ application, you might want to add them to a `.cfignore` file to exclude them fr
 To use a `.cfignore` file, create a text file named `.cfignore` in the root of your application directory structure. In this file, specify the files or file types you wish to exclude from upload. For example, these lines in a `.cfignore` file exclude the "tmp" and "log" directories.
 
 <pre class="terminal">
-    tmp/
-    log/
+    tmp
+    log
 </pre>
 
 The file types you will want to exclude vary, based on the application
-frameworks you use. For examples of commonly-used `.gitignore` files, see [https://github.com/github/gitignore].
+frameworks you use. For examples of commonly-used `.gitignore` files, see [https://github.com/github/gitignore](https://github.com/github/gitignore).
 
 ## <a id="increase-availability"></a>Run Multiple Instances to Increase Availability ##
 

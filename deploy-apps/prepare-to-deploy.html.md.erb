@@ -56,7 +56,15 @@ For application management purposes, Cloud Foundry may need to stop and restart 
 
 1. After 10 seconds, Cloud Foundry forcibly shuts down your application.
 
-Your application should accept and handle the termination signal to ensure that it shuts down gracefully.
+Your application should accept and handle the termination signal to ensure that it shuts down gracefully. To achieve this, the application is expected to follow the steps below when shutting down:
+
+1. Application receives termination signal
+1. Application closes listener so that it stops accepting new connections
+1. Application finishes serving in-flight requests
+1. Application closes existing connections as their requests complete
+1. Application shuts down or is killed
+
+See the [Sample HTTP Application](https://github.com/cloudfoundry/sample-http-app) GitHub repository for an implementation of the expected shutdown behavior in Golang.
 
 ## <a id="exclude"></a>Ignore Unnecessary Files When Pushing ##
 

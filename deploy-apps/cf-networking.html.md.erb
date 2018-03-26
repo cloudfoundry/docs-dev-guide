@@ -1,33 +1,36 @@
 ---
-title: Administering Container-to-Container Networking
+title: Configuring Container-to-Container Networking
 owner: Container-to-Container Networking
 ---
 
 
 <div class="quick-links">
 <ul>
-<% if vars.product_name == 'CF' %>
+  <% if vars.product_name == 'CF' %>
   <li><a href="#enable">Enable Container-to-Container Networking</a></li>
   <li><a href="#logging">Manage Logging for Container-to-Container Networking</a></li>
-<% end %>
+  <% end %>
+  <% if vars.product_name.include? "CF" %>
+  <li><a href="#overlay">Configure the Overlay Network</a></li>
+  <% end %>  
   <li><a href="#create-policies">Create and Manage Networking Policies</a>
     <ul>
       <li><a href="#prereq">Prerequisites</a></li>
-<% if vars.product_name != 'PWS' %>
+      <% if vars.product_name.include? "CF" %>
       <li><a href="#grant">Grant Permissions</a></li>
-<% end %>
+      <% end %>
       <li><a href="#add-policy">Add a Network Policy</a></li>
       <li><a href="#list-policies">List Network Policies</a></li>
       <li><a href="#rm-policy">Remove a Network Policy</a></li>
     </ul>
-  <li><a href="#discovery">App Service Discovery</a>
-<% if vars.product_name != 'PWS' %>
-    <ul>
-      <li><a href="#enable-discovery">Enable App Service Discovery</a></li>
-    </ul>
-<% end %>
-  </li>
-</ul>
+    <li><a href="#discovery">App Service Discovery</a>
+      <% if vars.product_name.include? "CF" %>
+      <ul>
+        <li><a href="#enable-discovery">Enable App Service Discovery</a></li>
+      </ul>
+      <% end %>
+    </li>
+  </ul>
 </div>
 
 This topic describes how to configure the Container-to-Container Networking feature, which allows direct network traffic between apps. For an overview of how Container-to-Container Networking works, see the [Understanding Container-to-Container Networking](../../concepts/understand-cf-networking.html) topic.
@@ -37,6 +40,15 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% if vars.product_name == 'CF' %>
 <%= partial 'c2c_oss_enable' %>
 <% else %>
+<% end %>
+
+<% if vars.product_name == 'CF' %>
+<%= partial 'c2c_oss_overlay' %>
+<% else %>
+<% if vars.product_name.include? "CF" %>
+<%= partial '../../opsguide/c2c_overlay' %>
+<% else %>
+<% end %>
 <% end %>
 
 <% if vars.product_name == 'CF' %>

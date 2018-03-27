@@ -596,7 +596,7 @@ If your DNS provider supports using an ALIAS or ANAME record, configure your roo
 
 If your DNS provider does not support ANAME or ALIAS records you can use subdomain redirection, also known as domain forwarding, to redirect requests for your root domain to a subdomain configured as a CNAME.
 
-<p class="note"><strong>Note</strong>: If you use domain forwarding, SSL requests to the root domain may fail if the SSL certificate only matches the subdomain. For more information on SSL certificates, see <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Configuring Trusted System Certificates for Applications</a>.</p>
+<p class="note"><strong>Note</strong>: If you use domain forwarding, SSL requests to the root domain may fail if the SSL certificate only matches the subdomain. For more information about SSL certificates, see <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Configuring Trusted System Certificates for Applications</a>.</p>
 
 Configure the root domain to point at a subdomain such as `www`, and configure the subdomain as a CNAME record pointing at a shared domain in <%=vars.product_short%>.
 

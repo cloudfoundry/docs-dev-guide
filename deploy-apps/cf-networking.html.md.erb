@@ -17,6 +17,10 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% end %>
 <% end %>
 
+<% if vars.product_name.include? "CF" %>
+##<a id="overlay"></a> Configure the Overlay Network
+<% end %>
+
 <% if vars.product_name == 'CF' %>
 <%= partial 'c2c_oss_overlay' %>
 <% else %>

@@ -5,18 +5,16 @@ owner: Diego
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to use the Instance Identity system provided by Cloud Foundry.  The Instance Identity system provides each application with a PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS#1](https://tools.ietf.org/html/rfc3447) RSA private key.
+This topic describes how to use the Instance Identity system provided by Cloud Foundry. The Instance Identity system provides each application with a PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS#1](https://tools.ietf.org/html/rfc3447) RSA private key.
 
-## <a id="use"></a> Using Instance Identity Certificates
+The environment variable `CF_INSTANCE_CERT` contains the absolute path of the certificate. The environment variable `CF_INSTANCE_KEY` contains the private key files. The provided certificate has the following properties:
 
-The environment variables `CF_INSTANCE_CERT` and `CF_INSTANCE_KEY` contain the absolute path of the certificate and private key files, respectively.  The provided certificate will have the following properties:
-
-- The certificate's `Common Name` property is set to the instance guid.
+- The `Common Name` property is set to the instance GUID.
 - The certificate contains an IP SAN set to the container IP address for the given app instance.
-- For Cloud Foundry apps, the certificate's `Organizational Unit` property is set to the string `app:app-guid`, where `app-guid` is the application guid assigned by Cloud Controller.
+- For Cloud Foundry apps, the `Organizational Unit` property is set to the string `app:APP-GUID`, where `APP-GUID` is the application GUID assigned by Cloud Controller.
 
-By default, the certificate is valid for 24 hours after the container is created, but the Diego operator may control this validity period with the `diego.executor.instance_identity_validity_period_in_hours` BOSH property. The smallest allowed validity duration is 1 hour.
+By default, the certificate is valid for 24 hours after the container is created. To change the validity period, set the `diego.executor.instance_identity_validity_period_in_hours` BOSH property. The smallest allowed validity duration is 1 hour.
 
-The Diego cell rep will supply a new certificate-key pair to the container before the end of the validity period. The new pair of files will replace the existing pair at the same path location, with each file being replaced atomically.
+The Diego Cell rep will supply a new certificate-key pair to the container before the end of the validity period. The new pair of files replaces the existing pair at the same path location, with each file replaced atomically.
 
-For more information on how to enable and configure the Instance Identity system in Cloud Foundry, see [Enabling Instance Identity](../../adminguide/instance-identity.html).
+For more information about enabling and configuring the Instance Identity system in Cloud Foundry, see [Enabling Instance Identity](../../adminguide/instance-identity.html).

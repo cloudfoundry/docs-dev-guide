@@ -40,7 +40,8 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% else %>
 <% end %>
 
-##<a name="create-policies"></a>Create Policies for Container-to-Container Networking
+
+## <a name="create-policies"></a> Create Policies for Container-to-Container Networking
 
 This section describes how to create and modify Container-to-Container Networking policies using the Cloud Foundry Command Line Interface (cf CLI).
 The cf CLI only supports configuring policies for apps within the same space. 
@@ -86,9 +87,9 @@ If you are a CF admin, you already have the `network.admin` scope. An admin can 
   <% end %>
 <% end %>
 
-To grant all Space Developers permissions to configure network policies, <%=  vars.grant_devs_c2c %>.
+To grant all Space Developers permissions to configure network policies, <%=  vars.grant_devs_c2c %>
 
-### Add a Network Policy
+### <a id="add-policy"></a> Add a Network Policy
 
 To add a policy that allows direct network traffic from one app to another, run the following command:
 
@@ -110,7 +111,7 @@ Adding network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>
 
-### List Policies
+### <a id="list-policies"></a> List Policies
 
 You can list all the policies in your space, or just the policies for which a single app is the source:
 
@@ -136,7 +137,7 @@ You can list all the policies in your space, or just the policies for which a si
     frontend    backend       tcp        8080
     </pre>
 
-### Remove a Network Policy
+### <a id="rm-policy"></a> Remove a Network Policy
 
 To remove a policy that allows direct network traffic from an app, run the following command:
 

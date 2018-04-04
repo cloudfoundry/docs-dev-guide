@@ -68,6 +68,30 @@ OK
 
 For more information about application manifests, see [Deploying with Application Manifests](../deploy-apps/manifest.html#services-block).
 
+### <a id='service-binding-names'></a>Named Service Bindings ###
+
+Service offering and service instance names may vary across the environments an app is deployed to. App authors need to discover the service instances their apps need, without having to know environment-specific service names. To make this easy, deployers can specify a service binding name that will be included in [VCAP_SERVICES](../deploy-apps/environment-variable.html).
+
+To specify the service binding name, provide the `--binding-name` flag when binding an app to a service instance:
+<pre class="terminal">
+cf bind-service my-app my-service --binding-name postgres-database
+OK
+</pre>
+
+The provided name will be available in the `name` and `binding_name` properties in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable:
+
+~~~
+"VCAP_SERVICES": {
+  "service-name": [
+    {
+      "name": "postgres-database",
+      "binding_name": "postgres-database",
+      ...
+    }
+  ]
+}
+~~~
+
 ### <a id='use'></a>Using Bound Service Instances ###
 
 Once you have a service instance created and bound to your application, you need to configure the application to dynamically fetch the credentials for your service instance. The [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable contains credentials and additional metadata for all bound service instances. There are two methods developers can leverage to have their applications consume binding credentials.

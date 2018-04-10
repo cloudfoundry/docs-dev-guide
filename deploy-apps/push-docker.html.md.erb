@@ -16,11 +16,11 @@ To push apps with Docker, you need the following:
 
 * A Docker image that meets the following requirements:
 
-  * The Docker image must contain an `/etc/passwd` file with an entry for the `root` user. In addition, the home directory and the shell for that `root` user  must be present in the image filesystem.
+  * The Docker image must contain an `/etc/passwd` file with an entry for the `root` user. In addition, the home directory and the shell for that `root` user  must be present in the image file system.
 
   * The total size of the Docker image filesystem layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2048&nbsp;MB per app.
 
-    <p class="note"><strong>Note</strong>: If the total size of the Docker image filesystem layers exceeds the disk quota, the app instances do not start.</p>
+    <p class="note"><strong>Note</strong>: If the total size of the Docker image file system layers exceeds the disk quota, the app instances do not start.</p>
 
 * The location of the Docker image on [Docker Hub](https://hub.docker.com) or another Docker registry. <% vars.docker_auth1 %>
 
@@ -138,7 +138,4 @@ Run the following command to deploy your GCR image using the cf CLI:
 <p class="note"><b>Note</b>: For information about specifying <code>MY-REGISTRY-URL</code>, see <a href="https://cloud.google.com/container-registry/docs/pushing-and-pulling">Pushing and Pulling Images</a> on the Google Cloud documentation.</p>
 
 ##<a id='volume'></a> Docker Volume Support
-
-Diego supports Docker volumes. 
-For more information about enabling volume support, see the [Using an External File System (Volume Services)](../services/using-vol-services.html) topic.
-For information about the limitations of NFS volumes, see the [NFS Bosh Volume Release](https://github.com/cloudfoundry-incubator/nfs-volume-release#special-notes-for-docker-image-based-apps).
+You can use volume services with Docker apps. For more information about enabling volume support, see the [Using an External File System (Volume Services)](../services/using-vol-services.html) topic.

@@ -395,11 +395,13 @@ For example:
   timeout: 80
 </pre>
 
-You can increase the timeout length for very large apps that require more time to start. The `timeout` attribute defaults to 60, but you can set it to any value up to the Cloud Controller's `health_check_timeout` property.
+You can increase the timeout length for very large apps that require more time to start. The `timeout` attribute defaults to 60, but you can set it to any value up to the Cloud Controller's `cc.maximum_health_check_timeout` property.
 
-`health_check_timeout` defaults to 180, but your Cloud Foundry operator can set to any value.
+`cc.maximum_health_check_timeout` defaults to 180, but your Cloud Foundry operator can set to any value.
 
 The command line option that overrides the timeout attribute is `-t`.
+
+<p class='warning'><strong>WARNING:</strong> Cloud Controller will report a validation error with the maximum limit if you to configure <code>timeout</code> with a value greater than it.</p>
 
 
 ## <a id='env-block'></a> Environment Variables

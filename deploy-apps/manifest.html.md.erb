@@ -11,7 +11,8 @@ You use the Cloud Foundry Command Line Interface tool (cf CLI) `cf push` command
 
 Manifests provide consistency and reproducibility, and can help you automate deploying apps.
 
-##<a id='find-manifest'></a>How cf push Finds the Manifest ##
+
+## <a id='find-manifest'></a> How cf push Finds the Manifest
 
 By default, the `cf push` command deploys an application using a `manifest.yml`
 file in the current working directory.
@@ -30,7 +31,6 @@ $ cf push -f ./different-directory-1/different-directory-2/alternate_manifest.ym
 Using manifest file ./different-directory-1/different-directory-2/alternate_manifest.yml
 </pre>
 
-
 If you provide a path with no filename, the `cf push` command requires a file named `manifest.yml`.
 
 For example:
@@ -39,7 +39,8 @@ $ cf push -f ./different-directory-1/different-directory-2/
 Using manifest file ./different-directory-1/different-directory-2/manifest.yml
 </pre>
 
-##<a id='minimal-manifest'></a>Example Manifest ##
+
+## <a id='minimal-manifest'></a> Example Manifest
 
 Although you can deploy apps without a manifest, manifests provide consistency and reproducibility. This can be useful when you want your apps to be portable between different clouds.
 
@@ -61,7 +62,8 @@ applications:
 A minimal manifest requires only an application `name`.
 To create a valid minimal manifest, remove the `memory` and `instances` properties from this example.
 
-##<a id='name'></a>Always Provide an Application Name to cf push ##
+
+## <a id='name'></a> Always Provide an Application Name to cf push
 
 `cf push` requires an application name, which you provide either in a manifest
 or at the command line.
@@ -79,7 +81,8 @@ $ cf push my-app
 <p class="note"><strong>Note</strong>: When you provide an application name at the command line, <code>cf push</code> uses that application name whether or not there is a different application name in the manifest. If the manifest describes multiple applications, you can push a single application by providing its name at the command line; the cf CLI does not push the others.
 Use these behaviors for testing.</p>
 
-##<a id='find-app'></a>How cf push Finds the Application ##
+
+## <a id='find-app'></a> How cf push Finds the Application
 
 By default, `cf push` recursively pushes the contents of the current working directory. Alternatively, you can provide a path using either a manifest or a command line option.
 
@@ -88,7 +91,8 @@ By default, `cf push` recursively pushes the contents of the current working dir
 
 <p class="note"><strong>Note</strong>: If you want to push more than a single file, but not the entire contents of a directory, consider using a <code>.cfignore</code> file to tell <code>cf push</code> what to exclude.</p>
 
-##<a id='precedence'></a>Precedence Between Manifests, Command Line Options, and Most Recent Values ##
+
+## <a id='precedence'></a> Precedence Between Manifests, Command Line Options, and Most Recent Values ##
 
 When you push an application for the first time, Cloud Foundry applies default values to any attributes that you do not set in a manifest or `cf push` command line options.
 
@@ -110,13 +114,14 @@ You can think of them as the most recent values.
 
 In general, you can think of manifests as just another input to `cf push`, to be combined with command line options and most recent values.
 
-##<a id='optional-attributes'></a>Optional Attributes ##
+
+## <a id='optional-attributes'></a> Optional Attributes
 
 This section explains how to describe optional application attributes in manifests. Each of these attributes can also be specified by a command line option. Command line options override the manifest.
 
 <p class='note'><strong>Note:</strong> The route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>, <code>hosts</code>, and <code>no-hostname</code> have been deprecated in favor of the <code>routes</code> attribute. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
 
-###<a id='buildpack'></a>buildpack ###
+### <a id='buildpack'></a> buildpack
 
 If your application requires a custom buildpack, you can use the `buildpack` attribute to specify it in one of three ways:
 
@@ -134,7 +139,7 @@ If your application requires a custom buildpack, you can use the `buildpack` att
 
 The command line option that overrides this attribute is `-b`.
 
-###<a id='start-commands'></a>command ###
+### <a id='start-commands'></a> command
 
 Some languages and frameworks require that you provide a custom command to start an application. Refer to the [buildpack](../../buildpacks/index.html) documentation to determine if you need to provide a custom start command.
 
@@ -180,7 +185,7 @@ To resolve this issue, you can use `exec` to replace the bash process with your 
 
 In more complex situations, like making a custom buildpack, you may want to use bash `trap`, `wait`, and backgrounded processes to manage your process tree and shut down apps gracefully. In most situations, however, a well-placed `exec` should be sufficient.
 
-###<a id='disk-quota'></a>disk_quota ###
+### <a id='disk-quota'></a> disk_quota
 
 Use the `disk_quota` attribute to allocate the disk space for your app instance. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case.
 
@@ -192,7 +197,7 @@ Use the `disk_quota` attribute to allocate the disk space for your app instance.
 
 The command line option that overrides this attribute is `-k`.
 
-###<a id='docker'></a>docker ###
+### <a id='docker'></a> docker
 
 If your application is contained in a Docker image, then you may use the `docker` attribute to specify it and an optional Docker username.
 
@@ -210,10 +215,10 @@ The command line option `--docker-image` or `-o` overrides `docker.image`.  The 
 
 The manifest attribute `docker.username` is optional.  If it is used, then the password must be provided in the environment variable `CF_DOCKER_PASSWORD`.  Additionally, if a Docker username is specified, then a Docker image must also be specified.
 
-#### Manifest Attributes
+#### <a id='manifest-attibutes'></a> Manifest Attributes
 The `docker` attribute cannot be used in conjunction with the following attributes: `buildpack` and `path`. An error will result.
 
-###<a id='health-check-http-endpoint'></a>health-check-http-endpoint ###
+### <a id='health-check-http-endpoint'></a> health-check-http-endpoint
 
 Use the `health-check-http-endpoint` attribute to customize the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint` attribute, 
 it uses endpoint '/'.
@@ -225,7 +230,7 @@ it uses endpoint '/'.
   health-check-http-endpoint: /health
 </pre>
 
-###<a id='health-check-type'></a>health-check-type ###
+### <a id='health-check-type'></a> health-check-type
 
 Use the `health-check-type` attribute to set the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type` attribute, 
 it defaults to `port`.
@@ -240,7 +245,7 @@ The command line option that overrides this attribute is `-u`.
 
 The value of `none` is deprecated in favor of `process`.
 
-###<a id='memory'></a>memory ###
+### <a id='memory'></a> memory
 
 Use the `memory` attribute to specify the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case. For example:
 
@@ -254,7 +259,7 @@ The default memory limit is 1G. You might want to specify a smaller limit to con
 
 The command line option that overrides this attribute is `-m`.
 
-###<a id='no-route'></a>no-route ###
+### <a id='no-route'></a>no-route
 
 By default, `cf push` assigns a route to every app. But, some apps process data while running in the background and should not be assigned routes.
 
@@ -276,7 +281,7 @@ To remove a route from an existing app, perform the following steps:
 
 For more information, see [Describing Multiple Applications with One Manifest](#multi-apps) below.
 
-###<a id='path'></a>path
+### <a id='path'></a> path
 
 You can use the `path` attribute to tell Cloud Foundry the directory location where it can find your application. 
 
@@ -292,7 +297,7 @@ The command line option that overrides this attribute is `-p`.
 
 For more information, see the [How cf push Finds the Application](#find-app) topic.
 
-###<a id='random-route'></a>random-route ###
+### <a id='random-route'></a> random-route
 
 If you push your app without specifying any route-related CLI options or app manifest flags, the cf CLI attempts to generate a route based on the app name, which can cause collisions. 
 
@@ -312,7 +317,7 @@ The command line option that overrides this attribute is `--random-route`.
   random-route: true
 </pre>
 
-###<a id='routes'></a>routes ###
+### <a id='routes'></a> routes
 
 Use the `routes` attribute to provide multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
 
@@ -327,10 +332,10 @@ This attribute is a combination of `push` options that include `--hostname`, `-d
   - route: tcp-example.com:1234
 </pre>
 
-#### Manifest Attributes
+#### <a id='manifest-attibutes-2'></a> Manifest Attributes
 The `routes` attribute cannot be used in conjunction with the following attributes: `host`, `hosts`, `domain`, `domains`, and `no-hostname`. An error will result.
 
-#### Push Flag Options
+#### <a id='push-flag-options'></a> Push Flag Options
 This attribute has unique interactions with different command line options.
 <table border="1" class="nice" >
 <tr>
@@ -364,7 +369,7 @@ The PORT and HOSTNAME will be randomly generated.</td>
 <tr>
 </table>
 
-###<a id='stack'></a>stack ###
+### <a id='stack'></a> stack
 
 Use the `stack` attribute to specify which stack to deploy your application to.
 
@@ -378,7 +383,7 @@ To see a list of available stacks, run `cf stacks` from the cf CLI.
 
 The command line option that overrides this attribute is `-s`.
 
-###<a id='timeout'></a>timeout ###
+### <a id='timeout'></a> timeout
 
 The `timeout` attribute defines the number of seconds that Cloud Foundry allocates for starting your application. It is related to the `health-check-type` attribute.
 
@@ -396,7 +401,8 @@ You can increase the timeout length for very large apps that require more time t
 
 The command line option that overrides the timeout attribute is `-t`.
 
-##<a id='env-block'></a>Environment Variables ###
+
+## <a id='env-block'></a> Environment Variables
 
 The `env` block consists of a heading, then one or more environment variable/value pairs.
 
@@ -425,7 +431,8 @@ the environment of the container where the application is staged, and the enviro
 
 * When you stop and then restart an application, its environment variables persist.
 
-##<a id='services-block'></a>Services ###
+
+## <a id='services-block'></a> Services
 
 Applications can bind to services such as databases, messaging, and key-value stores.
 
@@ -445,7 +452,8 @@ Whoever creates the service chooses the service instance names. These names can 
 
 Binding to a service instance is a special case of setting an environment variable, namely `VCAP_SERVICES`. See the [Bind a Service](../services/application-binding.html#bind) section of the _Delivering Service Credentials to an Application_ topic.
 
-##<a id='multi-apps'></a>Describing Multiple Applications with One Manifest ##
+
+## <a id='multi-apps'></a> Describing Multiple Applications with One Manifest
 
 You can deploy multiple applications with one `cf push` command by describing the apps in a single manifest. 
 
@@ -516,7 +524,8 @@ There are only two narrow exceptions:
 
 * If you want to push a single application rather than all of the applications described in the manifest, provide the desired application name by running `cf push my-app`.
 
-##<a id='minimize-duplication'></a>Minimizing Duplication ##
+
+## <a id='minimize-duplication'></a> Minimizing Duplication
 
 <p class='note'><strong>Note:</strong> Promoted content has been deprecated in favor of YAML anchors. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
 
@@ -540,7 +549,8 @@ applications:
 
 This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpack but with 256M memory for smallapp and 1G for bigapp.
 
-##<a id='multi-manifests'></a>Multiple Manifests with Inheritance ##
+
+## <a id='multi-manifests'></a> Multiple Manifests with Inheritance
 
 <p class="note"><strong>Note</strong>: Inheritance has been deprecated. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
 
@@ -608,6 +618,7 @@ applications:
 </pre>
 
 <p class='note'><strong>Note</strong>: Inheritance can add an additional level of complexity to manifest creation and maintenance. Comments that precisely explain how the child manifest extends or overrides the descriptions in the parent manifest can alleviate this complexity.</p>
+
 
 ## <a id='deprecated'></a> Deprecated App Manifest Features
 

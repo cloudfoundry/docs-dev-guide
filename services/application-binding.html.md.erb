@@ -70,11 +70,11 @@ For more information about application manifests, see [Deploying with Applicatio
 
 ### <a id='service-binding-names'></a>Named Service Bindings ###
 
-Service offering and service instance names may vary across the environments an app is deployed to. App authors need to discover the service instances their apps need, without having to know environment-specific service names. To make this easy, deployers can specify a service binding name that will be included in [VCAP_SERVICES](../deploy-apps/environment-variable.html).
+Service offering and service instance names vary across environments. App authors can discover the service instances their apps require, without having to know environment-specific service names. Developers can specify a service binding name to be included in [VCAP_SERVICES](../deploy-apps/environment-variable.html).
 
 To specify the service binding name, provide the `--binding-name` flag when binding an app to a service instance:
 <pre class="terminal">
-cf bind-service my-app my-service --binding-name postgres-database
+$ cf bind-service my-app my-service --binding-name postgres-database
 OK
 </pre>
 

@@ -215,10 +215,5 @@ If you are developing a client that displays a stream of Cloud Foundry logs to u
 
 * Batch the logs and display whatever logs you have in that timeframe sorted by timestamp. This technique is good for CLIs. 
 * For web clients you can use dynamic HTML to insert older logs into the sorting as they appear. This is nice because by the time a user grabs the content for a copy paste, the logs will likely be both complete and in order. 
-* Java app developers may want to convert stack traces into a single log entity. For more information, see [Multi-Line Stack Traces as a Single Log Entity](#multi-line-stack-traces).
-
-#### <a id=‘multi-line-stack-traces’></a> Multi-Line Stack Traces as a Single Log Entity
-
-To simplify log ordering for Java apps, use the [multi-line Java message workaround](https://github.com/cloudfoundry/loggregator-release/blob/develop/docs/java-multi-line-work-around.md) to convert your multi-line stack traces into a single log entity. 
-
-By modifying the Java log output, you can make your app reformat your stack trace messages so any newline characters are replaced with a token. Then, you can make your log parsing code replace that token with newline characters again to display the logs properly in Kibana.
+* Java app developers may want to convert stack traces into a single log entity. To simplify log ordering for Java apps, use the [multi-line Java message workaround](https://github.com/cloudfoundry/loggregator-release/blob/develop/docs/java-multi-line-work-around.md) to convert your multi-line stack traces into a single log entity. 
+<br><br>By modifying the Java log output, you can make your app reformat your stack trace messages so any newline characters are replaced with a token. Then, you can make your log parsing code replace that token with newline characters again to display the logs properly in Kibana.

@@ -16,7 +16,7 @@ service.
 See [Third-Party Log Management Services](../services/log-management.html).
 
 Cloud Foundry gathers and stores logs in a best-effort manner.
-If a client is unable to consume log lines quickly enough, the Loggregator
+If a client cannot consume log lines quickly enough, the Loggregator
 buffer may need to overwrite some lines before the client has consumed them.
 A syslog drain or a CLI tail can usually keep up with the flow of app
 logs.
@@ -25,10 +25,10 @@ logs.
 
 Every log line contains four fields:
 
-1. Timestamp
-1. Log type (origin code)
-1. Channel: either `OUT` (logs emitted on `stdout`) or `ERR` (logs emitted on `stderr`)
-1. Message
+* Timestamp
+* Log type (origin code)
+* Channel: either `OUT`, for logs emitted on `stdout`, or `ERR`, for logs emitted on `stderr`
+* Message
 
 Loggregator assigns the timestamp when it receives log data.
 The log data is opaque to Loggregator, which simply puts it in the message field
@@ -41,13 +41,13 @@ Origin codes from system components have three letters.
 The app origin code is `APP` followed by slash and a digit that
 indicates the app instance.
 
-Many frameworks write to an app log that is separate from STDOUT and
-STDERR.
+Many frameworks write to an app log that is separate from `stdout` and
+`stderr`.
 This is not supported by Loggregator.
-Your app must write to STDOUT or STDERR for its logs to be included in
+Your app must write to `stdout` or `stderr` for its logs to be included in
 the Loggregator stream.
 Check the buildpack your app uses to determine whether it automatically
-ensures that your app correctly writes logs to STDOUT and STDERR only.
+ensures that your app correctly writes logs to `stdout` and `stderr` only.
 Some buildpacks do this, and some do not.
 
 ## <a id='format'></a>Log Types and Their Messages ##
@@ -103,7 +103,7 @@ The following is an example access log message containing Zipkin headers:
 2016-11-23T16:04:01.49-0800 [RTR/0]      OUT www.example.com - [24/11/2016:00:04:01.227 +0000] "GET / HTTP/1.1" 200 0 109 "-" "curl/7.43.0" 10.0.2.150:4070 10.0.48.66:60815 x_forwarded_for:"198.51.100.120" x_forwarded_proto:"http" vcap_request_id:87f9d899-c7a4-46cd-7b76-4ec35ce9921b response_time:0.263000966 app_id:8e5d6451-b369-4423-bce8-3a7a9e479dbb app_index:0 x_b3_traceid:"2d5610bf5e0f7241" x_b3_spanid:"2d5610bf5e0f7241" x_b3_parentspanid:"-"
 </pre>
 
-For more information about Zipkin tracing, see the [Zipkin Tracking in HTTP Headers](../../concepts/http-routing.html#zipkin-headers) topic.
+For more information about Zipkin tracing, see [Zipkin Tracking in HTTP Headers](../../concepts/http-routing.html#zipkin-headers).
 
 ### <a id='lgr'></a>LGR ###
 
@@ -122,7 +122,7 @@ For example:
 
 ### <a id="ssh"></a>SSH ###
 
-The Diego cell emits SSH logs when a user accesses an application container through SSH by using the [cf ssh](http://cli.cloudfoundry.org/en-US/cf/ssh.html) command.
+The Diego cell emits SSH logs when a user accesses an application container through SSH by using the Cloud Foundry Command Line Interface (cf CLI) [cf ssh](https://cli.cloudfoundry.org/en-US/cf/ssh.html) command.
 
 For example:
 
@@ -154,18 +154,18 @@ performance.
 
 ## <a id='container-metrics'></a> Including Container Metrics in Syslog Drains
 
-By default, app logs are included in syslog drains. To include container metrics in your syslog drain, an operator must first set the `scalablesyslog.adapter.metrics_to_syslog_enabled` to `true`. Then you can include the `-metrics` option in the `cf create-drain` command, as shown below.
-
-<pre class=‘term’>$ cf create-drain -metrics YOUR_APP_INSTANCE YOUR_SYSLOG_DRAIN SYSLOG_DRAIN_URL</pre>
+By default, app logs are included in syslog drains. To include container metrics in your syslog drain, an operator must first set `scalablesyslog.adapter.metrics_to_syslog_enabled` to `true`. Once `scalablesyslog.adapter.metrics_to_syslog_enabled` is set to `true`, run the following cf CLI command:
+`cf create-drain -metrics YOUR-APP-INSTANCE YOUR-SYSLOG-DRAIN SYSLOG-DRAIN-URL`
+<br><br>Replace `YOUR-APP-INSTANCE` with your app instance, `YOUR-SYSLOG-DRAIN` with the name of your syslog drain, and `SYSLOG-DRAIN-URL` with the URL of your syslog drain.
 
 ## <a id='view'></a>Viewing Logs in the Command Line Interface ##
 
-You view logs in the CLI using the [cf logs](http://cli.cloudfoundry.org/en-US/cf/logs.html) command.
+Use the cf CLI [cf logs](https://cli.cloudfoundry.org/en-US/cf/logs.html) command to view logs.
 You can tail, dump, or filter log output.
 
 ### <a id="tail-log"></a>Tailing Logs ###
 
-`cf logs APP_NAME` streams Loggregator output to the terminal.
+Run `cf logs APP-NAME` to stream Loggregator output to the terminal. Replace `APP-NAME` with the name of your app.
 
 For example:
 
@@ -183,13 +183,12 @@ Use **Ctrl-C** (^C) to exit the real-time stream.
 
 ### <a id="dump-log"></a>Dumping Logs ###
 
-`cf logs APP_NAME --recent` displays all the lines in the Loggregator buffer.
+Run `cf logs APP-NAME --recent` to display all the lines in the Loggregator buffer. Replace `APP-NAME` with the name of your app.
 
 ### <a id="filter"></a>Filtering Logs ###
 
-To view some subset of log output, use `cf logs` in conjunction with filtering
-commands of your choice.
-In the example below, `grep -v` excludes all Router logs:
+To view some subset of log output, run `cf logs APP-NAME` in conjunction with filtering commands of your choice. Replace `APP-NAME` with the name of your app.
+In the example below, `grep -v RTR` excludes all Router logs:
 
 <pre class="terminal">
 $ cf logs spring-music --recent | grep -v RTR
@@ -202,18 +201,16 @@ $ cf logs spring-music --recent | grep -v RTR
     ...
 </pre>
 
-### <a id=‘log-ordering’></a> Log Ordering
+### <a id='log-ordering'></a> Log Ordering
 
-Ensuring log ordering in drains can be an important for both operators and developers. However, the Loggregator Firehose does not offer a deterministic routing mechanism for ordering.  
+Ensuring log ordering in drains can be an important consideration for both operators and developers. 
 
-For operators configuring syslog drains, it is useful to note that:
+* Diego uses a nanosecond-based timestamp that can be ingested properly by Splunk. For more information, see [TIME_FORMAT and subseconds](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html) in the Splunk documentation.
+* The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are truncated. For more information, see the [Date datatype](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) in the Elasticsearch documentation and the [Date type has not enough precision for the logging use case](https://github.com/elastic/elasticsearch/issues/10005) GitHub issue.
 
-* Diego uses a nanosecond-based timestamp that can be ingested properly by Splunk. For more information, see [these instructions](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html).
-* The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are truncated. For more information, see [ELK's date type](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) and the relevant [issue](https://github.com/elastic/elasticsearch/issues/10005).
+If you are developing a client that displays a stream of Cloud Foundry logs to users, you can order the logs to improve the debugging experience for your user. The following are general tips for ordering logs:
 
-If you are developing a client that displays a stream of Cloud Foundry logs to users, consider ordering the logs to improve the debugging experience for your user. The following are general tips for ordering logs:
-
-* Batch the logs and display whatever logs you have in that timeframe sorted by timestamp. This technique is good for CLIs. 
-* For web clients you can use dynamic HTML to insert older logs into the sorting as they appear. This is nice because by the time a user grabs the content for a copy paste, the logs will likely be both complete and in order. 
-* Java app developers may want to convert stack traces into a single log entity. To simplify log ordering for Java apps, use the [multi-line Java message workaround](https://github.com/cloudfoundry/loggregator-release/blob/develop/docs/java-multi-line-work-around.md) to convert your multi-line stack traces into a single log entity. 
-<br><br>By modifying the Java log output, you can make your app reformat your stack trace messages so any newline characters are replaced with a token. Then, you can make your log parsing code replace that token with newline characters again to display the logs properly in Kibana.
+* For CLIs, batch the logs and display the logs you have in that timeframe, sorted by timestamp.
+* For web clients, use dynamic HTML to insert older logs into the sorting as they appear. This creates complete, ordered logs.
+* Java app developers may want to convert stack traces into a single log entity. To simplify log ordering for Java apps, use the [multi-line Java message workaround](https://github.com/cloudfoundry/loggregator-release/blob/develop/docs/java-multi-line-work-around.md) to convert your multi-line stack traces into a single log entity.
+<br><br>By modifying the Java log output, you can force your app to reformat stack trace messages, replacing newline characters with a token. Set your log parsing code to replace that token with newline characters again to display the logs properly in Kibana.

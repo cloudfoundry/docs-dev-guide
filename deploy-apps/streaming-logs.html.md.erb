@@ -16,7 +16,7 @@ service.
 See [Third-Party Log Management Services](../services/log-management.html).
 
 Cloud Foundry gathers and stores logs in a best-effort manner.
-If a client is unable to consume log lines quickly enough, the Loggregator
+If a client cannot consume log lines quickly enough, the Loggregator
 buffer may need to overwrite some lines before the client has consumed them.
 A syslog drain or a CLI tail can usually keep up with the flow of app
 logs.
@@ -27,7 +27,7 @@ Every log line contains four fields:
 
 * Timestamp
 * Log type (origin code)
-* Channel: either `OUT`, for logs emitted on `stdout`, or `ERR`, for logs emitted on `stderr`
+* Channel: Either `OUT`, for logs emitted on `stdout`, or `ERR`, for logs emitted on `stderr`
 * Message
 
 Loggregator assigns the timestamp when it receives log data.
@@ -209,13 +209,13 @@ $ cf logs spring-music --recent | grep -v RTR
 
 ### <a id='log-ordering'></a> Log Ordering
 
-Ensuring log ordering in drains can be an important consideration for both operators and developers. Diego uses a nanosecond-based timestamp that can be ingested properly by Splunk. For more information, see [TIME_FORMAT and subseconds](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html) in the Splunk documentation.
+Ensuring log ordering in drains can be an important for both operators and developers. However, the Loggregator Firehose does not offer a deterministic routing mechanism for ordering.  
 
-The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are truncated. For more information, see 
-the [Date datatype](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) in the Elasticsearch documentation and the [Date type has not enough precision for the logging use case](https://github.com/elastic/elasticsearch/issues/10005) GitHub issue.
+* Diego uses a nanosecond-based timestamp that can be ingested properly by Splunk. For more information, see [TIME_FORMAT and subseconds](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html) in the Splunk documentation.
+* The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are truncated. For more information, see the [Date datatype](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) in the Elasticsearch documentation and the [Date type has not enough precision for the logging use case](https://github.com/elastic/elasticsearch/issues/10005) GitHub issue.
 
 ### <a id='multi-line-stack-traces'></a> Multi-Line Stack Traces as a Single Log Entity
 
-You can see your multi-line stack traces as a single log entity instead of broken up into multiple log messages. By modifying the Java log output, you can force your app to reformat stack trace messages, replacing newline characters with a token. Set your log parsing code to replace that token with newline characters again.
+Java app developers may want to convert stack traces into a single log entity. To simplify log ordering for Java apps, use the [multi-line Java message workaround](https://github.com/cloudfoundry/loggregator-release/blob/develop/docs/java-multi-line-work-around.md) to convert your multi-line stack traces into a single log entity.
 
-For more information about modifying your Java log output, see [Multi-line Java message workaround](https://github.com/cloudfoundry/loggregator-release/blob/develop/docs/java-multi-line-work-around.md) in GitHub.
+By modifying the Java log output, you can force your app to reformat stack trace messages, replacing newline characters with a token. Set your log parsing code to replace that token with newline characters again.

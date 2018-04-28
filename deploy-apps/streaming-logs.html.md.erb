@@ -16,7 +16,7 @@ service.
 See [Third-Party Log Management Services](../services/log-management.html).
 
 Cloud Foundry gathers and stores logs in a best-effort manner.
-If a client is unable to consume log lines quickly enough, the Loggregator
+If a client cannot consume log lines quickly enough, the Loggregator
 buffer may need to overwrite some lines before the client has consumed them.
 A syslog drain or a CLI tail can usually keep up with the flow of app
 logs.
@@ -27,7 +27,7 @@ Every log line contains four fields:
 
 * Timestamp
 * Log type (origin code)
-* Channel: either `OUT`, for logs emitted on `stdout`, or `ERR`, for logs emitted on `stderr`
+* Channel: Either `OUT`, for logs emitted on `stdout`, or `ERR`, for logs emitted on `stderr`
 * Message
 
 Loggregator assigns the timestamp when it receives log data.

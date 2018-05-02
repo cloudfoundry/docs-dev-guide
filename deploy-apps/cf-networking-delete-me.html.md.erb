@@ -1,0 +1,198 @@
+---
+title: Configuring Container-to-Container Networking
+owner: Container-to-Container Networking
+---
+
+<div class="quick-links">
+<ul>
+  <% if vars.product_name == 'CF' %>
+  <li><a href="#enable">Enable Container-to-Container Networking</a></li>
+  <li><a href="#logging">Manage Logging for Container-to-Container Networking</a></li>
+  <% end %>
+  <% if vars.product_name.include? "CF" %>
+  <li><a href="#overlay">Configure the Overlay Network</a></li>
+  <% end %>  
+  <li><a href="#create-policies">Create and Manage Networking Policies</a>
+    <ul>
+      <li><a href="#prereq">Prerequisites</a></li>
+      <% if vars.product_name.include? "CF" %>
+      <li><a href="#grant">Grant Permissions</a></li>
+      <% end %>
+      <li><a href="#add-policy">Add a Network Policy</a></li>
+      <li><a href="#list-policies">List Network Policies</a></li>
+      <li><a href="#rm-policy">Remove a Network Policy</a></li>
+    </ul>
+    <li><a href="#discovery">App Service Discovery</a>
+      <% if vars.product_name.include? "CF" %>
+      <ul>
+        <li><a href="#enable-discovery">Enable App Service Discovery</a></li>
+      </ul>
+      <% end %>
+    </li>
+  </ul>
+</div>
+
+This topic describes how to configure the Container-to-Container Networking feature, which allows direct network traffic between apps. For an overview of how Container-to-Container Networking works, see the [Understanding Container-to-Container Networking](../../concepts/understand-cf-networking.html) topic.
+
+<%= vars.app_traffic_logging %>
+
+<% if vars.product_name == 'CF' %>
+<%= partial 'c2c_oss_enable_delete_me' %>
+<% else %>
+<% end %>
+
+<% if vars.product_name == 'CF' %>
+<%= partial 'c2c_oss_overlay' %>
+<% else %>
+<% if vars.product_name.include? "CF" %>
+<%= partial '../../opsguide/c2c_overlay' %>
+<% end %>
+<% end %>
+
+<% if vars.product_name == 'CF' %>
+<%= partial 'c2c_oss_logging' %>
+<% else %>
+<% end %>
+
+##<a name="create-policies"></a>Create and Manage Networking Policies
+
+This section describes how to create and modify Container-to-Container Networking policies using the Cloud Foundry Command Line Interface (cf CLI).
+The cf CLI only supports configuring policies for apps within the same space. 
+To configure policies for apps in different orgs and spaces, use the [Policy Server External API](https://github.com/cloudfoundry/cf-networking-release/blob/master/docs/API.md).
+
+<p class='note'><strong>Note:</strong> With the NSX-T integration, container networking policies and ASGs continue to work as normal. Advanced ASG logging is not supported with NSX-T.</p>
+
+###<a name="prereq"></a>Prerequisites
+
+* Ensure that you are using cf CLI v6.30 or higher:
+<pre class="terminal">
+$ cf version
+</pre>
+For more information about updating the cf CLI, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
+
+<% if vars.product_name.include? "CF" %>
+
+###<a name="grant"></a>Grant Permissions
+
+CF admins use the following UAA scopes to grant specific users or groups permissions to configure network policies:
+
+<table>
+  <tr>
+    <th>UAA Scope</th>
+    <th>Suitable for&hellip;</th>
+    <th>Allows users to create policies&hellip;</th>
+  </tr>
+  <tr>
+    <td><code>network.admin</code></td>
+    <td>operators</td>
+    <td>for any apps in the CF deployment</td>
+  </tr>
+  <tr>
+    <td><code>network.write</code></td>
+    <td>space developers</td>
+    <td>for apps in spaces that they can access</td>
+   </tr>
+</table>
+
+If you are a CF admin, you already have the `network.admin` scope. An admin can also grant the `network.admin` scope to a space developer.
+
+<%= vars.uaa_cli %>
+
+To grant all Space Developers permissions to configure network policies, <%=  vars.grant_devs_c2c %>.
+
+<% else %>
+<%= partial '../../appsman-services/c2c_pws_create' %>
+<% end %>
+
+###<a name="add-policy"></a>Add a Network Policy
+
+To add a policy that allows direct network traffic from one app to another, run the following command:
+
+```cf add-network-policy SOURCE_APP --destination-app DESTINATION_APP --protocol (tcp | udp) --port RANGE
+```
+
+Replace the placeholders in the above command as follows:
+
+* `SOURCE_APP` is the name of the app that sends traffic.
+* `DESTINATION_APP` is the name of the app that will receive traffic.
+* `PROTOCOL` is one of the following: `tcp` or `udp`.
+* `RANGE` are the ports at which to connect to the destination app. The allowed range is from `1` to `65535`. You can specify a single port, such as `8080`, or a range of ports, such as `8080-8090`.
+
+The following example command allows access from the `frontend` app to the `backend` app over TCP at port 8080:
+
+<pre class="terminal">
+$ cf add-network-policy frontend --destination-app backend --protocol tcp --port 8080
+Adding network policy to app frontend in org my-org / space dev as admin...
+OK
+</pre>
+
+###<a name="list-policies"></a>List Policies
+
+You can list all the policies in your space, or just the policies for which a single app is the source:
+
++ To list the all the policies in your space, run `cf network-policies`.
+
+    <pre class="terminal">
+    $ cf network-policies
+    </pre>
+
++ To list the policies for an app, run `cf network-policies --source MY-APP`. Replace `MY-APP` with the name of your app. 
+
+    <pre class="terminal">
+    $ cf network-policies --source example-app
+    </pre>
+
+    The following example command lists policies for the app `frontend`:
+    
+    <pre class="terminal">
+    $ cf network-policies --source frontend
+    Listing network policies in org my-org / space dev as admin...
+
+    source      destination   protocol   ports
+    frontend    backend       tcp        8080
+    </pre>
+
+###<a name="rm-policy"></a>Remove a Network Policy
+
+To remove a policy that allows direct network traffic from an app, run the following command:
+
+```cf remove-network-policy SOURCE_APP --destination-app DESTINATION_APP --protocol PROTOCOL --port RANGE
+```
+
+Replace the placeholders in the above command to match an existing policy, as follows:
+
+* `SOURCE_APP` is the name of the app that sends traffic.
+* `DESTINATION_APP` is the name of the app that receives traffic.
+* `PROTOCOL` is either `tcp` or `udp`.
+* `PORTS` are the ports connecting the apps. The allowed range is from `1` to `65535`. You can specify a single port, such as `8080`, or a range of ports, such as `8080-8090`.
+
+The following command deletes the policy that allowed the `frontend` app to communicate with the `backend` app over TCP on port 8080:
+<pre class="terminal">
+$ cf remove-network-policy frontend --destination-app backend --protocol tcp --port 8080
+Removing network policy to app frontend in org my-org / space dev as admin...
+OK
+</pre>
+
+##<a name="discovery"></a>App Service Discovery (Experimental)
+
+When app service discovery is enabled, apps pushed to <%= vars.product_full %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front-end apps to easily connect with back-end apps.
+
+To establish container-to-container communications between a front-end and back-end app, a developer:
+
+1. Launches a back-end app that publishes a local endpoint.
+1. Maps a named route to the endpoint.
+1. Creates a network policy that allows direct traffic from the front-end to the back-end app.
+1. Launches the front-end app.
+
+
+See [Cats and Dogs with Service Discovery](https://github.com/cloudfoundry/cf-networking-examples/blob/master/docs/c2c-with-service-discovery.md) in GitHub for an example, written in Go, that demonstrates communication between front-end and back-end apps.
+
+<% if vars.product_name.include? "CF" %>
+
+###<a name="enable-discovery"></a>Enable App Service Discovery
+
+To enable app service discovery, <%= vars.enable_c2c_discovery %>.
+
+<% else %>
+<% end %>
+

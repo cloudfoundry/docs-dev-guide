@@ -37,52 +37,7 @@ This topic describes how to configure the Container-to-Container Networking feat
 <%= vars.app_traffic_logging %>
 
 <% if vars.product_name == 'CF' %>
-
-<%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_spring', at: 'gsg-spring-s3' %>
-
-<table border="1" class="nice">
-  <tr>
-    <th style="width:35%">Container-to-Container Networking Opsfiles</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td colspan=2><%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_spring', at: 'gsg-spring-s3' %></td>
-    <td>
-  </tr>
-  <tr>
-    <td><pre><code>
-<%= yield_for_code_snippet from: 'cloudfoundry/cf-networking-release', at: 'c2c_networking_stub_table_r1c1' %>
-    </code></pre></td>
-    <td>
-<%= yield_for_code_snippet from: 'cloudfoundry/cf-networking-release', at: 'c2c_networking_stub_table_r1c2' %>
-    </td>
-  </tr>
-  <tr>
-    <td><pre><code>
-<%= yield_for_code_snippet from: 'cloudfoundry/cf-networking-release', at: 'c2c_networking_stub_table_r2c1' %>
-    </code></pre></td>
-    <td>
-<%= yield_for_code_snippet from: 'cloudfoundry/cf-networking-release', at: 'c2c_networking_stub_table_r2c2' %>
-    </td>
-  </tr>
-  <tr>
-    <td><pre><code>
-<%= yield_for_code_snippet from: 'cloudfoundry/cf-networking-release', at: 'c2c_networking_stub_table_r3c1' %>
-    </code></pre></td>
-    <td>
-<%= yield_for_code_snippet from: 'cloudfoundry/cf-networking-release', at: 'c2c_networking_stub_table_r3c2' %>
-    </td>
-  </tr>
-  <tr>
-    <td><pre><code>
-<%= yield_for_code_snippet from: 'cloudfoundry/cf-networking-release', at: 'c2c_networking_stub_table_r4c1' %>
-    </code></pre></code>
-    <td>
-<%= yield_for_code_snippet from: 'cloudfoundry/cf-networking-release', at: 'c2c_networking_stub_table_r4c2' %>
-    </td>
-  </tr>
-</table>
-
+<%= partial 'c2c_oss_enable_delete_me' %>
 <% else %>
 <% end %>
 

@@ -6,61 +6,29 @@ Container networking has properties that you can configure to change their defau
 
 <table border="1" class="nice">
   <tr>
-    <th style="width:35%">Container-to-Container Networking Stub Contents</th>
-    <th>Editing Instructions</th>
+    <th style="width:35%">Container-to-Container Networking Opsfiles</th>
+    <th>Description</th>
   </tr>
   <tr>
     <td><pre><code>
-properties:
-  cf_networking:
-    vxlan_policy_agent:
-      policy_server_url: [...]
-      ca_cert: |
-        -----BEGIN CERTIFICATE-----
-        REPLACE-WITH-CA-CERTIFICATE
-        -----END CERTIFICATE-----
-      client_cert: |
-        -----BEGIN CERTIFICATE-----
-        REPLACE-WITH-CLIENT-CERTIFICATE
-        -----END CERTIFICATE-----
-      client_key: |
-        -----BEGIN EXAMPLE RSA PRIVATE KEY-----
-        REPLACE-WITH-CLIENT-KEY
-        -----END EXAMPLE RSA PRIVATE KEY-----</code></pre></td>
-    <td>Copy in certificates and keys for the policy agent.
-        The policy agent communicates with the policy server through TLS.
-        See the <a href="../../concepts/understand-cf-networking.html#architecture">Architecture</a> section for more information.
-    </td>
-  <tr>
-    <td><pre><code>
-policy_server:
-  debug_server_port: REPLACE-WITH-LISTEN-PORT
-
-vxlan_policy_agent:
-  debug_server_port: REPLACE-WITH-LISTEN-PORT
-</code></pre></td>
-    <td>By default, the Policy Server and VXLAN Policy Agent listen on port 22222.<br><br>
-    (Optional) Change these port numbers by adding the <code>debug_server_port</code> key pair to the stub file.
-    <br>
-    Replace <code>REPLACE-WITH-LISTEN-PORT</code> with a port number.<br><br>
-    For more information, see <a href="#debug-logging">Manage Debug Logging</a> below.
-    </td>
-    <tr>
-    <td><pre><code>
-vxlan_policy_agent:
-  iptables_c2c_logging: true
-</code></pre></td>
-    <td>The default value for <code>iptables_c2c_logging</code> is <code>false</code>.
+    - type: replace
+    path: /instance_groups/name=diego-cell/jobs/name=vxlan_policy_agent/properties/iptables_logging?
+    value: true
+    </code></pre></td>
+    <td>
+    The default value for <code>iptables_logging</code> is <code>false</code>.
     <br><br>
     (Optional) Change the value to <code>true</code> to enable logging for Container-to-Container policy iptables rules.
     </td>
+  </tr>
   <tr>
     <td><pre><code>
-garden_external_networker:
-  iptables_asg_logging: true
+    - type: replace
+    path: /instance_groups/name=diego-cell/jobs/name=cni/properties/iptables_logging?
+    value: true
     </code></pre></td>
     <td>
-    The default value for <code>iptables_asg_logging</code> is <code>false</code>.
+    The default value for <code>iptables_logging</code> is <code>false</code>.
     <br><br>
     (Optional) Change the value to <code>true</code> to enable
     logging for Application Security Group (ASG) iptables rules.
@@ -68,72 +36,24 @@ garden_external_networker:
   </tr>
   <tr>
     <td><pre><code>
-policy_server:
-  uaa_client_secret: REPLACE-WITH-UAA-CLIENT-SECRET
-    </code></pre></td>
-    <td>Copy in the <code>REPLACE-WITH-UAA-CLIENT-SECRET</code> value you used in the step <a href="#uaa-secret">above</a>.
-    </td>
-  </tr>
-  <tr>
-    <td><pre><code>
-database:
-  type: REPLACE-WITH-DB-TYPE
-  username: REPLACE-WITH-USERNAME
-  password: REPLACE-WITH-PASSWORD
-  host: REPLACE-WITH-DB-HOSTNAME
-  port: REPLACE-WITH-DB-PORT
-  name: REPLACE-WITH-DB-NAME
-   </code></pre></td>
-    <td>
-    Supply the details for the database from <a href="#enable">step 1</a>.<br>
-    The database type must be <code>postgres</code> or <code>mysql</code>.<br>
-    Choose a username and password.
-    <br>For <code>host</code>, enter the IP address of the database instance.
-    <br>Supply a port. For MySQL, a typical port is <code>3360</code>.
-    <br>Supply the name of the database.
-    </td>
-  </tr>
-  <tr>
-    <td><pre><code>
-  ca_cert: |
-    -----BEGIN CERTIFICATE-----
-    REPLACE-WITH-CA-CERTIFICATE
-    -----END CERTIFICATE-----
-  server_cert: |
-    -----BEGIN CERTIFICATE-----
-    REPLACE-WITH-SERVER-CERT
-    -----END CERTIFICATE-----
-  server_key: |
-    -----BEGIN EXAMPLE RSA PRIVATE KEY-----
-    REPLACE-WITH-SERVER-KEY
-    -----END EXAMPLE RSA PRIVATE KEY-----
-garden_external_networker:
-  cni_plugin_dir: /var/vcap/packages/flannel/bin
-  cni_config_dir: /var/vcap/jobs/cni-flannel/config/cni
+    - type: replace
+    path: /instance_groups/name=diego-cell/jobs/name=silk-controller/properties/network?
+    value: REPLACE-WITH-OVERLAY-NETWORK-CIDR
     </code></pre></td>
     <td>
-    Copy in the certificates and keys for the policy server. 
-    The policy server communicates with the policy agent through TLS. 
-    See the <a href="../../concepts/understand-cf-networking.html#architecture">Architecture</a> section for more information.
+    (Optional) Enter an IP range for the overlay network. The CIDR must specify an RFC 1918 range. If you do not set a custom range, the deployment uses <code>10.255.0.0/16</code>.
+    <br><br>
+    See <a href="../../concepts/understand-cf-networking.html#app-comm">App Instance Communication</a> for more information.
     </td>
   </tr>
   <tr>
     <td><pre><code>
-properties:
-  cf_networking:
-    network: REPLACE-WITH-OVERLAY-NETWORK-CIDR
-    </code></pre></td>
-    <td>(Optional) Enter an IP range for the overlay network. The CIDR must specify an RFC 1918 range. If you do not set a custom range, the deployment uses <code>10.255.0.0/16</code>.
-<br><br>See <a href="../../concepts/understand-cf-networking.html#app-comm">App Instance Communication</a> for more information.
-    </td>
-  </tr>
-  <tr>
-    <td><pre><code>
-properties:
-  cf_networking:
-    mtu: REPLACE-WITH-MTU
+    - type: replace
+    path: /instance_groups/name=diego-cell/jobs/name=cni/properties/mtu?
+    value: REPLACE-WITH-MTU
     </code></pre></code>
-    <td>(Optional) You can manually configure the Maximum Transmission Unit (MTU) value to support additional encapsulation overhead.
+    <td>
+    (Optional) You can manually configure the Maximum Transmission Unit (MTU) value to support additional encapsulation overhead.
     </td>
   </tr>
 </table>

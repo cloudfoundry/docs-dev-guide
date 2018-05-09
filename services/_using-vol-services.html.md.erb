@@ -49,6 +49,8 @@ To use a volume service deployed by <%= vars.admin %>, you must first create an 
     The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`,
     passing an in-line JSON string:
     <pre class="terminal">$ cf bind-service my-app nfs\_service\_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1","readonly":true}'</pre>
+    If you use an LDAP server, you must specify `username` and `password` instead of a UID and GID in this command. For example:
+    <pre class="terminal">$ cf bind-service my-app nfs\_service\_instance -c '{"username":"user1000","password":"secret","mount":"/var/volume1","readonly":true}'</pre>
 
 1. Run `cf restage YOUR-APP` to complete the service binding by restaging your app. Replace `YOUR-APP` with the name of your app.
   <pre class="terminal">$ cf restage my-app</pre>

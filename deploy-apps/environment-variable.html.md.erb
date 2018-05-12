@@ -265,11 +265,9 @@ Example: `CF_INSTANCE_PORTS=[{external:61045,internal:8080},{external:61046,inte
 
 ### <a id='DATABASE-URL'></a>DATABASE\_URL ###
 
-At runtime, CF creates a `DATABASE_URL` environment variable
-for every app based on the [VCAP_SERVICES](#VCAP-SERVICES) environment variable.
+For apps bound to certain services that use a database, CF creates a `DATABASE_URL` environment variable based on the [VCAP_SERVICES](#VCAP-SERVICES) environment variable at runtime.
 
-CF uses the structure of the `VCAP_SERVICES` environment
-variable to populate `DATABASE_URL`.
+CF uses the structure of the `VCAP_SERVICES` environment variable to populate `DATABASE_URL`.
 CF recognizes any service containing a JSON object with the following form as a candidate for `DATABASE_URL` and uses the first candidate it finds.
 
     {

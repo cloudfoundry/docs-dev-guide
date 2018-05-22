@@ -121,9 +121,9 @@ This section explains how to describe optional application attributes in manifes
 
 <p class='note'><strong>Note:</strong> The route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>, <code>hosts</code>, and <code>no-hostname</code> have been deprecated in favor of the <code>routes</code> attribute. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
 
-### <a id='buildpack'></a> buildpack
+### <a id='buildpack'></a> buildpacks
 
-If your application requires a custom buildpack, you can use the `buildpack` attribute to specify it in one of three ways:
+If your application requires a custom buildpack, you can use the `buildpacks` attribute to specify it in a number of ways:
 
 * By name: `MY-BUILDPACK`. 
 * By GitHub URL: `https://github.com/cloudfoundry/java-buildpack.git`. 
@@ -132,8 +132,24 @@ If your application requires a custom buildpack, you can use the `buildpack` att
 <pre>
 ---
   ...
-  buildpack: buildpack_URL
+  buildpacks: 
+    - buildpack_URL
 </pre>
+
+If you are using multiple buildpacks, you can provide an additional `-b` flag or add an additional value to your manifest:
+
+<pre>
+---
+  ...
+  buildpacks: 
+    - buildpack_URL
+    - buildpack_URL
+</pre>
+
+<p class="note"><strong>Note</strong>: You must specify multiple buildpacks in the correct order: the buildpack will use the app start command given by the final buildpack. See <a href=https://github.com/cloudfoundry/multi-buildpack#usageapp</a> for more information.</p>
+
+Also see [Pushing an Application with Multiple Buildpacks](https://docs.cloudfoundry.org/buildpacks/use-multiple-buildpacks.html) for more information. 
+
 
 <p class="note"><strong>Note</strong>: The <code>cf buildpacks</code> command lists the buildpacks that you can refer to by name in a manifest or a command line option.</p>
 
@@ -216,7 +232,7 @@ The command line option `--docker-image` or `-o` overrides `docker.image`.  The 
 The manifest attribute `docker.username` is optional.  If it is used, then the password must be provided in the environment variable `CF_DOCKER_PASSWORD`.  Additionally, if a Docker username is specified, then a Docker image must also be specified.
 
 #### <a id='manifest-attibutes'></a> Manifest Attributes
-The `docker` attribute cannot be used in conjunction with the following attributes: `buildpack` and `path`. An error will result.
+The `docker` attribute cannot be used in conjunction with the following attributes: `buildpacks` and `path`. An error will result.
 
 ### <a id='health-check-http-endpoint'></a> health-check-http-endpoint
 
@@ -538,7 +554,8 @@ You can declare shared configuration using a YAML anchor, which the manifest ref
 <pre>
 ---
 defaults: &amp;defaults
-  buildpack: staticfile_buildpack
+  buildpacks: 
+    - staticfile_buildpack
   memory: 1G
 
 applications:
@@ -656,7 +673,8 @@ The following example illustrates how to declare shared configuration using a YA
 <pre>
 ---
 defaults: &amp;defaults
-  buildpack: staticfile_buildpack
+  buildpacks: 
+    - staticfile_buildpack
   memory: 1G
 
 applications:

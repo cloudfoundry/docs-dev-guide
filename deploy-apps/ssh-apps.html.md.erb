@@ -188,7 +188,7 @@ You have now securely connected to the application instance.
 
 ## <a id="ssh-proxy-security-configuration"></a>SSH Proxy Security Configuration
 
-The SSH proxy has following SSH security configuration by default:
+The SSH proxy has the following SSH security configuration by default:
 
 <table id='ssh-proxy-security-configuration-values' border="1" class="nice">
   <tr>
@@ -220,7 +220,7 @@ The SSH proxy has following SSH security configuration by default:
   </tr>
 </table>
 
-The `cf ssh` command is compatible with this security configuration. If you use a different SSH client to access applications over SSH, you should ensure that you configure it to be compatible with these ciphers, MACs, and key exchanges. For more information about other SSH clients, see the [Application SSH Access without cf CLI](#other-ssh-access) section of this topic.
+The `cf ssh` command is compatible with this security configuration. If you use a different SSH client to access applications over SSH, you should ensure that you configure your client to be compatible with these ciphers, MACs, and key exchanges. For more information about other SSH clients, see the [Application SSH Access without cf CLI](#other-ssh-access) section of this topic.
 
 <% if vars.product_name == 'CF' %>
 Cloud Foundry deployment operators can also change these default values in the SSH proxy configuration. Changing these default values may require a change to the SSH client configuration.

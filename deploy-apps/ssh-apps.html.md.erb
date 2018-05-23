@@ -186,6 +186,44 @@ vcap@ce4l5164kws:~$
 <br/>
 You have now securely connected to the application instance.
 
+## <a id="ssh-proxy-security-configuration"></a>SSH Proxy Security Configuration
+
+The CF SSH proxy has following SSH security configuration by default:
+
+<table id='ssh-proxy-security-configuration-values' border="1" class="nice">
+  <tr>
+    <th>Security Parameter</th>
+    <th>Values</th>
+  </tr>
+  <tr>
+    <td>Ciphers</td>
+    <td>
+      <code>chacha20-poly1305@openssh.com</code><br/>
+      <code>aes128-gcm@openssh.com</code><br/>
+      <code>aes256-ctr</code><br/>
+      <code>aes192-ctr</code><br/>
+      <code>aes128-ctr</code>
+    </td>
+  </tr>
+  <tr>
+    <td><abbr title="Message Authentication Codes">MACs</abbr></td>
+    <td>
+      <code>hmac-sha2-256-etm@openssh.com</code><br/>
+      <code>hmac-sha2-256</code>
+    </td>
+  </tr>
+  <tr>
+    <td>Key Exchanges</td>
+    <td>
+      <code>curve25519-sha256@libssh.org</code>
+    </td>
+  </tr>
+</table>
+
+The `cf ssh` command is already compatible with this security configuration. If you <a href="#other-ssh-access">use a different SSH client</a> to access applications over SSH, you should ensure that it is configured to be compatible with these ciphers, MACs, and key exchanges.
+
+The CF deployment operator may also change these default values in the SSH proxy configuration, which may then require a change to the SSH client configuration.
+
 
 ## <a id="proxy-to-container-auth"></a>Proxy to Container Authentication
 

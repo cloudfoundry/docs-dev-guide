@@ -561,7 +561,8 @@ Value substitution allow app developers to create app manifests with values shar
 To utilize this feature, your app manifest requires an explicit declaration that the app or app configuration requires additional data. Use template variables in parentheses in your app manifest in place of fixed values.
 
 For example:
-```
+
+<pre>
 ---
 applications:
 - name: test-app
@@ -571,14 +572,13 @@ applications:
   env:
     GOPACKAGENAME: go_calls_ruby
   command: go_calls_ruby
-```
+</pre>
 
 The variable substitution file should have corresponding attribute values:
-```
+<pre>
 instances: 2
 memory: 1G
-```
-
+</pre>
 
 The CLI replaces the variables in the app manifest with the specified values and proceeds with the push process as usual.
 

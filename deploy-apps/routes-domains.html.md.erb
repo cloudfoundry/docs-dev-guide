@@ -83,9 +83,9 @@ TCP routes include a domain and a route port. A route port is the port clients m
 
 <p class="note"><strong>Note</strong>: This feature is currently experimental.</p>
 
-Applications can communicate without leaving the platform on the container network using internal routes. An internal route can be created using the [map-route](#map-internal-route) command with an [internal domain](#internal-domains).
+Applications can communicate without leaving the platform on the container network using internal routes. You can create an internal route using the [cf map-route](#map-internal-route) command with an [internal domain](#internal-domains).
 
-By default, apps cannot communicate with each other on the container network. In order for an app to talk to another app a [network policy](https://cli.cloudfoundry.org/en-US/cf/add-network-policy.html) must be created.
+By default, apps cannot communicate with each other on the container network. To allow apps to communicate with each other you must create a network policy. For more information, see [add-network-policy](https://cli.cloudfoundry.org/en-US/cf/add-network-policy.html) in the _Cloud Foundry CLI Reference Guide_.
 
 ### <a id='create-route'></a>Create a Route ###
 
@@ -340,9 +340,9 @@ See the [Routing Conflict](./troubleshoot-app-health.html#routing-conflict) sect
 
 <p class="note"><strong>Note</strong>: This feature is currently experimental.</p>
 
-Developers can map a route to their app that is only available internally to the platform. Once a route is mapped, that route will be available to all other apps on the platform.
+You can map an internal route to any app. This internal route allows your app to communicate with other apps without leaving the platform. Once mapped, this route becomes available to all other apps on the platform.
 
-To create a `foo.apps.internal` internal route for `myapp`:
+This example creates a `foo.apps.internal` internal route for `myapp`:
 
 <pre class="terminal">
 $ cf map-route myapp apps.internal --hostname foo
@@ -471,15 +471,13 @@ Admins can delete a shared domain from <%=vars.product_short%> with the `cf dele
 $ cf delete-shared-domain example.com
 </pre>
 
-#### <a id='internal-domains'></a>Internal Domains ####
+#### <a id='internal-domains'></a>Internal Domain ####
 
 <p class="note"><strong>Note</strong>: This feature is currently experimental.</p>
 
-Internal domains are a special type of shared domain. They are used only for application communication internal to
-the platform via the container network. When service discovery is enabled, the internal domain `apps.internal` will
-automatically be provided for your use.
+The internal domain is a special type of shared domain used for app communication internal to the platform. When you enable service discovery, the internal domain `apps.internal` becomes provided for your use.
 
-<p class="note"><strong>Note</strong>: The internal domain <i>apps.internal</i> cannot be deleted and no other internal domains can be created at this time.</p>
+<p class="note"><strong>Note</strong>: The internal domain <em>apps.internal</em> cannot be deleted. At this time, no other internal domains can be created.</p>
 
 ### <a id='private-domains'></a>Private Domains ###
 

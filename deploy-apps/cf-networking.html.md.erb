@@ -55,7 +55,8 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% else %>
 <% end %>
 
-##<a name="create-policies"></a>Create and Manage Networking Policies
+
+## <a name="create-policies"></a> Create and Manage Networking Policies
 
 This section describes how to create and modify Container-to-Container Networking policies using the Cloud Foundry Command Line Interface (cf CLI).
 The cf CLI only supports configuring policies for apps within the same space. 
@@ -63,7 +64,7 @@ To configure policies for apps in different orgs and spaces, use the [Policy Ser
 
 <p class='note'><strong>Note:</strong> With the NSX-T integration, container networking policies and ASGs continue to work as normal. Advanced ASG logging is not supported with NSX-T.</p>
 
-###<a name="prereq"></a>Prerequisites
+### <a name="prereq"></a> Prerequisites
 
 * Ensure that you are using cf CLI v6.30 or higher:
 <pre class="terminal">
@@ -73,7 +74,7 @@ For more information about updating the cf CLI, see the [Installing the cf CLI](
 
 <% if vars.product_name.include? "CF" %>
 
-###<a name="grant"></a>Grant Permissions
+### <a name="grant"></a> Grant Permissions
 
 CF admins use the following UAA scopes to grant specific users or groups permissions to configure network policies:
 
@@ -105,7 +106,7 @@ To grant all Space Developers permissions to configure network policies, <%=  va
 <%= partial '../../appsman-services/c2c_pws_create' %>
 <% end %>
 
-###<a name="add-policy"></a>Add a Network Policy
+### <a name="add-policy"></a> Add a Network Policy
 
 To add a policy that allows direct network traffic from one app to another, run the following command:
 
@@ -127,7 +128,7 @@ Adding network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>
 
-###<a name="list-policies"></a>List Policies
+### <a name="list-policies"></a> List Policies
 
 You can list all the policies in your space, or just the policies for which a single app is the source:
 
@@ -153,7 +154,7 @@ You can list all the policies in your space, or just the policies for which a si
     frontend    backend       tcp        8080
     </pre>
 
-###<a name="rm-policy"></a>Remove a Network Policy
+### <a name="rm-policy"></a> Remove a Network Policy
 
 To remove a policy that allows direct network traffic from an app, run the following command:
 
@@ -174,23 +175,23 @@ Removing network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>
 
-##<a name="discovery"></a>App Service Discovery (Experimental)
 
-When app service discovery is enabled, apps pushed to <%= vars.product_full %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front-end apps to easily connect with back-end apps.
+## <a name="discovery"></a> App Service Discovery
 
-To establish container-to-container communications between a front-end and back-end app, a developer:
+When app service discovery is enabled, apps pushed to <%= vars.product_full %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front end apps to easily connect with back end apps.
+
+To establish container-to-container communications between a front end and back end app, a developer:
 
 1. Launches a back-end app that publishes a local endpoint.
 1. Maps a named route to the endpoint.
 1. Creates a network policy that allows direct traffic from the front-end to the back-end app.
 1. Launches the front-end app.
 
-
-See [Cats and Dogs with Service Discovery](https://github.com/cloudfoundry/cf-networking-examples/blob/master/docs/c2c-with-service-discovery.md) in GitHub for an example, written in Go, that demonstrates communication between front-end and back-end apps.
+See [Cats and Dogs with Service Discovery](https://github.com/cloudfoundry/cf-networking-examples/blob/master/docs/c2c-with-service-discovery.md) in GitHub for an example, written in Go, that demonstrates communication between front end and back end apps.
 
 <% if vars.product_name.include? "CF" %>
 
-###<a name="enable-discovery"></a>Enable App Service Discovery
+### <a name="enable-discovery"></a> Enable App Service Discovery
 
 To enable app service discovery, <%= vars.enable_c2c_discovery %>.
 

@@ -62,6 +62,8 @@ applications:
 A minimal manifest requires only an application `name`.
 To create a valid minimal manifest, remove the `memory` and `instances` properties from this example.
 
+<p class="note"><strong>Note</strong>: There are certain forbidden characters for the application `name` value. For instance, `-` is a forbidden character.</p>
+
 
 ## <a id='name'></a> Always Provide an Application Name to cf push
 
@@ -569,74 +571,95 @@ applications:
 This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpack but with 256M memory for smallapp and 1G for bigapp.
 
 
-## <a id='multi-manifests'></a> Multiple Manifests with Inheritance
+## <a id='multi-manifests'></a> Variable Substitution
 
-<p class="note"><strong>Note</strong>: Inheritance has been deprecated. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
+Variable substitution replaces [Inheritance](#inheritance-deprecated), which has been deprecated.  
 
-A single manifest can describe multiple applications. Another powerful technique is to create multiple manifests with inheritance. Here, manifests have parent-child relationships such that children inherit descriptions from a parent. Children can use inherited descriptions as-is, extend them, or override them.
+Value substitution allow app developers to create app manifests with values shared across all applicable environments in combination with references to environment-specific differences defined in separate files. It addition, using variable substitution enables developers to store sensitive data in a separate file that the app manifest would reference, making the security sensitive data easier to manage and keep secure.
 
-Content in the child manifest overrides content in the parent manifest, if the two conflict.
+To utilize this feature, your app manifest requires an explicit declaration that the app or app configuration requires additional data. Use template variables in parentheses in your app manifest in place of fixed values.
 
-This technique helps in these and other scenarios:
-
-* An application has a set of different deployment modes, such as debug, local, and public. Each deployment mode is described in child manifests that extend the settings in a base parent manifest.
-
-* An application is packaged with a basic configuration described by a parent manifest. Users can extend the basic configuration by creating child manifests that add new properties or override those in the parent manifest.
-
-The benefits of multiple manifests with inheritance are similar to those of minimizing duplicated content within single manifests. With inheritance, though, we "promote" content by placing it in the parent manifest.
-
-Every child manifest must contain an "inherit" line that points to the parent manifest. Place the inherit line immediately after the three dashes at the top of the child manifest. For example, every child of a parent manifest named `base-manifest.yml` begins as follows:
+For example:
 
 <pre>
 ---
-inherit: base-manifest.yml
+applications:
+- name: test-app
+  instances: ((instances))
+  memory: ((memory))
+  buildpack: go_buildpack
+  env:
+    GOPACKAGENAME: go_calls_ruby
+  command: go_calls_ruby
+</pre>
+
+The variable substitution file should have corresponding attribute values:
+<pre>
+instances: 2
+memory: 1G
+</pre>
+
+The CLI replaces the variables in the app manifest with the specified values and proceeds with the push process as usual.
+
+For example: 
+
+<pre class="terminal">
+$ cf push foo-app -f ~/workspace/var_manifest.yml --vars-file ~/workspace/vars.yml
+Pushing from manifest to org Doop / space lessing as achau@pivotal.io...
+Using manifest file /Users/achau/workspace/var_manifest.yml
+Getting app info...
+Creating app with these attributes...
++ name:        foo-app
+  path:        /Users/achau/workspace/cf-acceptance-tests/assets/dora
++ instances:   2
++ memory:      1G
+  routes:
++   foo-app.cfapps.io
 ...
 </pre>
 
-You do not need to add anything to the parent manifest.
+Template variables can also be used as partial values. Starting with the following manifest.yml:
 
-In the simple example below, a parent manifest gives each application minimal resources, while a production child manifest scales them up.
-
-**simple-base-manifest.yml**
-
-<pre>
+<pre class="terminal">
 ---
-path: .
-domain: <%=vars.app_domain%>
-memory: 256M
-instances: 1
-services:
-- singular-backend
-
-# app-specific configuration
 applications:
- - name: springtock
-   host: 765shower
-   path: ./april/build/libs/april-weather.war
- - name: wintertick
-   host: 321flurry
-   path: ./december/target/december-weather.war
+  - name: ((app-name))
+    instances: ((instances))
+    env:
+      ((env-key)): ((env-val))
+    routes:
+      - route: ((host)).env.com
 </pre>
 
-**simple-prod-manifest.yml**
+and a secrets.yml variable file:
 
-<pre>
+<pre class="terminal">
 ---
-inherit: simple-base-manifest.yml
-applications:
- - name:springstorm
-   memory: 512M
-   instances: 1
-   host: 765deluge
-   path: ./april/build/libs/april-weather.war
- - name: winterblast
-   memory: 1G
-   instances: 2
-   host: 321blizzard
-   path: ./december/target/december-weather.war
+app-name: test-app
+instances: 2
+env-key: HIDDEN
+env-val: HIDDEN
+host: test
 </pre>
 
-<p class='note'><strong>Note</strong>: Inheritance can add an additional level of complexity to manifest creation and maintenance. Comments that precisely explain how the child manifest extends or overrides the descriptions in the parent manifest can alleviate this complexity.</p>
+When you do a push invoking both files above, the partial value for `routes` in the manifest.yml is replaced by `host` in the variables.yml file.
+
+<pre class="terminal">
+$ cf push -f manifest.yml --vars-file <(cat secrets.yml)
+Pushing from manifest to org system / space maspace as admin...
+Using manifest file manifest.yml
+Getting app info...
+Creating app with these attributes...
++ name:        test-app
+  path:        /home/pivotal/go/src/github.com/cloudfoundry/cf-acceptance-tests/assets/dora
++ instances:   2
+  env:
++   HIDDEN
+  routes:
++   test.env.com
+Creating app test-app...
+</pre>
+
 
 
 ## <a id='deprecated'></a> Deprecated App Manifest Features
@@ -725,4 +748,5 @@ This app manifest feature has been deprecated, and a replacement option is under
 
 ### <a id='inheritance-deprecated'></a> Inheritance Is Deprecated
 
-With inheritance, child manifests inherited configurations from a parent manifest, and the child manifests could use inherited configurations as provided, extend them, or override them. This feature has been deprecated.
+With inheritance, child manifests inherited configurations from a parent manifest, and the child manifests could use inherited configurations as provided, extend them, or override them. This feature has been deprecated, and has been replaced by [Variable Substitution](#multi-manifests).
+

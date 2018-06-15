@@ -729,3 +729,7 @@ This app manifest feature has been deprecated, and a replacement option is under
 ### <a id='inheritance-deprecated'></a> Inheritance Is Deprecated
 
 With inheritance, child manifests inherited configurations from a parent manifest, and the child manifests could use inherited configurations as provided, extend them, or override them. This feature has been deprecated, and has been replaced by [Variable Substitution](#multi-manifests).
+
+### <a id='buildpack-deprecated'></a> Buildpack Field in Manifest Is Deprecated
+
+The singular `buildpack` field in manifests is deprecated. It has been replaced by `buildpacks`, which is now an array which takes as a value [multiple buildpacks](#buildpack).

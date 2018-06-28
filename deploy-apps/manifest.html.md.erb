@@ -206,10 +206,9 @@ This attribute is a combination of `push` options that include `--docker-image` 
 
 The command line option `--docker-image` or `-o` overrides `docker.image`.  The command line option `--docker-username` overrides `docker.username`.
 
-The manifest attribute `docker.username` is optional.  If it is used, then the password must be provided in the environment variable `CF_DOCKER_PASSWORD`.  Additionally, if a Docker username is specified, then a Docker image must also be specified.
+The manifest attribute `docker.username` is optional. If you us this attribute, you must provide the password in the environment variable `CF_DOCKER_PASSWORD`. Additionally, if you specify a Docker username, then you you must also specify a Docker image.
 
-#### Manifest Attributes
-The `docker` attribute cannot be used in conjunction with the following attributes: `buildpack` and `path`. An error will result.
+<p class="note"><strong>Note</strong>: Using the <code>docker</code> attribute in conjunction with the <code>buildpack</code> or <code>path</code> attributes will result in an error.</p>
 
 ###<a id='domain'></a>domain ###
 

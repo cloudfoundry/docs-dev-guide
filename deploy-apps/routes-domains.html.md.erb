@@ -473,11 +473,16 @@ $ cf delete-shared-domain example.com
 
 #### <a id='internal-domains'></a>Internal Domain ####
 
-<p class="note"><strong>Note</strong>: This feature is currently experimental.</p>
+The internal domain is a special type of shared domain used for application communication internal to the platform. New internal domains can be added by calling:
 
-The internal domain is a special type of shared domain used for app communication internal to the platform. When you enable service discovery, the internal domain `apps.internal` becomes provided for your use.
+<pre class="terminal">
+$ cf curl /v2/shared_domains" -d '{
+  "name": "example.internal",
+  "internal": true
+}'
+</pre>
 
-<p class="note"><strong>Note</strong>: The internal domain <em>apps.internal</em> cannot be deleted. At this time, no other internal domains can be created.</p>
+In addition, internal domains must be added to the `bosh-dns-adapter` bosh job property: `internal_domains` for application containers to resolve new internal domains.
 
 ### <a id='private-domains'></a>Private Domains ###
 

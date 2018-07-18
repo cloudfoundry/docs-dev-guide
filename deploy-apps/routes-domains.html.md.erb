@@ -328,6 +328,44 @@ Developers can map a route to their app with a manifest by editing the `route` a
 
 See the [Routing Conflict](./troubleshoot-app-health.html#routing-conflict) section of the Troubleshooting Application Deployment and Health topic for more information about troubleshooting this problem.
 
+#### <a id='map-multiple-routes'></a>Map Multiple Routes to One App ####
+
+You can have multiple routes to an app, but those routes cannot have different context paths.
+
+The following routes are valid for a single app:
+
+<table>
+  <tr>
+    <th>Route 1</th>
+    <th>Route 2</th>
+  </tr>
+  <tr>
+    <td><code>myapp.example.com</code></td>
+    <td><code>myapp.apps.cf.example.com</code></td>
+  </tr>
+  <tr>
+    <td><code>myapp.example.com/foo</code></td>
+    <td><code>myapp.apps.cf.example.com/foo</code></td>
+  </tr>
+</table>
+
+The following routes are **not** valid for a single app:
+
+<table>
+  <tr>
+    <th>Route 1</th>
+    <th>Route 2</th>
+  </tr>
+  <tr>
+    <td><code>myapp.example.com/foo</code></td>
+    <td><code>myapp.apps.cf.example.com/bar</code></td>
+  </tr>
+  <tr>
+    <td><code>myapp.apps.cf.example.com/foo</code></td>
+    <td><code>myapp.example.com/bar</code></td>
+  </tr>
+</table>
+
 ### <a id='unmap-route'></a>Unmap a Route ###
 
 Developers can remove a route from an app using the `cf unmap-route` command. The route remains reserved for later use in the space where it was created until the route is deleted.

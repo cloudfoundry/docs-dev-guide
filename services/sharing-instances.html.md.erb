@@ -1,11 +1,8 @@
 ---
-title: Sharing Service Instances (Beta)
+title: Sharing Service Instances
 owner: Core Services
 ---
 
-
-<p class="note warning"><strong>WARNING</strong>: Service instance sharing is a beta feature and may be removed at any time without notice.
-Use at your own risk.</p>
 
 This topic explains how to use service instance sharing.
 
@@ -52,7 +49,7 @@ $ cf enable-feature-flag service_instance_sharing
 
 You can share a service instance from one space to another if you have the Space Developer role in both spaces.
 
-To share a service instance to another space, run the following beta Cloud 
+To share a service instance to another space, run the following Cloud 
 Foundry Command Line Interface (cf CLI) command:
 
 <pre class="terminal">
@@ -81,7 +78,7 @@ space where this service instance was shared from.
 You cannot delete or rename a service instance until it is unshared from all 
 spaces.
 
-To unshare a service instance, run the following beta cf CLI command:
+To unshare a service instance, run the following cf CLI command:
 
 <pre class="terminal">
 $ cf unshare-service SERVICE-INSTANCE -s OTHER-SPACE [-o OTHER-ORG] [-f]

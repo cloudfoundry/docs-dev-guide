@@ -122,8 +122,7 @@ If this happens, try the following:
     Run `cf events APP-NAME` and `cf logs APP-NAME --recent` and look for
 messages similar to this:
   <pre class="terminal">
-  2014-04-29T17:52:34.00-0700   app.crash          index: 0, reason: CRASHED,
-  exit\_description: app instance exited, exit\_status: 1
+  2018-07-20T15:53:26.00-0700   app.crash                  app-name   index: 2, reason: CRASHED, cell\_id: d874ad05-d0ca-4c63-9f5a-0b1ddd90dd5d, instance: f406c53e-b1ca-4a0f-6140-dddd, exit\_description: APP/PROC/WEB: Exited with status 1
   </pre>
   These messages may identify a memory or port issue.
   If they do, take that as a starting point when you re-examine and fix your

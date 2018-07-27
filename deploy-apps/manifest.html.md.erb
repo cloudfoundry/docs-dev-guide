@@ -62,7 +62,7 @@ applications:
 A minimal manifest requires only an application `name`.
 To create a valid minimal manifest, remove the `memory` and `instances` properties from this example.
 
-<p class="note"><strong>Note</strong>: There are certain forbidden characters for the application `name` value. For instance, `-` is a forbidden character.</p>
+<p class="note"><strong>Note</strong>: There are certain forbidden characters for the application <code>name</code> value. For instance, <code>-</code> is a forbidden character.</p>
 
 
 ## <a id='name'></a> Always Provide an Application Name to cf push
@@ -233,8 +233,8 @@ The command line option `--docker-image` or `-o` overrides `docker.image`.  The 
 
 The manifest attribute `docker.username` is optional.  If it is used, then the password must be provided in the environment variable `CF_DOCKER_PASSWORD`.  Additionally, if a Docker username is specified, then a Docker image must also be specified.
 
-#### <a id='manifest-attibutes'></a> Manifest Attributes
-The `docker` attribute cannot be used in conjunction with the following attributes: `buildpacks` and `path`. An error will result.
+<p class="note"><strong>Note</strong>: Using the <code>docker</code> attribute in conjunction with the <code>buildpacks</code> or <code>path</code> attributes will result in an error.</p>
+
 
 ### <a id='health-check-http-endpoint'></a> health-check-http-endpoint
 
@@ -560,18 +560,19 @@ defaults: &amp;defaults
     - staticfile_buildpack
   memory: 1G
 
+
 applications:
 - name: bigapp
-  &lt;&lt;: *defaults
+  &lt;&lt;: *defaults
 - name: smallapp
-  &lt;&lt;: *defaults
-  memory: 256M
+  &lt;&lt;: *defaults
+  memory: 256M
 </pre>
 
 This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpack but with 256M memory for smallapp and 1G for bigapp.
 
 
-## <a id='multi-manifests'></a> Variable Substitution
+## <a id='variable-substitution'></a> Variable Substitution
 
 Variable substitution replaces [Inheritance](#inheritance-deprecated), which has been deprecated.  
 
@@ -700,12 +701,13 @@ defaults: &amp;defaults
     - staticfile_buildpack
   memory: 1G
 
+
 applications:
 - name: bigapp
-  &lt;&lt;: *defaults
+  &lt;&lt;: *defaults
 - name: smallapp
-  &lt;&lt;: *defaults
-  memory: 256M
+  &lt;&lt;: *defaults
+  memory: 256M
 </pre>
 
 When pushing the app, make explicit the attributes in each app’s declaration. To do this, assign the anchors and include the app-level attributes with YAML aliases in each app declaration.
@@ -718,9 +720,9 @@ Previously, you could specify routes by listing them all at once using the `rout
 ---
 applications
 - name: webapp
-  host: www
-  domains:
-  - example.com
+  host: www
+  domains:
+  - example.com
   - example.io
 </pre>
 
@@ -739,14 +741,17 @@ Now you can only specify routes by using the `routes` attribute:
 ---
 applications
 - name: webapp
-  routes:
-  - route: www.example.com/foo 
-  - route: tcp.example.com:1234
+  routes:
+  - route: www.example.com/foo 
+  - route: tcp.example.com:1234
 </pre>
 
 This app manifest feature has been deprecated, and a replacement option is under consideration.
 
-### <a id='inheritance-deprecated'></a> Inheritance Is Deprecated
+### <a id='inheritance-deprecated'></a> Inheritance
+
+This feature has been deprecated, and has been replaced by [Variable Substitution](#variable-substitution).
 
 With inheritance, child manifests inherited configurations from a parent manifest, and the child manifests could use inherited configurations as provided, extend them, or override them. This feature has been deprecated, and has been replaced by [Variable Substitution](#multi-manifests).
+
 

@@ -388,13 +388,13 @@ For example:
   ...
   timeout: 80
 </pre>
-
+<% if vars.product_name == 'CF' %>
 You can increase the timeout length for very large apps that require more time to start. The `timeout` attribute defaults to 60, but you can set it to any value up to the Cloud Controller's `maximum_health_check_timeout` property.
 
 `maximum_health_check_timeout` defaults to 180, but your Cloud Foundry operator can set to any value.
 
 The command line option that overrides the timeout attribute is `-t`.
-
+<% end %>
 ##<a id='env-block'></a>Environment Variables ###
 
 The `env` block consists of a heading, then one or more environment variable/value pairs.

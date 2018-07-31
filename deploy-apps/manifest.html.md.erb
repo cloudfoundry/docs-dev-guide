@@ -627,7 +627,7 @@ host: test
 When you do a push invoking both files above, the partial value for `routes` in the manifest.yml is replaced by `host` in the variables.yml file.
 
 <pre class="terminal">
-$ cf push -f manifest.yml --vars-file <(cat secrets.yml)
+$ cf push -f manifest.yml --vars-file secrets.yml
 Pushing from manifest to org system / space maspace as admin...
 Using manifest file manifest.yml
 Getting app info...

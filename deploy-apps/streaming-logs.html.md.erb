@@ -154,9 +154,14 @@ performance.
 
 ## <a id='container-metrics'></a> Including Container Metrics in Syslog Drains
 
-By default, app logs are included in syslog drains. To include container metrics in your syslog drain, an operator must first set `scalablesyslog.adapter.metrics_to_syslog_enabled` to `true`. Once `scalablesyslog.adapter.metrics_to_syslog_enabled` is set to `true`, run the following cf CLI command:
+By default, app logs are included in syslog drains. To include container metrics in your syslog drain, `scalablesyslog.adapter.metrics_to_syslog_enabled` must be set to `true`&nbsp;. To set this property to `true`, select the **System Logging** pane in your Pivotal Application Services (PAS) tile and enable the **Include container metrics in SysLog Drains** checkbox. In PAS v2.2, this property is set to `true` by default.
+
+Once `scalablesyslog.adapter.metrics_to_syslog_enabled` is set to `true`, run the following cf CLI command:
+
 `cf create-drain -metrics YOUR-APP-INSTANCE YOUR-SYSLOG-DRAIN SYSLOG-DRAIN-URL`
-<br><br>Replace `YOUR-APP-INSTANCE` with your app instance, `YOUR-SYSLOG-DRAIN` with the name of your syslog drain, and `SYSLOG-DRAIN-URL` with the URL of your syslog drain.
+
+Replace `YOUR-APP-INSTANCE` with your app instance, `YOUR-SYSLOG-DRAIN` with the name of your syslog drain, and `SYSLOG-DRAIN-URL` with the URL of your syslog drain.
+
 
 ## <a id='view'></a>Viewing Logs in the Command Line Interface ##
 

@@ -180,14 +180,14 @@ OK
 
 When app service discovery is enabled, apps pushed to <%= vars.product_full %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front end apps to easily connect with back end apps.
 
+<p class='note'><strong>Note:</strong> Administrators can create internal domains. See the <a href="https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md#internal-domains">Internal Domains</a>. section in the `cf-networking-release` repository.</p>
+
 To establish container-to-container communications between a front end and back end app, a developer:
 
 1. Launches a back end app that publishes a local endpoint.
 1. Maps a named route to the endpoint.
 1. Creates a network policy that allows direct traffic from the front end to the back end app.
 1. Launches the front end app.
-
-<p class='note'><strong>Note:</strong> an internal domain can be created by an administrator.</p>
 
 See [Cats and Dogs with Service Discovery](https://github.com/cloudfoundry/cf-networking-examples/blob/master/docs/c2c-with-service-discovery.md) in GitHub for an example, written in Go, that demonstrates communication between front end and back end apps.
 

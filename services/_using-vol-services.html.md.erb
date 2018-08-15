@@ -5,6 +5,11 @@
       <li><a href="#create">Create and Bind a Service Instance</a></li>
       <li><a href="#app">Access the Volume Service from your App</a></li>
       <li><a href="#nfs">NFS Volume Service</a></li>
+        <ul>
+          <li><a href="#create-nfs">Create an NFS Volume Service</a></li>
+          <li><a href="#nfs-sample">Deploy and Bind Sample App</a></li>
+          <li><a href="#nfs-additional">Additional Information</a></li>
+        </ul>
     </ul>
   </div>
 </div>
@@ -28,6 +33,8 @@ If no volume service that fits your requirements exists, contact <%= vars.admin 
 ## <a id="create"></a> Create and Bind a Service Instance
 
 To use a volume service deployed by <%= vars.admin %>, you must first create an instance of the specific volume service that you need. Follow the instructions below to create this service instance.
+
+<p class="note"><strong>Note</strong>: For NFS-specific instructions and information, see <a href="#nfs">NFS Volume Service</a>.</p>
 
 1. In a terminal window, run `cf create-service SERVICE-NAME PLAN SERVICE-INSTANCE -c SHARE-JSON` to create a service instance. Replace the following with the specified values:
   * `SERVICE`: The name of the volume service that you want to use.
@@ -114,74 +121,122 @@ To access the volume service from your app, you must know which file path to use
 
 ## <a id='nfs'></a> NFS Volume Service
 
-### Create an NFS volume service
-* To create an NFS volume service, type the following:
+This section describes how to use the NFS volume service. 
 
-    ```bash
-    $ cf create-service nfs Existing myVolume -c '{"share":"<server>/<share>"}'
-    $ cf services
+### <a id='create-nfs'></a> Create an NFS Volume Service
+
+Cloud Foundry includes two versions of the NFS volume service: 
+
+* **NFSv3**: This volume service is implemented with libfuse. It only supports NFSv3 and has some performance constraints.  
+* **NFSv4 (experimental)**: This volume service provides better performance. It supports NFSv4 through a `version` parameter that determines which NFS protocol to use.
+
+To create an NFS volume service, follow the procedure below that corresponds to your use case. 
+
+#### Create with NFSv3
+
+You can create a NFS volume service with NFSv3 using the `Existing` service plan. Run the following command:
+
+```
+$ cf create-service nfs Existing SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE"}'   
+```
+
+Where: 
+
+* `SERVICE-INSTANCE-NAME` is a name you provide for this NFS volume service instance. 
+* `SERVER/SHARE` is the NFS address of your server and share. 
+
+<p class="note"><strong>Note</strong>: Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
+
+You can run the `cf services` command to confirm that your newly created NFS volume service displays in the output. 
+
+
+#### Create with NFSv4 (Experimental):
+
+You can create a NFS volume service with NFSv4 using the `nfs-experimental` service plan. Run the following command:
+
+```
+$ cf create-service nfs nfs-experimental SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "version":"4.1"}'   
+```
+
+Where: 
+
+* `SERVICE-INSTANCE-NAME` is a name you provide for this NFS volume service instance. 
+* `SERVER/SHARE` is the NFS address of your server and share. 
+
+<p class="note"><strong>Note</strong>: Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
+
+You can run the `cf services` command to confirm that your newly created NFS volume service displays in the output. 
+
+### <a id='nfs-sample'></a> Deploy and Bind a Sample App
+
+This section includes a procedure for deploying a sample app and binding it to the NFS volume service. 
+
+1. Clone the github repo and push the pora test app:
+  1. `cd ~/workspace`
+  1. `git clone https://github.com/cloudfoundry/persi-acceptance-tests.git`
+  1. `cd ~/workspace/persi-acceptance-tests/assets/pora`
+  1. `cf push pora --no-start`
+
+1. To bind the service to your app, run the following command:
+
     ```
-* Substitute the nfs address of your server and share, taking care to omit the `:` that ordinarily follows the server name in the address.
-
-#### NFS v4 (Experimental):
-
-The Existing `nfs` volume service is provided by a libfuse implementation that only supports nfsv3 and has some performance constraints.
-
-If you require nfsv4 or better performance or both then you can try the new nfsv4 (experimental) support offered through a new nfsbroker plan called `nfs-experimental`.  The `nfs-experimental` plan accepts a `version` parameter to determine which nfs protocol version to use.
-
-* type the following:
-
-    ```bash
-    $ cf create-service nfs-experimental Existing myVolume -c '{"share":"<server>/<share>","version":"4.1"}'
-    $ cf services
+    $ cf bind-service pora SERVICE-INSTANCE-NAME -c '{"uid":"UID","gid":"GID"}'
     ```
+    Where:
+    * `SERVICE-INSTANCE-NAME`: The name of the volume service instance you created previously.
+    * `UID` and `GID`: The `gid` and `uid` to use when mounting the share to the app. The nfs driver uses these values in the following ways:
+      * When sending traffic to the nfs server, the nfs driver translates the app user id and group id to the `UID` and `GID` values. 
+      * When returning attributes from the nfs server, the nfs driver translates the `UID` and `GID` back to the running user uid and default gid. 
+      
+        This allows you to interact with your nfs server as a specific user while allowing Cloud Foundry to run your application as an arbitrary user.
+    * **Optional paramenters**:
+      * `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example: 
 
-### Deploy the pora test app, first by pushing the source code to CloudFoundry
-* Clone this github repo and push the pora test application:
+            ``` 
+            cf bind-service pora myVolume -c '{"uid":"0","gid":"0","mount":"/var/path"}'
+            ```
+      * `readonly`: When you issue the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.
 
-    ```bash
-    $ cd ~/workspace
-    $ git clone https://github.com/cloudfoundry/persi-acceptance-tests.git
-    $ cd ~/workspace/persi-acceptance-tests/assets/pora
-    $ cf push pora --no-start
+1. Start the app:
+    
     ```
-
-* Bind the service to your app supplying the correct uid and gid corresponding to what is seen on the nfs server.
-
-    ```bash
-    $ cf bind-service pora myVolume -c '{"uid":"1000","gid":"1000"}'
-    ```
-   > #### Bind Parameters
-   > * **uid** and **gid:** When binding the nfs service to the application, the uid and gid specified are supplied to the nfs driver.  The nfs driver tranlates the application user id and group id to the specified uid and gid when sending traffic to the nfs server, and translates this uid and gid back to the running user uid and default gid when returning attributes from the server.  This allows you to interact with your nfs server as a specific user while allowing Cloud Foundry to run your application as an arbitrary user.
-   > * **mount:** By default, volumes are mounted into the application container in an arbitrarily named folder under /var/vcap/data.  If you prefer to mount your directory to some specific path where your application expects it, you can control the container mount path by specifying the `mount` option.  The resulting bind command would look something like
-   > ``` cf bind-service pora myVolume -c '{"uid":"0","gid":"0","mount":"/var/path"}'```
-   > * **readonly:** Set true if you want the mounted volume to be read only.
-   >
-   > As of nfs-volume-release version 1.3.1, bind parameters may also be specified in configuration during service instance creation.  Specifying bind parameters in advance when creating the service instance is particularly helpful when binding services to an application in the application manifest, where bind configuration is not supported.
-
-* Start the application
-
-    ```bash
     $ cf start pora
     ```
 
-### Test the app to make sure that it can access your NFS volume
-* to check if the app is running, `curl http://pora.YOUR.DOMAIN.com` should return the instance index for your app
-* to check if the app can access the shared volume `curl http://pora.YOUR.DOMAIN.com/write` writes a file to the share and then reads it back out again.
+1. Use the following curl command to confirm the app is running. The command returns an instance index for your app.
+    
+    ```
+    $ curl http://pora.YOUR-CF-DOMAIN.com
+    ```
 
-### File Locking via flock() and lockf()/fcntl()
-If your application relies on file locking either through unix system calls such as flock() and fcntl() or through script commands such as `flock` **please be aware that the lock will not be enforced across diego cells**.  This is because the file locking implementations in the underlying fuse-nfs executable are not implemented, so locking is limited to local locks between precesses on the same VM.  If you have a legitimate requirement for file locking, please document your use case in a comment on [this github issue](https://github.com/cloudfoundry-incubator/nfs-volume-release/issues/13) and we'll see what we can do.
+1. Use the follwing curl command to confirm the app can access the shared volume. The command writes a file to the share and then reads it back out again.
 
-### LDAP Support
+    ```
+    $ curl http://pora.YOUR-CF-DOMAIN.com/write
+    ``` 
 
-If you Cloud Foundry deploynet has been cofigured with LDAP you can also bind using LDAP credentials instead of uid/gid.  Testing this will be more or less the same as before, except that when you bind your application to your volume, you must specify `username` and `password` instead of UID and GID.
+### <a id="nfs-additional"></a> Additional Information
 
-```bash
-$ cf create-service nfs Existing myVolume -c '{"share":"<server>/<share>"}'
-$ cf bind-service pora myVolume -c '{"username":"<username>","password":"<password>"}'
+This section provides additional information about using the NFS Volume Service. 
+
+#### Binding with LDAP Credentials
+
+If your Cloud Foundry deployment has LDAP enabled, you can bind using LDAP credentials.
+
+To bind an app to your volume using LDAP credentials, specify `username` and `password` instead of `uid` and `gid`. See the following example:
+
+```
+$ cf bind-service pora myVolume -c '{"username":"USERNAME","password":"PASSWORD"}'
 ```
 
-## Credential Rotation
+<p class="note"><strong>Note</strong>: If your LDAP server password changes, you must re-bind your app to the service and restage. If you do not, your app will fail during restart or scaling. This is because user credentials are stored as part of the service binding and checked whenever an app is placed on a cell.</p>
 
-Note that user credentials will be stored as part of the service binding and checked whenever an application is placed on a cell.  Hence, if the password changes on your
-LDAP server, the  application must be re-bound to the service and restaged, otherwise it will fail the next time the application is restarted or scaled.
+#### Specifying Bind Parameters During Service Instance Creation
+
+As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, when you create a service instance. Use this option if you bind the service to your app in an app manifest, where bind configuration is not supported.
+
+#### File Locking with `flock()` and `lockf()`/`fcntl()`
+
+For apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock`, NFS volume service does not enforce the locking across Diego cells. This is because the file locking capability of the underlying `fuse-nfs` executable is not implemented. Locking is therefore limited to local locks between precesses on the same VM.  
+
+If you have a requirement for file locking, describe your use case in the following Github issue for consideration by the Diego Persistence team: [lock not propagated between instances](https://github.com/cloudfoundry-incubator/nfs-volume-release/issues/13).

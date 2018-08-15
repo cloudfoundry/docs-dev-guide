@@ -125,14 +125,14 @@ This section describes how to use the NFS volume service.
 
 ### <a id='create-nfs'></a> Create an NFS Volume Service
 
-Cloud Foundry includes two versions of the NFS volume service: 
+Cloud Foundry offers two plans for the NFS volume service: 
 
-* **NFSv3**: This volume service is implemented with libfuse. It only supports NFSv3 and has some performance constraints.  
-* **NFSv4 (experimental)**: This volume service provides better performance. It supports NFSv4 through a `version` parameter that determines which NFS protocol to use.
+* `Existing`: This volume service is implemented with libfuse. It only supports NFSv3 and has some performance constraints.  
+* `nfs-experimental`: This volume service provides better performance. It supports NFSv4 through a `version` parameter that determines which NFS protocol to use.
 
 To create an NFS volume service, follow the procedure below that corresponds to your use case. 
 
-#### Create with NFSv3
+#### Create with Existing Plan
 
 You can create a NFS volume service with NFSv3 using the `Existing` service plan. Run the following command:
 
@@ -150,9 +150,9 @@ Where:
 You can run the `cf services` command to confirm that your newly created NFS volume service displays in the output. 
 
 
-#### Create with NFSv4 (Experimental):
+#### Create with Experimental Plan:
 
-You can create a NFS volume service with NFSv4 using the `nfs-experimental` service plan. Run the following command:
+You can create a NFS volume service with NFSv3 or NFSv4 using the `nfs-experimental` service plan. Run the following command:
 
 ```
 $ cf create-service nfs nfs-experimental SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "version":"4.1"}'   

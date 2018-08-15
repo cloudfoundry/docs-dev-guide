@@ -155,13 +155,14 @@ You can run the `cf services` command to confirm that your newly created NFS vol
 You can create a NFS volume service with NFSv3 or NFSv4 using the `nfs-experimental` service plan. Run the following command:
 
 ```
-$ cf create-service nfs nfs-experimental SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "version":"4.1"}'   
+$ cf create-service nfs nfs-experimental SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "version":"NFS-PROTOCOL"}'   
 ```
 
 Where: 
 
 * `SERVICE-INSTANCE-NAME` is a name you provide for this NFS volume service instance. 
 * `SERVER/SHARE` is the NFS address of your server and share. 
+* `VERSION` is the NFS protocol you want to use. For example, if you want to use NFSv4, set the version to `4.1`. 
 
 <p class="note"><strong>Note</strong>: Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
 

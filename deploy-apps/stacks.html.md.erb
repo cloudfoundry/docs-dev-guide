@@ -14,7 +14,16 @@ A stack is a prebuilt root file system (rootfs) that supports a specific operati
 
 ##<a id='available-stacks'></a>Available Stacks ##
 
-The Linux `cflinuxfs2` stack is derived from Ubuntu Trusty 14.04. Refer to the Github stacks page for supported [libraries](https://github.com/cloudfoundry/stacks/blob/master/cflinuxfs2/cflinuxfs2_receipt).
+<%= vars.product_short %> <%= vars.current_major_version %> includes support for the following stacks:
+
+ * **cflinuxfs3**: The Linux `cflinuxfs3` stack is derived from Ubuntu Bionic 18.04.
+Refer to the GitHub stacks page for supported [libraries](https://github.com/cloudfoundry/cflinuxfs3/blob/master/receipt.cflinuxfs3.x86_64).
+ * **cflinuxfs2**: The Linux `cflinuxfs2` stack is derived from Ubuntu Trusty 14.04.
+Refer to the GitHub stacks page for supported [libraries](https://github.com/cloudfoundry/stacks/blob/master/cflinuxfs2/cflinuxfs2_receipt).
+  <p class="note breaking"><strong>Breaking Change</strong>: Support for Ubuntu Trusty 14.04 ends in April 2019.
+  Future versions of <%= vars.product_short %> may remove support for <code>cflinuxfs2</code>.
+  Push all new apps using <code>cflinuxfs3</code> and migrate existing apps to <code>cflinuxfs3</code> as soon as possible.
+  For more information about the Ubuntu support lifecycle, see the <a href="https://www.ubuntu.com/about/release-cycle">Canonical</a> documentation.</p>
 
 <%= vars.custom_stack %>
 
@@ -24,7 +33,7 @@ For security, stacks receive regular updates to address Common Vulnerabilities a
 
 It can be difficult to know what libraries an app statically links to, and it depends on the languages you are using. One example is an app that uses a Ruby or Python binary, and links out to part of the C standard library. If the C library requires an update, you may need to recompile the app and restage it as follows:
 
-1. Use the [cf stacks](http://cli.cloudfoundry.org/en-US/cf/stacks.html) command to list the stacks available in a deployment. 
+1. Use the [cf stacks](http://cli.cloudfoundry.org/en-US/cf/stacks.html) command to list the stacks available in a deployment.
 
     <pre class='terminal'>
     $ cf stacks
@@ -58,5 +67,3 @@ It can be difficult to know what libraries an app statically links to, and it de
 ##<a id='stacks-api'></a>Stacks API ##
 
 For API information, review the Stacks section of the [Cloud Foundry API Documentation](http://apidocs.cloudfoundry.org).
-
-  

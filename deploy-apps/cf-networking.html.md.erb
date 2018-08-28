@@ -180,9 +180,9 @@ OK
 
 ## <a name="discovery"></a> App Service Discovery
 
-When app service discovery is enabled, apps pushed to <%= vars.product_full %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front end apps to easily connect with back end apps.
+With app service discovery, apps pushed to <%= vars.product_full %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front end apps to easily connect with back end apps. 
 
-<p class='note'><strong>Note:</strong> Administrators can create internal domains. See the <a href="https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md#internal-domains">Internal Domains</a> section in the <code>cf-networking-release</code> repository.</p>
+<%= vars.internal_domain_config %>
 
 To establish container-to-container communications between a front end and back end app, a developer:
 
@@ -193,12 +193,15 @@ To establish container-to-container communications between a front end and back 
 
 See [Cats and Dogs with Service Discovery](https://github.com/cloudfoundry/cf-networking-examples/blob/master/docs/c2c-with-service-discovery.md) in GitHub for an example, written in Go, that demonstrates communication between front end and back end apps.
 
-<% if vars.product_name.include? "CF" %>
+<% if vars.product_name == "CF" %>
 
 ### <a name="enable-discovery"></a> Enable App Service Discovery
 
 To enable app service discovery, <%= vars.enable_c2c_discovery %>.
 
 <% else %>
+
+<p class="note"><strong>Note</strong>: App service discovery is enabled by default in PAS.</p>
+
 <% end %>
 

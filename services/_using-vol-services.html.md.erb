@@ -131,7 +131,7 @@ Cloud Foundry offers two NFS volume services:
 * `nfs-experimental`: This volume service provides better performance.
   * It supports NFSv4 through a `version` parameter that determines which NFS protocol to use.
   *  For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
-  * It skips mapfs mounting and performs a normal kernel mount of the NFS file system without the overhead associated with FUSE mounts when you omit `uid` and `gid` or `username` and `password` in bind configuration. 
+  * It skips `mapfs` mounting and performs a normal kernel mount of the NFS file system without the overhead associated with FUSE mounts when you omit `uid` and `gid` or `username` and `password` in bind configuration. 
 
 Both services offer a single plan called `Existing`.
 
@@ -152,7 +152,7 @@ Where:
 
 <p class="note"><strong>Note</strong>: Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
 
-You can run the `cf services` command to confirm that your newly created NFS volume service displays in the output.
+You can run the `cf services` command to confirm that your newly-created NFS volume service displays in the output.
 
 
 #### Create with `nfs-experimental` Service:
@@ -171,13 +171,13 @@ Where:
 
 <p class="note"><strong>Note</strong>: Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
 
-You can run the `cf services` command to confirm that your newly created NFS volume service displays in the output.
+You can run the `cf services` command to confirm that your newly-created NFS volume service displays in the output.
 
 ### <a id='nfs-sample'></a> Deploy and Bind a Sample App
 
-This section includes a procedure for deploying a sample app and binding it to the NFS volume service.
+This section describes how to deploy a sample app and bind it to the NFS volume service.
 
-1. Clone the github repo and push the pora test app:
+1. Clone the github repo and push the `pora` test app:
   1. `cd ~/workspace`
   1. `git clone https://github.com/cloudfoundry/persi-acceptance-tests.git`
   1. `cd ~/workspace/persi-acceptance-tests/assets/pora`
@@ -191,10 +191,10 @@ This section includes a procedure for deploying a sample app and binding it to t
     Where:
     * `SERVICE-INSTANCE-NAME`: The name of the volume service instance you created previously.
     * `UID` and `GID`: The `gid` and `uid` to use when mounting the share to the app. The NFS driver uses these values in the following ways:
-      * When sending traffic to the nfs server, the NFS driver translates the app user id and group id to the `UID` and `GID` values.
-      * When returning attributes from the nfs server, the NFS driver translates the `UID` and `GID` back to the running user uid and default gid.
+      * When sending traffic to the NFS server, the NFS driver translates the app user id and group id to the `UID` and `GID` values.
+      * When returning attributes from the NFS server, the NFS driver translates the `UID` and `GID` back to the running user uid and default gid.
 
-        This allows you to interact with your nfs server as a specific user while allowing Cloud Foundry to run your application as an arbitrary user.
+        This allows you to interact with your NFS server as a specific user while allowing Cloud Foundry to run your application as an arbitrary user.
     * **Optional paramenters**:
       * `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example:
 
@@ -209,13 +209,13 @@ This section includes a procedure for deploying a sample app and binding it to t
     $ cf start pora
     ```
 
-1. Use the following curl command to confirm the app is running. The command returns an instance index for your app.
+1. Use the following `curl` command to confirm the app is running. The command returns an instance index for your app.
 
     ```
     $ curl http://pora.YOUR-CF-DOMAIN.com
     ```
 
-1. Use the follwing curl command to confirm the app can access the shared volume. The command writes a file to the share and then reads it back out again.
+1. Use the following `curl` command to confirm the app can access the shared volume. The command writes a file to the share and then reads it back out again.
 
     ```
     $ curl http://pora.YOUR-CF-DOMAIN.com/write

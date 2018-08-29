@@ -128,16 +128,16 @@ This section describes how to use the NFS volume service.
 Cloud Foundry offers two NFS volume services:
 
 * `nfs`: This volume service is implemented with libfuse. It only supports NFSv3 and has some performance constraints.
-* `nfs-experimental`: This volume service provides better performance:
+* `nfs-experimental`: This volume service provides better performance.
   * It supports NFSv4 through a `version` parameter that determines which NFS protocol to use.
-  * It is using the read-only mounts causing the driver to enable attribute caching for mounts. This results in fewer attribute RPCs and better performance.
-  * Omitting 'uid' and 'gid' (or 'username' and 'password') in bind configuration causes the nfsdriver to skip mapfs mounting, resulting in a normal kernel mount of the nfs file system without the overhead associated with FUSE mounts.
+  * It uses read-only mounts, which causes the driver to enable attribute caching for mounts. This results in fewer attribute RPCs and better performance.
+  * It skips mapfs mounting and performs a normal kernel mount of the NFS file system without the overhead associated with FUSE mounts when you omit `uid` and `gid` or `username` and `password` in bind configuration. 
 
 Both services offer a single plan called `Existing`.
 
 To create an NFS volume service, follow the procedure below that corresponds to your use case.
 
-#### Create with `nfs` service
+#### Create with `nfs` Service
 
 You can create a NFS volume service with NFSv3 using the `Existing` plan of the `nfs` service. Run the following command:
 
@@ -155,7 +155,7 @@ Where:
 You can run the `cf services` command to confirm that your newly created NFS volume service displays in the output.
 
 
-#### Create with `nfs-experimental` service:
+#### Create with `nfs-experimental` Service:
 
 You can create a NFS volume service with NFSv3 or NFSv4 using the `Existing` plan of the `nfs-experimental` service. Run the following command:
 
@@ -190,9 +190,9 @@ This section includes a procedure for deploying a sample app and binding it to t
     ```
     Where:
     * `SERVICE-INSTANCE-NAME`: The name of the volume service instance you created previously.
-    * `UID` and `GID`: The `gid` and `uid` to use when mounting the share to the app. The nfs driver uses these values in the following ways:
-      * When sending traffic to the nfs server, the nfs driver translates the app user id and group id to the `UID` and `GID` values.
-      * When returning attributes from the nfs server, the nfs driver translates the `UID` and `GID` back to the running user uid and default gid.
+    * `UID` and `GID`: The `gid` and `uid` to use when mounting the share to the app. The NFS driver uses these values in the following ways:
+      * When sending traffic to the nfs server, the NFS driver translates the app user id and group id to the `UID` and `GID` values.
+      * When returning attributes from the nfs server, the NFS driver translates the `UID` and `GID` back to the running user uid and default gid.
 
         This allows you to interact with your nfs server as a specific user while allowing Cloud Foundry to run your application as an arbitrary user.
     * **Optional paramenters**:

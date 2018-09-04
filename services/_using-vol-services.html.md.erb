@@ -242,6 +242,4 @@ As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, w
 
 #### File Locking with `flock()` and `lockf()`/`fcntl()`
 
-For apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock`, NFS volume service does not enforce the locking across Diego cells. This is because the file locking capability of the underlying `fuse-nfs` executable is not implemented. Locking is therefore limited to local locks between precesses on the same VM.
-
-If you have a requirement for file locking, describe your use case in the following Github issue for consideration by the Diego Persistence team: [lock not propagated between instances](https://github.com/cloudfoundry-incubator/nfs-volume-release/issues/13).
+Apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock` should use the `nfs-experimental` service.  The `nfs` service uses a fuse mounting process that does not enforce locks across Diego cells.

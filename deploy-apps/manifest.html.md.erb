@@ -581,18 +581,18 @@ instances: 2
 memory: 1G
 </pre>
 
-The CLI replaces the variables in the app manifest with the specified values and proceeds with the push process as usual.
+The cf CLI replaces the variables in the app manifest with the specified values and proceeds with the push process as usual.
 
 For example: 
 
 <pre class="terminal">
 $ cf push foo-app -f ~/workspace/var_manifest.yml --vars-file ~/workspace/vars.yml
-Pushing from manifest to org Doop / space lessing as achau@pivotal.io...
-Using manifest file /Users/achau/workspace/var_manifest.yml
+Pushing from manifest to org My-Org / space lessing as jdoe@pivotal.io...
+Using manifest file /Users/jdoe/workspace/var_manifest.yml
 Getting app info...
 Creating app with these attributes...
 + name:        foo-app
-  path:        /Users/achau/workspace/cf-acceptance-tests/assets/dora
+  path:        /Users/jdoe/workspace/cf-acceptance-tests/assets/dora
 + instances:   2
 + memory:      1G
   routes:

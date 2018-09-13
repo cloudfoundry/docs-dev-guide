@@ -79,8 +79,6 @@ Apps can communicate without leaving the platform on the container network using
 
 By default, apps cannot communicate with each other on the container network. To allow apps to communicate with each other you must create a network policy. For more information, see [add-network-policy](https://cli.cloudfoundry.org/en-US/cf/add-network-policy.html) in the _Cloud Foundry CLI Reference Guide_.
 
-<%= vars.mutual_tls_tcp %>
-
 ### <a id='create-route'></a> Create a Route
 
 When a developer creates a route using the cf CLI, <%=vars.product_short%> determines whether the route is an HTTP or a TCP route based on the domain. To create a HTTP route, a developer must choose an HTTP domain. To create a TCP route, a developer must choose a TCP domain.

@@ -47,7 +47,8 @@ The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controlle
   </tr>
 </table>
 
-## <a id="enable-disable-ssh"></a>Enabling and Disabling SSH Access
+
+## <a id="enable-disable-ssh"></a> Enabling and Disabling SSH Access
 
 A cloud operator can deploy <%=vars.product_full%> to either allow or prohibit Application SSH across the entire deployment. <%=vars.config_ssh_link%>
 
@@ -55,7 +56,8 @@ Within a deployment that permits SSH access to applications, Space Developers ca
 
 You must restart your application after enabling SSH access.
 
-### <a id="configure-ssh-access-apps"></a>Configuring SSH Access at the Application Level
+### <a id="configure-ssh-access-apps"></a> Configuring SSH Access at the Application Level
+
 [cf enable-ssh](http://cli.cloudfoundry.org/en-US/cf/enable-ssh.html) enables SSH access to all instances of an app:
 <pre class="terminal">
 $ cf enable-ssh MY-AWESOME-APP
@@ -66,7 +68,7 @@ $ cf enable-ssh MY-AWESOME-APP
 $ cf disable-ssh MY-AWESOME-APP
 </pre>
 
-### <a id="configure-ssh-access-spaces"></a>Configuring SSH Access at the Space Level
+### <a id="configure-ssh-access-spaces"></a> Configuring SSH Access at the Space Level
 
 [cf allow-space-ssh](http://cli.cloudfoundry.org/en-US/cf/allow-space-ssh.html) allows SSH access into all apps in a space:
 <pre class="terminal">
@@ -78,7 +80,8 @@ $ cf allow-space-ssh SPACE-NAME
 $ cf disallow-space-ssh SPACE-NAME
 </pre>
 
-## <a id="check-ssh-permissions"></a>Checking SSH Permissions
+
+## <a id="check-ssh-permissions"></a> Checking SSH Permissions
 
 [cf ssh-enabled](http://cli.cloudfoundry.org/en-US/cf/ssh-enabled.html) checks whether an app is accessible with SSH:
 <pre class="terminal">$ cf ssh-enabled MY-AWESOME-APP
@@ -91,7 +94,9 @@ $ cf space-ssh-allowed SPACE-NAME
 ssh support is enabled in space 'SPACE-NAME'
 </pre>
 
-## <a id="ssh-command"></a>Logging Into an Application Container with cf SSH
+
+## <a id="ssh-command"></a> Logging Into an Application Container with cf SSH
+
 If SSH access is allowed at the deployment, space, and application level, you can run the `cf ssh APP-NAME` command to start an interactive SSH session with a VM hosting an application. By default, the command accesses the container running the first instance of the application, the instance with index **0**.
 <pre class="terminal">
 $ cf ssh MY-AWESOME-APP
@@ -99,7 +104,8 @@ $ cf ssh MY-AWESOME-APP
 
 <%= vars.cfdot_kb %>
 
-### <a id="ssh-common-flags"></a>Common cf SSH Flags
+### <a id="ssh-common-flags"></a> Common cf SSH Flags
+
 You can tailor [cf ssh](http://cli.cloudfoundry.org/en-US/cf/ssh.html) commands with the following flags, most of which mimic flags for the Unix or Linux `ssh` command. Run the `cf ssh --help` command for more details.
 
 * The `-i` flag targets a specific instance of an application. To log into the VM container hosting the third instance, `index=2`,  of MY-AWESOME-APP, run:
@@ -116,7 +122,8 @@ $ cf ssh MY-AWESOME-APP -L [LOCAL-NETWORK-INTERFACE:]LOCAL-PORT:REMOTE-HOST-NAME
 
 * The `--request-pseudo-tty` and `--force-pseudo-tty ` flags let you run an SSH session in pseudo-tty mode rather than generate terminal line output.
 
-## <a id="ssh-env"></a>SSH Session Environment
+
+## <a id="ssh-env"></a> SSH Session Environment
 
 If you want the environment of your interactive SSH session to match the environment of your buildpack-based app, with the same environment variables and working directory, run the following commands after starting the session:
 
@@ -137,7 +144,8 @@ source /home/vcap/app/.profile
 
 After running the above commands, the value of the `VCAP_APPLICATION` environment variable differs slightly from its value in the environment of the app process, as it will not have the `host`, `instance_id`, `instance_index`, or `port` fields set. These fields are available in other environment variables, as described in the <a href="environment-variable.html#VCAP-APPLICATION">VCAP_APPLICATION</a> documentation.
 
-## <a id="other-ssh-access"></a>Application SSH Access without cf CLI
+
+## <a id="other-ssh-access"></a> Application SSH Access without cf CLI
 
 In addition to `cf ssh`, you can use other SSH clients such as `ssh`, `scp`, or `sftp` to access your application, if you have SSH permissions.
 
@@ -189,7 +197,8 @@ vcap@ce4l5164kws:~$
 <br/>
 You have now securely connected to the application instance.
 
-## <a id="ssh-proxy-security-configuration"></a>SSH Proxy Security Configuration
+
+## <a id="ssh-proxy-security-configuration"></a> SSH Proxy Security Configuration
 
 The SSH proxy has the following SSH security configuration by default:
 
@@ -229,37 +238,33 @@ The `cf ssh` command is compatible with this security configuration. If you use 
 Cloud Foundry deployment operators can also change these default values in the SSH proxy configuration. Changing these default values may require a change to the SSH client configuration.
 <% end %>
 
-## <a id="proxy-to-container-auth"></a>Proxy to Container Authentication
 
-A second layer of SSH security runs within each container. When the SSH proxy attempts to handshake with the SSH daemon inside the target
-container, it uses the following fields associated with the `diego-ssh` key in its route to the application instance. This inner layer works invisibly and requires no user action, but is described here to complete the SSH security picture.
+## <a id="proxy-to-container-auth"></a> Proxy to Container Authentication
+
+A second layer of SSH security runs within each container. When the SSH proxy attempts to handshake with the SSH daemon inside the target container, it uses the following fields associated with the `diego-ssh` key in its route to the application instance. This inner layer works invisibly and requires no user action, but is described here to complete the SSH security picture.
 
 ### CONTAINER_PORT (required)
-`container_port` indicates which port inside the container the SSH daemon is
-listening on. The proxy attempts to connect to host side mapping of this
-port after authenticating the client.
+
+`container_port` indicates which port inside the container the SSH daemon is listening on. The proxy attempts to connect to host side mapping of this port after authenticating the client.
 
 ### HOST_FINGERPRINT (optional)
-When present, `host_fingerprint` declares the expected fingerprint of the SSH
-daemon's host public key. When the fingerprint of the actual target's host key
-does not match the expected fingerprint, the connection is terminated. The
-fingerprint should only contain the hex string generated by `ssh-keygen -l`.
+
+When present, `host_fingerprint` declares the expected fingerprint of the SSH daemon's host public key. When the fingerprint of the actual target's host key does not match the expected fingerprint, the connection is terminated. The fingerprint should only contain the hex string generated by `ssh-keygen -l`.
 
 ### USER (optional)
-`user` declares the user ID to use during authentication with the container's
-SSH daemon. While this is not a required part of the routing data, it is required
-for password authentication and may be required for public key authentication.
+
+`user` declares the user ID to use during authentication with the container's SSH daemon. While this is not a required part of the routing data, it is required for password authentication and may be required for public key authentication.
 
 ### PASSWORD (optional)
-`password` declares the password to use during password authentication with
-the container's ssh daemon.
+
+`password` declares the password to use during password authentication with the container's ssh daemon.
 
 ### PRIVATE_KEY (optional)
-`private_key` declares the private key to use when authenticating with the
-container's SSH daemon. If present, the key must be a PEM encoded RSA or DSA
-public key.
+
+`private_key` declares the private key to use when authenticating with the container's SSH daemon. If present, the key must be a PEM encoded RSA or DSA public key.
 
 #### Example Application Process
+
 ```json
 {
   "process_guid": "ssh-process-guid",
@@ -296,10 +301,9 @@ public key.
 }
 ```
 
-### Daemon discovery
+### Daemon Discovery
 
-To be accessible via the SSH proxy, containers must host an SSH daemon, expose
-it via a mapped port, and advertise the port in a `diego-ssh` route. If a proxy cannot find the target process or a route, user authentication fails.
+To be accessible via the SSH proxy, containers must host an SSH daemon, expose it via a mapped port, and advertise the port in a `diego-ssh` route. If a proxy cannot find the target process or a route, user authentication fails.
 
 ```
   "routes": {

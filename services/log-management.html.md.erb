@@ -70,16 +70,32 @@ Each option is described below.
 
 1. If the CF Drain CLI Plugin is not installed on your local workstation, follow the [Installing Plugin](https://github.com/cloudfoundry/cf-drain-cli#installing-plugin) instructions in the plugin source repository.
 
-2. Run `cf create-drain APP-NAME DRAIN-NAME SYSLOG-DRAIN-URL`, filling in values as follows:
-  - APP-NAME: The name of the app to stream logs from
-  - DRAIN-NAME: A name to use for your syslog drain service instance
-  - SYSLOG-DRAIN-URL: The syslog URL from [Step 1: Configure the Log Management Service](#step1).
+2. Decide whether to bind the drain to a single app or all apps in a space, and run the corresponding command:
+  * **Single app**:<br>
+        
+        ```
+        cf drain APP-NAME SYSLOG-DRAIN-URL
+        ```
+        Where:
+        * `APP-NAME` is name of the app to stream logs from
+        * `SYSLOG-DRAIN-URL` is the syslog URL from [Step 1: Configure the Log Management Service](#step1)
+  * **All apps in a space**:
+
+        ```
+        cf drain-space --drain-name DRAIN-NAME --drain-url SYSLOG-DRAIN-URL --username USERNAME`
+        ```
+        Where:
+        * `DRAIN-NAME` is the name of the app to stream logs from.
+        * `SYSLOG-DRAIN-URL`: The syslog URL from [Step 1: Configure the Log Management Service](#step1).
+        * `USERNAME`: Username to use when pushing the app. If you do not specify a username, you must have admin permissions because the plugin will create a user. 
 
 After a short delay, logs begin to flow automatically.
 
 Refer to the [Usage](https://github.com/cloudfoundry/cf-drain-cli#installing-plugin) section of the CF Drain plugin source repository for CF Drain commands, and [Managing Service Instances with the CLI](./managing-services.html) for general CF service commands.
 
 #### <a id='no-plugin'></a>With General cf CLI Service Commands
+
+<p class="note"><strong>Note</strong>: To bind a drain to all apps in a space with a single command, you must use the CF Drain CLI Plugin as described in the previous section.</p>
 
 1. To create the service instance, run `cf create-user-provided-service` (or `cf cups`) with the `-l` flag, filling in values as follows:
   - DRAIN-NAME: A name to use for your syslog drain service instance
@@ -116,7 +132,7 @@ Your third-party log management service should display corresponding messages.
 
 ### <a id='drain-cli'></a>CF Drain CLI Plugin
 
-The CF Drain CLI plugin extends the cf CLI by adding simple commands for user-provided syslog drains.
+The CF Drain CLI plugin extends the cf CLI by adding simple commands for user-provided syslog drains. Also, you can use the plugin to bind all apps in a space to a syslog drain. This option includes app, space, and org names in the drain. It also binds any new apps pushed to the space. 
 
 **Installation**: To install the CF Drain CLI plugin see the [Installing Plugin](https://github.com/cloudfoundry/cf-drain-cli#installing-plugin) instructions in the plugin source repository.
 

@@ -125,6 +125,8 @@ This section explains how to describe optional application attributes in manifes
 
 ### <a id='buildpack'></a> buildpacks
 
+<p class="note"><strong>Note</strong>: Note if you are using a <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#buildpack">manifest property</a> for multiple buildpacks, note that this feature does not work with <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#deprecated">deprecated manifest</a> properties.</p>
+
 If your application requires a custom buildpack, you can use the `buildpacks` attribute to specify it in a number of ways:
 
 * By name: `MY-BUILDPACK`. 

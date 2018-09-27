@@ -125,39 +125,36 @@ This section explains how to describe optional application attributes in manifes
 
 ### <a id='buildpack'></a> buildpacks
 
-<p class="note"><strong>Note</strong>: Note if you are using a <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#buildpack">manifest property</a> for multiple buildpacks, note that this feature does not work with <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#deprecated">deprecated manifest</a> properties.</p>
+You can refer to a buildpack by name in a manifest or a command line option. The <code>cf buildpacks</code> command lists the buildpacks that you can use. 
 
-If your application requires a custom buildpack, you can use the `buildpacks` attribute to specify it in a number of ways:
+See below for information on referencing buildpacks in a manifest. The command line option that overrides this attribute is `-b`.
 
-* By name: `MY-BUILDPACK`. 
-* By GitHub URL: `https://github.com/cloudfoundry/java-buildpack.git`. 
-* By GitHub URL with a branch or tag: `https://github.com/cloudfoundry/java-buildpack.git#v3.3.0` for the `v3.3.0` tag.
+* **Custom buildpacks**: If your application requires a custom buildpack, you can use the `buildpacks` attribute to specify it in a number of ways:
+  * By name: `MY-BUILDPACK`. 
+  * By GitHub URL: `https://github.com/cloudfoundry/java-buildpack.git`. 
+  * By GitHub URL with a branch or tag: `https://github.com/cloudfoundry/java-buildpack.git#v3.3.0` for the `v3.3.0` tag.
 
-<pre>
----
-  ...
-  buildpacks: 
-    - buildpack_URL
-</pre>
+      ```
+      ---
+        ...
+        buildpacks: 
+          - buildpack_URL
+      ```
+* **Multiple buildpacks**: If you are using multiple buildpacks, you can provide an additional `-b` flag or add an additional value to your manifest:
 
-If you are using multiple buildpacks, you can provide an additional `-b` flag or add an additional value to your manifest:
+      ```
+      ---
+        ...
+        buildpacks: 
+          - buildpack_URL
+          - buildpack_URL
+      ```
 
-<pre>
----
-  ...
-  buildpacks: 
-    - buildpack_URL
-    - buildpack_URL
-</pre>
+      <p class="note"><strong>Note</strong>: This feature does not work with <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#deprecated">deprecated manifest</a> properties.</p>
 
-<p class="note"><strong>Note</strong>: You must specify multiple buildpacks in the correct order: the buildpack will use the app start command given by the final buildpack. See <a href=https://github.com/cloudfoundry/multi-buildpack#usageapp</a> for more information.</p>
+      <p class="note"><strong>Note</strong>: You must specify multiple buildpacks in the correct order: the buildpack will use the app start command given by the final buildpack. See <a href=https://github.com/cloudfoundry/multi-buildpack#usageapp>the multi-buildpack repository</a> for more information.</p>
 
 Also see [Pushing an Application with Multiple Buildpacks](https://docs.cloudfoundry.org/buildpacks/use-multiple-buildpacks.html) for more information. 
-
-
-<p class="note"><strong>Note</strong>: The <code>cf buildpacks</code> command lists the buildpacks that you can refer to by name in a manifest or a command line option.</p>
-
-The command line option that overrides this attribute is `-b`.
 
 ### <a id='start-commands'></a> command
 

@@ -126,11 +126,11 @@ This section describes how to use the NFS volume service.
 
 Cloud Foundry offers two NFS volume services:
 
-* `nfs`: This volume service is implemented with libfuse. It only supports NFSv3 and has some performance constraints.
-* `nfs-experimental`: This volume service provides better performance.
-  * It supports NFSv4 through a `version` parameter that determines which NFS protocol to use.
-  *  For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
-  * It skips `mapfs` mounting and performs a normal kernel mount of the NFS file system without the overhead associated with FUSE mounts when you omit `uid` and `gid` or `username` and `password` in bind configuration. 
+* `nfs`: This volume service provides support for both NFSv3 (default) and NFSv4 volumes.
+  * For NFSv4,  specify a `version` parameter in the create configuration.
+  * For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
+  * When you omit `uid` and `gid` or `username` and `password` in bind configuration, the driver skips `mapfs` mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
+* `nfs-legacy`: This volume service is implemented with libfuse. It only supports NFSv3 and has some performance constraints.  This service is deprecated.
 
 Both services offer a single plan called `Existing`.
 
@@ -154,23 +154,28 @@ Where:
 You can run the `cf services` command to confirm that your newly-created NFS volume service displays in the output.
 
 
-#### Create with `nfs-experimental` Service:
+#### Create an NFSv4 volume with `nfs` Service:
 
-You can create a NFS volume service with NFSv3 or NFSv4 using the `Existing` plan of the `nfs-experimental` service. Run the following command:
+You can create a NFS volume service with NFSv4.x using the `Existing` plan of the `nfs` service. Run the following command:
 
 ```
-$ cf create-service nfs-experimental Existing SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "version":"NFS-PROTOCOL"}'
+$ cf create-service nfs Existing SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "version":"NFS-PROTOCOL"}'
 ```
 
 Where:
 
 * `SERVICE-INSTANCE-NAME` is a name you provide for this NFS volume service instance.
 * `SERVER/SHARE` is the NFS address of your server and share.
-* `VERSION` is the NFS protocol you want to use. For example, if you want to use NFSv4, set the version to `4.1`.
+* `VERSION` is the NFS protocol you want to use. For example, if you want to use NFSv4.1, set the version to `4.1`.  Valid values are `4` or `4.1`
 
 <p class="note"><strong>Note</strong>: Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
 
 You can run the `cf services` command to confirm that your newly-created NFS volume service displays in the output.
+
+#### Existing `nfs-legacy` Services:
+
+With the release of NFS Volume Service 1.5.4, the original fuse-based nfs service has been deprecated in favor of the newer kernel-mount based nfs service and will eventually be removed.  Existing nfs volume service bindings will now be listed as `nfs-legacy`.  To switch-over we recommend that you re-create and re-bind your `nfs` services.
+
 
 ### <a id='nfs-sample'></a> Deploy and Bind a Sample App
 
@@ -242,4 +247,4 @@ As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, w
 
 #### File Locking with `flock()` and `lockf()`/`fcntl()`
 
-Apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock` should use the `nfs-experimental` service.  The `nfs` service uses a fuse mounting process that does not enforce locks across Diego cells.
+Apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock` may use the `nfs` service.  The `nfs-legacy` service uses a fuse mounting process that does not enforce locks across Diego cells.

@@ -10,6 +10,11 @@
           <li><a href="#nfs-sample">Deploy and Bind Sample App</a></li>
           <li><a href="#nfs-additional">Additional Information</a></li>
         </ul>
+      <li><a href="#smb">SMB Volume Service</a></li>
+        <ul>
+          <li><a href="#create-smb">Create an SMB Volume Service</a></li>
+          <li><a href="#smb-sample">Deploy and Bind Sample App</a></li>
+        </ul>
     </ul>
   </div>
 </div>
@@ -248,3 +253,77 @@ As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, w
 #### File Locking with `flock()` and `lockf()`/`fcntl()`
 
 Apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock` may use the `nfs` service.  The `nfs-legacy` service uses a fuse mounting process that does not enforce locks across Diego cells.
+
+## <a id='smb'></a> SMB Volume Service
+
+This section describes how to use the SMB volume service.
+
+### <a id='create-smb'></a> Create an SMB Volume Service
+
+Cloud Foundry offers one SMB volume service:
+
+* `smb`: This volume service provides support for existing SMB shares.
+
+The service offers a single plan called `Existing`.
+
+To create an SMB volume service, follow the procedure below.
+
+#### Create with `smb` Service
+
+You can create an SMB volume service using the `Existing` plan of the `smb` service. Run the following command:
+
+```
+$ cf create-service smb Existing SERVICE-INSTANCE-NAME -c '{"share":"//SERVER/SHARE"}'
+```
+
+Where:
+
+* `SERVICE-INSTANCE-NAME` is a name you provide for this SMB volume service instance.
+* `//SERVER/SHARE` is the SMB address of your server and share.
+
+You can run the `cf services` command to confirm that your newly-created SMB volume service displays in the output.
+
+### <a id='smb-sample'></a> Deploy and Bind a Sample App
+
+This section describes how to deploy a sample app and bind it to the SMB volume service.
+
+1. Clone the github repo and push the `pora` test app:
+  1. `cd ~/workspace`
+  1. `git clone https://github.com/cloudfoundry/persi-acceptance-tests.git`
+  1. `cd ~/workspace/persi-acceptance-tests/assets/pora`
+  1. `cf push pora --no-start`
+
+1. To bind the service to your app, run the following command:
+
+    ```
+    $ cf bind-service pora SERVICE-INSTANCE-NAME -c '{"username":"USERNAME","password":"PASSWORD"}'
+    ```
+    Where:
+    * `SERVICE-INSTANCE-NAME`: The name of the volume service instance you created previously.
+    * `USERNAME` and `PASSWORD`: The username and password to use when mounting the share to the app. This allows you to interact with your SMB server as a specific user while allowing Cloud Foundry to run your application as an arbitrary user.
+    * **Optional parameters**:
+      * `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example:
+
+            ```
+            cf bind-service pora myVolume -c '{"username":"some-user","password":"some-password","mount":"/var/path"}'
+            ```
+      * `readonly`: When you issue the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.
+      * `domain`: In case if your user is in windows domain you can specify `domain` parameter.
+
+1. Start the app:
+
+    ```
+    $ cf start pora
+    ```
+
+1. Use the following `curl` command to confirm the app is running. The command returns an instance index for your app.
+
+    ```
+    $ curl http://pora.YOUR-CF-DOMAIN.com
+    ```
+
+1. Use the following `curl` command to confirm the app can access the shared volume. The command writes a file to the share and then reads it back out again.
+
+    ```
+    $ curl http://pora.YOUR-CF-DOMAIN.com/write
+    ```

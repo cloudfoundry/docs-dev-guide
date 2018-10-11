@@ -4,6 +4,17 @@
       <li><a href="#pre">Prerequisite</a></li>
       <li><a href="#create">Create and Bind a Service Instance</a></li>
       <li><a href="#app">Access the Volume Service from your App</a></li>
+      <li><a href="#nfs">NFS Volume Service</a></li>
+        <ul>
+          <li><a href="#create-nfs">Create an NFS Volume Service</a></li>
+          <li><a href="#nfs-sample">Deploy and Bind Sample App</a></li>
+          <li><a href="#nfs-additional">Additional Information</a></li>
+        </ul>
+      <li><a href="#smb">SMB Volume Service</a></li>
+        <ul>
+          <li><a href="#create-smb">Create an SMB Volume Service</a></li>
+          <li><a href="#smb-sample">Deploy and Bind Sample App</a></li>
+        </ul>
     </ul>
   </div>
 </div>
@@ -28,23 +39,24 @@ If no volume service that fits your requirements exists, contact <%= vars.admin 
 
 To use a volume service deployed by <%= vars.admin %>, you must first create an instance of the specific volume service that you need. Follow the instructions below to create this service instance.
 
+<p class="note"><strong>Note</strong>: For NFS-specific instructions and information, see <a href="#nfs">NFS Volume Service</a>.</p>
+
 1. In a terminal window, run `cf create-service SERVICE-NAME PLAN SERVICE-INSTANCE -c SHARE-JSON` to create a service instance. Replace the following with the specified values:
   * `SERVICE`: The name of the volume service that you want to use.
   * `PLAN`: The name of the service plan. Service plans are a way for providers to offer varying levels of resources or features for the same service.
   * `SERVICE-INSTANCE`:  A name you provide for your service instance. Use any series of alpha-numeric characters, hyphens, and underscores. You can rename the instance at any time.
-  * `SHARE-JSON` (NFS Only): If you create an instance of the NFS volume service, you must supply an extra parameter, `share`, by using the `-c` flag with a JSON string, in-line or in a file. This parameter forwards information to the broker about the NFS server and share required for the service. 
-  
-    The following example shows creating an instance of the "Existing" NFS 
-    service plan, passing an in-line JSON string: 
+  * `SHARE-JSON` (NFS Only): If you create an instance of the NFS volume service, you must supply an extra parameter, `share`, by using the `-c` flag with a JSON string, in-line or in a file. This parameter forwards information to the broker about the NFS server and share required for the service.
+
+    The following example shows creating an instance of the "Existing" NFS
+    service plan, passing an in-line JSON string:
     <pre class="terminal">$ cf create-service nfs Existing nfs\_service\_instance -c '{"share": "10.10.10.10/export/myshare"}'</pre>
 
 1. Run `cf bind-service YOUR-APP SERVICE-NAME -c GID-AND-UID-JSON MOUNT-PATH READ-ONLY-TRUE` to bind your service instance to an app. Replace the following with the specified values:
-  * `YOUR-APP`: The name of the <%= vars.product_name %> app for which you want to use the volume service. 
+  * `YOUR-APP`: The name of the <%= vars.product_name %> app for which you want to use the volume service.
   * `SERVICE-NAME`: The name of the volume service instance you created in the previous step.
   * `GID-AND-UID-JSON` (NFS only): If you bind an instance of the NFS volume service, you must supply two extra parameters, `gid` and `uid`. You can specify these parameters with the `-c` flag and a JSON string, in-line or from a file. This parameter specifies the `gid` and `uid` to use when mounting the share to the app.
   * `MOUNT-PATH` (Optional): To mount the volume to a particular path within your app rather than the default path, you supply the `mount` parameter. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
-  * `READ-ONLY-TRUE` (Optional): When you issue the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string. 
-<p class='note warning'><strong>Warning</strong>: Due to an underlying kernel defect, read-only NFS mounts show as <code>"mode": "rw"</code>, not <code>"mode": "ro"</code>.</p>
+  * `READ-ONLY-TRUE` (Optional): When you issue the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.
 
     The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`,
     passing an in-line JSON string:
@@ -85,7 +97,6 @@ To access the volume service from your app, you must know which file path to use
     ]
   }
   </pre>
-  <p class='note warning'><strong>Warning</strong>: Due to an underlying kernel defect, read-only NFS mounts show as <code>"mode": "rw"</code>, not <code>"mode": "ro"</code>.</p>
 
 2. Use the properties under `volume_mounts` for any information your app needs. Refer to the following table:
   <table>
@@ -107,8 +118,212 @@ To access the volume service from your app, you must know which file path to use
     </tr>
     <tr>
       <td><code>mode</code></td>
-      <td>String that informs what type of access your app has to NFS, either read-only, <code>ro</code>, or read and write, <code>rw</code>.<br><br>
-		Due to an underlying kernel defect, read-only NFS mounts show as <code>"mode": "rw"</code>.
+      <td>String that informs what type of access your app has to NFS, either read-only, <code>ro</code>, or read and write, <code>rw</code>.
 		</td>
     </tr>
   </table>
+
+## <a id='nfs'></a> NFS Volume Service
+
+This section describes how to use the NFS volume service.
+
+### <a id='create-nfs'></a> Create an NFS Volume Service
+
+Cloud Foundry offers two NFS volume services:
+
+* `nfs`: This volume service provides support for both NFSv3 (default) and NFSv4 volumes.
+  * For NFSv4,  specify a `version` parameter in the create configuration.
+  * For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
+  * When you omit `uid` and `gid` or `username` and `password` in bind configuration, the driver skips `mapfs` mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
+* `nfs-legacy`: This volume service is implemented with libfuse. It only supports NFSv3 and has some performance constraints.  This service is deprecated.
+
+Both services offer a single plan called `Existing`.
+
+To create an NFS volume service, follow the procedure below that corresponds to your use case.
+
+#### Create with `nfs` Service
+
+You can create a NFS volume service with NFSv3 using the `Existing` plan of the `nfs` service. Run the following command:
+
+```
+$ cf create-service nfs Existing SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE"}'
+```
+
+Where:
+
+* `SERVICE-INSTANCE-NAME` is a name you provide for this NFS volume service instance.
+* `SERVER/SHARE` is the NFS address of your server and share.
+
+<p class="note"><strong>Note</strong>: Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
+
+You can run the `cf services` command to confirm that your newly-created NFS volume service displays in the output.
+
+
+#### Create an NFSv4 volume with `nfs` Service:
+
+You can create a NFS volume service with NFSv4.x using the `Existing` plan of the `nfs` service. Run the following command:
+
+```
+$ cf create-service nfs Existing SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "version":"NFS-PROTOCOL"}'
+```
+
+Where:
+
+* `SERVICE-INSTANCE-NAME` is a name you provide for this NFS volume service instance.
+* `SERVER/SHARE` is the NFS address of your server and share.
+* `VERSION` is the NFS protocol you want to use. For example, if you want to use NFSv4.1, set the version to `4.1`.  Valid values are `4` or `4.1`
+
+<p class="note"><strong>Note</strong>: Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
+
+You can run the `cf services` command to confirm that your newly-created NFS volume service displays in the output.
+
+#### Existing `nfs-legacy` Services:
+
+With the release of NFS Volume Service 1.5.4, the original fuse-based NFS service has been deprecated in favor of the newer kernel-mount based NFS service and will eventually be removed.  Existing NFS volume service bindings will now be listed as `nfs-legacy`.  To switch over from `nfs-legacy` to the newer `nfs` service, we recommend that you re-create and re-bind your `nfs` service instances.
+
+
+### <a id='nfs-sample'></a> Deploy and Bind a Sample App
+
+This section describes how to deploy a sample app and bind it to the NFS volume service.
+
+1. Clone the github repo and push the `pora` test app:
+  1. `cd ~/workspace`
+  1. `git clone https://github.com/cloudfoundry/persi-acceptance-tests.git`
+  1. `cd ~/workspace/persi-acceptance-tests/assets/pora`
+  1. `cf push pora --no-start`
+
+1. To bind the service to your app, run the following command:
+
+    ```
+    $ cf bind-service pora SERVICE-INSTANCE-NAME -c '{"uid":"UID","gid":"GID"}'
+    ```
+    Where:
+    * `SERVICE-INSTANCE-NAME`: The name of the volume service instance you created previously.
+    * `UID` and `GID`: The `gid` and `uid` to use when mounting the share to the app. The NFS driver uses these values in the following ways:
+      * When sending traffic to the NFS server, the NFS driver translates the app user id and group id to the `UID` and `GID` values.
+      * When returning attributes from the NFS server, the NFS driver translates the `UID` and `GID` back to the running user uid and default gid.
+
+        This allows you to interact with your NFS server as a specific user while allowing Cloud Foundry to run your application as an arbitrary user.
+    * **Optional paramenters**:
+      * `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example:
+
+            ```
+            cf bind-service pora myVolume -c '{"uid":"0","gid":"0","mount":"/var/path"}'
+            ```
+      * `readonly`: When you issue the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.
+
+1. Start the app:
+
+    ```
+    $ cf start pora
+    ```
+
+1. Use the following `curl` command to confirm the app is running. The command returns an instance index for your app.
+
+    ```
+    $ curl http://pora.YOUR-CF-DOMAIN.com
+    ```
+
+1. Use the following `curl` command to confirm the app can access the shared volume. The command writes a file to the share and then reads it back out again.
+
+    ```
+    $ curl http://pora.YOUR-CF-DOMAIN.com/write
+    ```
+
+### <a id="nfs-additional"></a> Additional Information
+
+This section provides additional information about using the NFS Volume Service.
+
+#### Binding with LDAP Credentials
+
+If your Cloud Foundry deployment has LDAP enabled, you can bind using LDAP credentials.
+
+To bind an app to your volume using LDAP credentials, specify `username` and `password` instead of `uid` and `gid`. See the following example:
+
+```
+$ cf bind-service pora myVolume -c '{"username":"USERNAME","password":"PASSWORD"}'
+```
+
+<p class="note"><strong>Note</strong>: If your LDAP server password changes, you must re-bind your app to the service and restage. If you do not, your app will fail during restart or scaling. This is because user credentials are stored as part of the service binding and checked whenever an app is placed on a cell.</p>
+
+#### Specifying Bind Parameters During Service Instance Creation
+
+As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, when you create a service instance. Use this option if you bind the service to your app in an app manifest, where bind configuration is not supported.
+
+#### File Locking with `flock()` and `lockf()`/`fcntl()`
+
+Apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock` may use the `nfs` service.  The `nfs-legacy` service uses a fuse mounting process that does not enforce locks across Diego cells.
+
+## <a id='smb'></a> SMB Volume Service
+
+This section describes how to use an SMB ([Server Message Block](https://docs.microsoft.com/en-us/windows/desktop/fileio/microsoft-smb-protocol-and-cifs-protocol-overview)) volume service.
+
+### <a id='create-smb'></a> Create an SMB Volume Service
+
+Cloud Foundry offers one SMB volume service:
+
+* `smb`: This volume service provides support for existing SMB shares.
+
+The service offers a single plan called `Existing`.
+
+To create an SMB volume service, follow the procedure below.
+
+#### Create with `smb` Service
+
+You can create an SMB volume service using the `Existing` plan of the `smb` service. Run the following command:
+
+```
+$ cf create-service smb Existing SERVICE-INSTANCE-NAME -c '{"share":"//SERVER/SHARE"}'
+```
+
+Where:
+
+* `SERVICE-INSTANCE-NAME` is a name you provide for this SMB volume service instance.
+* `//SERVER/SHARE` is the SMB address of your server and share.
+
+You can run the `cf services` command to confirm that your newly-created SMB volume service displays in the output.
+
+### <a id='smb-sample'></a> Deploy and Bind a Sample App
+
+This section describes how to deploy a sample app and bind it to the SMB volume service.
+
+1. Clone the github repo and push the `pora` test app:
+  1. `cd ~/workspace`
+  1. `git clone https://github.com/cloudfoundry/persi-acceptance-tests.git`
+  1. `cd ~/workspace/persi-acceptance-tests/assets/pora`
+  1. `cf push pora --no-start`
+
+1. To bind the service to your app, run the following command:
+
+    ```
+    $ cf bind-service pora SERVICE-INSTANCE-NAME -c '{"username":"USERNAME","password":"PASSWORD"}'
+    ```
+    Where:
+    * `SERVICE-INSTANCE-NAME`: The name of the volume service instance you created previously.
+    * `USERNAME` and `PASSWORD`: The username and password to use when mounting the share to the app. This allows you to interact with your SMB server as a specific user while allowing Cloud Foundry to run your application as an arbitrary user.
+    * **Optional parameters**:
+      * `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example:
+
+            ```
+            cf bind-service pora myVolume -c '{"username":"some-user","password":"some-password","mount":"/var/path"}'
+            ```
+      * `readonly`: When you issue the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.
+      * `domain`: In case if your user is in windows domain you can specify `domain` parameter.
+
+1. Start the app:
+
+    ```
+    $ cf start pora
+    ```
+
+1. Use the following `curl` command to confirm the app is running. The command returns an instance index for your app.
+
+    ```
+    $ curl http://pora.YOUR-CF-DOMAIN.com
+    ```
+
+1. Use the following `curl` command to confirm the app can access the shared volume. The command writes a file to the share and then reads it back out again.
+
+    ```
+    $ curl http://pora.YOUR-CF-DOMAIN.com/write
+    ```

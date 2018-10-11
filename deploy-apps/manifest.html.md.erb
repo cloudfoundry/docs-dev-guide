@@ -123,23 +123,38 @@ This section explains how to describe optional application attributes in manifes
 
 <p class='note'><strong>Note:</strong> The route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>, <code>hosts</code>, and <code>no-hostname</code> have been deprecated in favor of the <code>routes</code> attribute. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
 
-### <a id='buildpack'></a> buildpack
+### <a id='buildpack'></a> buildpacks
 
-If your application requires a custom buildpack, you can use the `buildpack` attribute to specify it in one of three ways:
+You can refer to a buildpack by name in a manifest or a command line option. The <code>cf buildpacks</code> command lists the buildpacks that you can use. 
 
-* By name: `MY-BUILDPACK`. 
-* By GitHub URL: `https://github.com/cloudfoundry/java-buildpack.git`. 
-* By GitHub URL with a branch or tag: `https://github.com/cloudfoundry/java-buildpack.git#v3.3.0` for the `v3.3.0` tag.
+See below for information on referencing buildpacks in a manifest. The command line option that overrides this attribute is `-b`.
 
-<pre>
----
-  ...
-  buildpack: buildpack_URL
-</pre>
+* **Custom buildpacks**: If your application requires a custom buildpack, you can use the `buildpacks` attribute to specify it in a number of ways:
+  * By name: `MY-BUILDPACK`. 
+  * By GitHub URL: `https://github.com/cloudfoundry/java-buildpack.git`. 
+  * By GitHub URL with a branch or tag: `https://github.com/cloudfoundry/java-buildpack.git#v3.3.0` for the `v3.3.0` tag.
 
-<p class="note"><strong>Note</strong>: The <code>cf buildpacks</code> command lists the buildpacks that you can refer to by name in a manifest or a command line option.</p>
+      ```
+      ---
+        ...
+        buildpacks: 
+          - buildpack_URL
+      ```
+* **Multiple buildpacks**: If you are using multiple buildpacks, you can provide an additional `-b` flag or add an additional value to your manifest:
 
-The command line option that overrides this attribute is `-b`.
+      ```
+      ---
+        ...
+        buildpacks: 
+          - buildpack_URL
+          - buildpack_URL
+      ```
+
+      <p class="note"><strong>Note</strong>: This feature does not work with <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
+
+      <p class="note"><strong>Note</strong>: You must specify multiple buildpacks in the correct order: the buildpack will use the app start command given by the final buildpack. See <a href=https://github.com/cloudfoundry/multi-buildpack#usageapp>the multi-buildpack repository</a> for more information.</p>
+
+Also see [Pushing an Application with Multiple Buildpacks](https://docs.cloudfoundry.org/buildpacks/use-multiple-buildpacks.html) for more information. 
 
 ### <a id='start-commands'></a> command
 
@@ -217,7 +232,8 @@ The command line option `--docker-image` or `-o` overrides `docker.image`.  The 
 
 The manifest attribute `docker.username` is optional.  If it is used, then the password must be provided in the environment variable `CF_DOCKER_PASSWORD`.  Additionally, if a Docker username is specified, then a Docker image must also be specified.
 
-<p class="note"><strong>Note</strong>: Using the <code>docker</code> attribute in conjunction with the <code>buildpack</code> or <code>path</code> attributes will result in an error.</p>
+<p class="note"><strong>Note</strong>: Using the <code>docker</code> attribute in conjunction with the <code>buildpacks</code> or <code>path</code> attributes will result in an error.</p>
+
 
 ### <a id='health-check-http-endpoint'></a> health-check-http-endpoint
 
@@ -539,8 +555,10 @@ You can declare shared configuration using a YAML anchor, which the manifest ref
 <pre>
 ---
 defaults: &amp;defaults
-  buildpack: staticfile_buildpack
-  memory: 1G
+  buildpacks: 
+    - staticfile_buildpack
+  memory: 1G
+
 
 applications:
 - name: bigapp
@@ -557,7 +575,7 @@ This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpac
 
 Variable substitution replaces [Inheritance](#inheritance-deprecated), which has been deprecated.  
 
-Value substitution allow app developers to create app manifests with values shared across all applicable environments in combination with references to environment-specific differences defined in separate files. It addition, using variable substitution enables developers to store sensitive data in a separate file that the app manifest would reference, making the security sensitive data easier to manage and keep secure.
+Value substitution allow app developers to create app manifests with values shared across all applicable environments in combination with references to environment-specific differences defined in separate files. In addition, using variable substitution enables developers to store sensitive data in a separate file that the app manifest would reference, making the security sensitive data easier to manage and keep secure.
 
 To utilize this feature, your app manifest requires an explicit declaration that the app or app configuration requires additional data. Use template variables in parentheses in your app manifest in place of fixed values.
 
@@ -587,7 +605,7 @@ For example:
 
 <pre class="terminal">
 $ cf push foo-app -f ~/workspace/var_manifest.yml --vars-file ~/workspace/vars.yml
-Pushing from manifest to org Doop / space lessing as achau@pivotal.io...
+Pushing from manifest to org Doop / space lessing as achau@example.com...
 Using manifest file /Users/achau/workspace/var_manifest.yml
 Getting app info...
 Creating app with these attributes...
@@ -627,13 +645,13 @@ host: test
 When you do a push invoking both files above, the partial value for `routes` in the manifest.yml is replaced by `host` in the variables.yml file.
 
 <pre class="terminal">
-$ cf push -f manifest.yml --vars-file <(cat secrets.yml)
+$ cf push -f manifest.yml --vars-file secrets.yml
 Pushing from manifest to org system / space maspace as admin...
 Using manifest file manifest.yml
 Getting app info...
 Creating app with these attributes...
 + name:        test-app
-  path:        /home/pivotal/go/src/github.com/cloudfoundry/cf-acceptance-tests/assets/dora
+  path:        /home/workspace/go/src/github.com/cloudfoundry/cf-acceptance-tests/assets/dora
 + instances:   2
   env:
 +   HIDDEN
@@ -678,8 +696,10 @@ The following example illustrates how to declare shared configuration using a YA
 <pre>
 ---
 defaults: &amp;defaults
-  buildpack: staticfile_buildpack
-  memory: 1G
+  buildpacks: 
+    - staticfile_buildpack
+  memory: 1G
+
 
 applications:
 - name: bigapp
@@ -733,7 +753,9 @@ This feature has been deprecated, and has been replaced by [Variable Substitutio
 
 With inheritance, child manifests inherited configurations from a parent manifest, and the child manifests could use inherited configurations as provided, extend them, or override them. This feature has been deprecated, and has been replaced by [Variable Substitution](#multi-manifests).
 
+
 ### <a id='buildpack-deprecated'></a> Buildpack Field in Manifest Is Deprecated
 
 The singular `buildpack` field in manifests is deprecated. It has been replaced by `buildpacks`, which is now an array which takes as a value [multiple buildpacks](#buildpack).
+
 

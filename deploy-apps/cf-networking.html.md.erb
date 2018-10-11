@@ -62,6 +62,8 @@ This section describes how to create and modify Container-to-Container Networkin
 The cf CLI only supports configuring policies for apps within the same space. 
 To configure policies for apps in different orgs and spaces, use the [Policy Server External API](https://github.com/cloudfoundry/cf-networking-release/blob/v1.10.x/docs/API.md).
 
+<%= vars.app_man_network %>
+
 <p class='note'><strong>Note:</strong> With the NSX-T integration, container networking policies and ASGs continue to work as normal. Advanced ASG logging is not supported with NSX-T.</p>
 
 ### <a name="prereq"></a> Prerequisites
@@ -178,7 +180,9 @@ OK
 
 ## <a name="discovery"></a> App Service Discovery
 
-When app service discovery is enabled, apps pushed to <%= vars.product_full %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front end apps to easily connect with back end apps.
+With app service discovery, apps pushed to <%= vars.product_full %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front end apps to easily connect with back end apps. 
+
+<%= vars.internal_domain_config %>
 
 To establish container-to-container communications between a front end and back end app, a developer:
 
@@ -189,12 +193,13 @@ To establish container-to-container communications between a front end and back 
 
 See [Cats and Dogs with Service Discovery](https://github.com/cloudfoundry/cf-networking-examples/blob/master/docs/c2c-with-service-discovery.md) in GitHub for an example, written in Go, that demonstrates communication between front end and back end apps.
 
-<% if vars.product_name.include? "CF" %>
+<% if vars.product_name == "CF" %>
 
 ### <a name="enable-discovery"></a> Enable App Service Discovery
 
 To enable app service discovery, <%= vars.enable_c2c_discovery %>.
 
 <% else %>
+
 <% end %>
 

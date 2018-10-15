@@ -126,10 +126,10 @@ This section describes how to use the NFS volume service.
 
 Cloud Foundry offers two NFS volume services:
 
-* `nfs`: This volume service is implemented with libfuse. It only supports NFSv3 and has some performance constraints.
+* `nfs`: This volume service is implemented with libfuse. It does not support `version` parameter and only mounts NFSv3. I also has some performance constraints.
 * `nfs-experimental`: This volume service provides better performance.
   * It supports NFSv4 through a `version` parameter that determines which NFS protocol to use.
-  *  For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
+  * For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
   * It skips `mapfs` mounting and performs a normal kernel mount of the NFS file system without the overhead associated with FUSE mounts when you omit `uid` and `gid` or `username` and `password` in bind configuration. 
 
 Both services offer a single plan called `Existing`.
@@ -166,7 +166,7 @@ Where:
 
 * `SERVICE-INSTANCE-NAME` is a name you provide for this NFS volume service instance.
 * `SERVER/SHARE` is the NFS address of your server and share.
-* `VERSION` is the NFS protocol you want to use. For example, if you want to use NFSv4, set the version to `4.1`.
+* `VERSION` is the NFS protocol you want to use. For example, if you want to use NFSv4, set the version to `4.1`. Supported versions are `3.0`, `4.0`, `4.1` or `4.2`. If no version is specified it defaults to `3.0`.
 
 <p class="note"><strong>Note</strong>: Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
 

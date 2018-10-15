@@ -37,9 +37,9 @@ a messaging queue service, bind it to their app, and share that service instance
 instance, and the two apps can begin publishing and receiving
 messages from one another.
 
-## <a id="enabling"></a> Enabling Service Instance Sharing in Cloud Foundry
+## <a id="enabling"></a> Enabling Service Instance Sharing in Cloud Foundry (by the CF platform operator)
 
-To enable service instance sharing, you must enable the `service_instance_sharing` flag.
+To enable service instance sharing, the platform operator must enable the `service_instance_sharing` flag on a Cloud Foundry level.
 
 <pre class="terminal">
 $ cf enable-feature-flag service_instance_sharing

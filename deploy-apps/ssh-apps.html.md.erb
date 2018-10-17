@@ -125,7 +125,9 @@ $ cf ssh MY-AWESOME-APP -L [LOCAL-NETWORK-INTERFACE:]LOCAL-PORT:REMOTE-HOST-NAME
 
 ## <a id="ssh-env"></a> SSH Session Environment
 
-If you want the environment of your interactive SSH session to match the environment of your buildpack-based app, with the same environment variables and working directory, run the following commands after starting the session:
+If you want the environment of your interactive SSH session to match the environment of
+your buildpack-based app, with the same environment variables and working directory, run
+the following commands after starting the session:
 
 <pre class="terminal">
 export HOME=/home/vcap/app
@@ -175,15 +177,14 @@ E1x89n
 </pre>
 
 1. Run your `ssh` or other command to connect to the application instance. For the username, use a string of the form `cf:APP-GUID/APP-INSTANCE-INDEX@SSH-ENDPOINT`, where `APP-GUID` and `SSH-ENDPOINT` come from the previous steps. For the port number, use the `SSH-PORT` recorded above. `APP-INSTANCE-INDEX` is the index of the instance you want to access.
-<br/><br/>With the above example, you `ssh` into the container hosting the first instance of your app by running the following command:
-<pre class="terminal">
-$ ssh -p 2222 cf:abcdefab-1234-5678-abcd-1234abcd1234/0<span>@</span>ssh.MY-DOMAIN.com
-</pre>
-<br/>Or you can use `scp` to transfer files by running one of the following commands:
-<pre class="terminal">
-$ scp -P 2222 -o User=cf:abcdefab-1234-5678-abcd-1234abcd1234/0 ssh.MY-DOMAIN.com:REMOTE-FILE-TO-RETRIEVE LOCAL-FILE-DESTINATION
-$ scp -P 2222 -o User=cf:abcdefab-1234-5678-abcd-1234abcd1234/0 LOCAL-FILE-DESTINATION ssh.MY-DOMAIN.com:REMOTE-FILE-TO-RETRIEVE 
-</pre>
+<br><br>With the above example, you `ssh` into the container hosting the first instance of your app by running the following command:
+   <pre class="terminal">
+   $ ssh -p 2222 cf:abcdefab-1234-5678-abcd-1234abcd1234/0<span>@</span>ssh.MY-DOMAIN.com
+   </pre>
+   <br>Or you can use `scp` to transfer files by running one of the following commands:
+   - `scp -P 2222 -o User=cf:abcdefab-1234-5678-abcd-1234abcd1234/0 ssh.MY-DOMAIN.com:REMOTE-FILE-TO-RETRIEVE LOCAL-FILE-DESTINATION`
+   - `scp -P 2222 -o User=cf:abcdefab-1234-5678-abcd-1234abcd1234/0 LOCAL-FILE-DESTINATION ssh.MY-DOMAIN.com:REMOTE-FILE-TO-RETRIEVE`
+   </pre>
 
 1. When the SSH proxy reports its RSA fingerprint, confirm that it matches the `app_ssh_host_key_fingerprint` recorded above. When prompted for a password, paste in the authorization code returned by `cf ssh-code`.
 <pre class="terminal">

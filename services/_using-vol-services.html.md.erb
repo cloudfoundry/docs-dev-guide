@@ -135,7 +135,8 @@ Cloud Foundry offers two NFS volume services:
   * For NFSv4,  specify a `version` parameter in the create configuration.
   * For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
   * When you omit `uid` and `gid` or `username` and `password` in bind configuration, the driver skips `mapfs` mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
-* `nfs-legacy`: This volume service is implemented with libfuse. It only supports NFSv3 and has some performance constraints.  This service is deprecated.
+* `nfs-legacy` (deprecated): This volume service is implemented with libfuse. It does not support
+`version` parameters and only mounts NFSv3. The service also has some performance constraints.
 
 Both services offer a single plan called `Existing`.
 
@@ -171,7 +172,9 @@ Where:
 
 * `SERVICE-INSTANCE-NAME` is a name you provide for this NFS volume service instance.
 * `SERVER/SHARE` is the NFS address of your server and share.
-* `VERSION` is the NFS protocol you want to use. For example, if you want to use NFSv4.1, set the version to `4.1`.  Valid values are `4` or `4.1`
+* `VERSION` is the NFS protocol you want to use. For example, if you want to use NFSv4,
+set the version to `4.1`. Valid values are `3.0`, `4.0`, `4.1` or `4.2`. If no version is
+specified, it defaults to `3.0`.
 
 <p class="note"><strong>Note</strong>: Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
 

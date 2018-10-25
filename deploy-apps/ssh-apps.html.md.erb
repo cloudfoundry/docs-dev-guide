@@ -133,15 +133,7 @@ the following commands after starting the session:
 export HOME=/home/vcap/app
 export TMPDIR=/home/vcap/tmp
 cd /home/vcap/app
-</pre>
-
-Before running commands below, verify that the contents of the files in both the `/home/vcap/app/.profile` and `/home/vcap/app/.profile.d` directories will not perform any actions that are undesirable for your running app. The `.profile.d` directory contains buildpack-specific initialization tasks, and the `.profile` file contains application-specific initialization tasks.
-
-If the `profile` and `.profile.d` scripts would alter your instance in undesirable ways, only run the commands in them that you need for environmental setup.
-
-<pre class="terminal">
-[ -d /home/vcap/app/.profile.d ] && for f in /home/vcap/app/.profile.d/*.sh; do source "$f"; done
-source /home/vcap/app/.profile
+/tmp/lifecycle/shell
 </pre>
 
 After running the above commands, the value of the `VCAP_APPLICATION` environment variable differs slightly from its value in the environment of the app process, as it will not have the `host`, `instance_id`, `instance_index`, or `port` fields set. These fields are available in other environment variables, as described in the <a href="environment-variable.html#VCAP-APPLICATION">VCAP_APPLICATION</a> documentation.

@@ -499,9 +499,25 @@ $ cf delete-shared-domain example.com
 
 #### <a id='internal-domains'></a> Internal Domain
 
-The internal domain is a special type of shared domain used for app communication internal to the platform. When you enable service discovery, the internal domain `apps.internal` becomes provided for your use.
+The internal domain is a special type of shared domain used for app communication internal to the platform. When you enable service discovery, the internal domain `apps.internal` becomes available for route mapping. Administrators can configure multiple internal domains.
 
-Administrators can configure multiple internal domains.
+Once an internal route is mapped to an application, the route will resolve to IP addresses of the application instances. The IP addresses are visible in the application container.
+
+<pre class="terminal">
+$ cf map-route app apps.internal --hostname app
+$ cf ssh app
+vcap@1234:~$ host app.apps.internal
+app.apps.internal has address 10.255.169.200
+app.apps.internal has address 10.255.49.7
+app.apps.internal has address 10.255.49.77
+</pre>
+
+To resolve individual instances, prepend the index to the internal route.
+
+<pre class="terminal">
+vcap@1234:~$ host 1.app.apps.internal
+1.app.apps.internal has address 10.255.49.7
+</pre>
 
 ### <a id='private-domains'></a> Private Domains
 

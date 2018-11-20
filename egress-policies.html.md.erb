@@ -1,0 +1,331 @@
+---
+title: Administering Dynamic Egress Policies (Experimental)
+owner: CF Networking
+---
+
+<p class="note"><strong>Note</strong>: This is an experimental feature.</p>
+
+This topic describes how to administer dynamic egress policies for the apps in your deployment. 
+
+## <a id="overview"></a> Overview
+
+You can create dynamic egress policies to allow your apps to communicate with external services, such as a MySQL database. The workflow is as follows:
+
+* Create a destination object with details about the external service that your app or space need access to, including an IP range.   
+* Create an egress policy from the app or space to the destination object. 
+
+Dynamic egress policies provide the following benefits over [Application Security Groups (ASGs)](../concepts/asgs.html):
+
+* You do not have to restart your apps when applying these policies, so there is no downtime. 
+* The policies include in additional level of granularity: you can apply them to specific apps.  
+
+## <a id="enable"></a> Enable the Dynamic Egress Feature
+
+The dynamic egress feature is disabled by default. To enable this feature, you must 
+<% if vars.product_name == 'CF' %>
+set the `enforce_experimental_dynamic_egress_policies` property of the `policy-server-internl` job to true. For more information, see the spec file in the [CF Networking Release](https://github.com/cloudfoundry/cf-networking-release/blob/develop/jobs/policy-server-internal/spec#L102-L104) repository. 
+<p class="note"><strong>Note</strong>: This feature is only compatible with the Silk CNI plugin.</p>
+<% else %>
+<%=vars.enable_egress%>
+<% end %>
+
+## <a id="auth"></a> API Authorization
+
+To administer dynamic egress policies, you must have the `network.admin` UAA scope. If you are a CF admin, you already have the `network.admin` scope. An admin can also grant the `network.admin` scope to a space developer. <%= vars.uaa_cli %>
+
+If you have the `network.admin` scope, you can interact with the API in the following ways:
+
+### <a id="cf-curl"></a> Option 1: cf curl
+
+When you use [cf curl](https://cli.cloudfoundry.org/en-US/cf/curl.html), you do not have to provide a token or the full API URL because you are already logged in and targeting your deployment. See the following example: 
+
+```sh
+$ cf curl /networking/v1/external/egress_policies
+{"total_egress_policies":2,"egress_policies":[{"source":{...}]}
+```
+
+### <a id="cf-curl"></a> Option 2: curl
+
+When using `curl`, you must provide the token `Authorization` header and use the full API URL. See the following example:
+
+```sh
+$ export TOKEN=`cf oauth-token` # as CF admin
+$ curl http://api.bosh-lite.com/networking/v1/external/egress_policies -H "Authorization: $TOKEN"
+{"total_egress_policies":2,"egress_policies":[{"source":{...}]}
+```
+
+## <a id="workflows"></a> Typical Workflows
+
+Dynamic egress policies depend on a destination object. See the following workflow examples:
+
+### <a id="add-policy"></a> Add an Egress Policy
+
+To create a policy, you must create a destination first:
+
+1. Create an egress destination. See [Create Egress Destinations](#create-egress-destinations).
+1. Create an egress policy linking the destination and an app or space. [Create Egress Policies](#create-egress-policies).
+1. See policy apply. No app restarts needed.
+
+### <a id="update-policy"></a> Update an Egress Policy when an IP Changes
+
+To update a policy, you update the destination: 
+
+1. List all egress destinations to find the one you want to change. See [List Egress Destinations](#list-egress-destinations). 
+1. Update the egress destination. See [Update Egress Destinations](#update-egress-destinations).
+1. See updated policy apply. No app restarts needed.
+
+## <a id="desinations"></a> Egress Destination API
+
+| Method | Path |  Description |
+| :----- | :--- |  :----------- |
+| GET | /networking/v1/external/destinations |  List Destinations |
+| POST | /networking/v1/external/destinations | Create Destinations |
+| PUT | /networking/v1/external/destinations | Update Destinations |
+| DELETE | /networking/v1/external/destinations/GUID | Delete Destinations |
+
+
+### <a id="list-egress-destinations"></a> List Egress Destinations
+
+#### GET /networking/v1/external/destinations
+
+#### Arguments:
+
+* (optional) `id`: comma-separated id values. This cannot be used with `name`.
+* (optional) `name`: comma-separated name values. This cannot be used with `id`.
+
+#### Response Body:
+
+Returns all egress destinations
+
+```json
+{
+  "total_destinations": 2,
+  "destinations": [
+   {
+      "name": "oracle database",
+      "id": "90be9c1f-b694-4463-9f1f-6ce71904440d",
+      "description": "db for user accounts",
+      "ips": [{"start":"1.9.9.9", "end": "1.9.9.20"}],
+      "ports": [{"start": 8000, "end": 9000}],
+      "protocol": "tcp"
+   },
+   {
+      "name": "AWS",
+      "id": "72813418-bd38-49e0-ace0-7bf5b7c54687",
+      "ips": [{"start":"1.8.8.8", "end": "1.8.8.8"}],
+      "ports": [{"start": 8000, "end": 9000}],
+      "protocol": "udp"
+   }
+  ]
+}
+```
+
+### <a id="create-egress-destinations"></a> Create Egress Destinations
+
+#### POST /networking/v1/external/destinations
+
+#### Request Body:
+
+```json
+{
+  "destinations": [
+   {
+      "name": "oracle database",
+      "description": "db for user accounts",
+      "ips": [{"start":"1.9.9.9", "end": "1.9.9.20"}],
+      "ports": [{"start": 8000, "end": 9000}],
+      "protocol": "tcp"
+   },
+   {
+      "name": "AWS",
+      "ips": [{"start":"1.8.8.8", "end": "1.8.8.8"}],
+      "ports": [{"start": 8000, "end": 9000}],
+      "protocol": "udp"
+   }
+  ]
+}
+```
+
+#### Parameters
+
+| Field | Required? | Description |
+| :---- | :-------: | :------ |
+| destinations.name | Y | The name of the destination. Must be globally unique.
+| destinations.description | N | A description of the destination.
+| destinations.ips.start* | Y | The start of the destination ip range. Must be IPv4.
+| destinations.ips.end* | Y | The end of the destination ip range. Must be IPv4. May be equal to the the start ip.
+| destinations.ports.start* | Y | The destination start port (1 - 65535). Ports are not applicable for ICMP protocol.
+| destinations.ports.end* | Y | The destination end port (1 - 65535). Ports are not applicable for ICMP protocol.
+| destinations.protocol | Y | The protocol (tcp, udp, or icmp)
+| destinations.icmp_type | N | The icmp type to allow when using the icmp protocol. Default is all icmp types, represented by -1.
+| destinations.icmp_code | N | The icmp code to allow when using the icmp protocol. Default is all icmp codes, represented by -1.
+
+*Currently only one IP range and one port range is supported.
+
+### <a id="update-egress-destinations"></a> Update Egress Destinations
+
+#### PUT /networking/v1/external/destinations
+
+#### Request Body:
+
+```json
+{
+  "destinations": [
+   {
+      "id": "90be9c1f-b694-4463-9f1f-6ce71904440d",
+      "name": "oracle database",
+      "description": "db for user accounts",
+      "ips": [{"start":"1.9.9.9", "end": "1.9.9.20"}],
+      "ports": [{"start": 8000, "end": 9000}],
+      "protocol": "tcp"
+   },
+   {
+      "id": "72813418-bd38-49e0-ace0-7bf5b7c54687",
+      "name": "AWS",
+      "ips": [{"start":"1.8.8.8", "end": "1.8.8.8"}],
+      "ports": [{"start": 8000, "end": 9000}],
+      "protocol": "udp"
+   }
+  ]
+}
+```
+
+#### Parameters
+
+| Field | Required? | Description |
+| :---- | :-------: | :------ |
+| destinations.id | Y | The id of the destination. This id is returned in the destinations create response, as well as in the destinations index response.
+| destinations.name | Y | The name of the destination. Must be globally unique.
+| destinations.description | N | A description of the destination.
+| destinations.ips.start* | Y | The start of the destination ip range. Must be IPv4.
+| destinations.ips.end* | Y | The end of the destination ip range. Must be IPv4. May be equal to the the start ip.
+| destinations.ports.start* | Y | The destination start port (1 - 65535). Ports are not applicable for ICMP protocol.
+| destinations.ports.end* | Y |The destination end port (1 - 65535). Ports are not applicable for ICMP protocol.
+| destinations.protocol | Y |The protocol (tcp, udp, or icmp)
+| destinations.icmp_type | N | The icmp type to allow when using the icmp protocol. Default is all icmp types, represented by -1.
+| destinations.icmp_code | N | The icmp code to allow when using the icmp protocol. Default is all icmp codes, represented by -1.
+
+*Note: Currently only one IP range and one port range is supported.
+
+### <a id="delete-egress-destinations"></a> Delete an Egress Destination
+
+#### DELETE /networking/v1/external/destinations/GUID
+
+#### Response Body:
+
+This endpoint returns the JSON of the deleted destination object.
+
+```json
+{
+  "total_destinations": 1,
+  "destinations": [
+   {
+      "name": "oracle database",
+      "id": "90be9c1f-b694-4463-9f1f-6ce71904440d",
+      "description": "db for user accounts",
+      "ips": [{"start":"1.9.9.9", "end": "1.9.9.20"}],
+      "ports": [{"start": 8000, "end": 9000}],
+      "protocol": "tcp"
+   }
+  ]
+}
+```
+
+
+## <a id="policies"></a> Egress Policy API
+
+| Method | Path |  Description|
+| :----- | :--- |  :----------- |
+| GET | /networking/v1/external/egress_policies |   List Egress Policies |
+| POST | /networking/v1/external/egress_policies |  Create EgressPolicies |
+| DELETE | /networking/v1/external/egress_policies/GUID | Delete Egress Policy |
+
+### <a id="list-egress-policies"></a> List Egress Policies
+
+#### GET /networking/v1/external/egress_policies
+#### Arguments: 
+
+None
+
+#### Response Body:
+
+Returns all egress policies.
+
+```json
+{
+  "total_egress_policies": 1,
+  "egress_policies": [{
+    "id": "dynamic-egress-guid",
+    "source": {
+      "type": "app",
+      "id": "SOURCE-APP-GUID"
+     },
+     "destination": {
+        "id": "guid-abc-123",
+        "name": "AWS",
+        "description": "AWS",
+        "id": "72813418-bd38-49e0-ace0-7bf5b7c54687",
+        "ips": [{"start":"1.8.8.8", "end": "1.8.8.8"}],
+        "ports": [{"start": 8000, "end": 9000}],
+        "protocol": "udp"
+     }
+   }]
+}
+```
+### <a id="create-egress-policies"></a> Create Egress Policies
+
+#### POST /networking/v1/external/egress_policies
+
+#### Request Body:
+
+```json
+{
+  "egress_policies": [{
+    "source": {
+      "type": "space",
+      "id": "SOURCE-SPACE-GUID"
+    },
+    "destination": {
+      "id": "EGRESS-DESTINATION-GUID"
+    }
+  }]
+}
+```
+
+#### Parameters
+
+| Field | Required? | Description |
+| :---- | :-------: | :------ |
+| source.type | N | The type of source. Must be 'app' or 'space'. Defaults to 'app'.
+| source.id | Y | The guid of the source app or space.
+| destination.id | Y | The guid of the egress destination.
+
+### <a id="delete-egress-policies"></a> Delete an Egress Policy
+
+#### DELETE /networking/v1/external/egress_policies/GUID
+
+#### Response Body:
+
+This endpoint returns the JSON of the deleted egress policy object.
+
+
+```json
+{
+  "total_egress_policies": 1,
+  "egress_policies": [{
+    "id": "dynamic-egress-guid",
+    "source": {
+      "type": "app",
+      "id": "SOURCE-APP-GUID"
+     },
+     "destination": {
+        "name": "AWS",
+        "description": "AWS",
+        "id": "72813418-bd38-49e0-ace0-7bf5b7c54687",
+        "ips": [{"start":"1.8.8.8", "end": "1.8.8.8"}],
+        "ports": [{"start": 8000, "end": 9000}],
+        "protocol": "udp"
+     }
+   }]
+}
+```

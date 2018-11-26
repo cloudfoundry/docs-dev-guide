@@ -5,8 +5,6 @@ owner: CAPI
 
 This topic describes a workflow by which developers can push updates to their apps without incurring downtime. 
 
-Cloud foundry now supports native rolling, zero-downtime deployments for applications. The traditional cf push behavior is to upload your new code, stop the old version of the application, and start the new version of the application.
-
 ## <a id="prerequisites"></a>  Prerequisites
 
 The procedures in this topic require the following: 
@@ -17,8 +15,9 @@ The procedures in this topic require the following:
 
 ## <a id="deploy"></a>  Deploy an App
 
-
 To deploy an app without incurring downtime, run the following command:
+
+<p class="note"><strong>Note</strong>: Ensure that you understand the <a href="#limitations">Limitations</a> of this feature before running the command.</p>
 
 ```
 cf v3-zdt-push APP-NAME
@@ -38,32 +37,62 @@ This reverts the app to its state from before the deployment started by doing th
 
 * Scaling up the original web process
 * Removing any deployment artifacts
-* Resetting the `current_droplet` on the application.
+* Resetting the `current_droplet` on the app
+
+### <a id="restart"></a> Restart an App
 
 ## <a id="how-it-works"></a> How it works
 
-cf v3-zdt-push has two steps relevant to this feature:
+The original `cf push` does the following:
 
-1. Stage the app and create a droplet representing updated code for your application
-1. Create a deployment with that droplet for your app. ßThe deployment can be seen with cf curl /v3/deployments and should have the state DEPLOYING
+1. Uploads your new code.
+1. Stops the old version of the app.
+1. Starts the new version of the app.
+
+To understand how the `v3-zdt-push` command works, see the _Deployment Algorithm_ section below.
 
 ### <a id="deployment-algorithm"></a>  Deployment Algorithm
 
-1. A new deployment web process is created for the application with the new droplet and any new configuration. This new process starts out with 1 instance and shares the route with the old web process. If you run cf app on your application, you will see a web process and a web-deployment-<deployment-guid> process.
-1. The cc_deployment_updater bosh job runs in the background, updating deployments:
-	1. Add another instance of the new deployment web process and remove an instance from the original web process. This only happens if all instances of the new deployment web process are currently running.
-	1. Repeat the above step until the new deployment web process has reached the desired number of instances for the application
+`cf v3-zdt-push` does the following:
+
+1. Stages the app and create a droplet with the updated code for your app.
+1. Creates a new deployment web process for the app with the new droplet and any new configuration. This new process starts out with 1 instance and shares the route with the old process. If you run `cf app` on your app, you see a `web` process and a `web-deployment-DEPLOYMENT-UUID` process.
+1. The `cc_deployment_updater` BOSH job runs in the background, updating deployments as follows:
+	1. Add another instance of the new deployment web process and remove an instance from the old web process. This only happens if all instances of the new deployment web process are currently running.
+	1. Repeat the above step until the new deployment web process reaches the desired number of instances. 
 	1. Remove the old web process. The new deployment web process now fully replaces the old web process.
-	1. Update all non-web processes with a restart
-	1. Mark the deployment as DEPLOYED
+	1. Update all non-web processes with a restart. 
+	1. Mark the deployment as `DEPLOYED`. 
 
 ### <a id="limitations"></a>  Limitations
 
-* There will be simultaneous versions of applications
-	* During a deployment, both the old and new version of your application will be served at the same route. This could lead to user issues if you push backwards-incompatible api changes. Specifically, deployments do not specifically handle database migrations. If a migration from the new version of your app renders the old application inoperable, you may still have downtime.
-* Non-web processes have downtime
-	* All non-web processes, such as worker processes, will be restarted in bulk after the web processes have updated. The zero-downtime guarantee is only for web processes.
-* Quotas
-	* A deployment will create an extra instance of your application, effectively serving as a canary instance. This extra instance is still subject to quotas. This means that an application that does not have enough quota to create an extra instance cannot be deployed in this fashion. Administrators may need to allow for headroom in their quotas for deployments.
-* Simultaneous deployments
-	* It is possible to create a deployment for an app while another deployment for that app is in progress. This will interrupt the prior deployment and eventually the application will be running with the newest code. Until the last deployment is completed, there may be many versions of the application running all at once.
+The following table describes the limitations to consider when using the experimental `v3-zdt-push` command. 
+
+<table>
+	<tr>
+		<th>Limitation</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>Multiple app versions</td>
+		<td>During a deployment, Cloud Foundry serves both the old and new version of your app at the same route. This could lead to user issues if you push backwards-incompatible API changes.</td>
+	</tr>
+	<tr>
+		<td>Database migrations</td>
+		<td>Deployments do not handle database migrations. If you are migrating an app database and the old app is not compatible with the migration, you may still have downtime. 
+		</td>
+	</tr>
+	<tr>
+		<td>Non-web processes</td>
+		<td>Zero-downtime deployments are only for web processes. Non-web processes, such as worker processes, restart in bulk after the web processes have updated. 
+		</td>
+	</tr>
+	<tr>
+		<td>Quotas</td>
+		<td>A deployment creates an extra instance of your app. If there is not enough quota available, the deployment does not work. Administrators may need to increase quotas to account for zero-downtime deployments.</td>
+	</tr>
+	<tr>
+		<td>Simultaneous deployments</td>
+		<td>If you run <code>v3-zdt-push</code> for an app before your previous <code>v3-zdt-push</code> command for the same app has completed, your first push gets interrupted. Until the last deployment completes, there may be many versions of the app running at once. Eventually, the app runs the code from your most recent push.</td>
+	</tr>
+</table>

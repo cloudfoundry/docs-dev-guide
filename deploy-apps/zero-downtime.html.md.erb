@@ -1,0 +1,69 @@
+---
+title: Deploying Apps with Zero Downtime (Experimental)
+owner: CAPI
+---
+
+This topic describes a workflow by which developers can push updates to their apps without incurring downtime. 
+
+Cloud foundry now supports native rolling, zero-downtime deployments for applications. The traditional cf push behavior is to upload your new code, stop the old version of the application, and start the new version of the application.
+
+## <a id="prerequisites"></a>  Prerequisites
+
+The procedures in this topic require the following: 
+
+* cf CLI v6.40 or later. 
+* The zero-downtime app deployment feature is enabled for your installation.
+	* <%= vars.zdt_enable %>
+
+## <a id="deploy"></a>  Deploy an App
+
+
+To deploy an app without incurring downtime, run the following command:
+
+```
+cf v3-zdt-push APP-NAME
+``` 
+
+### <a id="cancel"></a>  Cancel a Deployment
+
+To stop the deployment of an app that you pushed, run the following command:
+
+<p class="note"><strong>Note</strong>: There is no guarantee of zero-downtime during a cancel. The goal is to revert the app to its original state as quickly as possible.</p>
+
+```
+cf v3-cancel-zdt-push APP_NAME
+```
+
+This reverts the app to its state from before the deployment started by doing the following:
+
+* Scaling up the original web process
+* Removing any deployment artifacts
+* Resetting the `current_droplet` on the application.
+
+## <a id="how-it-works"></a> How it works
+
+cf v3-zdt-push has two steps relevant to this feature:
+
+1. Stage the app and create a droplet representing updated code for your application
+1. Create a deployment with that droplet for your app. ßThe deployment can be seen with cf curl /v3/deployments and should have the state DEPLOYING
+
+### <a id="deployment-algorithm"></a>  Deployment Algorithm
+
+1. A new deployment web process is created for the application with the new droplet and any new configuration. This new process starts out with 1 instance and shares the route with the old web process. If you run cf app on your application, you will see a web process and a web-deployment-<deployment-guid> process.
+1. The cc_deployment_updater bosh job runs in the background, updating deployments:
+	1. Add another instance of the new deployment web process and remove an instance from the original web process. This only happens if all instances of the new deployment web process are currently running.
+	1. Repeat the above step until the new deployment web process has reached the desired number of instances for the application
+	1. Remove the old web process. The new deployment web process now fully replaces the old web process.
+	1. Update all non-web processes with a restart
+	1. Mark the deployment as DEPLOYED
+
+### <a id="limitations"></a>  Limitations
+
+* There will be simultaneous versions of applications
+	* During a deployment, both the old and new version of your application will be served at the same route. This could lead to user issues if you push backwards-incompatible api changes. Specifically, deployments do not specifically handle database migrations. If a migration from the new version of your app renders the old application inoperable, you may still have downtime.
+* Non-web processes have downtime
+	* All non-web processes, such as worker processes, will be restarted in bulk after the web processes have updated. The zero-downtime guarantee is only for web processes.
+* Quotas
+	* A deployment will create an extra instance of your application, effectively serving as a canary instance. This extra instance is still subject to quotas. This means that an application that does not have enough quota to create an extra instance cannot be deployed in this fashion. Administrators may need to allow for headroom in their quotas for deployments.
+* Simultaneous deployments
+	* It is possible to create a deployment for an app while another deployment for that app is in progress. This will interrupt the prior deployment and eventually the application will be running with the newest code. Until the last deployment is completed, there may be many versions of the application running all at once.

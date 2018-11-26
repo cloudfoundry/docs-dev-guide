@@ -41,13 +41,14 @@ It can be difficult to know what libraries an app statically links to, and it de
     OK
 
     name            description
-    cflinuxfs2      Cloud Foundry Linux-based file system
+    cflinuxfs2      Cloud Foundry Linux-based filesystem - Ubuntu Trusty 14.04 LTS
+    cflinuxfs3      Cloud Foundry Linux-based filesystem - Ubuntu Bionic 18.04 LTS
     </pre>
 
-1. To change your stack and restage your application, use the [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command. For example, to restage your app on the default stack `cflinuxfs2` you can run `cf push MY-APP`:
+1. To change your stack and restage your application, use the [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command. For example, to restage your app on the stack `cflinuxfs3` you can run `cf push MY-APP -s cflinuxfs3`:
     <pre class='terminal'>
-    $ cf push MY-APP
-    Using stack cflinuxfs2...
+    $ cf push MY-APP -s cflinuxfs3
+    Using stack cflinuxfs3...
     OK
     Creating app MY-APP in org MY-ORG / space development as developer@example<span>.</span>com...
     OK
@@ -61,7 +62,7 @@ It can be difficult to know what libraries an app statically links to, and it de
     \#0  running  2015-04-08 04:41:54 PM   0.0%   57.3M of 1G   128.8M of 1G
     </pre>
 
-    To specify a different stack, append `-s STACKNAME` to the command.
+    To specify a different stack, replace `cflinuxfs3` with the name of the stack in the `-s STACKNAME` parameter of the command.
 
 
 ##<a id='stacks-api'></a>Stacks API ##

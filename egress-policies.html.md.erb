@@ -23,7 +23,7 @@ Dynamic egress policies provide the following benefits over [Application Securit
 
 The dynamic egress feature is disabled by default. To enable this feature, you must 
 <% if vars.product_name == 'CF' %>
-set the `enforce_experimental_dynamic_egress_policies` property of the `policy-server-internl` job to true. For more information, see the spec file in the [CF Networking Release](https://github.com/cloudfoundry/cf-networking-release/blob/develop/jobs/policy-server-internal/spec#L102-L104) repository. 
+set the `enforce_experimental_dynamic_egress_policies` property of the `policy-server-internal` job to true. For more information, see the spec file in the [CF Networking Release](https://github.com/cloudfoundry/cf-networking-release/blob/develop/jobs/policy-server-internal/spec#L102-L104) repository. 
 <p class="note"><strong>Note</strong>: This feature is only compatible with the Silk CNI plugin.</p>
 <% else %>
 <%=vars.enable_egress%>

@@ -3,17 +3,23 @@ title: Deploying Apps with Zero Downtime (Experimental)
 owner: CAPI
 ---
 
-This topic describes a workflow by which developers can push updates to their apps without incurring downtime. 
+This topic describes how developers use experimental Cloud Foundry Command Line Interface (cf CLI) commands to push updates to their apps without incurring downtime. 
+
+For information about the traditional method for addressing app downtime during deployment, see [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).   
 
 ## <a id="prerequisites"></a>  Prerequisites
 
 The procedures in this topic require the following: 
 
-* cf CLI v6.40 or later. 
-* The zero-downtime app deployment feature is enabled for your installation.
+* You must have cf CLI v6.40 or later. 
+* The zero-downtime app deployment feature must be enabled for your installation.
 	* <%= vars.zdt_enable %>
 
-## <a id="deploy"></a>  Deploy an App
+## <a id="commands"></a> Experimental Commands
+
+This section describes the experimental commands for working with zero-downtime app deployments. 
+
+### <a id="deploy"></a>  Deploy an App
 
 To deploy an app without incurring downtime, run the following command:
 
@@ -23,6 +29,8 @@ To deploy an app without incurring downtime, run the following command:
 cf v3-zdt-push APP-NAME
 ``` 
 
+For more information about this command, see [How it Works](#how-it-works). 
+
 ### <a id="cancel"></a>  Cancel a Deployment
 
 To stop the deployment of an app that you pushed, run the following command:
@@ -30,7 +38,7 @@ To stop the deployment of an app that you pushed, run the following command:
 <p class="note"><strong>Note</strong>: There is no guarantee of zero-downtime during a cancel. The goal is to revert the app to its original state as quickly as possible.</p>
 
 ```
-cf v3-cancel-zdt-push APP_NAME
+cf v3-cancel-zdt-push APP-NAME
 ```
 
 This reverts the app to its state from before the deployment started by doing the following:
@@ -41,7 +49,17 @@ This reverts the app to its state from before the deployment started by doing th
 
 ### <a id="restart"></a> Restart an App
 
-## <a id="how-it-works"></a> How it works
+To apply configuration updates without downtime, such as environment variables or service bindings, run the following command to restart your app: 
+
+```
+cf v3-cancel-zdt-restart APP-NAME
+```
+
+## <a id="how-it-works"></a> How It Works
+
+This section compares the original `cf push` command with the experimental `cf v3-zdt-push` command. 
+
+### <a id="deployment-process"></a> cf push Process
 
 The original `cf push` does the following:
 
@@ -49,20 +67,24 @@ The original `cf push` does the following:
 1. Stops the old version of the app.
 1. Starts the new version of the app.
 
-To understand how the `v3-zdt-push` command works, see the _Deployment Algorithm_ section below.
+### <a id="deployment-process"></a>  cf v3-zdt-push Process
 
-### <a id="deployment-algorithm"></a>  Deployment Algorithm
+This section describes the process of pushing an app with `cf v3-zdt-push`. 
 
-`cf v3-zdt-push` does the following:
-
-1. Stages the app and create a droplet with the updated code for your app.
-1. Creates a new deployment web process for the app with the new droplet and any new configuration. This new process starts out with 1 instance and shares the route with the old process. If you run `cf app` on your app, you see a `web` process and a `web-deployment-DEPLOYMENT-UUID` process.
-1. The `cc_deployment_updater` BOSH job runs in the background, updating deployments as follows:
-	1. Add another instance of the new deployment web process and remove an instance from the old web process. This only happens if all instances of the new deployment web process are currently running.
-	1. Repeat the above step until the new deployment web process reaches the desired number of instances. 
-	1. Remove the old web process. The new deployment web process now fully replaces the old web process.
-	1. Update all non-web processes with a restart. 
-	1. Mark the deployment as `DEPLOYED`. 
+1. The `cf v3-zdt-push` command does the following:
+	1. Stages the updated app package
+	1. Creates a droplet with the updated app package
+	1. Creates a deployment with the new droplet and any new configuration. 
+		* This starts a new process with one instance that shares the route with the old process. 
+		* At this point, if you run `cf app` on your app, you see a `web` process and a `web-deployment-DEPLOYMENT-UUID` process.
+		* For more information about the deployment object, see the [Deployments](http://v3-apidocs.cloudfoundry.org/index.html#deployments) section of the CAPI v3 docs. 
+1. Once the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the background, updating deployments as follows:
+	1. Adds another instance of the new web process and removes an instance from the old web process. 
+		<p class="note"><strong>Note</strong>: This only happens if all instances of the new deployment web process are currently running.</p>
+	1. Repeats the above step until the new web process reaches the desired number of instances. 
+	1. Removes the old web process. The new web process now fully replaces the old web process.
+	1. Restarts all non-web processes of the app. 
+	1. Sets the deployment to `DEPLOYED`. 
 
 ### <a id="limitations"></a>  Limitations
 
@@ -84,7 +106,8 @@ The following table describes the limitations to consider when using the experim
 	</tr>
 	<tr>
 		<td>Non-web processes</td>
-		<td>Zero-downtime deployments are only for web processes. Non-web processes, such as worker processes, restart in bulk after the web processes have updated. 
+		<td>Zero-downtime deployments are only for web processes. Non-web processes, such as worker processes, restart in bulk after the web processes have updated.<br><br>
+		The CAPI v3 API introduces the concept of processes as runnable units of an app. Each app has a web process by default. You can specify additional processes with a procfile, and in some cases buildpacks create additional processes. For more information about processes, see the <a href="http://v3-apidocs.cloudfoundry.org/index.html#processes">Processes</a> section of the CAPI v3 documentation. 
 		</td>
 	</tr>
 	<tr>
@@ -92,7 +115,7 @@ The following table describes the limitations to consider when using the experim
 		<td>A deployment creates an extra instance of your app. If there is not enough quota available, the deployment does not work. Administrators may need to increase quotas to account for zero-downtime deployments.</td>
 	</tr>
 	<tr>
-		<td>Simultaneous deployments</td>
+		<td>Simultaneous apps when interrupting a push</td>
 		<td>If you run <code>v3-zdt-push</code> for an app before your previous <code>v3-zdt-push</code> command for the same app has completed, your first push gets interrupted. Until the last deployment completes, there may be many versions of the app running at once. Eventually, the app runs the code from your most recent push.</td>
 	</tr>
 </table>

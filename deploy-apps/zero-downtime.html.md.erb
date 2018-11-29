@@ -52,7 +52,7 @@ This reverts the app to its state from before the deployment started by doing th
 To apply configuration updates without downtime, such as environment variables or service bindings, run the following command to restart your app: 
 
 ```
-cf v3-cancel-zdt-restart APP-NAME
+cf v3-zdt-restart APP-NAME
 ```
 
 ## <a id="how-it-works"></a> How It Works
@@ -80,7 +80,7 @@ This section describes the process of pushing an app with `cf v3-zdt-push`.
 		* For more information about the deployment object, see the [Deployments](http://v3-apidocs.cloudfoundry.org/index.html#deployments) section of the CAPI v3 docs. 
 1. Once the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the background, updating deployments as follows:
 	1. Adds another instance of the new web process and removes an instance from the old web process. 
-		<p class="note"><strong>Note</strong>: This only happens if all instances of the new deployment web process are currently running.</p>
+		<p class="note"><strong>Note</strong>: This only happens if all instances of the new web process are currently running.</p>
 	1. Repeats the above step until the new web process reaches the desired number of instances. 
 	1. Removes the old web process. The new web process now fully replaces the old web process.
 	1. Restarts all non-web processes of the app. 

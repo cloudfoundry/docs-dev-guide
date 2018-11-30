@@ -5,7 +5,7 @@ owner: CAPI
 
 This topic describes how developers use experimental Cloud Foundry Command Line Interface (cf CLI) commands to push updates to their apps without incurring downtime. 
 
-For information about the traditional method for addressing app downtime during deployment, see [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).   
+For information about the traditional method for addressing app downtime while pushing app updates, see [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).   
 
 ## <a id="prerequisites"></a>  Prerequisites
 
@@ -15,7 +15,7 @@ The procedures in this topic require the following:
 * The zero-downtime app deployment feature must be enabled for your installation.
 	* <%= vars.zdt_enable %>
 
-## <a id="commands"></a> Experimental Commands
+## <a id="commands"></a> Commands
 
 This section describes the experimental commands for working with zero-downtime app deployments. 
 
@@ -23,11 +23,11 @@ This section describes the experimental commands for working with zero-downtime 
 
 To deploy an app without incurring downtime, run the following command:
 
-<p class="note"><strong>Note</strong>: Ensure that you understand the <a href="#limitations">Limitations</a> of this feature before running the command.</p>
-
 ```
 cf v3-zdt-push APP-NAME
 ``` 
+
+<p class="note"><strong>Note</strong>: Ensure that you understand the <a href="#limitations">Limitations</a> of this feature before running the command.</p>
 
 For more information about this command, see [How it Works](#how-it-works). 
 
@@ -35,7 +35,7 @@ For more information about this command, see [How it Works](#how-it-works).
 
 To stop the deployment of an app that you pushed, run the following command:
 
-<p class="note"><strong>Note</strong>: There is no guarantee of zero-downtime during a cancel. The goal is to revert the app to its original state as quickly as possible.</p>
+<p class="note"><strong>Note</strong>: The <code>v3-cancel-zdt-push</code> command is designed to revert the app to its original state as quickly as possible, and does not guarantee zero downtime.</p>
 
 ```
 cf v3-cancel-zdt-push APP-NAME
@@ -49,7 +49,8 @@ This reverts the app to its state from before the deployment started by doing th
 
 ### <a id="restart"></a> Restart an App
 
-To apply configuration updates without downtime, such as environment variables or service bindings, run the following command to restart your app: 
+Restart your app without downtime using the following command. 
+This is useful when apply configuration updates that require a restart, such as environment variables or service bindings. 
 
 ```
 cf v3-zdt-restart APP-NAME
@@ -57,15 +58,7 @@ cf v3-zdt-restart APP-NAME
 
 ## <a id="how-it-works"></a> How It Works
 
-This section compares the original `cf push` command with the experimental `cf v3-zdt-push` command. 
-
-### <a id="deployment-process"></a> cf push Process
-
-The original `cf push` does the following:
-
-1. Uploads your new code.
-1. Stops the old version of the app.
-1. Starts the new version of the app.
+This section describes the experimental `cf v3-zdt-push` command and its limitations. 
 
 ### <a id="deployment-process"></a>  cf v3-zdt-push Process
 
@@ -106,13 +99,13 @@ The following table describes the limitations to consider when using the experim
 	</tr>
 	<tr>
 		<td>Non-web processes</td>
-		<td>Zero-downtime deployments are only for web processes. Non-web processes, such as worker processes, restart in bulk after the web processes have updated.<br><br>
+		<td>The <code>v3-zdt</code> commands only run web processes through the zero-downtime update sequence described above. The commands restart worker and other non-web processes in bulk after updating all web processes.<br><br>
 		The CAPI v3 API introduces the concept of processes as runnable units of an app. Each app has a web process by default. You can specify additional processes with a procfile, and in some cases buildpacks create additional processes. For more information about processes, see the <a href="http://v3-apidocs.cloudfoundry.org/index.html#processes">Processes</a> section of the CAPI v3 documentation. 
 		</td>
 	</tr>
 	<tr>
 		<td>Quotas</td>
-		<td>A deployment creates an extra instance of your app. If there is not enough quota available, the deployment does not work. Administrators may need to increase quotas to account for zero-downtime deployments.</td>
+		<td>Pushing updates to your app with a <code>v3-zdt</code> command creates an extra instance of your app. If there is not enough quota available, the deployment does not work. Administrators may need to increase quotas to account for zero-downtime deployments.</td>
 	</tr>
 	<tr>
 		<td>Simultaneous apps when interrupting a push</td>

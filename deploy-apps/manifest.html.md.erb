@@ -666,6 +666,9 @@ Creating app test-app...
 
 These app manifest features have been deprecated in favor of existing options.
 
+<p class='warning'><strong>WARNING:</strong> If you are running `cf push app -f manifest.yml` with any of the deprecated features below, `push` will fail until you've updated your manifest to exclude deprecated properties and/or any promoted content.</p>
+
+
 ### <a id='yaml-anchors'></a> YAML Anchors Replace Promoted Content
 
 Previously, you could manage duplicated settings in YAML files by “promoting” the duplicate content — that is, by moving it to above the applications block, where it need appear only once.

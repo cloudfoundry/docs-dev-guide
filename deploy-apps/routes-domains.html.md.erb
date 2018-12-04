@@ -73,8 +73,6 @@ TCP routes include a domain and a route port. A route port is the port clients m
 
 ### <a id='internal-routes'></a> Internal Routes
 
-<p class="note"><strong>Note:</strong> This feature is currently experimental.</p>
-
 Apps can communicate without leaving the platform on the container network using internal routes. You can create an internal route using the [cf map-route](#map-internal-route) command with an [internal domain](#internal-domains).
 
 After an internal route is mapped to an application, the route resolves to IP addresses
@@ -382,8 +380,6 @@ The following routes are **not** valid for a single app:
 </table>
 
 #### <a id='map-internal-route'></a> Map an Internal Route to an App
-
-<p class="note"><strong>Note:</strong> This feature is currently experimental.</p>
 
 You can map an internal route to any app. This internal route allows your app to communicate with other apps without leaving the platform. Once mapped, this route becomes available to all other apps on the platform.
 

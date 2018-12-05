@@ -28,7 +28,7 @@ To push apps with Docker, you need the following:
 
 * A registry that supports the [Docker Registry HTTP API V2](https://docs.docker.com/registry/spec/api/) and presents a valid certificate for HTTPS traffic.
 
-###<a id='cf-ssh'></a>Requirements for cf ssh Support
+###<a id='cf-ssh'></a>Requirement for cf ssh Support
 
 If you want to log in to your app container using the <code>cf ssh</code> command, you must make a shell such as <code>sh</code> or <code>bash</code> available in the container. 
 
@@ -43,8 +43,9 @@ The SSH server in the container looks for the following executables in absolute 
 
 ## <a id='tag'></a>Benefits of Specifying Tags
 
-If you want your app container to be consistent through platform updates and code changes, push with a tag. 
-Otherwise, the plaform applies the <code>latest</code> tag without respecting changes to `PORT` or `ENTRYPOINT`.
+If you want your app container to be consistent after platform updates and code changes, specify a tag 
+when you push your Docker image. 
+Otherwise, the platform applies the <code>latest</code> tag without respecting changes to `PORT` or `ENTRYPOINT`.
 
 If you push your Docker image without specifying a tag, you must run `cf restage` for the changes to take effect.
 

@@ -1,34 +1,34 @@
 ---
-title: Scaling an Application Using cf scale
+title: Scaling an App Using cf scale
 owner: CAPI
 ---
 
 <strong><%= modified_date %></strong>
 
-Factors such as user load, or the number and nature of tasks performed by an application, can change the disk space and memory the application uses.
-For many applications, increasing the available disk space or memory can improve
+Factors such as user load, or the number and nature of tasks performed by an app, can change the disk space and memory the app uses.
+For many apps, increasing the available disk space or memory can improve
 overall performance.
-Similarly, running additional instances of an application can allow the
-application to handle increases in user load and concurrent requests.
-These adjustments are called **scaling** an application.
+Similarly, running additional instances of an app can allow the
+app to handle increases in user load and concurrent requests.
+These adjustments are called **scaling** an app.
 
-Use [cf scale](http://cli.cloudfoundry.org/en-US/cf/scale.html) to scale your application up or down to meet changes in traffic
+Use [cf scale](http://cli.cloudfoundry.org/en-US/cf/scale.html) to scale your app up or down to meet changes in traffic
 or demand.
 
 <%=vars.autoscaler_note_dev_guide%>
 
 ## <a id="horizontal"></a>Scaling Horizontally ##
 
-Horizontally scaling an application creates or destroys instances of your application.
+Horizontally scaling an app creates or destroys instances of your app.
 
-Incoming requests to your application are automatically load balanced across all
-instances of your application, and each instance handles tasks in parallel with
+Incoming requests to your app are automatically load balanced across all
+instances of your app, and each instance handles tasks in parallel with
 every other instance.
-Adding more instances allows your application to handle increased traffic and
+Adding more instances allows your app to handle increased traffic and
 demand.
 
-Use `cf scale APP -i INSTANCES` to horizontally scale your application.
-Cloud Foundry will increase or decrease the number of instances of your application to match `INSTANCES`.
+Use `cf scale APP -i INSTANCES` to horizontally scale your app.
+Cloud Foundry will increase or decrease the number of instances of your app to match `INSTANCES`.
 
 <pre class='terminal'>
 $ cf scale myApp -i 5
@@ -36,11 +36,11 @@ $ cf scale myApp -i 5
 
 ## <a id="vertical"></a>Scaling Vertically ##
 
-Vertically scaling an application changes the disk space limit or memory limit
-that Cloud Foundry applies to all instances of the application.
+Vertically scaling an app changes the disk space limit or memory limit
+that Cloud Foundry app to all instances of the app.
 
 Use `cf scale APP -k DISK` to change the disk space limit applied to all
-instances of your application.
+instances of your app.
 `DISK` must be an integer followed by either an **M**, for megabytes, or **G**,
 for gigabytes.
 
@@ -49,7 +49,7 @@ $ cf scale myApp -k 512M
 </pre>
 
 Use `cf scale APP -m MEMORY` to change the memory limit applied to all instances
-of your application.
+of your app.
 `MEMORY` must be an integer followed by either an **M**, for megabytes, or
 **G**, for gigabytes.
 

@@ -9,7 +9,7 @@ This topic describes managing service instance credentials with service keys.
 
 Service keys generate credentials for manually configuring consumers of marketplace services. Once you configure them for your service, local clients, apps in other spaces, or entities outside your deployment can access your service with these keys.
 
-<p class='note'><strong>Note</strong>: Some service brokers do not support service keys. If you want to build a service broker that supports service keys, see <a href="../../services/index.html">Services</a>. If you want to use a service broker that does not support service keys, see <a href="./application-binding.html">Delivering Service Credentials to an Application</a>.</p>
+<p class='note'><strong>Note</strong>: Some service brokers do not support service keys. If you want to build a service broker that supports service keys, see <a href="../../services/index.html">Services</a>. If you want to use a service broker that does not support service keys, see <a href="./application-binding.html">Delivering Service Credentials to an App</a>.</p>
 
 ## <a id='create'></a> Create a Service Key ##
 
@@ -21,7 +21,7 @@ Creating service key MY-KEY for service instance MY-SERVICE as me@example.com...
 OK
 </pre>
 
-Use the `-c` flag to provide service-specific configuration parameters in a valid JSON object, either in-line or in a file. 
+Use the `-c` flag to provide service-specific configuration parameters in a valid JSON object, either in-line or in a file.
 
 To provide the JSON object in-line, use the following format:
 
@@ -80,7 +80,7 @@ OK
 
 ## <a id='configure'></a>Configure Credentials for a Service Key ##
 
-Once these credentials are obtained, you can use a local CLI or utility to connect to the service instance, configure an application running outside the platform to connect to the service instance, or create a user-provided service instance so that applications in another space can connect to the service instance. How you configure these credentials will depend on what local client, app, or entity is used to access your service instance.
+Once these credentials are obtained, you can use a local CLI or utility to connect to the service instance, configure an app running outside the platform to connect to the service instance, or create a user-provided service instance so that apps in another space can connect to the service instance. How you configure these credentials will depend on what local client, app, or entity is used to access your service instance.
 
 For more information on configuring credentials with a user-provided service instance, see [User-Provided Service Instances](http://docs.cloudfoundry.org/devguide/services/user-provided.html).
 

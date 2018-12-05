@@ -206,7 +206,7 @@ This section describes how to deploy a sample app and bind it to the NFS volume 
       * When sending traffic to the NFS server, the NFS driver translates the app user id and group id to the `UID` and `GID` values.
       * When returning attributes from the NFS server, the NFS driver translates the `UID` and `GID` back to the running user uid and default gid.
 
-        This allows you to interact with your NFS server as a specific user while allowing Cloud Foundry to run your application as an arbitrary user.
+        This allows you to interact with your NFS server as a specific user while allowing Cloud Foundry to run your app as an arbitrary user.
     * **Optional paramenters**:
       * `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example:
 
@@ -303,7 +303,7 @@ This section describes how to deploy a sample app and bind it to the SMB volume 
     ```
     Where:
     * `SERVICE-INSTANCE-NAME`: The name of the volume service instance you created previously.
-    * `USERNAME` and `PASSWORD`: The username and password to use when mounting the share to the app. This allows you to interact with your SMB server as a specific user while allowing Cloud Foundry to run your application as an arbitrary user.
+    * `USERNAME` and `PASSWORD`: The username and password to use when mounting the share to the app. This allows you to interact with your SMB server as a specific user while allowing Cloud Foundry to run your app as an arbitrary user.
     * **Optional parameters**:
       * `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example:
 

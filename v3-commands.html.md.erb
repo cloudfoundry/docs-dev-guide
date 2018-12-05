@@ -5,7 +5,7 @@ owner: CF CLI
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to use the experimental Cloud Foundry Command Line Interface (cf CLI) commands offered by the Cloud Controller V3 API. 
+This topic describes how to use the experimental Cloud Foundry Command Line Interface (cf CLI) commands offered by the Cloud Controller V3 API.
 
 These commands provide developers with the ability to better orchestrate app deployment workflows. New features include the deployment and management of apps with multiple processes and uploading and staging multiple versions of a single app.
 
@@ -19,7 +19,7 @@ For more information about cf CLI commands, see the [Cloud Foundry CLI Reference
 
 The new commands include a `v3-` prefix. While the syntax of some experimental commands is based on the existing cf CLI, these commands call the V3 API and support new flags to unlock additional features. Other commands expose the new primitives of apps, such as by performing operations on an app's packages and droplets.
 
-In the V2 APIs, running and staging an app are tightly coupled operations. As a result, an app cannot be staging and running at the same time. The V3 APIs offer developers more granular control over the uploading, staging, and running of an app. 
+In the V2 APIs, running and staging an app are tightly coupled operations. As a result, an app cannot be staging and running at the same time. The V3 APIs offer developers more granular control over the uploading, staging, and running of an app.
 
 ##<a id='commands'></a> Commands
 
@@ -32,7 +32,7 @@ Consult the following table for a description of the experimental commands.
 </tr>
 <tr>
 <td><code>v3-apply-manifest</code></td>
-<td>Applies manifest properties to an application</td>
+<td>Applies manifest properties to an app</td>
 </tr>
 <tr>
 <td><code>v3-apps</code></td>
@@ -92,7 +92,7 @@ Consult the following table for a description of the experimental commands.
 </tr>
 <tr>
 <td><code>v3-ssh</code></td>
-<td>SSH to an application container instance</td>
+<td>SSH to an app container instance</td>
 </tr>
 <tr>
 <td><code>v3-stage</code></td>
@@ -111,19 +111,19 @@ Consult the following table for a description of the experimental commands.
 <td>Removes an environment variable from an app</td>
 </tr>
 </table>
-        
+
 ##<a id='considerations'></a> Considerations
 
 Keep in mind the following considerations when using the experimental commands:
 
-* `v3-push` supports only a subset of features of `push`. In particular, it does not support app manifests.  
-* For some commands, such as `set-env`, `ssh`, and `bind-service`, no new V3 version exists. In those cases, use the old commands.  
+* `v3-push` supports only a subset of features of `push`. In particular, it does not support app manifests.
+* For some commands, such as `set-env`, `ssh`, and `bind-service`, no new V3 version exists. In those cases, use the old commands.
 * You can use V3 and old commands together, but some combinations may give unexpected results. For example, if you use V3 commands to create an app with a package but it is not staged, or you use `v3-push` to push an app but it fails to stage, the old `apps` command does not return the app.
 
 ##<a id='procfile'></a> Declaring Multiple App Processes with a Procfile
 
-Developers can supply a Procfile with their app in order to run multiple long-lived processes using a single codebase. 
+Developers can supply a Procfile with their app in order to run multiple long-lived processes using a single codebase.
 
-To use a Procfile, include it in the root of your application directory and push your application.
+To use a Procfile, include it in the root of your app directory and push your app.
 
 For more information about Procfiles, see the [About Procfiles](../buildpacks/prod-server.html#procfile) section of the <em>Production Server Configuration</em> topic.

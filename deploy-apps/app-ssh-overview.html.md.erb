@@ -1,5 +1,5 @@
 ---
-title: Application SSH Overview
+title: App SSH Overview
 owner: Diego
 ---
 
@@ -33,16 +33,16 @@ Operators, space managers, and space developers can configure SSH access for <%=
     <td>cf CLI <a href="http://cli.cloudfoundry.org/en-US/cf/allow-space-ssh.html">allow-space-ssh</a> and <a href="http://cli.cloudfoundry.org/en-US/cf/disallow-space-ssh.html">disallow-space-ssh</a> commands</td>
   </tr><tr>
     <td>Space Developer</td>
-    <td>Application</td>
+    <td>App</td>
     <td>cf CLI <a href="http://cli.cloudfoundry.org/en-US/cf/enable-ssh.html">enable-ssh</a> and <a href="http://cli.cloudfoundry.org/en-US/cf/disable-ssh.html">disable-ssh</a> commands</td>
   </tr>
 </table>
 
-An application is SSH-accessible only if operators, space managers, and space developers all grant SSH access at their respective levels. For example, the image below shows a deployment where:
+An app is SSH-accessible only if operators, space managers, and space developers all grant SSH access at their respective levels. For example, the image below shows a deployment where:
 
 * An operator allowed SSH access at the deployment level.
-* A space manager allowed SSH access for applications running in spaces "A" and "B" but not "C."
-* A space developer enabled SSH access for applications that include "Foo," "Bar," and "Baz."
+* A space manager allowed SSH access for apps running in spaces "A" and "B" but not "C."
+* A space developer enabled SSH access for apps that include "Foo," "Bar," and "Baz."
 
 As a result, apps "Foo," "Bar," and "Baz" accept SSH requests.
 
@@ -51,7 +51,7 @@ As a result, apps "Foo," "Bar," and "Baz" accept SSH requests.
 
 ## <a id='app-ssh-config'></a> SSH Access for Apps and Spaces
 
-Space managers and space developers can configure SSH access from the command line. The Cloud Foundry Command Line Interface (cf CLI) also includes commands to return the value of the SSH access setting. See the [Accessing Apps with Diego SSH](./ssh-apps.html) topic to use and configure SSH at both the application level and the space level.
+Space managers and space developers can configure SSH access from the command line. The Cloud Foundry Command Line Interface (cf CLI) also includes commands to return the value of the SSH access setting. See the [Accessing Apps with Diego SSH](./ssh-apps.html) topic to use and configure SSH at both the app level and the space level.
 
 
 ## <a id="platform-ssh-config"></a> Configuring SSH Access for <%= vars.product_full %>

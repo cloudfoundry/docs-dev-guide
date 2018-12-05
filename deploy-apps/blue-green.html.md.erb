@@ -5,7 +5,7 @@ owner: Routing
 
 <strong><%= modified_date %></strong>
 
-Blue-green deployment is a technique that reduces downtime and risk by running 
+Blue-green deployment is a technique that reduces downtime and risk by running
 two identical production environments called Blue and Green.
 
 At any time, only one of the environments is live, with the live environment
@@ -19,7 +19,7 @@ Once you have deployed and fully tested the software in Green, you switch the
 router so all incoming requests now go to Green instead of Blue.
 Green is now live, and Blue is idle.
 
-This technique can eliminate downtime due to application deployment.
+This technique can eliminate downtime due to app deployment.
 In addition, blue-green deployment reduces risk: if something unexpected happens
 with your new version on Green, you can immediately roll back to the last
 version by switching back to Blue.
@@ -31,13 +31,13 @@ version by switching back to Blue.
 
 ## <a id='blue-green-deployment'></a>Blue-Green Deployment with Cloud Foundry Example ##
 
-For this example, we’ll start with a simple application: "demo-time."
+For this example, we’ll start with a simple app: "demo-time."
 This app is a web page that displays the words "Blue time" and the date/time on
 the server.
 
 ### <a id='push-an-app'></a>Step 1: Push an App ###
-Use the Cloud Foundry Command Line Interface (cf CLI) to push the application.
-Name the application "Blue" with the subdomain "demo-time."
+Use the Cloud Foundry Command Line Interface (cf CLI) to push the app.
+Name the app "Blue" with the subdomain "demo-time."
 
 <pre class="terminal">
 $ cf push Blue -n demo-time
@@ -52,9 +52,9 @@ As shown in the graphic below:
 
 ### <a id='update-and-push'></a>Step 2: Update App and Push ###
 
-Now make a change to the application.
-First, replace the word "Blue" on the web page with "Green," then rebuild the source file for the application.
-Run `cf push` again, but use the name "Green" for the application and provide a
+Now make a change to the app.
+First, replace the word "Blue" on the web page with "Green," then rebuild the source file for the app.
+Run `cf push` again, but use the name "Green" for the app and provide a
 different subdomain to create a temporary route:
 
 <pre class="terminal">
@@ -63,7 +63,7 @@ $ cf push Green -n demo-time-temp
 
 After this push:
 
-* Two instances of our application are now running on Cloud Foundry: the
+* Two instances of our app are now running on Cloud Foundry: the
 original Blue and the updated Green.
 * The CF Router continues sending all traffic for `demo-time.example.com` to
 Blue.
@@ -76,7 +76,7 @@ The router now also sends any traffic for `demo-time-temp.example.com` to Green.
 Now that both apps are up and running, switch the router so all incoming
 requests go to the Green app *and* the Blue app.
 Do this by mapping the original URL route (`demo-time.example.com`) to the Green
-application using the [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html) command.
+app using the [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html) command.
 
 <pre class="terminal">
 $ cf map-route Green example.com -n demo-time
@@ -119,5 +119,5 @@ You can now use `cf unmap-route` to remove the route `demo-time-temp.example.com
 Cloud Foundry community members have written plugins to automate the blue-green
 deployment process. These include:
 
-* [Autopilot](https://github.com/contraband/autopilot): Autopilot is a Cloud Foundry Go plugin that provides a subcommand, `zero-downtime-push`, for hands-off, zero-downtime application deploys.
+* [Autopilot](https://github.com/contraband/autopilot): Autopilot is a Cloud Foundry Go plugin that provides a subcommand, `zero-downtime-push`, for hands-off, zero-downtime app deploys.
 * [BlueGreenDeploy](https://github.com/bluemixgaragelondon/cf-blue-green-deploy): cf-blue-green-deploy is a plugin, written in Go, for the Cloud Foundry Command Line Interface (cf CLI) that automates a few steps involved in zero-downtime deploys.

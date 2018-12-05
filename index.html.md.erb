@@ -2,39 +2,39 @@
 title: Developer Guide
 ---
 
-This guide has instructions for pushing an application to Cloud Foundry and
-making the application work with any available cloud-based services it uses,
+This guide has instructions for pushing an app to Cloud Foundry and
+making the app work with any available cloud-based services it uses,
 such as databases, email, or message servers.
-The core of this guide is the [Deploy an Application](./deploy-apps/deploy-app.html) process guide, which provides 
-end-to-end instructions for deploying and running applications on Cloud 
-Foundry, including tips for troubleshooting deployment and application health 
+The core of this guide is the [Deploy an App](./deploy-apps/deploy-app.html) process guide, which provides
+end-to-end instructions for deploying and running apps on Cloud
+Foundry, including tips for troubleshooting deployment and app health
 issues.
 
-Before you can use the instructions in this document, you must have an account 
+Before you can use the instructions in this document, you must have an account
 on your Cloud Foundry instance.
 
 ___
 
-## <a id='prepare'></a>Preparing Applications for the Cloud ##
+## <a id='prepare'></a>Preparing Apps for the Cloud ##
 
-* <a href="./deploy-apps/prepare-to-deploy.html" class="subnav">Considerations for Designing and Running an Application in the Cloud</a>
+* <a href="./deploy-apps/prepare-to-deploy.html" class="subnav">Considerations for Designing and Running an App in the Cloud</a>
 
 <%=vars.gsg_app_video_link %>
 
 ___
 
-## <a id='deploy'></a>Deploying and Managing Applications ##
+## <a id='deploy'></a>Deploying and Managing Apps ##
 
 <ul>
-<li><a href="./deploy-apps/deploy-app.html" class="subnav">Deploy an Application</a></li>
+<li><a href="./deploy-apps/deploy-app.html" class="subnav">Deploy an App</a></li>
 
-<li><a href="./deploy-apps/large-app-deploy.html" class="subnav">Deploy a Large Application</a></li>
+<li><a href="./deploy-apps/large-app-deploy.html" class="subnav">Deploy a Large App</a></li>
 
 <li><a href="./deploy-apps/push-docker.html" class="subnav">Deploy an App with Docker</a></li>
 
-<li><a href="./deploy-apps/start-restart-restage.html" class="subnav">Starting, Restarting, and Restaging Applications</a></li>
+<li><a href="./deploy-apps/start-restart-restage.html" class="subnav">Starting, Restarting, and Restaging Apps</a></li>
 
-<li><a href="./deploy-apps/app-lifecycle.html" class="subnav">Application Container Lifecycle</a></li>
+<li><a href="./deploy-apps/app-lifecycle.html" class="subnav">App Container Lifecycle</a></li>
 
 <li><a href="./deploy-apps/routes-domains.html" class="subnav">Routes and Domains</a></li>
 
@@ -44,11 +44,11 @@ ___
 
 <li><a href="./deploy-apps/stacks.html" class="subnav">Changing Stacks</a></li>
 
-<li><a href="./deploy-apps/manifest.html" class="subnav">Deploying with Application Manifests</a></li>
+<li><a href="./deploy-apps/manifest.html" class="subnav">Deploying with App Manifests</a></li>
 
-<li><a href="./deploy-apps/healthchecks.html" class="subnav">Using Application Health Checks</a></li>
+<li><a href="./deploy-apps/healthchecks.html" class="subnav">Using App Health Checks</a></li>
 
-<li><a href="./deploy-apps/cf-scale.html" class="subnav">Scaling an Application Using cf scale</a></li>
+<li><a href="./deploy-apps/cf-scale.html" class="subnav">Scaling an App Using cf scale</a></li>
 
 <li><a href="./using-tasks.html" class="subnav">Running Tasks</a></li>
 
@@ -58,11 +58,11 @@ ___
 
 <li><a href="./deploy-apps/blue-green.html" class="subnav">Using Blue-Green Deployment to Reduce Downtime and Risk</a></li>
 
-<li><a href="./deploy-apps/streaming-logs.html">Application Logging in Cloud Foundry</a></li>
+<li><a href="./deploy-apps/streaming-logs.html">App Logging in Cloud Foundry</a></li>
 
-<li><a href="./deploy-apps/troubleshoot-app-health.html" class="subnav">Troubleshooting Application Deployment and Health</a></li>
+<li><a href="./deploy-apps/troubleshoot-app-health.html" class="subnav">Troubleshooting App Deployment and Health</a></li>
 
-<li><a href="./deploy-apps/app-ssh-overview.html" class="subnav">Application SSH Overview</a></li>
+<li><a href="./deploy-apps/app-ssh-overview.html" class="subnav">App SSH Overview</a></li>
 
 <li><a href="./deploy-apps/ssh-apps.html" class="subnav">Accessing Apps with SSH</a></li>
 
@@ -84,7 +84,7 @@ ___
 <ul>
 <li><a href="./services/index.html">Services Overview</a></li>
 
-<li><a href="./services/application-binding.html" class="subnav">Delivering Service Credentials to an Application</a></li>
+<li><a href="./services/application-binding.html" class="subnav">Delivering Service Credentials to an App</a></li>
 
 <li><a href="./services/managing-services.html" class="subnav">Managing Service Instances</a></li>
 
@@ -94,15 +94,15 @@ ___
 
 <li><a href="./services/user-provided.html" class="subnav">User-Provided Service Instances</a></li>
 
-<li><a href="./services/log-management.html" class="subnav">Streaming Application Logs to Log Management Services</a></li>
+<li><a href="./services/log-management.html" class="subnav">Streaming App Logs to Log Management Services</a></li>
 
-<li><a href="./services/log-management-thirdparty-svc.html" class="subnav">Service-Specific Instructions for Streaming Application Logs</a></li>
+<li><a href="./services/log-management-thirdparty-svc.html" class="subnav">Service-Specific Instructions for Streaming App Logs</a></li>
 
-<li><a href="./services/integrate-splunk.html" class="subnav">Streaming Application Logs to Splunk</a></li>
+<li><a href="./services/integrate-splunk.html" class="subnav">Streaming App Logs to Splunk</a></li>
 
-<li><a href="./services/fluentd.html" class="subnav">Streaming Application Logs with Fluentd</a></li>
+<li><a href="./services/fluentd.html" class="subnav">Streaming App Logs with Fluentd</a></li>
 
-<li><a href="./services/oms-nozzle.html" class="subnav">Streaming Application Logs to Azure OMS Log Analytics</a></li>
+<li><a href="./services/oms-nozzle.html" class="subnav">Streaming App Logs to Azure OMS Log Analytics</a></li>
 
 <li><a href="./services/play-service-bindings.html" class="subnav">Configuring Play Framework Service Connections</a></li>
 

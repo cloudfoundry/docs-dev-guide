@@ -1,5 +1,5 @@
 ---
-title: Troubleshooting Application Deployment and Health
+title: Troubleshooting app Deployment and Health
 owner:
   - Routing
   - Release Integration
@@ -9,11 +9,11 @@ owner:
 
 <% $this_topic = 'troubleshoot-app-health' %>
 
-Refer to this topic for help diagnosing and resolving common issues when you deploy and run applications on Cloud Foundry.
+Refer to this topic for help diagnosing and resolving common issues when you deploy and run apps on Cloud Foundry.
 
 ## <a id='scenarios'></a>Common Issues ##
 
-The following sections describe common issues you might encounter when attempting to deploy and run your application, and possible resolutions.
+The following sections describe common issues you might encounter when attempting to deploy and run your app, and possible resolutions.
 
 ### <a id='time'></a>cf push Times Out ###
 
@@ -26,14 +26,14 @@ If your deployment times out during the upload or staging phase, you may receive
 If this happens, do the following:
 
   * **Check your network speed.**
-  Depending on the size of your application, your `cf push` could be timing out because the upload is taking too long.
+  Depending on the size of your app, your `cf push` could be timing out because the upload is taking too long.
 We recommended an Internet connection speed of at least 768 KB/s (6 Mb/s) for uploads.
 
   * **Make sure you are pushing only needed files.**
   By default, `cf push` will push all the contents of the current working directory.
-Make sure you are pushing only the directory for your application.
-If your application is too large, or if it has many small files, Cloud Foundry may time out during the upload.
-To reduce the number of files you are pushing, ensure that you push only the directory for your application, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude).
+Make sure you are pushing only the directory for your app.
+If your app is too large, or if it has many small files, Cloud Foundry may time out during the upload.
+To reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude).
 
   * **Set the CF\_STAGING\_TIMEOUT and CF\_STARTUP\_TIMEOUT environment variables.**
   By default your app has 15 minutes to stage and 5 minutes to start.
@@ -47,7 +47,7 @@ This is less likely to work if your app has many small files.
 
 ### <a id='upload'></a>App Too Large ###
 
-If your application is too large, you may receive one of the following error messages on `cf push`:
+If your app is too large, you may receive one of the following error messages on `cf push`:
 
 * `413 Request Entity Too Large`
 * `You have exceeded your organization's memory limit`
@@ -59,14 +59,14 @@ If this happens, do the following:
 organization.
   To view the memory quota for your org, use `cf org ORG_NAME`.
 
-    Your total memory usage is the sum of the memory used by all applications in all spaces within the org.
-    Each application's memory usage is the memory allocated to it
+    Your total memory usage is the sum of the memory used by all apps in all spaces within the org.
+    Each app's memory usage is the memory allocated to it
 multiplied by the number of instances.
   To view the memory usage of all the apps in a space, use `cf apps`.
 
-  * **Make sure your application is less than 1 GB.**
+  * **Make sure your app is less than 1 GB.**
   By default, Cloud Foundry deploys all the contents of the current working directory.
-  To reduce the number of files you are pushing, ensure that you push only the directory for your application, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude).
+  To reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude).
   The following limits apply:
 
     * The app files to push cannot exceed 1 GB.
@@ -76,15 +76,15 @@ multiplied by the number of instances.
 
     * The combined size of the app files, compiled droplet, and buildpack cache cannot total more than 4 GB of space during staging.
 
-### <a id='detect'></a>Unable to Detect a Supported Application Type ###
+### <a id='detect'></a>Unable to Detect a Supported App Type ###
 
-If Cloud Foundry cannot [identify an appropriate buildpack](../../buildpacks/detection.html) for your app, you will see an error message that states `Unable to detect a supported application type`.
+If Cloud Foundry cannot [identify an appropriate buildpack](../../buildpacks/detection.html) for your app, you will see an error message that states `Unable to detect a supported app type`.
 
 You can view what buildpacks are available with the `cf buildpacks` command.
 
-If you see a buildpack that you believe should support your app, refer to the [buildpack documentation](../../buildpacks/) for details about how that buildpack detects applications it supports.
+If you see a buildpack that you believe should support your app, refer to the [buildpack documentation](../../buildpacks/) for details about how that buildpack detects apps it supports.
 
-If you do not see a buildpack for your app, you may still be able to push your application with a [custom buildpack](../../buildpacks/custom.html) using `cf push -b` with a path to your buildpack.
+If you do not see a buildpack for your app, you may still be able to push your app with a [custom buildpack](../../buildpacks/custom.html) using `cf push -b` with a path to your buildpack.
 
 ### <a id='deploy_fail'></a> App Deploy Fails ###
 Even when the deploy fails, the app might exist on <%=vars.product_short%>.
@@ -92,7 +92,7 @@ Run `cf apps` to review the apps in the currently targeted org and space. You mi
 
 Common reasons deploying an app fails include the following:
 
-* You did not successfully create and bind a needed service instance to the app, such as a PostgreSQL or MongoDB service instance. Refer to Step 3: Create and Bind a Service Instance for a RoR Application.
+* You did not successfully create and bind a needed service instance to the app, such as a PostgreSQL or MongoDB service instance. Refer to Step 3: Create and Bind a Service Instance for a RoR App.
 * You did not successfully create a unique URL for the app. Refer to the troubleshooting tip App Requires Unique URL.
 
 ### <a id='unique_url'></a> App Requires Unique URL ###
@@ -126,39 +126,39 @@ messages similar to this:
   </pre>
   These messages may identify a memory or port issue.
   If they do, take that as a starting point when you re-examine and fix your
-application code.
+app code.
 
-  * **Make sure your application code uses the `PORT` environment variable.**
-Your application may be failing because it is listening on the wrong port.
-Instead of hard coding the port on which your application listens, use the `PORT` environment variable.
-    
+  * **Make sure your app code uses the `PORT` environment variable.**
+Your app may be failing because it is listening on the wrong port.
+Instead of hard coding the port on which your app listens, use the `PORT` environment variable.
+
     For example, this Ruby snippet assigns the port value to the `listen_here`
 variable:
      `listen_here = ENV['PORT']`
-   
-    For more examples specific to your application framework, see the
+
+    For more examples specific to your app framework, see the
 appropriate [buildpacks documentation](../../buildpacks/) for your app's language.
 
   * **Make sure your app adheres to the principles of the
-[Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an Application]
+[Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an App]
 (./prepare-to-deploy.html).**
 These texts explain how to prevent situations where your app builds locally but
 fails to build in the cloud.
 
-  * **Verify the timeout configuration of your app.** Application health checks use a timeout setting when an app starts up for the first time. See [Using Application Health Checks](./healthchecks.html). If an application fails to start up due to health check timeout, you might see messages in the logs similar to the following:
+  * **Verify the timeout configuration of your app.** App health checks use a timeout setting when an app starts up for the first time. See [Using Application Health Checks](./healthchecks.html). If an app fails to start up due to health check timeout, you might see messages in the logs similar to the following:
     <pre class="terminal">
   2017-01-30T14:07:20.39-0800 [CELL/0]     OUT Creating container
 2017-01-30T14:07:20.65-0800 [CELL/0]     OUT Successfully created container
 2017-01-30T14:07:22.30-0800 [CELL/0]     OUT Starting health monitoring of container
-2017-01-30T14:08:23.52-0800 [CELL/0]     ERR Timed out after 1m0s: 
+2017-01-30T14:08:23.52-0800 [CELL/0]     ERR Timed out after 1m0s:
 health check never passed.
 2017-01-30T14:08:23.57-0800 [CELL/0]     OUT Destroying container
 2017-01-30T14:08:23.59-0800 [API/0]      OUT Process has crashed with type: "web"
 2017-01-30T14:08:23.59-0800 [CELL/0]     OUT Creating container
-2017-01-30T14:08:23.60-0800 [API/0]      OUT App instance exited with guid 91086440-bac0-44f0-808f-a034a1ec2ed0 
+2017-01-30T14:08:23.60-0800 [API/0]      OUT App instance exited with guid 91086440-bac0-44f0-808f-a034a1ec2ed0
 payload: {"instance"=>"", "index"=>0, "reason"=>"CRASHED",
-"exit\_description"=>"2 error(s) occurred:\n\n* 1 error(s) 
-occurred:\n\n* Exited with status 6\n* 2 error(s) 
+"exit\_description"=>"2 error(s) occurred:\n\n* 1 error(s)
+occurred:\n\n* Exited with status 6\n* 2 error(s)
 occurred:\n\n* cancelled\n* cancelled", "crash\_count"=>1,
 "crash_timestamp"=>1485814103565763172,
 "version"=>"3e6e4232-7e19-4168-9583-1176833d2c71"}
@@ -196,11 +196,11 @@ Use the techniques in this section to gather diagnostic information and troubles
 
 ### <a id='env'></a>Examine Environment Variables ###
 
-`cf push` deploys your application to a container on the server.
-The environment variables in the container govern your application.
+`cf push` deploys your app to a container on the server.
+The environment variables in the container govern your app.
 
 You can set environment variables in a manifest created before you deploy.
-See [Deploying with Application Manifests](./manifest.html).
+See [Deploying with app Manifests](./manifest.html).
 
 You can also set an environment variable with a `cf set-env` command followed
 by a `cf push` command.
@@ -240,7 +240,7 @@ $ cf env my-app
 
 To view app logs streamed in real-time, use the `cf logs APP-NAME` command.
 
-To aggregate your app logs to view log history, bind your app to a syslog drain service. For more information, see [Streaming Application Logs to Log Management Services](./../services/log-management.html).
+To aggregate your app logs to view log history, bind your app to a syslog drain service. For more information, see [Streaming app Logs to Log Management Services](./../services/log-management.html).
 
 <p class="note"><strong>Note</strong>: The Diego architecture does not support the <code>cf files</code> command.</p>
 
@@ -273,7 +273,7 @@ Do not confuse <code>CF_TRACE</code> with the <a href="#env">variables in the co
 
 When the Zipkin feature is enabled in Cloud Foundry, the Gorouter adds or forwards Zipkin trace IDs and span IDs to HTTP headers. For more information about what the Gorouter provides in the HTTP header, see the [HTTP Headers](../../concepts/http-routing.html#http-headers) section of the _HTTP Routing_ topic.
 
-After adding Zipkin HTTP headers to app logs, developers can use `cf logs myapp` to correlate the trace and span ids logged by the Gorouter with the trace ids logged by their app. To correlate trace ids for a request through multiple apps, each app must forward appropriate values for the headers with requests to other applications.
+After adding Zipkin HTTP headers to app logs, developers can use `cf logs myapp` to correlate the trace and span ids logged by the Gorouter with the trace ids logged by their app. To correlate trace ids for a request through multiple apps, each app must forward appropriate values for the headers with requests to other apps.
 
 ## <a id='cf-commands'></a>Use Troubleshooting Commands ##
 
@@ -282,38 +282,36 @@ You can investigate app deployment and health using the cf CLI.
 Some cf CLI commands may return connection credentials.
 Remove credentials and other sensitive information from command output before you post the output a public forum.
 
-* `cf apps`: Returns a list of the applications deployed to the current space
+* `cf apps`: Returns a list of the apps deployed to the current space
 with deployment options, including the name, current state, number of instances,
-memory and disk allocations, and URLs of each application.
+memory and disk allocations, and URLs of each app.
 
-* `cf app APP-NAME`: Returns the health and status of each instance of a specific application in the current space, including instance ID number, current
+* `cf app APP-NAME`: Returns the health and status of each instance of a specific app in the current space, including instance ID number, current
 state, how long it has been running, and how much CPU, memory, and disk it is using.
 <p class="note"><strong>Note</strong>: CPU values returned by <code>cf app</code> show the total usage of each app instance on all CPU cores on a host VM, where each core contributes 100%. For example, the CPU of a single-threaded app instance on a Diego cell with one core cannot exceed 100%, and four instances sharing the cell cannot exceed an average CPU of 25%. A multi-threaded app instance running alone on a cell with eight cores can draw up to 800% CPU.</p>
 
 * `cf env APP-NAME`: Returns environment variables set using `cf set-env` and variables existing in the container environment.
 
-* `cf events APP-NAME`: Returns information about application crashes, including error codes. Shows that an app instance exited. For more detail, look in the application logs. See [https://github.com/cloudfoundry/errors](https://github.com/cloudfoundry/errors) for a list of Cloud Foundry errors.
+* `cf events APP-NAME`: Returns information about app crashes, including error codes. Shows that an app instance exited. For more detail, look in the app logs. See [https://github.com/cloudfoundry/errors](https://github.com/cloudfoundry/errors) for a list of Cloud Foundry errors.
 
 * `cf logs APP-NAME --recent`: Dumps recent logs.
 See [Viewing Logs in the Command Line Interface](./streaming-logs.html#view).
 
-* `cf logs APP-NAME`: Returns a real-time stream of the application STDOUT and
+* `cf logs APP-NAME`: Returns a real-time stream of the app STDOUT and
 STDERR. Use **Ctrl-C** (^C) to exit the real-time stream.
 
-* `cf files APP-NAME`: Lists the files in an application directory.
+* `cf files APP-NAME`: Lists the files in an app directory.
 Given a path to a file, outputs the contents of that file. Given a path to a
 subdirectory, lists the files within. Use this to [explore](#logs) individual
 logs.
 
-<p class="note"><strong>Note</strong>: Your application should direct its logs to STDOUT and STDERR.
+<p class="note"><strong>Note</strong>: Your app should direct its logs to STDOUT and STDERR.
 The <code>cf logs</code> command also returns messages from any <a href="http://logging.apache.org/log4j/">log4j</a> facility that you configure to send logs to STDOUT.</p>
 
 ## <a id='ssh'></a>Access Apps with SSH ##
 
-If you need to troubleshoot an instance of an app, you can gain SSH access to the app with the SSH proxy and daemon. See the [Application SSH Overview](./app-ssh-overview.html) topic for more information.
+If you need to troubleshoot an instance of an app, you can gain SSH access to the app with the SSH proxy and daemon. See the [app SSH Overview](./app-ssh-overview.html) topic for more information.
 
 ## <a id='request-to-instance'></a>Send Requests to App Instance ##
 
 To obtain debug data without SSH, you can make HTTP requests to a specific instance of an app by using the `X-CF-APP-INSTANCE` HTTP header. See the [App Instance Routing](../../concepts/http-routing.html#app-instance-routing) section of the <em>HTTP Routing</em> topic for more information.
-
-

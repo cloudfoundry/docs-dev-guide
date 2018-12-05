@@ -8,7 +8,7 @@ owner:
 
 <strong><%= modified_date %></strong>
 
-A stack is a prebuilt root file system (rootfs) that supports a specific operating system. For example, Linux-based systems need `/usr` and `/bin` directories at their root. The stack works in tandem with a buildpack to support applications running in compartments. Under Diego architecture, cell VMs can support multiple stacks.
+A stack is a prebuilt root file system (rootfs) that supports a specific operating system. For example, Linux-based systems need `/usr` and `/bin` directories at their root. The stack works in tandem with a buildpack to support apps running in compartments. Under Diego architecture, cell VMs can support multiple stacks.
 
 <p class="note"><strong>Note</strong>: Docker apps do not use stacks.</p>
 
@@ -27,7 +27,7 @@ Refer to the GitHub stacks page for supported [libraries](https://github.com/clo
 
 <%= vars.custom_stack %>
 
-##<a id='cli-commands'></a>Restaging Applications on a New Stack ##
+##<a id='cli-commands'></a>Restaging Apps on a New Stack ##
 
 For security, stacks receive regular updates to address Common Vulnerabilities and Exposures ([CVEs](http://www.ubuntu.com/usn/)). Apps pick up on these stack changes through new releases of <%= vars.product_short %>. However, if your app links statically to a library provided in the rootfs, you may have to manually restage it to pick up the changes.
 
@@ -45,7 +45,7 @@ It can be difficult to know what libraries an app statically links to, and it de
     cflinuxfs3      Cloud Foundry Linux-based filesystem - Ubuntu Bionic 18.04 LTS
     </pre>
 
-1. To change your stack and restage your application, use the [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command. For example, to restage your app on the stack `cflinuxfs3` you can run `cf push MY-APP -s cflinuxfs3`:
+1. To change your stack and restage your app, use the [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command. For example, to restage your app on the stack `cflinuxfs3` you can run `cf push MY-APP -s cflinuxfs3`:
     <pre class='terminal'>
     $ cf push MY-APP -s cflinuxfs3
     Using stack cflinuxfs3...

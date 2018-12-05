@@ -7,21 +7,21 @@ owner:
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure health checks for your applications in Cloud Foundry.
+This topic describes how to configure health checks for your apps in Cloud Foundry.
 
 ## <a id="about_health_checks"></a> Overview
 
 An application health check is a monitoring process that continually checks the status of a running Cloud Foundry app.
 
-Developers can configure a health check for an application using the Cloud Foundry Command Line Interface (cf CLI) or by specifying the `health-check-http-endpoint` and `health-check-type` fields in an application manifest. 
+Developers can configure a health check for an app using the Cloud Foundry Command Line Interface (cf CLI) or by specifying the `health-check-http-endpoint` and `health-check-type` fields in an app manifest.
 
-To configure a health check using the cf CLI, follow the instructions in the [Configure Health Checks](#setting_health_checks) section below. For more information about using an application manifest to configure a health check, see the [health-check-http-endpoint](manifest.html#health-check-http-endpoint) and [health-check-type](manifest.html#health-check-type) sections of the <em>Deploying with Application Manifest</em> topic.
+To configure a health check using the cf CLI, follow the instructions in the [Configure Health Checks](#setting_health_checks) section below. For more information about using an app manifest to configure a health check, see the [health-check-http-endpoint](manifest.html#health-check-http-endpoint) and [health-check-type](manifest.html#health-check-type) sections of the <em>Deploying with App Manifest</em> topic.
 
 Application health checks function as part of the app lifecycle managed by [Diego architecture](../../concepts/diego/diego-architecture.html).
 
 ## <a id="setting_health_checks"></a> Configure Health Checks
 
-To configure a health check while creating or updating an application, use the [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command:
+To configure a health check while creating or updating an app, use the [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command:
 
 <pre class="terminal">
 $ cf push YOUR-APP -u HEALTH-CHECK-TYPE -t HEALTH-CHECK-TIMEOUT
@@ -30,11 +30,11 @@ $ cf push YOUR-APP -u HEALTH-CHECK-TYPE -t HEALTH-CHECK-TIMEOUT
 Replace the placeholders in the example command above as follows:
 
 * `HEALTH-CHECK-TYPE`: Valid health check types are `port`, `process`, and `http`. See the [Health Check Types](#types) section below for more information.
-* `HEALTH-CHECK-TIMEOUT`: The timeout is the amount of time allowed to elapse between starting up an application and the first healthy response. See the [Health Check Timeouts](#health_check_timeout) section for more information.
+* `HEALTH-CHECK-TIMEOUT`: The timeout is the amount of time allowed to elapse between starting up an app and the first healthy response. See the [Health Check Timeouts](#health_check_timeout) section for more information.
 
-<p class="note"><strong>Note</strong>: The health check configuration you provide with <code>cf push</code> overrides any configuration in the application manifest.</p>
+<p class="note"><strong>Note</strong>: The health check configuration you provide with <code>cf push</code> overrides any configuration in the app manifest.</p>
 
-To configure a health check for an existing application or to add a custom HTTP endpoint, use the [cf set-health-check](http://cli.cloudfoundry.org/en-US/cf/set-health-check.html) command:
+To configure a health check for an existing app or to add a custom HTTP endpoint, use the [cf set-health-check](http://cli.cloudfoundry.org/en-US/cf/set-health-check.html) command:
 
 <pre class="terminal">
 $ cf set-health-check YOUR-APP HEALTH-CHECK-TYPE --endpoint CUSTOM-HTTP-ENDPOINT
@@ -62,7 +62,7 @@ The following table describes how application health checks work in Cloud Foundr
 	</tr>
 	<tr>
 		<td>1</td>
-		<td>Application developer deploys an app to Cloud Foundry.</td>
+		<td>App developer deploys an app to Cloud Foundry.</td>
 	</tr>
 	<tr>
 		<td>2</td>
@@ -102,7 +102,7 @@ The following table describes how application health checks work in Cloud Foundr
 
 ### <a id="types"></a> Health Check Types
 
-The following table describes the types of health checks available for applications and recommended circumstances in which to use them:
+The following table describes the types of health checks available for apps and recommended circumstances in which to use them:
 
 <table>
 <tr>
@@ -117,8 +117,8 @@ The following table describes the types of health checks available for applicati
 </tr>
 <tr>
 <td><code>port</code></td>
-<td>The app can receive TCP connections (including HTTP web applications).</td>
-<td>A health check makes a TCP connection to the port or ports configured for the app. For applications with multiple ports, a health check monitors each port. If you do not specify a health check type for your app, then the monitoring process defaults to a <code>port</code> health check. The TCP connection must be established within 1 second to be considered healthy.
+<td>The app can receive TCP connections (including HTTP web apps).</td>
+<td>A health check makes a TCP connection to the port or ports configured for the app. For apps with multiple ports, a health check monitors each port. If you do not specify a health check type for your app, then the monitoring process defaults to a <code>port</code> health check. The TCP connection must be established within 1 second to be considered healthy.
 </td>
 </tr>
 <tr>

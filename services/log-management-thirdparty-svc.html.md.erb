@@ -1,5 +1,5 @@
 ---
-title: Service-Specific Instructions for Streaming Application Logs
+title: Service-Specific Instructions for Streaming App Logs
 owner: PCF Metrics
 ---
 
@@ -8,7 +8,7 @@ owner: PCF Metrics
 This topic provides instructions for configuring some third-party log management
 services.
 
-Once you have configured a service, refer to the [Third-Party Log Management Services](./log-management.html) topic for instructions on binding your application to the service.
+Once you have configured a service, refer to the [Third-Party Log Management Services](./log-management.html) topic for instructions on binding your app to the service.
 
 ## <a id='logit'></a>Logit.io ##
 
@@ -23,10 +23,10 @@ From your Logit.io dashboard:
 1. Note your TCP-SSL, TCP, or UDP **Port** (not the syslog port).
 
 1. Create the log drain service in Cloud Foundry.
-    
+
     <pre class='terminal'>
     $ cf cups logit-ssl-drain -l syslog-tls://ENDPOINT:PORT
-    </pre>   
+    </pre>
     or
     <pre class='terminal'>
     $ cf cups logit-drain -l syslog://ENDPOINT:PORT
@@ -97,7 +97,7 @@ to the logs viewing page.
 
 ## <a id='splunk'></a>Splunk ##
 
-See [Streaming Application Logs to Splunk](integrate-splunk.html) for details.
+See [Streaming App Logs to Splunk](integrate-splunk.html) for details.
 
 ## <a id='splunkstorm'></a>Splunk Storm ##
 

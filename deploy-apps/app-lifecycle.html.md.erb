@@ -1,15 +1,15 @@
 ---
-title: Application Container Lifecycle
+title: App Container Lifecycle
 owner: Diego
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes the lifecycle of an application container for Cloud Foundry (CF) deployments running on the Diego architecture.
+This topic describes the lifecycle of an app container for Cloud Foundry (CF) deployments running on the Diego architecture.
 
 ##<a id="deployment"></a> Deployment
 
-The application deployment process involves uploading, staging, and starting the app in a container. Your app must successfully complete each of these phases within certain time limits. The default time limits for the phases are as follows:
+The app deployment process involves uploading, staging, and starting the app in a container. Your app must successfully complete each of these phases within certain time limits. The default time limits for the phases are as follows:
 
 * Upload: 15 minutes
 * Stage: 15 minutes
@@ -17,7 +17,7 @@ The application deployment process involves uploading, staging, and starting the
 
 <p class="note"><strong>Note</strong>: Your administrator can change these defaults. Check with your administrator for the actual time limits set for app deployment.</p>
 
-Developers can change the time limit for starting apps through an application manifest or on the command line. For more information, see [The timeout attribute](manifest.html#timeout) section of the Deploying with Application Manifests topic and [Using Application Health Checks](./healthchecks.html).
+Developers can change the time limit for starting apps through an app manifest or on the command line. For more information, see [The timeout attribute](manifest.html#timeout) section of the Deploying with App Manifests topic and [Using Application Health Checks](./healthchecks.html).
 
 ##<a id="crash-events"></a>Crash Events
 
@@ -31,4 +31,4 @@ Certain operator actions require restarting VMs with containers hosting app inst
 
 When <%=vars.product_name%> requests a shutdown of your app instance, either in response to the command `cf scale APPNAME -i NUMBER-OF-INSTANCES` or because of a system event, CF sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, CF sends a SIGKILL.
 
-Apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before CF terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests. 
+Apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before CF terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests.

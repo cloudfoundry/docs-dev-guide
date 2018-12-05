@@ -1,5 +1,5 @@
 ---
-title: Application Logging in Cloud Foundry
+title: App Logging in Cloud Foundry
 owner: PCF Metrics
 ---
 
@@ -95,7 +95,7 @@ For example:
 
 #### <a id="traceid"></a> Zipkin Trace Logging
 
-If Zipkin trace logging is enabled in Cloud Foundry, then Gorouter access log messages contain Zipkin HTTP headers. 
+If Zipkin trace logging is enabled in Cloud Foundry, then Gorouter access log messages contain Zipkin HTTP headers.
 
 The following is an example access log message containing Zipkin headers:
 
@@ -122,7 +122,7 @@ For example:
 
 ### <a id="ssh"></a>SSH ###
 
-The Diego cell emits SSH logs when a user accesses an application container through SSH by using the Cloud Foundry Command Line Interface (cf CLI) [cf ssh](https://cli.cloudfoundry.org/en-US/cf/ssh.html) command.
+The Diego cell emits SSH logs when a user accesses an app container through SSH by using the Cloud Foundry Command Line Interface (cf CLI) [cf ssh](https://cli.cloudfoundry.org/en-US/cf/ssh.html) command.
 
 For example:
 
@@ -155,7 +155,7 @@ performance.
 ## <a id='container-metrics'></a> Including Container Metrics in Syslog Drains
 
 By default, app logs are included in syslog drains.
-To include container metrics in your syslog drain, an operator must first set `scalablesyslog.adapter.metrics_to_syslog_enabled` to `true`. 
+To include container metrics in your syslog drain, an operator must first set `scalablesyslog.adapter.metrics_to_syslog_enabled` to `true`.
 <%= vars.container_metrics %>
 
 ## <a id='view'></a>Viewing Logs in the Command Line Interface ##
@@ -203,7 +203,7 @@ $ cf logs spring-music --recent | grep -v RTR
 
 ### <a id='log-ordering'></a> Log Ordering
 
-Ensuring log ordering in drains can be an important consideration for both operators and developers. 
+Ensuring log ordering in drains can be an important consideration for both operators and developers.
 
 * Diego uses a nanosecond-based timestamp that can be ingested properly by Splunk. For more information, see [TIME_FORMAT and subseconds](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html) in the Splunk documentation.
 * The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are truncated. For more information, see the [Date datatype](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) in the Elasticsearch documentation and the [Date type has not enough precision for the logging use case](https://github.com/elastic/elasticsearch/issues/10005) GitHub issue.

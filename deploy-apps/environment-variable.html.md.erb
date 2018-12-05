@@ -6,17 +6,17 @@ owner: CAPI
 <strong><%= modified_date %></strong>
 
 Environment variables are the means by which the Cloud Foundry (CF) runtime
-communicates with a deployed application about its environment.
+communicates with a deployed app about its environment.
 This page describes the environment variables that the runtime and buildpacks
-set for applications.
+set for app.
 
-For information about setting your own application-specific environment
-variables, see the [Environment Variable](./manifest.html#env-block) section of the _Deploying with Application Manifests_ topic.
+For information about setting your own app-specific environment
+variables, see the [Environment Variable](./manifest.html#env-block) section of the _Deploying with App Manifests_ topic.
 
 ## <a id='view-env'></a>View Environment Variables ##
 
 Install the Cloud Foundry Command Line Interface (cf CLI), and use the [cf env](http://cli.cloudfoundry.org/en-US/cf/env.html) command to view the Cloud
-Foundry environment variables for your application.
+Foundry environment variables for your app.
 The `cf env` command displays the following environment variables:
 
 * The `VCAP_APPLICATION` and `VCAP_SERVICES` variables provided in the container environment
@@ -59,11 +59,11 @@ MY_DRAIN: http://drain.example.com
 MY_ENV_VARIABLE: 100
 </pre>
 
-## <a id='app-system-env'></a>Application-Specific System Variables ##
+## <a id='app-system-env'></a>App-Specific System Variables ##
 
 The subsections that follow describe the environment variables that Cloud
-Foundry makes available to your application container.
-Some of these variables are the same across instances of a single application,
+Foundry makes available to your app container.
+Some of these variables are the same across instances of a single app,
 and some vary from instance to instance.
 
 You can access environment variables programmatically, including variables
@@ -258,7 +258,7 @@ Example: `CF_INSTANCE_PORT=61045`
 ### <a id='CF-INSTANCE-PORTS'></a>CF\_INSTANCE\_PORTS ###
 
 The list of mappings between internal, or *container-side*, and external, or *host-side*, ports allocated to the instance's container.
-Not all of the internal ports are necessarily available for the application to
+Not all of the internal ports are necessarily available for the app to
 bind to, as some of them may be used by system-provided services that also run
 inside the container. These internal and external values may differ.
 
@@ -302,7 +302,7 @@ Based on this `VCAP_SERVICES`, CF creates the following
     DATABASE_URL = postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb
 
 ### <a id='HOME'></a>HOME ###
-Root folder for the deployed application.
+Root folder for the deployed app.
 
 Example: `HOME=/home/vcap/app`
 
@@ -312,9 +312,9 @@ LANG is required by buildpacks to ensure consistent script load order.
 Example: `LANG=en_US.UTF-8`
 
 ### <a id='memory'></a>MEMORY_LIMIT ###
-The maximum amount of memory that each instance of the application can consume.
-You specify this value in an application manifest or with the cf CLI when
-pushing an application.
+The maximum amount of memory that each instance of the app can consume.
+You specify this value in an app manifest or with the cf CLI when
+pushing an app.
 The value is limited by space and org quotas.
 
 If an instance exceeds the maximum limit, it will be restarted.
@@ -326,14 +326,14 @@ Example: `MEMORY_LIMIT=512M`
 
 The port on which the app should listen for requests.
 The Cloud Foundry runtime allocates a port dynamically for each instance of the
-application, so code that obtains or uses the app port should refer to
+app, so code that obtains or uses the app port should refer to
 it using the `PORT` environment variable.
 
 Example: `PORT=8080`
 
 ### <a id='PWD'></a>PWD ###
 Identifies the present working directory, where the buildpack that processed
-the application ran.
+the app ran.
 
 Example: `PWD=/home/vcap/app`
 
@@ -343,7 +343,7 @@ Directory location where temporary and staging files are stored.
 Example: `TMPDIR=/home/vcap/tmp`
 
 ### <a id='USER'></a>USER###
-The user account under which the application runs.
+The user account under which the app runs.
 
 Example: `USER=vcap`
 
@@ -353,7 +353,7 @@ Deprecated name for the [PORT](#PORT) variable defined above.
 
 ### <a id='VCAP-APPLICATION'></a>VCAP_APPLICATION ###
 
-This variable contains the associated attributes for a deployed application.
+This variable contains the associated attributes for a deployed app.
 Results are returned in JSON format.
 The table below lists the attributes that are returned.
 
@@ -364,19 +364,19 @@ The table below lists the attributes that are returned.
   </tr>
   <tr>
     <td><code>application_id</code></td>
-    <td>GUID identifying the application.</td>
+    <td>GUID identifying the app.</td>
   </tr>
   <tr>
     <td><code>application_name</code></td>
-    <td>The name assigned to the application when it was pushed.</td>
+    <td>The name assigned to the app when it was pushed.</td>
   </tr>
   <tr>
     <td><code>application_uris</code></td>
-    <td>The URIs assigned to the application.</td>
+    <td>The URIs assigned to the app.</td>
   </tr>
   <tr>
     <td><code>application_version</code></td>
-    <td>GUID identifying a version of the application. Each time an application is pushed or restarted, this value is updated.</td>
+    <td>GUID identifying a version of the app. Each time an app is pushed or restarted, this value is updated.</td>
   </tr>
   <tr>
     <td><code>cf_api</code></td>
@@ -384,11 +384,11 @@ The table below lists the attributes that are returned.
   </tr>
   <tr>
     <td><code>host</code></td>
-    <td>Deprecated. IP address of the application instance. </td>
+    <td>Deprecated. IP address of the app instance. </td>
   </tr>
   <tr>
     <td><code>limits</code></td>
-    <td>The limits to disk space, number of files, and memory permitted to the app. Memory and disk space limits are supplied when the application is deployed, either on the command line or in the application manifest. The number of files allowed is operator-defined.</td>
+    <td>The limits to disk space, number of files, and memory permitted to the app. Memory and disk space limits are supplied when the app is deployed, either on the command line or in the app manifest. The number of files allowed is operator-defined.</td>
   </tr>
   <tr>
     <td><code>name</code></td>
@@ -396,7 +396,7 @@ The table below lists the attributes that are returned.
   </tr>
   <tr>
     <td><code>space_id</code></td>
-    <td>GUID identifying the application's space.</td>
+    <td>GUID identifying the app's space.</td>
   </tr>
   <tr>
     <td><code>space_name</code></td>
@@ -449,13 +449,13 @@ VCAP_APPLICATION={"instance_id":"fe98dc76ba549876543210abcd1234",
 ### <a id='VCAP-SERVICES'></a>VCAP\_SERVICES ###
 
 For [bindable services](../services/), Cloud Foundry adds connection details to
-the `VCAP_SERVICES` environment variable when you restart your application,
-after binding a service instance to your application.
+the `VCAP_SERVICES` environment variable when you restart your app,
+after binding a service instance to your app.
 
 The results are returned as a JSON document that contains an object for each
-service for which one or more instances are bound to the application.
+service for which one or more instances are bound to the app.
 The service object contains a child object for each service instance of that
-service that is bound to the application.
+service that is bound to the app.
 The attributes that describe a bound service are defined in the table below.
 
 The key for each service in the JSON document is the same as the value of the
@@ -496,7 +496,7 @@ The key for each service in the JSON document is the same as the value of the
   </tr>
 </table>
 
-To see the value of VCAP\_SERVICES for an application pushed to Cloud Foundry,
+To see the value of VCAP\_SERVICES for an app pushed to Cloud Foundry,
 see [View Environment Variable Values](#view-env).
 
 The example below shows the value of VCAP_SERVICES for bound instances of several services available in the
@@ -545,15 +545,15 @@ VCAP_SERVICES=
 
 ## <a id='evgroups'></a>Environment Variable Groups ##
 
-Environment variable groups are system-wide variables that enable operators to apply a group of environment variables to all running applications and all staging applications separately.
+Environment variable groups are system-wide variables that enable operators to apply a group of environment variables to all running apps and all staging apps separately.
 
-An environment variable group consists of a single hash of name-value pairs that are later inserted into an application container at runtime or at staging. These values can contain information such as HTTP proxy information. The values for variables set in an environment variable group are case-sensitive.
+An environment variable group consists of a single hash of name-value pairs that are later inserted into an app container at runtime or at staging. These values can contain information such as HTTP proxy information. The values for variables set in an environment variable group are case-sensitive.
 
 When creating environment variable groups, consider the following:
 
 * Only the Cloud Foundry operator can set the hash value for each group.
-* All authenticated users can get the environment variables assigned to their application.
-* All variable changes take effect after the operator restarts or restages the applications.
+* All authenticated users can get the environment variables assigned to their app.
+* All variable changes take effect after the operator restarts or restages the apps.
 * Any user-defined variable takes precedence over environment variables provided by these groups.
 
 The table below lists the commands for environment variable groups.

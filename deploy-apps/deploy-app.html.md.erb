@@ -1,5 +1,5 @@
 ---
-title: Deploy an Application
+title: Deploy an App
 owner: CAPI
 ---
 
@@ -19,7 +19,7 @@ Between the time that you run `cf push` and the time that the app is available, 
 * Selects an appropriate Diego [cell](../../concepts/architecture/index.html#diego-cell) to run the droplet
 * Starts the app
 
-For more information about the lifecycle of an app, see the <a href="app-lifecycle.html">Application Container Lifecycle</a> topic.
+For more information about the lifecycle of an app, see the <a href="app-lifecycle.html">App Container Lifecycle</a> topic.
 
 An app that uses services, such as a database, messaging, or email
 server, is not fully functional until you provision the service and, if
@@ -49,7 +49,7 @@ the app.
 
 For help preparing to deploy your app, see:
 
-* [Considerations for Designing and Running an Application in the Cloud](./prepare-to-deploy.html)
+* [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html)
 * [Buildpacks](../../buildpacks/index.html)
 
 
@@ -129,7 +129,7 @@ target app space.
 
 You can define deployment options on the command line, in a manifest file, or
 both together.
-See [Deploying with Application Manifests](./manifest.html) to learn how
+See [Deploying with App Manifests](./manifest.html) to learn how
 app settings change from push to push, and how command-line options,
 manifests, and commands like `cf scale` interact.
 
@@ -144,24 +144,24 @@ Cloud Foundry uploads all app files except version control files and
 folders with names such as `.svn`, `.git`, and `_darcs`.
 To exclude other files from upload, specify them in a `.cfignore` file in the
 directory where you run the push command.
-For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section of the [Considerations for Designing and Running an Application in the Cloud](./prepare-to-deploy.html) topic.
+For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section of the [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html) topic.
 
-For more information about the manifest file, see the [Deploying with Application Manifests](./manifest.html) topic.
+For more information about the manifest file, see the [Deploying with App Manifests](./manifest.html) topic.
 
 ### <a id='profile'></a>Configure Pre-Runtime Hooks ###
 
 <p class="note"><strong>Note</strong>: The Java buildpack does not support pre-runtime hooks.</p>
 
-To configure pre-runtime hooks, create a file named `.profile` and place it in the root of your app directory. 
-If the directory includes a `.profile` script, then Cloud Foundry executes it immediately before each instance of your app starts. 
+To configure pre-runtime hooks, create a file named `.profile` and place it in the root of your app directory.
+If the directory includes a `.profile` script, then Cloud Foundry executes it immediately before each instance of your app starts.
 Because the `.profile` script executes after the buildpack, the script has access to the language runtime environment created by the buildpack.
 
-<p class="note"><strong>Note</strong>: Your app root directory may also include a <code>.profile.d</code> directory that contains bash scripts that perform initialization tasks for the buildpack. 
+<p class="note"><strong>Note</strong>: Your app root directory may also include a <code>.profile.d</code> directory that contains bash scripts that perform initialization tasks for the buildpack.
 Developers should not edit these scripts unless they are using a <a href="../../buildpacks/custom.html">custom buildpack</a>.</p>
 
-You can use the `.profile` script to perform app-specific initialization tasks, such as setting custom environment variables. 
-Environment variables are key-value pairs defined at the operating system level. 
-These key-value pairs provide a way to configure the apps running on a system. 
+You can use the `.profile` script to perform app-specific initialization tasks, such as setting custom environment variables.
+Environment variables are key-value pairs defined at the operating system level.
+These key-value pairs provide a way to configure the apps running on a system.
 For example, any app can access the LANG environment variable to determine which language to use for error messages and instructions, collating sequences, and date formats.
 
 To set an environment variable, add the appropriate bash commands to your `.profile` file. See the example below.
@@ -171,7 +171,7 @@ To set an environment variable, add the appropriate bash commands to your `.prof
 export LANG=en_US.UTF-8
 ~~~
 
-<p class="note"><strong>Note</strong>: If you are using a PHP buildpack version prior to v4.3.18, the buildpack does not execute your PHP app's <code>.profile</code> script. Your PHP app will host the <code>.profile</code> script's contents. 
+<p class="note"><strong>Note</strong>: If you are using a PHP buildpack version prior to v4.3.18, the buildpack does not execute your PHP app's <code>.profile</code> script. Your PHP app will host the <code>.profile</code> script's contents.
 This means that any PHP app staged using the affected PHP buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
 ## <a id='push'></a>Step 5: Push the App ##
@@ -182,7 +182,7 @@ Run the following command to deploy an app without a manifest:
 
 If you provide the app name in a manifest, you can reduce the command to
 `cf push`.
-See [Deploying with Application Manifests](./manifest.html).
+See [Deploying with App Manifests](./manifest.html).
 
 Because all you have provided is the name of your app, `cf push` sets the
 number of instances, amount of memory, and other attributes of your app
@@ -262,4 +262,4 @@ If your app does not start on Cloud Foundry, first ensure that your
 app can run locally.
 
 You can troubleshoot your app in the cloud using the cf CLI.
-See [Troubleshoot Application Deployment and Health](./troubleshoot-app-health.html).
+See [Troubleshoot App Deployment and Health](./troubleshoot-app-health.html).

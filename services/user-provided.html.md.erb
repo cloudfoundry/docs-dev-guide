@@ -11,21 +11,21 @@ This topic describes how to create and update user-provided service instances.
 
 ## <a id='overview'></a>Overview ##
 
-User-provided service instances enable developers to use services that are not available in the marketplace with their applications running on Cloud Foundry.
+User-provided service instances enable developers to use services that are not available in the marketplace with their apps running on Cloud Foundry.
 
-User-provided service instances can be used to deliver service credentials to an application, and/or to trigger streaming of application logs to a syslog compatible consumer. These two functions can be used alone or at the same time.
+User-provided service instances can be used to deliver service credentials to an app, and/or to trigger streaming of app logs to a syslog compatible consumer. These two functions can be used alone or at the same time.
 
-Once created, user-provided service instances behave like service instances created through the marketplace; see [Managing Service Instances](managing-services.html) and [Application Binding](application-binding.html) for details on listing, renaming, deleting, binding, and unbinding.
+Once created, user-provided service instances behave like service instances created through the marketplace; see [Managing Service Instances](managing-services.html) and [App Binding](application-binding.html) for details on listing, renaming, deleting, binding, and unbinding.
 
 ## <a id='create'></a>Create a User-Provided Service Instance ##
 
 The alias for [cf create-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/create-user-provided-service.html) is `cf cups`.
 
-### <a id='credentials'></a>Deliver Service Credentials to an Application ###
+### <a id='credentials'></a>Deliver Service Credentials to an App ###
 
-Suppose a developer obtains a URL, port, username, and password for communicating with an Oracle database managed outside of Cloud Foundry. The developer could manually create custom environment variables to configure their application with these credentials (of course you would never hard code these credentials in your application!).
+Suppose a developer obtains a URL, port, username, and password for communicating with an Oracle database managed outside of Cloud Foundry. The developer could manually create custom environment variables to configure their app with these credentials (of course you would never hard code these credentials in your app!).
 
-User-provided service instances enable developers to configure their applications with these using the familiar [Application Binding](application-binding.html) operation and the same application runtime environment variable used by Cloud Foundry to automatically deliver credentials for marketplace services ([VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES)).
+User-provided service instances enable developers to configure their apps with these using the familiar [App Binding](application-binding.html) operation and the same app runtime environment variable used by Cloud Foundry to automatically deliver credentials for marketplace services ([VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES)).
 
 <pre class="terminal">
 cf cups SERVICE_INSTANCE -p '{"username":"admin","password":"pa55woRD"}'
@@ -44,11 +44,11 @@ Creating user provided service my-user-provided-route-service in org my-org / sp
 OK
 </pre>
 
-Once the user-provided service instance is created, to deliver the credentials to one or more applications see [Application Binding](application-binding.html).
+Once the user-provided service instance is created, to deliver the credentials to one or more apps see [App Binding](application-binding.html).
 
-### <a id='syslog'></a>Stream Application Logs to a Service ###
+### <a id='syslog'></a>Stream App Logs to a Service ###
 
-User-provided service instances enable developers to stream applications logs to a syslog compatible aggregation or analytics service that isn't available in the marketplace. For more information about the syslog protocol see [RFC 5424](http://tools.ietf.org/html/rfc5424) and [RFC 6587](http://tools.ietf.org/html/rfc6587).
+User-provided service instances enable developers to stream app logs to a syslog compatible aggregation or analytics service that isn't available in the marketplace. For more information about the syslog protocol see [RFC 5424](http://tools.ietf.org/html/rfc5424) and [RFC 6587](http://tools.ietf.org/html/rfc6587).
 
 Create the user-provided service instance, specifying the URL of the service with the `-l` option.
 
@@ -56,10 +56,10 @@ Create the user-provided service instance, specifying the URL of the service wit
 cf cups SERVICE_INSTANCE -l syslog://example.log-aggregator.com
 </pre>
 
-To stream application logs to the service, bind the user-provided service instance to your app.
+To stream app logs to the service, bind the user-provided service instance to your app.
 
-### <a id='route-service'></a> Proxy Application Requests to a Route Service ###
-User-provided service instances enable developers to proxy application requests to [route services](./index.html#route-services) for preprocessing. To create a user-provided service instance for a route service, specify the url for the route service using the `-r` option.
+### <a id='route-service'></a> Proxy App Requests to a Route Service ###
+User-provided service instances enable developers to proxy app requests to [route services](./index.html#route-services) for preprocessing. To create a user-provided service instance for a route service, specify the url for the route service using the `-r` option.
 
 <pre class="terminal">
 $ cf create-user-provided-service my-user-provided-route-service -r https://my-route-service.example.com
@@ -72,7 +72,7 @@ OK
 </p>
 
 To proxy requests to the user-provided route service, you must bind the service instance to the route.
-For more information, see [Manage Application Requests with Route Services](./route-binding.html).
+For more information, see [Manage App Requests with Route Services](./route-binding.html).
 
 ## <a id='update'></a> Update a User-provided Service Instance ###
 

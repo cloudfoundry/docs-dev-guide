@@ -30,7 +30,7 @@ You can create a service instance with the following command: `cf create-service
 Use the information in the list below to replace `SERVICE`, `PLAN`, and `SERVICE_INSTANCE` with appropriate values.
 
    * `SERVICE`: The name of the service you want to create an instance of.
-   * `PLAN`: The name of a plan that meets your needs. Service providers use **plans** to offer varying levels of resources or features for the same service. 
+   * `PLAN`: The name of a plan that meets your needs. Service providers use **plans** to offer varying levels of resources or features for the same service.
    * `SERVICE_INSTANCE`: The name you provide for your service instance. You use this name to refer to your service instance with other commands. Service instance names can include alpha-numeric characters, hyphens, and underscores, and you can rename the service instance at any time.
 
 <pre class="terminal">
@@ -40,7 +40,7 @@ Creating service my-rabbitmq in org console / space development as user@example.
 OK
 </pre>
 
-<strong>User Provided Service Instances</strong> provide a way for developers to bind applications with services that are not available in their Cloud Foundry marketplace. For more information, see the <a href="./user-provided.html">User Provided Service Instances</a> topic.
+<strong>User Provided Service Instances</strong> provide a way for developers to bind apps with services that are not available in their Cloud Foundry marketplace. For more information, see the <a href="./user-provided.html">User Provided Service Instances</a> topic.
 
 ### <a id='arbitrary-params-create'></a> Arbitrary Parameters  ###
 
@@ -69,7 +69,7 @@ OK
 ### <a id='instance-tags-create'></a> Instance Tags  ###
 _Instance tags require cf CLI v6.12.1+_
 
-Some services provide a list of tags that Cloud Foundry delivers in the [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html#VCAP-SERVICES). These tags provide developers with a more generic way for applications to parse `VCAP_SERVICES` for credentials. Developers may provide their own tags when creating a service instance by including the `-t` flag followed by a comma-separated list of tags.
+Some services provide a list of tags that Cloud Foundry delivers in the [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html#VCAP-SERVICES). These tags provide developers with a more generic way for apps to parse `VCAP_SERVICES` for credentials. Developers may provide their own tags when creating a service instance by including the `-t` flag followed by a comma-separated list of tags.
 
 Example providing a comma-separated list of tags:
 
@@ -117,13 +117,13 @@ Updated: 2015-05-18T22:01:26Z
 
 ## <a id='bind'></a>Bind a Service Instance ##
 
-Depending on the service, you can bind service instances to applications and/or routes.
+Depending on the service, you can bind service instances to apps and/or routes.
 
-Not all services support binding, as some services deliver value to users directly without integration with Cloud Foundry, such as SaaS applications.
+Not all services support binding, as some services deliver value to users directly without integration with Cloud Foundry, such as SaaS apps.
 
-### <a id='app-binding'></a>Bind a Service Instance to an Application ###
+### <a id='app-binding'></a>Bind a Service Instance to an App ###
 
-Depending on the service, binding a service instance to your application may deliver credentials for the service instance to the application. See the [Delivering Service Credentials to an Application](application-binding.html) topic for more information. Binding a service instance to an application may also trigger application logs to be streamed to the service instance. For more information, see [Streaming Application Logs to Log Management Services](log-management.html).
+Depending on the service, binding a service instance to your app may deliver credentials for the service instance to the app. See the [Delivering Service Credentials to an App](application-binding.html) topic for more information. Binding a service instance to an app may also trigger app logs to be streamed to the service instance. For more information, see [Streaming App Logs to Log Management Services](log-management.html).
 
 <pre class="terminal">
 $ cf bind-service my-app mydb
@@ -134,13 +134,13 @@ TIP: Use 'cf push' to ensure your env variable changes take effect
 $ cf restart my-app
 </pre>
 
-<p class='note'><strong>Note</strong>: You must restart or in some cases re-push your application for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the application to recognize these changes.</p>
+<p class='note'><strong>Note</strong>: You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
 
-#### <a id='bind-with-manifest'></a> Binding with Application Manifest ####
+#### <a id='bind-with-manifest'></a> Binding with App Manifest ####
 
-As an alternative to binding a service instance to an application after pushing an application, you can use the application manifest to bind the service instance during push. As of cf CLI v6.12.1, [Arbitrary Parameters](#arbitrary-params-binding) are not supported in application manifests. Using the manifest to bind service instances to routes is also not supported.
+As an alternative to binding a service instance to an app after pushing an app, you can use the app manifest to bind the service instance during push. As of cf CLI v6.12.1, [Arbitrary Parameters](#arbitrary-params-binding) are not supported in app manifests. Using the manifest to bind service instances to routes is also not supported.
 
-The following excerpt from an application manifest binds a service instance called `test-mysql-01` to the application on push.
+The following excerpt from an app manifest binds a service instance called `test-mysql-01` to the app on push.
 
 ```
 services:
@@ -159,11 +159,11 @@ Binding service test-mysql-01 to test-msg-app in org My-Org / space development 
 OK
 </pre>
 
-For more information about application manifests, see [Deploying with Application Manifests](../deploy-apps/manifest.html#services-block).
+For more information about app manifests, see [Deploying with App Manifests](../deploy-apps/manifest.html#services-block).
 
 ### <a id='route-binding'></a>Bind a Service Instance to a Route ###
 
-Binding a service instance to a route will cause application requests and responses to be proxied through the service instance, where it may be used to transform or intermediate requests. For more information, see [Manage Application Requests with Route Services](./route-binding.html).
+Binding a service instance to a route will cause app requests and responses to be proxied through the service instance, where it may be used to transform or intermediate requests. For more information, see [Manage App Requests with Route Services](./route-binding.html).
 
 <pre class="terminal">
 $ cf bind-route-service <%=vars.app_domain%> --hostname my-app my-service-instance
@@ -171,7 +171,7 @@ Binding route my-app.<%=vars.app_domain%> to service instance my-service-instanc
 OK
 </pre>
 
-Restaging your application is not required.
+Restaging your app is not required.
 
 ### <a id='arbitrary-params-binding'></a> Arbitrary Parameters  ###
 
@@ -194,9 +194,9 @@ Binding service my-db to app rails-sample in org console / space development as 
 
 ## <a id='unbind'></a>Unbind a Service Instance ##
 
-### <a id='app-unbinding'></a>Unbind a Service Instance from an Application ###
+### <a id='app-unbinding'></a>Unbind a Service Instance from an App ###
 
-Unbinding a service instance from an application removes the credentials created for your application from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
+Unbinding a service instance from an app removes the credentials created for your app from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
 
 <pre class="terminal">
 $ cf unbind-service my-app mydb
@@ -204,13 +204,13 @@ Unbinding app my-app from service mydb in org my-org / space test as user@exampl
 OK
 </pre>
 
-<p class='note'><strong>Note</strong>: You must restart or in some cases re-push your application for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the application to recognize these changes.</p>
+<p class='note'><strong>Note</strong>: You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
 
 ### <a id='route-unbinding'></a>Unbind a Service Instance from a Route ###
 
-Unbinding a service instance from a route will result in requests and responses no longer being proxied through the service instance. For more information, see [Manage Application Requests with Route Services](./route-binding.html).
+Unbinding a service instance from a route will result in requests and responses no longer being proxied through the service instance. For more information, see [Manage App Requests with Route Services](./route-binding.html).
 
-<p class='note'><strong>Note</strong>: If your bound service instance is providing security features, like authorization, unbinding the service instance may leave your application vulnerable.</p>
+<p class='note'><strong>Note</strong>: If your bound service instance is providing security features, like authorization, unbinding the service instance may leave your app vulnerable.</p>
 
 <pre class="terminal">
 $ cf unbind-route-service <%=vars.app_domain%> --hostname my-app my-service-instance
@@ -221,11 +221,11 @@ Unbinding route my-app.<%=vars.app_domain%> from service instance my-service-ins
 OK
 </pre>
 
-Restaging your application is not required.
+Restaging your app is not required.
 
 ## <a id='rename_service'></a>Rename a Service Instance ##
 
-You can change the name given to a service instance. Keep in mind that upon restarting any bound applications, the name of the instance will change in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your application depends on the instance name for discovering credentials, changing the name could break your application's use of the service instance.
+You can change the name given to a service instance. Keep in mind that upon restarting any bound apps, the name of the instance will change in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your app depends on the instance name for discovering credentials, changing the name could break your app's use of the service instance.
 
 <pre class="terminal">
 $ cf rename-service mydb mydb1
@@ -267,7 +267,7 @@ Updating service instance mydb as user@example.com...
 ### <a id='instance-tags-update'></a> Instance Tags  ###
 _Instance tags require cf CLI v6.12.1+_
 
-Some services provide a list of tags that Cloud Foundry delivers in the [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html#VCAP-SERVICES). These tags provide developers with a more generic way for applications to parse `VCAP_SERVICES` for credentials. Developers may provide their own tags when creating a service instance by including a comma-separated list of tags with the `-t` flag.
+Some services provide a list of tags that Cloud Foundry delivers in the [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html#VCAP-SERVICES). These tags provide developers with a more generic way for apps to parse `VCAP_SERVICES` for credentials. Developers may provide their own tags when creating a service instance by including a comma-separated list of tags with the `-t` flag.
 
 <pre class="terminal">
 $ cf update-service my-db -t "staging, web"

@@ -1,16 +1,16 @@
 ---
-title: Deploying a Large Application
+title: Deploying a Large App
 owner: CAPI
 ---
 
 <strong><%= modified_date %></strong>
 
 This topic describes constraints and recommended settings for deploying
-applications above 750 MB.
+apps above 750 MB.
 
 ## <a id="consid_limits"></a>Deployment Considerations and Limitations ##
 
-The deployment process involves uploading, staging, and starting the app. See the <a href="app-lifecycle.html#deployment">Deployment</a> section of the Application Container Lifecycle topic for more information about the default time limits for uploading, staging, and starting an app.
+The deployment process involves uploading, staging, and starting the app. See the <a href="app-lifecycle.html#deployment">Deployment</a> section of the App Container Lifecycle topic for more information about the default time limits for uploading, staging, and starting an app.
 
 To deploy large apps to <%=vars.product_short%>, ensure the following:
 
@@ -18,7 +18,7 @@ To deploy large apps to <%=vars.product_short%>, ensure the following:
 
 * Your network connection speed is sufficient to upload your app within the 15 minute limit. We recommend a minimum speed of 874 KB/s.
 
-    <p class="note"><strong>Note</strong>: <%=vars.product_short%> provides an authorization token that is valid for a minimum of 20 minutes.</p>
+    <p class="note"><strong>Note</strong>: <%= vars.product_short %> provides an authorization token that is valid for a minimum of 20 minutes.</p>
 
 * You allocate enough memory for all instances of your app. Use either the `-m` flag with `cf push` or set an app memory value in your `manifest.yml` file.
 
@@ -26,11 +26,11 @@ To deploy large apps to <%=vars.product_short%>, ensure the following:
 
 * If you use an app manifest file, `manifest.yml`, be sure to specify adequate values for your app for attributes such as app memory, app start timeout, and disk space allocation.
 
-    For more information about using manifests, refer to the [Deploying with Application Manifests](./manifest.html) topic.
+    For more information about using manifests, refer to the [Deploying with App Manifests](./manifest.html) topic.
 
-* You push only the files that are necessary for your application.
+* You push only the files that are necessary for your app.
 
-    To meet this requirement, push only the directory for your application, and remove unneeded files or use the `.cfignore` file to [specify excluded files](./prepare-to-deploy.html#exclude).
+    To meet this requirement, push only the directory for your app, and remove unneeded files or use the `.cfignore` file to [specify excluded files](./prepare-to-deploy.html#exclude).
 
 * You configure Cloud Foundry Command Line Interface (cf CLI) staging, startup, and timeout settings to override settings in the manifest, as necessary.
 
@@ -40,7 +40,7 @@ To deploy large apps to <%=vars.product_short%>, ensure the following:
 
     For more information about using the cf CLI to deploy apps, refer to the [Push section](../../cf-cli/getting-started.html#push) of the _Getting Started with the cf CLI_ topic.
 
-    <p class="note"><strong>Note</strong>: Changing the timeout setting for the cf CLI does not change the timeout limit for Cloud Foundry server-side jobs such as staging or starting applications. You must change server-side timeouts in the manifest. Because of the differences between the Cloud Foundry and cf CLI timeout values, your app might successfully start even though the cf CLI reports <code>App failed</code>. Run <code>cf apps APP_NAME</code> to review the actual status of your app.</p>
+    <p class="note"><strong>Note</strong>: Changing the timeout setting for the cf CLI does not change the timeout limit for Cloud Foundry server-side jobs such as staging or starting apps. You must change server-side timeouts in the manifest. Because of the differences between the Cloud Foundry and cf CLI timeout values, your app might successfully start even though the cf CLI reports <code>App failed</code>. Run <code>cf apps APP_NAME</code> to review the actual status of your app.</p>
 
 ## <a id="limits_table"></a>Default Settings and Limitations Summary Table ##
 

@@ -1,5 +1,5 @@
 ---
-title: Streaming Application Logs to Splunk
+title: Streaming App Logs to Splunk
 owner: PCF Metrics
 ---
 
@@ -12,7 +12,7 @@ To integrate Cloud Foundry with Splunk Enterprise, complete the following proces
 In Cloud Foundry, create a syslog drain user-provided service instance as
 described in [Using Third-Party Log Management Services](./log-management.html).
 
-Choose one or more applications whose logs you want to drain to Splunk
+Choose one or more apps whose logs you want to drain to Splunk
 through the service.
 
 Bind each app to the service instance and restart the app.
@@ -78,7 +78,7 @@ To view logs from all apps at once, you can omit the `appname` field.
 
 Verify that results rows contain the three Cloud Foundry-specific fields:
 
-* **appname**: The GUID for the Cloud Foundry application
+* **appname**: The GUID for the Cloud Foundry app
 * **host**: The IP address of the Loggregator host
 * **procid**: The Cloud Foundry component emitting the log
 

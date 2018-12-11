@@ -664,7 +664,9 @@ Creating app test-app...
 
 ## <a id='deprecated'></a> Deprecated App Manifest Features
 
-These app manifest features have been deprecated in favor of existing options.
+These app manifest features have been deprecated in favor of other options, as described below.
+
+<p class='warning'><strong>WARNING:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated features along with the feature that replaces it.</p>
 
 ### <a id='yaml-anchors'></a> YAML Anchors Replace Promoted Content
 
@@ -751,7 +753,7 @@ This app manifest feature has been deprecated, and a replacement option is under
 
 This feature has been deprecated, and has been replaced by [Variable Substitution](#variable-substitution).
 
-With inheritance, child manifests inherited configurations from a parent manifest, and the child manifests could use inherited configurations as provided, extend them, or override them. This feature has been deprecated, and has been replaced by [Variable Substitution](#multi-manifests).
+With inheritance, child manifests inherited configurations from a parent manifest, and the child manifests could use inherited configurations as provided, extend them, or override them. This feature has been deprecated, and has been replaced by [Variable Substitution](#variable-substitution).
 
 
 ### <a id='buildpack-deprecated'></a> Buildpack Field in Manifest Is Deprecated

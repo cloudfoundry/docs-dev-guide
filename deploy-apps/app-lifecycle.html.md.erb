@@ -34,7 +34,7 @@ Certain operator actions require restarting VMs with containers hosting app inst
 * When a user runs `cf scale`, `cf stop`, `cf push`, `cf delete`, or `cf restart-app-instance`
 * As a result of a system event, such as the replacement procedure during Diego cell evacuation or when an app instance stops because of a failed health-check probe
 
-To shutdown the app, CF sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, CF sends a SIGKILL.
+To shut down the app, CF sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, CF sends a SIGKILL.
 
 Apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before CF terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests.
 

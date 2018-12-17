@@ -34,6 +34,6 @@ Certain operator actions require restarting VMs with containers hosting app inst
 * When a user runs `cf scale`, `cf stop`, `cf push`, `cf delete`, or `cf restart-app-instance`
 * As a result of a system event, such as the replacement procedure during Diego cell evacuation or when an app instance stops because of a failed health-check probe
 
-To shutdown the app, CF sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, CF sends a SIGKILL.
+To shut down the app, CF sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, CF sends a SIGKILL.
 
 <p class="note"><strong>Note</strong>: One exception to the cases mentioned above is when monit restarts a crashed Diego cell rep or Garden server. In this case, CF immediately stops the apps that are still running using SIGKILL.</p>

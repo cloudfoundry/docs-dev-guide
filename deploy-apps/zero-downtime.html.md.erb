@@ -111,4 +111,10 @@ The following table describes the limitations to consider when using the beta `v
 		<td>Simultaneous apps when interrupting a push</td>
 		<td>If you run <code>v3-zdt-push</code> for an app before your previous <code>v3-zdt-push</code> command for the same app has completed, your first push gets interrupted. Until the last deployment completes, there may be many versions of the app running at once. Eventually, the app runs the code from your most recent push.</td>
 	</tr>
+	<tr>
+		<td>SSH to app instances</td>
+		<td>Pushing updates to your app with a <code>v3-zdt</code> command causes the new web
+		process and app GUID to mismatch. `cf ssh` does not handle this
+		scenario. You must use the `cf v3-ssh` command instead.</td>
+	</tr>
 </table>

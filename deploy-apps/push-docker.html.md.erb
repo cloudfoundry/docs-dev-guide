@@ -71,7 +71,12 @@ Cloud Foundry supports only one exposed port on the image.
 
 ## <a id='start_command'></a>Start Command
 
-By default the start command specified in the Docker image will be used. You can override the start command using a command-line parameter or specifying it in a manifest file.
+By default, Docker uses the start command specified in the Docker image. You can override
+the start command either by using a command-line parameter or by specifying it in a
+manifest file.
+
+For more information about command-line parameters for `docker start`, see [docker
+start](https://docs.docker.com/engine/reference/commandline/start/) in the Docker Documentation.
 
 ##<a id='public'></a>Push a Docker Image From Docker Hub
 

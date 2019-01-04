@@ -57,15 +57,17 @@ User-provided service instances can be used to drain app logs to a service not a
 
 To learn how marketplace services (and user-provided service instances) can be used to perform preprocessing on app requests, see [Manage App Requests with Route Services](./route-binding.html).
 
-## <a id='migrating'></a>Migrate a Database ##
+## <a id='migrating'></a>Migrate a Database Schema##
 
-If your app relies on a relational database, you must apply schema changes periodically. To perform database migrations on Cloud Foundry-managed services, run a database migration task with the Cloud Foundry Command Line Interface (cf CLI) tool.
+If your app relies on a relational database, you must apply schema changes periodically. To perform database schema migrations on Cloud Foundry-managed services, run a database migration task with the Cloud Foundry Command Line Interface (cf CLI) tool.
 
 For more information about running cf CLI tasks, see [Running Tasks](../using-tasks.html).
 
+<%= vars.internal_percona_db_migration_ref %>
+
 <p class="note"><strong>Note</strong>: To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. See the <a href="../../cf-cli/install-go-cli.html">Installing the cf CLI</a> topic for information about downloading, installing, and uninstalling the cf CLI.</p>
 
-To perform a database migration with the cf CLI, do the following:
+To perform a database schema migration with the cf CLI, do the following:
 
 1. Run the following command to push the app:
 	<pre class="terminal">$ cf push APP-NAME</pre>
@@ -74,7 +76,7 @@ To perform a database migration with the cf CLI, do the following:
 
 	<p class="note"><strong>Note</strong>: To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
 
-1. Run the following command to perform a database migration as a task on the app:
+1. Run the following command to perform a database schema migration as a task on the app:
 
 	<pre class="terminal">
 	$ cf run-task APP-NAME "bin/rails db:migrate" --name TASK-NAME

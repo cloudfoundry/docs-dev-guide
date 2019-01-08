@@ -1,0 +1,71 @@
+---
+title: Pushing an App with Multiple Processes (Beta)
+owner: CAPI
+---
+
+This topic describes how to push and manage apps with multiple processes. 
+
+<p class="note"><strong>Note</strong>: This is a beta feature. Because the CLI may change, this feature is not recommended for use in scripts until it is generally available.</p>
+
+## <a id="about-processes"></a> About Processes 
+
+The CAPI v3 API introduces the concept of processes as runnable units of an app. This new resource supports apps that run in multiple modes using the same codebase, such as a web app that has a web UI process and a worker process. 
+
+Previously, you had to push two separate apps for a web UI and worker process. Now you can push them as part of the same app using a Procfile. See [Push an App with Multiple Processes](#push-with-multiple-processes). 
+
+For more information about processes, see the <a href="http://v3-apidocs.cloudfoundry.org/index.html#processes">Processes</a> section of the CAPI v3 documentation. 
+
+## <a id="push-with-multiple-processes"></a> Push an App with Multiple Processes
+
+You can push an app with multiple processes using a Procfile.
+Follow the procedure below. 
+
+1. Create a file named `Procfile` in the root of your app directory. 
+	<p class="note"><strong>Note</strong> For more information about Procfiles, see the <a href="https://v3-apidocs.cloudfoundry.org/index.html#procfiles">Procfiles</a> section of the CAPI v3 documentation.</p>
+1. Add each process and its start command to the Procfile. See the following example:
+
+	```
+	web: bundle exec rackup config.ru -p $PORT
+ 	worker: bundle exec rake worker:start
+ 	```
+1. Run the `v3-push` command:
+
+	```
+	cf v3-push myapp
+	```
+
+By default, the web process has a route and one instance. 
+
+## <a id="scale-a-process"></a>Scale a Process 
+
+To scale an app process, run the following command:
+
+```
+cf v3-scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
+```
+
+## <a id="view-processes"></a>View Processes
+
+To view the processes running as part of an app, run `cf v3-app APP-NAME`. See the following example in which the app has a `web` and a `worker` process. 
+
+```
+$ cf v3-app myapp
+ Showing health and status for app myapp in org test / space test as admin...
+
+name: myapp
+ requested state: started
+ processes: web:1/1, worker:2/2
+ memory usage: 256M x 1, 256M x 2
+ routes: myapp.cloudfoundry.example.com
+ stack: cflinuxfs2
+ buildpacks: ruby
+
+web:1/1
+ state since cpu memory disk
+ #0 running 2017-09-25 15:43:26 PM 0.2% 18.9M of 256M 84.4M of 1G
+
+worker:2/2
+ state since cpu memory disk
+ #0 running 2017-09-25 15:49:46 PM 0.1% 5M of 256M 73M of 1G
+ #1 running 2017-09-25 15:49:46 PM 0.1% 5M of 256M 73M of 1G
+```

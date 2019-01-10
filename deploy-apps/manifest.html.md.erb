@@ -61,6 +61,8 @@ applications:
 A minimal manifest requires only an application `name`.
 To create a valid minimal manifest, remove the `memory` and `instances` properties from this example.
 
+<p class="note"><strong>Note</strong>: If your app name begins with the <code>-</code> character, you cannot interact with the app using the cf CLI. This is because the cf CLI interprets the <code>-</code> character as a flag.</p>
+
 ##<a id='name'></a>Always Provide an Application Name to cf push ##
 
 `cf push` requires an application name, which you provide either in a manifest

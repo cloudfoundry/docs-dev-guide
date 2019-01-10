@@ -62,8 +62,7 @@ applications:
 A minimal manifest requires only an app `name`.
 To create a valid minimal manifest, remove the `memory` and `instances` properties from this example.
 
-<p class="note"><strong>Note</strong>:  A leading dash will be accepted by the CLI but will create an app that you cannot interact with via the CLI. This is because, since the name starts with a <code>-</code>, it will be interpreted as a flag. Non-leading dashes are acceptable.</p>
-
+<p class="note"><strong>Note</strong>: If your app name begins with the <code>-</code> character, you cannot interact with the app using the cf CLI. This is because the cf CLI interprets the <code>-</code> character as a flag.</p>
 
 ## <a id='name'></a> Always Provide an App Name to cf push
 

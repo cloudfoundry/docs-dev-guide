@@ -34,7 +34,7 @@ Follow the procedure below.
 	cf v3-push myapp
 	```
 
-By default, the web process has a route and one instance. 
+By default, the web process has a route and one instance. Other processes have zero instances by default. 
 
 ## <a id="scale-a-process"></a>Scale a Process 
 
@@ -46,7 +46,7 @@ cf v3-scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
 
 ## <a id="view-processes"></a>View Processes
 
-To view the processes running as part of an app, run `cf v3-app APP-NAME`. See the following example in which the app has a `web` and a `worker` process. 
+To view the processes running as part of an app, run `cf APP-NAME`. See the following example in which the app has a `web` and a `worker` process. 
 
 ```
 $ cf v3-app myapp

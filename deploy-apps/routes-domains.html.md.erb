@@ -63,7 +63,7 @@ Routes are considered HTTP if they are created from HTTP domains, and TCP if the
 
 HTTP routes include a domain, an optional hostname, and an optional context path. `<%= vars.app_domain %>`, `myapp.<%= vars.app_domain %>`, and `myapp.<%= vars.app_domain %>/products` are all examples of HTTP routes. Apps should listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. As an example, requests to `myapp.<%= vars.app_domain %>` would be routed to the app container at `localhost:8080`.
 
-<p class="note"><strong>Note</strong>: Developers can use the Cloud Controller API to update the ports an app can receive requests on. For more information, see <a href="../devguide/custom-ports.html">Configuring Apps to Listen on Custom Ports</a>. 
+<p class="note"><strong>Note</strong>: Developers can use the Cloud Controller API to update the ports an app can receive requests on. For more information, see <a href="../devguide/custom-ports.html">Configuring Apps to Listen on Custom Ports (Beta)</a>. 
 </p>
 
 * Requests to HTTP routes must be sent to ports 80 or 443.

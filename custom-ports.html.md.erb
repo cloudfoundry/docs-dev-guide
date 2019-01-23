@@ -17,6 +17,37 @@ By default, apps only receive requests on port 8080 for both HTTP and TCP routin
 
 The [Procedure](#procedure) below describes how to use the `apps` and `route_mappings` Cloud Controller API endpoints to update the ports the app can receive requests on. 
 
+### <a id="flow"></a> Flow of a Request to an App
+
+The following table describes the types of ports used at each stage of a client request. The procedure in this document discusses configuring _app ports_ specifically.  
+
+<table>
+	<tr>
+		<th>Port Type</th>
+		<th>Description</th>
+		<th>Applicable Stage</th>
+	</tr>
+	<tr>
+		<td>Route port</td>
+		<td>The port a client sends a request to</td>
+		<td>Client to load balancer, load balancer to Gorouter</td>
+	</tr>
+	<tr>
+		<td>Backend port</td>
+		<td>The port of the host VM where an app container is hosted</td>
+		<td>Gorouter to Diego Cell</td>
+	</tr>
+	<tr>
+		<td>App port</td>
+		<td>The port on which the app listens for requests</td>
+		<td>Diego Cell to app container</td>
+	</tr>
+</table>
+
+See the following diagram for an illustration of a request using example routes and ports. 
+
+![Traffic-flow-diagram](route_ports.png)
+
 ## <a id="prerequisite"></a> Prerequisite
 
 Before following the procedure to configure routing to your app on custom ports, you must have the following:

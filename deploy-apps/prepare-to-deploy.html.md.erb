@@ -100,10 +100,13 @@ frameworks you use. For examples of commonly-used `.gitignore` files, see [https
 
 ## <a id="increase-availability"></a>Run Multiple Instances to Increase Availability ##
 
-When a Diego cell is upgraded, the apps running on it are shut down gracefully,
-then restarted on another Diego cell. To avoid the risk of an app being unavailable
-during a Cloud Foundry upgrade processes, you should run more than one instance of the
-app.
+Singleton apps may become temporarily unavailable for reasons that include:
+
+* During an upgrade, <%= vars.first_product_name %> gracefully shuts down the apps running on each Diego cell and then restarts them on another Diego cell. Single app instances may become temporarily unavailable if the replacement instance does not become healthy within the cell's evacuation timeout, which defaults to 10 minutes.
+
+* Unexpected faults in <%= vars.product_name %> system components or underlying infrastructure, such as container-host VMs or IaaS Availability Zones, may cause lone app instances to disappear or become unroutable for a minute or two.
+
+To avoid the risk of an app becoming temporarily unavailable, developers can run more than one instance of the app.
 
 ## <a id="buildpacks"></a>Using Buildpacks ##
 

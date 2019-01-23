@@ -1,25 +1,25 @@
 ---
-title: Customizing App Deployments (Beta)
+title: Running cf push Sub-Step Commands (Beta)
 owner: CAPI
 ---
 
-This section describes how to customize app deployments using beta Cloud Foundry Command Line Interface (cf CLI) commands that provide granular control over the `cf push` process. 
+This topic describes how to run beta Cloud Foundry Command Line Interface (cf CLI) commands that provide granular control over the `cf push` process. These commands break down the `cf push` process into sub-steps that can run independently. 
 
 <p class="note"><strong>Note</strong>: This is a beta feature. Because the CLI may change, this feature is not recommended for use in scripts until it is generally available.</p>
 
 ## <a id="about"></a> Overview 
 
-The cf CLI includes commands to provide granular control over app deployments. With these commands, you can choose to perform only some steps of the `cf push` process or perform specific actions between the steps normally executed as part of running `cf push`.
+The cf CLI includes commands to provide granular control over app pushes. With these commands, you can choose to perform only some steps of the `cf push` process or perform specific actions between the steps normally executed as part of running `cf push`.
 
-Here are some example use cases for customizing an app deployment:
+Here are some example use cases for the sub-step commands:
 
 * Updating a third party system before staging an app
 * Retrying failed stagings without incurring downtime
-* Calling external services to report audit data during deployment 
+* Calling external services to report audit data during push 
 * Scanning a droplet before deploy
 * Integrating with a change request system
 
-To support custom deployment workflows, Cloud Foundry divides apps into smaller building blocks. The following table describes these building blocks as _Resources_ and lists the command associated with each one.  
+To support these custom push workflows, Cloud Foundry divides apps into smaller building blocks. The following table describes these building blocks as _Resources_ and lists the command associated with each one.  
 
 For information on using these commands, see the [Example Workflows](#example-workflows) section below. 
 
@@ -57,11 +57,11 @@ For information on using these commands, see the [Example Workflows](#example-wo
 
 ## <a id="example-workflows"></a> Example Workflows
 
-The following sections describe example workflows for working with granular deployment commands. 
+The following sections describe example workflows for working with the `cf push` sub-step commands. 
 
-### <a id="update-system"></a> Push an App Using Granular Commands
+### <a id="update-system"></a> Push an App Using Sub-Step Commands
 
-This example workflow describes how to push an app using granular deployment commands instead of `cf push`.
+This example workflow describes how to push an app using sub-step commands instead of `cf push`.
 
 1. Create your app with the cf CLI:
 

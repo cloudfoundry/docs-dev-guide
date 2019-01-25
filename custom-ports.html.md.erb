@@ -1,15 +1,13 @@
 ---
-title: Configuring Apps to Listen on Custom Ports (Beta)
+title: Configuring CF to Route Traffic to Apps on Custom Ports (Beta)
 owner: Routing
 ---
 
-This topic describes how to configure your apps to listen for traffic on custom ports. 
-
-<p class="note"><strong>Note</strong>: This is a beta feature. Some of the API endpoints described in this topic are not yet considered generally available.</p>
+This topic describes how to configure Cloud Foundry to route traffic to your apps listening on custom ports. 
 
 ## <a id="overview"></a> Overview
 
-By default, apps only receive requests on port 8080 for both HTTP and TCP routing. Configuring custom app ports allows developers to bring workloads onto Cloud Foundry (CF) that listen on ports other than 8080. Here are some example use cases:
+By default, apps only receive requests on port 8080 for both HTTP and TCP routing, and so must be configured (or hard coded) to listen on this port. Configuring custom app ports allows developers to bring workloads onto Cloud Foundry (CF) that listen on ports other than 8080. Here are some example use cases:
 
 * Serving web client requests on one port and offering stats/debug on another
 * Using TCP protocols that require multiple ports 
@@ -19,13 +17,13 @@ The [Procedure](#procedure) below describes how to use the `apps` and `route_map
 
 ### <a id="flow"></a> Flow of a Request to an App
 
-The following table describes the types of ports used at each stage of a client request. The procedure in this document discusses configuring _app ports_ specifically.  
+The following table describes the Network Address Translation that occurs in the data path of a client request. The procedure in this document discusses configuring _app ports_ specifically.  
 
 <table>
 	<tr>
 		<th>Port Type</th>
 		<th>Description</th>
-		<th>Applicable Stage</th>
+		<th>Network Hop</th>
 	</tr>
 	<tr>
 		<td>Route port</td>
@@ -34,17 +32,17 @@ The following table describes the types of ports used at each stage of a client 
 	</tr>
 	<tr>
 		<td>Backend port</td>
-		<td>The port of the host VM where an app container is hosted</td>
+		<td>The port on the VM where an app container is hosted, which is unique to the container</td>
 		<td>Gorouter to Diego Cell</td>
 	</tr>
 	<tr>
 		<td>App port</td>
-		<td>The port on which the app listens for requests</td>
+		<td>The port on the container; this should match a port the app is configured to listen on</td>
 		<td>Diego Cell to app container</td>
 	</tr>
 </table>
 
-See the following diagram for an illustration of a request using example routes and ports. 
+The following diagram provides an example data path and Network Address Translation for TCP Routing. For HTTP Routing, the Route Port is always 80 or 443.  
 
 ![Traffic-flow-diagram](route_ports.png)
 
@@ -53,10 +51,8 @@ See the following diagram for an illustration of a request using example routes 
 Before following the procedure to configure routing to your app on custom ports, you must have the following:
 
 * An app pushed to PCF that can listen on one or more custom ports. 
-* **TCP only**: Routes mapped to each port you want your app to listen on. 
-	For example, if you want your app to receive TCP connections on ports `1234` and `5678`, create two TCP routes:
-	* One that maps `example.com:FIRST-RANDOM-PORT` to app port `1234`
-	* Another that maps `example.com:SECOND-RANDOM-PORT` to app port `5678`
+* Routes for which you would like traffic forwarded to your app on custom ports. 
+	For example, if your app listens on two ports and you'd like clients to be able to send requests to both of them, create two routes. These can be from HTTP or TCP domains (see [Routes and Domains](./deploy-apps/routes-domains.html) for more info). E.g. foo.example.com and bar.example.com. In the following procedure, you will use API endpoints to map these routes to your app on the ports it is listening.
 
 ## <a id="procedure"></a> Procedure
 
@@ -69,7 +65,7 @@ To configure your app to receive HTTP or TCP traffic on custom ports, do the fol
 	``` 
 	Where `APP-NAME` is the name of your app
 
-1. Add ports to your app:
+1. Configure CF with the ports your app is listening on:
 
 	```
 	cf curl /v2/apps/APP-GUID -X PUT -d '{"ports": [PORT1, PORT2, PORT3...]}'. 
@@ -78,12 +74,12 @@ To configure your app to receive HTTP or TCP traffic on custom ports, do the fol
 	* `APP-GUID` is the GUID of your app
 	*  `PORT1, PORT2, PORT3...` is a comma-separated list of the ports on which you want your app to receive traffic. 
 
-1. Retrieve the GUID of the route to which clients will make requests for your custom port:
+1. Retrieve the GUID of the route to which clients will make requests, and for which Cloud Foundry will route requests to the app on a custom port:
 
 	```
-	cf curl /v2/routes?q=host:APP-NAME
+	cf curl /v2/routes?q=host:HOST-NAME
 	```
-	Where `APP-NAME` is the name of your app
+	Where `HOST-NAME` is the hostname for the route; by default this is the name of your app.
 
 1. Update the route mapping for your app:
 

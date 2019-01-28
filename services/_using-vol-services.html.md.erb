@@ -66,6 +66,8 @@ To use a volume service deployed by <%= vars.admin %>, you must first create an 
     If you use an LDAP server, you must specify `username` and `password` instead of a UID and GID in this command. For example:
     <pre class="terminal">$ cf bind-service my-app nfs\_service\_instance -c '{"username":"user1000","password":"secret","mount":"/var/volume1","readonly":true}'</pre>
 
+    <p class="note"><strong>Note</strong>: It is also possible to bind volume services from within an application manifest as described in the <a href="../deploy-apps/manifest.html#services-block">manifest dcoumentation</a> but application manifests do not support setting bind configuration. As a result, in order to bind a volume service from within an application manifest, you must specify any bind configuration during service instance creation.  Recent releases of the NFS and SMB volume services support inclusion of binding parameters in service instance configuration.</p>
+
 1. Run `cf restage YOUR-APP` to complete the service binding by restaging your app. Replace `YOUR-APP` with the name of your app.
   <pre class="terminal">$ cf restage my-app</pre>
 

@@ -67,6 +67,10 @@ To use a volume service deployed by <%= vars.admin %>, you must first create an 
     <pre class="terminal">$ cf bind-service my-app nfs\_service\_instance -c '{"username":"user1000","password":"secret","mount":"/var/volume1","readonly":true}'</pre>
 
     <p class="note"><strong>Note</strong>: 
+    It is not recommended to specify `mount` paths within the `/app` path where your application droplet will be unpacked. Because mounts are performed prior to insertion of your compiled application, placing a mount inside the `/app` directory can result in application startup failures, and may also result in parts of your application droplet being written to the remote file share.  If your application requires the shared volume to be placed within the `/app` directory, the preferred method is to mount it elsewhere, and then to create a symbolic link at application startup time, prior to launching the application.  For example:<br/>
+    `cf push my-app -c "ln -s /var/volume1 /app/volume1 && \$HOME/boot.sh"`</p>
+
+    <p class="note"><strong>Note</strong>: 
     You can also bind volume services using an app manifest as described in the <a href="../deploy-apps/manifest.html#services-block">Services</a> section of the <i>Deploying with App Manifests</i> topic. However, app manifests do not support bind configuration. If you want to bind a volume service using an app manifest, you must specify bind configuration when you create the service instance. The releases that support this are <code>nfs-volume</code> v1.3.1 and later and <code>smb-volume</code> v1.0.0 and later.</p>
 
 

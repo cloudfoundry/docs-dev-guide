@@ -81,7 +81,7 @@ You can also bind volume services using an app manifest as described in the <a h
 
 ### <a id='mount-path'></a> Mount Path Limitation
 
-Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where Cloud Foundry unpacks the droplet. If you specify a mount inside the <code>/app</code> directory, the app may fail to start and parts of the app droplet may be written to the remote file share. This is because Cloud Foundry mounts the volume before moving your compiled app into the droplet. 
+Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.product_short %> unpacks the droplet. If you specify a mount inside the <code>/app</code> directory, the app may fail to start and parts of the app droplet may be written to the remote file share. This is because <%= vars.product_short %> mounts the volume before moving your compiled app into the droplet. 
 
 If your app requires the shared volume to be placed within the <code>/app</code> directory, do the following:
 

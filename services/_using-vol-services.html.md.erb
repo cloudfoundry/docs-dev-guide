@@ -3,6 +3,10 @@
     <ul>
       <li><a href="#pre">Prerequisite</a></li>
       <li><a href="#create">Create and Bind a Service Instance</a></li>
+        <ul>
+          <li><a href="#manifest">Bind with an App Manifest</a></li>
+          <li><a href="#mount-path">Mount Path Limitation</a></li>
+        </ul>
       <li><a href="#app">Access the Volume Service from your App</a></li>
       <li><a href="#nfs">NFS Volume Service</a></li>
         <ul>
@@ -58,6 +62,7 @@ To use a volume service deployed by <%= vars.admin %>, you must first create an 
   * `SERVICE-NAME`: The name of the volume service instance you created in the previous step.
   * `GID-AND-UID-JSON` (NFS only): If you bind an instance of the NFS volume service, you must supply two extra parameters, `gid` and `uid`. You can specify these parameters with the `-c` flag and a JSON string, in-line or from a file. This parameter specifies the `gid` and `uid` to use when mounting the share to the app.
   * `MOUNT-PATH` (Optional): To mount the volume to a particular path within your app rather than the default path, you supply the `mount` parameter. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
+    <p class="note"><strong>Note</strong>: Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory. For more information, see <a href="mount-path">Mount Path Limitation</a>.</p>
   * `READ-ONLY-TRUE` (Optional): When you issue the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.
 
     The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`,
@@ -66,16 +71,24 @@ To use a volume service deployed by <%= vars.admin %>, you must first create an 
     If you use an LDAP server, you must specify `username` and `password` instead of a UID and GID in this command. For example:
     <pre class="terminal">$ cf bind-service my-app nfs\_service\_instance -c '{"username":"user1000","password":"secret","mount":"/var/volume1","readonly":true}'</pre>
 
-    <p class="note"><strong>Note</strong>: 
-    It is not recommended to specify `mount` paths within the `/app` path where your application droplet will be unpacked. Because mounts are performed prior to insertion of your compiled application, placing a mount inside the `/app` directory can result in application startup failures, and may also result in parts of your application droplet being written to the remote file share.  If your application requires the shared volume to be placed within the `/app` directory, the preferred method is to mount it elsewhere, and then to create a symbolic link at application startup time, prior to launching the application.  For example:<br/>
-    `cf push my-app -c "ln -s /var/volume1 /app/volume1 && \$HOME/boot.sh"`</p>
-
-    <p class="note"><strong>Note</strong>: 
-    You can also bind volume services using an app manifest as described in the <a href="../deploy-apps/manifest.html#services-block">Services</a> section of the <i>Deploying with App Manifests</i> topic. However, app manifests do not support bind configuration. If you want to bind a volume service using an app manifest, you must specify bind configuration when you create the service instance. The releases that support this are <code>nfs-volume</code> v1.3.1 and later and <code>smb-volume</code> v1.0.0 and later.</p>
-
 
 1. Run `cf restage YOUR-APP` to complete the service binding by restaging your app. Replace `YOUR-APP` with the name of your app.
   <pre class="terminal">$ cf restage my-app</pre>
+
+### <a id='manifest'></a> Bind with an App Manifest
+
+You can also bind volume services using an app manifest as described in the <a href="../deploy-apps/manifest.html#services-block">Services</a> section of the <i>Deploying with App Manifests</i> topic. However, app manifests do not support bind configuration. If you want to bind a volume service using an app manifest, you must specify bind configuration when you create the service instance. The releases that support this are <code>nfs-volume</code> v1.3.1 and later and <code>smb-volume</code> v1.0.0 and later.
+
+### <a id='mount-path'></a> Mount Path Limitation
+
+Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where Cloud Foundry unpacks the droplet. If you specify a mount inside the <code>/app</code> directory, the app may fail to start and parts of the app droplet may be written to the remote file share. This is because Cloud Foundry mounts the volume before moving your compiled app into the droplet. 
+
+If your app requires the shared volume to be placed within the <code>/app</code> directory, do the following:
+
+1. Specify a mount volume in a location outside of the `/app` directory.
+2. Create a symbolic link at app startup time, prior to launching the app. For example:
+  <pre class="terminal">cf push my-app -c "ln -s /var/volume1 /app/volume1 && \$HOME/boot.sh"</pre>
+
 
 ## <a id='app'></a> Access the Volume Service from your App
 

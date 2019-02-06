@@ -114,9 +114,10 @@ You can now use `cf unmap-route` to remove the route `demo-time-temp.example.com
 
 <%= image_tag("../images/blue-green/green.png") %>
 
-## <a id='implementations'></a>Implementation
+## <a id='implementations'></a>Implementations
 
-Cloud Foundry community members have written a plugin to automate the blue-green
-deployment process:
+Cloud Foundry community members have written plugins to automate the blue-green
+deployment process. These include:
 
+* [Autopilot](https://github.com/contraband/autopilot): Autopilot is a Cloud Foundry Go plugin that provides a subcommand, `zero-downtime-push`, for hands-off, zero-downtime app deploys.
 * [BlueGreenDeploy](https://github.com/bluemixgaragelondon/cf-blue-green-deploy): cf-blue-green-deploy is a plugin, written in Go, for the Cloud Foundry Command Line Interface (cf CLI) that automates a few steps involved in zero-downtime deploys.

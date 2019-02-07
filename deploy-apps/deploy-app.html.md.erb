@@ -150,8 +150,6 @@ For more information about the manifest file, see the [Deploying with App Manife
 
 ### <a id='profile'></a>Configure Pre-Runtime Hooks ###
 
-<p class="note"><strong>Note</strong>: The Java buildpack does not support pre-runtime hooks.</p>
-
 To configure pre-runtime hooks, create a file named `.profile` and place it in the root of your app directory.
 If the directory includes a `.profile` script, then Cloud Foundry executes it immediately before each instance of your app starts.
 Because the `.profile` script executes after the buildpack, the script has access to the language runtime environment created by the buildpack.

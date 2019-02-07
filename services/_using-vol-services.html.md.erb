@@ -107,7 +107,7 @@ To access the volume service from your app, you must know which file path to use
         "provider": null,
         "syslog\_drain\_url": null,
         "tags": [
-        "nfs"
+          "nfs"
         ],
         "volume\_mounts": [
           {
@@ -158,8 +158,7 @@ Cloud Foundry offers two NFS volume services:
   * For NFSv4,  specify a `version` parameter in the create configuration.
   * For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
   * When you omit `uid` and `gid` or `username` and `password` in bind configuration, the driver skips `mapfs` mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
-* `nfs-legacy` (deprecated): This volume service is implemented with libfuse. It does not support
-`version` parameters and only mounts NFSv3. The service also has some performance constraints.
+* `nfs-legacy` (deprecated): This volume service exists for historical reasons only as it is difficult to retire services at the moment.  If you use this service it will perform exactly the same mount as the `nfs` service.
 
 Both services offer a single plan called `Existing`.
 
@@ -181,7 +180,6 @@ Where:
 <p class="note"><strong>Note</strong>: Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
 
 You can run the `cf services` command to confirm that your newly-created NFS volume service displays in the output.
-
 
 #### Create an NFSv4 volume with `nfs` Service:
 
@@ -207,6 +205,7 @@ You can run the `cf services` command to confirm that your newly-created NFS vol
 
 With the release of NFS Volume Service 1.5.4, the original fuse-based NFS service has been deprecated in favor of the newer kernel-mount based NFS service and will eventually be removed.  Existing NFS volume service bindings will now be listed as `nfs-legacy`.  To switch over from `nfs-legacy` to the newer `nfs` service, we recommend that you re-create and re-bind your `nfs` service instances.
 
+With the release of NFS Volume Service 2.0.0, the `nfs-legacy` service has been rewritten to use the `nfs` service behind the scenes.  We still recommend that you re-create and re-bind your `nfs` service instances to avoid being affected when the `nfs-legacy` service is eventually retired.
 
 ### <a id='nfs-sample'></a> Deploy and Bind a Sample App
 

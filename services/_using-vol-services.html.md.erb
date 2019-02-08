@@ -2,12 +2,13 @@
   <div class="quick-links">
     <ul>
       <li><a href="#pre">Prerequisite</a></li>
-      <li><a href="#create">Create and Bind a Service Instance</a></li>
-        <ul>
-          <li><a href="#manifest">Bind with an App Manifest</a></li>
-          <li><a href="#mount-path">Mount Path Limitation</a></li>
-        </ul>
-      <li><a href="#app">Access the Volume Service from your App</a></li>
+      <li><a href="#mount-external-filesystem">Mount an External Filesystem</a></li>
+      <ul>
+        <li><a href="#create">Create and Bind a Service Instance</a></li>
+        <li><a href="#app">Access the Volume Service from your App</a></li>
+        <li><a href="#manifest">Bind with an App Manifest</a></li>
+        <li><a href="#mount-path">Mount Path Limitation</a></li>
+      </ul>
       <li><a href="#nfs">NFS Volume Service</a></li>
         <ul>
           <li><a href="#create-nfs">Create an NFS Volume Service</a></li>
@@ -41,7 +42,11 @@ nfs       Existing   Service for connecting to NFS volumes
 
 If no volume service that fits your requirements exists, contact <%= vars.admin %>.
 
-## <a id="create"></a> Create and Bind a Service Instance
+## <a id="mount-external-filesystem"></a> Mount an External Filesystem
+
+The sections below describe how to mount an external filesystem to your app.
+
+### <a id="create"></a> Create and Bind a Service Instance
 
 To use a volume service deployed by <%= vars.admin %>, you must first create an instance of the specific volume service that you need. Follow the instructions below to create this service instance.
 
@@ -75,22 +80,7 @@ To use a volume service deployed by <%= vars.admin %>, you must first create an 
 1. Run `cf restage YOUR-APP` to complete the service binding by restaging your app. Replace `YOUR-APP` with the name of your app.
   <pre class="terminal">$ cf restage my-app</pre>
 
-### <a id='manifest'></a> Bind with an App Manifest
-
-You can also bind volume services using an app manifest as described in the <a href="../deploy-apps/manifest.html#services-block">Services</a> section of the <i>Deploying with App Manifests</i> topic. However, app manifests do not support bind configuration. If you want to bind a volume service using an app manifest, you must specify bind configuration when you create the service instance. The releases that support this are <code>nfs-volume</code> v1.3.1 and later and <code>smb-volume</code> v1.0.0 and later.
-
-### <a id='mount-path'></a> Mount Path Limitation
-
-Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.product_short %> unpacks the droplet. If you specify a mount inside the <code>/app</code> directory, the app may fail to start and parts of the app droplet may be written to the remote file share. This is because <%= vars.product_short %> mounts the volume before moving your compiled app into the droplet. 
-
-If your app requires the shared volume to be placed within the <code>/app</code> directory, do the following:
-
-1. Specify a mount volume in a location outside of the `/app` directory.
-2. Create a symbolic link at app startup time, prior to launching the app. For example:
-  <pre class="terminal">cf push my-app -c "ln -s /var/volume1 /app/volume1 && \$HOME/boot.sh"</pre>
-
-
-## <a id='app'></a> Access the Volume Service from your App
+### <a id='app'></a> Access the Volume Service from your App
 
 To access the volume service from your app, you must know which file path to use in your code. You can view the file path in the details of the service binding, which are available from the [VCAP_SERVICES](../deploy-apps/environment-variable.html#view-env) environment variable. Follow the steps below.
 
@@ -145,6 +135,21 @@ To access the volume service from your app, you must know which file path to use
 		</td>
     </tr>
   </table>
+
+### <a id='manifest'></a> Bind with an App Manifest
+
+You can also bind volume services using an app manifest as described in the <a href="../deploy-apps/manifest.html#services-block">Services</a> section of the <i>Deploying with App Manifests</i> topic. However, app manifests do not support bind configuration. If you want to bind a volume service using an app manifest, you must specify bind configuration when you create the service instance. The releases that support this are <code>nfs-volume</code> v1.3.1 and later and <code>smb-volume</code> v1.0.0 and later.
+
+### <a id='mount-path'></a> Mount Path Limitation
+
+Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.product_short %> unpacks the droplet. If you specify a mount inside the <code>/app</code> directory, the app may fail to start and parts of the app droplet may be written to the remote file share. This is because <%= vars.product_short %> mounts the volume before moving your compiled app into the droplet. 
+
+If your app requires the shared volume to be placed within the <code>/app</code> directory, do the following:
+
+1. Specify a mount volume in a location outside of the `/app` directory.
+2. Create a symbolic link at app startup time, prior to launching the app. For example:
+  <pre class="terminal">cf push my-app -c "ln -s /var/volume1 /app/volume1 && \$HOME/boot.sh"</pre>
+
 
 ## <a id='nfs'></a> NFS Volume Service
 

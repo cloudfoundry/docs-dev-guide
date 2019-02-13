@@ -18,9 +18,9 @@ $ cf marketplace
 Getting services from marketplace in org my-org / space test as user@example.com...
 OK
 
-service               plans                  description
-p-mysql               100mb, 1gb             A DBaaS
-p-riakcs              developer              An S3-compatible object store
+service            plans               description                       broker
+p-mysql            100mb, 1gb          A DBaaS                           mysql-broker
+p-riakcs           developer           An S3-compatible object store     object-store-broker
 </pre>
 
 ## <a id='create'></a>Creating Service Instances ##
@@ -41,6 +41,8 @@ OK
 </pre>
 
 <strong>User Provided Service Instances</strong> provide a way for developers to bind apps with services that are not available in their Cloud Foundry marketplace. For more information, see the <a href="./user-provided.html">User Provided Service Instances</a> topic.
+
+<p class="note"><strong>Note</strong>: When there are two or more services with the same name, provided by multiple brokers, you must specify the broker using <code>-b BROKER</code> flag to the <code>cf create-service</code> command.</p>
 
 ### <a id='arbitrary-params-create'></a> Arbitrary Parameters  ###
 
@@ -89,9 +91,9 @@ $ cf services
 Getting services in org my-org / space test as user@example.com...
 OK
 
-name       service         plan        bound apps              last operation
-mybucket   p-riakcs        developer   myapp                   create succeeded
-mydb       p-mysql         100mb                               create succeeded
+name       service       plan        bound apps   last operation      broker
+mybucket   p-riakcs      developer   myapp        create succeeded    object-store-broker
+mydb       p-mysql       100mb                    create succeeded    mysql-broker
 </pre>
 
 ### <a id='get-details'></a>Get Details for a Particular Service Instance ###
@@ -101,18 +103,24 @@ Details include dashboard urls, if applicable, and operation start and last upda
 <pre class='terminal'>
 $ cf service mydb
 
-Service instance: mydb
-Service: p-mysql
-Plan: 100mb
-Description: MySQL databases on demand
-Documentation url:
-Dashboard: https://p-mysql.example.com/manage/instances/abcd-ef12-3456
+service instance:       mydb
+service:                p-mysql
+plan:                   100mb
+description:            mysql databases on demand
+documentation url:
+dashboard:              https://p-mysql.example.com/manage/instances/abcd-ef12-3456
+service broker:         mysql-broker
 
-Last Operation
-Status: create succeeded
-Message:
-Started: 2015-05-08T22:59:07Z
-Updated: 2015-05-18T22:01:26Z
+This service is not currently shared.
+
+Showing status of last operation from service mydb...
+
+status:    create succeeded
+message:
+started:   2019-02-13T12:02:19Z
+updated:   2019-02-13T12:02:19Z
+
+There are no bound apps for this service.
 </pre>
 
 ## <a id='bind'></a>Bind a Service Instance ##

@@ -1,0 +1,483 @@
+---
+title: App Manifest Attribute Reference
+owner: CLI
+---
+
+This topic describes basic manifest format and the attributes available for deploying apps with manifests. 
+
+For more information, see [Deploying with App Manifests](./manifest.html).
+
+## <a id='minimal-manifest'></a> Manifest Format
+
+Manifests are written in YAML. The manifest below illustrates some YAML conventions, as follows:
+
+* The manifest begins with three dashes.
+* The `applications` block begins with a heading followed by a colon.
+* The app `name` is preceded by a single dash and one space.
+* Subsequent lines in the block are indented two spaces to align with `name`.
+
+<pre>
+---
+applications:
+- name: my-app
+  memory: 512M
+  instances: 2
+</pre>
+
+<p class="note"><strong>Note</strong>: If your app name begins with the dash character (<code>-</code>), you cannot interact with the app using the cf CLI. This is because the cf CLI interprets the dash as a flag.</p>
+
+## <a id='optional-attributes'></a> Application Attributes
+
+This section explains how to describe optional app attributes in manifests. Each of these attributes can also be specified by a command line option. Command line options override the manifest.
+
+<p class='note'><strong>Note:</strong> The route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>, <code>hosts</code>, and <code>no-hostname</code> have been deprecated in favor of the <code>routes</code> attribute. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
+
+### <a id='buildpack'></a> buildpacks
+
+You can refer to a buildpack by name in a manifest or a command line option. The <code>cf buildpacks</code> command lists the buildpacks that you can use.
+
+See below for information on referencing buildpacks in a manifest. The command line option that overrides this attribute is `-b`.
+
+* **Custom buildpacks**: If your app requires a custom buildpack, you can use the `buildpacks` attribute to specify it in a number of ways:
+  * By name: `MY-BUILDPACK`.
+  * By GitHub URL: `https://github.com/cloudfoundry/java-buildpack.git`.
+  * By GitHub URL with a branch or tag: `https://github.com/cloudfoundry/java-buildpack.git#v3.3.0` for the `v3.3.0` tag.
+
+      ```
+      ---
+        ...
+        buildpacks:
+          - buildpack_URL
+      ```
+* **Multiple buildpacks**: If you are using multiple buildpacks, you can provide an additional `-b` flag or add an additional value to your manifest:
+
+      ```
+      ---
+        ...
+        buildpacks:
+          - buildpack_URL
+          - buildpack_URL
+      ```
+
+      <p class="note"><strong>Note</strong>: This feature does not work with <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
+
+      <p class="note"><strong>Note</strong>: You must specify multiple buildpacks in the correct order: the buildpack will use the app start command given by the final buildpack. See <a href=https://github.com/cloudfoundry/multi-buildpack#usageapp>the multi-buildpack repository</a> for more information.</p>
+
+Also see [Pushing an App with Multiple Buildpacks](https://docs.cloudfoundry.org/buildpacks/use-multiple-buildpacks.html) for more information.
+
+### <a id='start-commands'></a> command
+
+Some languages and frameworks require that you provide a custom command to start an app. Refer to the [buildpack](../../buildpacks/index.html) documentation to determine if you need to provide a custom start command.
+
+You can provide the custom start command in your app manifest or on the command line. See <a href="./start-restart-restage.html">Starting, Restarting, and Restaging Apps</a> for more information about how Cloud Foundry determines its default start command.
+
+To specify the custom start command in your app manifest, add it in the `command: START-COMMAND` format as the following example shows:
+
+<pre>
+---
+  ...
+  command: bundle exec rake VERBOSE=true
+</pre>
+
+The start command you specify becomes the default for your app. To return to using the original default start command set by your buildpack, you must explicitly set the attribute to `null` as follows:
+
+
+<pre>
+---
+  ...
+  command: null
+</pre>
+
+On the command line, use the `-c` option to specify the custom start command as the following example shows:
+
+<pre class="terminal">
+$ cf push my-app -c "bundle exec rake VERBOSE=true"
+</pre>
+
+<p class="note"><strong>Note</strong>: The <code>-c</code> option with a value of 'null' forces <code>cf push</code> to use the buildpack start command. See <a href="./start-restart-restage.html#revert">Forcing cf push to use the Buildpack Start Command</a> for more information.</p>
+
+If you override the start command for a Buildpack app, Linux uses
+<code>bash -c YOUR-COMMAND</code> to invoke your app.
+If you override the start command for a Docker app, Linux uses <code>sh -c YOUR-COMMAND</code> to invoke your app.
+Because of this, if you override a start command, you should prefix <code>exec</code> to the final command in your custom composite start command.
+
+An app needs to catch [termination signals](./prepare-to-deploy.html#moving-apps) and clean itself up appropriately. Because of the way that shells manage process trees, the use of custom composite shell commands, particularly those that create child processes using `&`, `&&`, `||`, etc., can prevent your app from receiving signals that are sent to the top level bash process.
+
+To resolve this issue, you can use `exec` to replace the bash process with your own process. For example:
+
+  * `bin/rake cf:on_first_instance db:migrate && bin/rails server -p $PORT -e $RAILS_ENV` The process tree is bash -> ruby, so on graceful shutdown only the bash process receives the TERM signal, not the ruby process.
+
+  * `bin/rake cf:on_first_instance db:migrate && exec bin/rails server -p $PORT -e $RAILS_ENV` Because of the `exec` prefix included on the final command, the ruby process invoked by rails takes over the bash process managing the execution of the composite command. The process tree is only ruby, so the ruby web server receives the TERM signal and can shutdown gracefully for 10 seconds.
+
+In more complex situations, like making a custom buildpack, you may want to use bash `trap`, `wait`, and backgrounded processes to manage your process tree and shut down apps gracefully. In most situations, however, a well-placed `exec` should be sufficient.
+
+### <a id='disk-quota'></a> disk_quota
+
+Use the `disk_quota` attribute to allocate the disk space for your app instance. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case.
+
+<pre>
+---
+  ...
+  disk_quota: 1024M
+</pre>
+
+The command line option that overrides this attribute is `-k`.
+
+### <a id='docker'></a> docker
+
+If your app is contained in a Docker image, then you may use the `docker` attribute to specify it and an optional Docker username.
+
+This attribute is a combination of `push` options that include `--docker-image` and `--docker-username`.
+
+<pre>
+---
+  ...
+  docker:
+    image: docker-image-repository/docker-image-name
+    username: docker-user-name
+</pre>
+
+The command line option `--docker-image` or `-o` overrides `docker.image`.  The command line option `--docker-username` overrides `docker.username`.
+
+The manifest attribute `docker.username` is optional.  If it is used, then the password must be provided in the environment variable `CF_DOCKER_PASSWORD`.  Additionally, if a Docker username is specified, then a Docker image must also be specified.
+
+<p class="note"><strong>Note</strong>: Using the <code>docker</code> attribute in conjunction with the <code>buildpacks</code> or <code>path</code> attributes will result in an error.</p>
+
+
+### <a id='health-check-http-endpoint'></a> health-check-http-endpoint
+
+Use the `health-check-http-endpoint` attribute to customize the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint` attribute,
+it uses endpoint '/'.
+
+<pre>
+---
+  ...
+  health-check-type: http
+  health-check-http-endpoint: /health
+</pre>
+
+### <a id='health-check-type'></a> health-check-type
+
+Use the `health-check-type` attribute to set the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type` attribute,
+it defaults to `port`.
+
+<pre>
+---
+  ...
+  health-check-type: port
+</pre>
+
+The command line option that overrides this attribute is `-u`.
+
+The value of `none` is deprecated in favor of `process`.
+
+### <a id='memory'></a> memory
+
+Use the `memory` attribute to specify the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case. For example:
+
+<pre>
+---
+  ...
+  memory: 1024M
+</pre>
+
+The default memory limit is 1G. You might want to specify a smaller limit to conserve <%= vars.quota_resource %> if you know that your app instances do not require 1G of memory.
+
+The command line option that overrides this attribute is `-m`.
+
+### <a id='no-route'></a>no-route
+
+By default, `cf push` assigns a route to every app. But, some apps process data while running in the background and should not be assigned routes.
+
+You can use the `no-route` attribute with a value of `true` to prevent a route from being created for your app.
+
+<pre>
+---
+  ...
+  no-route: true
+</pre>
+The command line option that overrides this attribute is `--no-route`.
+
+In the Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check and Cloud Foundry marks it as crashed. To prevent this, disable the port-based health check with `cf set-health-check APP_NAME process`.
+
+To remove a route from an existing app, perform the following steps:
+
+1. Remove the route using the `cf unmap-route` command.
+1. Push the app again with the `no-route: true` attribute in the manifest or the `--no-route` command line option.
+
+For more information, see [Describing Multiple Apps with One Manifest](#multi-apps) below.
+
+### <a id='path'></a> path
+
+You can use the `path` attribute to tell Cloud Foundry the directory location where it can find your app.
+
+The directory specified as the `path`, either as an attribute or as a parameter on the command line, becomes the location where the buildpack `Detect` script executes.
+
+The command line option that overrides this attribute is `-p`.
+
+<pre>
+---
+  ...
+  path: /path/to/app/bits
+</pre>
+
+For more information, see the [How cf push Finds the App](#find-app) topic.
+
+### <a id='random-route'></a> random-route
+
+If you push your app without specifying any route-related CLI options or app manifest flags, the cf CLI attempts to generate a route based on the app name, which can cause collisions.
+
+You can use the `random-route` attribute to generate a unique route and avoid name collisions.
+When you use `random-route`, the cf CLI generates an HTTP route with a random host (if `host` is not set) or a TCP route with an unused port number.
+
+See the following example use cases:
+
+* You deploy the same app to multiple spaces for testing purposes. In this situation, you can use `random-route` to randomize routes declared with the route attribute in the app manifest.
+* You use an app manifest for a classroom training exercise in which multiple users deploy the same app to the same space.
+
+The command line option that overrides this attribute is `--random-route`.
+
+<pre>
+---
+  ...
+  random-route: true
+</pre>
+
+### <a id='routes'></a> routes
+
+Use the `routes` attribute to provide multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
+
+This attribute is a combination of `push` options that include `--hostname`, `-d`, and `--route-path`.
+
+<pre>
+---
+  ...
+  routes:
+  - route: example.com
+  - route: www.example.com/foo
+  - route: tcp-example.com:1234
+</pre>
+
+#### <a id='manifest-attibutes-2'></a> Manifest Attributes
+The `routes` attribute cannot be used in conjunction with the following attributes: `host`, `hosts`, `domain`, `domains`, and `no-hostname`. An error will result.
+
+#### <a id='push-flag-options'></a> Push Flag Options
+This attribute has unique interactions with different command line options.
+<table border="1" class="nice" >
+<tr>
+<th>Push Flag Option</th>
+<th>Resulting Behaviour</th>
+</tr>
+<tr>
+<td><code>--no-route</code></td>
+<td>All declared routes are ignored.</td>
+</tr>
+<tr>
+<td><code>-d</code></td>
+<td>Overrides DOMAIN part of all declared HTTP and TCP routes.</td>
+</tr>
+<tr>
+<td><code>--hostname, -n</code></td>
+<td>Sets or overrides HOSTNAME in all HTTP routes. <br />
+It has no impact on TCP routes.</td>
+</tr>
+<tr>
+<td><code>--route-path</code></td>
+<td>Sets or overrides the PATH in all HTTP routes.<br />
+It has no impact on TCP routes.</td>
+</tr>
+<tr>
+<td><code>--random-route</code></td>
+<td>Sets or overrides the HOSTNAME in all HTTP routes.<br />
+Sets or overrides the PORT in all TCP routes.<br />
+The PORT and HOSTNAME will be randomly generated.</td>
+</tr>
+<tr>
+</table>
+
+### <a id='stack'></a> stack
+
+Use the `stack` attribute to specify which stack to deploy your app to.
+
+To see a list of available stacks, run `cf stacks` from the cf CLI.
+
+<pre>
+---
+  ...
+  stack: cflinuxfs3
+</pre>
+
+The command line option that overrides this attribute is `-s`.
+
+### <a id='timeout'></a> timeout
+
+The `timeout` attribute defines the number of seconds that Cloud Foundry allocates for starting your app. It is related to the `health-check-type` attribute.
+
+For example:
+
+<pre>
+---
+  ...
+  timeout: 80
+</pre>
+
+You can increase the timeout length for very large apps that require more time to start. The `timeout` attribute defaults to 60, but you can set it to any value up to the Cloud Controller's `cc.maximum_health_check_timeout` property.
+
+`cc.maximum_health_check_timeout` defaults to 180, but your Cloud Foundry operator can set to any value.
+
+The command line option that overrides the timeout attribute is `-t`.
+
+<p class='warning'><strong>WARNING:</strong> Cloud Controller will report a validation error with the maximum limit if you to configure <code>timeout</code> with a value greater than it.</p>
+
+
+## <a id='env-block'></a> Environment Variable Attribute
+
+The `env` block consists of a heading, then one or more environment variable/value pairs.
+
+For example:
+
+<pre>
+---
+  ...
+  env:
+    RAILS_ENV: production
+    RACK_ENV: production
+</pre>
+
+`cf push` deploys the app to a container on the server. The variables belong to the container environment.
+
+While the app is running, you can modify environment variables.
+
+* View all variables: `cf env my-app`
+* Set an individual variable: `cf set-env my-app my-variable_name my-variable_value`
+* Unset an individual variable: `cf unset-env my-app my-variable_name my-variable_value`
+
+Environment variables interact with manifests in the following ways:
+
+* When you deploy an app for the first time, Cloud Foundry reads the variables described in the environment block of the manifest and adds them to
+the environment of the container where the app is staged, and the environment of the container where the app is deployed.
+
+* When you stop and then restart an app, its environment variables persist.
+
+
+## <a id='services-block'></a> Services Attribute
+
+Apps can bind to services such as databases, messaging, and key-value stores.
+
+Apps are deployed into App Spaces. An app can only bind to services instances that exist in the target App Space before the app is deployed.
+
+The `services` block consists of a heading, then one or more service instance names.
+
+Whoever creates the service chooses the service instance names. These names can convey logical information, as in `backend_queue`, describe the nature of the service, as in `mysql_5.x`, or do neither, as in the example below.
+
+<pre>
+---
+  ...
+  services:
+   - instance_ABC
+   - instance_XYZ
+</pre>
+
+Binding to a service instance is a special case of setting an environment variable, namely `VCAP_SERVICES`. See the [Bind a Service](../services/application-binding.html#bind) section of the _Delivering Service Credentials to an App_ topic.
+
+
+
+
+## <a id='deprecated'></a> Deprecated App Manifest Features
+
+These app manifest features have been deprecated in favor of other options, as described below.
+
+<p class="note warning"><strong>WARNING:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated features along with the feature that replaces it.</p>
+
+### <a id='yaml-anchors'></a> YAML Anchors Replace Promoted Content
+
+Previously, you could manage duplicated settings in YAML files by “promoting” the duplicate content — that is, by moving it to above the apps block, where it need appear only once.
+
+The following example illustrates how promoted content was used to manage duplicated settings.
+
+<pre>
+---
+# all apps use these settings and services
+domain: shared-domain.example.com
+memory: 1G
+instances: 1
+services:
+- clockwork-mysql
+applications:
+- name: springtock
+  host: tock09876
+  path: ./spring-music/build/libs/spring-music.war
+- name: springtick
+  host: tick09875
+  path: ./spring-music/build/libs/spring-music.war
+</pre>
+
+Now, you can use YAML aliases instead.
+
+The following example illustrates how to declare shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an alias.
+
+<pre>
+---
+defaults: &amp;defaults
+  buildpacks:
+    - staticfile_buildpack
+  memory: 1G
+
+
+applications:
+- name: bigapp
+  &lt;&lt;: *defaults
+- name: smallapp
+  &lt;&lt;: *defaults
+  memory: 256M
+</pre>
+
+When pushing the app, make explicit the attributes in each app’s declaration. To do this, assign the anchors and include the app-level attributes with YAML aliases in each app declaration.
+
+### <a id='route-attribute'></a> Attribute routes Replaces domain, domains, host, hosts, and no-hostname
+
+Previously, you could specify routes by listing them all at once using the `routes` attribute, or by using their hosts and domains as shown below.
+
+<pre>
+---
+applications
+- name: webapp
+  host: www
+  domains:
+  - example.com
+  - example.io
+</pre>
+
+The following route component attributes have been deprecated:
+<ul>
+  <li><code>domain</code></li>
+  <li><code>domains</code></li>
+  <li><code>host</code></li>
+  <li><code>hosts</code></li>
+  <li><code>no-hostname</code></li>
+</ul>
+
+Now you can only specify routes by using the `routes` attribute:
+
+<pre>
+---
+applications
+- name: webapp
+  routes:
+  - route: www.example.com/foo
+  - route: tcp.example.com:1234
+</pre>
+
+This app manifest feature has been deprecated, and a replacement option is under consideration.
+
+### <a id='inheritance-deprecated'></a> Inheritance
+
+This feature has been deprecated, and has been replaced by [Variable Substitution](#variable-substitution).
+
+With inheritance, child manifests inherited configurations from a parent manifest, and the child manifests could use inherited configurations as provided, extend them, or override them. This feature has been deprecated, and has been replaced by [Variable Substitution](#variable-substitution).
+
+
+### <a id='buildpack-deprecated'></a> Buildpack Field in Manifest Is Deprecated
+
+The singular `buildpack` field in manifests is deprecated. It has been replaced by `buildpacks`, which is now an array which takes as a value [multiple buildpacks](#buildpack).
+

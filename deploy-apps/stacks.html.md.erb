@@ -8,21 +8,24 @@ owner:
 
 <strong><%= modified_date %></strong>
 
-This topic explains how to restage apps on a new stack. It also provides a description of stacks and lists the supported stacks on <%= vars.product_short %> <%= vars.current_major_version %>. 
+This topic explains how to restage apps on a new stack. It also provides a description of stacks and lists the supported stacks on <%= vars.product_short %> v<%= vars.current_major_version %>. 
 
-##<a id='overview'></a>Overview ##
+
+## <a id='overview'></a> Overview ##
 
 A stack is a prebuilt root file system (rootfs) that supports a specific operating system. For example, Linux-based systems need `/usr` and `/bin` directories at their root. The stack works in tandem with a buildpack to support apps running in compartments. Under Diego architecture, cell VMs can support multiple stacks.
 
-<p class="note"><strong>Note</strong>: Docker apps do not use stacks.</p>
+<p class="note"><strong>Note:</strong> Docker apps do not use stacks.</p>
 
-##<a id='available-stacks'></a>Available Stacks ##
 
-<%= vars.product_short %> <%= vars.current_major_version %> includes support for cflinuxfs3. The Linux `cflinuxfs3` stack is derived from Ubuntu Bionic 18.04. Refer to the GitHub stacks page for supported [libraries](https://github.com/cloudfoundry/cflinuxfs3/blob/master/receipt.cflinuxfs3.x86_64).
+## <a id='available-stacks'></a> Available Stacks
+
+<%= vars.product_short %> v<%= vars.current_major_version %> includes support for `cflinuxfs3`. The Linux `cflinuxfs3` stack is derived from Ubuntu Bionic 18.04. For more information about supported libraries, see the [GitHub stacks page](https://github.com/cloudfoundry/cflinuxfs3/blob/master/receipt.cflinuxfs3.x86_64).
 
 <%= vars.custom_stack %>
 
-##<a id='cli-commands'></a>Restaging Apps on a New Stack ##
+
+## <a id='cli-commands'></a> Restaging Apps on a New Stack
 
 For security, stacks receive regular updates to address Common Vulnerabilities and Exposures ([CVEs](http://www.ubuntu.com/usn/)). Apps pick up on these stack changes through new releases of <%= vars.product_short %>. However, if your app links statically to a library provided in the rootfs, you may have to manually restage it to pick up the changes.
 
@@ -69,6 +72,7 @@ To restage an app on a new stack, do the following:
         \#0  running  2015-04-08 04:41:54 PM   0.0%   57.3M of 1G   128.8M of 1G
         </pre>
 
-##<a id='stacks-api'></a>Stacks API ##
 
-For API information, review the Stacks section of the [Cloud Foundry API Documentation](http://apidocs.cloudfoundry.org).
+## <a id='stacks-api'></a> Stacks API
+
+For API information, see the _Stacks_ section of the [Cloud Foundry API Documentation](http://apidocs.cloudfoundry.org).

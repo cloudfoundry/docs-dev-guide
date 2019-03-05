@@ -26,7 +26,9 @@ A stack is a prebuilt root file system (rootfs) that supports a specific operati
 
 For security, stacks receive regular updates to address Common Vulnerabilities and Exposures ([CVEs](http://www.ubuntu.com/usn/)). Apps pick up on these stack changes through new releases of <%= vars.product_short %>. However, if your app links statically to a library provided in the rootfs, you may have to manually restage it to pick up the changes.
 
-It can be difficult to know what libraries an app statically links to, and it depends on the languages you are using. One example is an app that uses a Ruby or Python binary, and links out to part of the C standard library. If the C library requires an update, you may need to recompile the app and restage it as follows:
+It can be difficult to know what libraries an app statically links to, and it depends on the languages you are using. One example is an app that uses a Ruby or Python binary, and links out to part of the C standard library. If the C library requires an update, you may need to recompile the app and restage it.
+
+To restage an app on a new stack, do the following:
 
 1. Use the [cf stacks](http://cli.cloudfoundry.org/en-US/cf/stacks.html) command to list the stacks available in a deployment.
 
@@ -40,25 +42,32 @@ It can be difficult to know what libraries an app statically links to, and it de
     cflinuxfs3      Cloud Foundry Linux-based filesystem - Ubuntu Bionic 18.04 LTS
     </pre>
 
-1. To change your stack and restage your app, use the [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command. For example, to restage your app on the stack `cflinuxfs3` you can run `cf push MY-APP -s cflinuxfs3`:
-    <pre class='terminal'>
-    $ cf push MY-APP -s cflinuxfs3
-    Using stack cflinuxfs3...
-    OK
-    Creating app MY-APP in org MY-ORG / space development as developer@example<span>.</span>com...
-    OK
-    ...
-    requested state: started
-    instances: 1/1
-    usage: 1G x 1 instances
-    urls: MY-APP.cfapps.io
-    last uploaded: Wed Apr 8 23:40:57 UTC 2015
-        state    since                    cpu    memory        disk
-    \#0  running  2015-04-08 04:41:54 PM   0.0%   57.3M of 1G   128.8M of 1G
-    </pre>
+1. To change your stack and restage your app, run the following command:
 
-    To specify a different stack, replace `cflinuxfs3` with the name of the stack in the `-s STACKNAME` parameter of the command.
+    ```
+    cf push MY-APP -s STACK-NAME
+    ```
 
+    Where:
+    - MY-APP is the name of the app.
+    - STACK-NAME is the name of the new stack.
+
+    For example, to restage your app on the stack `cflinuxfs3`, run `cf push MY-APP -s cflinuxfs3`:
+        <pre class='terminal'>
+        $ cf push MY-APP -s cflinuxfs3
+        Using stack cflinuxfs3...
+        OK
+        Creating app MY-APP in org MY-ORG / space development as developer@example<span>.</span>com...
+        OK
+        ...
+        requested state: started
+        instances: 1/1
+        usage: 1G x 1 instances
+        urls: MY-APP.cfapps.io
+        last uploaded: Wed Apr 8 23:40:57 UTC 2015
+            state    since                    cpu    memory        disk
+        \#0  running  2015-04-08 04:41:54 PM   0.0%   57.3M of 1G   128.8M of 1G
+        </pre>
 
 ##<a id='stacks-api'></a>Stacks API ##
 

@@ -8,6 +8,10 @@ owner:
 
 <strong><%= modified_date %></strong>
 
+This topic explains how to restage apps on a new stack. It also provides a description of stacks and lists the supported stacks on <%= vars.product_short %> <%= vars.current_major_version %>. 
+
+##<a id='overview'></a>Overview ##
+
 A stack is a prebuilt root file system (rootfs) that supports a specific operating system. For example, Linux-based systems need `/usr` and `/bin` directories at their root. The stack works in tandem with a buildpack to support apps running in compartments. Under Diego architecture, cell VMs can support multiple stacks.
 
 <p class="note"><strong>Note</strong>: Docker apps do not use stacks.</p>

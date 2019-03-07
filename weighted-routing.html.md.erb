@@ -1,0 +1,74 @@
+---
+title: Configure and update weights mapped to a route
+owner: Routing
+---
+
+Now that we have the Istio routing tier set up, we can now push apps with routes in the istio domain or map routes to apps in the istio domain. We have not yet integrated with the CF CLI but have enabled Cloud Controller v3 API to support weighted routes.
+
+## About Weighted Routing
+
+Weights for each individual route mapping are calculated as a ratio of the individual route mapping weight to the sum of all weights for that particular route. 
+
+See the following example:
+
+<table>
+	<tr>
+		<th>App</th>
+		<th>weight</th>
+		<th>formula</th>
+		<th>percentage of requests</th>
+	</tr>
+	<tr>
+		<td>app-a</td>
+		<td>1</td>
+		<td>(1/(1+3))</td>
+		<td>25%</td>
+	</tr>
+	<tr>
+		<td>app-b</td>
+		<td>3</td>
+		<td>(3/(1+3))</td>
+		<td>75%</td>
+	</tr>
+</table>
+
+The weights can be any integer from 1 to 128. You are not allowed to exceed 100 routes mappings for a particular route. This may result in some apps not receiving any requests. 
+
+You can also unmap the route from one of the apps, and then observe 100% of the requests going to just one application thus simulating a migration.
+
+## Procedure
+
+1. Map the route to your app using the CF CLI:
+	```
+	cf map-route app1 istio.apps-domain.com -n app1
+	```
+
+1. Get the GUID for the app:
+	```
+	cf app app1 --guid
+	```
+
+1. Get the guid for the route mapping:
+	1. `cf curl /v2/routes?q=host:app1` to get the ROUTE_GUID from the metadata, which will help you get the `ROUTE_MAPPING_GUID`
+	1. `cf curl /v2/routes/<ROUTE_GUID>/route_mappings` to get your route mappings, and the ROUTE_MAPPING_GUID. The route mapping you need will have an APP_GUID and ROUTE_GUIDs matching the app GUID and route GUIDs you just found.  
+
+1. Update the route mapping with the new weight.
+	```
+	cf curl /v3/route_mappings/<ROUTE_MAPPING_GUID> -X PATCH -d ‘{“weight”: 10}’
+	```
+
+Once you have two or more apps mapped to the same route with weights, you can use curl to see the distribution of the requests:
+
+For example, given the following
+
+```
+$ cf apps
+Getting apps in org shubha / space test as admin...
+OK
+ 
+name     requested state   instances memory   disk urls
+go-app   started         1/1 32M   32M go-app.istio.istio-acceptance.routing.cf-app.com
+dora     started         1/1 1G   1G go-app.istio.istio-acceptance.routing.cf-app.com
+```
+Running Curl  go-app.istio.istio-acceptance.routing.cf-app.com should result in 50% of the requests going to go-app and 50% of the requests going to dora.
+

@@ -1,74 +1,122 @@
 ---
-title: Configure and update weights mapped to a route
+title: Using Weighted Routing (Beta)
 owner: Routing
 ---
 
-Now that we have the Istio routing tier set up, we can now push apps with routes in the istio domain or map routes to apps in the istio domain. We have not yet integrated with the CF CLI but have enabled Cloud Controller v3 API to support weighted routes.
+This topic provides information about weighted routing and how to configure weighted routing for your apps.  
 
-## About Weighted Routing
+## <a id="overview"></a> Overview
 
-Weights for each individual route mapping are calculated as a ratio of the individual route mapping weight to the sum of all weights for that particular route. 
+The weighted routing feature is available for Cloud Foundry deployments that include the Istio routing tier. For more information, see [Using Envoy and Istio for Ingress to Cloud Foundry](../running/envoy-istio-ingress.html).
+
+Weighted routing allows you to map multiple apps to the same route and control the amount of traffic sent to each of them. Some use cases include include A/B testing or slowly rolling out new features. 
+
+### <a id="calculation"></a> How Weights are Calculated
+
+Cloud Foundry uses numeric weight values to calculate the percentage of requests that each app receives. For a route with multiple apps mapped, the percentage of requests for a given app is calculated as follows:
+
+ _weight of app_ / _sum of the weights of all apps mapped to route_
 
 See the following example:
 
 <table>
 	<tr>
 		<th>App</th>
-		<th>weight</th>
-		<th>formula</th>
-		<th>percentage of requests</th>
+		<th>Weight</th>
+		<th>Formula</th>
+		<th>Percentage of Requests</th>
 	</tr>
 	<tr>
 		<td>app-a</td>
 		<td>1</td>
-		<td>(1/(1+3))</td>
+		<td>1/(1+3)</td>
 		<td>25%</td>
 	</tr>
 	<tr>
 		<td>app-b</td>
 		<td>3</td>
-		<td>(3/(1+3))</td>
+		<td>3/(1+3)</td>
 		<td>75%</td>
 	</tr>
 </table>
 
-The weights can be any integer from 1 to 128. You are not allowed to exceed 100 routes mappings for a particular route. This may result in some apps not receiving any requests. 
+In this example, you can also unmap the route from one of the apps and observe 100% of the requests going to just one app, which simulates a migration.
 
-You can also unmap the route from one of the apps, and then observe 100% of the requests going to just one application thus simulating a migration.
+### <a id="considerations"></a> Considerations for Working with Routing Weights
 
-## Procedure
+Consider the following when working with routing weights:
 
-1. Map the route to your app using the CF CLI:
+* The default weight is 1. This means that if multiple apps are mapped to the same route and their weights are not updated, traffic is equally distributed between them.  
+* The percentage of requests described above is not applied exactly, but over time the requests reflect the percentage.
+* You cannot set a weight to 0. You can stop weighting traffic by deleting apps or unmapping apps from the route. 
+* You cannot exceed 100 routes mappings for a particular route. This could result in some apps not receiving any requests.
+
+
+## <a id="procedure"></a> Configure Routing Weights
+
+<p class="note"><strong>Note</strong>: This feature does not yet have cf CLI integration. The steps for updating a routing weight require you to curl the Cloud Controller v3 API.</p>
+
+This section describes how to configure routing weights. Repeat the steps below for each app that you want to map to the same route. 
+
+
+1. Map a route to your app using the shared domain created for Istio:
+
 	```
-	cf map-route app1 istio.apps-domain.com -n app1
+	cf map-route APP-NAME SHARED-ISTIO-DOMAIN -n HOSTNAME
+	```
+	Where:
+	* `APP-NAME` is the name of the app
+	* `SHARED-ISTIO-DOMAIN` is the shared Istio domain configured by your operator. 
+	* `HOSTNAME` is the hostname to use for creating the route. The format of the route is `HOSTNAME.SHARED-ISTIO-DOMAIN`. 
+
+	For example:
+	<pre class="terminal">
+	$ cf map-route app1 istio.apps-domain.com -n app1
+	</pre>
+
+1. Get the GUID of the app:
+
+	```
+	cf app APP-NAME --guid
 	```
 
-1. Get the GUID for the app:
+
+1. Get the GUID of the route:
+	
 	```
-	cf app app1 --guid
+	cf curl /v2/routes?q=host:APP-NAME
+	``` 
+	The GUID of the route is located after `"metadata": {"guid":`. 
+
+1. List the route mappings associated with the route:
+	
 	```
+	cf curl /v2/routes/ROUTE_GUID/route_mappings
+	``` 
+	Where `ROUTE_GUID` is the GUID you got from the previous step. 
+	
+1. In the output from the previous step, find the route mapping that contains the `app_guid` from when you ran `cf app --guid`. Record the GUID of the route mapping. 
 
-1. Get the guid for the route mapping:
-	1. `cf curl /v2/routes?q=host:app1` to get the ROUTE_GUID from the metadata, which will help you get the `ROUTE_MAPPING_GUID`
-	1. `cf curl /v2/routes/<ROUTE_GUID>/route_mappings` to get your route mappings, and the ROUTE_MAPPING_GUID. The route mapping you need will have an APP_GUID and ROUTE_GUIDs matching the app GUID and route GUIDs you just found.  
+1. Update the route mapping with a new weight:
 
-1. Update the route mapping with the new weight.
 	```
-	cf curl /v3/route_mappings/<ROUTE_MAPPING_GUID> -X PATCH -d ‘{“weight”: 10}’
+	cf curl /v3/route_mappings/ROUTE-MAPPING-GUID -X PATCH -d '{"weight": WEIGHT}'
 	```
+	Where:
+	* `ROUTE_MAPPING_GUID` is the GUID you got from the previous step.
+	* `WEIGHT` is an integer from 1 to 128.  
 
-Once you have two or more apps mapped to the same route with weights, you can use curl to see the distribution of the requests:
+## <a id="observve"></a> Observe the Request Distribution
 
-For example, given the following
+Once you have two or more apps mapped to the same route, you can use curl to observe the distribution of the requests. Consider an example with the following apps:
 
-```
+<pre class="terminal">
 $ cf apps
-Getting apps in org shubha / space test as admin...
+Getting apps in org myorg / space test as admin...
 OK
  
 name     requested state   instances memory   disk urls
-go-app   started         1/1 32M   32M go-app.istio.istio-acceptance.routing.cf-app.com
-dora     started         1/1 1G   1G go-app.istio.istio-acceptance.routing.cf-app.com
-```
-Running Curl  go-app.istio.istio-acceptance.routing.cf-app.com should result in 50% of the requests going to go-app and 50% of the requests going to dora.
-
+go-app   started           1/1       32M      32M  go-app.istio.example.com
+dora     started           1/1       1G       1G   go-app.istio.example.com
+</pre>
+Running `curl  go-app.istio.example.com` results in 50% of the requests going to `go-app` and 50% of the requests going to `dora`.

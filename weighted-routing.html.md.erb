@@ -9,7 +9,7 @@ This topic provides information about weighted routing and how to configure weig
 
 The weighted routing feature is available for Cloud Foundry deployments that include the Istio routing tier. For more information, see [Using Envoy and Istio for Ingress to Cloud Foundry](../running/envoy-istio-ingress.html).
 
-Weighted routing allows you to map multiple apps to the same route and control the amount of traffic sent to each of them. Some use cases include include A/B testing or slowly rolling out new features. 
+Weighted routing allows you to map multiple apps to the same route and control the amount of traffic sent to each of them. Some use cases include include A/B testing, canary releases, or rolling out features over time to incremental user-bases. 
 
 ### <a id="calculation"></a> How Weights are Calculated
 
@@ -56,23 +56,52 @@ Consider the following when working with routing weights:
 
 <p class="note"><strong>Note</strong>: This feature does not yet have cf CLI integration. The steps for updating a routing weight require you to curl the Cloud Controller v3 API.</p>
 
-This section describes how to configure routing weights. Repeat the steps below for each app that you want to map to the same route. 
+You can configure routing weights when creating or updating a route mapping, Follow the procedure below that corresponds to your use case. 
 
+You can repeat the steps for each app that you want to receive a portion of requests at the same route.  
 
-1. Map a route to your app using the shared domain created for Istio:
+### <a id="new"></a> Create a New Route Mapping
+
+This procedure describes how to use `cf curl` to map a route to an app and assign a weight.  
+
+1. If you do not already have one, create a route. The route must use the shared domain created for Istio:
 
 	```
-	cf map-route APP-NAME SHARED-ISTIO-DOMAIN -n HOSTNAME
+	cf create-route SPACE-NAME SHARED-ISTIO-DOMAIN -n HOSTNAME
 	```
 	Where:
-	* `APP-NAME` is the name of the app
+	* `SPACE-NAME` is the space in which you want to create the route. 
 	* `SHARED-ISTIO-DOMAIN` is the shared Istio domain configured by your operator. 
 	* `HOSTNAME` is the hostname to use for creating the route. The format of the route is `HOSTNAME.SHARED-ISTIO-DOMAIN`. 
 
-	For example:
-	<pre class="terminal">
-	$ cf map-route app1 istio.apps-domain.com -n app1
-	</pre>
+1. Get the GUID of your route:
+
+	```
+	cf curl /v2/routes?q=host:HOSTNAME
+	```
+	Where `HOSTNAME` is the hostname you specified when creating the route.
+
+1. Get the GUID of the app that you want to map the route to:
+
+	```
+	cf app APP-NAME --guid
+	```
+
+1. Create a route mapping and assign a weight:
+
+	```
+	cf curl /v3/route_mappings -X POST -d '{"app_guid": "APP-GUID", "route_guid": "ROUTE-GUID", "weight": WEIGHT}'
+	```
+	Where:
+	* `APP-GUID` is the GUID you got previously
+	* `ROUTE-GUID` is the GUID you got previously
+	* `WEIGHT` is an integer from 1 to 128
+
+### <a id="existing"></a> Update an Existing Route Mapping
+
+This procedure requires that you have mapped an app to a route in the shared Istio domain either using `cf map-route`, or `cf curl` as described in [Create a New Route Mapping](#new) above. 
+
+To update an existing route mapping with a new weight, do the following:
 
 1. Get the GUID of the app:
 
@@ -84,8 +113,9 @@ This section describes how to configure routing weights. Repeat the steps below 
 1. Get the GUID of the route:
 	
 	```
-	cf curl /v2/routes?q=host:APP-NAME
+	cf curl /v2/routes?q=host:HOSTNAME
 	``` 
+	Where `HOSTNAME` is the hostname you specified when creating the route. This is generally the same as the app name.<br> 
 	The GUID of the route is located after `"metadata": {"guid":`. 
 
 1. List the route mappings associated with the route:
@@ -119,4 +149,4 @@ name     requested state   instances memory   disk urls
 go-app   started           1/1       32M      32M  go-app.istio.example.com
 dora     started           1/1       1G       1G   go-app.istio.example.com
 </pre>
-Running `curl  go-app.istio.example.com` results in 50% of the requests going to `go-app` and 50% of the requests going to `dora`.
+If `go-app` has a weight of 9 and `dora` has a weight of 1, then running `curl  go-app.istio.example.com` results in observing 90% of the requests go to `go-app` and 10% to `dora`.

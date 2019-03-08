@@ -26,6 +26,75 @@ applications:
 
 <p class="note"><strong>Note</strong>: If your app name begins with the dash character (<code>-</code>), you cannot interact with the app using the cf CLI. This is because the cf CLI interprets the dash as a flag.</p>
 
+### <a id='variable-substitution'></a> Add Variables to a Manifest
+
+You can use variables to create app manifests with values shared across all applicable environments in combination with references to environment-specific differences defined in separate files. 
+
+In addition, using variables enables you to store sensitive data in a separate file that the app manifest would reference, making the security sensitive data easier to manage and keep secure.
+
+To add variables to an app manifest, do the following:
+
+1. Create a file called `vars.yml`. 
+
+1. Add attributes to your `vars.yml` file. See the following example:
+
+    ```
+    instances: 2
+    memory: 1G
+    ```
+
+1. Add the variables to your app manifest file using the following format: `((VARIABLE-NAME)). See the following example:
+
+    ```
+    ---
+    applications:
+    - name: test-app
+      instances: ((instances))
+      memory: ((memory))
+      buildpack: go_buildpack
+      env:
+        GOPACKAGENAME: go_calls_ruby
+      command: go_calls_ruby
+    ```
+
+    <p class="note"><strong>Note</strong>: You can also use variables for partial values. For example, you can specify <code>host</code> in your variables file and <code>- route: ((host)).env.com</code> in your manifest file.</p>
+
+1. Run `cf push`:
+
+    ```
+    cf push --vars-file /PATH/vars.yml
+    ```
+    Where `PATH` is the path to the file you created. 
+
+### <a id='minimize-duplication'></a> Minimize Duplication with YAML Anchors
+
+<p class='note'><strong>Note:</strong> Promoted content has been deprecated in favor of YAML anchors. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
+
+In manifests where multiple apps share settings or services, you may see duplicated content. While the manifests still work, duplication increases the risk of typographical errors, which cause deployments to fail.
+
+You can declare shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an alias.
+
+<pre>
+---
+defaults: &amp;defaults
+  buildpacks:
+    - staticfile_buildpack
+  memory: 1G
+
+
+applications:
+- name: bigapp
+  &lt;&lt;: *defaults
+- name: smallapp
+  &lt;&lt;: *defaults
+  memory: 256M
+</pre>
+
+This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpack but with 256M memory for smallapp and 1G for bigapp.
+
+
+
+
 ## <a id='optional-attributes'></a> Application Attributes
 
 This section explains how to describe optional app attributes in manifests. Each of these attributes can also be specified by a command line option. Command line options override the manifest.

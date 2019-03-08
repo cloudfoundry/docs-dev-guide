@@ -9,17 +9,24 @@ owner:
 
 This topic provides basic procedures and guidance for deploying apps with a manifest file. 
 
+## <a id='overview'></a> Overview
+
 `cf push` deploys apps with a default number of instances, disk space limit, and memory limit. You can override the default values by invoking `cf push` with flags and values, or by specifying key-value pairs in a manifest file. Manifests provide consistency and reproducibility, and can help you automate deploying apps.
+
+When you push an app for the first time, Cloud Foundry applies default values to any attributes that you do not set in a manifest or `cf push` command line options.
+
+`cf push` follows rules of precedence when setting attribute values:
+
+* Manifests override most recent values, including defaults and values set by commands such as `cf scale`.
+* Command line options override manifests.
 
 For a full list of attributes you can specify in an app manifest, see [App Manifest Attribute Reference](./manifest-attributes.html).
 
 ## <a id='procedure'></a> Deploy an App with a Manifest
 
-This section describes how to deploy an app with a manifest. 
-
-### <a id='procedure'></a> Procedure
-
 The following procedure describes how to deploy an app with a minimal manifest. For more information about manifest format and attributes, see [App Manifest Attribute Reference](./manifest-attributes.html). 
+
+To deploy an app with a manifest, do the following:
 
 1. Create a `manifest.yml` file in the root directory of your app. 
   <p class="note"><strong>Note</strong>: By default, the cf push command looks for a manifest file in the app directory. However, you can create a manifest file in a different location and use the <code>-f</code> flag when you run <code>cf push</code></p>
@@ -34,22 +41,21 @@ The following procedure describes how to deploy an app with a minimal manifest. 
 
 1. Run `cf push`. If you specify any command line options, they override the values specified in the manifest. See the following section.
 
-### <a id='cli-options'></a> Command Line Options Override Manifests
-
-When you push an app for the first time, Cloud Foundry applies default values to any attributes that you do not set in a manifest or `cf push` command line options.
-
-`cf push` follows rules of precedence when setting attribute values:
-
-* Manifests override most recent values, including defaults and values set by commands such as `cf scale`.
-* Command line options override manifests.
 
 ## <a id='multi-apps'></a> Deploy Multiple Apps with One Manifest
 
-You can deploy multiple apps with one `cf push` command by describing the apps in a single manifest.  
+This procedure describes how to deploy multiple apps with a minimal manifest. For more information about manifest format and attributes, see [App Manifest Attribute Reference](./manifest-attributes.html). 
 
-###  <a id='multi-apps-procedure'></a> Procedure
+Follow these general rules when deploying multiple apps with one manifest:
 
-The following procedure describes how to deploy multiple apps with a minimal manifest. For more information about manifest format and attributes, see [App Manifest Attribute Reference](./manifest-attributes.html). 
+* Use a `no-route` line in the description of any app that provides background services to another app.
+
+* Do not use any command line options with `cf push`, with the following exception:
+  * If your manifest is not named `manifest.yml` or not in the current working directory, use the `-f` command line option.
+
+* To push a single app rather than all of the apps described in the manifest, provide the desired app name by running `cf push my-app`.
+
+To deploy multiple apps with a manifest, do the following:
 
 <p class="note"><strong>Note</strong>: Each app must be in a subdirectory under the same parent directory.</p>
 
@@ -73,84 +79,6 @@ The following procedure describes how to deploy multiple apps with a minimal man
     * `APP-TWO-DIRECTORY` is the directory containing the second app
 
 1. Run `cf push` from the directory that contains the apps and the manifest. 
-
-### <a id='multi-apps-rules'></a> General Rules
-
-Follow these general rules when using a multiple-app manifest:
-
-* Use a `no-route` line in the description of any app that provides background services to another app.
-
-* Do not use any command line options with `cf push`, with the following exception:
-  * If your manifest is not named `manifest.yml` or not in the current working directory, use the `-f` command line option.
-
-* To push a single app rather than all of the apps described in the manifest, provide the desired app name by running `cf push my-app`.
-
-### <a id='minimize-duplication'></a> Minimize Duplication with YAML Anchors
-
-<p class='note'><strong>Note:</strong> Promoted content has been deprecated in favor of YAML anchors. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
-
-In manifests where multiple apps share settings or services, you may see duplicated content. While the manifests still work, duplication increases the risk of typographical errors, which cause deployments to fail.
-
-You can declare shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an alias.
-
-<pre>
----
-defaults: &amp;defaults
-  buildpacks:
-    - staticfile_buildpack
-  memory: 1G
-
-
-applications:
-- name: bigapp
-  &lt;&lt;: *defaults
-- name: smallapp
-  &lt;&lt;: *defaults
-  memory: 256M
-</pre>
-
-This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpack but with 256M memory for smallapp and 1G for bigapp.
-
-
-## <a id='variable-substitution'></a> Add Variables to a Manifest
-
-You can use variables to create app manifests with values shared across all applicable environments in combination with references to environment-specific differences defined in separate files. 
-
-In addition, using variables enables you to store sensitive data in a separate file that the app manifest would reference, making the security sensitive data easier to manage and keep secure.
-
-To add variables to an app manifest, do the following:
-
-1. Create a file called `vars.yml`. 
-
-1. Add attributes to your `vars.yml` file. See the following example:
-
-    ```
-    instances: 2
-    memory: 1G
-    ```
-
-1. Add the variables to your app manifest file using the following format: `((VARIABLE-NAME)). See the following example:
-
-    ```
-    ---
-    applications:
-    - name: test-app
-      instances: ((instances))
-      memory: ((memory))
-      buildpack: go_buildpack
-      env:
-        GOPACKAGENAME: go_calls_ruby
-      command: go_calls_ruby
-    ```
-
-    <p class="note"><strong>Note</strong>: You can also use variables for partial values. For example, you can specify <code>host</code> in your variables file and <code>- route: ((host)).env.com</code> in your manifest file.</p>
-
-1. Run `cf push`:
-
-    ```
-    cf push --vars-file /PATH/vars.yml
-    ```
-    Where `PATH` is the path to the file you created. 
 
 
 

@@ -26,7 +26,7 @@ Use the `-c` flag to provide service-specific configuration parameters in a vali
 To provide the JSON object in-line, use the following format:
 
 <pre class="terminal">
-$ cf create-service-key MY-SERVICE MY-KEY -c '{"permissions":"read-only"}'
+$ cf create-service-key MY-SERVICE MY-KEY -c '{"read-only":true}'
 Creating service key MY-KEY for service instance MY-SERVICE as me@example.com...
 OK
 </pre>

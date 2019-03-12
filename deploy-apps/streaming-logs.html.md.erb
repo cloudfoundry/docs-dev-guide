@@ -21,7 +21,8 @@ buffer may need to overwrite some lines before the client has consumed them.
 A syslog drain or a CLI tail can usually keep up with the flow of app
 logs.
 
-## <a id='types'></a>Contents of a Log Line ##
+
+## <a id='types'></a> Contents of a Log Line
 
 Every log line contains four fields:
 
@@ -50,13 +51,14 @@ Check the buildpack your app uses to determine whether it automatically
 ensures that your app correctly writes logs to `stdout` and `stderr` only.
 Some buildpacks do this, and some do not.
 
-## <a id='format'></a>Log Types and Their Messages ##
+
+## <a id='format'></a> Log Types and Their Messages
 
 Different types of logs have different message formats, as shown in the examples
 below.
 The digit appended to the code indicates the instance index: 0 is the first instance, 1 is the second, and so on.
 
-### <a id='api'></a>API ###
+### <a id='api'></a> API
 
 Users make API calls to request changes in app state. Cloud Controller,
 the Cloud Foundry component responsible for the API, logs the actions that Cloud
@@ -68,7 +70,7 @@ For example:
 2016-06-14T14:10:05.36-0700 [API/0]      OUT Updated app with guid cdabc600-0b73-48e1-b7d2-26af2c63f933 ({"name"=>"spring-music", "instances"=>1, "memory"=>512, "environment_json"=>"PRIVATE DATA HIDDEN"})
 </pre>
 
-### <a id='stg'></a>STG ###
+### <a id='stg'></a> STG
 
 The Diego cell or the Droplet Execution Agent emits STG logs when staging or restaging an app.
 These actions implement the desired state requested by the user.
@@ -81,7 +83,7 @@ For example:
 2016-06-14T14:10:27.91-0700 [STG/0]      OUT Staging...
 </pre>
 
-### <a id='rtr'></a>RTR ###
+### <a id='rtr'></a> RTR
 
 The Router emits RTR logs when it routes HTTP requests to the app.
 Router messages include the app name followed by a Router timestamp and
@@ -105,12 +107,12 @@ The following is an example access log message containing Zipkin headers:
 
 For more information about Zipkin tracing, see [Zipkin Tracking in HTTP Headers](../../concepts/http-routing.html#zipkin-headers).
 
-### <a id='lgr'></a>LGR ###
+### <a id='lgr'></a> LGR
 
 Loggregator emits LGR to indicate problems with the logging process.
 Examples include "can't reach syslog drain url" and "dropped log messages due to high rate."
 
-### <a id='app'></a>APP ###
+### <a id='app'></a> APP
 
 Every app emits logs according to choices by the developer.
 
@@ -120,7 +122,7 @@ For example:
 2016-06-14T14:10:15.18-0700 [APP/0]      OUT Exit status 0
 </pre>
 
-### <a id="ssh"></a>SSH ###
+### <a id="ssh"></a> SSH
 
 The Diego cell emits SSH logs when a user accesses an app container through SSH by using the Cloud Foundry Command Line Interface (cf CLI) [cf ssh](https://cli.cloudfoundry.org/en-US/cf/ssh.html) command.
 
@@ -130,7 +132,7 @@ For example:
 2016-06-14T14:16:11.49-0700 [SSH/0]      OUT Successful remote access by 192.0.2.33:7856
 </pre>
 
-### <a id='cell'></a>CELL ###
+### <a id='cell'></a> CELL
 
 The Diego cell emits CELL logs when it starts or stops the
 app. These actions implement the desired state requested by the user.
@@ -142,7 +144,8 @@ For example:
 2016-06-14T13:44:38.14-0700 [CELL/0]     OUT Successfully created container
 </pre>
 
-## <a id='writing'></a>Writing to the Log from Your App ##
+
+## <a id='writing'></a> Writing to the Log from Your App
 
 Your app must write logs to `stderr` or `stdout`.
 Both are typically buffered, and you should flush the buffer before delivering
@@ -152,18 +155,20 @@ Alternatively, you can write log messages to `stderr` or `stdout` synchronously.
 This approach is mainly used for debugging because it may affect app
 performance.
 
+
 ## <a id='container-metrics'></a> Including Container Metrics in Syslog Drains
 
 By default, app logs are included in syslog drains.
 To include container metrics in your syslog drain, an operator must first set `scalablesyslog.adapter.metrics_to_syslog_enabled` to `true`.
 <%= vars.container_metrics %>
 
-## <a id='view'></a>Viewing Logs in the Command Line Interface ##
+
+## <a id='view'></a> Viewing Logs in the Command Line Interface
 
 Use the cf CLI [cf logs](https://cli.cloudfoundry.org/en-US/cf/logs.html) command to view logs.
 You can tail, dump, or filter log output.
 
-### <a id="tail-log"></a>Tailing Logs ###
+### <a id="tail-log"></a> Tailing Logs
 
 Run `cf logs APP-NAME` to stream Loggregator output to the terminal. Replace `APP-NAME` with the name of your app.
 
@@ -181,11 +186,11 @@ Connected, tailing logs for app spring-music in org example / space development 
 
 Use **Ctrl-C** (^C) to exit the real-time stream.
 
-### <a id="dump-log"></a>Dumping Logs ###
+### <a id="dump-log"></a> Dumping Logs
 
 Run `cf logs APP-NAME --recent` to display all the lines in the Loggregator buffer. Replace `APP-NAME` with the name of your app.
 
-### <a id="filter"></a>Filtering Logs ###
+### <a id="filter"></a> Filtering Logs
 
 To view some subset of log output, run `cf logs APP-NAME` in conjunction with filtering commands of your choice. Replace `APP-NAME` with the name of your app.
 In the example below, `grep -v RTR` excludes all Router logs:

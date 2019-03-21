@@ -64,7 +64,9 @@ You can repeat the steps for each app that you want to receive a portion of requ
 
 This procedure describes how to use `cf curl` to map a route to an app and assign a weight.  
 
-1. If you do not already have one, create a route. The route must use the shared domain created for Istio:
+<% if vars.product_short = "CF" %>
+
+1. If you do not already have one, create a route. The route must use the shared domain created for service mesh:
 
 	```
 	cf create-route SPACE-NAME SHARED-ISTIO-DOMAIN -n HOSTNAME
@@ -73,6 +75,20 @@ This procedure describes how to use `cf curl` to map a route to an app and assig
 	* `SPACE-NAME` is the space in which you want to create the route. 
 	* `SHARED-ISTIO-DOMAIN` is the shared Istio domain configured by your operator. 
 	* `HOSTNAME` is the hostname to use for creating the route. The format of the route is `HOSTNAME.SHARED-ISTIO-DOMAIN`. 
+
+<% else %>
+
+1. If you do not already have one, create a route. The route must use the domain created for service mesh:
+
+	```
+	cf create-route SPACE-NAME mesh.SHARED-APPS-DOMAIN -n HOSTNAME
+	```
+	Where:
+	* `SPACE-NAME` is the space in which you want to create the route. 
+	* `SHARED-APPS-DOMAIN` is the shared domain for apps configured by your operator. 
+	* `HOSTNAME` is the hostname to use for creating the route. The format of the route is `HOSTNAME.mesh.SHARED-APPS-DOMAIN`. 
+
+<% end %>
 
 1. Get the GUID of your route:
 

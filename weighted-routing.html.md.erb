@@ -7,13 +7,13 @@ This topic provides information about weighted routing and how to configure weig
 
 ## <a id="overview"></a> Overview
 
-The weighted routing feature is available for Cloud Foundry deployments that include the Istio routing tier. For more information, see [Using Envoy and Istio for Ingress to Cloud Foundry](../running/envoy-istio-ingress.html).
+The weighted routing feature is available for <% vars.product_full %> deployments that use service mesh. For more information, see [Service Mesh (Beta)](../adminguide/service-mesh.html).
 
 Weighted routing allows you to map multiple apps to the same route and control the amount of traffic sent to each of them. Some use cases include include A/B testing, canary releases, or rolling out features over time to incremental user-bases. 
 
 ### <a id="calculation"></a> How Weights are Calculated
 
-Cloud Foundry uses numeric weight values to calculate the percentage of requests that each app receives. For a route with multiple apps mapped, the percentage of requests for a given app is calculated as follows:
+<% vars.product_short %> uses numeric weight values to calculate the percentage of requests that each app receives. For a route with multiple apps mapped, the percentage of requests for a given app is calculated as follows:
 
  _weight of app_ / _sum of the weights of all apps mapped to route_
 

@@ -7,7 +7,12 @@ This topic provides information about weighted routing and how to configure weig
 
 ## <a id="overview"></a> Overview
 
+<% if vars.product_short.include? "CF" %>
+
 The weighted routing feature is available for <% vars.product_full %> deployments that use service mesh. For more information, see [Service Mesh (Beta)](../adminguide/service-mesh.html).
+
+<% else %>
+<% end %>
 
 Weighted routing allows you to map multiple apps to the same route and control the amount of traffic sent to each of them. Some use cases include include A/B testing, canary releases, or rolling out features over time to incremental user-bases. 
 

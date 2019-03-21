@@ -1,0 +1,152 @@
+---
+title: Using Weighted Routing (Beta)
+owner: Routing
+---
+
+This topic provides information about weighted routing and how to configure weighted routing for your apps.  
+
+## <a id="overview"></a> Overview
+
+The weighted routing feature is available for <% vars.product_full %> deployments that use service mesh. For more information, see [Service Mesh (Beta)](../adminguide/service-mesh.html).
+
+Weighted routing allows you to map multiple apps to the same route and control the amount of traffic sent to each of them. Some use cases include include A/B testing, canary releases, or rolling out features over time to incremental user-bases. 
+
+### <a id="calculation"></a> How Weights are Calculated
+
+<% vars.product_short %> uses numeric weight values to calculate the percentage of requests that each app receives. For a route with multiple apps mapped, the percentage of requests for a given app is calculated as follows:
+
+ _weight of app_ / _sum of the weights of all apps mapped to route_
+
+See the following example:
+
+<table>
+	<tr>
+		<th>App</th>
+		<th>Weight</th>
+		<th>Formula</th>
+		<th>Percentage of Requests</th>
+	</tr>
+	<tr>
+		<td>app-a</td>
+		<td>1</td>
+		<td>1/(1+3)</td>
+		<td>25%</td>
+	</tr>
+	<tr>
+		<td>app-b</td>
+		<td>3</td>
+		<td>3/(1+3)</td>
+		<td>75%</td>
+	</tr>
+</table>
+
+In this example, you can also unmap the route from one of the apps and observe 100% of the requests going to just one app, which simulates a migration.
+
+### <a id="considerations"></a> Considerations for Working with Routing Weights
+
+Consider the following when working with routing weights:
+
+* The default weight is 1. This means that if multiple apps are mapped to the same route and their weights are not updated, traffic is equally distributed between them.  
+* The percentage of requests described above is not applied exactly, but over time the requests reflect the percentage.
+* You cannot set a weight to 0. You can stop weighting traffic by deleting apps or unmapping apps from the route. 
+* You cannot exceed 100 routes mappings for a particular route. This could result in some apps not receiving any requests.
+
+
+## <a id="procedure"></a> Configure Routing Weights
+
+<p class="note"><strong>Note</strong>: This feature does not yet have cf CLI integration. The steps for updating a routing weight require you to curl the Cloud Controller v3 API.</p>
+
+You can configure routing weights when creating or updating a route mapping, Follow the procedure below that corresponds to your use case. 
+
+You can repeat the steps for each app that you want to receive a portion of requests at the same route.  
+
+### <a id="new"></a> Create a New Route Mapping
+
+This procedure describes how to use `cf curl` to map a route to an app and assign a weight.  
+
+1. If you do not already have one, create a route. The route must use the shared domain created for Istio:
+
+	```
+	cf create-route SPACE-NAME SHARED-ISTIO-DOMAIN -n HOSTNAME
+	```
+	Where:
+	* `SPACE-NAME` is the space in which you want to create the route. 
+	* `SHARED-ISTIO-DOMAIN` is the shared Istio domain configured by your operator. 
+	* `HOSTNAME` is the hostname to use for creating the route. The format of the route is `HOSTNAME.SHARED-ISTIO-DOMAIN`. 
+
+1. Get the GUID of your route:
+
+	```
+	cf curl /v2/routes?q=host:HOSTNAME
+	```
+	Where `HOSTNAME` is the hostname you specified when creating the route.
+
+1. Get the GUID of the app that you want to map the route to:
+
+	```
+	cf app APP-NAME --guid
+	```
+
+1. Create a route mapping and assign a weight:
+
+	```
+	cf curl /v3/route_mappings -X POST -d '{"app_guid": "APP-GUID", "route_guid": "ROUTE-GUID", "weight": WEIGHT}'
+	```
+	Where:
+	* `APP-GUID` is the GUID you got previously
+	* `ROUTE-GUID` is the GUID you got previously
+	* `WEIGHT` is an integer from 1 to 128
+
+### <a id="existing"></a> Update an Existing Route Mapping
+
+This procedure requires that you have mapped an app to a route in the shared Istio domain either using `cf map-route`, or `cf curl` as described in [Create a New Route Mapping](#new) above. 
+
+To update an existing route mapping with a new weight, do the following:
+
+1. Get the GUID of the app:
+
+	```
+	cf app APP-NAME --guid
+	```
+
+
+1. Get the GUID of the route:
+	
+	```
+	cf curl /v2/routes?q=host:HOSTNAME
+	``` 
+	Where `HOSTNAME` is the hostname you specified when creating the route. This is generally the same as the app name.<br> 
+	The GUID of the route is located after `"metadata": {"guid":`. 
+
+1. List the route mappings associated with the route:
+	
+	```
+	cf curl /v2/routes/ROUTE_GUID/route_mappings
+	``` 
+	Where `ROUTE_GUID` is the GUID you got from the previous step. 
+	
+1. In the output from the previous step, find the route mapping that contains the `app_guid` from when you ran `cf app --guid`. Record the GUID of the route mapping. 
+
+1. Update the route mapping with a new weight:
+
+	```
+	cf curl /v3/route_mappings/ROUTE-MAPPING-GUID -X PATCH -d '{"weight": WEIGHT}'
+	```
+	Where:
+	* `ROUTE_MAPPING_GUID` is the GUID you got from the previous step.
+	* `WEIGHT` is an integer from 1 to 128.  
+
+## <a id="observve"></a> Observe the Request Distribution
+
+Once you have two or more apps mapped to the same route, you can use curl to observe the distribution of the requests. Consider an example with the following apps:
+
+<pre class="terminal">
+$ cf apps
+Getting apps in org myorg / space test as admin...
+OK
+ 
+name     requested state   instances memory   disk urls
+go-app   started           1/1       32M      32M  go-app.istio.example.com
+dora     started           1/1       1G       1G   go-app.istio.example.com
+</pre>
+If `go-app` has a weight of 9 and `dora` has a weight of 1, then running `curl  go-app.istio.example.com` results in observing 90% of the requests go to `go-app` and 10% to `dora`.

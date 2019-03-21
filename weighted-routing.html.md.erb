@@ -9,7 +9,7 @@ This topic provides information about weighted routing and how to configure weig
 
 <% if vars.product_short.include? "CF" %>
 
-The weighted routing feature is available for <% vars.product_full %> deployments that use service mesh. For more information, see [Service Mesh (Beta)](../adminguide/service-mesh.html).
+The weighted routing feature is available for <%= vars.product_full %> deployments that use service mesh. For more information, see [Service Mesh (Beta)](../adminguide/service-mesh.html).
 
 <% else %>
 <% end %>
@@ -18,7 +18,7 @@ Weighted routing allows you to map multiple apps to the same route and control t
 
 ### <a id="calculation"></a> How Weights are Calculated
 
-<% vars.product_short %> uses numeric weight values to calculate the percentage of requests that each app receives. For a route with multiple apps mapped, the percentage of requests for a given app is calculated as follows:
+<%= vars.product_short %> uses numeric weight values to calculate the percentage of requests that each app receives. For a route with multiple apps mapped, the percentage of requests for a given app is calculated as follows:
 
  _weight of app_ / _sum of the weights of all apps mapped to route_
 

@@ -159,8 +159,9 @@ This section describes how to use the NFS volume service.
 
 Cloud Foundry offers two NFS volume services:
 
-* `nfs`: This volume service provides support for both NFSv3 (default) and NFSv4 volumes.
-  * For NFSv4,  specify a `version` parameter in the create configuration.
+* `nfs`: This volume service provides support for NFS volumes using both v3 and v4.x protocols.
+  * If you do not specify a `version` parameter in the create configuration, the protocol version used will be negotiated between client and server at mount time.  This usually results in the latest available version being used.
+  * If you want to request a specific protocol version, include a `version` parameter in the create configuration.
   * For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
   * When you omit `uid` and `gid` or `username` and `password` in bind configuration, the driver skips `mapfs` mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
 * `nfs-legacy` (deprecated): Although it is deprecated, this volume service is still available due to the difficulty of retiring services.  If you use this service, it performs exactly the same mount as the `nfs` service.
@@ -169,9 +170,9 @@ Both services offer a single plan called `Existing`.
 
 To create an NFS volume service, follow the procedure below that corresponds to your use case.
 
-#### Create with `nfs` Service
+#### Create an `nfs` Service (auto-negotiated version)
 
-You can create a NFS volume service with NFSv3 using the `Existing` plan of the `nfs` service. Run the following command:
+You can create a NFS volume service using the `Existing` plan of the `nfs` service. Run the following command:
 
 ```
 $ cf create-service nfs Existing SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE"}'
@@ -186,9 +187,9 @@ Where:
 
 You can run the `cf services` command to confirm that your newly-created NFS volume service displays in the output.
 
-#### Create an NFSv4 volume with `nfs` Service:
+#### Create an `nfs` Service (explicit version)
 
-You can create a NFS volume service with NFSv4.x using the `Existing` plan of the `nfs` service. Run the following command:
+You can create a NFS volume service with a specific NFS protocol version using the `Existing` plan of the `nfs` service. Run the following command:
 
 ```
 $ cf create-service nfs Existing SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "version":"NFS-PROTOCOL"}'
@@ -199,8 +200,7 @@ Where:
 * `SERVICE-INSTANCE-NAME` is a name you provide for this NFS volume service instance.
 * `SERVER/SHARE` is the NFS address of your server and share.
 * `VERSION` is the NFS protocol you want to use. For example, if you want to use NFSv4,
-set the version to `4.1`. Valid values are `3.0`, `4.0`, `4.1` or `4.2`. If no version is
-specified, it defaults to `3.0`.
+set the version to `4.1`. Valid values are `3.0`, `4.0`, `4.1` or `4.2`.
 
 <p class="note"><strong>Note</strong>: Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
 

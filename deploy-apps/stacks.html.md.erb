@@ -8,7 +8,7 @@ owner:
 
 <strong><%= modified_date %></strong>
 
-This topic explains how to restage apps on a new stack. It also provides a description of stacks and lists the supported stacks on <%= vars.current_major_version ?  "#{vars.product_full} (#{vars.product_short}) v#{vars.current_major_version}" : vars.product_full %>. 
+This topic explains how to cgange applications stacks. It also provides a description of stacks and lists the supported stacks on <%= vars.current_major_version ?  "#{vars.product_full} (#{vars.product_short}) v#{vars.current_major_version}" : vars.product_full %>. 
 
 You can also use the Stack Auditor plugin for the Cloud Foundry Command Line Interface (cf CLI) when changing stacks. See [Using the Stack Auditor Plugin](../../adminguide/stack-auditor.html).
 
@@ -49,7 +49,7 @@ It can be difficult to know what libraries an app statically links to, and it de
     cflinuxfs2      Cloud Foundry Linux-based file system
     </pre>
 
-1. To change your stack and restage your app, run `cf push`. For example, to restage your app on the stack `cflinuxfs3`, run `cf push MY-APP -s cflinuxfs3`:
+1. To change your stack you have to push your application again. Run `cf push` in the application directory. For example, change the stack of your application to `cflinuxfs3`, run `cf push MY-APP -s cflinuxfs3`:
     <pre class='terminal'>
     $ cf push MY-APP
     Using stack cflinuxfs2...

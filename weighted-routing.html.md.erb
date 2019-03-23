@@ -22,7 +22,7 @@ Weighted routing allows you to map multiple apps to the same route and control t
 
  _weight of app_ / _sum of the weights of all apps mapped to route_
 
-See the following example:
+See the following example in which two apps are mapped to the same route:
 
 <table>
 	<tr>
@@ -33,33 +33,33 @@ See the following example:
 	</tr>
 	<tr>
 		<td>app-a</td>
-		<td>1</td>
-		<td>1/(1+3)</td>
-		<td>25%</td>
+		<td><code>1</code></td>
+		<td><code>1</code>/(<code>1</code>+<code>3</code>)</td>
+		<td><code>25%</code></td>
 	</tr>
 	<tr>
 		<td>app-b</td>
-		<td>3</td>
-		<td>3/(1+3)</td>
-		<td>75%</td>
+		<td><code>3</code></td>
+		<td><code>3</code>/(<code>1</code>+<code>3</code>)</td>
+		<td><code>75%</code></td>
 	</tr>
 </table>
 
-In this example, you can also unmap the route from one of the apps and observe 100% of the requests going to just one app, which simulates a migration.
+In this example, you can also unmap the route from one of the apps and observe <code>100%</code> of the requests going to just one app, which simulates a migration.
 
 ### <a id="considerations"></a> Considerations for Working with Routing Weights
 
 Consider the following when working with routing weights:
 
-* The default weight is 1. This means that if multiple apps are mapped to the same route and their weights are not updated, traffic is equally distributed between them.  
+* The default weight is <code>1</code>. This means that if multiple apps are mapped to the same route and their weights are not updated, traffic is equally distributed between them.  
 * The percentage of requests described above is not applied exactly, but over time the requests reflect the percentage.
-* You cannot set a weight to 0. You can stop weighting traffic by deleting apps or unmapping apps from the route. 
-* You cannot exceed 100 routes mappings for a particular route. This could result in some apps not receiving any requests.
+* You cannot set a weight to <code>0</code>. You can stop weighting traffic by deleting apps or unmapping apps from the route. 
+* You cannot exceed <code>100</code> routes mappings for a particular route. This could result in some apps not receiving any requests.
 
 
 ## <a id="procedure"></a> Configure Routing Weights
 
-<p class="note"><strong>Note</strong>: This feature does not yet have cf CLI integration. The steps for updating a routing weight require you to curl the Cloud Controller v3 API.</p>
+<p class="note"><strong>Note</strong>: This feature does not yet have cf CLI integration. The steps for updating a routing weight require you to <code>curl</code> the Cloud Controller v3 API.</p>
 
 You can configure routing weights when creating or updating a route mapping, Follow the procedure below that corresponds to your use case. 
 
@@ -95,14 +95,14 @@ This procedure describes how to use `cf curl` to map a route to an app and assig
 
 <% end %>
 
-1. Get the GUID of your route:
+1. Run the following command and record the GUID of your route:
 
 	```
 	cf curl /v2/routes?q=host:HOSTNAME
 	```
 	Where `HOSTNAME` is the hostname you specified when creating the route.
 
-1. Get the GUID of the app that you want to map the route to:
+1. Run the following command and record the GUID of the app that you want to map the route to:
 
 	```
 	cf app APP-NAME --guid
@@ -114,9 +114,9 @@ This procedure describes how to use `cf curl` to map a route to an app and assig
 	cf curl /v3/route_mappings -X POST -d '{"app_guid": "APP-GUID", "route_guid": "ROUTE-GUID", "weight": WEIGHT}'
 	```
 	Where:
-	* `APP-GUID` is the GUID you got previously
-	* `ROUTE-GUID` is the GUID you got previously
-	* `WEIGHT` is an integer from 1 to 128
+	* `APP-GUID` is the app GUID you recorded previously
+	* `ROUTE-GUID` is the route GUID you recorded previously
+	* `WEIGHT` is an integer used to calculate the percentage of requests the app receives. You can enter a value from `1` to `128`. See [How Weights are Calculated](#calculation) above. 
 
 ### <a id="existing"></a> Update an Existing Route Mapping
 
@@ -124,14 +124,14 @@ This procedure requires that you have mapped an app to a route in the shared Ist
 
 To update an existing route mapping with a new weight, do the following:
 
-1. Get the GUID of the app:
+1. Run the following command and record the GUID of the app:
 
 	```
 	cf app APP-NAME --guid
 	```
 
 
-1. Get the GUID of the route:
+1. Run the following command and record the GUID of the route:
 	
 	```
 	cf curl /v2/routes?q=host:HOSTNAME
@@ -144,7 +144,7 @@ To update an existing route mapping with a new weight, do the following:
 	```
 	cf curl /v2/routes/ROUTE_GUID/route_mappings
 	``` 
-	Where `ROUTE_GUID` is the GUID you got from the previous step. 
+	Where `ROUTE_GUID` is the route GUID you got from the previous step. 
 	
 1. In the output from the previous step, find the route mapping that contains the `app_guid` from when you ran `cf app --guid`. Record the GUID of the route mapping. 
 
@@ -154,12 +154,12 @@ To update an existing route mapping with a new weight, do the following:
 	cf curl /v3/route_mappings/ROUTE-MAPPING-GUID -X PATCH -d '{"weight": WEIGHT}'
 	```
 	Where:
-	* `ROUTE_MAPPING_GUID` is the GUID you got from the previous step.
-	* `WEIGHT` is an integer from 1 to 128.  
+	* `ROUTE_MAPPING_GUID` is the route mapping GUID you got from the previous step.
+	* `WEIGHT` is an integer used to calculate the percentage of requests the app receives. You can enter a value from `1` to `128`. See [How Weights are Calculated](#calculation) above.  
 
 ## <a id="observve"></a> Observe the Request Distribution
 
-Once you have two or more apps mapped to the same route, you can use curl to observe the distribution of the requests. Consider an example with the following apps:
+Once you have two or more apps mapped to the same route, you can use `curl` to observe the distribution of the requests. Consider an example with the following apps:
 
 <pre class="terminal">
 $ cf apps
@@ -170,4 +170,4 @@ name     requested state   instances memory   disk urls
 go-app   started           1/1       32M      32M  go-app.istio.example.com
 dora     started           1/1       1G       1G   go-app.istio.example.com
 </pre>
-If `go-app` has a weight of 9 and `dora` has a weight of 1, then running `curl  go-app.istio.example.com` results in observing 90% of the requests go to `go-app` and 10% to `dora`.
+If `go-app` has a weight of <code>9</code> and `dora` has a weight of <code>1</code>, then running `curl  go-app.istio.example.com` results in observing <code>90%</code> of the requests go to `go-app` and <code>10%</code> to `dora`.

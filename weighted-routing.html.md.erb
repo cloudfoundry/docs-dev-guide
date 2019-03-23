@@ -157,9 +157,34 @@ To update an existing route mapping with a new weight, do the following:
 	* `ROUTE_MAPPING_GUID` is the route mapping GUID you got from the previous step.
 	* `WEIGHT` is an integer used to calculate the percentage of requests the app receives. You can enter a value from `1` to `128`. See [How Weights are Calculated](#calculation) above.  
 
-## <a id="observve"></a> Observe the Request Distribution
+## <a id="observe"></a> Confirm Routing Weights
 
-Once you have two or more apps mapped to the same route, you can use `curl` to observe the distribution of the requests. Consider an example with the following apps:
+If you have two or more apps mapped to the same route, one way you can confirm routing weights is to use `curl` to view the amount of requests that goes to each app. 
+
+To view the amount of requests that goes to each app, do the following:
+
+1. For each app mapped to the route, open a terminal window and run the following command. This allows you to see streaming logs for the apps. 
+
+	```
+	cf logs APP-NAME
+	```
+
+1. In another terminal window, run the following command to send a `curl` request to the route every `N` seconds. 
+
+	```
+	while sleep N; do curl ROUTE; done
+	```
+	Where:
+	* `N` is the frequency, in seconds, with which you want to `curl` the app. 
+	* `ROUTE` is the route that you have multiple apps mapped to. 
+
+1. Observe each window in which you are running `cf logs APP-NAME`. The output displays a log message each time there is a request. The amount of requests each app receives corresponds to its configured routing weight. 
+
+1. When finished, enter `Ctrl + C` to stop sending requests with the `while` loop. 
+
+### <a id="example"></a> Example
+
+Consider an example with the following apps:
 
 <pre class="terminal">
 $ cf apps

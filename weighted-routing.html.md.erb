@@ -3,6 +3,17 @@ title: Using Weighted Routing (Beta)
 owner: Routing
 ---
 
+<style>
+.app-a {
+	color: #0065d5;
+}
+
+.app-b {
+	color: #971922;
+}
+
+</style>
+
 This topic provides information about weighted routing and how to configure weighted routing for your apps.  
 
 ## <a id="overview"></a> Overview
@@ -22,9 +33,9 @@ Weighted routing allows you to map multiple apps to the same route and control t
 
  _weight of app_ / _sum of the weights of all apps mapped to route_
 
-Consider an example in which two apps are mapped to the same route: <font color="red"><code>app-a</code></font> and <font color="blue"><code>app-b</code></font>. The percentage of requests for <font color="blue"><code>app-b</code></font> is calculated as follows:
+Consider an example in which two apps are mapped to the same route: <code class="app-a">app-a</code> and <code class="app-b">app-b</code>. The percentage of requests for <code class="app-b">app-b</code> is calculated as follows:
 
-<font color="blue">weight of <code>app-b</code></font> / ( <font color="red">weight of <code>app-a</code></font> + <font color="blue">weight of <code>app-b</code></font> )
+<span class="app-b">weight of <code>app-b</code></span> / ( <span class="app-a">weight of <code>app-a</code></span> + <span class="app-b">weight of <code>app-b</code></span> )
 
 The following table uses example values to show how the percentage of requests is calculated for the two apps: 
 
@@ -36,16 +47,16 @@ The following table uses example values to show how the percentage of requests i
 		<th>Percentage of Requests</th>
 	</tr>
 	<tr>
-		<td><font color="red"><code>app-a</code></font></td>
-		<td><font color="red"><code>1</code></font></td>
-		<td><font color="red"><code>1</code></font> / ( <font color="red"><code>1</code></font> + <font color="blue"><code>3</code></font> )</td>
-		<td><font color="red"><code>25%</code></font></td>
+		<td><code class="app-a">app-a</code></td>
+		<td><code class="app-a">1</code></td>
+		<td><code class="app-a">1</code> / ( <code class="app-a">1</code> + <code class="app-b">3</code> )</td>
+		<td><code class="app-a">25%</code></td>
 	</tr>
 	<tr>
-		<td><font color="blue"><code>app-b</code></font></td>
-		<td><font color="blue"><code>3</code></font></td>
-		<td><font color="blue"><code>3</code></font> / ( <font color="red"><code>1</code></font> + <font color="blue"><code>3</code></font> )</td>
-		<td><font color="blue"><code>75%</code></font></td>
+		<td><code class="app-b">app-b</code></td>
+		<td><code class="app-b">3</code></td>
+		<td><code class="app-b">3</code> / ( <code class="app-a">1</code> + <code class="app-b">3</code> )</td>
+		<td><code class="app-b">75%</code></td>
 	</tr>
 </table>
 

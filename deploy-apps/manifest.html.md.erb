@@ -11,9 +11,7 @@ This topic provides basic procedures and guidance for deploying apps with a mani
 
 ## <a id='overview'></a> Overview
 
-`cf push` deploys apps with a default number of instances, disk space limit, and memory limit. You can override the default values by invoking `cf push` with flags and values, or by specifying key-value pairs in a manifest file. Manifests provide consistency and reproducibility, and can help you automate deploying apps.
-
-When you push an app for the first time, Cloud Foundry applies default values to any attributes that you do not set in a manifest or `cf push` command line options.
+Manifests provide consistency and reproducibility, and can help you automate deploying apps. Both manifests and command line options allow you to override the default attribute values of `cf push`. These attributes include things like  number of instances, disk space limit, and memory limit.  
 
 `cf push` follows rules of precedence when setting attribute values:
 
@@ -46,6 +44,8 @@ To deploy an app with a manifest, do the following:
 
 This procedure describes how to deploy multiple apps with a minimal manifest. For more information about manifest format and attributes, see [App Manifest Attribute Reference](./manifest-attributes.html). 
 
+### <a id='general-rules'></a> General Rules
+
 Follow these general rules when deploying multiple apps with one manifest:
 
 * Use a `no-route` line in the description of any app that provides background services to another app.
@@ -54,6 +54,8 @@ Follow these general rules when deploying multiple apps with one manifest:
   * If your manifest is not named `manifest.yml` or not in the current working directory, use the `-f` command line option.
 
 * To push a single app rather than all of the apps described in the manifest, provide the desired app name by running `cf push my-app`.
+
+### <a id='procedure'></a> Procedure
 
 To deploy multiple apps with a manifest, do the following:
 

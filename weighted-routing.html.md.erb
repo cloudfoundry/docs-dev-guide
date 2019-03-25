@@ -159,9 +159,9 @@ To update an existing route mapping with a new weight, do the following:
 
 ## <a id="observe"></a> Confirm Routing Weights
 
-If you have two or more apps mapped to the same route, one way you can confirm routing weights is to use `curl` to view the amount of requests that goes to each app. 
+If you have two or more apps mapped to the same route, one way you can confirm routing weights is to use `curl` to view the amount of requests to each app. 
 
-To view the amount of requests that goes to each app, do the following:
+To view the amount of requests to each app, do the following:
 
 1. For each app mapped to the route, open a terminal window and run the following command. This allows you to see streaming logs for the apps. 
 
@@ -175,7 +175,7 @@ To view the amount of requests that goes to each app, do the following:
 	while sleep N; do curl ROUTE; done
 	```
 	Where:
-	* `N` is the frequency, in seconds, with which you want to `curl` the app. 
+	* `N` is the frequency, in seconds, with which you want to `curl` the route. 
 	* `ROUTE` is the route that you have multiple apps mapped to. 
 
 1. Observe each window in which you are running `cf logs APP-NAME`. The output displays a log message each time there is a request. The amount of requests each app receives corresponds to its configured routing weight. 

@@ -61,14 +61,14 @@ To configure your app to receive HTTP or TCP traffic on custom ports, do the fol
 1. Retrieve the GUID of your app:
 
 	```
-	cf APP-NAME --guid
+	cf app APP-NAME --guid
 	``` 
 	Where `APP-NAME` is the name of your app
 
 1. Configure <%= vars.product_short %> with the ports your app is listening on:
 
 	```
-	cf curl /v2/apps/APP-GUID -X PUT -d '{"ports": [PORT1, PORT2, PORT3...]}'. 
+	cf curl /v2/apps/APP-GUID -X PUT -d '{"ports": [PORT1, PORT2, PORT3...]}' 
 	```
 	Where:
 	* `APP-GUID` is the GUID of your app

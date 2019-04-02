@@ -11,7 +11,9 @@ owner: Routing
 .app-b {
 	color: #971922;
 }
-
+.guid {
+  color: #5FABFF;
+}
 </style>
 
 This topic provides information about weighted routing and how to configure weighted routing for your apps.  
@@ -115,7 +117,27 @@ This procedure describes how to use `cf curl` to map a route to an app and assig
 	```
 	cf curl /v2/routes?q=host:HOSTNAME
 	```
-	Where `HOSTNAME` is the hostname you specified when creating the route.
+	Where `HOSTNAME` is the hostname you specified when creating the route.<br><br>
+
+	The GUID of the route is located after `"metadata": {"guid":`. See the following example in which the GUID is highlighted in blue:
+
+	<pre class="terminal">
+	$ cf curl /v2/routes?q=host:my-hostname
+	{
+	  "total_results": 1,
+	  "total_pages": 1,
+	  "prev_url": null,
+	  "next_url": null,
+	  "resources": [
+	    {
+	      "metadata": {
+	        <span class="guid">"guid": "311d34d1-c045-4853-845f-05132377ad7d"</span>,
+	        "url": "/v2/routes/311d34d1-c045-4853-845f-05132377ad7d",
+	        "created_at": "2016-06-08T16:41:44Z",
+	        "updated_at": "2016-06-08T16:41:26Z"
+	      },
+	      . . . 
+	</pre>
 
 1. Run the following command and record the GUID of the app that you want to map the route to:
 
@@ -151,8 +173,27 @@ To update an existing route mapping with a new weight, do the following:
 	```
 	cf curl /v2/routes?q=host:HOSTNAME
 	``` 
-	Where `HOSTNAME` is the hostname you specified when creating the route. This is generally the same as the app name.<br> 
-	The GUID of the route is located after `"metadata": {"guid":`. 
+	Where `HOSTNAME` is the hostname you specified when creating the route. This is generally the same as the app name.<br><br>
+	
+	The GUID of the route is located after `"metadata": {"guid":`. See the following example in which the GUID is highlighted in blue:
+
+	<pre class="terminal">
+	$ cf curl /v2/routes?q=host:my-hostname
+	{
+	  "total_results": 1,
+	  "total_pages": 1,
+	  "prev_url": null,
+	  "next_url": null,
+	  "resources": [
+	    {
+	      "metadata": {
+	        <span class="guid">"guid": "311d34d1-c045-4853-845f-05132377ad7d"</span>,
+	        "url": "/v2/routes/311d34d1-c045-4853-845f-05132377ad7d",
+	        "created_at": "2016-06-08T16:41:44Z",
+	        "updated_at": "2016-06-08T16:41:26Z"
+	      },
+	      . . . 
+	</pre> 
 
 1. List the route mappings associated with the route:
 	
@@ -161,7 +202,33 @@ To update an existing route mapping with a new weight, do the following:
 	``` 
 	Where `ROUTE_GUID` is the route GUID you got from the previous step. 
 	
-1. In the output from the previous step, find the route mapping that contains the `app_guid` from when you ran `cf app --guid`. Record the GUID of the route mapping. 
+1. In the output from the previous step, find the route mapping that contains the `app_guid` from when you ran `cf app --guid`. Record the GUID of the route mapping. See the following example output in which both the route mapping and app guids are highlighted in blue:
+	<pre class="terminal">
+	$ cf curl /v2/routes/521c375d-a7e2-4f87-9527-7fd1db1b2010/route_mappings
+	{
+	  "total_results": 1,
+	  "total_pages": 1,
+	  "prev_url": null,
+	  "next_url": null,
+	  "resources": [
+	    {
+	      "metadata": {
+	        <span class="guid">"guid": "9feb9667-9249-44b7-9e4e-92157a2aaefb"</span>,
+	        "url": "/v2/route_mappings/9feb9667-9249-44b7-9e4e-92157a2aaefb",
+	        "created_at": "2016-06-08T16:41:28Z",
+	        "updated_at": "2016-06-08T16:41:26Z"
+	      },
+	      "entity": {
+	        "app_port": null,
+	        <span class="guid">"app_guid": "bf65b03d-5416-4603-9de2-ef74491d29b6"</span>,
+	        "route_guid": "521c375d-a7e2-4f87-9527-7fd1db1b2010",
+	        "app_url": "/v2/apps/bf65b03d-5416-4603-9de2-ef74491d29b6",
+	        "route_url": "/v2/routes/521c375d-a7e2-4f87-9527-7fd1db1b2010"
+	      }
+	    }
+	  ]
+	}	
+	</pre>
 
 1. Update the route mapping with a new weight:
 

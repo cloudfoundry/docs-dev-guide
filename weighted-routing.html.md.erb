@@ -168,7 +168,7 @@ This procedure describes how to use `cf curl` to map a route to an app and assig
 
 ### <a id="existing"></a> Update an Existing Route Mapping
 
-This procedure requires that you have mapped an app to a route in the shared Istio domain either using `cf map-route`, or `cf curl` as described in [Create a New Route Mapping](#new) above. 
+This procedure requires that you have mapped an app to a route in <% if vars.product_name == "CF" %> shared Istio domain <%else%> `*.mesh.YOUR-APPS-DOMAIN` <%end%>  either using `cf map-route`, or `cf curl` as described in [Create a New Route Mapping](#new) above. 
 
 To update an existing route mapping with a new weight, do the following:
 

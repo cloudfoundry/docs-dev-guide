@@ -148,7 +148,18 @@ This procedure describes how to use `cf curl` to map a route to an app and assig
 1. Create a route mapping and assign a weight:
 
 	```
-	cf curl /v3/route_mappings -X POST -d '{"app_guid": "APP-GUID", "route_guid": "ROUTE-GUID", "weight": WEIGHT}'
+	cf curl /v3/route_mappings -X POST -d \
+	'{
+      "relationships": {
+        "app": {
+          "guid": "APP-GUID"
+        },
+        "route": {
+          "guid": "ROUTE-GUID"
+        }
+      },
+      "weight": WEIGHT
+    }'
 	```
 	Where:
 	* `APP-GUID` is the app GUID you recorded previously

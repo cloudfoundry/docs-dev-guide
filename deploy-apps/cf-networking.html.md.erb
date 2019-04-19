@@ -18,10 +18,10 @@ owner: Container-to-Container Networking
       <li><a href="#prereq">Prerequisites</a></li>
       <% if vars.product_name.include? "CF" %>
       <li><a href="#grant">Grant Permissions</a></li>
-      <% end %>
       <li><a href="#add-policy">Add a Network Policy</a></li>
       <li><a href="#list-policies">List Network Policies</a></li>
       <li><a href="#rm-policy">Remove a Network Policy</a></li>
+      <li><a href="#disable-policy">Disable Network Policy Enforcement</a></li>
     </ul>
     <li><a href="#discovery">App Service Discovery</a>
       <% if vars.product_name.include? "CF" %>
@@ -108,6 +108,7 @@ To grant all Space Developers permissions to configure network policies, <%=  va
 <%= partial '../../appsman-services/c2c_pws_create' %>
 <% end %>
 
+
 ### <a name="add-policy"></a> Add a Network Policy
 
 To add a policy that allows direct network traffic from one app to another, run the following command:
@@ -176,6 +177,28 @@ $ cf remove-network-policy frontend --destination-app backend --protocol tcp --p
 Removing network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>
+
+### <a name="#disable-policy"></a> Disable Network Policy Enforcement
+
+You can disable Silk network policy enforcement between apps. Disabling network policy enforcement allows all apps to send network traffic to all other apps in the foundation despite no policy specifically allowing it.
+
+To disable network policy enforcement between apps, do the following:
+
+<% if vars.product_name == 'CF' %>
+
+1. In your BOSH deployment manifest, change the `disable_container_network_policy` value to `false`.
+
+1. Redeploy with BOSH.
+
+<% else %>
+
+1. Go to the **Networking** pane of your PAS tile.
+
+1. Disable the **Enable Silk Network Policy Enforcement** checkbox.
+
+1. Click **Save**.
+
+<% end %>
 
 
 ## <a name="discovery"></a> App Service Discovery

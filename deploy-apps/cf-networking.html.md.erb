@@ -185,13 +185,22 @@ To disable network policy enforcement between apps, do the following:
 
 <% if vars.product_name == 'CF' %>
 
-1. Run `bosh target -e MY-ENV -d MY-DEPLOYMENT` to target your app.
+1. To target your app, run the following command:
+   <pre class="terminal">
+   $ bosh target -e MY-ENV -d MY-DEPLOYMENT
+   </pre>
 
-1. Run `bosh -e MY-ENV -d MY-DEPLOYMENT manifest > MY-MANIFEST.yml` to download and save the current BOSH manifest.
+1. To download and save the current BOSH manifest, run the following command:
+   <pre class="terminal">
+   $ bosh -e MY-ENV -d MY-DEPLOYMENT manifest > MY-MANIFEST.yml
+   </pre>
 
 1. In your BOSH manifest, change the `disable_container_network_policy` value to `false`.
 
-1. Run `bosh -e MY-ENV -d cf deploy cf-deployment/cf-deployment.yml` to redeploy your app using the edited BOSH manifest.
+1. To redeploy your app using the edited BOSH manifest, run the following command:
+   <pre class="terminal">
+   $ bosh -e MY-ENV -d cf deploy cf-deployment/cf-deployment.yml
+   </pre>
 
 <% else %>
 

@@ -3,15 +3,15 @@ title: Revisions
 owner: CAPI
 ---
 
-This topic describes Revisions and how you can use them. 
+This topic describes revisions and how you can use them. 
 
 ## <a id="enable"></a> Overview
 
-A Revision represents code and configuration used by an app at a specific time. It is a Cloud Foundry API (CAPI) object that can contain references to a droplet, custom start command, and environment variables. The most recent Revision for a running app represents code and configuration currently running in Cloud Foundry.
+A revision represents code and configuration used by an app at a specific time. It is a Cloud Foundry API (CAPI) object that can contain references to a droplet, custom start command, and environment variables. The most recent revision for a running app represents code and configuration currently running in Cloud Foundry.
 
 Some use cases for Revisions include:
 
-* **Viewing Revisions for an app**: This can help you understand how your app has changed over time. 
+* **Viewing revisions for an app**: This can help you understand how your app has changed over time. 
 * **Rolling back to a previous revision**: This allows you to deploy a version of the app that you had running previously without needing to track that previous state yourself or have multiple apps running. When you create a deployment and reference a revision, the revision deploys as the current version of your app.
 
 ### <a id="events"></a> Events that Trigger Revisions

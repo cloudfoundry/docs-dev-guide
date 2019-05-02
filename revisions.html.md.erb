@@ -38,6 +38,11 @@ Each Revision includes a description of what changed in your app at the time the
 * `New environment variables deployed`
 * `New droplet deployed`
 
+### <a id="droplets"></a> Droplet Storage Considerations
+
+By default, Cloud Foundry retains the 5 most recent staged droplets in its droplets bucket. This means that you can roll back to revisions as long as they are using one of those 5 droplets. Note that not all revisions include a change in droplet. 
+
+Operators can configure Cloud Foundry to retain more droplets if necessary using the <%= vars.droplet_config %>. 
 
 ## <a id="enable"></a> Enable Revisions for an App
 

@@ -3,30 +3,19 @@ title: Deploying an App
 owner: CAPI
 ---
 
-
+This topic describes how to deploy an app with the Cloud Foundry Command Line Interface (cf CLI).
 
 <p class="note"><strong>Note</strong>: See the <a href="../../buildpacks/">buildpacks</a> documentation for deployment guides specific to your app language or framework, such as the <a href="../../buildpacks/ruby/gsg-ror.html">Getting Started Deploying Ruby on Rails Apps</a> guide.</p>
+## <a id="overview"></a> Overview
 
-## <a id='intro'></a>Overview of Deployment Process ##
+To deploy an app, do the following:
 
-You deploy an app to Cloud Foundry by running a `cf push` command from the Cloud Foundry Command Line Interface (cf CLI).
-Refer to the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic for more information.
-Between the time that you run `cf push` and the time that the app is available, Cloud Foundry performs the following tasks:
+3. [(Optional) Configure Domains](#domain)
+4. [Determine Deployment Options](#options)
+5. [Push the App](#push)
 
-* Uploads and stores app files
-* Examines and stores app metadata
-* Creates a "droplet" (the Cloud Foundry unit of execution) for the app
-* Selects an appropriate Diego [cell](../../concepts/architecture/index.html#diego-cell) to run the droplet
-* Starts the app
 
-For more information about the lifecycle of an app, see the <a href="app-lifecycle.html">App Container Lifecycle</a> topic.
-
-An app that uses services, such as a database, messaging, or email
-server, is not fully functional until you provision the service and, if
-required, bind the service to the app.
-For more information about services, see the [Services Overview](../services/index.html) topic.
-
-## <a id='prepare'></a>Step 1: Prepare to Deploy ##
+## <a id='prepare'></a> Prerequisites
 
 Before you deploy your app to Cloud Foundry, make sure that:
 
@@ -53,7 +42,6 @@ For help preparing to deploy your app, see:
 * [Buildpacks](../../buildpacks/index.html)
 
 
-## <a id='logon-target'></a>Step 2: Know Your Credentials and Target ##
 
 Before you can push your app to Cloud Foundry you need to know:
 
@@ -66,7 +54,8 @@ spaces.
 As a Cloud Foundry user, you have access to one or more organizations and
 spaces.
 
-## <a id='domain'></a>Step 3: (Optional) Configure Domains ##
+
+## <a id='domain'></a>(Optional) Configure Domains 
 
 Cloud Foundry directs requests to an app using a route, which is a URL
 made up of a host and a domain.
@@ -94,7 +83,7 @@ CF ​allows​ app names, but not app URLs, to include underscores. CF converts
 
 For more information about domains, see [Routes and Domains](./routes-domains.html).
 
-## <a id='options'></a>Step 4: Determine Deployment Options ##
+## <a id='options'></a>Determine Deployment Options
 
 Before you deploy, you need to decide on the following:
 
@@ -125,7 +114,7 @@ Apps are deployed into app spaces.
 An app can only bind to a service that has an existing instance in the
 target app space.
 
-### <a id='defining-options'></a>Define Deployment Options ###
+### <a name='defining-options'></a>Define Deployment Options 
 
 You can define deployment options on the command line, in a manifest file, or
 both together.
@@ -148,7 +137,7 @@ For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-
 
 For more information about the manifest file, see the [Deploying with App Manifests](./manifest.html) topic.
 
-### <a id='profile'></a>Configure Pre-Runtime Hooks ###
+### <a name='profile'></a>Configure Pre-Runtime Hooks
 
 <p class="note"><strong>Note</strong>: The Java buildpack does not support pre-runtime hooks.</p>
 
@@ -174,7 +163,7 @@ export LANG=en_US.UTF-8
 <p class="note"><strong>Note</strong>: If you are using a PHP buildpack version prior to v4.3.18, the buildpack does not execute your PHP app's <code>.profile</code> script. Your PHP app will host the <code>.profile</code> script's contents.
 This means that any PHP app staged using the affected PHP buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
-## <a id='push'></a>Step 5: Push the App ##
+## <a id='push'></a> Push the App 
 
 Run the following command to deploy an app without a manifest:
 
@@ -244,22 +233,3 @@ to app when given a `cf push` command.
 
 </pre>
 
-## <a id='service-connection'></a>Step 6: (Optional) Configure Service Connections ##
-
-If you bound a service to the app that you deployed, you might need to
-configure your app with the service URL and credentials.
-For more information, see the specific documentation for your app
-framework:
-
-* [Ruby](../../buildpacks/ruby/ruby-service-bindings.html)
-* [Node.js](../../buildpacks/node/node-service-bindings.html)
-* [Spring](../../buildpacks/java/configuring-service-connections/spring-service-bindings.html)
-* [Grails](../../buildpacks/java/configuring-service-connections/grails-service-bindings.html)
-
-## <a id='troubleshoot-push'></a>Step 7: Troubleshoot Deployment Problems ##
-
-If your app does not start on Cloud Foundry, first ensure that your
-app can run locally.
-
-You can troubleshoot your app in the cloud using the cf CLI.
-See [Troubleshoot App Deployment and Health](./troubleshoot-app-health.html).

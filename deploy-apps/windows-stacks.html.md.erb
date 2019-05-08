@@ -11,8 +11,10 @@ This topic explains how to restage apps on a new Windows stack. It also provides
 
 To restage a Windows app on a new Linux stack, see [Changing Stacks](./stacks.html).
 
-You can also use the Stack Auditor plugin for the Cloud Foundry Command Line Interface (cf CLI) when
-changing Windows stacks. See [Using the Stack Auditor Plugin](../../adminguide/stack-auditor.html).
+<% if vars.product_name.include? "CF" %>
+You can also use the Stack Auditor plugin for the Cloud Foundry Command Line Interface (cf CLI) when changing stacks. See [Using the Stack Auditor Plugin](../../adminguide/stack-auditor.html).
+<% else %>
+<% end %>
 
 ## <a id='overview'></a> Overview ##
 

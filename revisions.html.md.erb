@@ -7,6 +7,8 @@ This topic describes app revisions and provides procedures for working with them
 
 For additional information, see the _Revisions_ section of the [CAPI documentation](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions). 
 
+<p class="note"><strong>Note</strong>: CAPI v3 is the recommended API version for revisions. While revisions work with v2, there are several inconsistencies. For example, revision descriptions for apps with multiple processes may be inaccurate because v2 does not support apps with multiple processes. Additionally, pushing an app for the first time with revisions in v2 creates two revisions.</p>
+
 ## <a id="enable"></a> Overview
 
 A revision represents code and configuration used by an app at a specific time. It is a Cloud Foundry API (CAPI) object that can contain references to a droplet, custom start command, and environment variables. The most recent revision for a running app represents code and configuration currently running in Cloud Foundry.

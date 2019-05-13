@@ -1,26 +1,30 @@
 ---
-title: Deploying an App
+title: Pushing an App
 owner: CAPI
 ---
 
-This topic describes how to deploy an app with the Cloud Foundry Command Line Interface (cf CLI).
+This topic describes how to use the Cloud Foundry Command Line Interface (cf CLI) to push an app to <%= vars.product_full %>.
 
-<p class="note"><strong>Note</strong>: See the <a href="../../buildpacks/">buildpacks</a> documentation for deployment guides specific to your app language or framework, such as the <a href="../../buildpacks/ruby/gsg-ror.html">Getting Started Deploying Ruby on Rails Apps</a> guide.</p>
 ## <a id="overview"></a> Overview
 
-To deploy an app, do the following:
+The cf CLI command `cf push` pushes apps to <%= vars.product_short %>.
+To push an app using `cf push`, do the following:
 
-3. [(Optional) Configure Domains](#domain)
-4. [Determine Deployment Options](#options)
-5. [Push the App](#push)
+1. [(Optional) Configure Domains](#domain)
+1. [Determine `cf push` Options](#options)
+1. [Push the App](#push)
 
+For help preparing to push your app, see:
+
+* [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html)
+* Any [Buildpacks](../../buildpacks/index.html) guides specific to your app language or framework, such as [Getting Started Deploying Ruby on Rails Apps](../../buildpacks/ruby/gsg-ror.html)
 
 ## <a id='prepare'></a> Prerequisites
 
-Before you deploy your app to Cloud Foundry, make sure that:
+Before you push your app to <%= vars.product_short %>, make sure that:
 
 * Your app is *cloud-ready*.
-Cloud Foundry behaviors related to file storage, HTTP sessions, and port usage
+<%= vars.product_short %> behaviors related to file storage, HTTP sessions, and port usage
 may require modifications to your app.
 
 * All required app resources are uploaded.
@@ -30,83 +34,75 @@ For example, you may need to include a database driver.
 You should explicitly exclude extraneous files that reside within your
 app directory structure, particularly if your app is large.
 
-* An instance of every service that your app needs has been created.
+* Every service that your app needs has an instance that it can access, for example running in the same space.
 
-* Your Cloud Foundry instance supports the type of app you are going to
-deploy, or you have the URL of an externally available buildpack that can stage
+* Your <%= vars.product_short %> installation supports the type of app you are going to
+push, or you have the URL of an externally-available buildpack that can stage
 the app.
 
-For help preparing to deploy your app, see:
-
-* [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html)
-* [Buildpacks](../../buildpacks/index.html)
-
-
-
-Before you can push your app to Cloud Foundry you need to know:
-
-* The API endpoint for your Cloud Foundry instance. Also known as the target
+* You have all of the following:
+  - The API endpoint for your <%= vars.product_short %> installation. Also known as the target
 URL, this is <%=vars.api_endpoint%>.
-* Your username and password for your Cloud Foundry instance.
-* The organization and space where you want to deploy your app.
-A Cloud Foundry workspace is organized into organizations, and within them,
+  - Your username and password for your <%= vars.product_short %> installation.
+  - The organization and space where you want to deploy your app.
+A <%= vars.product_short %> workspace is organized into organizations, and within them,
 spaces.
-As a Cloud Foundry user, you have access to one or more organizations and
+As a <%= vars.product_short %> user, you may have access to one or more organizations and
 spaces.
 
+## <a id='domain'></a>(Optional) Configure Domains
 
-## <a id='domain'></a>(Optional) Configure Domains 
-
-Cloud Foundry directs requests to an app using a route, which is a URL
+<%= vars.product_short %> directs requests to an app using a route, which is a URL
 made up of a host and a domain.
 
 * The name of an app is the default host for that app, unless you specify the host name with the <code>-n</code> flag.
 
-* Every app is deployed to an app space that belongs to a
-domain.
-Every Cloud Foundry instance has a default domain defined.
-You can specify a non-default, or custom, domain when deploying, provided that
-the domain is registered and is mapped to the organization which contains the target app space.
+* Every app is pushed to a space that belongs to a domain.
+Every <%= vars.product_short %> installation has a default domain.
+You can specify a custom domain for the app if
+  - The domain is registered
+  - The domain is mapped to the org that contains the target space for the app
 
 <p class='note'><strong>Note</strong>:
-CF ​allows​ app names, but not app URLs, to include underscores. CF converts underscores to hyphens when setting a default app URL from an app name.
+<%= vars.product_short %> ​allows​ app names, but not app URLs, to include underscores.
+<%= vars.product_short %> converts underscores to hyphens when setting a default app URL from an app name.
 </p>
 
-* The URL for your app must be unique from other apps hosted by <%=vars.product_short%>. Use the following options with the [cf CLI](../../cf-cli/index.html) to help create a unique URL:
+* The URL for your app must be different from other apps hosted by <%=vars.product_short%>.
+The following `cf push` options can help create a unique URL:
+   - `-n` assigns a different HOST name for the app
+   - `--random-route` creates a URL that includes the app name and random words
 
-   * `-n` to assign a different HOST name for the app
-   * `--random-route` to create a URL that includes the app name and random words
-
- <p class='note'><strong>Note</strong>: Use <code>cf help push</code> to view other options for this command.</p>
+ <p class='note'><strong>Note</strong>: Run <code>cf help push</code> to view other options for the <code>cf push</code> command.</p>
 
 <%=vars.ssl%>
 
 For more information about domains, see [Routes and Domains](./routes-domains.html).
 
-## <a id='options'></a>Determine Deployment Options
+## <a id='options'></a>Determine Push Options
 
-Before you deploy, you need to decide on the following:
+Before you push an app, you need to decide on the following:
 
-* **Name**: You can use any series of alpha-numeric characters as the name of your app.
-* **Instances**: Generally speaking, the more instances you run, the less
+* **Name**: You can use any series of alphanumeric characters as the name of your app.
+* **Instances**: Generally speaking, the more app instances you run, the less
 downtime your app will experience.
 If your app is still in development, running a single instance can
 simplify troubleshooting.
 For any production app, we recommend a minimum of two instances.
 * **Memory Limit**: The maximum amount of memory that each instance of your
 app can consume.
-If an instance exceeds this limit, Cloud Foundry restarts the instance.
-    <p class='note'><strong>Note</strong>: Initially, Cloud Foundry immediately
+If an instance exceeds this limit, <%= vars.product_short %> restarts the instance.
+    <p class='note'><strong>Note</strong>: Initially, <%= vars.product_short %> immediately
 	restarts any instances that exceed the memory limit. If an instance
-	repeatedly exceeds the memory limit in a short period of time, Cloud Foundry
+	repeatedly exceeds the memory limit in a short period of time, <%= vars.product_short %>
 	delays restarting the instance.</p>
-* **Start Command**: This is the command that Cloud Foundry uses to start each
+* **Start Command**: This is the command that <%= vars.product_short %> uses to start each
 instance of your app.
 This start command varies by app framework.
 * **Subdomain (host) and Domain**:
 The route, which is the combination of subdomain and domain, must be globally
 unique.
-This is true whether you specify a portion of the route or allow Cloud Foundry
+This is true whether you specify a portion of the route or allow <%= vars.product_short %>
 to use defaults.
 * **Services**: Apps can bind to services such as databases, messaging,
 and key-value stores.
@@ -114,58 +110,49 @@ Apps are deployed into app spaces.
 An app can only bind to a service that has an existing instance in the
 target app space.
 
-### <a name='defining-options'></a>Define Deployment Options 
+### <a name='manifests'></a>Manifests
 
-You can define deployment options on the command line, in a manifest file, or
-both together.
+You can define push options on the command line, in a manifest file, or
+both.
+
 See [Deploying with App Manifests](./manifest.html) to learn how
 app settings change from push to push, and how command-line options,
 manifests, and commands like `cf scale` interact.
 
-When you deploy an app while it is running, Cloud Foundry stops all instances of that app and then deploys.
-Users who try to run the app get a "404 not found" message while `cf push` runs.
-Stopping all instances is necessary to prevent two versions of your code from running at the same time.
-A worst-case example would be deploying an update that involved a database
-schema migration, because instances running the old code would not work and
-users could lose data.
-
-Cloud Foundry uploads all app files except version control files and
-folders with names such as `.svn`, `.git`, and `_darcs`.
-To exclude other files from upload, specify them in a `.cfignore` file in the
-directory where you run the push command.
-For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section of the [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html) topic.
-
 For more information about the manifest file, see the [Deploying with App Manifests](./manifest.html) topic.
 
-### <a name='profile'></a>Configure Pre-Runtime Hooks
+### <a name='exclude'></a>Exclude Files
+
+<%= vars.product_short %> uploads all app files except version control files and
+folders with names such as `.svn`, `.git`, and `_darcs`.
+
+To exclude other files from upload, specify them in a `.cfignore` file in the
+directory where you run the `cf push command.
+For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section of the [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html) topic.
+
+### <a name='profile'></a>Pre-Runtime Hooks
 
 <p class="note"><strong>Note</strong>: The Java buildpack does not support pre-runtime hooks.</p>
 
-To configure pre-runtime hooks, create a file named `.profile` and place it in the root of your app directory.
-If the directory includes a `.profile` script, then Cloud Foundry executes it immediately before each instance of your app starts.
-Because the `.profile` script executes after the buildpack, the script has access to the language runtime environment created by the buildpack.
+To run custom initialization tasks for your app, include them in a `.profile` file in the root of your app directory. After <%= vars.product_short %> loads the buildpack for an app, it executes any `.profile` file that it finds, and the `.profile` tasks can access the language runtime environment. After <%= vars.product_short %> runs `.profile` tasks, it starts the app instance itself.
 
-<p class="note"><strong>Note</strong>: Your app root directory may also include a <code>.profile.d</code> directory that contains bash scripts that perform initialization tasks for the buildpack.
-Developers should not edit these scripts unless they are using a <a href="../../buildpacks/custom.html">custom buildpack</a>.</p>
-
-You can use the `.profile` script to perform app-specific initialization tasks, such as setting custom environment variables.
-Environment variables are key-value pairs defined at the operating system level.
-These key-value pairs provide a way to configure the apps running on a system.
-For example, any app can access the LANG environment variable to determine which language to use for error messages and instructions, collating sequences, and date formats.
-
-To set an environment variable, add the appropriate bash commands to your `.profile` file. See the example below.
+As an example, the following `.profile` file uses `bash` to set a value for the environment variable `LANG`. Setting this value at the operating system level lets the app determine which which language to use for error messages and instructions, collating sequences, and date formats:
 
 ~~~bash
 # Set the default LANG for your apps
 export LANG=en_US.UTF-8
 ~~~
 
+Your app root directory may also include a `.profile.d` directory that contains bash scripts that perform initialization tasks for the buildpack.
+Developers should not edit these scripts unless they are using a [custom buildpack](../../buildpacks/custom.html).
+
+
 <p class="note"><strong>Note</strong>: If you are using a PHP buildpack version prior to v4.3.18, the buildpack does not execute your PHP app's <code>.profile</code> script. Your PHP app will host the <code>.profile</code> script's contents.
 This means that any PHP app staged using the affected PHP buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
-## <a id='push'></a> Push the App 
+## <a id='push'></a> Push the App
 
-Run the following command to deploy an app without a manifest:
+Run the following command to push an app without a manifest:
 
   `cf push APP-NAME`
 
@@ -179,10 +166,18 @@ to the default values.
 You can also use command-line options to specify these and additional
 attributes.
 
-The following transcript illustrates  how Cloud Foundry assigns default values
+### <a id='updates'></a> App Updates
+
+When you push an app that is already running, <%= vars.product_short %> stops all existing instances of that app. Users who try to access the app get a "404 not found" message while `cf push` runs.
+
+To prevent two versions of your code from running at the same time, you need to stop all running instances of your app. A worst-case example of not doing this is: your app update migrates a database schema, instances running the old code fail, and users lose data.
+
+### <a id='example'></a> Example Session
+
+The following session illustrates  how <%= vars.product_short %> assigns default values
 to app when given a `cf push` command.
 
-<p class ="note"><strong>Note</strong>: When deploying your own apps, avoid generic names like <code>my-app</code>. Cloud Foundry uses the app name to compose the route to the app, and deployment fails unless the app has a globally unique route.</p>
+<p class ="note"><strong>Note</strong>: When deploying your own apps, avoid generic names like <code>my-app</code>. <%= vars.product_short %> uses the app name to compose the route to the app, and deployment fails unless the app has a globally unique route.</p>
 
 <pre class="terminal">
 	$ cf push my-app
@@ -232,4 +227,3 @@ to app when given a `cf push` command.
 	#0   running   2014-01-24 05:07:18 PM   0.0%   18.5M of 1G   52.5M of 1G
 
 </pre>
-

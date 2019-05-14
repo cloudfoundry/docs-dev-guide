@@ -8,10 +8,13 @@ This topic describes how to use the Cloud Foundry Command Line Interface (cf CLI
 ## <a id="overview"></a> Overview
 
 The cf CLI command `cf push` pushes apps to <%= vars.product_short %>.
+The `cf push` command uses flags and helper files that determine the following:
+
+* How the pushed app runs, including its route (URL), instance count, and memory limits.
+* How the push process works: whether it's configured with a manifest, runs a startup script, or limits files uploaded to the Cloud Controller.
 
 To push an app using `cf push`, do the following:
 
-1. [(Optional) Configure Domains](#domain)
 1. [Determine `cf push` Options](#options)
 1. [Push the App](#push)
 
@@ -26,34 +29,25 @@ For help preparing your app to be pushed to <%= vars.product_short %>, see:
   - [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html)
   - Any [Buildpacks](../../buildpacks/index.html) guides specific to your app language or framework, such as [Getting Started Deploying Ruby on Rails Apps](../../buildpacks/ruby/gsg-ror.html)
 
-* All required app resources are uploaded.
-For example, you may need to include a database driver.
-
-* Extraneous files and artifacts are excluded from upload.
-You should explicitly exclude extraneous files that reside within your
-app directory structure, particularly if your app is large.
-
-* Every service that your app needs has an instance that it can access, for example running in the same space.
-
 * Your <%= vars.product_short %> installation supports the type of app you are going to
 push, or you have the URL of an externally-available buildpack that can stage
 the app.
 
-* You have all of the following:
+* All required app resources are uploaded.
+For example, you may need to include a database driver.
+
+* Your app can access an instance of every service that it needs, because the service instance is either running in or shared with the app's space. See [Determine the Org and Space](#space).
+
+* You have the following:
   - The API endpoint for your <%= vars.product_short %> installation. Also known as the target
 URL, this is <%=vars.api_endpoint%>.
   - Your username and password for your <%= vars.product_short %> installation.
-  - The organization and space where you want to push your app.
-A <%= vars.product_short %> workspace is organized into organizations, and within them,
-spaces.
-As a <%= vars.product_short %> user, you may have access to one or more organizations and
-spaces.
 
-## <a id='options'></a>Push Options
+## <a id='options'></a>Determine cf push Options
 
-Before you push an app, you need to collect basic field values and decide on some larger options.
+Before you push an app, you need to collect basic field values and make some choices.
 
-### <a name='basic'></a>Basic Fields
+### <a id='basic'></a>Collect Basic Field Values
 
 Before you push an app, you need values for the following fields, unless you want the defaults:
 
@@ -62,7 +56,7 @@ Before you push an app, you need values for the following fields, unless you wan
 downtime your app will experience.
 If your app is still in development, running a single instance can
 simplify troubleshooting.
-For any production app, we recommend a minimum of two instances.
+For any production app, <%= vars.recommended_by %> recommends a minimum of two instances.
 * **Memory Limit**: The maximum amount of memory that each instance of your
 app can consume.
 If an instance exceeds this limit, <%= vars.product_short %> restarts the instance.
@@ -70,87 +64,88 @@ If an instance exceeds its memory limit repeatedly in a short period of time, <%
 	delays restarting the instance.
 * **Start Command**: This is the command that <%= vars.product_short %> uses to start each
 instance of your app.
-This start command varies by app framework.
-* **Services**: Apps can bind to services such as databases, messaging,
-and key-value stores.
-Apps are pushed into app spaces.
-An app can only bind to a service that has an existing instance in the
-target app space.
+This start command differs by app framework.
 
-### <a id='route'></a>Route
+### <a id='space'></a>Determine the Org and Space
+
+A <%= vars.product_short %> workspace is organized into orgs, and within them, spaces.
+Apps are pushed into app spaces.
+
+As a <%= vars.product_short %> user, you may have access to one or more orgs and spaces.
+Before pushing an app, you must:
+
+* Decide the target org and space where you want to push your app.
+
+### <a id='service'></a>Confirm Service Accessibility
+
+Apps use services such as databases, messaging, and key-value stores.
+To use a service, the app must bind to an instance of the service running in the same space, or shared with its space. Before pushing an app, you must:
+
+* Confirm that every service that your app uses has an instance that the app can access.
+
+See [Sharing Service Instances](../services/sharing-instances.html) for how to share service instances across spaces.
+
+### <a id='route'></a>Determine the Route
 
 <%= vars.product_short %> directs requests to an app based on its route.
 The route is a URL made up of a hostname and a domain, as in `https://HOSTNAME.example.com`.
 
-You can customize an app's hostname and domain or let `cf push` use the defaults.
+You can let `cf push` use the default app route, or specify a different route by customizing its hostname or domain.
 
-#### Route Defaults
+For more information about domains, see [Routes and Domains](./routes-domains.html).
 
-<%= vars.product_short %> default an app's route as follows:
+#### Default Route
+
+<%= vars.product_short %> defaults an app's route as follows:
 
 * **Hostname**: The name of the app.
   - If the app name contains underscores, <%= vars.product_short %> converts them to hyphens when creating the app's route.
 
 * **Domain**: The default apps domain for the <%= vars.product_short %> installation.
 
-#### (Optional) Customize Routes
+<%=vars.ssl%>
 
-Do the following to customize an app's route:
+#### (Optional) Customize the Route
+
+To customize an app's route, do the following:
 
 * **Hostname**
-  - Pass the custom hostname to `cf push` with the `-n` flag.
+  - Pass the custom hostname into `cf push` with the `-n` flag.
 
 * **Domain**
-  - Pass the custome domain to `cf push` with the `-d` flag.
+  - Pass the custom domain into `cf push` with the `-d` flag.
   The custom domain must be registered, and mapped to the org that contains the app's target space
 
 #### Ensure Uniqueness
 
-The app's route must be globally unique, whether you let <%= vars.product_short %> use defaults
-for the host or domain, or specify custom values.
+The app's route must be globally unique, whether you use the <%= vars.product_short %> defaults
+or a custom host or domain.
 
-To help ensure route uniqueness, you can use the following `cf push` options:
+To help ensure route uniqueness you can use the `--random-route` option with `cf push`.
+`--random-route` creates a route that contains the app name and random words
 
-* `-n` assigns a different HOST name for the app
-* `--random-route` creates a URL that includes the app name and random words
+### <a id='exclude'></a>(Optional) Limit the Upload Files
 
-<p class='note'><strong>Note</strong>: Run <code>cf help push</code> to view other options for the <code>cf push</code> command.</p>
-
-<%=vars.ssl%>
-
-
-
-For more information about domains, see [Routes and Domains](./routes-domains.html).
-
-### <a name='manifests'></a>Manifests
-
-You can define push options on the command line, in a manifest file, or
-both.
-
-See [Deploying with App Manifests](./manifest.html) to learn how
-app settings change from push to push, and how command-line options,
-manifests, and commands like `cf scale` interact.
-
-For more information about the manifest file, see the [Deploying with App Manifests](./manifest.html) topic.
-
-### <a name='exclude'></a>Files to Upload
-
-<%= vars.product_short %> uploads all app files except version control files and
+By default, <%= vars.product_short %> uploads all app files except version control files and
 folders with names such as `.svn`, `.git`, and `_darcs`.
 
-To exclude other files from upload, specify them in a `.cfignore` file in the
+<%= vars.recommended_by %> recommends that you explicitly exclude extraneous files residing within your app directory, particularly if your app is large.
+For example, if you build your app locally and push it as a binary, you can save resources by not uploading any of the app's source code.
+
+To exclude files from upload, specify them in a `.cfignore` file in the
 directory where you run the `cf push` command.
-For example, if you build your app locally and push it as a binary, you can save resources by not uploading any of its source code.
 
 For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section of the [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html) topic.
 
-### <a name='profile'></a>Pre-Runtime Hooks
+### <a id='profile'></a>(Optional) Configure Pre-Runtime Hooks
 
 <p class="note"><strong>Note</strong>: The Java buildpack does not support pre-runtime hooks.</p>
 
-To run custom initialization tasks for your app, include them in a `.profile` file in the root of your app directory. After <%= vars.product_short %> loads the buildpack for an app, it executes any `.profile` file that it finds, and the `.profile` tasks can access the language runtime environment. After <%= vars.product_short %> runs `.profile` tasks, it starts the app instance itself.
+To run custom initialization tasks for your app, include them in a `.profile` file in the root of your app directory. After <%= vars.product_short %> loads the buildpack for an app, it executes any `.profile` file that it finds, and the `.profile` tasks can access the language runtime environment.
 
-As an example, the following `.profile` file uses `bash` to set a value for the environment variable `LANG`. Setting this value at the operating system level lets the app determine which which language to use for error messages and instructions, collating sequences, and date formats:
+After <%= vars.product_short %> runs `.profile` tasks, it starts the app instance itself.
+
+As an example, the following `.profile` file uses `bash` to set a value for the environment variable `LANG`. Setting this value at the operating system level lets the app determine which language to use for error messages and instructions, collating sequences, and date formats:
 
 ~~~bash
 # Set the default LANG for your apps
@@ -166,25 +161,19 @@ This means that any PHP app staged using the affected PHP buildpack versions can
 
 ## <a id='push'></a> Push the App
 
-Run the following command to push an app without a manifest:
+To push an app with default values for the number of instances, amount of memory, and other attributes, run the following command:
 
   `cf push APP-NAME`
 
-If you provide the app name in a manifest, you can reduce the command to
-`cf push`.
-See [Deploying with App Manifests](./manifest.html).
+To specify options, as described in [Determine `cf push` Options](#options), include them in the `cf push` command itself, in a `manifest.yml` file, or both.
 
-Because all you have provided is the name of your app, `cf push` sets the
-number of instances, amount of memory, and other attributes of your app
-to the default values.
-You can also use command-line options to specify these and additional
-attributes.
+See [Deploying with App Manifests](./manifest.html) to learn how app settings change from push to push, and how command-line options, manifests, and commands like `cf scale` interact.
 
 ### <a id='updates'></a> App Updates and Downtime
 
 When you push an app that is already running, <%= vars.product_short %> stops all existing instances of that app. Users who try to access the app get a "404 Not Found" message while `cf push` runs.
 
-For some app updates, old and new versions of your code should not run at the same time. A worst-case example is if your app update migrates a database schema, which causes old app instances to fail and lose user data.  To prevent this, you need to stop all running instances of your app before you push the new version.
+With some app updates, old and new versions of your code should never run at the same time. A worst-case example is if your app update migrates a database schema, causing old app instances to fail and lose user data.  To prevent this, you need to stop all running instances of your app before you push the new version.
 
 When old and new versions of your app can run simultaneously, you can avoid app downtime by using the [blue-green method](./blue-green.html) to swap routes between app versions running in parallel.
 
@@ -193,24 +182,22 @@ When old and new versions of your app can run simultaneously, you can avoid app 
 The following session illustrates  how <%= vars.product_short %> assigns default values
 to app when given a `cf push` command.
 
-<p class ="note"><strong>Note</strong>: Avoid generic app names like <code>my-app</code>. <%= vars.product_short %> uses the app name to compose the route to the app, and app staging fails unless the app has a globally unique route.</p>
-
 <pre class="terminal">
-	$ cf push my-app
-	Creating app my-app in org example-org / space development as a.user@<%=vars.app_domain%>...
+	$ cf push my-app-1234
+	Creating app my-app-1234 in org example-org / space development as a.user@<%=vars.app_domain%>...
 	OK
 
-	Creating route my-app.<%=vars.app_domain%>...
+	Creating route my-app-1234.<%=vars.app_domain%>...
 	OK
 
-	Binding my-app.<%=vars.app_domain%> to my-app...
+	Binding my-app-1234.<%=vars.app_domain%> to my-app-1234...
 	OK
 
-	Uploading my-app...
+	Uploading my-app-1234...
 	Uploading app: 560.1K, 9 files
 	OK
 
-	Starting app my-app in org example-org / space development as a.user@<%= vars.app_domain %>...
+	Starting app my-app-1234 in org example-org / space development as a.user@<%= vars.app_domain %>...
 	-----> Downloaded app package (552K)
 	OK
 	-----> Using Ruby version: ruby-1.9.3
@@ -231,13 +218,13 @@ to app when given a `cf push` command.
 
 	App started
 
-	Showing health and status for app my-app in org example-org / space development as a.user@<%=vars.app_domain%>...
+	Showing health and status for app my-app-1234 in org example-org / space development as a.user@<%=vars.app_domain%>...
 	OK
 
 	requested state: started
 	instances: 1/1
 	usage: 1G x 1 instances
-	urls: my-app.<%=vars.app_domain%>
+	urls: my-app-1234.<%=vars.app_domain%>
 
 	     state     since                    cpu    memory        disk
 	#0   running   2014-01-24 05:07:18 PM   0.0%   18.5M of 1G   52.5M of 1G

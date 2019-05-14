@@ -19,7 +19,7 @@ To push an app using `cf push`, do the following:
 1. [Push the App](#push)
 1. [(Optional) Configure App Services](#services)
 
-For an explanation of what <%= vars.product_short %> does after you run `cf push`, see [How Apps are Staged](../concepts/how-applications-are-staged.html).
+For an explanation of what <%= vars.product_short %> does when you run `cf push`, see [How Apps are Staged](../../concepts/how-applications-are-staged.html).
 
 For information about the lifecycle of an app, see [App Container Lifecycle](./app-lifecycle.html)
 
@@ -41,11 +41,9 @@ the app.
 * All required app resources are uploaded.
 For example, you may need to include a database driver.
 
-* Your app can access an instance of every service that it needs, because the service instance is:
-  - Running in, or shared with, the app's space. See [Determine the Org and Space](#space).
-  - Bound to and configured for the app. See [Configure App Services](#services).
+* Your app can access an instance of every service that it needs, because the service instance is running in, or shared with, the app's space. See [Determine the Org and Space](#space).
 
-* You have the following:
+* You have your target and credentials:
   - The API endpoint for your <%= vars.product_short %> installation. Also known as the target
 URL, this is <%=vars.api_endpoint%>.
   - Your username and password for your <%= vars.product_short %> installation.
@@ -56,13 +54,12 @@ Before you push an app, you need to collect basic field values and make some cho
 
 ### <a id='basic'></a>Collect Basic Field Values
 
-Before you push an app, you need values for the following fields, unless you want the defaults:
+Before you push an app, you need values for the following fields:
 
 * **Name**: You can use any series of alphanumeric characters as the name of your app.
 * **Instances**: Generally speaking, the more app instances you run, the less
 downtime your app will experience.
-If your app is still in development, running a single instance can
-simplify troubleshooting.
+If your app is still in development, running a single instance can simplify troubleshooting.
 For any production app, <%= vars.recommended_by %> recommends a minimum of two instances.
 * **Memory Limit**: The maximum amount of memory that each instance of your
 app can consume.

@@ -8,16 +8,12 @@ This topic describes how to use the Cloud Foundry Command Line Interface (cf CLI
 ## <a id="overview"></a> Overview
 
 The cf CLI command `cf push` pushes apps to <%= vars.product_short %>.
+
 To push an app using `cf push`, do the following:
 
 1. [(Optional) Configure Domains](#domain)
 1. [Determine `cf push` Options](#options)
 1. [Push the App](#push)
-
-For help preparing to push your app, see:
-
-* [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html)
-* Any [Buildpacks](../../buildpacks/index.html) guides specific to your app language or framework, such as [Getting Started Deploying Ruby on Rails Apps](../../buildpacks/ruby/gsg-ror.html)
 
 ## <a id='prepare'></a> Prerequisites
 
@@ -26,6 +22,9 @@ Before you push your app to <%= vars.product_short %>, make sure that:
 * Your app is *cloud-ready*.
 <%= vars.product_short %> behaviors related to file storage, HTTP sessions, and port usage
 may require modifications to your app.
+For help preparing your app to be pushed to <%= vars.product_short %>, see:
+  - [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html)
+  - Any [Buildpacks](../../buildpacks/index.html) guides specific to your app language or framework, such as [Getting Started Deploying Ruby on Rails Apps](../../buildpacks/ruby/gsg-ror.html)
 
 * All required app resources are uploaded.
 For example, you may need to include a database driver.
@@ -44,44 +43,19 @@ the app.
   - The API endpoint for your <%= vars.product_short %> installation. Also known as the target
 URL, this is <%=vars.api_endpoint%>.
   - Your username and password for your <%= vars.product_short %> installation.
-  - The organization and space where you want to deploy your app.
+  - The organization and space where you want to push your app.
 A <%= vars.product_short %> workspace is organized into organizations, and within them,
 spaces.
 As a <%= vars.product_short %> user, you may have access to one or more organizations and
 spaces.
 
-## <a id='domain'></a>(Optional) Configure Domains
+## <a id='options'></a>Push Options
 
-<%= vars.product_short %> directs requests to an app using a route, which is a URL
-made up of a host and a domain.
+Before you push an app, you need to collect basic field values and decide on some larger options.
 
-* The name of an app is the default host for that app, unless you specify the host name with the <code>-n</code> flag.
+### <a name='basic'></a>Basic Fields
 
-* Every app is pushed to a space that belongs to a domain.
-Every <%= vars.product_short %> installation has a default domain.
-You can specify a custom domain for the app if
-  - The domain is registered
-  - The domain is mapped to the org that contains the target space for the app
-
-<p class='note'><strong>Note</strong>:
-<%= vars.product_short %> ​allows​ app names, but not app URLs, to include underscores.
-<%= vars.product_short %> converts underscores to hyphens when setting a default app URL from an app name.
-</p>
-
-* The URL for your app must be different from other apps hosted by <%=vars.product_short%>.
-The following `cf push` options can help create a unique URL:
-   - `-n` assigns a different HOST name for the app
-   - `--random-route` creates a URL that includes the app name and random words
-
- <p class='note'><strong>Note</strong>: Run <code>cf help push</code> to view other options for the <code>cf push</code> command.</p>
-
-<%=vars.ssl%>
-
-For more information about domains, see [Routes and Domains](./routes-domains.html).
-
-## <a id='options'></a>Determine Push Options
-
-Before you push an app, you need to decide on the following:
+Before you push an app, you need values for the following fields, unless you want the defaults:
 
 * **Name**: You can use any series of alphanumeric characters as the name of your app.
 * **Instances**: Generally speaking, the more app instances you run, the less
@@ -92,23 +66,61 @@ For any production app, we recommend a minimum of two instances.
 * **Memory Limit**: The maximum amount of memory that each instance of your
 app can consume.
 If an instance exceeds this limit, <%= vars.product_short %> restarts the instance.
-    <p class='note'><strong>Note</strong>: Initially, <%= vars.product_short %> immediately
-	restarts any instances that exceed the memory limit. If an instance
-	repeatedly exceeds the memory limit in a short period of time, <%= vars.product_short %>
-	delays restarting the instance.</p>
+If an instance exceeds its memory limit repeatedly in a short period of time, <%= vars.product_short %>
+	delays restarting the instance.
 * **Start Command**: This is the command that <%= vars.product_short %> uses to start each
 instance of your app.
 This start command varies by app framework.
-* **Subdomain (host) and Domain**:
-The route, which is the combination of subdomain and domain, must be globally
-unique.
-This is true whether you specify a portion of the route or allow <%= vars.product_short %>
-to use defaults.
 * **Services**: Apps can bind to services such as databases, messaging,
 and key-value stores.
-Apps are deployed into app spaces.
+Apps are pushed into app spaces.
 An app can only bind to a service that has an existing instance in the
 target app space.
+
+### <a id='route'></a>Route
+
+<%= vars.product_short %> directs requests to an app based on its route.
+The route is a URL made up of a hostname and a domain, as in `https://HOSTNAME.example.com`.
+
+You can customize an app's hostname and domain or let `cf push` use the defaults.
+
+#### Route Defaults
+
+<%= vars.product_short %> default an app's route as follows:
+
+* **Hostname**: The name of the app.
+  - If the app name contains underscores, <%= vars.product_short %> converts them to hyphens when creating the app's route.
+
+* **Domain**: The default apps domain for the <%= vars.product_short %> installation.
+
+#### (Optional) Customize Routes
+
+Do the following to customize an app's route:
+
+* **Hostname**
+  - Pass the custom hostname to `cf push` with the `-n` flag.
+
+* **Domain**
+  - Pass the custome domain to `cf push` with the `-d` flag.
+  The custom domain must be registered, and mapped to the org that contains the app's target space
+
+#### Ensure Uniqueness
+
+The app's route must be globally unique, whether you let <%= vars.product_short %> use defaults
+for the host or domain, or specify custom values.
+
+To help ensure route uniqueness, you can use the following `cf push` options:
+
+* `-n` assigns a different HOST name for the app
+* `--random-route` creates a URL that includes the app name and random words
+
+<p class='note'><strong>Note</strong>: Run <code>cf help push</code> to view other options for the <code>cf push</code> command.</p>
+
+<%=vars.ssl%>
+
+
+
+For more information about domains, see [Routes and Domains](./routes-domains.html).
 
 ### <a name='manifests'></a>Manifests
 
@@ -121,13 +133,15 @@ manifests, and commands like `cf scale` interact.
 
 For more information about the manifest file, see the [Deploying with App Manifests](./manifest.html) topic.
 
-### <a name='exclude'></a>Exclude Files
+### <a name='exclude'></a>Files to Upload
 
 <%= vars.product_short %> uploads all app files except version control files and
 folders with names such as `.svn`, `.git`, and `_darcs`.
 
 To exclude other files from upload, specify them in a `.cfignore` file in the
-directory where you run the `cf push command.
+directory where you run the `cf push` command.
+For example, if you build your app locally and push it as a binary, you can save resources by not uploading any of its source code.
+
 For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section of the [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html) topic.
 
 ### <a name='profile'></a>Pre-Runtime Hooks
@@ -166,18 +180,20 @@ to the default values.
 You can also use command-line options to specify these and additional
 attributes.
 
-### <a id='updates'></a> App Updates
+### <a id='updates'></a> App Updates and Downtime
 
-When you push an app that is already running, <%= vars.product_short %> stops all existing instances of that app. Users who try to access the app get a "404 not found" message while `cf push` runs.
+When you push an app that is already running, <%= vars.product_short %> stops all existing instances of that app. Users who try to access the app get a "404 Not Found" message while `cf push` runs.
 
-To prevent two versions of your code from running at the same time, you need to stop all running instances of your app. A worst-case example of not doing this is: your app update migrates a database schema, instances running the old code fail, and users lose data.
+For some app updates, old and new versions of your code should not run at the same time. A worst-case example is if your app update migrates a database schema, which causes old app instances to fail and lose user data.  To prevent this, you need to stop all running instances of your app before you push the new version.
+
+When old and new versions of your app can run simultaneously, you can avoid app downtime by using the [blue-green method](./blue-green.html) to swap routes between app versions running in parallel.
 
 ### <a id='example'></a> Example Session
 
 The following session illustrates  how <%= vars.product_short %> assigns default values
 to app when given a `cf push` command.
 
-<p class ="note"><strong>Note</strong>: When deploying your own apps, avoid generic names like <code>my-app</code>. <%= vars.product_short %> uses the app name to compose the route to the app, and deployment fails unless the app has a globally unique route.</p>
+<p class ="note"><strong>Note</strong>: Avoid generic app names like <code>my-app</code>. <%= vars.product_short %> uses the app name to compose the route to the app, and app staging fails unless the app has a globally unique route.</p>
 
 <pre class="terminal">
 	$ cf push my-app

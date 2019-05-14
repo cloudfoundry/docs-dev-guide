@@ -17,6 +17,11 @@ To push an app using `cf push`, do the following:
 
 1. [Determine `cf push` Options](#options)
 1. [Push the App](#push)
+1. [(Optional) Configure Service Connections](#service-connection)
+
+For an explanation of what <%= vars.product_short %> does after you run `cf push`, see [How Apps are Staged](../concepts/how-applications-are-staged.html).
+
+For information about the lifecycle of an app, see [App Container Lifecycle](./app-lifecycle.html)
 
 ## <a id='prepare'></a> Prerequisites
 
@@ -36,7 +41,9 @@ the app.
 * All required app resources are uploaded.
 For example, you may need to include a database driver.
 
-* Your app can access an instance of every service that it needs, because the service instance is either running in or shared with the app's space. See [Determine the Org and Space](#space).
+* Your app can access an instance of every service that it needs, because the service instance is:
+  - Running in, or shared with, the app's space. See [Determine the Org and Space](#space).
+  - Bound to and configured for the app. See [Configure App Services](#services).
 
 * You have the following:
   - The API endpoint for your <%= vars.product_short %> installation. Also known as the target
@@ -167,6 +174,8 @@ To push an app with default values for the number of instances, amount of memory
 
 To specify options, as described in [Determine `cf push` Options](#options), include them in the `cf push` command itself, in a `manifest.yml` file, or both.
 
+A manifest file can also include a [Services](./manifest-attributes.html#services-block) block that lists service instances for the app to bind to automatically.
+
 See [Deploying with App Manifests](./manifest.html) to learn how app settings change from push to push, and how command-line options, manifests, and commands like `cf scale` interact.
 
 ### <a id='updates'></a> App Updates and Downtime
@@ -230,3 +239,23 @@ to app when given a `cf push` command.
 	#0   running   2014-01-24 05:07:18 PM   0.0%   18.5M of 1G   52.5M of 1G
 
 </pre>
+
+## <a id='services'></a>(Optional) Configure App Services
+
+If a newly-pushed app has the same name and route as an older app version that is already bound and configured for the services it uses, the new app retains the bindings and service configuration of the previously-running version.
+
+For apps that are not already set up for the services that they use, you need to:
+
+1. Bind the services to the app. For more information about services, see the [Services Overview](../services/index.html) topic.
+
+1. (Optional) Configure the app with the service URL and credentials, if needed. For more information, see the specific documentation for your app framework, such as:
+  - [Ruby](../../buildpacks/ruby/ruby-service-bindings.html)
+  - [Node.js](../../buildpacks/node/node-service-bindings.html)
+  - [Spring](../../buildpacks/java/configuring-service-connections/spring-service-bindings.html)
+  - [Grails](../../buildpacks/java/configuring-service-connections/grails-service-bindings.html)
+
+## <a id='troubleshoot-push'></a>Troubleshoot App Push Problems
+
+If your app does not start on <%= vars.product_short %>, first ensure that the app can run locally.
+
+For how to troubleshoot your app in the cloud using the cf CLI, see [Troubleshoot App Deployment and Health](./troubleshoot-app-health.html).

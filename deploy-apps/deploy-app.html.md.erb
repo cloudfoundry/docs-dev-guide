@@ -83,7 +83,7 @@ Before pushing an app, you must:
 ### <a id='service'></a>Confirm Service Accessibility
 
 Apps use services such as databases, messaging, and key-value stores.
-To use a service, the app must bind to an instance of the service running in the same space, or shared with its space. Before pushing an app, you must:
+To use a service, the app must bind to an instance of the service that is running in the same space or shared with its space. Before pushing an app, you must:
 
 * Confirm that every service that your app uses has an instance that the app can access.
 
@@ -94,7 +94,7 @@ See [Sharing Service Instances](../services/sharing-instances.html) for how to s
 <%= vars.product_short %> directs requests to an app based on its route.
 The route is a URL made up of a hostname and a domain, as in `https://HOSTNAME.example.com`.
 
-You can let `cf push` use the default app route, or specify a different route by customizing its hostname or domain.
+You can let `cf push` use a default app route, or specify a different route by customizing its hostname or domain.
 
 For more information about domains, see [Routes and Domains](./routes-domains.html).
 
@@ -169,7 +169,7 @@ To push an app with default values for the number of instances, amount of memory
 
   `cf push APP-NAME`
 
-To specify options, as described in [Determine `cf push` Options](#options), include them in the `cf push` command itself, in a `manifest.yml` file, or both.
+To specify options, as described in [Determine cf push Options](#options), you can include them in the `cf push` command itself, in a `manifest.yml` file, or both.
 
 A manifest file can also include a [Services](./manifest-attributes.html#services-block) block that lists service instances for the app to bind to automatically.
 
@@ -239,7 +239,7 @@ to app when given a `cf push` command.
 
 ## <a id='services'></a>(Optional) Configure App Services
 
-If a newly-pushed app has the same name and route as an older app version that is already bound and configured for the services it uses, the new app retains the bindings and service configuration of the previously-running version.
+If a newly-pushed app has the same name and route as an older app version, the new app retains the service bindings and service configuration of the previously-pushed version.
 
 For apps that are not already set up for the services that they use, you need to:
 

@@ -8,16 +8,14 @@ This topic describes how to use the Cloud Foundry Command Line Interface (cf CLI
 ## <a id="overview"></a> Overview
 
 The cf CLI command `cf push` pushes apps to <%= vars.product_short %>.
-The `cf push` command uses flags and helper files that determine the following:
+There are two main ways to run the `cf push` command:
 
-* How the pushed app runs, including its route (URL), instance count, and memory limits.
-* How the push process works: whether it's configured with a manifest, runs a startup script, or limits files uploaded to the Cloud Controller.
+- Run `cf push APP-NAME` to push an app the easiest way, using default settings.
+- Run the `cf push` command with flags and helper files to customize:
+    - How the pushed app runs, including its route (URL), instance count, and memory limits.
+    - How the push process works: whether it's configured with a manifest, runs a startup script, or limits files uploaded to the Cloud Controller.
 
-To push an app using `cf push`, do the following:
-
-1. [Determine `cf push` Options](#options)
-1. [Push the App](#push)
-1. [(Optional) Configure App Services](#services)
+The [Push with Defaults](#default-push) and [Push with Custom Settings](#custom-push) sections below detail both of these options.
 
 For an explanation of what <%= vars.product_short %> does when you run `cf push`, see [How Apps are Staged](../../concepts/how-applications-are-staged.html).
 
@@ -41,147 +39,54 @@ the app.
 * All required app resources are uploaded.
 For example, you may need to include a database driver.
 
-* Your app can access an instance of every service that it needs, because the service instance is running in, or shared with, the app's space. See [Determine the Org and Space](#space).
-
 * You have your target and credentials:
   - The API endpoint for your <%= vars.product_short %> installation. Also known as the target
 URL, this is <%=vars.api_endpoint%>.
   - Your username and password for your <%= vars.product_short %> installation.
 
-## <a id='options'></a>Determine cf push Options
+* You are logged into your app's target org and space.
+  1. Decide the org and space where you want to push your app.
+  You may have access to one or more org and space.
+  1. Log into this target org and space with `cf login`.
 
-Before you push an app, you need to collect basic field values and make some choices.
+* Your app can access every service that it uses, because an instance of the service runs in, or is shared with, the app's space.
+  - See [Sharing Service Instances](../services/sharing-instances.html) for how to share service instances across spaces.
+  - Typical services that cloud apps use include databases, message queues, and key-value stores.
 
-### <a id='basic'></a>Collect Basic Field Values
+## <a id='default-push'></a>Push with Defaults
 
-Before you push an app, you need values for the following fields:
+To push an app with default settings, do the following:
 
-* **Name**: You can use any series of alphanumeric characters as the name of your app.
-* **Instances**: Generally speaking, the more app instances you run, the less
-downtime your app will experience.
-If your app is still in development, running a single instance can simplify troubleshooting.
-For any production app, <%= vars.recommended_by %> recommends a minimum of two instances.
-* **Memory Limit**: The maximum amount of memory that each instance of your
-app can consume.
-If an instance exceeds this limit, <%= vars.product_short %> restarts the instance.
-If an instance exceeds its memory limit repeatedly in a short period of time, <%= vars.product_short %>
-	delays restarting the instance.
-* **Start Command**: This is the command that <%= vars.product_short %> uses to start each
-instance of your app.
-This start command differs by app framework.
+1. Choose a name for the app.
+  - The app name must consist of alphanumeric characters.
+  - The app name must be unique to your <%= vars.product_short %> installation.
+       - To use an app name that is not unique, customize the app's route as described in [Customize the Route](#custom-route) below.
+       -  Apps running at their default routes require unique names because default routes are based on app names, and all routes must be globally unique.
 
-### <a id='space'></a>Determine the Org and Space
+1. Run the following command:
 
-A <%= vars.product_short %> workspace is organized into orgs, and within them, spaces.
-Apps are pushed into app spaces.
+    ```
+    cf push APP-NAME
+    ```
+    Where APP-NAME is the name of the app.
 
-As a <%= vars.product_short %> user, you may have access to one or more orgs and spaces.
-Before pushing an app, you must:
 
-* Decide the target org and space where you want to push your app.
+### <a id='default-route'></a> Default Route
 
-### <a id='service'></a>Confirm Service Accessibility
+An app's route is the URL that it runs at.  <%= vars.product_short %> assembles the route for a pushed app from a hostname and a domain.
 
-Apps use services such as databases, messaging, and key-value stores.
-To use a service, the app must bind to an instance of the service that is running in the same space or shared with its space. Before pushing an app, you must:
+By default, <%= vars.product_short %> sets the hostname and domain as follows:
 
-* Confirm that every service that your app uses has an instance that the app can access.
-
-See [Sharing Service Instances](../services/sharing-instances.html) for how to share service instances across spaces.
-
-### <a id='route'></a>Determine the Route
-
-<%= vars.product_short %> directs requests to an app based on its route.
-The route is a URL made up of a hostname and a domain, as in `https://HOSTNAME.example.com`.
-
-You can let `cf push` use a default app route, or specify a different route by customizing its hostname or domain.
-
-For more information about domains, see [Routes and Domains](./routes-domains.html).
-
-#### Default Route
-
-<%= vars.product_short %> defaults an app's route as follows:
-
-* **Hostname**: The name of the app.
+* **Hostname**: The name of the app, as specified in the `cf push` command.
   - If the app name contains underscores, <%= vars.product_short %> converts them to hyphens when creating the app's route.
 
 * **Domain**: The default apps domain for the <%= vars.product_short %> installation.
 
+For example, an app named `my-app-1234` running on <%= vars.product_short %> with an apps domain `apps.example.com` would, by default, run at the URL `https://my-app-1234.apps.example.com`.
+
+For more information about routes and domains, see [Routes and Domains](./routes-domains.html).
+
 <%=vars.ssl%>
-
-#### (Optional) Customize the Route
-
-To customize an app's route, do the following:
-
-* **Hostname**
-  - Pass the custom hostname into `cf push` with the `-n` flag.
-
-* **Domain**
-  - Pass the custom domain into `cf push` with the `-d` flag.
-  The custom domain must be registered, and mapped to the org that contains the app's target space
-
-#### Ensure Uniqueness
-
-The app's route must be globally unique, whether you use the <%= vars.product_short %> defaults
-or a custom host or domain.
-
-To help ensure route uniqueness you can use the `--random-route` option with `cf push`.
-`--random-route` creates a route that contains the app name and random words
-
-### <a id='exclude'></a>(Optional) Limit the Upload Files
-
-By default, <%= vars.product_short %> uploads all app files except version control files and
-folders with names such as `.svn`, `.git`, and `_darcs`.
-
-<%= vars.recommended_by %> recommends that you explicitly exclude extraneous files residing within your app directory, particularly if your app is large.
-For example, if you build your app locally and push it as a binary, you can save resources by not uploading any of the app's source code.
-
-To exclude files from upload, specify them in a `.cfignore` file in the
-directory where you run the `cf push` command.
-
-For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section of the [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html) topic.
-
-### <a id='profile'></a>(Optional) Configure Pre-Runtime Hooks
-
-<p class="note"><strong>Note</strong>: The Java buildpack does not support pre-runtime hooks.</p>
-
-To run custom initialization tasks for your app, include them in a `.profile` file in the root of your app directory. After <%= vars.product_short %> loads the buildpack for an app, it executes any `.profile` file that it finds, and the `.profile` tasks can access the language runtime environment.
-
-After <%= vars.product_short %> runs `.profile` tasks, it starts the app instance itself.
-
-As an example, the following `.profile` file uses `bash` to set a value for the environment variable `LANG`. Setting this value at the operating system level lets the app determine which language to use for error messages and instructions, collating sequences, and date formats:
-
-~~~bash
-# Set the default LANG for your apps
-export LANG=en_US.UTF-8
-~~~
-
-Your app root directory may also include a `.profile.d` directory that contains bash scripts that perform initialization tasks for the buildpack.
-Developers should not edit these scripts unless they are using a [custom buildpack](../../buildpacks/custom.html).
-
-
-<p class="note"><strong>Note</strong>: If you are using a PHP buildpack version prior to v4.3.18, the buildpack does not execute your PHP app's <code>.profile</code> script. Your PHP app will host the <code>.profile</code> script's contents.
-This means that any PHP app staged using the affected PHP buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
-
-## <a id='push'></a> Push the App
-
-To push an app with default values for the number of instances, amount of memory, and other attributes, run the following command:
-
-  `cf push APP-NAME`
-
-To specify options, as described in [Determine cf push Options](#options), you can include them in the `cf push` command itself, in a `manifest.yml` file, or both.
-
-A manifest file can also include a [Services](./manifest-attributes.html#services-block) block that lists service instances for the app to bind to automatically.
-
-See [Deploying with App Manifests](./manifest.html) to learn how app settings change from push to push, and how command-line options, manifests, and commands like `cf scale` interact.
-
-### <a id='updates'></a> App Updates and Downtime
-
-When you push an app that is already running, <%= vars.product_short %> stops all existing instances of that app. Users who try to access the app get a "404 Not Found" message while `cf push` runs.
-
-With some app updates, old and new versions of your code should never run at the same time. A worst-case example is if your app update migrates a database schema, causing old app instances to fail and lose user data.  To prevent this, you need to stop all running instances of your app before you push the new version.
-
-When old and new versions of your app can run simultaneously, you can avoid app downtime by using the [blue-green method](./blue-green.html) to swap routes between app versions running in parallel.
 
 ### <a id='example'></a> Example Session
 
@@ -237,7 +142,114 @@ to app when given a `cf push` command.
 
 </pre>
 
-## <a id='services'></a>(Optional) Configure App Services
+## <a id='custom-push'></a>Push with Custom Settings
+
+Pushing an app with with custom settings typically proceeds as follows:
+
+  1. [(Optional) Customize Basic App Settings](#basic-settings)
+  1. [(Optional) Customize the Route](#custom-route)
+  1. [(Optional) Limit the Upload Files](#exclude)
+  1. [(Optional) Configure App Initialization](#profile)
+  1. [Custom Push the App](#custom-push)
+  1. [(Optional) Configure App Services](#services)
+
+The sections below detail these steps.
+
+### <a id='basic-settings'></a>(Optional) Customize Basic App Settings
+
+Basic settings to customize when pushing an app include:
+
+* **Name**: You can use any series of alphanumeric characters as the name of your app.
+* **Instances**: Generally speaking, the more app instances you run, the less
+downtime your app will experience.
+If your app is still in development, running a single instance can simplify troubleshooting.
+For any production app, <%= vars.recommended_by %> recommends a minimum of two instances.
+* **Memory Limit**: The maximum amount of memory that each instance of your
+app can consume.
+If an instance exceeds this limit, <%= vars.product_short %> restarts the instance.
+If an instance exceeds its memory limit repeatedly in a short period of time, <%= vars.product_short %>
+	delays restarting the instance.
+* **Start Command**: This is the command that <%= vars.product_short %> uses to start each
+instance of your app.
+This start command differs by app framework.
+
+### <a id='custom-route'></a>(Optional) Customize the Route
+
+To customize an app's route, do the following:
+
+1. **(Optional) Customize the Hostname**
+  - Pass the custom hostname into `cf push` with the `-n` flag.
+
+1. **(Optional) Customize the Domain**
+  - Pass the custom domain into `cf push` with the `-d` flag.
+  The custom domain must be registered, and mapped to the org that contains the app's target space
+
+1. **Ensure Route Uniqueness**
+  - The app's route must be globally unique, whether you customize its host or domain, or let it use the [Default Route](#default-route) described above.
+  - To help ensure route uniqueness, pass the `--random-route` option into `cf push`.
+`--random-route` creates a route that includes the app name and random words
+
+### <a id='exclude'></a>(Optional) Limit the Upload Files
+
+By default, <%= vars.product_short %> uploads all app files except version control files and
+folders with names such as `.svn`, `.git`, and `_darcs`.
+
+<%= vars.recommended_by %> recommends that you explicitly exclude extraneous files residing within your app directory, particularly if your app is large.
+For example, if you build your app locally and push it as a binary, you can save resources by not uploading any of the app's source code.
+
+To exclude files from upload:
+
+1. Create a `.cfignore` file that lists the files to exclude.
+
+1. Save the `.cfignore` file to the directory where you run the `cf push` command.
+
+For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section of the [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html) topic.
+
+### <a id='profile'></a>(Optional) Configure App Initialization
+
+<p class="note"><strong>Note</strong>: The Java buildpack does not support an initialization script.</p>
+
+You can configure `cf push` to run custom initialization tasks for an app.
+
+These tasks run after <%= vars.product_short %> loads the app's buildpack, but before it launches the app itself, in order to let the initialization script access the app's language runtime environment.
+
+To run initialization tasks:
+
+1. Create a `.profile` script that contains the initialization tasks.
+
+1. Save the `.profile` script to the directory where you run the `cf push` command.
+
+As an example, the following `.profile` file uses `bash` to set a value for the environment variable `LANG`. Setting this value at the operating system level lets the app determine which language to use for error messages and instructions, collating sequences, and date formats:
+
+~~~bash
+# Set the default LANG for your apps
+export LANG=en_US.UTF-8
+~~~
+
+Your app root directory may also include a `.profile.d` directory that contains bash scripts that perform initialization tasks for the buildpack.
+Developers should not edit these scripts unless they are using a [custom buildpack](../../buildpacks/custom.html).
+
+<p class="note"><strong>Note</strong>: If you are using a PHP buildpack version prior to v4.3.18, the buildpack does not execute your PHP app's <code>.profile</code> script. Your PHP app will host the <code>.profile</code> script's contents.
+This means that any PHP app staged using the affected PHP buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
+
+Initialization tasks as described here are also called "pre-runtime hooks" and "`.profile` tasks".
+
+### <a id='custom-push'></a> Custom Push the App
+
+To specify custom options when pushing an app with `cf push`, you can:
+
+* Include them in the `cf push APP-NAME` command itself.
+* Include them in a manifest file.
+  - The manifest file must be named `manifest.yml` and reside in the directory where you run `cf push`.
+  - The manifest can include the app name, which lets you run `cf push` with no arguments.
+  - The manifest can also include a [Services](./manifest-attributes.html#services-block) block that lists service instances for the app to bind to automatically.
+* Both of the above, command-line options and a manifest.
+
+See [Deploying with App Manifests](./manifest.html) to learn how app settings change from push to push, and how command-line options, manifests, and commands like `cf scale` interact.
+
+See the [Cloud Foundry CLI Reference Guide](https://cli.cloudfoundry.org/en-US/cf/push.html) for a full list of `cf push` options.
+
+### <a id='services'></a>(Optional) Configure App Services
 
 If a newly-pushed app has the same name and route as an older app version, the new app retains the service bindings and service configuration of the previously-pushed version.
 
@@ -250,6 +262,15 @@ For apps that are not already set up for the services that they use, you need to
   - [Node.js](../../buildpacks/node/node-service-bindings.html)
   - [Spring](../../buildpacks/java/configuring-service-connections/spring-service-bindings.html)
   - [Grails](../../buildpacks/java/configuring-service-connections/grails-service-bindings.html)
+
+## <a id='updates'></a> App Updates and Downtime
+
+When you push an app that is already running, <%= vars.product_short %> stops all existing instances of that app. Users who try to access the app get a "404 Not Found" message while `cf push` runs.
+
+With some app updates, old and new versions of your code should never run at the same time. A worst-case example is if your app update migrates a database schema, causing old app instances to fail and lose user data.  To prevent this, you need to stop all running instances of your app before you push the new version.
+
+When old and new versions of your app can run simultaneously, you can avoid app downtime by using the [blue-green method](./blue-green.html) to swap routes between app versions running in parallel.
+
 
 ## <a id='troubleshoot-push'></a>Troubleshoot App Push Problems
 

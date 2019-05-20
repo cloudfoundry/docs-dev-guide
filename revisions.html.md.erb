@@ -57,7 +57,7 @@ To enable revisions for an app, do the following:
 1. Get the GUID of the app:
 
 	```
-	cf APP-NAME --guid
+	cf app APP-NAME --guid
 	```
 
 1. Run the following command:
@@ -78,7 +78,7 @@ To list revisions for an app, do the following:
 1. Get the GUID of the app:
 
 	```
-	cf APP-NAME --guid
+	cf app APP-NAME --guid
 	```
 
 1. Run the following command:
@@ -96,7 +96,7 @@ Deployed revisions are revisions linked to started processes in an app. To list 
 1. Get the GUID of the app:
 
 	```
-	cf APP-NAME --guid
+	cf app APP-NAME --guid
 	```
 
 1. Run the following command:
@@ -124,7 +124,7 @@ To roll back to a previous revision, do the following:
 1. Get the GUID of the app:
 
 	```
-	cf APP-NAME --guid
+	cf app APP-NAME --guid
 	```
 
 1. Get the GUID of the revision. See [View Revisions](#view). 
@@ -132,7 +132,7 @@ To roll back to a previous revision, do the following:
 1. Create a deployment using CAPI:
 
 	```
-	cf curl v3/deployments" \
+	cf curl v3/deployments \
 	-X POST \
 	-d '{
 	  "revision": {

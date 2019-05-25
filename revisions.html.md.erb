@@ -9,7 +9,7 @@ For additional information, see the _Revisions_ section of the [CAPI documentati
 
 <p class="note"><strong>Note</strong>: CAPI v3 is the recommended API version for revisions. While revisions work with v2, there are several inconsistencies. For example, revision descriptions for apps with multiple processes may be inaccurate because v2 does not support apps with multiple processes. Additionally, pushing an app for the first time with revisions in v2 creates two revisions.</p>
 
-## <a id="enable"></a> Overview
+## <a id="overview"></a> Overview
 
 A revision represents code and configuration used by an app at a specific time. It is a Cloud Foundry API (CAPI) object that can contain references to a droplet, custom start command, and environment variables. The most recent revision for a running app represents code and configuration currently running in Cloud Foundry.
 
@@ -71,7 +71,7 @@ To enable revisions for an app, do the following:
 
 This section describes how to use CAPI endpoints for viewing revisions.
 
-### <a id="view"></a> List Revisions for an App 
+### <a id="list"></a> List Revisions for an App 
 
 To list revisions for an app, do the following:
 
@@ -89,7 +89,7 @@ To list revisions for an app, do the following:
 	Where `GUID` is the GUID you got in the previous step.
 
 
-### <a id="view"></a> List Deployed Revisions for an App
+### <a id="list-deployed"></a> List Deployed Revisions for an App
 
 Deployed revisions are revisions linked to started processes in an app. To list deployed revisions, do the following:
 
@@ -106,7 +106,7 @@ Deployed revisions are revisions linked to started processes in an app. To list 
 	```
 	Where `GUID` is the GUID you got in the previous step.
 
-### <a id="view"></a> Get a Revision
+### <a id="get"></a> Get a Revision
 
 To get a revision, do the following:
 
@@ -151,7 +151,7 @@ To roll back to a previous revision, do the following:
 	* `REVISION-GUID` is the GUID of the revision. 
 	* `APP-GUID` is the GUID of the app. 
 
-## <a id="view"></a> Add Metadata to a Revision
+## <a id="metadata"></a> Add Metadata to a Revision
 
 <% if vars.product_name.include? "CF" %>
 To add metadata to a revision, follow the steps to [Add Metadata to an Object](../adminguide/metadata.html). 

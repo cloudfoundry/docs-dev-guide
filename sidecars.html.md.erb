@@ -1,0 +1,86 @@
+---
+title: Using Sidecar Processes in Your App
+owner: CAPI
+---
+
+This topic describes sidecar processes and how to use them in your app. 
+
+## <a id="overview"></a> Overview
+
+You can run additional operating system processes in the same container as your app. These are called sidecar processes, or sidecars. An example of a sidecar is an Application Performance Monitoring (APM) tool. 
+
+### <a id="use-case"></a> Use Cases
+
+You can use sidecars for processes that depend on each other or must run in the same container. 
+
+Some examples include processes that need do the following:
+
+* Communicate over a Unix socket or through localhost
+* Share the same filesystem
+* Be scaled and placed together
+* Have fast interprocess communication
+
+### <a id="how"></a> How They Work
+
+All required code and configuration needed to run the sidecar and app are packaged together in the same droplet. This droplet is deployed in a single container on Diego and both processes within the container are health checked independently.
+
+
+### <a id="limitations"></a> Limitations
+
+Sidecars have the following limitations:
+
+* The start and stop order of app processes and their sidecars is undefined.
+* App processes and sidecars are codependent: if either crashes or exits, the other will as well.
+* Sidecars are currently not independently scalable and share resources with the main app process and other sidecars within the container. 
+* Sidecars only support PID-based health checks. HTTP health-checks for sidecars are not currently supported.
+
+## <a id="create"></a> Create a Sidecar
+
+The recommended way to create sidecars for your app is with an App Manifest.
+
+name is a user defined identifier (unique per app)
+process_types is a list of app processes the sidecar will attach to. You can attach multiple sidecars to each process type your app uses
+command is the command used to start the sidecar
+
+## <a id="example"></a> Example: Push a Sample App with a Sidecar
+
+### <a id="about"></a> About the Sample App
+
+To demonstrate how sidecars work in Cloud Foundry, we will deploy a simple Ruby app that talks to a separate Golang binary called `config-server` that is deployed as a sidecar process.
+
+First, clone the capi-sidecar-samples git repository:
+
+git clone https://github.com/cloudfoundry-samples/capi-sidecar-samples.git
+
+In this repository you will find two apps: a Ruby app that serves as the “main application” called `sidecar-dependent-app` and a Golang “configuration server” sidecar called `config-server-sidecar` that produces a `config-server` binary.
+
+The `config-server` binary provides applications with their required configuration over its `/config/` endpoint and only accepts connections over localhost on the `CONFIG_SERVER_PORT` port. For example:
+
+```
+vcap@f00949bd-6601-4731-6f7e-e859:~$ curl localhost:$CONFIG_SERVER_PORT/config/
+{"Scope":"some-service.admin","Password":"not-a-real-p4$$w0rd"}
+```
+
+Since the `config-server` sidecar process only accepts connections directly over localhost, it needs to share the same network namespace as the main app. Or, in other words, it needs to be co-located in the same container. This makes the `config-server` process a prime candidate for the sidecar pattern. For demonstration purposes, we’ve added a `/config` endpoint to the main app that simply calls out to the `config-server` sidecar and will echo back the configuration in its response:
+
+```
+get '/config' do
+puts "Sending a request to the config-server sidecar at localhost:#{ENV['CONFIG_SERVER_PORT']}/config/"
+response = Typhoeus.get("localhost:#{ENV['CONFIG_SERVER_PORT']}/config/")
+puts "Received #{response.body} from the config-server sidecar"
+response.body
+end
+```
+
+The diagram below demonstrates this architecture:
+
+![Sidecar Diagram](sidecar-diagram.png)
+
+### <a id="procedure"></a> Procedure
+
+
+
+
+
+
+

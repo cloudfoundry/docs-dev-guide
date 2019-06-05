@@ -1,13 +1,18 @@
 ---
-title: Using Sidecar Processes in Your App
+title: Pushing Apps with Sidecar Processes (Alpha)
 owner: CAPI
 ---
 
-This topic describes sidecar processes and how to use them in your app. 
+This topic describes sidecar processes and how to include them when you push your app. 
 
 ## <a id="overview"></a> Overview
 
 You can run additional operating system processes in the same container as your app. These are called sidecar processes, or sidecars. An example of a sidecar is an Application Performance Monitoring (APM) tool. 
+
+When you provide a sidecar for your app, Cloud Foundry packages the required code and configuration needed to run the sidecar and app in the same droplet. It deploys this droplet in a single container on Diego and both processes within the container are health checked independently.
+
+For additional information about sidecars, see the _Sidecars_ section of the [CAPI v3 documentation](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#sidecars). 
+
 
 ### <a id="use-case"></a> Use Cases
 
@@ -20,11 +25,6 @@ Some examples include processes that need do the following:
 * Be scaled and placed together
 * Have fast interprocess communication
 
-### <a id="how"></a> How They Work
-
-All required code and configuration needed to run the sidecar and app are packaged together in the same droplet. This droplet is deployed in a single container on Diego and both processes within the container are health checked independently.
-
-
 ### <a id="limitations"></a> Limitations
 
 Sidecars have the following limitations:
@@ -34,53 +34,211 @@ Sidecars have the following limitations:
 * Sidecars are currently not independently scalable and share resources with the main app process and other sidecars within the container. 
 * Sidecars only support PID-based health checks. HTTP health-checks for sidecars are not currently supported.
 
-## <a id="create"></a> Create a Sidecar
+## <a id="create"></a> Push an App with a Sidecar
 
-The recommended way to create sidecars for your app is with an App Manifest.
+This section provides general instructions for pushing an app with a sidecar. For an example that you can try yourself, see the [Sidecar Tutorial](#tutorial) section below. 
 
-name is a user defined identifier (unique per app)
-process_types is a list of app processes the sidecar will attach to. You can attach multiple sidecars to each process type your app uses
-command is the command used to start the sidecar
+### <a id="prerequisite"></a> Prerequisites
 
-## <a id="example"></a> Example: Push a Sample App with a Sidecar
+Before you can push an app with a sidecar, you have a must have the following:
+
+* An app that is currently running or ready to be pushed. 
+* A file that Cloud Foundry can execute inside the app container as a sidecar process. A few examples include a binary, `.jar`, or `.rb` file. 
+
+### <a id="create"></a> Procedure
+
+To push an app with a sidecar, do the following:
+
+<p class="note"><strong>Note</strong>: This procedure uses <code>v3</code> commands because it requires the server-side manifest support in CAPI v3.</p>
+
+1. If your app is not yet running, create a record it:
+
+	```
+	cf v3-create-app MY-APP
+	```
+
+1. If you do not already have one, create a manifest file in the root directory of your app, such as `manifest.yml`. For more information, see [Deploying with App Manifests](./deploy-apps/manifest.html). 
+
+1. Add the following content to your app manifest file under the `applications` key:
+
+	```
+	  sidecars:
+      - name: MY-SIDECAR
+        process_types: [ 'MY-PROCESS-TYPES' ]
+        command: MY-START-COMMAND
+	```
+
+	Where:
+	* `MY-SIDECAR` is a name that you define for your sidecar. 
+	* `MY-PROCESS-TYPES` is a list of app processes for the sidecar to attach to, such as `web` or `worker`. You can attach multiple sidecars to each process type your app uses. 
+	* `MY-START-COMMAND` is the command used to start the sidecar. For example, `./my-binary` or `java -jar my-java-file.jar`. 
+
+	See the following example that includes multiple sidecars:
+
+	```
+	---
+	applications:
+	- name: my-app
+	  sidecars:
+       - name: authenticator
+         process_types: [ 'web', 'worker' ]
+         command: bundle exec run-authenticator
+       - name: performance monitor
+         process_types: [ 'web' ]
+         command: bundle exec run-performance-monitor
+	```
+
+1. Apply the manifest to your app: 
+
+	```
+	cf v3-apply-manifest -f PATH-TO-MANIFEST
+	```
+
+1. Push your app:
+
+	```
+	cf v3-push MY-APP
+	```
+
+## <a id="tutorial"></a> Sidecar Tutorial
+
+You can explore sidecars using the app in the [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository. The sections below describe the app, how to build and push it, and some ways to observe the app and its processes after pushing.  
 
 ### <a id="about"></a> About the Sample App
 
-To demonstrate how sidecars work in Cloud Foundry, we will deploy a simple Ruby app that talks to a separate Golang binary called `config-server` that is deployed as a sidecar process.
+The [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository contains the following:
 
-First, clone the capi-sidecar-samples git repository:
+* **A simple Ruby app**<br>This app is named `sidecar-dependent-app`. It includes a `/config` endpoint that calls to the sidecar and prints the response. See the following code snippet:
 
-git clone https://github.com/cloudfoundry-samples/capi-sidecar-samples.git
+	```
+	get '/config' do
+	puts "Sending a request to the config-server sidecar at localhost:#{ENV['CONFIG_SERVER_PORT']}/config/"
+	response = Typhoeus.get("localhost:#{ENV['CONFIG_SERVER_PORT']}/config/")
+	puts "Received #{response.body} from the config-server sidecar"
+	response.body
+	end
+	```
 
-In this repository you will find two apps: a Ruby app that serves as the “main application” called `sidecar-dependent-app` and a Golang “configuration server” sidecar called `config-server-sidecar` that produces a `config-server` binary.
+* **A Golang sidecar**<br>The `config-server-sidecar` produces a `config-server` binary. It provides apps with their required configuration over its `/config` endpoint. It also accepts connections only over localhost on the `CONFIG_SERVER_PORT` port, which means it must be co-located in the same conrtainer so that it shares the same network namespace as the main app. This makes it a good candidate for the sidecar pattern. 
 
-The `config-server` binary provides applications with their required configuration over its `/config/` endpoint and only accepts connections over localhost on the `CONFIG_SERVER_PORT` port. For example:
-
-```
-vcap@f00949bd-6601-4731-6f7e-e859:~$ curl localhost:$CONFIG_SERVER_PORT/config/
-{"Scope":"some-service.admin","Password":"not-a-real-p4$$w0rd"}
-```
-
-Since the `config-server` sidecar process only accepts connections directly over localhost, it needs to share the same network namespace as the main app. Or, in other words, it needs to be co-located in the same container. This makes the `config-server` process a prime candidate for the sidecar pattern. For demonstration purposes, we’ve added a `/config` endpoint to the main app that simply calls out to the `config-server` sidecar and will echo back the configuration in its response:
-
-```
-get '/config' do
-puts "Sending a request to the config-server sidecar at localhost:#{ENV['CONFIG_SERVER_PORT']}/config/"
-response = Typhoeus.get("localhost:#{ENV['CONFIG_SERVER_PORT']}/config/")
-puts "Received #{response.body} from the config-server sidecar"
-response.body
-end
-```
-
-The diagram below demonstrates this architecture:
+The diagram below illustrates the app architecture:
 
 ![Sidecar Diagram](sidecar-diagram.png)
 
-### <a id="procedure"></a> Procedure
 
 
+### <a id="push"></a> Push the App and Sidecar
+
+To push the app and sidecar, do the following:
+
+1. In a terminal window, clone the git repository to your workspace:
+
+	```
+	git clone https://github.com/cloudfoundry-samples/capi-sidecar-samples.git
+	```
+
+1. Navigate to the `config-server-sidecar` directory. 
+
+1. Build the binary for the sidecar by running the following command:
+		
+	```
+	GOOS=linux GOARCH=amd64 go build -o config-server .
+	```
+
+	<p class="note"><strong>Note</strong>: If you do not have Go installed, download the <code>config-server_linux_x86-64</code> binary from the <a href="https://github.com/cloudfoundry-samples/capi-sidecar-samples/releases">Releases</a> section of the <code>capi-sidecar-samples</code> repository in GitHub.</p>
+
+1. Create the app:
+
+	```
+	cf v3-create-app sidecar-dependent-app
+	```
+
+1. Navigate to the `sidecar-dependent-app` directory. 
+
+1. Open and review the `manifest.yml` file. Under `sidecars`, the sidecar is specified with a name, process type, and start command. Under `env`, there is an environment variable used by the app and sidecar to know which port to communicate on. 
+
+1. Apply the manifest to the app:
+
+	```
+	cf v3-apply-manifest
+	```
+
+1. Push the app: 
+
+	```
+	cf v3-push sidecar-dependent-app
+	```
+
+Once you have pushed the app, you can further explore it in the sections below: [View the Processes Running in the Container](#view-processes) and [View the Web URL and App Logs](#view-logs). 
+
+### <a id="view-processes"></a> View the Processes Running in the Container
+
+To view the app and sidecar process running in the container, do the following:
+
+1. SSH into the app container:
+	
+	```
+	cf ssh sidecar-dependent-app
+	```
+
+1. Run `ps aux` to see both processes running: The `rackup` process for the main app and `config-server` process for the sidecar. For example:
+
+	<pre class="terminal">
+	vcap@f00949bd-6601-4731-6f7e-e859:~$ ps aux
+USER         PID %CPU %MEM    VSZ      RSS   TTY   STAT   START TIME  COMMAND
+root           1 0.0  0.0     1120     0     ?     S      22:17 0:00  /tmp/garden-init
+vcap           7 0.0  0.0     106716   4508  ?     S      22:17 0:00  ./config-server
+vcap          13 0.0  0.1     519688   35412 ?     S      22:17 0:00  /home/vcap/deps/0/vendor_bundle/ruby/2.4.0/bin/rackup config.ru -p 8080
+vcap          24 0.0  0.0     116344   10792 ?     S      22:17 0:00  /tmp/lifecycle/diego-sshd --allowedKeyExchanges= --address=0.0.0.0:2222 --allowUnauthenticatedClients=false --inhe
+root          82 0.0  0.0     108012   4548  ?     S      22:17 0:00  /etc/cf-assets/healthcheck/healthcheck -port=8080 -timeout=1000ms -liveness-interval=30s
+vcap         215 0.3  0.0     70376    3756  pts/0 S      23:12 0:00  /bin/bash
+vcap         227 0.0  0.0     86268    3116  pts/0 R      23:12 0:00  ps aux	
+	</pre>
+
+1. Run `lsof -i | grep $CONFIG_SERVER_PORT` to see the sidecar is listening on the port specified by `CONFIG_SERVER_PORT` and that the main `ruby` process is connected to it. For example: 
+
+	<pre class="terminal">
+	vcap@f00949bd-6601-4731-6f7e-e859:~$ lsof -i | grep $CONFIG_SERVER_PORT
+	config-se   7 vcap 3u  IPv4 17265901     0t0 TCP *:8082 (LISTEN)
+	config-se   7 vcap 5u  IPv4 17265992     0t0 TCP localhost:8082->localhost:42266 (ESTABLISHED)
+<rp></rp>uby       13 vcap 11u  IPv4 17274965    0t0 TCP localhost:42266->localhost:8082 (ESTABLISHED)
+	</pre>
+
+### <a id="view-logs"></a> View the Web URL and App Logs
+
+To view the Web URL and logs for the app, do the following:
+
+1. In a browser, navigate to the `config` endpoint of the `sidecar-dependent-app`. For example: `https://sidecar-dependent-app.example.com/config`. 
+
+1. See that the browser displays `Scope` and `Password` information. This is the configuration that the app fetches from the `config-server` sidecar. 
+
+1. In a terminal window, run the following command to begin streaming logs for the app: 
+	
+	```
+	cf logs sidecar-dependent-app
+	```
+
+1. In your browser, refresh the `/config` endpoint page and observe that the log stream in your terminal displays logs for both the sidecar and the main app process. 
 
 
+1. In a separate terminal window from your log stream, SSH into the app container:
+	
+	```
+	cf ssh sidecar-dependent-app
+	```
 
+1. Terminate the the sidecar process:
 
-
+	```
+	kill -9 $(pgrep config-server)
+	```
+1. View the output the terminal window where you are streaming your app logs. It displays logs indicating that the sidecar process crashed and Diego  restarted the app container. For example:
+	<pre class="terminal">
+	2019-04-17T16:48:55.41-0700 [API/0] OUT App instance exited with guid 
+	21df1eb8-f25d-43b2-990b-c1a417310553 payload: 
+	{"instance"=>"a8db0eed-7371-4805-5ad3-4596", "index"=>0, 
+	"cell_id"=>"86808ce7-afc2-47da-9e79-522a62a48cff", "reason"=>"CRASHED", 
+	"exit_description"=>"APP/PROC/WEB/SIDECAR/CONFIG-SERVER: Exited with status 137",
+	"crash_count"=>1, "crash_timestamp"=>1555544935367052708, 
+	"version"=>"50892dcb-274d-4cf6-b944-3eda1e000283"}	
+	</pre>

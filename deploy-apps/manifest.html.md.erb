@@ -583,7 +583,7 @@ applications:
 - name: test-app
   instances: ((instances))
   memory: ((memory))
-  buildpack: go_buildpack
+  buildpacks: go_buildpack
   env:
     GOPACKAGENAME: go_calls_ruby
   command: go_calls_ruby

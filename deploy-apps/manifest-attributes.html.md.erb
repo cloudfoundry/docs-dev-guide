@@ -67,7 +67,7 @@ To add variables to an app manifest, do the following:
 
 ### <a id='minimize-duplication'></a> Minimize Duplication with YAML Anchors
 
-<p class='note'><strong>Note:</strong> Promoted content has been deprecated in favor of YAML anchors. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
+<p class='note'><strong>Note:</strong> Top-level attributes have been deprecated in favor of YAML anchors. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
 
 In manifests where multiple apps share settings or services, you may see duplicated content. While the manifests still work, duplication increases the risk of typographical errors, which cause deployments to fail.
 
@@ -460,11 +460,11 @@ These app manifest features have been deprecated in favor of other options, as d
 
 <p class="note warning"><strong>WARNING:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated features along with the feature that replaces it.</p>
 
-### <a id='yaml-anchors'></a> YAML Anchors Replace Promoted Content
+### <a id='yaml-anchors'></a> YAML Anchors Replace Top Level (Or "Global") Attributes
 
-Previously, you could manage duplicated settings in YAML files by “promoting” the duplicate content — that is, by moving it to above the apps block, where it need appear only once.
+Previously, you could declare top-level (or "global") attributes. For example, you could move an attribute above the `applications` block, where it need appear only once.
 
-The following example illustrates how promoted content was used to manage duplicated settings.
+The following example illustrates how this was used to manage duplicated settings.
 
 <pre>
 ---

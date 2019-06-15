@@ -207,7 +207,11 @@ For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-
 
 ### <a id='profile'></a>(Optional) Configure App Initialization
 
-<p class="note"><strong>Note</strong>: Applications using the Java or Binary buildpacks do not support an initialization script.</p>
+<p class="note"><strong>Note</strong>:
+  Applications using the Java or Binary buildpacks do not support an initialization script.
+  <br/>
+  Java and Binary applications can use the <a href="https://github.com/starkandwayne/dot-profile-buildpack"><code>profiled_buildpack community</code></a> buildpack to provide <code>.profile</code> files.
+</p>
 
 You can configure `cf push` to run custom initialization tasks for an app.
 

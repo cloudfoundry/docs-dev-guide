@@ -117,6 +117,7 @@ In <%= vars.product_short %>, a hostname is the label that indicates a subdomain
   Creating route myapp.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
+  <p class="note"><strong>Note</strong>: The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are currently targeting.</p>
 * **cf CLI v6**
   <pre class="terminal">
   $ cf create-route my-space <%= vars.app_domain %> --hostname myapp

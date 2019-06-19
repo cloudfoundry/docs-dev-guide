@@ -587,14 +587,25 @@ Private domains can be HTTP or HTTPS only. TCP Routing is supported for shared d
 #### <a id='create-private-domain'></a> Create a Private Domain
 
 Org managers can create a private domain with the following command:
-<pre class="terminal">
-$ cf create-domain my-org <%= vars.private_app_domain %>
-</pre>
+* **cf CLI v7**
+  <pre class="terminal">
+  $ cf create-private-domain my-org <%= vars.private_app_domain %>
+  </pre>
+* **cf CLI v6**
+  <pre class="terminal">
+  $ cf create-domain my-org <%= vars.private_app_domain %>
+  </pre>
 
 Org managers can create a private domain for a subdomain with the following command:
-<pre class="terminal">
-$ cf create-domain my-org foo.<%= vars.private_app_domain %>
-</pre>
+
+* **cf CLI v7**
+  <pre class="terminal">
+  $ cf create-private-domain my-org foo.<%= vars.private_app_domain %>
+  </pre>
+* **cf CLI v6**
+  <pre class="terminal">
+  $ cf create-domain my-org foo.<%= vars.private_app_domain %>
+  </pre>
 
 #### <a id='sharing-private-domains'></a> Sharing a Private Domain with One or More Orgs
 

@@ -460,9 +460,9 @@ These app manifest features have been deprecated in favor of other options, as d
 
 <p class="note warning"><strong>WARNING:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated features along with the feature that replaces it.</p>
 
-### <a id='yaml-anchors'></a> YAML Anchors Replace Top Level (Or "Global") Attributes
+### <a id='yaml-anchors'></a> YAML Anchors Replace Top-Level Attributes
 
-Previously, you could declare top-level (or "global") attributes. For example, you could move an attribute above the `applications` block, where it need appear only once.
+Previously, you could declare top-level attributes, also known as global attributes. For example, you could move an attribute above the `applications` block, where it need appear only once.
 
 The following example illustrates how this was used to manage duplicated settings.
 

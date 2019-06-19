@@ -211,7 +211,7 @@ For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-
 
 You can configure `cf push` to run custom initialization tasks for an app.
 
-These tasks run after <%= vars.product_short %> loads the app's buildpack, but before it launches the app itself, in order to let the initialization script access the app's language runtime environment.
+These tasks run after <%= vars.product_short %> loads the app droplet but before it launches the app itself to let the initialization script access the app language runtime environment. For example, your script can map values from `$VCAP_SERVICES` into other environment variables or a config file that the app uses.
 
 To run initialization tasks:
 

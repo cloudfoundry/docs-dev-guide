@@ -621,9 +621,15 @@ $ cf unshare-private-domain test-org <%= vars.private_app_domain %>
 
 Org managers can delete a domain from <%= vars.product_short %> with the `cf delete-domain` command:
 
-<pre class="terminal">
-$ cf delete-domain <%= vars.private_app_domain %>
-</pre>
+* **cf CLI v7**:
+  <pre class="terminal">
+  $ cf delete-private-domain <%= vars.private_app_domain %>
+  </pre>
+  <p class="note"><strong>Note</strong>: cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</p>
+* **cf CLI v6**:
+  <pre class="terminal">
+  $ cf delete-domain <%= vars.private_app_domain %>
+  </pre
 
 ### <a id='parent-child-domains'></a> Requirements for Parent and Child Domains
 

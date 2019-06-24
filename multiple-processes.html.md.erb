@@ -26,11 +26,17 @@ Follow the procedure below.
 	web: bundle exec rackup config.ru -p $PORT
  	worker: bundle exec rake worker:start
  	```
-1. Run the `v3-push` command:
+1. Push the app:
+	* **cf CLI v7**:
 
-	```
-	cf v3-push myapp
-	```
+		```
+		cf push myapp
+		```
+	* **cf CLI v6**:
+
+		```
+		cf v3-push myapp
+		```
 
 By default, the web process has a route and one instance. Other processes have zero instances by default. 
 
@@ -38,13 +44,22 @@ By default, the web process has a route and one instance. Other processes have z
 
 To scale an app process, run the following command:
 
-```
-cf v3-scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
-```
+* **cf CLI v7**:
+
+	```
+	cf scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
+	```
+* **cf CLI v6**:
+
+	```
+	cf v3-scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
+	```
 
 ## <a id="view-processes"></a>View Processes
 
 To view the processes running as part of an app, run `cf APP-NAME`. See the following example in which the app has a `web` and a `worker` process. 
+
+<p class="note"><strong>Note</strong>: In cf CLI v7, the <code>v3-prefix</code> is not required.</p>
 
 ```
 $ cf v3-app myapp

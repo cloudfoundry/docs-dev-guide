@@ -301,12 +301,20 @@ Developers cannot create a route that is already taken. To check whether a route
 
 The following command checks whether a route with the hostname `store` and the domain `<%= vars.app_domain %>` and the path `products` exists:
 
-<pre class="terminal">
-$ cf check-route store <%= vars.app_domain %> --path /products
-Checking for route...
-OK
-Route store.<%= vars.app_domain %>/products does exist
-</pre>
+* **cf CLI v7**:
+  <pre class="terminal">
+  $ cf check-route <%= vars.app_domain %> --hostname store --path /products
+  Checking for route...
+  OK
+  Route store.<%= vars.app_domain %>/products does exist
+  </pre>
+* **cf CLI v6**:
+  <pre class="terminal">
+  $ cf check-route store <%= vars.app_domain %> --path /products
+  Checking for route...
+  OK
+  Route store.<%= vars.app_domain %>/products does exist
+  </pre>
 
 ### <a id='map-route'></a> Map a Route to Your App
 

@@ -295,6 +295,8 @@ my-space		    <%= vars.app_domain %>	60000 			  tcp   tcp-app
 
 Developers can only see routes in spaces where they are members.
 
+<p class="note"><strong>Note</strong>: cf CLI v7 removes the <code>port</code> and <code>path</code> columns from the output.</p>
+
 ### <a id='check-routes'></a> Check Routes
 
 Developers cannot create a route that is already taken. To check whether a route is available, developers can use the [cf check-route](https://cli.cloudfoundry.org/en-US/cf/check-route.html) command.

@@ -30,6 +30,8 @@ To deploy an app without incurring downtime, run the following command:
 	```
 	cf push APP-NAME --strategy rolling
 	``` 
+	<p class="note"><strong></strong>: cf CLI v7 exits when one instance of each process is healthy. It also includes a <code>--no-wait</code> flag on push for users who do not want to wait for the operation to complete.</p>
+
 * **cf CLI v6**:
 
 	```

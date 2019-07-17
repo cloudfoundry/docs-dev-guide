@@ -555,6 +555,9 @@ $ cf create-shared-domain <%= vars.app_domain %>
 </pre>
 
 To create a TCP shared domain, first discover the name of the TCP Router Group.
+
+<p class="note"><strong>Note</strong>: cf CLI v7 does not support TCP routing or creating shared domains with router groups.</p>
+
 <pre class="terminal">
 $ cf router-groups
 Getting router groups as admin ...

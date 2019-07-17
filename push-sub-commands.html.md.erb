@@ -32,7 +32,7 @@ For information on using these commands, see the [Example Workflows](#example-wo
 	<tr>
 		<td>App</td>
 		<td>The top-level resource that represents an app and its configuration.<br>
-		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#apps">Apps</a>.</td>
+		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#apps">Apps</a> in the CAPI documentation.</td>
 		<td>
 		<ul>
 			<li><strong>cf CLI v6</strong>: <br><code>v3-create-app</code></li>
@@ -43,7 +43,7 @@ For information on using these commands, see the [Example Workflows](#example-wo
 	<tr>
 		<td>Package</td>
 		<td>The source code that makes up an app.<br>
-		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#packages">Packages</a>.</td>
+		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#packages">Packages</a> in the CAPI documentation.</td>
 		<td><ul>
 			<li><strong>cf CLI v6</strong>: <br><code>v3-create-package</code></li>
 			<li><strong>cf CLI v7</strong>: <br><code>create-package</code></li>
@@ -52,7 +52,7 @@ For information on using these commands, see the [Example Workflows](#example-wo
 	<tr>
 		<td>Build</td>
 		<td>The staging process. Creating a build combines a Package with a Buildpack and builds it into an executable resource.<br>
-		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#builds">Builds</a>.</td>
+		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#builds">Builds</a> in the CAPI documentation.</td>
 		<td><ul>
 			<li><strong>cf CLI v6</strong>: <br><code>v3-stage</code></li>
 			<li><strong>cf CLI v7</strong>: <br><code>stage</code></li>
@@ -61,10 +61,19 @@ For information on using these commands, see the [Example Workflows](#example-wo
 	<tr>
 		<td>Droplet</td>
 		<td>An executable resource that results from a Build.<br>
-		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#droplets">Droplet</a>.</td>
+		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#droplets">Droplet</a>  in the CAPI documentation.</td>
 		<td><ul>
 			<li><strong>cf CLI v6</strong>: <br><code>v3-set-droplet</code></li>
 			<li><strong>cf CLI v7</strong>: <br><code>set-droplet</code></li>
+		</ul></td>
+	</tr>
+	<tr>
+		<td>Manifest</td>
+		<td>A file used when pushing your app to apply bulk configuration to an app and its underlying processes..<br>
+		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#app-manifest">App Manifest</a> in the CAPI documentation.</td>
+		<td><ul>
+			<li><strong>cf CLI v6</strong>: <br><code>v3-create-manifest</code>, code>v3-apply-manifest</code></li>
+			<li><strong>cf CLI v7</strong>: <br><code>create-manifest</code>, <code>apply-manifest</code></li>
 		</ul></td>
 	</tr>
 </table>

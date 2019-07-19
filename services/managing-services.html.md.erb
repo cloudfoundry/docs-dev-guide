@@ -91,9 +91,9 @@ $ cf services
 Getting services in org my-org / space test as user@example.com...
 OK
 
-name       service       plan        bound apps   last operation      broker
-mybucket   p-riakcs      developer   myapp        create succeeded    object-store-broker
-mydb       p-mysql       100mb                    create succeeded    mysql-broker
+name       service       plan        bound apps   last operation      broker                upgrade available
+mybucket   p-riakcs      developer   myapp        create succeeded    object-store-broker   no
+mydb       p-mysql       100mb                    create succeeded    mysql-broker          yes
 </pre>
 
 ### <a id='get-details'></a>Get Details for a Particular Service Instance ###
@@ -243,10 +243,38 @@ OK
 
 ## <a id='update_service'></a>Update a Service Instance ##
 
-### Upgrade/Downgrade Service Plan
+### Upgrade a Service Instance
+_Upgrading a Service Instance requires cf CLI v6.46.0+ and CAPI release 1.83.0+_
+
+Some individual service instances can be upgraded to the latest version of the service plan offered (for example, to upgrade the underlying operating system the service instance is running on). Though the platform and cf CLI support this feature, service brokers must also expressly support this feature.
+
+An indication that an upgrade is a available can be found in the `upgrade available` column in `cf services` output":
+
+<pre class="terminal">
+$ cf services
+Getting services in org acceptance / space dev as admin...
+
+name      service   plan     bound apps   last operation     broker         upgrade available
+mydb      p-mysql   small                 create succeeded   mysql-broker   yes
+otherdb   p-mysql   medium                create succeeded   mysql-broker   no
+</pre>
+
+The service instance can then be updated using the `--upgrade` flag:
+
+<pre class="terminal">
+$ cf update-service mydb --upgrade
+You are about to update mydb.
+Warning: This operation may be long running and will block further operations on the service until complete.
+Really update service mydb? [yN]: y
+OK
+</pre>
+
+<strong>Note</strong>: The `--upgrade` flag is currently experimental, it is not guaranteed to be available or compatible in subsequent cf CLI releases.
+
+### Changing a Service Plan
 _Changing a plan requires cf CLI v6.7+ and cf-release v192+_
 
-By updating the service plan for an instance, users can effectively upgrade and downgrade their service instance to other service plans. Though the platform and CLI now support this feature, services must expressly implement support for it so not all services will. Further, a service might support updating between some plans but not others. For instance, a service might support updating a plan where only a logical change is required, but not where data migration is necessary. In either case, users can expect to see a meaningful error when plan update is not supported.
+By updating the service plan for an instance, users can change their service instance to other service plans. Though the platform and CLI now support this feature, services must expressly implement support for it so not all services will. Further, a service might support updating between some plans but not others. For instance, a service might support updating a plan where only a logical change is required, but not where data migration is necessary. In either case, users can expect to see a meaningful error when plan update is not supported.
 
 <pre class="terminal">
 $ cf update-service mydb -p new-plan

@@ -243,34 +243,6 @@ OK
 
 ## <a id='update_service'></a>Update a Service Instance ##
 
-### Upgrade a Service Instance
-_Upgrading a Service Instance requires cf CLI v6.46.0+ and CAPI release 1.83.0+_
-
-Some individual service instances can be upgraded to the latest version of the service plan offered (for example, to upgrade the underlying operating system the service instance is running on). Though the platform and cf CLI support this feature, service brokers must also expressly support this feature.
-
-An indication that an upgrade is a available can be found in the `upgrade available` column in `cf services` output":
-
-<pre class="terminal">
-$ cf services
-Getting services in org acceptance / space dev as admin...
-
-name      service   plan     bound apps   last operation     broker         upgrade available
-mydb      p-mysql   small                 create succeeded   mysql-broker   yes
-otherdb   p-mysql   medium                create succeeded   mysql-broker   no
-</pre>
-
-The service instance can then be updated using the `--upgrade` flag:
-
-<pre class="terminal">
-$ cf update-service mydb --upgrade
-You are about to update mydb.
-Warning: This operation may be long running and will block further operations on the service until complete.
-Really update service mydb? [yN]: y
-OK
-</pre>
-
-<strong>Note</strong>: The `--upgrade` flag is currently experimental, it is not guaranteed to be available or compatible in subsequent cf CLI releases.
-
 ### Changing a Service Plan
 _Changing a plan requires cf CLI v6.7+ and cf-release v192+_
 
@@ -311,6 +283,36 @@ $ cf update-service my-db -t "staging, web"
 Updating service my-db in org console / space development as user@example.com...
 OK
 </pre>
+
+## <a id='upgrade'></a> Upgrade a Service Instance
+
+_Upgrading a Service Instance requires cf CLI v6.46.0+ and CAPI release 1.83.0+_
+
+Some service brokers support upgrading service instances to the latest version of a service plan. For example, a broker may want to provide a way for users of the service to upgrade the underlying operating system that their service instances run on. 
+
+To upgrade your service instances, do the following:
+
+1. Confirm that an upgrade is available by running `cf services` and reviewing the `upgrade available` column:
+
+	```
+	$ cf services
+	Getting services in org acceptance / space dev as admin...
+
+	name      service   plan     bound apps   last operation     broker         upgrade available
+	mydb      p-mysql   small                 create succeeded   mysql-broker   yes
+	otherdb   p-mysql   medium                create succeeded   mysql-broker   no
+	```
+
+1. Upgrade the service instance using the `--upgrade` flag:
+
+	```
+	$ cf update-service mydb --upgrade
+	You are about to update mydb.
+	Warning: This operation may be long running and will block further operations on the service until complete.
+	Really update service mydb? [yN]: y
+	OK
+	```
+
 
 ## <a id='delete'></a>Delete a Service Instance ##
 

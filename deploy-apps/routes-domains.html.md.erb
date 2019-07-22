@@ -7,7 +7,7 @@ owner: Routing
 
 This topic describes how routes and domains work in <%= vars.product_full %>, and how developers and administrators configure routes and domains for their apps using the Cloud Foundry Command Line Interface (cf CLI).
 
-<p class="note"><strong>Note</strong>: cf CLI v7 does not yet support TCP routing. The commands in this topic related to TCP routing only work in cf CLI v6.</p>
+<p class="note"><strong>Note</strong>: cf CLI v7 beta does not support TCP routing. The commands in this topic related to TCP routing only work in cf CLI v6.</p>
 
 For more information about routing capabilities in <%= vars.product_short %>, see the [HTTP Routing](../../concepts/http-routing.html) topic.
 
@@ -257,7 +257,7 @@ If the developer maps the first route with path `products` to the `products` app
 
 #### <a id='create-route-with-port'></a> Create a TCP Route with a Port
 
-<p class="note"><strong>Note</strong>: cf CLI v7 does not yet support TCP routing. The commands in this section related to TCP routing only work in cf CLI v6.</p>
+<p class="note"><strong>Note</strong>: cf CLI v7 beta does not support TCP routing. The commands in this section related to TCP routing only work in cf CLI v6.</p>
 
 A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port with the following command. If the clients of the app can accommodate addressing an arbitrary port, then developers should use the `--random-port` to instruct <%= vars.product_short %> to pick a port for your route.
 
@@ -558,7 +558,7 @@ $ cf create-shared-domain <%= vars.app_domain %>
 
 To create a TCP shared domain, first discover the name of the TCP Router Group.
 
-<p class="note"><strong>Note</strong>: cf CLI v7 does not yet support TCP routing or creating shared domains with router groups.</p>
+<p class="note"><strong>Note</strong>: cf CLI v7 beta does not support TCP routing or creating shared domains with router groups.</p>
 
 <pre class="terminal">
 $ cf router-groups

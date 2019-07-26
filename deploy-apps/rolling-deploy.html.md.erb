@@ -91,6 +91,11 @@ The following table describes the limitations to consider when using the beta `v
 		<th>Description</th>
 	</tr>
 	<tr>
+		<td>Application Manifests</td>
+		<td>The beta `v3-zdt-push` command does not support providing an application manifest via the `-f` flag.  In addition, a `manifest.yml` file in your application directory will be ignored.  The CLI V7 beta will not have this limitation.</td>
+	</tr>
+	<tr>
+	<tr>
 		<td>Multiple app versions</td>
 		<td>During a deployment, Cloud Foundry serves both the old and new version of your app at the same route. This could lead to user issues if you push backwards-incompatible API changes.</td>
 	</tr>

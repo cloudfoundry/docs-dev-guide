@@ -113,6 +113,10 @@ The following table describes the limitations to consider when using the rolling
 		<th>Description</th>
 	</tr>
 	<tr>
+		<td>App Manifests</td>
+		<td>The <code>v3-zdt-push</code> command does not support providing an app manifest with the <code>-f</code> flag. If you have a `manifest.yml` file in your app directory, it is ignored. The cf CLI V7 beta does not have this limitation.</td>
+	</tr>
+	<tr>
 		<td>SSH to app instances</td>
 		<td>Pushing updates to your app with a <code>v3-zdt</code> command causes the new web
 			process and app GUID to mismatch. <code>cf ssh</code> does not handle this

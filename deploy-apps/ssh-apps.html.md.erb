@@ -173,7 +173,7 @@ E1x89n
    <br>Or you can use `scp` to transfer files by running one of the following commands:
    - `scp -P 2222 -o User=cf:abcdefab-1234-5678-abcd-1234abcd1234/0 ssh.MY-DOMAIN.com:REMOTE-FILE-TO-RETRIEVE LOCAL-FILE-DESTINATION`
    - `scp -P 2222 -o User=cf:abcdefab-1234-5678-abcd-1234abcd1234/0 LOCAL-FILE-TO-COPY ssh.MY-DOMAIN.com:REMOTE-FILE-DESTINATION`
-   <br>Or you can use `ssh` piped with `cat` command to transfer file by rurrning:
+   <br>Or you can use `ssh` piped with `cat` command to transfer file by running the following:
    - cat local_file_path | cf ssh MY-AWESOME-APP -c "cat > remote_file_path"
    </pre>
 

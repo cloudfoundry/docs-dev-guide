@@ -150,7 +150,7 @@ Pushing an app with with custom settings typically proceeds as follows:
   1. [(Optional) Customize the Route](#custom-route)
   1. [(Optional) Limit the Upload Files](#exclude)
   1. [(Optional) Configure App Initialization](#profile)
-  1. [Custom Push the App](#custom-push)
+  1. [Custom Push the App](#custom-cf-push)
   1. [(Optional) Configure App Services](#services)
 
 The sections below detail these steps.
@@ -234,7 +234,7 @@ This means that any PHP app staged using the affected PHP buildpack versions can
 
 Initialization tasks as described here are also called "pre-runtime hooks" and "`.profile` tasks".
 
-### <a id='custom-push'></a> Custom Push the App
+### <a id='custom-cf-push'></a> Custom Push the App
 
 To specify custom options when pushing an app with `cf push`, you can:
 

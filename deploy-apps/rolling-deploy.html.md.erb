@@ -11,11 +11,17 @@ For information about the traditional method for addressing app downtime while p
 
 ## <a id="prerequisites"></a>  Prerequisites
 
-The procedures in this topic require the following: 
+The procedures in this topic require the following
 
-* You must have cf CLI v6.40 or later. 
-* The rolling deployment feature must be enabled for your installation.
-	* <%= vars.zdt_enable %>
+* **cf CLI v7**: 
+	* You must have the cf CLI v7. 
+	* You must have CAPI version [PLACEHOLDER]
+* **cf CLI v6**: 
+	* You must have cf CLI v6.40 or later. 
+	* The rolling deployment feature must be enabled for your installation.
+		* <%= vars.zdt_enable %>
+
+
 
 ## <a id="commands"></a> Commands
 
@@ -30,7 +36,7 @@ To deploy an app without incurring downtime, run the following command:
 	```
 	cf push APP-NAME --strategy rolling
 	``` 
-	<p class="note"><strong>Note</strong>: cf CLI v7 exits when one instance of each process is healthy. It also includes a <code>--no-wait</code> flag on push for users who do not want to wait for the operation to complete.</p>
+	<p class="note"><strong>Note</strong>: cf CLI v7 exits when one instance of each process is healthy. It also includes a <code>--no-wait</code> flag on push for users who do not want to wait for the operation to complete. No wait exits as soon as one instance is healthy.</p>
 
 * **cf CLI v6**:
 
@@ -70,10 +76,7 @@ Restart your app without downtime using the following command.
 This is useful when applying configuration updates that require a restart, such as environment variables or service bindings. 
 
 * **cf CLI v7**:
-
-	```
-	cf restart APP-NAME
-	```
+	* As of the cf CLI v7 beta, there is no way to restart with a rolling deploy strategy. 
 * **cf CLI v6**:
 
 	```
@@ -114,13 +117,14 @@ The following table describes the limitations to consider when using the rolling
 	</tr>
 	<tr>
 		<td>App Manifests</td>
-		<td>The <code>v3-zdt-push</code> command does not support providing an app manifest with the <code>-f</code> flag. If you have a `manifest.yml` file in your app directory, it is ignored. The cf CLI V7 beta does not have this limitation.</td>
+		<td>The <code>v3-zdt-push</code> command does not support providing an app manifest with the <code>-f</code> flag. If you have a `manifest.yml` file in your app directory, it is ignored. The cf CLI V7 beta does not have this limitation. However, the cf CLI v7 beta does not support multi-app manifests.</td>
 	</tr>
 	<tr>
 		<td>SSH to app instances</td>
 		<td>Pushing updates to your app with a <code>v3-zdt</code> command causes the new web
 			process and app GUID to mismatch. <code>cf ssh</code> does not handle this
-			scenario. You must use the <code>cf v3-ssh</code> command instead.</td>
+			scenario. You must use the <code>cf v3-ssh</code> command instead.
+			<p class="note"><strong>Note</strong>: This limitation only applies to cf CLI v6.</p></td>
 	</tr>
 	<tr>
 		<td>Multiple app versions</td>

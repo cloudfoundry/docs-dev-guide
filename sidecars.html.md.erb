@@ -54,10 +54,17 @@ To push an app with a sidecar, do the following:
 <p class="note"><strong>Note</strong>: This procedure uses <code>v3</code> commands because it requires the server-side manifest support in CAPI v3.</p>
 
 1. Create an app. Or, use an existing app. Run the following command to create an app:
+	* **cf CLI v7**
 
-	```
-	cf v3-create-app MY-APP
-	```
+		```
+		cf create-app MY-APP
+		```
+	* **cf CLI v6**
+
+		```
+		cf v3-create-app MY-APP
+		```
+
 	Where `MY-APP` is a name that you define for your app.
 
 1. Create a manifest file in the root directory of your app, such as `manifest.yml`. Or, use an existing manifest file for your app. For more information, see [Deploying with App Manifests](./deploy-apps/manifest.html). 
@@ -92,16 +99,28 @@ To push an app with a sidecar, do the following:
 	```
 
 1. Apply the manifest file to your app: 
+	* **cf CLI v7**
 
-	```
-	cf v3-apply-manifest -f PATH-TO-MANIFEST
-	```
+		```
+		cf apply-manifest -f PATH-TO-MANIFEST
+		```
+	* **cf CLI v6**
+	
+		```
+		cf v3-apply-manifest -f PATH-TO-MANIFEST
+		```
 
 1. Push your app:
+	* **cf CLI v7**
 
-	```
-	cf v3-push MY-APP
-	```
+		```
+		cf push MY-APP
+		```
+	* **cf CLI v6**
+
+		```
+		cf v3-push MY-APP
+		```
 
 ## <a id="tutorial"></a> Sidecar Tutorial
 
@@ -151,26 +170,44 @@ To push the app and sidecar, do the following:
 	<p class="note"><strong>Note</strong>: If you do not have Go installed, download the <code>config-server_linux_x86-64</code> binary from the <a href="https://github.com/cloudfoundry-samples/capi-sidecar-samples/releases">Releases</a> section of the <code>capi-sidecar-samples</code> repository in GitHub.</p>
 
 1. Create the app:
+	* **cf CLI v7**
 
-	```
-	cf v3-create-app sidecar-dependent-app
-	```
+		```
+		cf create-app sidecar-dependent-app
+		```
+	* **cf CLI v6**
+
+		```
+		cf v3-create-app sidecar-dependent-app
+		```
 
 1. Navigate to the `sidecar-dependent-app` directory. 
 
 1. Open and review the `manifest.yml` file. Under `sidecars`, the sidecar is specified with a name, process type, and start command. Under `env`, there is an environment variable that defines the port on which the app and sidecar communicate. 
 
 1. Apply the manifest to the app:
+	* **cf CLI v7**
 
-	```
-	cf v3-apply-manifest
-	```
+		```
+		cf apply-manifest
+		```
+	* **cf CLI v6**
+
+		```
+		cf v3-apply-manifest
+		```
 
 1. Push the app: 
+	* **cf CLI v7**
 
-	```
-	cf v3-push sidecar-dependent-app
-	```
+		```
+		cf push sidecar-dependent-app
+		```
+	* **cf CLI v6**
+	
+		```
+		cf v3-push sidecar-dependent-app
+		```
 
 After you push the app, you can further explore it in the following sections: 
 * [View the Processes Running in the Container](#view-processes) 

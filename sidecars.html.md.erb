@@ -247,3 +247,33 @@ To view the Web URL and logs for the app, do the following:
 	"crash_count"=>1, "crash_timestamp"=>1555544935367052708, 
 	"version"=>"50892dcb-274d-4cf6-b944-3eda1e000283"}	
 	</pre>
+
+
+## <a id="java-sample"></a> Using sidecars with Java apps
+
+This section provides instructions for pushing a Java app with a sidecar, which is similar to the tutorial above, with a few considerations.  The [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository contains a `sidecar-dependent-java-app` that can be pushed with `push_java_app_with_binary_sidecar.sh`
+
+### <a id="java-sidecar-memory"></a> Reserving sidecar memory
+
+It is important to allocate memory for the sidecar otherwise the Java buildpack allocates all of the available memory for the Java app.
+As a result, the sidecar will not have enough memory and the app will not be able to start.
+
+To fix this, specify the memory for the sidecar in the manifest.yml file as shown below:
+
+```
+	sidecars:
+	- name: MY-SIDECAR
+		process_types: [ 'MY-PROCESS-TYPES' ]
+		command: MY-START-COMMAND
+		memory: 256MB
+```
+
+### <a id="java-sidecar-packaging"></a> Packaging sidecar binaries with Java apps
+
+Since the Java buildpack requires you to push a `.jar` file in some circumstances, you must include the sidecar binary in the `.jar` file like so:
+
+```
+	zip MY-JAR -u MY-SIDECAR-BINARY
+```
+
+For further reading on packaging assets along with your Java app, see [Tips for Java Developers](https://docs.cloudfoundry.org/buildpacks/java/java-tips.html)

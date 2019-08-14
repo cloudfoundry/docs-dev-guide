@@ -31,6 +31,7 @@ For example, you can use sidecars for processes that must do the following:
 
 Sidecars have the following limitations:
 
+* Sidecars do not work with Java apps. 
 * The start and stop order of app processes and their sidecars is undefined.
 * App processes and sidecars are codependent. If either crashes or exits, the other will as well.
 * Sidecars are currently not independently scalable. Sidecars share resources with the main app process and other sidecars within the container. 

@@ -105,6 +105,37 @@ To push an app with a sidecar, do the following:
 	cf v3-push MY-APP
 	```
 
+## <a id="java"></a> Requirements for Java Apps
+
+This section describes several requirements that are specific to Java apps. 
+
+### <a id="java-sidecar-memory"></a> Reserving Memory
+
+You must allocate memory to the sidecar. If you do not, the Java buildpack allocates all of the available memory to the app. 
+As a result, the sidecar does not have enough memory and the app fails to start.
+
+To allocate memory to the sidecar, use the `memory` property in the app manifest. See the following example: 
+
+```
+sidecars:
+- name: my-sidecar
+	process_types: [ 'my-process-types' ]
+	command: my-start-command
+	memory: 256MB
+```
+
+### <a id="java-sidecar-packaging"></a> Packaging Binaries 
+
+The Java buildpack requires you to push a `.jar` file in some cases. If this is the case with your app, you must include the sidecar binary in the `.jar` file. 
+
+To package the sidecar binary with the `.jar` file, run following command and replace the values for `MY-JAR` and `MY-SIDECAR-BINARY`:
+
+```
+zip MY-JAR -u MY-SIDECAR-BINARY
+```
+
+For more information about packaging assets with your Java app, see [Tips for Java Developers](https://docs.cloudfoundry.org/buildpacks/java/java-tips.html). 
+
 ## <a id="tutorial"></a> Sidecar Tutorial
 
 You can explore sidecars using the app in the [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository. The sections below describe the app, how to build and push the app, and some ways to observe the app and its processes after pushing.  
@@ -252,34 +283,3 @@ To view the Web URL and logs for the app, do the following:
 	"version"=>"50892dcb-274d-4cf6-b944-3eda1e000283"}	
 	</pre>
 
-
-## <a id="java"></a> Requirements for Java Apps
-
-This section describes several requirements that are specific to Java apps. 
-
-### <a id="java-sidecar-memory"></a> Reserving Memory
-
-You must allocate memory to the sidecar. If you do not, the Java buildpack allocates all of the available memory to the app. 
-As a result, the sidecar does not have enough memory and the app fails to start.
-
-To allocate memory to the sidecar, use the `memory` property in the app manifest. See the following example: 
-
-```
-sidecars:
-- name: my-sidecar
-	process_types: [ 'my-process-types' ]
-	command: my-start-command
-	memory: 256MB
-```
-
-### <a id="java-sidecar-packaging"></a> Packaging Binaries 
-
-The Java buildpack requires you to push a `.jar` file in some cases. If this is the case with your app, you must include the sidecar binary in the `.jar` file. 
-
-To package the sidecar binary with the `.jar` file, run following command and replace the values for `MY-JAR` and `MY-SIDECAR-BINARY`:
-
-```
-zip MY-JAR -u MY-SIDECAR-BINARY
-```
-
-For more information about packaging assets with your Java app, see [Tips for Java Developers](https://docs.cloudfoundry.org/buildpacks/java/java-tips.html). 

@@ -5,17 +5,25 @@ owner: CAPI
 
 <p class="note warning"><strong>Warning</strong>: This CLI feature is currently experimental, use at your own risk. Further development of this feature will occur on CLI V7 beta.</p>
 
+<p class="note"><strong>Note</strong>: This topic includes references to cf CLI v7 commands. cf CLI v7 is in beta and is subject to change. Additionally, it is only tested against the latest CAPI release candidate. For more information, see <a href="../../cf-cli/v7.html">Upgrading to cf CLI v7</a>.</p>
+
 This topic describes how developers use beta Cloud Foundry Command Line Interface (cf CLI) commands to push their apps using a rolling deployment. 
 
 For information about the traditional method for addressing app downtime while pushing app updates, see [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).   
 
 ## <a id="prerequisites"></a>  Prerequisites
 
-The procedures in this topic require the following: 
+The procedures in this topic require the following
 
-* You must have cf CLI v6.40 or later. 
-* The rolling deployment feature must be enabled for your installation.
-	* <%= vars.zdt_enable %>
+* **cf CLI v7**: 
+	* You must have the cf CLI v7. 
+	* You must have CAPI version [PLACEHOLDER]
+* **cf CLI v6**: 
+	* You must have cf CLI v6.40 or later. 
+	* The rolling deployment feature must be enabled for your installation.
+		* <%= vars.zdt_enable %>
+
+
 
 ## <a id="commands"></a> Commands
 
@@ -25,10 +33,18 @@ This section describes the beta commands for working with rolling app deployment
 
 To deploy an app without incurring downtime, run the following command:
 
-```
-cf v3-zdt-push APP-NAME
-``` 
+* **cf CLI v7**:
 
+	```
+	cf push APP-NAME --strategy rolling
+	``` 
+	<p class="note"><strong>Note</strong>: cf CLI v7 exits when one instance of each process is healthy. It also includes a <code>--no-wait</code> flag on push for users who do not want to wait for the operation to complete. No wait exits as soon as one instance is healthy.</p>
+
+* **cf CLI v6**:
+
+	```
+	cf v3-zdt-push APP-NAME
+	``` 
 <p class="note warning"><strong>Warning</strong>: Ensure that you understand the <a href="#limitations">Limitations</a> of this feature before running the command.</p>
 
 For more information about this command, see [How it Works](#how-it-works). 
@@ -37,11 +53,18 @@ For more information about this command, see [How it Works](#how-it-works).
 
 To stop the deployment of an app that you pushed, run the following command:
 
-<p class="note"><strong>Note</strong>: The <code>v3-cancel-zdt-push</code> command is designed to revert the app to its original state as quickly as possible, and does not guarantee zero downtime.</p>
+<p class="note"><strong>Note</strong>: The cancel command is designed to revert the app to its original state as quickly as possible and does not guarantee zero downtime.</p>
 
-```
-cf v3-cancel-zdt-push APP-NAME
-```
+* **cf CLI v7**: 
+
+	```
+	cf cancel-deployment APP-NAME
+	```
+* **cf CLI v6**: 
+
+	```
+	cf v3-cancel-zdt-push APP-NAME
+	```
 
 This reverts the app to its state from before the deployment started by doing the following:
 
@@ -54,24 +77,28 @@ This reverts the app to its state from before the deployment started by doing th
 Restart your app without downtime using the following command. 
 This is useful when applying configuration updates that require a restart, such as environment variables or service bindings. 
 
-```
-cf v3-zdt-restart APP-NAME
-```
+* **cf CLI v7**:
+	* As of the cf CLI v7 beta, there is no way to restart with a rolling deploy strategy. 
+* **cf CLI v6**:
+
+	```
+	cf v3-zdt-restart APP-NAME
+	```
 
 ## <a id="how-it-works"></a> How It Works
 
-This section describes the beta `cf v3-zdt-push` command and its limitations. 
+This section describes the beta rolling deployments and their limitations. 
 
-### <a id="deployment-process"></a>  cf v3-zdt-push Process
+### <a id="deployment-process"></a>  Rolling Deployment Process
 
-This section describes the process of pushing an app with `cf v3-zdt-push`. 
+This section describes the process of pushing an app with a rolling deployment strategy. 
 
-1. The `cf v3-zdt-push` command does the following:
+1. The `cf push APP-NAME --strategy rolling` command does the following:
 	1. Stages the updated app package
 	1. Creates a droplet with the updated app package
 	1. Creates a deployment with the new droplet and any new configuration. 
 		* This starts a new process with one instance that shares the route with the old process. 
-		* At this point, if you run `cf app` on your app, you see a `web` process and a `web-deployment-DEPLOYMENT-UUID` process.
+		* At this point, if you run `cf app` on your app, you see multiple `web` processes.
 		* For more information about the deployment object, see the [Deployments](http://v3-apidocs.cloudfoundry.org/index.html#deployments) section of the CAPI v3 docs. 
 1. Once the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the background, updating deployments as follows:
 	1. Adds another instance of the new web process and removes an instance from the old web process. 
@@ -83,7 +110,7 @@ This section describes the process of pushing an app with `cf v3-zdt-push`.
 
 ### <a id="limitations"></a>  Limitations
 
-The following table describes the limitations to consider when using the beta `v3-zdt-push` command. 
+The following table describes the limitations to consider when using the rolling deployments. 
 
 <table>
 	<tr>
@@ -91,10 +118,16 @@ The following table describes the limitations to consider when using the beta `v
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td>App manifests</td>
-		<td>The <code>v3-zdt-push</code> command does not support providing an app manifest with the <code>-f</code> flag.  If you have a <code>manifest.yml</code> file in your app directory, it is ignored.</td>
+		<td>App Manifests</td>
+		<td>The <code>v3-zdt-push</code> command does not support providing an app manifest with the <code>-f</code> flag. If you have a `manifest.yml` file in your app directory, it is ignored. The cf CLI V7 beta does not have this limitation. However, the cf CLI v7 beta does not support multi-app manifests.</td>
 	</tr>
 	<tr>
+		<td>SSH to app instances</td>
+		<td>Pushing updates to your app with a <code>v3-zdt</code> command causes the new web
+			process and app GUID to mismatch. <code>cf ssh</code> does not handle this
+			scenario. You must use the <code>cf v3-ssh</code> command instead.
+			<p class="note"><strong>Note</strong>: This limitation only applies to cf CLI v6.</p></td>
+	</tr>
 	<tr>
 		<td>Multiple app versions</td>
 		<td>During a deployment, Cloud Foundry serves both the old and new version of your app at the same route. This could lead to user issues if you push backwards-incompatible API changes.</td>
@@ -106,22 +139,16 @@ The following table describes the limitations to consider when using the beta `v
 	</tr>
 	<tr>
 		<td>Non-web processes</td>
-		<td>The <code>v3-zdt</code> commands only run web processes through the rolling update sequence described above. The commands restart worker and other non-web processes in bulk after updating all web processes.<br><br>
+		<td>Rolling deployments only run web processes through the rolling update sequence described above. The commands restart worker and other non-web processes in bulk after updating all web processes.<br><br>
 		The CAPI v3 API introduces the concept of processes as runnable units of an app. Each app has a web process by default. You can specify additional processes with a procfile, and in some cases buildpacks create additional processes. For more information about processes, see the <a href="http://v3-apidocs.cloudfoundry.org/index.html#processes">Processes</a> section of the CAPI v3 documentation. 
 		</td>
 	</tr>
 	<tr>
 		<td>Quotas</td>
-		<td>Pushing updates to your app with a <code>v3-zdt</code> command creates an extra instance of your app. If there is not enough quota available, the deployment does not work. Administrators may need to increase quotas to account for rolling deployments.</td>
+		<td>Pushing updates to your app using a rolling deployment strategy creates an extra instance of your app. If there is not enough quota available, the deployment does not work. Administrators may need to increase quotas to account for rolling deployments.</td>
 	</tr>
 	<tr>
 		<td>Simultaneous apps when interrupting a push</td>
-		<td>If you run <code>v3-zdt-push</code> for an app before your previous <code>v3-zdt-push</code> command for the same app has completed, your first push gets interrupted. Until the last deployment completes, there may be many versions of the app running at once. Eventually, the app runs the code from your most recent push.</td>
-	</tr>
-	<tr>
-		<td>SSH to app instances</td>
-		<td>Pushing updates to your app with a <code>v3-zdt</code> command causes the new web
-			process and app GUID to mismatch. <code>cf ssh</code> does not handle this
-			scenario. You must use the <code>cf v3-ssh</code> command instead.</td>
+		<td>If you push app before your previous push command for the same app has completed, your first push gets interrupted. Until the last deployment completes, there may be many versions of the app running at once. Eventually, the app runs the code from your most recent push.</td>
 	</tr>
 </table>

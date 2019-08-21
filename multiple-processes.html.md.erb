@@ -7,17 +7,6 @@ This topic describes how to push and manage apps with multiple processes.
 
 <p class="note"><strong>Note</strong>: This is a beta feature. Because the CLI may change, this feature is not recommended for use in scripts until it is generally available.</p>
 
-<div class="note">
-<strong>Note:</strong>
-This topic includes references to cf CLI v7 beta commands. Consider the following when using these commands:
-<ul>
-<li> cf CLI v7 beta and CAPI v3 are both in active development and subject to change. </li>
-<li> cf CLI v7 beta is developed and tested against the latest CAPI release candidate. </li>
-<li> cf CLI v7 beta does not yet use CAPI v3 for all commands. Some commands still use CAPI v2 during beta. </li>
-</ul>
-For more information, see <a href="../../cf-cli/v7.html">Upgrading to cf CLI v7 (Beta)</a>. 
-</div>
-
 ## <a id="about-processes"></a> About Processes 
 
 The CAPI v3 API supports using a single command to push apps that run multiple processes, such as a web app that has a UI process and a worker process. To push an app that creates multiple processes from the same codebase, you first define its processes in a Procfile. See [Push an App with Multiple Processes](#push-with-multiple-processes). 
@@ -29,9 +18,6 @@ For more information about processes, see the <a href="http://v3-apidocs.cloudfo
 You can push an app with multiple processes using a Procfile.
 Follow the procedure below. 
 
-<p class="note"><strong>Note</strong>: You can also push and app with multiple processes using an app manifest. See [The app manifest specification](https://v3-apidocs.cloudfoundry.org/index.html#the-app-manifest-specification) in the CAPI v3 docs.</p>
-
-
 1. Create a file named `Procfile` in the root of your app directory. 
 	<p class="note"><strong>Note</strong> For more information about Procfiles, see the <a href="https://v3-apidocs.cloudfoundry.org/index.html#procfiles">Procfiles</a> section of the CAPI v3 documentation.</p>
 1. Add each process and its start command to the Procfile. See the following example:
@@ -40,17 +26,11 @@ Follow the procedure below.
 	web: bundle exec rackup config.ru -p $PORT
  	worker: bundle exec rake worker:start
  	```
-1. Push the app:
-	* **cf CLI v7**:
+1. Run the `v3-push` command:
 
-		```
-		cf push myapp
-		```
-	* **cf CLI v6**:
-
-		```
-		cf v3-push myapp
-		```
+	```
+	cf v3-push myapp
+	```
 
 By default, the web process has a route and one instance. Other processes have zero instances by default. 
 
@@ -58,22 +38,13 @@ By default, the web process has a route and one instance. Other processes have z
 
 To scale an app process, run the following command:
 
-* **cf CLI v7**:
-
-	```
-	cf scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
-	```
-* **cf CLI v6**:
-
-	```
-	cf v3-scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
-	```
+```
+cf v3-scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
+```
 
 ## <a id="view-processes"></a>View Processes
 
 To view the processes running as part of an app, run `cf APP-NAME`. See the following example in which the app has a `web` and a `worker` process. 
-
-<p class="note"><strong>Note</strong>: In cf CLI v7, the <code>v3-prefix</code> is not required.</p>
 
 ```
 $ cf v3-app myapp

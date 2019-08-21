@@ -3,7 +3,11 @@ title: App Manifest Attribute Reference
 owner: CLI
 ---
 
-This topic describes manifest formatting and provides a full list of attributes available for app manifests. You can use it alongside the [Deploying with App Manifests](./manifest.html) topic, which provides basic procedures and guidance for deploying apps with manifests.
+This topic describes manifest formatting and provides a full list of attributes available for app manifests using the v6 CLI. You can use it alongside the [Deploying with App Manifests](./manifest.html) topic, which provides basic procedures and guidance for deploying apps with manifests.
+
+For manifest properties for the v7 beta cf CLI, see the [CC API documentation](http://v3-apidocs.cloudfoundry.org/version/3.75.0/index.html#app-manifest) for v3 app manifest properties. 
+
+
 
 ## <a id='minimal-manifest'></a> Manifest Format
 
@@ -254,6 +258,8 @@ The default memory limit is 1G. You might want to specify a smaller limit to con
 The command line option that overrides this attribute is `-m`.
 
 ### <a id='no-route'></a>no-route
+
+<p class="note"><strong>Note</strong>: If you use the `no-route` flag attribute in the manifest or the flag option, it will override all route-related attributes.</p>
 
 By default, `cf push` assigns a route to every app. But, some apps process data while running in the background and should not be assigned routes.
 

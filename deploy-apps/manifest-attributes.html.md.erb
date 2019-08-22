@@ -102,7 +102,7 @@ This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpac
 
 This section explains how to describe optional app attributes in manifests. Each of these attributes can also be specified by a command line option. Command line options override the manifest.
 
-<p class='note'><strong>Note:</strong> The route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>, <code>hosts</code>, and <code>no-hostname</code> have been deprecated in favor of the <code>routes</code> attribute. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
+<p class='note'><strong>Note:</strong> In cf CLI v6, the route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>, <code>hosts</code>, and <code>no-hostname</code> have been deprecated in favor of the <code>routes</code> attribute. In cf CLI v7, these attributes are removed. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
 
 ### <a id='buildpack'></a> buildpacks
 
@@ -241,7 +241,7 @@ it defaults to `port`.
 
 The command line option that overrides this attribute is `-u`.
 
-The value of `none` is deprecated in favor of `process`.
+In cf CLI v6, the value of `none` is deprecated in favor of `process`. In cf CLI v7, `none` is removed. 
 
 ### <a id='memory'></a> memory
 
@@ -512,6 +512,8 @@ applications:
 When pushing the app, make explicit the attributes in each app’s declaration. To do this, assign the anchors and include the app-level attributes with YAML aliases in each app declaration.
 
 ### <a id='route-attribute'></a> Attribute routes Replaces domain, domains, host, hosts, and no-hostname
+
+<p class="note"><strong>Note</strong>: These properties are removed in cf CLI v7.</p>
 
 Previously, you could specify routes by listing them all at once using the `routes` attribute, or by using their hosts and domains as shown below.
 

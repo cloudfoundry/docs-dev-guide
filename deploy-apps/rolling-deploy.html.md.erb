@@ -67,7 +67,7 @@ To stop the deployment of an app that you pushed, run the following command:
 * **cf7 CLI v7**: 
 
 	```
-	cf cancel-deployment APP-NAME
+	cf7 cancel-deployment APP-NAME
 	```
 * **cf CLI v6**: 
 
@@ -87,7 +87,7 @@ Restart your app without downtime using the following command.
 This is useful when applying configuration updates that require a restart, such as environment variables or service bindings. 
 
 * **cf CLI v7**:
-	* As of the cf CLI v7 beta, there is no way to restart with a rolling deploy strategy. 
+	* As of the cf CLI v7 beta, there is no way to restart with a rolling deploy strategy. See [release notes](https://github.com/cloudfoundry/cli/releases) for more information. 
 * **cf CLI v6**:
 
 	```
@@ -102,7 +102,7 @@ This section describes the beta rolling deployments and their limitations.
 
 This section describes the process of pushing an app with a rolling deployment strategy. 
 
-1. The `cf push APP-NAME --strategy rolling` command does the following:
+1. The `cf7 push APP-NAME --strategy rolling` command does the following:
 	1. Stages the updated app package
 	1. Creates a droplet with the updated app package
 	1. Creates a deployment with the new droplet and any new configuration. 

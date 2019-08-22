@@ -45,7 +45,7 @@ To deploy an app without incurring downtime, run the following command:
 * **cf CLI v7**:
 
 	```
-	cf push APP-NAME --strategy rolling
+	cf7 push APP-NAME --strategy rolling
 	``` 
 	<p class="note"><strong>Note</strong>: cf CLI v7 exits when one instance of each process is healthy. It also includes a <code>--no-wait</code> flag on push for users who do not want to wait for the operation to complete. No wait exits as soon as one instance is healthy.</p>
 
@@ -64,7 +64,7 @@ To stop the deployment of an app that you pushed, run the following command:
 
 <p class="note"><strong>Note</strong>: The cancel command is designed to revert the app to its original state as quickly as possible and does not guarantee zero downtime.</p>
 
-* **cf CLI v7**: 
+* **cf7 CLI v7**: 
 
 	```
 	cf cancel-deployment APP-NAME

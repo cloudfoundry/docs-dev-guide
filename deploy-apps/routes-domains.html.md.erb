@@ -200,7 +200,7 @@ A developer can create a wildcard route from the domain `foo.<%= vars.app_domain
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf create-route foo.<%= vars.app_domain %> --hostname '*'
+  $ cf7 create-route foo.<%= vars.app_domain %> --hostname '*'
   Creating route *.foo.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
@@ -221,17 +221,17 @@ A developer can create three routes using the same hostname and domain in the sp
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf create-route <%= vars.app_domain %> --hostname store --path products
+  $ cf7 create-route <%= vars.app_domain %> --hostname store --path products
   Creating route store.<%= vars.app_domain %>/products for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
   <pre class="terminal">
-  $ cf create-route <%= vars.app_domain %> --hostname store --path orders
+  $ cf7 create-route <%= vars.app_domain %> --hostname store --path orders
   Creating route store.<%= vars.app_domain %>/orders for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
   <pre class="terminal">
-  $ cf create-route <%= vars.app_domain %> --hostname store
+  $ cf7 create-route <%= vars.app_domain %> --hostname store
   Creating route store.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
@@ -319,7 +319,7 @@ The following command checks whether a route with the hostname `store` and the d
 
 * **cf CLI v7**:
   <pre class="terminal">
-  $ cf check-route <%= vars.app_domain %> --hostname store --path /products
+  $ cf7 check-route <%= vars.app_domain %> --hostname store --path /products
   Checking for route...
   OK
   Route store.<%= vars.app_domain %>/products does exist
@@ -628,7 +628,7 @@ Org managers can create a private domain for a subdomain with the following comm
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf create-private-domain my-org foo.<%= vars.private_app_domain %>
+  $ cf7 create-private-domain my-org foo.<%= vars.private_app_domain %>
   </pre>
 * **cf CLI v6**
   <pre class="terminal">
@@ -651,7 +651,7 @@ Org managers can delete a domain from <%= vars.product_short %> with the `cf del
 
 * **cf CLI v7**:
   <pre class="terminal">
-  $ cf delete-private-domain <%= vars.private_app_domain %>
+  $ cf7 delete-private-domain <%= vars.private_app_domain %>
   </pre>
   <p class="note"><strong>Note</strong>: cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</p>
 * **cf CLI v6**:

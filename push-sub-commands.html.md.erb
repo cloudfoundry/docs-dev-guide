@@ -101,7 +101,7 @@ This example workflow describes how to push an app using sub-step commands inste
 	* **cf CLI v7**: 
 
 		```
-		cf create-app MY-APP
+		cf7 create-app MY-APP
 		```
 	* **cf CLI v6**: 
 
@@ -113,7 +113,7 @@ This example workflow describes how to push an app using sub-step commands inste
 	* **cf CLI v7**:
 
 		```
-		cf create-package MY-APP
+		cf7 create-package MY-APP
 		```
 	* **cf CLI v6**:
 
@@ -132,7 +132,7 @@ This example workflow describes how to push an app using sub-step commands inste
 	* **cf CLI v7**:
 
 		```
-		cf stage MY-APP --package-guid PACKAGE-GUID
+		cf7 stage MY-APP --package-guid PACKAGE-GUID
 		``` 
 	* **cf CLI v6**:
 
@@ -154,7 +154,7 @@ This example workflow describes how to push an app using sub-step commands inste
 	* **cf CLI v7**:
 
 		```
-		cf set-droplet MY-APP -d DROPLET-GUID
+		cf7 set-droplet MY-APP -d DROPLET-GUID
 		```
 	* **cf CLI v6**:
 
@@ -166,7 +166,7 @@ This example workflow describes how to push an app using sub-step commands inste
 	* **cf CLI v7**:
 
 		```
-		cf start MY-APP
+		cf7 start MY-APP
 		```
 	* **cf CLI v6**:
 
@@ -182,7 +182,7 @@ This example workflow describes how to roll back to a previous droplet used by y
 	* **cf CLI v7**:
 
 		```
-		cf droplets MY-APP
+		cf7 droplets MY-APP
 		```
 	* **cf CLI v6**:
 
@@ -203,7 +203,7 @@ This example workflow describes how to roll back to a previous droplet used by y
 	* **cf CLI v7**:
 
 		```
-		cf stop MY-APP
+		cf7 stop MY-APP
 		```
 	* **cf CLI v6**:
 
@@ -215,7 +215,7 @@ This example workflow describes how to roll back to a previous droplet used by y
 	* **cf CLI v7**:
 
 		```
-		cf set-droplet MY-APP -d PREVIOUS-DROPLET-GUID
+		cf7 set-droplet MY-APP -d PREVIOUS-DROPLET-GUID
 		```
 	* **cf CLI v6**:
 
@@ -227,7 +227,7 @@ This example workflow describes how to roll back to a previous droplet used by y
 	* **cf CLI v7**:
 
 		```
-		cf start MY-APP
+		cf7 start MY-APP
 		```
 	* **cf CLI v6**:
 

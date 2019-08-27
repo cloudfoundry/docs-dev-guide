@@ -3,9 +3,10 @@ title: Administering Dynamic Egress Policies (Beta)
 owner: CF Networking
 ---
 
-<p class="note"><strong>Note</strong>: This is a beta feature.</p>
+<p class="note"><strong>Note:</strong> This is a beta feature.</p>
 
 This topic describes how to administer dynamic egress policies for the apps in your deployment. 
+
 
 ## <a id="overview"></a> Overview
 
@@ -14,20 +15,24 @@ You can create dynamic egress policies to allow your apps to communicate with ex
 * Create a destination object with details about the external service that your app or space need access to, including an IP range.   
 * Create an egress policy from the app or space to the destination object. 
 
-Dynamic egress policies provide the following benefits over [Application Security Groups (ASGs)](../concepts/asg.html):
+Dynamic egress policies provide the following benefits over App Security Groups (ASGs):
 
 * You do not have to restart your apps when applying these policies, so there is no downtime. 
-* The policies include in additional level of granularity: you can apply them to specific apps.  
+* The policies include in additional level of granularity: you can apply them to specific apps.
+
+For more information about ASGs, see [App Security Groups](../concepts/asg.html). 
+
 
 ## <a id="enable"></a> Enable the Dynamic Egress Feature
 
 The dynamic egress feature is disabled by default. To enable this feature, you must 
 <% if vars.product_name == 'CF' %>
 set the `enforce_experimental_dynamic_egress_policies` property of the `policy-server-internal` job to true. For more information, see the spec file in the [CF Networking Release](https://github.com/cloudfoundry/cf-networking-release/blob/develop/jobs/policy-server-internal/spec#L102-L104) repository. 
-<p class="note"><strong>Note</strong>: This feature is only compatible with the Silk CNI plugin.</p>
+<p class="note"><strong>Note:</strong> This feature is only compatible with the Silk CNI plugin.</p>
 <% else %>
 <%=vars.enable_egress%>
 <% end %>
+
 
 ## <a id="auth"></a> API Authorization
 
@@ -60,19 +65,24 @@ Dynamic egress policies depend on a destination object. See the following workfl
 
 ### <a id="add-policy"></a> Add an Egress Policy
 
-To create a policy, you must create a destination first:
+To create a policy, you must first create a destination. To create a destination:
 
-1. Create an egress destination. See [Create Egress Destinations](#create-egress-destinations).
-1. Create an egress policy linking the destination and an app or space. [Create Egress Policies](#create-egress-policies).
-1. See policy apply. No app restarts needed.
+1. Create an egress destination. For more information, see [Create Egress Destinations](#create-egress-destinations).
 
-### <a id="update-policy"></a> Update an Egress Policy when an IP Changes
+1. Create an egress policy linking the destination and an app or space. For more information, see [Create Egress Policies](#create-egress-policies).
 
-To update a policy, you update the destination: 
+1. The policy is applied. You do not need to restart any apps.
 
-1. List all egress destinations to find the one you want to change. See [List Egress Destinations](#list-egress-destinations). 
-1. Update the egress destination. See [Update Egress Destinations](#update-egress-destinations).
-1. See updated policy apply. No app restarts needed.
+### <a id="update-policy"></a> Update an Egress Policy When an IP Changes
+
+To update a policy, you update the destination. To update the destination of a policy: 
+
+1. List all egress destinations to find the one you want to change. For more information, see [List Egress Destinations](#list-egress-destinations).
+
+1. Update the egress destination. For more information, see [Update Egress Destinations](#update-egress-destinations).
+
+1. The updated policy is applied. You do not need to restart any apps.
+
 
 ## <a id="desinations"></a> Egress Destination API
 
@@ -83,19 +93,18 @@ To update a policy, you update the destination:
 | PUT | /networking/v1/external/destinations | Update Destinations |
 | DELETE | /networking/v1/external/destinations/GUID | Delete Destinations |
 
-
 ### <a id="list-egress-destinations"></a> List Egress Destinations
 
 #### GET /networking/v1/external/destinations
 
 #### Arguments:
 
-* (optional) `id`: comma-separated id values. This cannot be used with `name`.
-* (optional) `name`: comma-separated name values. This cannot be used with `id`.
+* (Optional) `id`: comma-separated ID values. This cannot be used with `name`.
+* (Optional) `name`: comma-separated name values. This cannot be used with `id`.
 
 #### Response Body:
 
-This endpoint returns all egress destinations
+This endpoint returns all egress destinations.
 
 ```json
 {
@@ -150,17 +159,17 @@ This endpoint returns all egress destinations
 
 | Field | Required? | Description |
 | :---- | :-------: | :------ |
-| destinations.name | Y | The name of the destination. Must be globally unique.
-| destinations.description | N | A description of the destination.
-| destinations.ips.start* | Y | The start of the destination ip range. Must be IPv4.
-| destinations.ips.end* | Y | The end of the destination ip range. Must be IPv4. May be equal to the the start ip.
-| destinations.ports.start* | Y | The destination start port (1 - 65535). Ports are not applicable for ICMP protocol.
-| destinations.ports.end* | Y | The destination end port (1 - 65535). Ports are not applicable for ICMP protocol.
-| destinations.protocol | Y | The protocol (tcp, udp, or icmp)
-| destinations.icmp_type | N | The icmp type to allow when using the icmp protocol. Default is all icmp types, represented by -1.
-| destinations.icmp_code | N | The icmp code to allow when using the icmp protocol. Default is all icmp codes, represented by -1.
+| destinations.name | Yes | The name of the destination. Must be globally unique.
+| destinations.description | No | A description of the destination.
+| destinations.ips.start* | Yes | The start of the destination IP range. Must be IPv4.
+| destinations.ips.end* | Yes | The end of the destination IP range. Must be IPv4. May be equal to the the start IP.
+| destinations.ports.start* | Yes | The destination start port (1 - 65535). Ports are not applicable for ICMP protocol.
+| destinations.ports.end* | Yes | The destination end port (1 - 65535). Ports are not applicable for ICMP protocol.
+| destinations.protocol | Yes | The protocol (`tcp`, `udp`, or `icmp`).
+| destinations.icmp_type | No | The ICMP type to allow when using the ICMP protocol. Default is all ICMP types, represented by -1.
+| destinations.icmp_code | No | The ICMP code to allow when using the ICMP protocol. Default is all ICMP codes, represented by -1.
 
-*Currently only one IP range and one port range is supported.
+*Currently, only one IP range and one port range are supported.
 
 ### <a id="update-egress-destinations"></a> Update Egress Destinations
 
@@ -194,18 +203,18 @@ This endpoint returns all egress destinations
 
 | Field | Required? | Description |
 | :---- | :-------: | :------ |
-| destinations.id | Y | The id of the destination. This id is returned in the destinations create response, as well as in the destinations index response.
-| destinations.name | Y | The name of the destination. Must be globally unique.
-| destinations.description | N | A description of the destination.
-| destinations.ips.start* | Y | The start of the destination ip range. Must be IPv4.
-| destinations.ips.end* | Y | The end of the destination ip range. Must be IPv4. May be equal to the the start ip.
-| destinations.ports.start* | Y | The destination start port (1 - 65535). Ports are not applicable for ICMP protocol.
-| destinations.ports.end* | Y |The destination end port (1 - 65535). Ports are not applicable for ICMP protocol.
-| destinations.protocol | Y |The protocol (tcp, udp, or icmp)
-| destinations.icmp_type | N | The icmp type to allow when using the icmp protocol. Default is all icmp types, represented by -1.
-| destinations.icmp_code | N | The icmp code to allow when using the icmp protocol. Default is all icmp codes, represented by -1.
+| destinations.id | Yes | The ID of the destination. This ID is returned in the destinations create response, as well as in the destinations index response.
+| destinations.name | Yes | The name of the destination. Must be globally unique.
+| destinations.description | No | A description of the destination.
+| destinations.ips.start* | Yes | The start of the destination IP range. Must be IPv4.
+| destinations.ips.end* | Yes | The end of the destination IP range. Must be IPv4. May be equal to the the start IP.
+| destinations.ports.start* | Yes | The destination start port (1 - 65535). Ports are not applicable for ICMP protocol.
+| destinations.ports.end* | Yes |The destination end port (1 - 65535). Ports are not applicable for ICMP protocol.
+| destinations.protocol | Yes |The protocol (`tcp`, `udp`, or `icmp`).
+| destinations.icmp_type | No | The ICMP type to allow when using the ICMP protocol. Default is all ICMP types, represented by -1.
+| destinations.icmp_code | No | The ICMP code to allow when using the ICMP protocol. Default is all ICMP codes, represented by -1.
 
-*Note: Currently only one IP range and one port range is supported.
+*Currently, only one IP range and one port range are supported.
 
 ### <a id="delete-egress-destinations"></a> Delete an Egress Destination
 
@@ -272,6 +281,7 @@ This endpoint returns all egress policies.
    }]
 }
 ```
+
 ### <a id="create-egress-policies"></a> Create Egress Policies
 
 #### POST /networking/v1/external/egress_policies
@@ -296,9 +306,9 @@ This endpoint returns all egress policies.
 
 | Field | Required? | Description |
 | :---- | :-------: | :------ |
-| source.type | N | The type of source. Must be 'app' or 'space'. Defaults to 'app'.
-| source.id | Y | The guid of the source app or space.
-| destination.id | Y | The guid of the egress destination.
+| source.type | No | The type of source. Must be `app` or `space`. Defaults to `app`.
+| source.id | Yes | The GUID of the source app or space.
+| destination.id | Yes | The GUID of the egress destination.
 
 ### <a id="delete-egress-policies"></a> Delete an Egress Policy
 
@@ -307,7 +317,6 @@ This endpoint returns all egress policies.
 #### Response Body:
 
 This endpoint returns the JSON of the deleted egress policy object.
-
 
 ```json
 {

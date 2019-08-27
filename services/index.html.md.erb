@@ -3,79 +3,81 @@ title: Services Overview
 owner: Services API
 ---
 
-
-
 This documentation is intended for end users of Cloud Foundry and covers provisioning of service instances and integrating them with apps that have been pushed to Cloud Foundry. <%= vars.custom_services %>
 
-## <a id='instances'></a>Services and Service Instances ##
+
+## <a id='instances'></a> Services and Service Instances
 
 Cloud Foundry offers a marketplace of services, from which users can provision reserved resources on-demand. Examples of resources services provide include databases on a shared or dedicated server, or accounts on a SaaS app. These resources are known as service instances and the systems that deliver and operate these resources are known as Services. Think of a service as a factory that delivers service instances.
 
-For documentation on provisioning service instances and other lifecycle operations, see [Managing Service Instances](./managing-services.html).
+For more information about provisioning service instances and other lifecycle operations, see [Managing Service Instances](./managing-services.html).
 
-<p class='note'><strong>Note</strong>: For a service to be available in the marketplace, it must be integrated with Cloud Foundry by way of APIs. <%= vars.custom_services %></p>
+<p class='note'><strong>Note:</strong> For a service to be available in the marketplace, it must be integrated with Cloud Foundry by way of APIs. <%= vars.custom_services %></p>
 
-### <a id='user-provided-services'></a>User-Provided Service Instances ###
+### <a id='user-provided-services'></a> User-Provided Service Instances
 
-Cloud Foundry enables users to leverage services that are not available in the marketplace using a feature called [User-Provided Service Instances](./user-provided.html) (UPSI).
+Cloud Foundry enables users to leverage services that are not available in the marketplace using user-provided service instances (UPSI). For more information, see [User-Provided Service Instances](./user-provided.html)
 
-## <a id='credentials'></a>Service Instance Credentials ##
 
-Cloud Foundry enables users to provision credentials needed to interface with a service instance. You can use [app binding](#application-binding) to automatically deliver these credentials to your Cloud Foundry app. For external and local clients, you can use [service keys](#service-keys) to generate credentials to communicate directly with a service instance.
+## <a id='credentials'></a> Service Instance Credentials
 
-### <a id='application-binding'></a>App Binding ###
+Cloud Foundry enables users to provision credentials needed to interface with a service instance. You can use app binding to automatically deliver these credentials to your Cloud Foundry app. For external and local clients, you can use service keys to generate credentials to communicate directly with a service instance.
+
+### <a id='application-binding'></a> App Binding
 
 Service instance credentials can be delivered automatically to apps running on Cloud Foundry in an environment variable. For more information, see [Delivering Service Credentials to an App](./application-binding.html).
 
-For details on binding to a specific app development framework, refer to the Service Binding section in the documentation for [your framework's buildpack](../../buildpacks/).
+For information about binding to a specific app development framework, see [Buildpacks](../../buildpacks/).
 
-### <a id='service-keys'></a>Service Keys ###
+### <a id='service-keys'></a> Service Keys
 
 Credentials managed manually are known as service keys. Use service keys when you want a set of credentials for use by clients other than the app in the same space. For instance, you can use service keys to connect to a service instance from a local client, or from an app in another space, or even from outside of Cloud Foundry.
 
-For more information about creating a user-provided service instance with
-service keys, see the [User-Provided Service Instances](./user-provided.html) topic. For more information about service keys, see the [Managing Service Keys](./service-keys.html) topic.
+For more information about creating a user-provided service instance with service keys, see the [User-Provided Service Instances](./user-provided.html) topic. For more information about service keys, see the [Managing Service Keys](./service-keys.html) topic.
 
-<p class='note'><strong>Note</strong>: Not all services support service keys. Some services support credentials through app binding only.</p>
+<p class='note'><strong>Note:</strong> Not all services support service keys. Some services support credentials through app binding only.</p>
 
-## <a id='external-ip'></a>Outbound IP Addresses ###
+
+## <a id='external-ip'></a> Outbound IP Addresses
 
 To allow an app to communicate with a service external to <%= vars.product_short %>, you may need to configure the service to accept connections from your app based on its outbound IP address.
 
 In your external service configuration, you must do one of the following:
 
-* Whitelist the entire IP range for the Diego cell where the app is deployed.
-* Derive the app IP address from its DNS name using a command-line tool such as `dig`, `host`, or `nslookup`. In your external service configuration, whitelist the IP address or range of the app instance.
+* Add the entire IP range for the Diego Cell where the app is deployed to your allow list.
+* Derive the app IP address from its DNS name using a command-line tool such as `dig`, `host`, or `nslookup`. In your external service configuration, add the IP address or range of the app instance to your allow list.
 
-## <a id='log-management'></a>Stream App Logs to Log Management Services ##
+
+## <a id='log-management'></a> Stream App Logs to Log Management Services
 
 To learn how your app logs can be streamed to third-party log management services, see [Streaming App Logs to Log Management Services](./log-management.html).
 
-User-provided service instances can be used to drain app logs to a service not available in the marketplace. This is also known as setting up a syslog drain. We've documented instructions for a few providers in the [Service-Specific Instructions for Streaming App Logs](./log-management-thirdparty-svc.html) topic.
+User-provided service instances can be used to drain app logs to a service not available in the marketplace. This is also known as setting up a syslog drain. For guidance on configuring some third-party log management services, see [Service-Specific Instructions for Streaming App Logs](./log-management-thirdparty-svc.html).
 
-## <a id='route-services'></a>Manage App Requests with Route Services ##
+
+## <a id='route-services'></a> Manage App Requests with Route Services
 
 To learn how marketplace services (and user-provided service instances) can be used to perform preprocessing on app requests, see [Manage App Requests with Route Services](./route-binding.html).
 
-## <a id='migrating'></a>Migrate a Database Schema##
+
+## <a id='migrating'></a> Migrate a Database Schema
 
 If your app relies on a relational database, you must apply schema changes periodically. To perform database schema migrations on Cloud Foundry-managed services, run a database migration task with the Cloud Foundry Command Line Interface (cf CLI) tool.
 
 For more information about running cf CLI tasks, see [Running Tasks](../using-tasks.html).
 
-<p class="note"><strong>Note</strong>: To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. See the <a href="../../cf-cli/install-go-cli.html">Installing the cf CLI</a> topic for information about downloading, installing, and uninstalling the cf CLI.</p>
+<p class="note"><strong>Note:</strong> To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. For information about downloading, installing, and uninstalling the cf CLI, see the <a href="../../cf-cli/install-go-cli.html">Installing the cf CLI</a>.</p>
 
-To perform a database schema migration with the cf CLI, do the following:
+To perform a database schema migration with the cf CLI:
 
-1. Run the following command to push the app:
+1. Push the app:
 	<pre class="terminal">$ cf push APP-NAME</pre>
 
-	Where <code>APP-NAME</code> is the name of the app.
+	Where `APP-NAME` is the name of the app.
 
-	<p class="note"><strong>Note</strong>: To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
+	<p class="note"><strong>Note:</strong> To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
 
-1. Run the following command to perform a database schema migration as a task on the app:
-
+1. Perform a database schema migration as a task on the app:
 	<pre class="terminal">
 	$ cf run-task APP-NAME "bin/rails db:migrate" --name TASK-NAME
 	Creating task for app APP-NAME in org jdoe-org / space development as jdoe@pivotal.io...
@@ -84,5 +86,5 @@ To perform a database schema migration with the cf CLI, do the following:
 	</pre>
 
 	Where:
-	- <code>APP-NAME</code> is the name of the app.
-	- <code>TASK-NAME</code> is the name of the task.
+	- `APP-NAME` is the name of the app.
+	- `TASK-NAME` is the name of the task.

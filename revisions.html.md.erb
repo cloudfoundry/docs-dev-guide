@@ -5,9 +5,10 @@ owner: CAPI
 
 This topic describes app revisions and provides procedures for working with them. 
 
-For additional information, see the _Revisions_ section of the [CAPI documentation](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions). 
+For additional information, see the [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) section of the CAPI documentation. 
 
-<p class="note"><strong>Note</strong>: CAPI v3 is the recommended API version for revisions. While revisions work with v2, there are several inconsistencies. For example, revision descriptions for apps with multiple processes may be inaccurate because v2 does not support apps with multiple processes. Additionally, pushing an app for the first time with revisions in v2 creates two revisions.</p>
+<p class="note"><strong>Note:</strong> CAPI v3 is the recommended API version for revisions. While revisions work with v2, there are several inconsistencies. For example, revision descriptions for apps with multiple processes may be inaccurate because v2 does not support apps with multiple processes. Additionally, pushing an app for the first time with revisions in v2 creates two revisions.</p>
+
 
 ## <a id="overview"></a> Overview
 
@@ -52,7 +53,7 @@ Operators can configure Cloud Foundry to retain more droplets if necessary using
 
 ## <a id="enable"></a> Enable Revisions for an App
 
-To enable revisions for an app, do the following:
+To enable revisions for an app:
 
 1. Get the GUID of the app:
 
@@ -67,13 +68,14 @@ To enable revisions for an app, do the following:
 	```
 	Where `GUID` is the GUID you got in the previous step. 
 
+
 ## <a id="view"></a> View Revisions
 
 This section describes how to use CAPI endpoints for viewing revisions.
 
 ### <a id="list"></a> List Revisions for an App 
 
-To list revisions for an app, do the following:
+To list revisions for an app:
 
 1. Get the GUID of the app:
 
@@ -87,7 +89,6 @@ To list revisions for an app, do the following:
 	cf curl /v3/apps/GUID/revisions
 	```
 	Where `GUID` is the GUID you got in the previous step.
-
 
 ### <a id="list-deployed"></a> List Deployed Revisions for an App
 
@@ -108,7 +109,7 @@ Deployed revisions are revisions linked to started processes in an app. To list 
 
 ### <a id="get"></a> Get a Revision
 
-To get a revision, do the following:
+To get a revision:
 
 1. Run the following command:
 
@@ -119,7 +120,7 @@ To get a revision, do the following:
 
 ## <a id="push-app"></a> Rollback to a Previous Revision
 
-To roll back to a previous revision, do the following: 
+To roll back to a previous revision: 
 
 1. Get the GUID of the app:
 
@@ -151,10 +152,11 @@ To roll back to a previous revision, do the following:
 	* `REVISION-GUID` is the GUID of the revision. 
 	* `APP-GUID` is the GUID of the app. 
 
+
 ## <a id="metadata"></a> Add Metadata to a Revision
 
 <% if vars.product_name.include? "CF" %>
-To add metadata to a revision, follow the steps to [Add Metadata to an Object](../adminguide/metadata.html). 
+To add metadata to a revision, see [Add Metadata to an Object](../adminguide/metadata.html). 
 <% else %>
-To add metadata to a revision, follow the steps to [Add Metadata to an Object](https://docs.cloudfoundry.org/adminguide/metadata.html). 
+To add metadata to a revision, see [Add Metadata to an Object](https://docs.cloudfoundry.org/adminguide/metadata.html). 
 <% end %>

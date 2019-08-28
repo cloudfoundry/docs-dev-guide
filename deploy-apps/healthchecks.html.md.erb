@@ -1,27 +1,27 @@
 ---
-title: Using Application Health Checks
+title: Using App Health Checks
 owner:
   - CAPI
   - CLI
 ---
 
-
-
 This topic describes how to configure health checks for your apps in Cloud Foundry.
+
 
 ## <a id="about_health_checks"></a> Overview
 
-An application health check is a monitoring process that continually checks the status of a running Cloud Foundry app.
+An app health check is a monitoring process that continually checks the status of a running Cloud Foundry app.
 
 Developers can configure a health check for an app using the Cloud Foundry Command Line Interface (cf CLI) or by specifying the `health-check-http-endpoint` and `health-check-type` fields in an app manifest.
 
-To configure a health check using the cf CLI, follow the instructions in the [Configure Health Checks](#setting_health_checks) section below. For more information about using an app manifest to configure a health check, see the [health-check-http-endpoint](manifest.html#health-check-http-endpoint) and [health-check-type](manifest.html#health-check-type) sections of the <em>Deploying with App Manifest</em> topic.
+To configure a health check using the cf CLI, follow the instructions in the [Configure Health Checks](#setting_health_checks) section below. For more information about using an app manifest to configure a health check, see the [health-check-http-endpoint](manifest.html#health-check-http-endpoint) and [health-check-type](manifest.html#health-check-type) sections of the _Deploying with App Manifest_ topic.
 
-Application health checks function as part of the app lifecycle managed by [Diego architecture](../../concepts/diego/diego-architecture.html).
+App health checks function as part of the app lifecycle managed by Diego architecture. For more information, see [Diego /Components and Architecture](../../concepts/diego/diego-architecture.html).
+
 
 ## <a id="setting_health_checks"></a> Configure Health Checks
 
-To configure a health check while creating or updating an app, use the [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command:
+To configure a health check while creating or updating an app:
 
 <pre class="terminal">
 $ cf push YOUR-APP -u HEALTH-CHECK-TYPE -t HEALTH-CHECK-TIMEOUT
@@ -29,12 +29,14 @@ $ cf push YOUR-APP -u HEALTH-CHECK-TYPE -t HEALTH-CHECK-TIMEOUT
 
 Replace the placeholders in the example command above as follows:
 
-* `HEALTH-CHECK-TYPE`: Valid health check types are `port`, `process`, and `http`. See the [Health Check Types](#types) section below for more information.
-* `HEALTH-CHECK-TIMEOUT`: The timeout is the amount of time allowed to elapse between starting up an app and the first healthy response. See the [Health Check Timeouts](#health_check_timeout) section for more information.
+* `HEALTH-CHECK-TYPE`: Valid health check types are `port`, `process`, and `http`. For more information, see [Health Check Types](#types).
+* `HEALTH-CHECK-TIMEOUT`: The timeout is the amount of time allowed to elapse between starting up an app and the first healthy response. For more information, see [Health Check Timeouts](#health_check_timeout).
 
-<p class="note"><strong>Note</strong>: The health check configuration you provide with <code>cf push</code> overrides any configuration in the app manifest.</p>
+For more information about the `cf push` command, see the [push](http://cli.cloudfoundry.org/en-US/cf/push.html) section of the Cloud Foundry CLI Reference Guide.
 
-To configure a health check for an existing app or to add a custom HTTP endpoint, use the [cf set-health-check](http://cli.cloudfoundry.org/en-US/cf/set-health-check.html) command:
+<p class="note"><strong>Note:</strong> The health check configuration you provide with <code>cf push</code> overrides any configuration in the app manifest.</p>
+
+To configure a health check for an existing app or to add a custom HTTP endpoint:
 
 <pre class="terminal">
 $ cf set-health-check YOUR-APP HEALTH-CHECK-TYPE --endpoint CUSTOM-HTTP-ENDPOINT
@@ -43,17 +45,20 @@ $ cf set-health-check YOUR-APP HEALTH-CHECK-TYPE --endpoint CUSTOM-HTTP-ENDPOINT
 Replace the placeholders in the example command above as follows:
 
 * `HEALTH-CHECK-TYPE`: Valid health check types are `port`, `process`, and `http`. See the [Health Check Types](#types) section below for more information.
-* `CUSTOM-HTTP-ENDPOINT`: A `http` health check defaults to using `/` as its endpoint, but you can specify a custom endpoint. See the [Health Check HTTP Endpoints](#health_check_uri) section below for more information.
+* `CUSTOM-HTTP-ENDPOINT`: A `http` health check defaults to using `/` as its endpoint, but you can specify a custom endpoint. For more information, see [Health Check HTTP Endpoints](#health_check_uri).
 
-<p class="note"><strong>Note</strong>: You can change the health check configuration of a deployed app with <code>cf set-health-check</code>, but you must restart the app for the changes to take effect.</p>
+For more information about the `cf set-health-check` command, see the [push](http://cli.cloudfoundry.org/en-US/cf/set-health-check.html) section of the Cloud Foundry CLI Reference Guide.
 
-<p class="note"><strong>Note</strong>: You can also change the health check invocation timeout for an app. If you have cf CLI v6, use <code>v3-set-health-check</code>. If you have cf CLI v7, use <code>set-health-check</code>. This option also requires restarting the app. See the <a href="https://docs.cloudfoundry.org/cf-cli/cf-help.html#apps-(experimental)">Cloud Foundry CLI Reference Guide</a> for more information.</p>
+<p class="note"><strong>Note:</strong> You can change the health check configuration of a deployed app with <code>cf set-health-check</code>, but you must restart the app for the changes to take effect.</p>
 
-##<a id='understand-healthchecks'></a> Understand Health Checks
+<p class="note"><strong>Note:</strong> You can also change the health check invocation timeout for an app. If you have cf CLI v6, use <code>v3-set-health-check</code>. If you have cf CLI v7, use <code>set-health-check</code>. This option also requires restarting the app. For more information, see the <a href="https://docs.cloudfoundry.org/cf-cli/cf-help.html#apps-(experimental)">Cloud Foundry CLI Reference Guide</a>.</p>
 
-###<a id='healthcheck-lifecycle'></a> Health Check Lifecycle
 
-The following table describes how application health checks work in Cloud Foundry.
+## <a id='understand-healthchecks'></a> Understand Health Checks
+
+### <a id='healthcheck-lifecycle'></a> Health Check Lifecycle
+
+The following table describes how app health checks work in Cloud Foundry.
 
 <table>
 	<tr>
@@ -81,7 +86,7 @@ The following table describes how application health checks work in Cloud Foundr
 	</tr>
 	<tr>
 		<td>5</td>
-		<td>When Diego starts an app instance, the application health check runs every 2 seconds until a response indicates that the app instance is healthy or until the health check timeout elapses. The 2-second health check interval is not configurable.
+		<td>When Diego starts an app instance, the app health check runs every 2 seconds until a response indicates that the app instance is healthy or until the health check timeout elapses. The 2-second health check interval is not configurable.
 		</td>
 
 	</tr>
@@ -113,7 +118,7 @@ The following table describes the types of health checks available for apps and 
 <tr>
 <td><code>http</code></td>
 <td>The app can provide an <code>HTTP 200</code> response.</td>
-<td>The <code>http</code> health check performs a GET request to the configured HTTP endpoint on the app's default port. When the health check receives an <code>HTTP 200</code> response, the app is declared healthy. We recommend using the <code>http</code> health check type whenever possible. A healthy HTTP response ensures that the web app is ready to serve HTTP requests. The configured endpoint must respond within 1 second to be considered healthy.<br><strong>WARNING:</strong> To prevent false negatives, use a dedicated endpoint for healthcheck where response time and result do not depend on business logic.</td>
+<td>The <code>http</code> health check performs a GET request to the configured HTTP endpoint on the app's default port. When the health check receives an <code>HTTP 200</code> response, the app is declared healthy. We recommend using the <code>http</code> health check type whenever possible. A healthy HTTP response ensures that the web app is ready to serve HTTP requests. The configured endpoint must respond within 1 second to be considered healthy.<br><strong>Warning:</strong> To prevent false negatives, use a dedicated endpoint for healthcheck where response time and result do not depend on business logic.</td>
 </tr>
 <tr>
 <td><code>port</code></td>
@@ -138,6 +143,6 @@ The value configured for the health check timeout is the amount of time allowed 
 
 Only used by `http` type, the `--endpoint` flag of the `cf set-health-check` command specifies the path portion of a URI that must be served by the app and return `HTTP 200` when the app is healthy.
 
-<p class="note"><strong>Note</strong>: This command will only check the health of the default port of the app.</p>
+<p class="note"><strong>Note:</strong> This command will only check the health of the default port of the app.</p>
 
-<p class="note"><strong>Note</strong>: For HTTP apps, we recommend setting the health check type to <code>http</code> instead of a simple port check.</p>
+<p class="note"><strong>Note:</strong> For HTTP apps, you should set the health check type to <code>http</code> instead of a simple port check.</p>

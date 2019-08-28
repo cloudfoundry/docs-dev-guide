@@ -3,46 +3,39 @@ title: Deploying a Large App
 owner: CAPI
 ---
 
+This topic describes constraints and recommended settings for deploying apps above 750&nbsp;MB.
 
 
-This topic describes constraints and recommended settings for deploying
-apps above 750 MB.
+## <a id="consid_limits"></a> Deployment Considerations and Limitations
 
-## <a id="consid_limits"></a>Deployment Considerations and Limitations ##
-
-The deployment process involves uploading, staging, and starting the app. See the <a href="app-lifecycle.html#deployment">Deployment</a> section of the App Container Lifecycle topic for more information about the default time limits for uploading, staging, and starting an app.
+The deployment process involves uploading, staging, and starting the app. For more information about the default time limits for uploading, staging, and starting an app, see the <a href="app-lifecycle.html#deployment">Deployment</a> section of the _App Container Lifecycle_ topic.
 
 To deploy large apps to <%=vars.product_short%>, ensure the following:
 
 * The total size of the files to upload for your app does not exceed <%= vars.max_app_size %>.
 
-* Your network connection speed is sufficient to upload your app within the 15 minute limit. We recommend a minimum speed of 874 KB/s.
-
-    <p class="note"><strong>Note</strong>: <%= vars.product_short %> provides an authorization token that is valid for a minimum of 20 minutes.</p>
+* Your network connection speed is sufficient to upload your app within the 15-minute limit. The minimum recommended speed is 874 KB per second.
+    <p class="note"><strong>Note:</strong> <%= vars.product_short %> provides an authorization token that is valid for a minimum of 20 minutes.</p>
 
 * You allocate enough memory for all instances of your app. Use either the `-m` flag with `cf push` or set an app memory value in your `manifest.yml` file.
 
 * You allocate enough disk space for all instances of your app. Use either the `-k` flag with `cf push` or set a disk space allocation value in your `manifest.yml` file.
 
-* If you use an app manifest file, `manifest.yml`, be sure to specify adequate values for your app for attributes such as app memory, app start timeout, and disk space allocation.
+* If you use an app manifest file, `manifest.yml`, be sure to specify adequate values for your app for attributes such as app memory, app start timeout, and disk space allocation. For more information about using manifests, see [Deploying with App Manifests](./manifest.html).
 
-    For more information about using manifests, refer to the [Deploying with App Manifests](./manifest.html) topic.
-
-* You push only the files that are necessary for your app.
-
-    To meet this requirement, push only the directory for your app, and remove unneeded files or use the `.cfignore` file to [specify excluded files](./prepare-to-deploy.html#exclude).
+* You push only the files that are necessary for your app. To meet this requirement, push only the directory for your app, and remove unneeded files or use the `.cfignore` file to specify excluded files. For more information about specifying excluded files, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section in the _Considerations for Designing and Running an App in the Cloud_ topic.
 
 * You configure Cloud Foundry Command Line Interface (cf CLI) staging, startup, and timeout settings to override settings in the manifest, as necessary.
+  	* `CF_STAGING_TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to stage after Cloud Foundry successfully uploads and packages the app. Value set in minutes.
+  	* `CF_STARTUP_TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to start. Value set in minutes.
+  	* `cf push -t TIMEOUT`: Controls the maximum time that Cloud Foundry allows to elapse between starting an app and the first healthy response from the app. When you use this flag, the cf CLI ignores any app start timeout value set in the manifest. Value set in seconds.
 
-  * `CF_STAGING_TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to stage after Cloud Foundry successfully uploads and packages the app. Value set in minutes.
-  * `CF_STARTUP_TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to start. Value set in minutes.
-  * `cf push -t TIMEOUT`: Controls the maximum time that Cloud Foundry allows to elapse between starting an app and the first healthy response from the app. When you use this flag, the cf CLI ignores any app start timeout value set in the manifest. Value set in seconds.
+    For more information about using the cf CLI to deploy apps, see the [Push](../../cf-cli/getting-started.html#push) section of the _Getting Started with the cf CLI_ topic.
 
-    For more information about using the cf CLI to deploy apps, refer to the [Push section](../../cf-cli/getting-started.html#push) of the _Getting Started with the cf CLI_ topic.
+    <p class="note"><strong>Note:</strong> Changing the timeout setting for the cf CLI does not change the timeout limit for Cloud Foundry server-side jobs such as staging or starting apps. You must change server-side timeouts in the manifest. Because of the differences between the Cloud Foundry and cf CLI timeout values, your app might successfully start even though the cf CLI reports <code>App failed</code>. Run <code>cf apps APP_NAME</code> to review the actual status of your app.</p>
 
-    <p class="note"><strong>Note</strong>: Changing the timeout setting for the cf CLI does not change the timeout limit for Cloud Foundry server-side jobs such as staging or starting apps. You must change server-side timeouts in the manifest. Because of the differences between the Cloud Foundry and cf CLI timeout values, your app might successfully start even though the cf CLI reports <code>App failed</code>. Run <code>cf apps APP_NAME</code> to review the actual status of your app.</p>
 
-## <a id="limits_table"></a>Default Settings and Limitations Summary Table ##
+## <a id="limits_table"></a> Default Settings and Limitations Summary Table
 
 This table provides summary information of constraints and default settings to consider when you deploy a large app to <%=vars.product_short%>.
 
@@ -75,10 +68,10 @@ Default: 60 seconds<br /></td>
 </tr>
 <tr>
 <td>Disk Space Allocation</td>
-<td>Default: 1024 MB</td>
+<td>Default: 1024&nbsp;MB</td>
 </tr>
 <tr>
 <td>Internet Connection Speed</td>
-<td>Recommended Minimum: 874 KB/s</td>
+<td>Recommended Minimum: 874 KB per second</td>
 </tr>
 </table>

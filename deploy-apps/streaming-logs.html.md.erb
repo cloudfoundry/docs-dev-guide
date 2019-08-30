@@ -5,7 +5,7 @@ owner: <%= vars.product_name %> Metrics
 
 Loggregator, the Cloud Foundry component responsible for logging, provides a stream of log output from your app and from Cloud Foundry system components that interact with your app during updates and execution.
 
-By default, Loggregator streams logs to your terminal. If you want to persist more than the limited amount of logging information that Loggregator can buffer, you can drain logs to a third-party log management service. For mor information, see [Third-Party Log Management Services](../services/log-management.html).
+By default, Loggregator streams logs to your terminal. If you want to persist more than the limited amount of logging information that Loggregator can buffer, you can drain logs to a third-party log management service. For more information, see [Third-Party Log Management Services](../services/log-management.html).
 
 Cloud Foundry gathers and stores logs in a best-effort manner. If a client cannot consume log lines quickly enough, the Loggregator buffer may need to overwrite some lines before the client has consumed them. A syslog drain or a CLI tail can usually keep up with the flow of app logs.
 

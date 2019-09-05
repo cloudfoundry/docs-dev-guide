@@ -14,6 +14,11 @@
           <li><a href="#create-nfs">Create an NFS Volume Service</a></li>
           <li><a href="#nfs-sample">Deploy and Bind Sample App</a></li>
           <li><a href="#nfs-additional">Additional Information</a></li>
+            <ul>
+              <li><a href="#ldap">Binding with LDAP Credentials</a></li>
+              <li><a href="#bind-parameters">Specifying Bind Parameters During Service Instance Creation</a></li>
+              <li><a href="#flock">File Locking with `flock()` and `lockf()`/`fcntl()`</a></li>
+            </ul>
         </ul>
       <li><a href="#smb">SMB Volume Service</a></li>
         <ul>
@@ -263,7 +268,7 @@ This section describes how to deploy a sample app and bind it to the NFS volume 
 
 This section provides additional information about using the NFS Volume Service.
 
-#### Binding with LDAP Credentials
+#### <a id='ldap'></a> Binding with LDAP Credentials
 
 If your Cloud Foundry deployment has LDAP enabled, you can bind using LDAP credentials.
 
@@ -275,13 +280,14 @@ $ cf bind-service pora myVolume -c '{"username":"USERNAME","password":"PASSWORD"
 
 <p class="note"><strong>Note:</strong> If your LDAP server password changes, you must re-bind your app to the service and restage. If you do not, your app will fail during restart or scaling. This is because user credentials are stored as part of the service binding and checked whenever an app is placed on a cell.</p>
 
-#### Specifying Bind Parameters During Service Instance Creation
+#### <a id='bind-parameters'></a> Specifying Bind Parameters During Service Instance Creation
 
 As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, when you create a service instance. Use this option if you bind the service to your app in an app manifest, where bind configuration is not supported.
 
-#### File Locking with `flock()` and `lockf()`/`fcntl()`
+#### <a id='flock'></a> File Locking with `flock()` and `lockf()`/`fcntl()`
 
 Apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock` may use the `nfs` service. The `nfs-legacy` service uses a fuse mounting process that does not enforce locks across Diego Cells.
+
 
 ## <a id='smb'></a> SMB Volume Service
 

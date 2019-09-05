@@ -15,8 +15,8 @@
           <li><a href="#nfs-sample">Deploy and Bind Sample App</a></li>
           <li><a href="#nfs-additional">Additional Information</a></li>
             <ul>
-              <li><a href="#ldap">Binding with LDAP Credentials</a></li>
-              <li><a href="#bind-parameters">Specifying Bind Parameters During Service Instance Creation</a></li>
+              <li><a href="#ldap">Configure LDAP Credentials with Service Instance Creation</a></li>
+              <li><a href="#bind-parameters">Specify Bind Parameters During Service Instance Creation</a></li>
               <li><a href="#flock">File Locking with `flock()` and `lockf()`/`fcntl()`</a></li>
             </ul>
         </ul>
@@ -268,19 +268,25 @@ This section describes how to deploy a sample app and bind it to the NFS volume 
 
 This section provides additional information about using the NFS Volume Service.
 
-#### <a id='ldap'></a> Binding with LDAP Credentials
+#### <a id='ldap'></a> Configure LDAP Credentials with Service Instance Creation
 
-If your Cloud Foundry deployment has LDAP enabled, you can bind using LDAP credentials.
+If your Cloud Foundry deployment has LDAP enabled, you can configure LDAP credentials for your NFS Volume Service instance.
 
-To bind an app to your volume using LDAP credentials, specify `username` and `password` instead of `uid` and `gid`. See the following example:
+To configure LDAP credentials while creating your NFS Volume Service instance, specify values for `username` and `password` in the JSON string for your `cf create-service` command. See the following example:
 
 ```
-$ cf bind-service pora myVolume -c '{"username":"USERNAME","password":"PASSWORD"}'
+$ cf create-service nfs PLAN SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "username":"USERNAME", "password":"PASSWORD"}'
 ```
 
-<p class="note"><strong>Note:</strong> If your LDAP server password changes, you must re-bind your app to the service and restage. If you do not, your app will fail during restart or scaling. This is because user credentials are stored as part of the service binding and checked whenever an app is placed on a cell.</p>
+Where:
 
-#### <a id='bind-parameters'></a> Specifying Bind Parameters During Service Instance Creation
+* `PLAN` is the name of the service plan.
+* `SERVICE-INSTANCE-NAME` is a name you provide for this NFS Volume Service instance.
+* `SERVER/SHARE` is the NFS address of your server and share.
+* `USERNAME` is a username you provide for this NFS Volume Service instance.
+* `PASSWORD` is a password you provide for this NFS Volume Service instance.
+
+#### <a id='bind-parameters'></a> Specify Bind Parameters During Service Instance Creation
 
 As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, when you create a service instance. Use this option if you bind the service to your app in an app manifest, where bind configuration is not supported.
 

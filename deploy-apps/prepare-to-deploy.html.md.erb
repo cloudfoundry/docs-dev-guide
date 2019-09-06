@@ -102,7 +102,7 @@ frameworks you use. For examples of commonly-used `.gitignore` files, see [https
 
 Singleton apps may become temporarily unavailable for reasons that include:
 
-* During an upgrade, <%= vars.first_product_name %> gracefully shuts down the apps running on each Diego cell and then restarts them on another Diego cell. Single app instances may become temporarily unavailable if the replacement instance does not become healthy within the cell's evacuation timeout, which defaults to 10 minutes.
+* During an upgrade, <%= vars.product_name %> gracefully shuts down the apps running on each Diego cell and then restarts them on another Diego cell. Single app instances may become temporarily unavailable if the replacement instance does not become healthy within the cell's evacuation timeout, which defaults to 10 minutes.
 
 * Unexpected faults in <%= vars.product_name %> system components or underlying infrastructure, such as container-host VMs or IaaS Availability Zones, may cause lone app instances to disappear or become unroutable for a minute or two.
 

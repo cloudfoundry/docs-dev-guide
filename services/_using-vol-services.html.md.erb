@@ -170,6 +170,7 @@ Cloud Foundry offers two NFS volume services:
   * If you want to request a specific protocol version, include a `version` parameter in the create configuration.
   * For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
   * When you omit `uid` and `gid` or `username` and `password` in bind configuration, the driver skips `mapfs` mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
+
 * `nfs-legacy` (deprecated): Although it is deprecated, this volume service is still available due to the difficulty of retiring services. If you use this service, it performs exactly the same mount as the `nfs` service.
 
 Both services offer a single plan called `Existing`.
@@ -272,19 +273,18 @@ This section provides additional information about using the NFS Volume Service.
 
 If your Cloud Foundry deployment has LDAP enabled, you can configure LDAP credentials for your NFS Volume Service instance.
 
-To configure LDAP credentials while creating your NFS Volume Service instance, specify values for `username` and `password` in the JSON string for your `cf create-service` command. See the following example:
+To configure LDAP credentials while creating your NFS Volume Service instance:
 
-```
-$ cf create-service nfs PLAN SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "username":"USERNAME", "password":"PASSWORD"}'
-```
-
-Where:
-
-* `PLAN` is the name of the service plan.
-* `SERVICE-INSTANCE-NAME` is a name you provide for this NFS Volume Service instance.
-* `SERVER/SHARE` is the NFS address of your server and share.
-* `USERNAME` is a username you provide for this NFS Volume Service instance.
-* `PASSWORD` is a password you provide for this NFS Volume Service instance.
+1. Specify values for `username` and `password` in the JSON string for your `cf create-service` command:
+    ```
+    $ cf create-service nfs PLAN SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "username":"USERNAME", "password":"PASSWORD"}'
+    ```
+    Where:
+    * `PLAN` is the name of the service plan.
+    * `SERVICE-INSTANCE-NAME` is a name you provide for this NFS Volume Service instance.
+    * `SERVER/SHARE` is the NFS address of your server and share.
+    * `USERNAME` is a username you provide for this NFS Volume Service instance.
+    * `PASSWORD` is a password you provide for this NFS Volume Service instance.
 
 #### <a id='bind-parameters'></a> Specify Bind Parameters During Service Instance Creation
 

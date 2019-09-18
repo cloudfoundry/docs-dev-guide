@@ -257,6 +257,22 @@ The default memory limit is 1G. You might want to specify a smaller limit to con
 
 The command line option that overrides this attribute is `-m`.
 
+### <a id='metadata'></a> metadata
+
+Use the `metadata` information to tag your apps with additional information. You can specify two types of metadata: `labels` and `annotations`. For more information, see [Types of Metadata](../adminguide/metadata.html#types) in _Using Metadata_. 
+
+See the following example:
+
+```
+metadata:
+  annotations:
+    contact: "bob@example.com jane@example.com"
+  labels:
+    sensitive: true
+```
+
+For more information about metadata, see [Using Metadata](../adminguide/metadta.html). 
+
 ### <a id='no-route'></a>no-route
 
 <p class="note"><strong>Note</strong>: If you use the `no-route` flag attribute in the manifest or the flag option, it will override all route-related attributes.</p>
@@ -296,6 +312,34 @@ The command line option that overrides this attribute is `-p`.
 </pre>
 
 For more information, see [How cf push Finds the App](../../cf-cli/getting-started.html#find-app).
+
+### <a id='processes'></a> processes
+
+Use the `processes` attribute to push apps that run multiple processes, such as a web app that has a UI process and a worker process. See the following example:
+
+```
+processes:
+- type: web
+  command: start-web.sh
+  disk_quota: 512M
+  health-check-http-endpoint: /healthcheck
+  health-check-type: http
+  health-check-invocation-timeout: 10
+  instances: 3
+  memory: 500M
+  timeout: 10
+- type: worker
+  command: start-worker.sh
+  disk_quota: 1G
+  health-check-type: process
+  instances: 2
+  memory: 256M
+  timeout: 15
+```
+
+For detailed information about the process-level configuration, see [The app manifest specification](https://v3-apidocs.cloudfoundry.org/version/3.76.0/index.html#app-manifest) in the CAPI documentation.
+
+For more information about pushing an app with multiple processes, see [Pushing an App with Multiple Processes](../devguide/multiple-processes).  
 
 ### <a id='random-route'></a> random-route
 
@@ -368,6 +412,24 @@ The PORT and HOSTNAME will be randomly generated.</td>
 </tr>
 <tr>
 </table>
+
+### <a id='sidecars'></a> sidecars
+
+Use the `sidecars` attribute to specify additional processes to run in the same container as your app. Each sidecar must have values for `name`, `process_types`, and `command`, whereas `memory` is optional. See the following example:
+
+```
+sidecars:
+- name: authenticator
+  process_types: [ 'web', 'worker' ]
+  command: bundle exec run-authenticator
+  memory: 800M
+- name: upcaser
+  process_types: [ 'worker' ]
+  command: ./tr-server
+  memory: 900M
+```
+
+For more information about sidecars, see [Pushing Apps with Sidecar Processes (Beta)](../sidecars.html). 
 
 ### <a id='stack'></a> stack
 

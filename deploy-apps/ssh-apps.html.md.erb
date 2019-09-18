@@ -7,7 +7,7 @@ owner: Diego
 
 _This page assumes you are using cf CLI v6.13.0 or later._
 
-The Cloud Foundry Command Line Interface (cf CLI) lets you securely log into remote host virtual machines (VMs) running <%= vars.product_full %> app instances. This topic describes the commands that enable SSH access to apps, and enable, disable, and check permissions for such access.
+The Cloud Foundry Command Line Interface (cf CLI) lets you securely log into remote host virtual machines (VMs) running <%= vars.app_runtime_full %> app instances. This topic describes the commands that enable SSH access to apps, and enable, disable, and check permissions for such access.
 
 The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controller `/v2/info` endpoint, and uses this identifier to query the UAA server for an SSH authorization code. On the target VM side, the SSH proxy contacts the Cloud Controller through the `app_ssh_endpoint` listed in `/v2/info` to confirm permission for SSH access.
 
@@ -50,7 +50,7 @@ The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controlle
 
 ## <a id="enable-disable-ssh"></a> Enabling and Disabling SSH Access
 
-A cloud operator can deploy <%= vars.product_full %> to either allow or prohibit app SSH across the entire deployment. <%= vars.config_ssh_link %>
+A cloud operator can deploy <%= vars.app_runtime_full %> to either allow or prohibit app SSH across the entire deployment. <%= vars.config_ssh_link %>
 
 Within a deployment that permits SSH access to apps, Space Developers can enable or disable SSH access to individual apps, and Space Managers can enable or disable SSH access to all apps running within a space.
 
@@ -306,4 +306,4 @@ To be accessible via the SSH proxy, containers must host an SSH daemon, expose i
   }
 ```
 
-The Diego system generates the appropriate process definitions for <%= vars.product_full %> apps which reflect the policies that are in effect.
+The Diego system generates the appropriate process definitions for <%= vars.app_runtime_full %> apps which reflect the policies that are in effect.

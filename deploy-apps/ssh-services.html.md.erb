@@ -30,7 +30,7 @@ To establish direct command line access to a service, you deploy a host app and 
 
 ##<a id="push-app"></a>Push Your Host App##
 
-To push an app that will act as the host for the SSH tunnel, push any app that will successfully deploy to <%= vars.product_full %>.
+To push an app that will act as the host for the SSH tunnel, push any app that will successfully deploy to <%= vars.app_runtime_full %>.
 <p class="note"><strong>Note:</strong> Your app must be prepared before you push it. See the <a href="deploy-app.html">Pushing an App</a> topic for details on preparing apps for pushing.
 </p>
 
@@ -38,7 +38,7 @@ To push an app that will act as the host for the SSH tunnel, push any app that w
 <pre class="terminal">$ cf push YOUR-HOST-APP</pre>
 1. Enable SSH for your app.
 <pre class="terminal">$ cf enable-ssh YOUR-HOST-APP</pre>
-<p class="note"><strong>Note:</strong> To enable SSH access to your app, SSH access must also be enabled for both the space that contains the app and <%= vars.product_full %>. See the [App SSH Overview](./app-ssh-overview.html) topic for more details.</p>
+<p class="note"><strong>Note:</strong> To enable SSH access to your app, SSH access must also be enabled for both the space that contains the app and <%= vars.app_runtime_full %>. See the [App SSH Overview](./app-ssh-overview.html) topic for more details.</p>
 
 ##<a id="bind-app"></a>Create Your Service Key##
 To establish SSH access to your service instance, you must create a service key that contains critical information for configuring your SSH tunnel.

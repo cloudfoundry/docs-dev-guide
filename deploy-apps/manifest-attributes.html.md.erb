@@ -409,18 +409,16 @@ The PORT and HOSTNAME will be randomly generated.</td>
 
 ### <a id='sidecars'></a> sidecars
 
-Use the `sidecars` attribute to specify additional processes to run in the same container as your app. Each sidecar must have values for `name`, `process_types`, and `command`, whereas `memory` is optional. See the following example:
+Use the `sidecars` attribute to specify additional processes to run in the same container as your app. Each sidecar must have values for `name`, `process_types`, and `command`. See the following example:
 
 ```
 sidecars:
 - name: authenticator
   process_types: [ 'web', 'worker' ]
   command: bundle exec run-authenticator
-  memory: 800M
 - name: upcaser
   process_types: [ 'worker' ]
   command: ./tr-server
-  memory: 900M
 ```
 
 For more information about sidecars, see [Pushing Apps with Sidecar Processes (Beta)](../sidecars.html). 

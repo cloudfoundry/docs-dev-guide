@@ -291,6 +291,34 @@ The command line option that overrides this attribute is `-p`.
 
 For more information, see [How cf push Finds the App](../../cf-cli/getting-started.html#find-app).
 
+### <a id='processes'></a> processes
+
+Use the `processes` attribute to push apps that run multiple processes, such as a web app that has a UI process and a worker process. See the following example:
+
+```
+processes:
+- type: web
+  command: start-web.sh
+  disk_quota: 512M
+  health-check-http-endpoint: /healthcheck
+  health-check-type: http
+  health-check-invocation-timeout: 10
+  instances: 3
+  memory: 500M
+  timeout: 10
+- type: worker
+  command: start-worker.sh
+  disk_quota: 1G
+  health-check-type: process
+  instances: 2
+  memory: 256M
+  timeout: 15
+```
+
+For detailed information about the process-level configuration, see [The app manifest specification](https://v3-apidocs.cloudfoundry.org/version/3.76.0/index.html#app-manifest) in the CAPI documentation.
+
+For more information about pushing an app with multiple processes, see [Pushing an App with Multiple Processes](../multiple-processes.html).  
+
 ### <a id='random-route'></a> random-route
 
 If you push your app without specifying any route-related CLI options or app manifest flags, the cf CLI attempts to generate a route based on the app name, which can cause collisions.

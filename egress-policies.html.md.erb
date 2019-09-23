@@ -26,7 +26,7 @@ For more information about ASGs, see [App Security Groups](../concepts/asg.html)
 ## <a id="enable"></a> Enable the Dynamic Egress Feature
 
 The dynamic egress feature is disabled by default. To enable this feature, you must 
-<% if vars.product_name == 'CF' %>
+<% if vars.platform_code == 'CF' %>
 set the `enforce_experimental_dynamic_egress_policies` property of the `policy-server-internal` job to true. For more information, see the spec file in the [CF Networking Release](https://github.com/cloudfoundry/cf-networking-release/blob/develop/jobs/policy-server-internal/spec#L102-L104) repository. 
 <p class="note"><strong>Note:</strong> This feature is only compatible with the Silk CNI plugin.</p>
 <% else %>

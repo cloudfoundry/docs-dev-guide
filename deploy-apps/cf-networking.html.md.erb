@@ -6,7 +6,7 @@ owner: Container-to-Container Networking
 
 <div class="quick-links">
 <ul>
-  <% if vars.product_name == 'CF' %>
+  <% if vars.platform_code == 'CF' %>
   <li><a href="#enable">Enable Container-to-Container Networking</a></li>
   <li><a href="#logging">Manage Logging for Container-to-Container Networking</a></li>
   <% end %>
@@ -36,12 +36,12 @@ This topic describes how to configure the Container-to-Container Networking feat
 
 <%= vars.app_traffic_logging %>
 
-<% if vars.product_name == 'CF' %>
+<% if vars.platform_code == 'CF' %>
 <%= partial 'c2c_oss_enable' %>
 <% else %>
 <% end %>
 
-<% if vars.product_name == 'CF' %>
+<% if vars.platform_code == 'CF' %>
 <%= partial 'c2c_oss_overlay' %>
 <% else %>
 <% if vars.product_name.include? "CF" %>
@@ -49,7 +49,7 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% end %>
 <% end %>
 
-<% if vars.product_name == 'CF' %>
+<% if vars.platform_code == 'CF' %>
 <%= partial 'c2c_oss_logging' %>
 <% else %>
 <% end %>
@@ -185,7 +185,7 @@ You can disable Silk network policy enforcement between apps. Disabling network 
 
 To disable network policy enforcement between apps, do the following:
 
-<% if vars.product_name == 'CF' %>
+<% if vars.platform_code == 'CF' %>
 
 1. To target your BOSH deployment, run the following command:
    <pre>
@@ -230,7 +230,7 @@ To establish container-to-container communications between a front end and back 
 
 See [Cats and Dogs with Service Discovery](https://github.com/cloudfoundry/cf-networking-examples/blob/master/docs/c2c-with-service-discovery.md) in GitHub for an example, written in Go, that demonstrates communication between front end and back end apps.
 
-<% if vars.product_name == "CF" %>
+<% if vars.platform_code == 'CF' %>
 
 ### <a name="enable-discovery"></a> Enable App Service Discovery
 

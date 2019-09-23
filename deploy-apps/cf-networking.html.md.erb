@@ -10,7 +10,7 @@ owner: Container-to-Container Networking
   <li><a href="#enable">Enable Container-to-Container Networking</a></li>
   <li><a href="#logging">Manage Logging for Container-to-Container Networking</a></li>
   <% end %>
-  <% if vars.product_name.include? "CF" %>
+  <% if vars.platform_code.include? "CF" %>
   <li><a href="#overlay">Configure the Overlay Network</a></li>
   <% end %>  
   <li><a href="#create-policies">Create and Manage Networking Policies</a>
@@ -23,7 +23,7 @@ owner: Container-to-Container Networking
       <li><a href="#disable-policy">Disable Network Policy Enforcement</a></li>
     </ul>
     <li><a href="#discovery">App Service Discovery</a>
-      <% if vars.product_name.include? "CF" %>
+      <% if vars.platform_code.include? "CF" %>
       <ul>
         <li><a href="#enable-discovery">Enable App Service Discovery</a></li>
       </ul>
@@ -44,7 +44,7 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% if vars.platform_code == 'CF' %>
 <%= partial 'c2c_oss_overlay' %>
 <% else %>
-<% if vars.product_name.include? "CF" %>
+<% if vars.platform_code.include? "CF" %>
 <%= partial '../../opsguide/c2c_overlay' %>
 <% end %>
 <% end %>
@@ -71,7 +71,7 @@ $ cf version
 </pre>
 For more information about updating the cf CLI, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
 
-<% if vars.product_name.include? "CF" %>
+<% if vars.platform_code.include? "CF" %>
 
 ### <a name="grant"></a> Grant Permissions
 

@@ -231,7 +231,7 @@ Developers should not edit these scripts unless they are using a [custom buildpa
 This means that any PHP app staged using the affected PHP buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
 <p class="note"><strong>Note</strong>: If you are using a Java buildpack, you have to place the <code>.profile</code> into the root dir of you <code>war</code> or <code>jar</code> file.
-You can add the <code>.profile</code> to the root dir of you <code>jar</code> with e.g. <code>jar -uvf target/artifact.jar .profile</code>
+You can add the <code>.profile</code> to the root dir of you <code>jar</code> with e.g. <code>jar -uvf target/artefact.jar .profile</code>
 </p>
 
 Initialization tasks as described here are also called "pre-runtime hooks" and "`.profile` tasks".

@@ -113,6 +113,8 @@ For example, the following command pushes the `v2` version of the `my-image` ima
 
 Many Docker registries control access to Docker images by authenticating with a username and password. Follow the steps below to deploy a Docker image with registry authentication:
 
+<p class="note"><b>Note</b>: This procedure does not work with the Amazon Web Services Elastic Container Registry (AWS ECR) registry, which authenticates with temporary password tokens rather than username and password.</p>
+
 1. Make sure the `CF_DOCKER_PASSWORD` environment variable is set to the Docker registry user password.
 1. Run the following command: `$ CF_DOCKER_PASSWORD=YOUR-PASSWORD cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username USER` 
 <br>Replace the placeholder values in the command as follows:

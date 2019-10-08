@@ -207,8 +207,6 @@ For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-
 
 ### <a id='profile'></a>(Optional) Configure App Initialization
 
-<p class="note"><strong>Note</strong>: The Java buildpack does not support an initialization script.</p>
-
 You can configure `cf push` to run custom initialization tasks for an app.
 
 These tasks run after <%= vars.product_short %> loads the app droplet but before it launches the app itself to let the initialization script access the app language runtime environment. For example, your script can map values from `$VCAP_SERVICES` into other environment variables or a config file that the app uses.
@@ -231,6 +229,10 @@ Developers should not edit these scripts unless they are using a [custom buildpa
 
 <p class="note"><strong>Note</strong>: If you are using a PHP buildpack version prior to v4.3.18, the buildpack does not execute your PHP app's <code>.profile</code> script. Your PHP app will host the <code>.profile</code> script's contents.
 This means that any PHP app staged using the affected PHP buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
+
+<p class="note"><strong>Note</strong>: If you are using a Java buildpack, you have to place the <code>.profile</code> into the root dir of you <code>war</code> or <code>jar</code> file.
+You can add the <code>.profile</code> to the root dir of you <code>jar</code> with e.g. <code>jar -uvf target/artifact.jar .profile</code>
+</p>
 
 Initialization tasks as described here are also called "pre-runtime hooks" and "`.profile` tasks".
 

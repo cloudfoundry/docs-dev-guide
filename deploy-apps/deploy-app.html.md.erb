@@ -150,7 +150,7 @@ For more information about the manifest file, see the [Deploying with App Manife
 
 ### <a id='profile'></a>Configure Pre-Runtime Hooks ###
 
-<p class="note"><strong>Note</strong>: The Java buildpack does not support pre-runtime hooks.</p>
+<p class="note"><strong>Note</strong>: <%= vars.product_short %> does not support initialization scripts for the Java buildpack or PHP buildpack versions prior to v4.3.18. If you use these buildpack versions, your app hosts the <code>.profile</code> script's contents. This means that any app staged using the affected buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
 To configure pre-runtime hooks, create a file named `.profile` and place it in the root of your app directory.
 If the directory includes a `.profile` script, then Cloud Foundry executes it immediately before each instance of your app starts.
@@ -170,9 +170,6 @@ To set an environment variable, add the appropriate bash commands to your `.prof
 # Set the default LANG for your apps
 export LANG=en_US.UTF-8
 ~~~
-
-<p class="note"><strong>Note</strong>: If you are using a PHP buildpack version prior to v4.3.18, the buildpack does not execute your PHP app's <code>.profile</code> script. Your PHP app will host the <code>.profile</code> script's contents.
-This means that any PHP app staged using the affected PHP buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
 ## <a id='push'></a>Step 5: Push the App ##
 

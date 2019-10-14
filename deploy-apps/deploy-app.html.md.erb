@@ -207,11 +207,11 @@ For more information, see the [Ignore Unnecessary Files When Pushing](./prepare-
 
 ### <a id='profile'></a>(Optional) Configure App Initialization
 
-<p class="note"><strong>Note</strong>: The Java buildpack does not support an initialization script.</p>
-
 You can configure `cf push` to run custom initialization tasks for an app.
 
-These tasks run after <%= vars.product_short %> loads the app droplet but before it launches the app itself to let the initialization script access the app language runtime environment. For example, your script can map values from `$VCAP_SERVICES` into other environment variables or a config file that the app uses.
+These tasks run after <%= vars.app_runtime %> loads the app droplet but before it launches the app itself to let the initialization script access the app language runtime environment. For example, your script can map values from `$VCAP_SERVICES` into other environment variables or a config file that the app uses.
+
+<p class="note"><strong>Note</strong>: <%= vars.app_runtime %> does not support initialization scripts for the Java buildpack or PHP buildpack versions prior to v4.3.18. If you use these buildpack versions, your app hosts the <code>.profile</code> script's contents. This means that any app staged using the affected buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
 To run initialization tasks:
 
@@ -228,9 +228,6 @@ export LANG=en_US.UTF-8
 
 Your app root directory may also include a `.profile.d` directory that contains bash scripts that perform initialization tasks for the buildpack.
 Developers should not edit these scripts unless they are using a [custom buildpack](../../buildpacks/custom.html).
-
-<p class="note"><strong>Note</strong>: If you are using a PHP buildpack version prior to v4.3.18, the buildpack does not execute your PHP app's <code>.profile</code> script. Your PHP app will host the <code>.profile</code> script's contents.
-This means that any PHP app staged using the affected PHP buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
 Initialization tasks as described here are also called "pre-runtime hooks" and "`.profile` tasks".
 

@@ -7,7 +7,7 @@ This topic describes how to use the Cloud Foundry Command Line Interface (cf CLI
 
 ## <a id="overview"></a> Overview
 
-The cf CLI command `cf push` pushes apps to <%= vars.product_short %>.
+The cf CLI command `cf push` pushes apps to <%= vars.app_runtime %>.
 There are two main ways to run the `cf push` command:
 
 - Run `cf push APP-NAME` to push an app the easiest way, using default settings.
@@ -17,22 +17,22 @@ There are two main ways to run the `cf push` command:
 
 The [Push with Defaults](#default-push) and [Push with Custom Settings](#custom-push) sections below detail both of these options.
 
-For an explanation of what <%= vars.product_short %> does when you run `cf push`, see [How Apps are Staged](../../concepts/how-applications-are-staged.html).
+For an explanation of what <%= vars.app_runtime %> does when you run `cf push`, see [How Apps are Staged](../../concepts/how-applications-are-staged.html).
 
 For information about the lifecycle of an app, see [App Container Lifecycle](./app-lifecycle.html)
 
 ## <a id='prepare'></a> Prerequisites
 
-Before you push your app to <%= vars.product_short %>, make sure that:
+Before you push your app to <%= vars.app_runtime %>, make sure that:
 
 * Your app is *cloud-ready*.
-<%= vars.product_short %> behaviors related to file storage, HTTP sessions, and port usage
+<%= vars.app_runtime %> behaviors related to file storage, HTTP sessions, and port usage
 may require modifications to your app.
-For help preparing your app to be pushed to <%= vars.product_short %>, see:
+For help preparing your app to be pushed to <%= vars.app_runtime %>, see:
   - [Considerations for Designing and Running an App in the Cloud](./prepare-to-deploy.html)
   - Any [Buildpacks](../../buildpacks/index.html) guides specific to your app language or framework, such as [Getting Started Deploying Ruby on Rails Apps](../../buildpacks/ruby/gsg-ror.html)
 
-* Your <%= vars.product_short %> installation supports the type of app you are going to
+* Your <%= vars.app_runtime %> installation supports the type of app you are going to
 push, or you have the URL of an externally-available buildpack that can stage
 the app.
 
@@ -40,9 +40,9 @@ the app.
 For example, you may need to include a database driver.
 
 * You have your target and credentials:
-  - The API endpoint for your <%= vars.product_short %> installation. Also known as the target
+  - The API endpoint for your <%= vars.app_runtime %> installation. Also known as the target
 URL, this is <%=vars.api_endpoint%>.
-  - Your username and password for your <%= vars.product_short %> installation.
+  - Your username and password for your <%= vars.app_runtime %> installation.
 
 * You are logged into your app's target org and space.
   1. Decide the org and space where you want to push your app.
@@ -59,7 +59,7 @@ To push an app with default settings, do the following:
 
 1. Choose a name for the app.
   - The app name must consist of alphanumeric characters.
-  - The app name must be unique to your <%= vars.product_short %> installation.
+  - The app name must be unique to your <%= vars.app_runtime %> installation.
        - To use an app name that is not unique, customize the app's route as described in [Customize the Route](#custom-route) below.
        -  Apps running at their default routes require unique names because default routes are based on app names, and all routes must be globally unique.
 
@@ -73,16 +73,16 @@ To push an app with default settings, do the following:
 
 ### <a id='default-route'></a> Default Route
 
-An app's route is the URL that it runs at.  <%= vars.product_short %> assembles the route for a pushed app from a hostname and a domain.
+An app's route is the URL that it runs at.  <%= vars.app_runtime %> assembles the route for a pushed app from a hostname and a domain.
 
-By default, <%= vars.product_short %> sets the hostname and domain as follows:
+By default, <%= vars.app_runtime %> sets the hostname and domain as follows:
 
 * **Hostname**: The name of the app, as specified in the `cf push` command.
-  - If the app name contains underscores, <%= vars.product_short %> converts them to hyphens when creating the app's route.
+  - If the app name contains underscores, <%= vars.app_runtime %> converts them to hyphens when creating the app's route.
 
-* **Domain**: The default apps domain for the <%= vars.product_short %> installation.
+* **Domain**: The default apps domain for the <%= vars.app_runtime %> installation.
 
-For example, an app named `my-app-1234` running on <%= vars.product_short %> with an apps domain `apps.example.com` would, by default, run at the URL `https://my-app-1234.apps.example.com`.
+For example, an app named `my-app-1234` running on <%= vars.app_runtime %> with an apps domain `apps.example.com` would, by default, run at the URL `https://my-app-1234.apps.example.com`.
 
 For more information about routes and domains, see [Routes and Domains](./routes-domains.html).
 
@@ -90,7 +90,7 @@ For more information about routes and domains, see [Routes and Domains](./routes
 
 ### <a id='example'></a> Example Session
 
-The following session illustrates  how <%= vars.product_short %> assigns default values
+The following session illustrates  how <%= vars.app_runtime %> assigns default values
 to app when given a `cf push` command.
 
 <pre class="terminal">
@@ -166,10 +166,10 @@ If your app is still in development, running a single instance can simplify trou
 For any production app, <%= vars.recommended_by %> recommends a minimum of two instances.
 * **Memory Limit**: The maximum amount of memory that each instance of your
 app can consume.
-If an instance exceeds this limit, <%= vars.product_short %> restarts the instance.
-If an instance exceeds its memory limit repeatedly in a short period of time, <%= vars.product_short %>
+If an instance exceeds this limit, <%= vars.app_runtime %> restarts the instance.
+If an instance exceeds its memory limit repeatedly in a short period of time, <%= vars.app_runtime %>
 	delays restarting the instance.
-* **Start Command**: This is the command that <%= vars.product_short %> uses to start each
+* **Start Command**: This is the command that <%= vars.app_runtime %> uses to start each
 instance of your app.
 This start command differs by app framework.
 
@@ -191,7 +191,7 @@ To customize an app's route, do the following:
 
 ### <a id='exclude'></a>(Optional) Limit the Upload Files
 
-By default, <%= vars.product_short %> uploads all app files except version control files and
+By default, <%= vars.app_runtime %> uploads all app files except version control files and
 folders with names such as `.svn`, `.git`, and `_darcs`.
 
 <%= vars.recommended_by %> recommends that you explicitly exclude extraneous files residing within your app directory, particularly if your app is large.
@@ -265,7 +265,7 @@ For apps that are not already set up for the services that they use, you need to
 
 ## <a id='updates'></a> App Updates and Downtime
 
-When you push an app that is already running, <%= vars.product_short %> stops all existing instances of that app. Users who try to access the app get a "404 Not Found" message while `cf push` runs.
+When you push an app that is already running, <%= vars.app_runtime %> stops all existing instances of that app. Users who try to access the app get a "404 Not Found" message while `cf push` runs.
 
 With some app updates, old and new versions of your code should never run at the same time. A worst-case example is if your app update migrates a database schema, causing old app instances to fail and lose user data.  To prevent this, you need to stop all running instances of your app before you push the new version.
 
@@ -274,6 +274,6 @@ When old and new versions of your app can run simultaneously, you can avoid app 
 
 ## <a id='troubleshoot-push'></a>Troubleshoot App Push Problems
 
-If your app does not start on <%= vars.product_short %>, first ensure that the app can run locally.
+If your app does not start on <%= vars.app_runtime %>, first ensure that the app can run locally.
 
 For how to troubleshoot your app in the cloud using the cf CLI, see [Troubleshoot App Deployment and Health](./troubleshoot-app-health.html).

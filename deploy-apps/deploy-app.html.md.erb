@@ -150,18 +150,18 @@ For more information about the manifest file, see the [Deploying with Applicatio
 
 ### <a id='profile'></a>Configure Pre-Runtime Hooks ###
 
-<p class="note"><strong>Note</strong>: The Java buildpack does not support pre-runtime hooks.</p>
+<p class="note"><strong>Note</strong>: <%= vars.product_short %> does not support initialization scripts for the Java buildpack or PHP buildpack versions prior to v4.3.18. If you use these buildpack versions, your app hosts the <code>.profile</code> script's contents. This means that any app staged using the affected buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
-To configure pre-runtime hooks, create a file named `.profile` and place it in the root of your app directory. 
-If the directory includes a `.profile` script, then Cloud Foundry executes it immediately before each instance of your app starts. 
+To configure pre-runtime hooks, create a file named `.profile` and place it in the root of your app directory.
+If the directory includes a `.profile` script, then Cloud Foundry executes it immediately before each instance of your app starts.
 Because the `.profile` script executes after the buildpack, the script has access to the language runtime environment created by the buildpack.
 
-<p class="note"><strong>Note</strong>: Your app root directory may also include a <code>.profile.d</code> directory that contains bash scripts that perform initialization tasks for the buildpack. 
+<p class="note"><strong>Note</strong>: Your app root directory may also include a <code>.profile.d</code> directory that contains bash scripts that perform initialization tasks for the buildpack.
 Developers should not edit these scripts unless they are using a <a href="../../buildpacks/custom.html">custom buildpack</a>.</p>
 
-You can use the `.profile` script to perform app-specific initialization tasks, such as setting custom environment variables. 
-Environment variables are key-value pairs defined at the operating system level. 
-These key-value pairs provide a way to configure the apps running on a system. 
+You can use the `.profile` script to perform app-specific initialization tasks, such as setting custom environment variables.
+Environment variables are key-value pairs defined at the operating system level.
+These key-value pairs provide a way to configure the apps running on a system.
 For example, any app can access the LANG environment variable to determine which language to use for error messages and instructions, collating sequences, and date formats.
 
 To set an environment variable, add the appropriate bash commands to your `.profile` file. See the example below.
@@ -170,9 +170,6 @@ To set an environment variable, add the appropriate bash commands to your `.prof
 # Set the default LANG for your apps
 export LANG=en_US.UTF-8
 ~~~
-
-<p class="note"><strong>Note</strong>: If you are using a PHP buildpack version prior to v4.3.18, the buildpack does not execute your PHP app's <code>.profile</code> script. Your PHP app will host the <code>.profile</code> script's contents. 
-This means that any PHP app staged using the affected PHP buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
 ## <a id='push'></a>Step 5: Push the App ##
 

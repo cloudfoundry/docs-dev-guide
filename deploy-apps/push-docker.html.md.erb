@@ -145,17 +145,17 @@ Many Docker registries control access to Docker images by authenticating with a 
 * To push an app as a Docker image from ECR:
 
     ```
-    $ CF_DOCKER_PASSWORD=AWS-SECRET-ACCESS-KEY cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username AWS-ACCESS-KEY-ID
+    $ CF_DOCKER_PASSWORD=AWS_ECR_PASSWORD cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username AWS_ECR_USER
     ```
 
     Where:
-    - `AWS-SECRET-ACCESS-KEY`: the AWS Secret Access Key for the IAM user accessing the ECR registry
+    - `AWS_ECR_USER`: the user returned by the `aws ecr get-login --no-include-email` command. It usually is `AWS`
         - Setting `CF_DOCKER_PASSWORD` prepended to the `cf push --docker-image` makes the value temporary, which is more secure than setting the environment variable indefinitely with `export`
     - `APP-NAME`: The name to give the pushed app on <%= vars.app_runtime_abbr %>
     - `REPO`: The ECR repository containing the image being pushed
     - `IMAGE`: The name of the app image being pushed
     - `TAG`: (Optional, but recommended) The tag or version for the image
-    - `AWS-ACCESS-KEY-ID`: The AWS Access Key ID for the IAM user accessing the ECR registry
+    - `AWS_ECR_PASSWORD`: the long password returned by the `aws ecr get-login --no-include-email` command. 
 
 **How it Works**: Running `cf push` with an ECR registry triggers <%= vars.app_runtime_abbr %> to:
 

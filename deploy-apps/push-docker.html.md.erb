@@ -5,7 +5,7 @@ owner: Diego
 
 
 
-This topic describes how to use the 
+This topic describes how to use the
 [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html) to push an app with a new or updated Docker image. Cloud Foundry then uses the Docker image to create containers for the app.
 
 See [Using Docker in Cloud Foundry](https://docs.cloudfoundry.org/adminguide/docker.html) in the Cloud Foundry documentation for an explanation of how Docker works in Cloud Foundry.
@@ -13,7 +13,7 @@ See [Using Docker in Cloud Foundry](https://docs.cloudfoundry.org/adminguide/doc
 ##<a id='requirements'></a>Requirements
 
 To push apps with Docker, you need the following:
- 
+
 * A Cloud Foundry deployment that has Docker support enabled. To enable Docker support, see the [Enable Docker](https://docs.cloudfoundry.org/adminguide/docker.html#enable) section of _Using Docker in Cloud Foundry_ in the Cloud Foundry documentation.
 
 * A Docker image that meets the following requirements:
@@ -30,7 +30,7 @@ To push apps with Docker, you need the following:
 
 ###<a id='cf-ssh'></a>Requirement for cf ssh Support
 
-If you want to log in to your app container using the <code>cf ssh</code> command, you must make a shell such as <code>sh</code> or <code>bash</code> available in the container. 
+If you want to log in to your app container using the <code>cf ssh</code> command, you must make a shell such as <code>sh</code> or <code>bash</code> available in the container.
 
 The SSH server in the container looks for the following executables in absolute locations or the <code>PATH</code> environment variable:
 <ul>
@@ -43,31 +43,31 @@ The SSH server in the container looks for the following executables in absolute 
 
 ## <a id='tag'></a>Benefits of Specifying Tags
 
-If you want your app container to be consistent after platform updates and code changes, specify a tag 
-when you push your Docker image. 
+If you want your app container to be consistent after platform updates and code changes, specify a tag
+when you push your Docker image.
 Otherwise, the platform applies the <code>latest</code> tag without respecting changes to `PORT` or `ENTRYPOINT`.
 
 If you push your Docker image without specifying a tag, you must run `cf restage` for the changes to take effect.
 
 ## <a id='port_config'></a>Port Configuration
 
-By default, apps listen for connections on the port specified in the 
-[PORT](environment-variable.html#PORT) 
+By default, apps listen for connections on the port specified in the
+[PORT](environment-variable.html#PORT)
 environment variable for the app. Cloud Foundry allocates this value dynamically.
 
-When configuring a Docker image for Cloud Foundry, you can control the exposed port and 
-the corresponding value of `PORT` by specifying the 
-[EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) directive in the image Dockerfile. 
-If you specify the `EXPOSE` directive, then the corresponding app pushed to Cloud Foundry listens on that 
+When configuring a Docker image for Cloud Foundry, you can control the exposed port and
+the corresponding value of `PORT` by specifying the
+[EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) directive in the image Dockerfile.
+If you specify the `EXPOSE` directive, then the corresponding app pushed to Cloud Foundry listens on that
 exposed port. For example, if you set `EXPOSE` to `7070`, then the app listens for connections on port 7070.
 
 If you do not specify a port in the `EXPOSE` directive, then the app listens on the value of the `PORT`
 environment variable as determined by Cloud Foundry.
- 
-If you set the `PORT` environment variable via an `ENV` directive in a Dockerfile, Cloud Foundry overrides 
+
+If you set the `PORT` environment variable via an `ENV` directive in a Dockerfile, Cloud Foundry overrides
 the value with the system-determined value.
 
-Cloud Foundry supports only one exposed port on the image. 
+Cloud Foundry supports only one exposed port on the image.
 
 ## <a id='start_command'></a>Start Command
 
@@ -142,20 +142,30 @@ Many Docker registries control access to Docker images by authenticating with a 
 
 <%= vars.app_runtime_abbr %> supports pushing apps from images hosted on Amazon Web Services ECR, which authenticates with temporary password tokens.
 
-* To push an app as a Docker image from ECR:
+To push an app as a Docker image from ECR:
+
+
+1. Run the following command to locate your AWS ECR credentials:
 
     ```
-    $ CF_DOCKER_PASSWORD=AWS_ECR_PASSWORD cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username AWS_ECR_USER
+    aws ecr get-login --no-include-email
+    ```
+    The output of this command contains your AWS ECR password and username. Use these values for `AWS-ECR-PASSWORD` and `AWS-ECR-USERNAME` in the next step.
+
+2. Run the following command to push the app as a Docker image:
+
+    ```
+    $ CF_DOCKER_PASSWORD=AWS-ECR-PASSWORD cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username AWS-ECR-USERNAME
     ```
 
     Where:
-    - `AWS_ECR_USER`: the user returned by the `aws ecr get-login --no-include-email` command. It usually is `AWS`
-        - Setting `CF_DOCKER_PASSWORD` prepended to the `cf push --docker-image` makes the value temporary, which is more secure than setting the environment variable indefinitely with `export`
-    - `APP-NAME`: The name to give the pushed app on <%= vars.app_runtime_abbr %>
-    - `REPO`: The ECR repository containing the image being pushed
-    - `IMAGE`: The name of the app image being pushed
-    - `TAG`: (Optional, but recommended) The tag or version for the image
-    - `AWS_ECR_PASSWORD`: the long password returned by the `aws ecr get-login --no-include-email` command. 
+    - `AWS-ECR-PASSWORD`: The ECR password from the output of the previous command.
+    - `AWS-ECR-USERNAME`: The ECR username from the output of the previous command. For example, `AWS`.
+        - Setting `CF_DOCKER_PASSWORD` prepended to the `cf push --docker-image` makes the value temporary, which is more secure than setting the environment variable indefinitely with `export`.
+    - `APP-NAME`: The name to give the pushed app on <%= vars.app_runtime_abbr %>.
+    - `REPO`: The ECR repository that contains the image being pushed.
+    - `IMAGE`: The name of the app image you are pushing.
+    - `TAG`: (Optional, but recommended) The tag or version for the image.
 
 **How it Works**: Running `cf push` with an ECR registry triggers <%= vars.app_runtime_abbr %> to:
 
@@ -170,7 +180,7 @@ Many Docker registries control access to Docker images by authenticating with a 
 
 To authenticate with GCR using <%= vars.product_name %>, you must create a JSON key file and associate it with your project:
 
-1. Create a GCP service account. See [Creating and Enabling Service Accounts for Instances](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances). 
+1. Create a GCP service account. See [Creating and Enabling Service Accounts for Instances](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances).
   <pre class="terminal">
   $ gcloud iam service-accounts create MY-ACCOUNT --display-name "MY DISPLAY NAME"
   </pre>
@@ -191,7 +201,7 @@ To authenticate with GCR using <%= vars.product_name %>, you must create a JSON 
 
 #### Step 2: Deploy the GCP Image
 
-Run the following command to deploy your GCR image using the cf CLI: 
+Run the following command to deploy your GCR image using the cf CLI:
 `CF_DOCKER_PASSWORD="$(cat key.json)" cf push APP-NAME --docker-image docker://MY-REGISTRY-URL/MY-PROJECT/MY-IMAGE-NAME --docker-username _json_key`
 <br>Replace the placeholder values in the command as follows:
 

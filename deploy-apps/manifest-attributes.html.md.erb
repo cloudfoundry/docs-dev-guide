@@ -315,6 +315,8 @@ For more information, see [How cf push Finds the App](../../cf-cli/getting-start
 
 ### <a id='processes'></a> processes
 
+<%= partial 'v3-note' %>
+
 Use the `processes` attribute to push apps that run multiple processes, such as a web app that has a UI process and a worker process. See the following example:
 
 ```
@@ -414,6 +416,8 @@ The PORT and HOSTNAME will be randomly generated.</td>
 </table>
 
 ### <a id='sidecars'></a> sidecars
+
+<%= partial 'v3-note' %>
 
 Use the `sidecars` attribute to specify additional processes to run in the same container as your app. Each sidecar must have values for `name`, `process_types`, and `command`, whereas `memory` is optional. See the following example:
 

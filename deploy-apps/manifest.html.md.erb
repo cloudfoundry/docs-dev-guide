@@ -27,7 +27,7 @@ The following procedure describes how to deploy an app with a minimal manifest. 
 To deploy an app with a manifest, do the following:
 
 1. Create a `manifest.yml` file in the root directory of your app. 
-  <p class="note"><strong>Note</strong>: By default, the cf push command looks for a manifest file in the app directory. However, you can create a manifest file in a different location and use the <code>-f</code> flag when you run <code>cf push</code></p>
+  <p class="note"><strong>Note</strong>: By default, the <code>cf push</code> command uses the <code>manifest.yml</code> file in the app directory.  To specify a different location for the manifest, pass its local path to the <code>-f</code> flag when you run <code>cf push</code>.</p>
 
 1. Add the following content to the file, replacing `MY-APP` with the name of your app:
 
@@ -55,7 +55,7 @@ Follow these general rules when deploying multiple apps with one manifest:
 
 * To push a single app rather than all of the apps described in the manifest, provide the desired app name by running `cf push my-app`.
 
-### <a id='procedure'></a> Procedure
+### <a id='procedure-multi'></a> Procedure
 
 To deploy multiple apps with a manifest, do the following:
 

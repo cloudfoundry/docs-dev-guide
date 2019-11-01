@@ -5,7 +5,7 @@ owner: CLI
 
 This topic describes manifest formatting and provides a full list of attributes available for app manifests using the v6 CLI. You can use it alongside the [Deploying with App Manifests](./manifest.html) topic, which provides basic procedures and guidance for deploying apps with manifests.
 
-For manifest properties for the v7 beta cf CLI, see the [CC API documentation](http://v3-apidocs.cloudfoundry.org/version/3.75.0/index.html#app-manifest) for v3 app manifest properties. 
+For manifest properties for the v7 beta cf CLI, see the [CC API documentation](http://v3-apidocs.cloudfoundry.org/version/3.75.0/index.html#app-manifest) for v3 app manifest properties.
 
 
 
@@ -30,13 +30,13 @@ applications:
 
 ### <a id='variable-substitution'></a> Add Variables to a Manifest
 
-You can use variables to create app manifests with values shared across all applicable environments in combination with references to environment-specific differences defined in separate files. 
+You can use variables to create app manifests with values shared across all applicable environments in combination with references to environment-specific differences defined in separate files.
 
 In addition, using variables enables you to store sensitive data in a separate file that the app manifest would reference, making the security sensitive data easier to manage and keep secure.
 
 To add variables to an app manifest, do the following:
 
-1. Create a file called `vars.yml`. 
+1. Create a file called `vars.yml`.
 
 1. Add attributes to your `vars.yml` file. See the following example:
 
@@ -67,7 +67,7 @@ To add variables to an app manifest, do the following:
     ```
     cf push --vars-file /PATH/vars.yml
     ```
-    Where `PATH` is the path to the file you created. 
+    Where `PATH` is the path to the file you created.
 
 ### <a id='minimize-duplication'></a> Minimize Duplication with YAML Anchors
 
@@ -241,7 +241,7 @@ it defaults to `port`.
 
 The command line option that overrides this attribute is `-u`.
 
-In cf CLI v6, the value of `none` is deprecated in favor of `process`. In cf CLI v7, `none` is removed. 
+In cf CLI v6, the value of `none` is deprecated in favor of `process`. In cf CLI v7, `none` is removed.
 
 ### <a id='memory'></a> memory
 
@@ -259,7 +259,7 @@ The command line option that overrides this attribute is `-m`.
 
 ### <a id='metadata'></a> metadata
 
-Use the `metadata` information to tag your apps with additional information. You can specify two types of metadata: `labels` and `annotations`. For more information, see [Types of Metadata](../../adminguide/metadata.html#types) in _Using Metadata_. 
+Use the `metadata` information to tag your apps with additional information. You can specify two types of metadata: `labels` and `annotations`. For more information, see [Types of Metadata](../../adminguide/metadata.html#types) in _Using Metadata_.
 
 See the following example:
 
@@ -271,7 +271,7 @@ metadata:
     sensitive: true
 ```
 
-For more information about metadata, see [Using Metadata](../../adminguide/metadata.html). 
+For more information about metadata, see [Using Metadata](../../adminguide/metadata.html).
 
 ### <a id='no-route'></a>no-route
 
@@ -315,6 +315,8 @@ For more information, see [How cf push Finds the App](../../cf-cli/getting-start
 
 ### <a id='processes'></a> processes
 
+<%= partial 'v3-note' %>
+
 Use the `processes` attribute to push apps that run multiple processes, such as a web app that has a UI process and a worker process. See the following example:
 
 ```
@@ -339,7 +341,7 @@ processes:
 
 For detailed information about the process-level configuration, see [The app manifest specification](https://v3-apidocs.cloudfoundry.org/version/3.76.0/index.html#app-manifest) in the CAPI documentation.
 
-For more information about pushing an app with multiple processes, see [Pushing an App with Multiple Processes](../multiple-processes.html).  
+For more information about pushing an app with multiple processes, see [Pushing an App with Multiple Processes](../multiple-processes.html).
 
 ### <a id='random-route'></a> random-route
 
@@ -415,6 +417,8 @@ The PORT and HOSTNAME will be randomly generated.</td>
 
 ### <a id='sidecars'></a> sidecars
 
+<%= partial 'v3-note' %>
+
 Use the `sidecars` attribute to specify additional processes to run in the same container as your app. Each sidecar must have values for `name`, `process_types`, and `command`, whereas `memory` is optional. See the following example:
 
 ```
@@ -429,7 +433,7 @@ sidecars:
   memory: 900M
 ```
 
-For more information about sidecars, see [Pushing Apps with Sidecar Processes (Beta)](../sidecars.html). 
+For more information about sidecars, see [Pushing Apps with Sidecar Processes (Beta)](../sidecars.html).
 
 ### <a id='stack'></a> stack
 
@@ -621,4 +625,3 @@ With inheritance, child manifests inherited configurations from a parent manifes
 ### <a id='buildpack-deprecated'></a> Buildpack Field in Manifest Is Deprecated
 
 The singular `buildpack` field in manifests is deprecated. It has been replaced by `buildpacks`, which is now an array which takes as a value [multiple buildpacks](#buildpack).
-

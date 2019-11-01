@@ -99,7 +99,7 @@ You can access environment variables programmatically, including variables defin
 
 ### <a id='CF-INSTANCE-ADDR'></a> CF\_INSTANCE\_ADDR
 
-The CF\_INSTANCE\_IP and CF\_INSTANCE\_PORT of the app instance in the format `IP:PORT`.
+The `CF\_INSTANCE\_IP` and `CF\_INSTANCE\_PORT` of the app instance in the format `IP:PORT`.
 
 Example: `CF_INSTANCE_ADDR=1.2.3.4:5678`
 
@@ -131,7 +131,7 @@ Example: `CF_INSTANCE_INTERNAL_IP=5.6.7.8`
 
 ### <a id='CF-INSTANCE-PORT'></a> CF\_INSTANCE\_PORT
 
-The external, or *host-side*, port corresponding to the internal, or *container-side*, port with value PORT. This value is generally different from the PORT of the app instance.
+The external, or *host-side*, port corresponding to the internal, or *container-side*, port with value `PORT`. This value is generally different from the `PORT` of the app instance.
 
 Example: `CF_INSTANCE_PORT=61045`
 
@@ -145,7 +145,7 @@ Example: `CF_INSTANCE_PORTS=[{external:61045,internal:8080},{external:61046,inte
 
 ### <a id='DATABASE-URL'></a> DATABASE\_URL
 
-For apps bound to certain services that use a database, CF creates a `DATABASE_URL` environment variable based on the VCAP_SERVICES environment variable at runtime.
+For apps bound to certain services that use a database, CF creates a `DATABASE_URL` environment variable based on the `VCAP_SERVICES` environment variable at runtime.
 
 CF uses the structure of the `VCAP_SERVICES` environment variable to populate `DATABASE_URL`. CF recognizes any service containing a JSON object with the following form as a candidate for `DATABASE_URL` and uses the first candidate it finds.
 
@@ -188,7 +188,7 @@ Example: `HOME=/home/vcap/app`
 
 ### <a id='LANG'></a> LANG
 
-LANG is required by buildpacks to ensure consistent script load order.
+`LANG` is required by buildpacks to ensure consistent script load order.
 
 Example: `LANG=en_US.UTF-8`
 
@@ -226,7 +226,7 @@ Example: `USER=vcap`
 
 ### <a id='VCAP-APP-PORT'></a> VCAP\_APP\_PORT
 
-Deprecated name for the PORT variable.
+Deprecated name for the `PORT` variable.
 
 ### <a id='VCAP-APPLICATION'></a> VCAP_APPLICATION
 
@@ -274,9 +274,9 @@ The key for each service in the JSON document is the same as the value of the "l
 | `plan` | The service plan selected when the service instance was created. |
 | `credentials` | A JSON object containing the service-specific credentials needed to access the service instance. |
 
-To see the value of VCAP\_SERVICES for an app pushed to CF, see [View Environment Variable Values](#view-env).
+To see the value of `VCAP\_SERVICES` for an app pushed to CF, see [View Environment Variable Values](#view-env).
 
-The example below shows the value of VCAP_SERVICES for bound instances of several services available in the Pivotal Web Services Marketplace.
+The example below shows the value of `VCAP_SERVICES` for bound instances of several services available in the Pivotal Web Services Marketplace.
 
 ~~~
 VCAP_SERVICES=
@@ -327,7 +327,7 @@ An environment variable group consists of a single hash of name-value pairs that
 
 When creating environment variable groups, consider:
 
-* Only the Cloud Foundry operator can set the hash value for each group.
+* Only the CF operator can set the hash value for each group.
 
 * All authenticated users can get the environment variables assigned to their app.
 

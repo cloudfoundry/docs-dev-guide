@@ -15,7 +15,7 @@ For information about setting your own app-specific environment variables, see t
 
 ## <a id='view-env'></a> View Environment Variables
 
-Install the Cloud Foundry Command Line Interface (cf CLI), and use the `cf env` command to view the CF environment variables for your app. The `cf env` command displays the following environment variables:
+Using the Cloud Foundry Command Line Interface (cf CLI), you can run the `cf env` command to view the CF environment variables for your app. The `cf env` command displays the following environment variables:
 
 * The `VCAP_APPLICATION` and `VCAP_SERVICES` variables provided in the container environment
 
@@ -67,9 +67,11 @@ MY_ENV_VARIABLE: 100
 
 ## <a id='app-system-env'></a> App-Specific System Variables
 
-The subsections that follow describe the environment variables that CF makes available to your app container. Some of these variables are the same across instances of a single app, and some vary from instance to instance.
+This section describes the environment variables that CF makes available to your app container. Some of these variables are the same across instances of a single app, and some vary from instance to instance.
 
 You can access environment variables programmatically, including variables defined by the buildpack. For more information, see the buildpack documentation for [Java](../../buildpacks/java/java-tips.html#env-var), [Node.js](../../buildpacks/node/node-tips.html#env-var), and [Ruby](../../buildpacks/ruby/ruby-tips.html#env-var).
+
+The table below lists the system variables available to your app container.
 
 | Environment Variable | Running | Staging | Task |
 | -------------------- | ------- | ------- | ---- |
@@ -99,55 +101,55 @@ You can access environment variables programmatically, including variables defin
 
 ### <a id='CF-INSTANCE-ADDR'></a> CF\_INSTANCE\_ADDR
 
-The `CF\_INSTANCE\_IP` and `CF\_INSTANCE\_PORT` of the app instance in the format `IP:PORT`.
+The `CF\_INSTANCE\_IP` and `CF\_INSTANCE\_PORT` of the app instance, in the format `IP:PORT`.
 
-Example: `CF_INSTANCE_ADDR=1.2.3.4:5678`
+For example: `CF_INSTANCE_ADDR=1.2.3.4:5678`
 
 For more information, see [CF\_INSTANCE\_IP](#CF-INSTANCE-IP) and [CF\_INSTANCE\_PORT](#CF-INSTANCE-PORT).
 
 ### <a id='CF-INSTANCE-GUID'></a> CF\_INSTANCE\_GUID
 
-The UUID of the particular instance of the app.
+The UUID of the app instance.
 
-Example: `CF_INSTANCE_GUID=41653aa4-3a3a-486a-4431-ef258b39f042`
+For example: `CF_INSTANCE_GUID=41653aa4-3a3a-486a-4431-ef258b39f042`
 
 ### <a id='CF-INSTANCE-INDEX'></a> CF\_INSTANCE\_INDEX
 
 The index number of the app instance.
 
-Example: `CF_INSTANCE_INDEX=0`
+For example: `CF_INSTANCE_INDEX=0`
 
 ### <a id='CF-INSTANCE-IP'></a> CF\_INSTANCE\_IP
 
 The external IP address of the host running the app instance.
 
-Example: `CF_INSTANCE_IP=1.2.3.4`
+For example: `CF_INSTANCE_IP=1.2.3.4`
 
 ### <a id='CF-INSTANCE-INTERNAL-IP'></a> CF\_INSTANCE\_INTERNAL_IP
 
 The internal IP address of the container running the app instance.
 
-Example: `CF_INSTANCE_INTERNAL_IP=5.6.7.8`
+For example: `CF_INSTANCE_INTERNAL_IP=5.6.7.8`
 
 ### <a id='CF-INSTANCE-PORT'></a> CF\_INSTANCE\_PORT
 
-The external, or *host-side*, port corresponding to the internal, or *container-side*, port with value `PORT`. This value is generally different from the `PORT` of the app instance.
+The external, or *host-side*, port corresponding to the internal, or *container-side*, port with value `PORT`. This value is usually different from the `PORT` of the app instance.
 
-Example: `CF_INSTANCE_PORT=61045`
+For example: `CF_INSTANCE_PORT=61045`
 
 For more information, see [PORT](#PORT).
 
 ### <a id='CF-INSTANCE-PORTS'></a> CF\_INSTANCE\_PORTS
 
-The list of mappings between internal, or *container-side*, and external, or *host-side*, ports allocated to the instance's container. Not all of the internal ports are necessarily available for the app to bind to, as some of them may be used by system-provided services that also run inside the container. These internal and external values may differ.
+The list of mappings between internal, or *container-side*, and external, or *host-side*, ports allocated to the container running the app instance. Not all of the internal ports are necessarily available for the app to bind to, as some of them may be used by system-provided services that also run inside the container. These internal and external values may differ.
 
-Example: `CF_INSTANCE_PORTS=[{external:61045,internal:8080},{external:61046,internal:2222}]`
+For example: `CF_INSTANCE_PORTS=[{external:61045,internal:8080},{external:61046,internal:2222}]`
 
 ### <a id='DATABASE-URL'></a> DATABASE\_URL
 
-For apps bound to certain services that use a database, CF creates a `DATABASE_URL` environment variable based on the `VCAP_SERVICES` environment variable at runtime.
+For apps bound to certain services that use a database, CF creates a `DATABASE_URL` environment variable based on the `VCAP_SERVICES` environment variable.
 
-CF uses the structure of the `VCAP_SERVICES` environment variable to populate `DATABASE_URL`. CF recognizes any service containing a JSON object with the following form as a candidate for `DATABASE_URL` and uses the first candidate it finds.
+CF uses the structure of the `VCAP_SERVICES` environment variable to populate the `DATABASE_URL` environment variable. CF recognizes any service containing a JSON object like the example below as a candidate for the `DATABASE_URL` environment variable and uses the first candidate it finds.
 
     {
       "some-service": [
@@ -159,7 +161,7 @@ CF uses the structure of the `VCAP_SERVICES` environment variable to populate `D
       ]
     }
 
-For example, consider the following `VCAP_SERVICES`:
+For example, see the following `VCAP_SERVICES` environment variable example:
 
     VCAP_SERVICES =
     {
@@ -174,7 +176,7 @@ For example, consider the following `VCAP_SERVICES`:
       ]
     }
 
-Based on this `VCAP_SERVICES`, CF creates the following `DATABASE_URL` environment variable:
+Based on this `VCAP_SERVICES` environment variable, CF creates the following `DATABASE_URL` environment variable:
 
     DATABASE_URL = postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb
 
@@ -182,15 +184,15 @@ For more information, see [VCAP_SERVICES](#VCAP-SERVICES).
 
 ### <a id='HOME'></a> HOME
 
-Root folder for the deployed app.
+The root folder for the deployed app.
 
-Example: `HOME=/home/vcap/app`
+For example: `HOME=/home/vcap/app`
 
 ### <a id='LANG'></a> LANG
 
-`LANG` is required by buildpacks to ensure consistent script load order.
+Required by buildpacks to ensure consistent script load order.
 
-Example: `LANG=en_US.UTF-8`
+For example: `LANG=en_US.UTF-8`
 
 ### <a id='memory'></a> MEMORY_LIMIT
 
@@ -198,31 +200,31 @@ The maximum amount of memory that each instance of the app can consume. You spec
 
 If an instance exceeds the maximum limit, it is restarted. If CF is asked to restart an instance too frequently, the instance is terminated.
 
-Example: `MEMORY_LIMIT=512M`
+For example: `MEMORY_LIMIT=512M`
 
 ### <a id='PORT'></a> PORT
 
-The port on which the app should listen for requests. The CF runtime allocates a port dynamically for each instance of the app, so code that obtains or uses the app port should refer to it using the `PORT` environment variable.
+The port on which the app should listen for requests. CF allocates a port dynamically for each instance of the app, so code that obtains or uses the app port should refer to it using the `PORT` environment variable.
 
-Example: `PORT=8080`
+For example: `PORT=8080`
 
 ### <a id='PWD'></a> PWD
 
-Identifies the present working directory, where the buildpack that processed the app ran.
+The present working directory where the buildpack that processed the app ran.
 
-Example: `PWD=/home/vcap/app`
+For example: `PWD=/home/vcap/app`
 
 ### <a id='TMPDIR'></a> TMPDIR
 
-Directory location where temporary and staging files are stored.
+The directory location where temporary and staging files are stored.
 
-Example: `TMPDIR=/home/vcap/tmp`
+For example: `TMPDIR=/home/vcap/tmp`
 
 ### <a id='USER'></a> USER
 
 The user account under which the app runs.
 
-Example: `USER=vcap`
+For example: `USER=vcap`
 
 ### <a id='VCAP-APP-PORT'></a> VCAP\_APP\_PORT
 
@@ -230,7 +232,7 @@ Deprecated name for the `PORT` variable.
 
 ### <a id='VCAP-APPLICATION'></a> VCAP_APPLICATION
 
-This variable contains the associated attributes for a deployed app. Results are returned in JSON format. The table below lists the attributes that are returned.
+This environment variable contains the associated attributes for a deployed app. Results are returned in JSON format. The table below lists the attributes that are returned.
 
 | Attribute | Description |
 | --------- | ----------- |
@@ -260,23 +262,23 @@ This variable contains the associated attributes for a deployed app. Results are
 
 For bindable services, CF adds connection details to the `VCAP_SERVICES` environment variable when you restart your app, after binding a service instance to your app. For more information about bindable services, see [Services Overview](../services/).
 
-The results are returned as a JSON document that contains an object for each service for which one or more instances are bound to the app. The service object contains a child object for each service instance of that service that is bound to the app. The attributes that describe a bound service are defined in the table below.
+CF returns the results as a JSON document that contains an object for each service for which one or more instances are bound to the app. The service object contains a child object for each instance of the service that is bound to the app.
 
-The key for each service in the JSON document is the same as the value of the "label" attribute.
+The table below defines the attributes that describe a bound service. The key for each service in the JSON document is the same as the value of the "label" attribute.
 
 | Attribute | Description |
 | --------- | ----------- |
 | `binding_name` | The name assigned to the service binding by the user. |
 | `instance_name` | The name assigned to the service instance by the user. |
-| `name` | The `binding_name` if it exists; otherwise the `instance_name`. |
+| `name` | The `binding_name`, if it exists. Otherwise, the `instance_name`. |
 | `label` | The name of the service offering. |
 | `tags` | An array of strings an app can use to identify a service instance. |
 | `plan` | The service plan selected when the service instance was created. |
 | `credentials` | A JSON object containing the service-specific credentials needed to access the service instance. |
 
-To see the value of `VCAP\_SERVICES` for an app pushed to CF, see [View Environment Variable Values](#view-env).
+To see the value of the `VCAP\_SERVICES` environment variable for an app pushed to CF, see [View Environment Variable Values](#view-env).
 
-The example below shows the value of `VCAP_SERVICES` for bound instances of several services available in the Pivotal Web Services Marketplace.
+The example below shows the value of the `VCAP_SERVICES` environment variable for bound instances of several services available in the Pivotal Web Services Marketplace.
 
 ~~~
 VCAP_SERVICES=
@@ -325,7 +327,7 @@ Environment variable groups are system-wide variables that enable operators to a
 
 An environment variable group consists of a single hash of name-value pairs that are later inserted into an app container at runtime or at staging. These values can contain information such as HTTP proxy information. The values for variables set in an environment variable group are case-sensitive.
 
-When creating environment variable groups, consider:
+When creating environment variable groups:
 
 * Only the CF operator can set the hash value for each group.
 

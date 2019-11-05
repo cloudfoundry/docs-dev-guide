@@ -29,24 +29,42 @@
   </div>
 </div>
 
-This topic describes how <%= vars.product_name %> app developers can read and write to a mounted file system from their apps. In <%= vars.product_name %>, a volume service provides a volume so your app can read or write to a reliable, non-ephemeral file system.
+This topic describes how <%= vars.product_name %> app developers can read and write to a mounted file system from their apps. In <%= vars.product_name %>, a volume service provides a volume so your app can read or write to a reliable, persistent file system.
 
 <p class="note"><strong>Note:</strong> NFS and SMB volume services are available for Linux cells only. These services are not available for Windows cells.</p>
 
 
 ## <a id="pre"></a> Prerequisite
 
-Before you can use a volume service with your app, <%= vars.admin %> must add a volume service to your deployment. <%= vars.add_volumes_link %>
+Before you can use a volume service with your app, determine if any volume services are available for your app. 
 
-You can run the Cloud Foundry Command Line Interface (cf CLI) `cf marketplace` command to determine if any volume services are available. See the following example output of the NFS volume service:
+To determine if volume services are available:
 
-<pre class="terminal">
-$ cf marketplace
-service   plans      description
-nfs       Existing   Service for connecting to NFS volumes
-</pre>
+1. Log in to the Cloud Foundry Command Line Interface (cf CLI). Run:
 
-If no volume service that fits your requirements exists, contact <%= vars.admin %>.
+    ```
+    cf login
+    ```
+
+1. List available NFS volume services. Run:  
+
+    ```
+    cf marketplace
+    ```
+
+    See the following example output of the NFS volume service:
+
+    <pre class="terminal">
+    $ cf marketplace
+    service   plans      description
+    nfs       Existing   Service for connecting to NFS volumes
+    </pre>
+
+1. Do one of the following:
+    * **If no NFS volume service exists**: If no volume service that fits your requirements exists, contact your <%= vars.admin %>. <%= vars.add_volumes_link %>
+    * **If a NFS volume service exists**: Continue to [Mount an External File System](#mount-external-filesystem).
+
+
 
 
 ## <a id="mount-external-filesystem"></a> Mount an External Filesystem
@@ -55,27 +73,32 @@ The sections below describe how to mount an external filesystem to your app.
 
 ### <a id="create"></a> Create and Bind a Service Instance
 
-To use a volume service deployed by <%= vars.admin %>, you must first create an instance of the specific volume service that you need. Follow the instructions below to create this service instance.
+To use a volume service deployed by your <%= vars.admin %>, you must first create an instance of the specific volume service that you need.
 
 <p class="note"><strong>Note:</strong> For NFS-specific instructions and information, see <a href="#nfs">NFS Volume Service</a>.</p>
 
-1. In a terminal window, run `cf create-service SERVICE-NAME PLAN SERVICE-INSTANCE -c SHARE-JSON` to create a service instance. Replace the following with the specified values:
-  * `SERVICE`: The name of the volume service that you want to use.
-  * `PLAN`: The name of the service plan. Service plans are a way for providers to offer varying levels of resources or features for the same service.
-  * `SERVICE-INSTANCE`:  A name you provide for your service instance. Use any series of alpha-numeric characters, hyphens, and underscores. You can rename the instance at any time.
-  * (NFS only) `SHARE-JSON`: If you create an instance of the NFS volume service, you must supply an extra parameter, `share`, by using the `-c` flag with a JSON string, in-line or in a file. This parameter forwards information to the broker about the NFS server and share required for the service.
+To create and bind an instance for the volume service:
 
-    The following example shows creating an instance of the `Existing` NFS service plan, passing an in-line JSON string:
-    <pre class="terminal">$ cf create-service nfs Existing nfs\_service\_instance -c '{"share": "10.10.10.10/export/myshare"}'</pre>
+1. Create a service instance:
+    * **NFS**: See [Create an NFS Volume Service](#create-nfs) below. 
+    * **SMB**: See [Create an SMB Volume Service](#create-smb) below.
 
-1. Run `cf bind-service YOUR-APP SERVICE-NAME -c GID-AND-UID-JSON MOUNT-PATH READ-ONLY-TRUE` to bind your service instance to an app. Replace the following with the specified values:
-  * `YOUR-APP`: The name of the <%= vars.product_name %> app for which you want to use the volume service.
-  * `SERVICE-NAME`: The name of the volume service instance you created in the previous step.
-  * (NFS only) `GID-AND-UID-JSON`: If you bind an instance of the NFS volume service, you must supply two extra parameters: `gid` and `uid`. You can specify these parameters with the `-c` flag and a JSON string. The JSON can be inline or from a file. This parameter specifies the `gid` and `uid` to use when mounting the share to the app. `UID` and `GID` must be positive integer values.
-  <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support `uid` and `gid` values of `0`.</p>
-  * (Optional) `MOUNT-PATH`: To mount the volume to a particular path within your app rather than the default path, you supply the `mount` parameter. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
-    <p class="note"><strong>Note</strong>: Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory. For more information, see <a href="#mount-path">Mount Path Limitation</a>.</p>
-  * (Optional) `READ-ONLY-TRUE`: When you issue the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.
+1. Bind your service instance to an app. Run: 
+
+    ```
+    cf bind-service YOUR-APP SERVICE-NAME -c GID-AND-UID-JSON MOUNT-PATH READ-ONLY-TRUE
+    ```
+    
+    Where:
+    * `YOUR-APP`: The name of the <%= vars.product_name %> app for which you want to use the volume service.
+    * `SERVICE-NAME`: The name of the volume service instance you created in the previous step.
+
+1. 
+    * (NFS only) `GID-AND-UID-JSON`: If you bind an instance of the NFS volume service, you must supply two extra parameters: `gid` and `uid`. You can specify these parameters with the `-c` flag and a JSON string. The JSON can be inline or from a file. This parameter specifies the `gid` and `uid` to use when mounting the share to the app. `UID` and `GID` must be positive integer values.
+    <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support `uid` and `gid` values of `0`.</p>
+    * (Optional) `MOUNT-PATH`: To mount the volume to a particular path within your app rather than the default path, you supply the `mount` parameter. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
+      <p class="note"><strong>Note</strong>: Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory. For more information, see <a href="#mount-path">Mount Path Limitation</a>.</p>
+    * (Optional) `READ-ONLY-TRUE`: When you issue the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.
 
     The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`, passing an in-line JSON string:
     <pre class="terminal">$ cf bind-service my-app nfs\_service\_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1","readonly":true}'</pre>

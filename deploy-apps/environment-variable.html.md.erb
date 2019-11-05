@@ -236,23 +236,23 @@ This environment variable contains the associated attributes for a deployed app.
 
 | Attribute | Description |
 | --------- | ----------- |
-| `application_id` | GUID identifying the app. |
+| `application_id` | The GUID identifying the app. |
 | `application_name` | The name assigned to the app when it was pushed. |
 | `application_uris` | The URIs assigned to the app. |
-| `application_version` | GUID identifying a version of the app. Each time an app is pushed or restarted, this value is updated. |
-| `cf_api` | Location of the Cloud Controller API for the CF Deployment where the app runs. |
-| `host` | Deprecated. IP address of the app instance. |
+| `application_version` | The GUID identifying a version of the app. Each time an app is pushed or restarted, this value is updated. |
+| `cf_api` | The location of the Cloud Controller API for the CF deployment where the app runs. |
+| `host` | Deprecated. The IP address of the app instance. |
 | `limits` | The limits to disk space, number of files, and memory permitted to the app. Memory and disk space limits are supplied when the app is deployed, either on the command line or in the app manifest. The number of files allowed is operator-defined. |
 | `name` | Identical to `application_name`. |
-| `organization_id` | GUID identifying the org where the app is deployed. |
-| `organization_name` | Human-readable name of the org where the app is deployed. |
-| `process_id` | UID identifying the process. Only present in running app containers. |
-| `process_type` | Type of process. Only present in running app containers. |
-| `space_id` | GUID identifying the space where the app is deployed. |
-| `space_name` | Human-readable name of the space where the app is deployed. |
-| `start` | Human-readable timestamp for the time the instance was started. Not provided on Diego Cells. |
+| `organization_id` | The GUID identifying the org where the app is deployed. |
+| `organization_name` | The human-readable name of the org where the app is deployed. |
+| `process_id` | The UID identifying the process. Only present in running app containers. |
+| `process_type` | The type of process. Only present in running app containers. |
+| `space_id` | The GUID identifying the space where the app is deployed. |
+| `space_name` | The human-readable name of the space where the app is deployed. |
+| `start` | The human-readable timestamp for the time the instance was started. Not provided on Diego Cells. |
 | `started_at` | Identical to `start`. Not provided on Diego Cells. |
-| `started_at_timestamp` | Unix epoch timestamp for the time the instance was started. Not provided on Diego Cells. |
+| `started_at_timestamp` | The Unix epoch timestamp for the time the instance was started. Not provided on Diego Cells. |
 | `state_timestamp` | Identical to `started_at_timestamp`. Not provided on Diego Cells. |
 | `uris` | Identical to `application_uris`. You must ensure that both `application_uris` and `uris` are set to the same value. |
 | `users` | Deprecated. Not provided on Diego Cells. |

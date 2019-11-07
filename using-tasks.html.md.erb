@@ -28,7 +28,7 @@ Tasks are used to perform one-off jobs, which include:
 * Backing-up data
 * Downloading content
 
-### <a id="task-proceses"></a> How Tasks Are Run
+### <a id="task-processes"></a> How Tasks Are Run
 
 Tasks are always executed asynchronously, meaning that they run independently from the parent app or other tasks that run on the same app.
 
@@ -98,7 +98,12 @@ To run a task on an app:
 	</pre>
 	<p class="note"><strong>Note:</strong> To re-run a task, you must run it as a new task using the above command.</p>
 
-1. Use the `cf logs APP-NAME --recent` command to display the recent logs of the app and all its tasks. The following example displays the logs of a successful task:
+1. To display the recent logs of the app and all its tasks, run:
+
+	```
+	cf logs APP-NAME --recent
+	```
+	The following example displays the logs of a successful task:
 	<pre class="terminal">
 	$ cf logs my-app --recent
 	2017-01-03T15:58:06.57-0800 [APP/TASK/my-task/0]OUT Creating container

@@ -1,6 +1,6 @@
 ---
 title: Running Tasks
-owner: CAPI
+owner: CAPI/CLI
 ---
 
 
@@ -137,6 +137,8 @@ To run a task on an app using a v7 cf CLI, perform the following steps:
 	<pre class="terminal">$ cf push APP-NAME --task</pre>
 1. Run your task on the deployed app:
 	<pre class="terminal">$ cf run-task APP-NAME --name TASK-NAME</pre>
+
+<p class="note"><strong>Note</strong>: <code>cf7 run-task</code> takes optional flags: <code>--process</code> and <code>--command</code>. If provided, <code>--command</code> will override the manifest property.</p>
 
 The following example runs a database migration as a task on the `my-app` app:
 

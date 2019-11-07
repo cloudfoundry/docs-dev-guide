@@ -8,7 +8,7 @@ This topic describes how to run tasks in Cloud Foundry. A task is an app or scri
 
 ## <a id='about-tasks'></a> About Tasks
 
-In contrast to a long running process (LRP), tasks run for a finite amount of time, then stop. Tasks run in their own containers and are designed to use minimal resources. After a task runs, Cloud Foundry destroys the container running the task.
+In contrast to a long-running process (LRP), tasks run for a finite amount of time, then stop. Tasks run in their own containers and are designed to use minimal resources. After a task runs, Cloud Foundry destroys the container running the task.
 
 As a single-use object, a task can be checked for its state and for a success or failure message.
 
@@ -60,7 +60,7 @@ The task execution history is retained for one month.
 
 At the system level, a user with admin-level privileges can use the Cloud Controller v3 API to view all tasks that are running within an org or space. For more information, see [List tasks](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#list-tasks) in the Cloud Foundry API documentation.
 
-In addition, admins can set the default memory and disk usage quotas for tasks on a global level. Initially, tasks use the same memory and disk usage defaults as apps. However, the default memory and disk allocations for tasks can be defined separately from the default app memory and disk allocations.
+Additionally, admins can set the default memory and disk usage quotas for tasks on a global level. Initially, tasks use the same memory and disk usage defaults as apps. However, the default memory and disk allocations for tasks can be defined separately from the default app memory and disk allocations.
 
 <% if vars.product_name == 'PCF'%>
 <%= partial '../opsguide/tasks_rec_alloc_pcf' %>
@@ -72,9 +72,9 @@ In addition, admins can set the default memory and disk usage quotas for tasks o
 
 You can use the Cloud Foundry Command Line Interface (cf CLI) to run a task in the context of an app.
 
-<p class="note"><strong>Note</strong>: To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. See the <a href="../cf-cli/install-go-cli.html">Installing the Cloud Foundry Command Line Interface</a> topic for information about downloading, installing, and uninstalling the cf CLI.</p>
+<p class="note"><strong>Note:</strong> To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. For information about downloading, installing, and uninstalling the cf CLI., see <a href="../cf-cli/install-go-cli.html">Installing the Cloud Foundry Command Line Interface</a>.</p>
 
-<p class="note"><strong>Note</strong>: To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
+<p class="note"><strong>Note:</strong> To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
 
 To run a task on an app:
 

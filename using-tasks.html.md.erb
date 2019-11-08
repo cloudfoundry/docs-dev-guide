@@ -1,6 +1,6 @@
 ---
 title: Running Tasks
-owner: CAPI
+owner: CAPI/CLI
 ---
 
 This topic describes how to run tasks in Cloud Foundry. A task is an app or script whose code is included as part of a deployed app, but runs independently in its own container.
@@ -68,15 +68,15 @@ Additionally, admins can set the default memory and disk usage quotas for tasks 
 <%= partial 'tasks_rec_alloc_oss' %>
 <% end %>
 
-## <a id='run-tasks'></a> Run a Task on an App
+## <a id='run-tasks'></a> Run a Task on an App using cf CLI v6
 
 You can use the Cloud Foundry Command Line Interface (cf CLI) to run a task in the context of an app.
 
-<p class="note"><strong>Note:</strong> To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. For information about downloading, installing, and uninstalling the cf CLI., see <a href="../cf-cli/install-go-cli.html">Installing the Cloud Foundry Command Line Interface</a>.</p>
+<p class="note"><strong>Note:</strong> To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later, or use the cf CLI v7 beta. For information about downloading, installing, and uninstalling the cf CLI., see <a href="../cf-cli/install-go-cli.html">Installing the Cloud Foundry Command Line Interface</a>.</p>
 
-<p class="note"><strong>Note:</strong> To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
+<p class="note"><strong>Note:</strong> To run a task on cf CLI v6 without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
 
-To run a task on an app:
+To run a task on an app using cf CLI v6:
 
 1. Push your app by running:
 
@@ -89,6 +89,10 @@ To run a task on an app:
 	```
 	cf run-task APP-NAME "TASK" --name TASK-NAME
 	```
+
+	<p class="note"><strong>Note</strong>: <code>cf7 run-task</code> takes optional flags: <code>--process</code> and <code>--command</code>. If provided, <code>--command</code> will override the manifest property.</p>
+
+
 	The following example runs a database migration as a task on the `my-app` app:
 	<pre class="terminal">
 	$ cf run-task my-app "bin/rails db:migrate" --name my-task
@@ -131,6 +135,25 @@ To run a task on an app:
 	</pre>
 	If your task name is unique, you can `grep` the output of the `cf logs` command for the task name to view task-specific logs.
 
+## <a id='run-tasks-v7'></a> Run a Task on an App Using cf CLI v7 (Beta)
+
+To run a task on an app using a v7 cf CLI, perform the following steps:
+
+1. Configure your v3 API [manifest](https://v3-apidocs.cloudfoundry.org/version/3.78.0/index.html#the-app-manifest-specification) with a task as a process type.
+1. Push your app using the `--task` flag:
+	<pre class="terminal">$ cf push APP-NAME --task</pre>
+1. Run your task on the deployed app:
+	<pre class="terminal">$ cf run-task APP-NAME --name TASK-NAME</pre>
+
+The following example runs a database migration as a task on the `my-app` app:
+
+<pre class="terminal">
+$ cf run-task my-app --name my-task
+Creating task for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
+OK
+Task 1 has been submitted successfully for execution.
+</pre>
+1. Use the `cf logs APP-NAME --recent` command to display the recent logs of the app and all its tasks.
 
 ## <a id='list-tasks'></a> List Tasks Running on an App
 

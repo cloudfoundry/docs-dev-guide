@@ -26,9 +26,9 @@ $ cf restart my-app
 
 ### <a id='arbitrary-params-binding'></a> Arbitrary Parameters  ###
 
-_Arbitrary parameters require Cloud Foundry Command Line Interface (cf CLI) v6.12.1 or later._
-
 Some services support additional configuration parameters with the bind request. These parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
+
+See the following examples:
 
 <pre class="terminal">
 $ cf bind-service rails-sample my-db -c '{"role":"read-only"}'
@@ -45,7 +45,9 @@ Binding service my-db to app rails-sample in org console / space development as 
 
 ### <a id='bind-with-manifest'></a> Binding with App Manifest ###
 
-As an alternative to binding a service instance after pushing an app, you can use the app manifest to bind the service instance during push. As of cf CLI v6.12.1, [Arbitrary Parameters](#arbitrary-params-binding) are not supported in app manifests.
+As an alternative to binding a service instance after pushing an app, you can use the app manifest to bind the service instance during `cf push`. 
+
+<p class="note"><strong>Note:</strong> Arbitrary parameters are not supported in app manifests in cf CLI v6.x. Arbitrary parameters are supported in app manifests in cf CLI v7.0 and later.</p>
 
 The following excerpt from an app manifest would bind a service instance called `test-mysql-01` to the app on push.
 

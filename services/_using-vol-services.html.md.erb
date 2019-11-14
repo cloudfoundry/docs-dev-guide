@@ -346,17 +346,16 @@ This section describes how to use a Server Message Block (SMB) volume service. F
 The service offers a single plan called `Existing`.
 
 To create an SMB volume service:
-
 1. Create the service. Run:
 
     ```
-    cf create-service smb Existing SERVICE-INSTANCE-NAME -c '{"share":"//SERVER/SHARE"}'
+    cf create-service smb Existing SERVICE-INSTANCE-NAME -c '{"share":"//SERVER/SHARE", "version":"SMB-PROTOCOL"}'
     ```
 
     Where:
     * `SERVICE-INSTANCE-NAME` is a name you provide for this SMB volume service instance.
     * `//SERVER/SHARE` is the SMB address of your server and share.
-
+    * (Optional) `SMB-PROTOCOL` is the SMB protocol version you want to use. For example, if you want to use SMB 2.1, set the version to `2.1`. Valid values are `1.0`, `2.0`, `2.1` or `3.0`. If you do not specify a `version`, the protocol version used is negotiated between client and server at mount time. This usually results in the latest available version being used.
 1. Confirm that the SMB volume service appears in your list of services. Run: 
 
     ```

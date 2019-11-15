@@ -3,19 +3,21 @@ title: Cloud Foundry Environment Variables
 owner: CAPI
 ---
 
-This page describes the environment variables that the Cloud Foundry (CF) runtime and buildpacks set for a deployed app.
+<% current_page.data.title = vars.app_runtime_abbr + " Environment Variables" %>
+
+This page describes the environment variables that the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) runtime and buildpacks set for a deployed app.
 
 
 ## <a id='overview'></a> Overview
 
-Environment variables are the means by which the CF runtime communicates with a deployed app about its environment.
+Environment variables are the means by which <%= vars.app_runtime_abbr %> communicates with a deployed app about its environment.
 
 For information about setting your own app-specific environment variables, see the [Environment Variable](./manifest.html#env-block) section of the _Deploying with App Manifests_ topic.
 
 
 ## <a id='view-env'></a> View Environment Variables
 
-Using the Cloud Foundry Command Line Interface (cf CLI), you can run the `cf env` command to view the CF environment variables for your app. The `cf env` command displays the following environment variables:
+Using the Cloud Foundry Command Line Interface (cf CLI), you can run the `cf env` command to view the <%= vars.app_runtime_abbr %> environment variables for your app. The `cf env` command displays the following environment variables:
 
 * The `VCAP_APPLICATION` and `VCAP_SERVICES` variables provided in the container environment
 
@@ -67,7 +69,7 @@ MY_ENV_VARIABLE: 100
 
 ## <a id='app-system-env'></a> App-Specific System Variables
 
-This section describes the environment variables that CF makes available to your app container. Some of these variables are the same across instances of a single app, and some vary from instance to instance.
+This section describes the environment variables that <%= vars.app_runtime_abbr %> makes available to your app container. Some of these variables are the same across instances of a single app, and some vary from instance to instance.
 
 You can access environment variables programmatically, including variables defined by the buildpack. For more information, see the buildpack documentation for [Java](../../buildpacks/java/java-tips.html#env-var), [Node.js](../../buildpacks/node/node-tips.html#env-var), and [Ruby](../../buildpacks/ruby/ruby-tips.html#env-var).
 
@@ -147,9 +149,9 @@ For example: `CF_INSTANCE_PORTS=[{external:61045,internal:8080},{external:61046,
 
 ### <a id='DATABASE-URL'></a> DATABASE\_URL
 
-For apps bound to certain services that use a database, CF creates a `DATABASE_URL` environment variable based on the `VCAP_SERVICES` environment variable.
+For apps bound to certain services that use a database, <%= vars.app_runtime_abbr %> creates a `DATABASE_URL` environment variable based on the `VCAP_SERVICES` environment variable.
 
-CF uses the structure of the `VCAP_SERVICES` environment variable to populate the `DATABASE_URL` environment variable. CF recognizes any service containing a JSON object like the example below as a candidate for the `DATABASE_URL` environment variable and uses the first candidate it finds.
+<%= vars.app_runtime_abbr %> uses the structure of the `VCAP_SERVICES` environment variable to populate the `DATABASE_URL` environment variable. <%= vars.app_runtime_abbr %> recognizes any service containing a JSON object like the example below as a candidate for the `DATABASE_URL` environment variable and uses the first candidate it finds.
 
     {
       "some-service": [
@@ -176,7 +178,7 @@ For example, see the following `VCAP_SERVICES` environment variable example:
       ]
     }
 
-Based on this `VCAP_SERVICES` environment variable, CF creates the following `DATABASE_URL` environment variable:
+Based on this `VCAP_SERVICES` environment variable, <%= vars.app_runtime_abbr %> creates the following `DATABASE_URL` environment variable:
 
     DATABASE_URL = postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb
 
@@ -198,13 +200,13 @@ For example: `LANG=en_US.UTF-8`
 
 The maximum amount of memory that each instance of the app can consume. You specify this value in an app manifest or with the cf CLI when pushing an app. The value is limited by space and org quotas.
 
-If an instance exceeds the maximum limit, it is restarted. If CF is asked to restart an instance too frequently, the instance is terminated.
+If an instance exceeds the maximum limit, it is restarted. If <%= vars.app_runtime_abbr %> is asked to restart an instance too frequently, the instance is terminated.
 
 For example: `MEMORY_LIMIT=512M`
 
 ### <a id='PORT'></a> PORT
 
-The port on which the app should listen for requests. CF allocates a port dynamically for each instance of the app, so code that obtains or uses the app port should refer to it using the `PORT` environment variable.
+The port on which the app should listen for requests. <%= vars.app_runtime_abbr %> allocates a port dynamically for each instance of the app, so code that obtains or uses the app port should refer to it using the `PORT` environment variable.
 
 For example: `PORT=8080`
 
@@ -240,7 +242,7 @@ This environment variable contains the associated attributes for a deployed app.
 | `application_name` | The name assigned to the app when it was pushed. |
 | `application_uris` | The URIs assigned to the app. |
 | `application_version` | The GUID identifying a version of the app. Each time an app is pushed or restarted, this value is updated. |
-| `cf_api` | The location of the Cloud Controller API for the CF deployment where the app runs. |
+| `cf_api` | The location of the Cloud Controller API for the <%= vars.app_runtime_abbr %> deployment where the app runs. |
 | `host` | Deprecated. The IP address of the app instance. |
 | `limits` | The limits to disk space, number of files, and memory permitted to the app. Memory and disk space limits are supplied when the app is deployed, either on the command line or in the app manifest. The number of files allowed is operator-defined. |
 | `name` | Identical to `application_name`. |
@@ -260,9 +262,9 @@ This environment variable contains the associated attributes for a deployed app.
 
 ### <a id='VCAP-SERVICES'></a> VCAP\_SERVICES
 
-For bindable services, CF adds connection details to the `VCAP_SERVICES` environment variable when you restart your app, after binding a service instance to your app. For more information about bindable services, see [Services Overview](../services/).
+For bindable services, <%= vars.app_runtime_abbr %> adds connection details to the `VCAP_SERVICES` environment variable when you restart your app, after binding a service instance to your app. For more information about bindable services, see [Services Overview](../services/).
 
-CF returns the results as a JSON document that contains an object for each service for which one or more instances are bound to the app. The service object contains a child object for each instance of the service that is bound to the app.
+<%= vars.app_runtime_abbr %> returns the results as a JSON document that contains an object for each service for which one or more instances are bound to the app. The service object contains a child object for each instance of the service that is bound to the app.
 
 The table below defines the attributes that describe a bound service. The key for each service in the JSON document is the same as the value of the "label" attribute.
 
@@ -276,7 +278,7 @@ The table below defines the attributes that describe a bound service. The key fo
 | `plan` | The service plan selected when the service instance was created. |
 | `credentials` | A JSON object containing the service-specific credentials needed to access the service instance. |
 
-To see the value of the `VCAP\_SERVICES` environment variable for an app pushed to CF, see [View Environment Variable Values](#view-env).
+To see the value of the `VCAP\_SERVICES` environment variable for an app pushed to <%= vars.app_runtime_abbr %>, see [View Environment Variable Values](#view-env).
 
 The example below shows the value of the `VCAP_SERVICES` environment variable for bound instances of several services available in the Pivotal Web Services Marketplace.
 
@@ -329,7 +331,7 @@ An environment variable group consists of a single hash of name-value pairs that
 
 When creating environment variable groups:
 
-* Only the CF operator can set the hash value for each group.
+* Only the <%= vars.app_runtime_abbr %> operator can set the hash value for each group.
 
 * All authenticated users can get the environment variables assigned to their app.
 

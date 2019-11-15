@@ -3,45 +3,32 @@ title: Configuring CF to Route Traffic to Apps on Custom Ports
 owner: Routing
 ---
 
-This topic describes how to configure <%= vars.product_name %> to route traffic to your apps listening on custom ports. 
+<% current_page.data.title = "Configuring " + vars.app_runtime_abbr + " to Route Traffic to Apps on Custom Ports" %>
+
+This topic describes how to configure <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) to route traffic to your apps listening on custom ports. 
 
 
 ## <a id="overview"></a> Overview
 
-By default, apps only receive requests on port 8080 for both HTTP and TCP routing, and so must be configured, or hardcoded, to listen on this port. Configuring custom app ports allows developers to bring workloads onto <%= vars.product_short %> that listen on ports other than 8080. Here are some example use cases:
+By default, apps only receive requests on port 8080 for both HTTP and TCP routing, and so must be configured, or hardcoded, to listen on this port. Configuring custom app ports allows developers to bring workloads onto <%= vars.app_runtime_abbr %> that listen on ports other than 8080. Some example use cases are:
 
 * Serving web client requests on one port and offering stats/debug on another
-* Using TCP protocols that require multiple ports 
-* Running Docker images on <%= vars.product_short %> 
+
+* Using TCP protocols that require multiple ports
+
+* Running Docker images on <%= vars.app_runtime_abbr %>
 
 The procedure below describes how to use the `apps` and `route_mappings` Cloud Controller API endpoints to update the ports the app can receive requests on. 
 
 ### <a id="flow"></a> Flow of a Request to an App
 
-The following table describes the Network Address Translation that occurs in the data path of a client request. The procedure in this document discusses configuring _app ports_ specifically.  
+The following table describes the Network Address Translation that occurs in the data path of a client request. The procedure in this document discusses configuring _app ports_ specifically.
 
-<table>
-	<tr>
-		<th>Port Type</th>
-		<th>Description</th>
-		<th>Network Hop</th>
-	</tr>
-	<tr>
-		<td>Route port</td>
-		<td>The port a client sends a request to</td>
-		<td>Client to load balancer, load balancer to Gorouter</td>
-	</tr>
-	<tr>
-		<td>Backend port</td>
-		<td>The port on the VM where an app container is hosted, which is unique to the container</td>
-		<td>Gorouter to Diego Cell</td>
-	</tr>
-	<tr>
-		<td>App port</td>
-		<td>The port on the container; this must match a port the app is configured to listen on</td>
-		<td>Diego Cell to app container</td>
-	</tr>
-</table>
+| Port Type | Description | Network Hop |
+| --------- | ----------- | ----------- |
+| Route port | The port a client sends a request to | Client to load balancer, load balancer to Gorouter |
+| Back end port | The port on the VM where an app container is hosted, which is unique to the container | Gorouter to Diego Cell |
+| App port | The port on the container; this must match a port the app is configured to listen on | Diego Cell to app container |
 
 The following diagram provides an example data path and Network Address Translation for TCP routing. For HTTP routing, the route port is always 80 or 443.  
 
@@ -52,7 +39,7 @@ The following diagram provides an example data path and Network Address Translat
 
 Before following the procedure to configure routing to your app on custom ports, you must have:
 
-* An app pushed to <%= vars.product_short %> that can listen on one or more custom ports.
+* An app pushed to <%= vars.app_runtime_abbr %> that can listen on one or more custom ports.
 
 * Routes for which you want traffic forwarded to your app on custom ports. 
 	* If your app listens on two ports and you want clients to be able to send requests to both of them, create two routes. These can be from HTTP or TCP domains. Consider an example in which you have two routes: `foo.example.com` and `bar.example.com`. In the following procedure, you use API endpoints to map these routes to your app on the ports it is listening. For more information, see [Routes and Domains](./deploy-apps/routes-domains.html).
@@ -62,53 +49,51 @@ Before following the procedure to configure routing to your app on custom ports,
 
 To configure your app to receive HTTP or TCP traffic on custom ports:
 
-1. Retrieve the GUID of your app:
+1. Retrieve the GUID of your app by running:
 
 	```
 	cf app APP-NAME --guid
 	``` 
-	Where `APP-NAME` is the name of your app
+	Where `APP-NAME` is the name of your app.
 
-1. Configure <%= vars.product_short %> with the ports your app is listening on:
+1. Configure <%= vars.app_runtime_abbr %> with the ports your app is listening on by running:
 
 	```
 	cf curl /v2/apps/APP-GUID -X PUT -d '{"ports": [PORT1, PORT2, PORT3...]}' 
 	```
 	Where:
-	* `APP-GUID` is the GUID of your app
+	* `APP-GUID` is the GUID of your app.
 	*  `PORT1, PORT2, PORT3...` is a comma-separated list of the ports on which you want your app to receive traffic. 
 
-1. Retrieve the GUID of the route to which clients will make requests, and for which Cloud Foundry will route requests to the app on a custom port:
+1. Retrieve the GUID of the route to which clients make requests, and for which <%= vars.app_runtime_abbr %> routes requests to the app on a custom port, by running:
 
 	```
 	cf curl /v2/routes?q=host:HOST-NAME
 	```
-	Where `HOST-NAME` is the hostname for the route; by default this is the name of your app.
+	Where `HOST-NAME` is the hostname for the route. By default, this is the name of your app.
 
-1. Update the route mapping for your app:
+1. Update the route mapping for your app by running:
 
 	```
 	cf curl /v2/route_mappings -X POST -d '{"app_guid": "APP-GUID", "route_guid": "ROUTE-GUID", "app_port": PORT1}'. 
 	```
 	Where:
-	* `APP-GUID` is the GUID of your app
+	* `APP-GUID` is the GUID of your app.
 	* `ROUTE-GUID` is the GUID of the route at which the app serves. 
-	*  `PORT1` is the app port, or one of the app ports, that you added in the previous step. 
+	* `PORT1` is the app port, or one of the app ports, that you added in the previous step. 
 
 1. Repeat the previous two steps for each port that you want your app to receive requests on. 
 
-<div class="note">
-<strong>Note:</strong>
-If you are trying to remove an app port, you need to delete the associated route mapping before you can update the app to remove the port.  
-</div>
+<p class="note"><strong>Note:</strong> If you are trying to remove an app port, you need to delete the associated route mapping before you can update the app to remove the port.</p>
+
 
 ## <a id="additional-resources"></a> Additional Resources
 
-Here are additional resources related to configuring custom app ports:
+For additional resources related to configuring custom app ports:
 
 * For more information about making requests to the Cloud Controller `apps` endpoint, see [Updating an App](https://apidocs.cloudfoundry.org/6.10.0/apps/updating_an_app.html) in the Cloud Controller API documentation. 
 
-* For more information about making requests to the Cloud Controller `route_mappings` endpoint, see [Mapping an App and a Route](https://apidocs.cloudfoundry.org/6.10.0/routes_mapping/mapping_an_app_and_a_route.html). 
+* For more information about making requests to the Cloud Controller `route_mappings` endpoint, see [Mapping an App and a Route](https://apidocs.cloudfoundry.org/6.10.0/routes_mapping/mapping_an_app_and_a_route.html) in the Cloud Controller API documentation. 
 
 * For an example multi-port app, see the [cf-acceptance-tests](https://github.com/cloudfoundry/cf-acceptance-tests/tree/master/assets/multi-port-app) repository on GitHub.
 

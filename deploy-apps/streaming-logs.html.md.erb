@@ -5,11 +5,14 @@ owner: <%= vars.product_name %> Metrics
 
 <% current_page.data.title = "App Logging in " + vars.app_runtime_abbr %>
 
-Loggregator, the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) component responsible for logging, provides a stream of log output from your app and from Cloud Foundry system components that interact with your app during updates and execution.
+This topic describes how Loggregator, the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) component responsible for logging, provides a stream of log output from your app and from <%= vars.app_runtime_abbr %> system components that interact with your app during updates and execution.
+
+
+## <a id='overview'></a> Overview
 
 By default, Loggregator streams logs to your terminal. If you want to persist more than the limited amount of logging information that Loggregator can buffer, you can drain logs to a third-party log management service. For more information, see [Third-Party Log Management Services](../services/log-management.html).
 
-Cloud Foundry gathers and stores logs in a best-effort manner. If a client cannot consume log lines quickly enough, the Loggregator buffer may need to overwrite some lines before the client has consumed them. A syslog drain or a CLI tail can usually keep up with the flow of app logs.
+<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log lines quickly enough, the Loggregator buffer may need to overwrite some lines before the client has consumed them. A syslog drain or a CLI tail can usually keep up with the flow of app logs.
 
 
 ## <a id='types'></a> Contents of a Log Line

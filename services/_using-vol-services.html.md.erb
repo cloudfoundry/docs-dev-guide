@@ -35,7 +35,7 @@ This topic describes how <%= vars.product_name %> app developers can read and wr
 
 ## <a id="pre"></a> Prerequisite
 
-Before you can use a volume service with your app, determine if any volume services are available for your app. 
+Before you can use a volume service with your app, determine if any volume services are available for your app.
 
 To determine if volume services are available:
 
@@ -45,7 +45,7 @@ To determine if volume services are available:
     cf login
     ```
 
-1. List available NFS volume services. Run:  
+1. List available NFS volume services. Run:
 
     ```
     cf marketplace
@@ -72,21 +72,21 @@ The sections below describe how to mount an external filesystem to your app.
 
 To use a volume service deployed by your <%= vars.admin %>, you must first create an instance of the specific volume service that you need.
 
-<p class="note"><strong>Note:</strong> You can also bind volume services using an app manifest. However, app manifests do not support bind configuration. If you want to bind a volume service using an app manifest, you must specify bind configuration when you create the service instance. The releases that support this are <code>nfs-volume</code> v1.3.1 and later and <code>smb-volume</code> v1.0.0 and later. For more information, see <a href="../deploy-apps/manifest.html#services-block">Services</a> in <em>Deploying with App Manifests</em>.</p> 
+<p class="note"><strong>Note:</strong> You can also bind volume services using an app manifest. However, app manifests do not support bind configuration. If you want to bind a volume service using an app manifest, you must specify bind configuration when you create the service instance. The releases that support this are <code>nfs-volume</code> v1.3.1 and later and <code>smb-volume</code> v1.0.0 and later. For more information, see <a href="../deploy-apps/manifest.html#services-block">Services</a> in <em>Deploying with App Manifests</em>.</p>
 
 To create and bind an instance for the volume service:
 
 1. Create a service instance:
-    * **NFS**: See [Create an NFS Volume Service](#create-nfs) below. 
+    * **NFS**: See [Create an NFS Volume Service](#create-nfs) below.
     * **SMB**: See [Create an SMB Volume Service](#create-smb) below.
 
-1. Bind your service instance to an app: 
-    * **NFS-only**: Bind an NFS service instance to an app. Run: 
+1. Bind your service instance to an app:
+    * **NFS-only**: Bind an NFS service instance to an app. Run:
 
         ```
         cf bind-service YOUR-APP SERVICE-NAME -c '{"uid":"UID","gid":"GID","mount":"OPTIONAL-MOUNT-PATH","readonly":true}'
         ```
-        
+
         Where:
         * `YOUR-APP` is the name of the <%= vars.product_name %> app for which you want to use the volume service.
         * `SERVICE-NAME` is the name of the volume service instance you created in the previous step.
@@ -121,17 +121,17 @@ To create and bind an instance for the volume service:
 
 ### <a id='app'></a> Access the Volume Service from Your App
 
-To access the volume service from your app, you must know which file path to use in your code. 
+To access the volume service from your app, you must know which file path to use in your code.
 
 You can view the file path in the details of the service binding, which are available from the `VCAP_SERVICES` environment variable. See [VCAP_SERVICES](../deploy-apps/environment-variable.html#view-env).
 
 To access the volume service from your app:
 
 1. View environment variables for your app. Run:
-    
+
     ```
     cf env YOUR-APP
-    ``` 
+    ```
     Where `YOUR-APP` is the name of your app.
     <br>
     <br>
@@ -191,7 +191,7 @@ To access the volume service from your app:
 
 If you specify a mount inside the `/app` directory, the app may fail to start and parts of the app droplet may be written to the remote file share. This is because <%= vars.product_short %> mounts the volume before moving your compiled app into the droplet.
 
-If your app requires the shared volume to be placed within the `/app` directory, you can use a symbolic link at app startup. 
+If your app requires the shared volume to be placed within the `/app` directory, you can use a symbolic link at app startup.
 
 To mount a volume in the `/app` directory:
 
@@ -219,7 +219,7 @@ Both services offer a single plan called `Existing`.
 
 ### <a id='create-nfs'></a> Create an NFS Volume Service
 
-To create an NFS volume service using the `Existing` plan of the `nfs` service: 
+To create an NFS volume service using the `Existing` plan of the `nfs` service:
 
 
 1. Create an NFS volume service. Run:
@@ -234,7 +234,7 @@ To create an NFS volume service using the `Existing` plan of the `nfs` service:
     <p class="note"><strong>Note:</strong> Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
     * (Optional) `NFS-PROTOCOL` is the NFS protocol you want to use. For example, if you want to use NFSv4, set the version to `4.1`. Valid values are `3.0`, `4.0`, `4.1` or `4.2`. If you do not specify a `version`, the protocol version used is negotiated between client and server at mount time. This usually results in the latest available version being used.
 
-1. Confirm that the NFS volume service appears in your list of services. Run: 
+1. Confirm that the NFS volume service appears in your list of services. Run:
 
     ```
     cf services
@@ -242,7 +242,7 @@ To create an NFS volume service using the `Existing` plan of the `nfs` service:
 
 ### <a id='migrate'></a> Migrate `nfs-legacy` Services to `nfs`
 
-With the release of NFS Volume Service v1.5.4, the original fuse-based NFS service is deprecated in favor of the newer kernel mount-based NFS service. Existing NFS volume service bindings are listed as `nfs-legacy`. 
+With the release of NFS Volume Service v1.5.4, the original fuse-based NFS service is deprecated in favor of the newer kernel mount-based NFS service. Existing NFS volume service bindings are listed as `nfs-legacy`.
 
 To migrate from `nfs-legacy` to the newer `nfs` service, Pivotal recommends you re-create and re-bind your `nfs` service instances.
 
@@ -346,17 +346,18 @@ This section describes how to use a Server Message Block (SMB) volume service. F
 The service offers a single plan called `Existing`.
 
 To create an SMB volume service:
+
 1. Create the service. Run:
 
     ```
-    cf create-service smb Existing SERVICE-INSTANCE-NAME -c '{"share":"//SERVER/SHARE", "version":"SMB-PROTOCOL"}'
+    cf create-service smb Existing SERVICE-INSTANCE-NAME -c '{"share":"//SERVER/SHARE", "version":"SMB-VERSION"}'
     ```
 
     Where:
     * `SERVICE-INSTANCE-NAME` is a name you provide for this SMB volume service instance.
     * `//SERVER/SHARE` is the SMB address of your server and share.
-    * (Optional) `SMB-PROTOCOL` is the SMB protocol version you want to use. For example, if you want to use SMB 2.1, set the version to `2.1`. Valid values are `1.0`, `2.0`, `2.1` or `3.0`. If you do not specify a `version`, the protocol version used is negotiated between client and server at mount time. This usually results in the latest available version being used.
-1. Confirm that the SMB volume service appears in your list of services. Run: 
+    * (Optional) `SMB-VERSION` is the SMB protocol version you want to use. For example, to use SMB 2.1, set the version to `2.1`. Valid values are `1.0`, `2.0`, `2.1`, or `3.0`. If you do not specify a `version`, the client and server negotiate a protocol version at mount time. The client and server usually select the latest available version.
+1. Confirm that the SMB volume service appears in your list of services. Run:
 
     ```
     cf services
@@ -400,7 +401,7 @@ To deploy and bind a sample app:
     cf start pora
     ```
 
-1. Confirm the app is running. Run: 
+1. Confirm the app is running. Run:
 
     ```
     curl http://pora.YOUR-CF-DOMAIN.com
@@ -408,7 +409,7 @@ To deploy and bind a sample app:
 
     The command returns an instance index for your app.
 
-1. Confirm the app can access the shared volume. Run: 
+1. Confirm the app can access the shared volume. Run:
 
     ```
     curl http://pora.YOUR-CF-DOMAIN.com/write

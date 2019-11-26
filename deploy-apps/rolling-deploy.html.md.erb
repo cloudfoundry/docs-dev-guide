@@ -112,14 +112,16 @@ To deploy an app without incurring downtime:
     </pre>
     Where `APP-GUID` is the unique identifier for your app that you recorded in the previous step.
 
-1. Upload the package bits with `POST /v3/packages/APP-GUID/upload`.
+1. Upload the package bits with `POST /v3/packages/PACKAGE-GUID/upload`.
 
     <pre>
-    cf curl /v3/packages/<span class="placeholder">APP-GUID</span>/upload \
+    cf curl /v3/packages/<span class="placeholder">PACKAGE-GUID</span>/upload \
     -X POST \
     -F bits=@"<span class="placeholder">YOUR-PACKAGED-APP</span>" \
     </pre>
-    Where `YOUR-PACKAGED-APP` is your app packaged in a file such as `.zip`.
+    Where
+    - `PACKAGE-GUID` is the package guid you recorded in the previous step.
+    - `YOUR-PACKAGED-APP` is your app packaged in a file such as `.zip`.
 
 
 1. Create the build with `POST /v3/builds`. Record the droplet guid from the output.
@@ -137,7 +139,7 @@ To deploy an app without incurring downtime:
     Where `PACKAGE-GUID` is the package guid you recorded in the previous step.
 
 
-1. Deploy your app with `POST /v3/deployments`.
+1. Deploy your app with `POST /v3/deployments`. If you want to check the status of the deployment or take action on the deployment, record the deployment guid from the output.
 
     <pre>
     cf curl /v3/deployments \
@@ -185,6 +187,7 @@ To stop the deployment of an app that you pushed:
     cf curl /v3/deployments/<span class="placeholder">DEPLOYMENT-GUID</span>/actions/cancel" \
     -X POST
     </pre>
+    Where the `DEPLOYMENT-GUID` is the guid you recorded after following the CAPI procedure in [Deploy an App](#deploy).
 
 This reverts the app to its state from before the deployment started by doing the following:
 

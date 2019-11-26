@@ -14,14 +14,14 @@ This topic includes references to cf CLI v7 beta commands. Consider the followin
 For more information, see <a href="../../cf-cli/v7.html">Upgrading to cf CLI v7 (Beta)</a>. 
 </div>
 
-This topic describes how developers use beta Cloud Foundry Command Line Interface (cf CLI) commands to push their apps using a rolling deployment. 
+This topic describes how developers use beta Cloud Foundry Command Line Interface (cf CLI) commands or the Cloud Controller API (CAPI) to push their apps using a rolling deployment. 
 
 For information about the traditional method for addressing app downtime while pushing app updates, see [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).   
 
 
 ## <a id="prerequisites"></a> Prerequisites
 
-The procedures in this topic require the following:
+The procedures in this topic require one of the following:
 
 * **cf CLI v7**: 
 	* You must have the cf CLI v7. While in beta, cf CLI v7 is only tested against the latest CAPI release candidate.
@@ -29,6 +29,7 @@ The procedures in this topic require the following:
 	* You must have cf CLI v6.40 or later. 
 	* The rolling deployment feature must be enabled for your installation.
 		* <%= vars.zdt_enable %>
+* **CAPI v3**: For more information about CAPI, see the [Cloud Controller API Reference](https://v3-apidocs.cloudfoundry.org/).
 
 
 ## <a id="commands"></a> Commands
@@ -50,7 +51,97 @@ To deploy an app without incurring downtime:
 
 	```
 	cf v3-zdt-push APP-NAME
-	``` 
+	```
+
+* **CAPI v3**:
+
+1. Log in to the cf CLI.
+
+	```bash
+	cf login
+	```
+
+1. Create an empty app with `POST /v3/apps`. Record the app guid from the output.
+
+    ```bash
+    curl /v3/apps \
+      -X POST \
+      -H "Content-type: application/json" \
+      -d '{
+        "name": "APP-NAME",
+        "relationships": {
+          "space": {
+            "data": {
+              "guid": "SPACE-GUID"
+            }
+          }
+        }
+      }'
+    ```
+    Where:
+    - `APP-NAME` is the name you want to give your app.
+    - `SPACE-GUID` is the space you want to associate with your app.
+
+1. Create a package with `POST /v3/packages`. Record the package guid from the output.
+
+    ```bash
+    cf curl /v3/packages \
+      -X POST \
+      -H "Content-type: application/json" \
+      -d '{
+        "type": "bits",
+        "relationships": {
+          "app": {
+            "data": {
+              
+            }
+          }
+        }
+      }'
+    ```
+    Where:
+    - `APP-GUID` is the unique identifier for your app that you recorded in the previous step.
+
+1. Create the build with `POST /v3/builds`. Record the droplet guid from the output.
+
+    ```bash
+    curl /v3/builds \
+      -X POST \
+      -H "Content-type: application/json" \
+      -d '{
+        "package": {
+           "guid": "PACKAGE-GUID"
+        }
+      }'
+    ```
+    Where:
+    - `PACKAGE-GUID` is the package guid you recorded in the previous step.
+
+
+1. Deploy your app with `POST /v3/deployments`.
+
+    ```bash
+    curl /v3/deployments \
+    -X POST \
+    -H "Content-type: application/json" \
+    -d '{
+      "droplet": {
+        "guid": "DROPLET-GUID"
+      },
+      "strategy": "rolling",
+      "relationships": {
+        "app": {
+          "data": {
+            "guid": "APP-GUID"
+          }
+        }
+      }
+    }'
+    ```
+    Where:
+    - `APP-GUID` and `DROPLET-GUID` are the guids you recorded in the previous steps.
+
+
 <p class="note warning"><strong>Warning:</strong> Ensure that you understand the limitations of this feature before running the command. For more information, see <a href="#limitations">Limitations</a>.</p>
 
 For more information about this command, see [How It Works](#how-it-works). 
@@ -69,6 +160,13 @@ To stop the deployment of an app that you pushed:
 	```
 	cf v3-cancel-zdt-push APP-NAME
 	```
+
+* **CAPI v3**:
+  
+    ```bash
+    cf curl /v3/deployments/APP-GUID/actions/cancel" \
+    -X POST
+    ```
 
 This reverts the app to its state from before the deployment started by doing the following:
 
@@ -92,6 +190,27 @@ Restart your app without downtime using the command below. This is useful when a
 	```
 	cf v3-zdt-restart APP-NAME
 	```
+
+* **CAPI v3**:
+
+    ```bash
+    cf curl /v3/deployments \
+    -X POST \
+    -H "Content-type: application/json" \
+    -d '{
+      "droplet": {
+        "guid": "DROPLET-GUID"
+      },
+      "strategy": "rolling",
+      "relationships": {
+        "app": {
+          "data": {
+            "guid": "APP-GUID"
+          }
+        }
+      }
+    }'
+    ```
 
 ## <a id="how-it-works"></a> How It Works
 

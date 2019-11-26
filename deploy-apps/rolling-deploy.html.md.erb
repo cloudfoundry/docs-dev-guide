@@ -181,10 +181,10 @@ To stop the deployment of an app that you pushed:
 
 * **CAPI v3**:
   
-    ```bash
-    cf curl /v3/deployments/APP-GUID/actions/cancel" \
+    <pre>
+    cf curl /v3/deployments/<span class="placeholder">DEPLOYMENT-GUID</span>/actions/cancel" \
     -X POST
-    ```
+    </pre>
 
 This reverts the app to its state from before the deployment started by doing the following:
 

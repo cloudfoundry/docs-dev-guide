@@ -79,7 +79,7 @@ To deploy an app without incurring downtime:
       -X POST \
       -H "Content-type: application/json" \
       -d '{
-        "name": "APP-NAME",
+        "name": "<span class="placeholder">APP-NAME</span>",
         "relationships": {
           "space": {
             "data": {
@@ -119,7 +119,7 @@ To deploy an app without incurring downtime:
     -X POST \
     -F bits=@"<span class="placeholder">YOUR-PACKAGED-APP</span>" \
     </pre>
-    Where
+    Where:
     - `PACKAGE-GUID` is the package guid you recorded in the previous step.
     - `YOUR-PACKAGED-APP` is your app packaged in a file such as `.zip`.
 

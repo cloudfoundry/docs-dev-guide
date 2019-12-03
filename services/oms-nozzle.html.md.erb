@@ -248,7 +248,7 @@ In either case, the nozzle sends the `slowConsumerAlert` event to OMS as the fol
 | ----------- | --------- |
 | nozzle.alert.slowConsumerAlert | 1 |
 
-For more information, see the [Slow Nozzle Alerts](../loggregator/log-ops-guide.html#slow-noz) section of the _Loggregator Guide for <%= vars.app_runtime_abbr %> Operators_ topic.
+For more information, see the [Slow Nozzle Alerts](../../loggregator/log-ops-guide.html#slow-noz) section of the _Loggregator Guide for <%= vars.app_runtime_abbr %> Operators_ topic.
 
 
 ## <a id='scaling'></a> (Optional) Step 5: Scale the Deployment
@@ -257,12 +257,12 @@ For more information, see the [Slow Nozzle Alerts](../loggregator/log-ops-guide.
 
 If the nozzle is unable to keep up with processing logs from the Firehose, Loggregator alerts the nozzle. When the nozzle receives the alert, it sends a `slowConsumerAlert` to OMS. If this happens, scaling up the nozzle minimizes data loss.
 
-If an operator chooses to scale up their deployment, the Firehose evenly distributes events across all instances of the nozzle. For more information, see the [Scaling Nozzles](../loggregator/log-ops-guide.html#scaling-nozzles) section of the _Loggregator Guide for <%= vars.app_runtime_abbr %> Operators_ topic.
+If an operator chooses to scale up their deployment, the Firehose evenly distributes events across all instances of the nozzle. For more information, see the [Scaling Nozzles](../../loggregator/log-ops-guide.html#scaling-nozzles) section of the _Loggregator Guide for <%= vars.app_runtime_abbr %> Operators_ topic.
 
 Operators can create an alert rule for the `slowConsumerAlert` message. For more information, see [Create Alert Rules](#alert).
 
 ### <a id='scale-loggregator'></a> Scale Loggregator
 
-Loggregator sends `LGR` log messages to indicate problems with the logging process. For more information, see the [Scaling Loggregator]/loggregator/log-ops-guide.html#scaling section of the _Loggregator Guide for <%= vars.app_runtime_abbr %> Operators_ topic.
+Loggregator sends `LGR` log messages to indicate problems with the logging process. For more information, see the [Scaling Loggregator](../../loggregator/log-ops-guide.html#scaling section of the _Loggregator Guide for <%= vars.app_runtime_abbr %> Operators_ topic.
 
 Operators can create an alert rule for the `LGR` message. For more information, see [Create Alert Rules](#alert).

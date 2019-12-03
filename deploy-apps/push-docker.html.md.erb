@@ -3,208 +3,264 @@ title: Deploying an App with Docker
 owner: Diego
 ---
 
+This topic describes how to use the [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html) to push an app with a new or updated Docker image. <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) then uses the Docker image to create containers for the app.
+
+For an explanation of how Docker works in <%= vars.app_runtime_abbr %>, see [Using Docker in <%= vars.app_runtime_abbr %>](../adminguide/docker.html).
 
 
-This topic describes how to use the 
-[Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html) to push an app with a new or updated Docker image. Cloud Foundry then uses the Docker image to create containers for the app.
+## <a id='requirements'></a> Requirements
 
-See [Using Docker in Cloud Foundry](https://docs.cloudfoundry.org/adminguide/docker.html) in the Cloud Foundry documentation for an explanation of how Docker works in Cloud Foundry.
-
-##<a id='requirements'></a>Requirements
-
-To push apps with Docker, you need the following:
+To push apps with Docker, you need:
  
-* A Cloud Foundry deployment that has Docker support enabled. To enable Docker support, see the [Enable Docker](https://docs.cloudfoundry.org/adminguide/docker.html#enable) section of _Using Docker in Cloud Foundry_ in the Cloud Foundry documentation.
+* A <%= vars.app_runtime_abbr %> deployment that has Docker support enabled. To enable Docker support, see the [Enable Docker](../adminguide/docker.html#enable) section of the _Using Docker in <%= vars.app_runtime_abbr %>_ topic.
 
 * A Docker image that meets the following requirements:
 
   * The Docker image must contain an `/etc/passwd` file with an entry for the `root` user. In addition, the home directory and the shell for that `root` user  must be present in the image file system.
 
-  * The total size of the Docker image file system layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2048 MB per app.
+  * The total size of the Docker image file system layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2048&nbsp;MB per app.
+    <p class="note"><strong>Note:</strong> If the total size of the Docker image file system layers exceeds the disk quota, the app instances do not start.</p>
 
-    <p class="note"><strong>Note</strong>: If the total size of the Docker image file system layers exceeds the disk quota, the app instances do not start.</p>
+* The location of the Docker image on Docker Hub or another Docker registry. <% vars.docker_auth1 %>
 
-* The location of the Docker image on [Docker Hub](https://hub.docker.com) or another Docker registry. <% vars.docker_auth1 %>
+* A registry that supports the Docker Registry HTTP API V2 and presents a valid certificate for HTTPS traffic. For more information, see the [Docker Registry HTTP API V2](https://docs.docker.com/registry/spec/api/) spec in the Docker documentation.
 
-* A registry that supports the [Docker Registry HTTP API V2](https://docs.docker.com/registry/spec/api/) and presents a valid certificate for HTTPS traffic.
+### <a id='cf-ssh'></a> Requirement for cf ssh Support
 
-###<a id='cf-ssh'></a>Requirement for cf ssh Support
+If you want to log in to your app container using the `cf ssh` command, you must make a shell such as `sh` or `bash` available in the container. 
 
-If you want to log in to your app container using the <code>cf ssh</code> command, you must make a shell such as <code>sh</code> or <code>bash</code> available in the container. 
+The SSH server in the container looks for the following executables in absolute locations or the `PATH` environment variable:
 
-The SSH server in the container looks for the following executables in absolute locations or the <code>PATH</code> environment variable:
-<ul>
-  <li><code>/bin/bash</code></li>
-  <li><code>/usr/local/bin/bash</code></li>
-  <li><code>/bin/sh</code></li>
-  <li><code>bash</code></li>
-  <li><code>sh</code></li>
-</ul>
+* `/bin/bash`
 
-## <a id='tag'></a>Benefits of Specifying Tags
+* `/usr/local/bin/bash`
 
-If you want your app container to be consistent after platform updates and code changes, specify a tag 
-when you push your Docker image. 
-Otherwise, the platform applies the <code>latest</code> tag without respecting changes to `PORT` or `ENTRYPOINT`.
+* `/bin/sh`
+
+* `bash`
+
+* `sh`
+
+
+## <a id='tag'></a> Benefits of Specifying Tags
+
+If you want your app container to be consistent after platform updates and code changes, specify a tag when you push your Docker image. Otherwise, the platform applies the `latest` tag without respecting changes to `PORT` or `ENTRYPOINT`.
 
 If you push your Docker image without specifying a tag, you must run `cf restage` for the changes to take effect.
 
-## <a id='port_config'></a>Port Configuration
 
-By default, apps listen for connections on the port specified in the 
-[PORT](environment-variable.html#PORT) 
-environment variable for the app. Cloud Foundry allocates this value dynamically.
+## <a id='port_config'></a> Port Configuration
 
-When configuring a Docker image for Cloud Foundry, you can control the exposed port and 
-the corresponding value of `PORT` by specifying the 
-[EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) directive in the image Dockerfile. 
-If you specify the `EXPOSE` directive, then the corresponding app pushed to Cloud Foundry listens on that 
-exposed port. For example, if you set `EXPOSE` to `7070`, then the app listens for connections on port 7070.
+By default, apps listen for connections on the port specified in the `PORT` environment variable for the app. <%= vars.app_runtime_abbr %> allocates this value dynamically.
 
-If you do not specify a port in the `EXPOSE` directive, then the app listens on the value of the `PORT`
-environment variable as determined by Cloud Foundry.
+When configuring a Docker image for <%= vars.app_runtime_abbr %>, you can control the exposed port and the corresponding value of `PORT` by specifying the `EXPOSE` directive in the image Dockerfile. If you specify the `EXPOSE` directive, then the corresponding app pushed to <%= vars.app_runtime_abbr %> listens on that exposed port. For example, if you set `EXPOSE` to `7070`, then the app listens for connections on port 7070.
+
+If you do not specify a port in the `EXPOSE` directive, then the app listens on the value of the `PORT` environment variable as determined by <%= vars.app_runtime_abbr %>.
  
-If you set the `PORT` environment variable via an `ENV` directive in a Dockerfile, Cloud Foundry overrides 
-the value with the system-determined value.
+If you set the `PORT` environment variable via an `ENV` directive in a Dockerfile, <%= vars.app_runtime_abbr %> overrides the value with the system-determined value.
 
-Cloud Foundry supports only one exposed port on the image. 
+<%= vars.app_runtime_abbr %> supports only one exposed port on the image.
 
-## <a id='start_command'></a>Start Command
+For more information about the `PORT` environment variable, see the [PORT](environment-variable.html#PORT) section of the _<%= vars.app_runtime_abbr %> Environment Variables_ topic. For more information about the `EXPOSE` directive, see the [EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) section of the _Dockerfile reference_ topic in the Docker documentation.
 
-By default, Docker uses the start command specified in the Docker image. You can override
-the start command either by using a command-line parameter or by specifying it in a
-manifest file.
 
-For more information about command-line parameters for `docker start`, see [docker
-start](https://docs.docker.com/engine/reference/commandline/start/) in the Docker Documentation.
+## <a id='start_command'></a> Start Command
 
-##<a id='registry'></a>Push a Docker Image from a Registry
+By default, Docker uses the start command specified in the Docker image. You can override the start command either by using a command-line parameter or by specifying it in a manifest file.
 
-<%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) supports pushing apps from container registries such as Docker Hub, Google Container Registry (GCR), and Amazon Elastic Container Registry (ECR).
+For more information about command-line parameters for `docker start`, see [docker start](https://docs.docker.com/engine/reference/commandline/start/) in the Docker Documentation.
+
+
+## <a id='registry'></a> Push a Docker Image from a Registry
+
+<%= vars.app_runtime_abbr %> supports pushing apps from container registries such as Docker Hub, Google Container Registry (GCR), and Amazon Elastic Container Registry (ECR).
 
 How you run `cf push` with apps stored in container registries depends on which registry you use and how it authenticates requests for the container image.
 
 The sections below explain how to push apps under different container registry scenarios.
 
-###<a id='public'></a>Docker Hub
+###<a id='public'></a> Docker Hub
 
-To deploy a Docker image from a Docker Hub repository, run `cf push APP-NAME --docker-image REPO/IMAGE:TAG`. Replace the placeholder values in the command as follows:
+To deploy a Docker image from a Docker Hub repository, run:
 
-* `APP-NAME`: The name to give the pushed app on <%= vars.app_runtime_abbr %>
-* `REPO`: The name of the repository where the image is stored
-* `IMAGE`: The name of the app image on Docker Hub
-* `TAG`: (Optional, recommended) The tag or version for the image
+```
+cf push APP-NAME --docker-image REPO/IMAGE:TAG
+```
 
-For example, the following command pushes the `my-image` image from Docker Hub to a Cloud Foundry app:
+Where:
 
-<pre class='terminal'>$ cf push my-app --docker-image cloudfoundry/my-image</pre>
+* `APP-NAME` is the name to give the pushed app on <%= vars.app_runtime_abbr %>.
 
-###<a id='private'></a>Private Container Registry without Authentication
+* `REPO` is the name of the repository where the image is stored.
+
+* `IMAGE` is the name of the app image on Docker Hub.
+
+* (Optional, but recommended) `TAG` is the tag or version for the image.
+
+For example, the following command pushes the `your-image` image from Docker Hub to a <%= vars.app_runtime_abbr %> app:
+
+```
+cf push your-app --docker-image cloudfoundry/your-image
+```
+
+### <a id='private'></a> Private Container Registry without Authentication
 
 As an alternative to Docker Hub, you can use any Docker image registry that presents a valid certificate for HTTPS traffic, such as a company-internal Docker registry.
 
-To push an app as a Docker image using a specified Docker registry, run `cf push APP-NAME --docker-image MY-PRIVATE-REGISTRY.DOMAIN:PORT/REPO/IMAGE:TAG`. Replace the placeholder values in the command as follows:
+To push an app as a Docker image using a specified Docker registry, run:
 
-* `APP-NAME`: The name to give the pushed app on <%= vars.app_runtime_abbr %>
-* `MY-PRIVATE-REGISTRY.DOMAIN`: The path to the Docker registry
-* `PORT`: The port where the registry serves traffic
-* `REPO`: The name of the repository where the image is stored
-* `IMAGE`: The name of the app image being pushed
-* `TAG`: (Optional, but recommended) The tag or version for the image
+```
+cf push APP-NAME --docker-image YOUR-PRIVATE-REGISTRY.DOMAIN:PORT/REPO/IMAGE:TAG
+```
 
-For example, the following command pushes the `v2` version of the `my-image` image from the `my-repo` repository of the `internal-registry.example.com` registry on port `5000`:
+Where:
 
-<pre class='terminal'>$ cf push my-app --docker-image internal-registry.example.com:5000/my-repo/my-image:v2
-</pre>
+* `APP-NAME` is the name to give the pushed app on <%= vars.app_runtime_abbr %>.
 
-###<a id='private-repo'></a>Private Container Registry with Basic Authentication
+* `YOUR-PRIVATE-REGISTRY.DOMAIN` is the path to the Docker registry.
+
+* `PORT` is the port where the registry serves traffic.
+
+* `REPO` is the name of the repository where the image is stored.
+
+* `IMAGE` is the name of the app image being pushed.
+
+* (Optional, but recommended) `TAG` is the tag or version for the image.
+
+For example, the following command pushes the `v2` version of the `your-image` image from the `your-repo` repository of the `internal-registry.example.com` registry on port `5000`:
+
+```
+cf push your-app --docker-image internal-registry.example.com:5000/your-repo/your-image:v2
+```
+
+### <a id='private-repo'></a> Private Container Registry with Basic Authentication
 
 Many Docker registries control access to Docker images by authenticating with a username and password.
 
-* To push an app as a Docker image from a registry that uses basic username and password authentication, run the following command:
+To push an app as a Docker image from a registry that uses basic username and password authentication, run:
 
-    ```
-    $ CF_DOCKER_PASSWORD=YOUR-PASSWORD cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username USER
-    ```
+```
+CF_DOCKER_PASSWORD=YOUR-PASSWORD cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username USER
+```
 
-    Where:
-    - `YOUR-PASSWORD`: The password to use for authentication with the Docker registry
-        - Setting `CF_DOCKER_PASSWORD` prepended to the `cf push --docker-image` makes the value temporary, which is more secure than setting the environment variable indefinitely with `export`
-    - `APP-NAME`: The name to give the pushed app on <%= vars.app_runtime_abbr %>
-    - `REPO`: The repository where the image is stored:
-        - For Docker Hub, this is just the repository name
-        - For a private registry, this includes the registry address and port, as described in [Push a Docker Image from a Private Registry](#private), in the format: `MY-PRIVATE-REGISTRY.DOMAIN:PORT/REPO`
-    - `IMAGE`: The name of the app image being pushed
-    - `TAG`: (Optional, but recommended) The tag or version for the image
-    - `USER`: The username to use for authentication with the registry
+Where:
 
-###<a id='ecr'></a>Amazon Elastic Container Registry (ECR)
+* `YOUR-PASSWORD` is the password to use for authentication with the Docker registry.
+    * Setting `CF_DOCKER_PASSWORD` prepended to the `cf push --docker-image` makes the value temporary, which is more secure than setting the environment variable indefinitely with `export`.
+
+* `APP-NAME` is the name to give the pushed app on <%= vars.app_runtime_abbr %>.
+
+* `REPO` is the repository where the image is stored.
+    * For Docker Hub, this is just the repository name.
+    * For a private registry, this includes the registry address and port, as described in [Push a Docker Image from a Private Registry](#private), in the format `YOUR-PRIVATE-REGISTRY.DOMAIN:PORT/REPO`.
+
+* `IMAGE` is the name of the app image being pushed.
+
+* (Optional, but recommended)`TAG` is the tag or version for the image.
+
+* `USER` is the username to use for authentication with the registry.
+
+### <a id='ecr'></a> Amazon Elastic Container Registry (ECR)
 
 <%= vars.app_runtime_abbr %> supports pushing apps from images hosted on Amazon Web Services ECR, which authenticates with temporary password tokens.
 
 <%= vars.ecr_support_cf_12_1 %>
 
-* To push an app as a Docker image from ECR:
+To push an app as a Docker image from ECR, run:
 
     ```
-    $ CF_DOCKER_PASSWORD=AWS-SECRET-ACCESS-KEY cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username AWS-ACCESS-KEY-ID
+    CF_DOCKER_PASSWORD=AWS-SECRET-ACCESS-KEY cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username AWS-ACCESS-KEY-ID
     ```
 
+Where:
+
+* `AWS-SECRET-ACCESS-KEY` is the AWS Secret Access Key for the IAM user accessing the ECR registry.
+    * Setting `CF_DOCKER_PASSWORD` prepended to the `cf push --docker-image` makes the value temporary, which is more secure than setting the environment variable indefinitely with `export`.
+
+* `APP-NAME` is the name to give the pushed app on <%= vars.app_runtime_abbr %>.
+
+* `REPO` is the ECR repository containing the image being pushed.
+
+* `IMAGE` is the name of the app image being pushed.
+
+* (Optional, but recommended) `TAG` is the tag or version for the image.
+
+* `AWS-ACCESS-KEY-ID` is the AWS Access Key ID for the IAM user accessing the ECR registry.
+
+Running `cf push` with an ECR registry triggers <%= vars.app_runtime_abbr %> to:
+
+1. Use the AWS Secret Access Key and Access Key ID to retrieve the temporary ECR username and password.
+
+1. Use the temporary tokens to retrieve the image.
+
+### <a id='gcr'></a> Google Container Registry (GCR)
+
+<%= vars.product_name %> supports pushing apps from images hosted on Google Container Registry (GCR) service. This feature requires that you use JSON key-based authentication. For more information, see the [JSON key file](https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file) section of the _Authentication methods_ topic in the Google Cloud documentation.
+
+#### <a id='authenticate'></a> Step 1: Authenticate with GCR
+
+To authenticate with GCR using <%= vars.platform_name %>, you must create a JSON key file and associate it with your project.
+
+To create a JSON key file and associate it with your project:
+
+1. Create a GCP service account. To create a GCP service account, see [Creating and enabling service accounts for instances](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances) in the Google Cloud documenation. Run: 
+  
+    ```
+    gcloud iam service-accounts create YOUR-ACCOUNT --display-name "YOUR-DISPLAY-NAME"
+    ```
     Where:
-    - `AWS-SECRET-ACCESS-KEY`: the AWS Secret Access Key for the IAM user accessing the ECR registry
-        - Setting `CF_DOCKER_PASSWORD` prepended to the `cf push --docker-image` makes the value temporary, which is more secure than setting the environment variable indefinitely with `export`
-    - `APP-NAME`: The name to give the pushed app on <%= vars.app_runtime_abbr %>
-    - `REPO`: The ECR repository containing the image being pushed
-    - `IMAGE`: The name of the app image being pushed
-    - `TAG`: (Optional, but recommended) The tag or version for the image
-    - `AWS-ACCESS-KEY-ID`: The AWS Access Key ID for the IAM user accessing the ECR registry
+    * `YOUR-ACCOUNT` is the name of your service account.
+    * `YOUR-DISPLAY-NAME` is the display name of your service account.
 
-**How it Works**: Running `cf push` with an ECR registry triggers <%= vars.app_runtime_abbr %> to:
+1. Set your project ID by running:
 
-  1. Use the AWS Secret Access Key and Access Key ID to retrieve the temporary ECR username and password.
-  1. Use the temporary tokens to retrieve the image.
+    ```
+    gcloud config set project YOUR-PROJECT-ID
+    ```
+    Where `YOUR-PROJECT-ID` is your project ID.
 
-###<a id='gcr'></a>Google Container Registry (GCR)
+1. Create a JSON key file and associate it with the service account by running:
+  
+    ```
+    gcloud iam service-accounts keys create key.json --iam-account=YOUR-ACCOUNT<span>@</span>YOUR-PROJECT-ID.iam.gserviceaccount.com
+    ```
+    Where:
+    * `YOUR-ACCOUNT` is the name of your service account.
+    * `YOUR-PROJECT-ID` is your project ID.
 
-<%= vars.product_name %> supports pushing apps from images hosted on Google Container Registry (GCR) service. This feature requires that you use [json_key based authentication](https://cloud.google.com/container-registry/docs/advanced-authentication#using_a_json_key_file).
+1. Add the IAM policy binding for your project and service account by running:
 
-#### Step 1: Authenticate with GCR
+    ```
+    gcloud projects add-iam-policy-binding YOUR-PROJECT --member serviceAccount:YOUR-ACCOUNT<span>@</span>YOUR-PROJECT-ID.iam.gserviceaccount.com --role roles/storage.objectViewer
+    ```
+    Where:
+    * `YOUR-PROJECT` is the name of your project.
+    * `YOUR-ACCOUNT` is the name of your service account.
+    * `YOUR-PROJECT-ID` is your project ID.
 
-To authenticate with GCR using <%= vars.product_name %>, you must create a JSON key file and associate it with your project:
+#### <a id='deploy'></a> Step 2: Deploy the GCP Image
 
-1. Create a GCP service account. See [Creating and Enabling Service Accounts for Instances](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances). 
-  <pre class="terminal">
-  $ gcloud iam service-accounts create MY-ACCOUNT --display-name "MY DISPLAY NAME"
-  </pre>
+To deploy your GCR image using the cf CLI, run:
 
-2. Create a JSON key file and associate it with the service account:
-  <pre class="terminal">
-    $ gcloud iam service-accounts keys create key.json --iam-account=MY-ACCOUNT<span>@</span>MY-PROJECT-ID.iam.gserviceaccount.com
-  </pre>
+```
+CF_DOCKER_PASSWORD="$(cat key.json)" cf push APP-NAME --docker-image docker://YOUR-REGISTRY-URL/YOUR-PROJECT/YOUR-IMAGE-NAME --docker-username _json_key`
+```
 
-3. Set your project ID:
-  <pre class="terminal">
-  $ gcloud config set project MY-PROJECT-ID
-  </pre>
-4. Add the IAM policy binding for your project and service account:
-  <pre class="terminal">
-  gcloud projects add-iam-policy-binding MY-PROJECT --member serviceAccount:MY-ACCOUNT<span>@</span>MY-PROJECT-ID.iam.gserviceaccount.com --role roles/storage.objectViewer
-  </pre>
+Where:
 
-#### Step 2: Deploy the GCP Image
+* `APP-NAME` is the name of the app being pushed.
 
-Run the following command to deploy your GCR image using the cf CLI: 
-`CF_DOCKER_PASSWORD="$(cat key.json)" cf push APP-NAME --docker-image docker://MY-REGISTRY-URL/MY-PROJECT/MY-IMAGE-NAME --docker-username _json_key`
-<br>Replace the placeholder values in the command as follows:
+* `YOUR-REGISTRY-URL` is the URL of your registry.
 
-- `APP-NAME`: The name of the app being pushed
-- `MY-REGISTRY-URL`: The URL of your registry
-- `MY-PROJECT`: The name of your project
-- `MY-IMAGE-NAME`: The name of your image
+* `YOUR-PROJECT` is the name of your project.
 
-<p class="note"><b>Note</b>: The <code>key.json</code> file must point to the file you created in the previous step.</p>
+* `YOUR-IMAGE-NAME` is the name of your image.
 
-<p class="note"><b>Note</b>: For information about specifying <code>MY-REGISTRY-URL</code>, see <a href="https://cloud.google.com/container-registry/docs/pushing-and-pulling">Pushing and Pulling Images</a> on the Google Cloud documentation.</p>
+<p class="note"><strong>Note:</strong> The <code>key.json</code> file must point to the file you created in the previous step.</p>
 
-##<a id='volume'></a> Docker Volume Support
-You can use volume services with Docker apps. For more information about enabling volume support, see the [Using an External File System (Volume Services)](../services/using-vol-services.html) topic.
+<p class="note"><strong>Note:</strong> For information about specifying <code>YOUR-REGISTRY-URL</code>, see <a href="https://cloud.google.com/container-registry/docs/pushing-and-pulling">Pushing and Pulling Images</a> in the Google Cloud documentation.</p>
+
+
+## <a id='volume'></a> Docker Volume Support
+
+You can use volume services with Docker apps. For more information about enabling volume support, see [Using an External File System (Volume Services)](../services/using-vol-services.html).

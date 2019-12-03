@@ -177,11 +177,11 @@ To import the OMS view:
 
 1. Click the **Tile** to view visualized metrics.
 
-For more information, see [Create custom views by using View Designer in Azure Monitor](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-view-designer) in the Azure documentation.
+For more information, see [Create custom views by using View Designer in Azure Monitor](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-view-designer) in the Microsoft Azure documentation.
 
 ### <a id='alert'></a> Create Alert Rules
 
-For more information about OMS Log Analytics alerts, see [Overview of alerts in Microsoft Azure](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-alerts) in the Azure documentation.
+For more information about OMS Log Analytics alerts, see [Overview of alerts in Microsoft Azure](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-alerts) in the Microsoft Azure documentation.
 
 ### <a id='queries'></a> Set Alert Queries
 
@@ -248,7 +248,7 @@ In either case, the nozzle sends the `slowConsumerAlert` event to OMS as the fol
 | ----------- | --------- |
 | nozzle.alert.slowConsumerAlert | 1 |
 
-For more information, see the [Slow Nozzle Alerts](../../loggregator/log-ops-guide.html#slow-noz) section of the _Loggregator Guide for <%= vars.app_runtime_abbr %> Operators_ topic.
+<%= vars.slow_nozzle_alerts_link %>
 
 
 ## <a id='scaling'></a> (Optional) Step 5: Scale the Deployment
@@ -257,12 +257,12 @@ For more information, see the [Slow Nozzle Alerts](../../loggregator/log-ops-gui
 
 If the nozzle is unable to keep up with processing logs from the Firehose, Loggregator alerts the nozzle. When the nozzle receives the alert, it sends a `slowConsumerAlert` to OMS. If this happens, scaling up the nozzle minimizes data loss.
 
-If an operator chooses to scale up their deployment, the Firehose evenly distributes events across all instances of the nozzle. For more information, see the [Scaling Nozzles](../../loggregator/log-ops-guide.html#scaling-nozzles) section of the _Loggregator Guide for <%= vars.app_runtime_abbr %> Operators_ topic.
+If an operator chooses to scale up their deployment, the Firehose evenly distributes events across all instances of the nozzle. <%= vars.scaling_nozzles_link %>
 
 Operators can create an alert rule for the `slowConsumerAlert` message. For more information, see [Create Alert Rules](#alert).
 
 ### <a id='scale-loggregator'></a> Scale Loggregator
 
-Loggregator sends `LGR` log messages to indicate problems with the logging process. For more information, see the [Scaling Loggregator](../../loggregator/log-ops-guide.html#scaling section of the _Loggregator Guide for <%= vars.app_runtime_abbr %> Operators_ topic.
+Loggregator sends `LGR` log messages to indicate problems with the logging process. <%= vars.scaling_loggregator_link %>
 
 Operators can create an alert rule for the `LGR` message. For more information, see [Create Alert Rules](#alert).

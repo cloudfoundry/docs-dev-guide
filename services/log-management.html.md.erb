@@ -1,63 +1,44 @@
 ---
 title: Streaming App Logs to Log Management Services
-owner: <%= vars.platform_name %> Metrics
+owner: <%= vars.product_name %> Metrics
 ---
 
-This topic describes how to drain logs from <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) to a third-party log management service.
+This topic describes how to drain logs from Cloud Foundry to a third-party log management service.
+
+Cloud Foundry aggregates logs for all instances of your apps as well as for requests made to your apps through internal components of Cloud Foundry. For example, when the Cloud Foundry Router forwards a request to an app, the Router records that event in the log stream for that app. Run the following command to access the log stream for an app in the terminal:
+
+<pre class='terminal'>$ cf logs YOUR-APP-NAME</pre>
+
+If you want to persist more than the limited amount of logging information that Cloud Foundry can buffer, drain these logs to a log management service.
+
+For more information about the systems responsible for log aggregation and streaming in Cloud Foundry, see [App Logging in Cloud Foundry](../deploy-apps/streaming-logs.html).
 
 
-## <a id='overview'></a> Overview
+## <a id='marketplace-services'></a> Using Services from the Cloud Foundry Marketplace
 
-<%= vars.app_runtime_abbr %> aggregates logs for all instances of your apps as well as for requests made to your apps through internal components of <%= vars.app_runtime_abbr %>. For example, when the <%= vars.app_runtime_abbr %> Gorouter forwards a request to an app, the Gorouter records that event in the log stream for that app. To access the log stream for an app in the terminal, run:
+Your Cloud Foundry marketplace may offer one or more log management services. To use one of these services, create an instance of the service and bind it to your app with the following commands:
 
-```
-cf logs YOUR-APP-NAME
-```
+<pre class='terminal'>
+$ cf create-service SERVICE PLAN SERVICE-INSTANCE
+$ cf bind-service YOUR-APP YOUR-LOG-STORE
+</pre>
 
-Where `YOUR-APP-NAME` is the name of the app whose log stream you want to access.
+For more information about service instance lifecycle management, see [Managing Service Instances](managing-services.html).
 
-If you want to persist more than the limited amount of logging information that <%= vars.app_runtime_abbr %> can buffer, drain these logs to a log management service.
-
-For more information about the systems responsible for log aggregation and streaming in <%= vars.app_runtime_abbr %>, see [App Logging in <%= vars.app_runtime_abbr %>](../deploy-apps/streaming-logs.html).
-
-
-## <a id='marketplace-services'></a> Using Services from the <%= vars.platform_name %> Marketplace
-
-Your <%= vars.platform_name %> marketplace may offer one or more log management services. To use one of these services, create an instance of the service and bind it to your app by running:
-
-```
-cf create-service SERVICE PLAN SERVICE-INSTANCE
-cf bind-service YOUR-APP YOUR-LOG-STORE
-```
-
-Where:
-
-* `SERVICE` is the name of the log management service you want to create an instance of.
-
-* `PLAN` is the name of a plan that meets your needs. Service providers use plans to offer varying levels of resources or features for the same service.
-
-* `SERVICE-INSTANCE` is the name you provide for your service instance. You use this name to refer to your service instance with other commands. Service instance names can include alpha-numeric characters, hyphens, and underscores, and you can rename the service instance at any time.
-
-* `YOUR-APP` is the app to which you want to bind the service.
-
-* `YOUR-LOG-STORE` is the log store where you store your app logs.
-
-For more information about service instance lifecycle management, see [Managing Service Instances with the cf CLI](managing-services.html).
-
-<p class='note'><strong>Note:</strong> Not all marketplace services support syslog drains. Some services implement an integration with <%= vars.platform_name %> that enables automated streaming of app syslogs. <%= vars.custom_services %></p>
+<p class='note'><strong>Note:</strong> Not all marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that enables automated streaming of app syslogs. <%= vars.custom_services %></p>
 
 
 ## <a id='user-provided'></a> Using Services Not Available in Your Marketplace
 
-If a compatible log management service is not available in your <%= vars.platform_name %> marketplace, you can use user-provided service instances to stream app logs to a service of your choice. For more information, see the [Stream App Logs to a Service](./user-provided.html#syslog) section of the _User-Provided Service Instances_ topic.
+If a compatible log management service is not available in your Cloud Foundry marketplace, you can use user-provided service instances to stream app logs to a service of your choice. For more information, see the [Stream App Logs to a Service](./user-provided.html#syslog) section of the _User-Provided Service Instances_ topic.
 
-You can install and use the [CF Drain CLI Plugin](#drain-plugin) to create and manage user-provided syslog drains from the cf CLI.
+You can install and use the [CF Drain CLI Plugin](#drain-plugin) to create and manage user-provided syslog drains from the CF command-line interface (cf CLI).
 
-You may need to prepare your log management service to receive app logs from <%= vars.app_runtime_abbr %>. For specific instructions for several popular services, see [Service-Specific Instructions for Streaming App Logs](./log-management-thirdparty-svc.html). If you cannot find instructions for your service, follow the generic instructions below.
+You may need to prepare your log management service to receive app logs from Cloud Foundry. For specific instructions for several popular services, see [Service-Specific Instructions for Streaming App Logs](./log-management-thirdparty-svc.html). If you cannot find instructions for your service, follow the generic instructions below.
 
 ### <a id='step1'></a>Step 1: Configure the Log Management Service
 
-To set up a communication channel between the log management service and your <%= vars.app_runtime_abbr %> deployment:
+To set up a communication channel between the log management service and your Cloud Foundry deployment:
 
 1. Obtain the <%=vars.external_ips%> that your <%=vars.admin%> assigns to outbound traffic.
 
@@ -66,22 +47,22 @@ To set up a communication channel between the log management service and your <%
 1. Add these IP addresses to your allow list to ensure unrestricted log routing to your log management service.
 
 1. Record the syslog URL provided by the third-party service. Third-party services typically provide a syslog URL to use as an endpoint for incoming log data. You use this syslog URL in [Step 2: Create a User-Provided Service Instance](#step2).
-  <br><br>
-  <%= vars.app_runtime_abbr %> uses the syslog URL to route messages to the service. The syslog URL has a scheme of `syslog`, `syslog-tls`, or `https`, and can include a port number. For example:
+<br><br>
+    Cloud Foundry uses the syslog URL to route messages to the service. The syslog URL has a scheme of `syslog`, `syslog-tls`, or `https`, and can include a port number. For example:
 
-  ```
-  syslog://logs.example.com:1234
-  ```
+    `syslog://logs.example.com:1234`
 
 <%=vars.pas_ssl_note%>
 
 ### <a id='step2'></a> Step 2: Create and Bind a User-Provided Service Instance
 
-You can create a syslog drain service and bind apps to it using either generic cf CLI commands, or drain-specific commands enabled by the CF Drain plugin for the cf CLI.
+You can create a syslog drain service and bind apps to it using either generic Cloud Foundry Command Line Interface (cf CLI) commands, or drain-specific commands enabled by the CF Drain plugin for the cf CLI.
+
+Each option is described below.
 
 #### <a id='drain-plugin'></a> With the CF Drain CLI Plugin
 
-1. If the CF Drain CLI Plugin is not installed on your local workstation, see [Installing Plugin](https://github.com/cloudfoundry/cf-drain-cli#installing-plugin) in the CF Drain CLI repository on GitHub.
+1. If the CF Drain CLI Plugin is not installed on your local workstation, follow the [Installing Plugin](https://github.com/cloudfoundry/cf-drain-cli#installing-plugin) instructions in the plugin source repository on GitHub.
 
 2. Decide whether to bind the drain to a single app or all apps in a space, and run the corresponding command:
   * **Single app**:<br>
@@ -104,35 +85,26 @@ You can create a syslog drain service and bind apps to it using either generic c
 
 After a short delay, logs begin to flow automatically.
 
-For CF Drain commands, see the [Usage](https://github.com/cloudfoundry/cf-drain-cli#installing-plugin) section of the CF Drain CLI repository on GitHub. For general cf CLI service commands, see [Managing Service Instances with the CLI](./managing-services.html).
+For CF Drain commands, see the [Usage](https://github.com/cloudfoundry/cf-drain-cli#installing-plugin) section of the CF Drain plugin source repository on GitHub. For general CF service commands, see [Managing Service Instances with the CLI](./managing-services.html).
 
 #### <a id='no-plugin'></a> With General cf CLI Service Commands
 
 <p class="note"><strong>Note:</strong> To bind a drain to all apps in a space with a single command, you must use the CF Drain CLI Plugin as described in the previous section.</p>
 
-1. To create the service instance, run:
+1. To create the service instance, run `cf create-user-provided-service` (or `cf cups`) with the `-l` flag, filling in values as follows:
+  - DRAIN-NAME: A name to use for your syslog drain service instance.
+  - SYSLOG-DRAIN-URL: The syslog URL from [Step 1: Configure the Log Management Service](#step1).
+<pre class="terminal">
+$ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL
+</pre>
+For more information, see [User-Provided Service Instances](./user-provided.html).
 
-    ```
-    cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL
-    ```
-    Where:
-    * `DRAIN-NAME` is a name to use for your syslog drain service instance.
-    * `SYSLOG-DRAIN-URL` is the syslog URL from [Step 1: Configure the Log Management Service](#step1).
-    <br>
-    <br>
-    For more information, see [User-Provided Service Instances](./user-provided.html).
-
-1. To bind an app to the service instance, either:
+1. To bind an app to the service instance, do one of the following:
   * Run `cf push` with a manifest. The services block in the manifest must specify the service instance that you want to bind.
   * Run `cf bind-service`:
-
-    ```
-    cf bind-service YOUR-APP-NAME DRAIN-NAME
-    ```
-    Where:
-    * `DRAIN-NAME` is a name to use for your syslog drain service instance.
-    * `SYSLOG-DRAIN-URL` is the syslog URL from [Step 1: Configure the Log Management Service](#step1).
-    <br>
+<pre class="terminal">
+$ cf bind-service YOUR-APP-NAME DRAIN-NAME
+</pre>
 
 After a short delay, logs begin to flow automatically.
 
@@ -146,14 +118,14 @@ To verify that logs are draining correctly to a third-party log management servi
 
 1. Compare the logs displayed in the CLI against those displayed by the log management service.
 
-For example, if your app serves web pages, you can send HTTP requests to the app. In <%= vars.app_runtime_abbr %>, these generate Gorouter log messages, which you can view in the CLI. Your third-party log management service should display corresponding messages.
+For example, if your app serves web pages, you can send HTTP requests to the app. In Cloud Foundry, these generate Router log messages, which you can view in the CLI. Your third-party log management service should display corresponding messages.
 
-<p class="note"><strong>Note:</strong> For security reasons, <%= vars.app_runtime_abbr %> apps do not respond to <code>ping</code>. You cannot use <code>ping</code> to generate log entries.</p>
+<p class="note"><strong>Note:</strong> For security reasons, Cloud Foundry apps do not respond to <code>ping</code>. You cannot use <code>ping</code> to generate log entries.</p>
 
 ### <a id='drain-cli'></a> CF Drain CLI Plugin
 
 The CF Drain CLI plugin extends the cf CLI by adding simple commands for user-provided syslog drains. You can also use the plugin to bind all apps in a space to a syslog drain. This option includes app, space, and org names in the drain. It also binds any new apps pushed to the space.
 
-To install the CF Drain CLI plugin, see [Installing Plugin](https://github.com/cloudfoundry/cf-drain-cli#installing-plugin) in the CF Drain CLI repository on GitHub.
+**Installation**: To install the CF Drain CLI plugin, see the [Installing Plugin](https://github.com/cloudfoundry/cf-drain-cli#installing-plugin) instructions in the plugin source repository on GitHub.
 
-The plugin adds commands for creating, deleting, and listing syslog drains, and for binding apps to the drains. For more information, see [Usage](https://github.com/cloudfoundry/cf-drain-cli#installing-plugin) in the CF Drain CLI repository on GitHub.
+**Commands**: The plugin adds commands for creating, deleting, and listing syslog drains, and for binding apps to the drains. For more information, see the [Usage](https://github.com/cloudfoundry/cf-drain-cli#installing-plugin) section of the plugin source repository on GitHub.

@@ -3,72 +3,55 @@ title: Streaming App Logs to Azure OMS Log Analytics (Beta)
 owner: Logging and Metrics
 ---
 
-<p class="note warning"><strong>Warning:</strong> The OMS Log Analytics Firehose Nozzle is currently intended for evaluation and test purposes only. Do not use this product in a production environment.</p>
-
-This topic explains how to integrate your <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) apps with [OMS Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/).
-
-Operations Management Suite (OMS) Log Analytics is a monitoring service for Microsoft Azure. The OMS Log Analytics Firehose Nozzle is a <%= vars.app_runtime_abbr %> component that forwards metrics from the Loggregator Firehose to OMS Log Analytics.
-
-This topic assumes you are using the latest version of the Cloud Foundry Command Line Interface (cf CLI) and a working <%= vars.app_runtime_abbr %> deployment on Azure.
 
 
-## <a id='config'></a> Step 1: Create an OMS Workspace in Azure
+<p class="note warning">
+<strong>WARNING</strong>:
+The OMS Log Analytics Firehose Nozzle is currently intended for evaluation and test purposes only. Do not use this product in a production environment.
+</p>
 
-To create an OMS workspace, see [Get started with Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-get-started) in the Microsoft Azure documentation.
+This topic explains how to integrate your Cloud Foundry (CF) apps with [OMS Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/).
 
+Operations Management Suite (OMS) Log Analytics is a monitoring service for Microsoft Azure.
+The OMS Log Analytics Firehose Nozzle is a CF component that forwards metrics from the Loggregator Firehose to OMS Log Analytics.
 
-## <a id='deploy'></a> Step 2: Deploy the Nozzle to <%= vars.app_runtime_abbr %>
+This topic assumes you are using the latest version of the Cloud Foundry Command Line Interface (cf CLI) and a working <%= vars.app_runtime_full %> deployment on
+Azure.
 
-To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
+## <a id='config'></a>Step 1: Create an OMS Workspace in Azure
 
-1. Authenticate to your <%= vars.app_runtime_abbr %> instance. <%= vars.uaa_cli %> Run:
+See [Get started with Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-get-started) in the Microsoft Azure documentation to create an OMS workspace.
 
-    ```
-    cf login -a https://api.YOUR-DOMAIN -u YOUR-USERNAME --skip-ssl-validation
-    ```
-    Where:
-    * `YOUR-DOMAIN` is your domain.
-    * `YOUR-USERNAME` is your <%= vars.app_runtime_abbr %> username.
+## <a id='deploy'></a>Step 2: Deploy the Nozzle to Cloud Foundry
 
-1. To create a new <%= vars.app_runtime_abbr %> user and grant it access to the Loggregator Firehose using the UAA CLI (UAAC):
-    1. Target your UAA server by running:
-      
-        ```
-        uaac target uaa.YOUR-DOMAIN --skip-ssl-validation
-        ```
-        Where `YOUR-DOMAIN` is your domain.
-    1. Obtain an access token for the admin client by running:
-      
-        ```
-        uaac token client get admin
-        ```
-    1. Create a new user by running:
+1. Run `cf login -a https://api.YOUR-DOMAIN -u YOUR-USERNAME --skip-ssl-validation`, replacing `YOUR-DOMAIN` with your domain
+and `YOUR-USERNAME` with your CF username, to authenticate to your CF instance. For example:
+    <pre class="terminal">$ cf login -a https<span>:</span>//api.example.com -u admin --skip-ssl-validation</pre>
 
-        ```
-        cf create-user USERNAME PASSWORD
-        ```
-        Where:
-        * `USERNAME` is a new username.
-        * `PASSWORD` is a password.
-    1. Grant the new user admin permissions by running:
+1. Follow the steps below to create a new Cloud Foundry user and grant it access to the Loggregator Firehose
+using the UAA CLI (UAAC). <%= vars.uaa_cli %>
 
-        ```
-        uaac member add cloud_controller.admin USERNAME
-        ```
-        Where `USERNAME` is the username you set in the previous step.
-    1. Grant the new user permission to read logs from the Loggregator Firehose endpoint by running:
+    1. Use `uaac target uaa.YOUR-DOMAIN` to target your UAA server:
+      <pre class="terminal">$ uaac target uaa.example.com --skip-ssl-validation</pre>
+    1. Run the following command to obtain an access token for the admin client:
+      <pre class="terminal">$ uaac token client get admin</pre>
+    1. Run `cf create-user USERNAME PASSWORD`, replacing `USERNAME` with a new username and `PASSWORD` with a password,
+to create a new user. For example:
+      <pre class="terminal">$ cf create-user firehose-user firehose-password</pre>
+    1. Run `uaac member add cloud_controller.admin USERNAME`, replacing `USERNAME` with the new username, to grant the new
+user admin permissions. For example:
+      <pre class="terminal">$ uaac member add cloud_controller.admin firehose-user</pre>
+    1. Run `uaac member add doppler.firehose USERNAME`, replacing `USERNAME` with the new username, to grant the new
+user permission to read logs from the Loggregator Firehose endpoint. For example:
+      <pre class="terminal">$ uaac member add doppler.firehose firehose-user</pre>
 
-        ```
-        uaac member add doppler.firehose USERNAME
-        ```
-        Where `USERNAME` is the username you set.
+1. Download the [OMS Log Analytics Firehose Nozzle BOSH release](https://github.com/Azure/oms-log-analytics-firehose-nozzle) from Github.
+Clone the repository and navigate to the `oms-log-analytics-firehose-nozzle` directory:
 
-1. Download the [OMS Log Analytics Firehose Nozzle BOSH release](https://github.com/Azure/oms-log-analytics-firehose-nozzle) from Github. Clone the repository and navigate to the `oms-log-analytics-firehose-nozzle` directory by running:
-
-    ```
-    git clone https<span>:</span>//github.com/Azure/oms-log-analytics-firehose-nozzle.git
-    cd oms-log-analytics-firehose-nozzle
-    ```
+    <pre class="terminal">
+    $ git clone https<span>:</span>//github.com/Azure/oms-log-analytics-firehose-nozzle.git
+    $ cd oms-log-analytics-firehose-nozzle
+    </pre>
 
 1. Set the following environment variables in the [OMS Log Analytics Firehose Nozzle manifest](https://github.com/Azure/oms-log-analytics-firehose-nozzle/blob/master/manifest.yml):
 
@@ -76,112 +59,112 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
       <tr>
         <th>Environment Variable</th>
         <th>Description</th>
-      </tr>
-      <tr>
+      </tr><tr>
         <td><pre>
         applications:
         - name: oms_nozzle
         ...
         env:
           OMS_WORKSPACE: YOUR-WORKSPACE-ID
-          OMS_KEY: YOUR-OMS-KEY</pre>
-        </td>
+          OMS_KEY: YOUR-OMS-KEY</pre></td>
         <td>Enter the ID and key value for your OMS workspace.</td>
-      </tr>
-      <tr>
-        <td><pre>OMS_POST_TIMEOUT: 10s</pre></td>
-        <td>(Optional) Set the HTTP post timeout for sending events to OMS LogmAnalytics. The default value is 10 seconds.</td>
-      </tr>
-      <tr>
-        <td><pre>OMS_BATCH_TIME: 10s</pre></td>
-        <td>(Optional) Set the interval for posting a batch to OMS. The default value is 10 seconds.
+      </tr><tr>
+        <td><pre>
+        OMS_POST_TIMEOUT: 10s</pre></td>
+        <td>(Optional) Set the HTTP post timeout for sending events to OMS Log
+        Analytics. The default value is 10 seconds.</td>
+      </tr><tr>
+        <td><pre>
+        OMS_BATCH_TIME: 10s</pre></td>
+        <td>(Optional) Set the interval for posting a batch to OMS. The default
+        value is 10 seconds.
         <br><br>
-        For more information, see <a href="#events">Configure Additional Logging</a>.</td>
-      </tr>
-      <tr>
-        <td><pre>OMS_MAX_MSG_NUM_PER_BATCH: 1000</pre></td>
-        <td>(Optional) Set the maximum number of messages to include in an OMS batch. The default amount is 1000.
+        For more information, see the <a href="#events">Configure Additional Logging</a> section below.</td>
+      </tr><tr>
+        <td><pre>
+        OMS_MAX_MSG_NUM_PER_BATCH: 1000</pre></td>
+        <td>(Optional) Set the maximum number of messages to include in an OMS
+        batch. The default amount is 1000.
         <br><br>
-        For more information, see <a href="#events">Configure Additional Logging</a>.</td>
-      </tr>
-      <tr>
+        For more information, see the <a href="#events">Configure Additional Logging</a> section below.</td>
+      </tr><tr>
         <td><pre>
         FIREHOSE_USER: YOUR-FIREHOSE-USER
         FIREHOSE_USER_PASSWORD: YOUR-FIREHOSE-PASSWORD</pre></td>
-        <td>Enter the username and password for the Firehose user you created in Step 2c.</td>
-      </tr>
-      <tr>
-        <td><pre>API_ADDR: https://api.YOUR-DOMAIN</pre></td>
+        <td>Enter the username and password for the Firehose user you created
+        in Step 2c.</td>
+      </tr><tr>
+        <td><pre>
+        API_ADDR: https://api.YOUR-DOMAIN</pre></td>
         <td>Enter the URL of your API endpoint.</td>
-      </tr>
-      <tr>
-        <td><pre>DOPPLER_ADDR: wss://doppler.YOUR-DOMAIN:443</pre></td>
-        <td>Enter the URL of your Loggregator Traffic Controller endpoint.</td>
-      </tr>
-      <tr>
-        <td><pre>EVENT_FILTER: YOUR-LIST</pre></td>
-        <td>(Optional) Enter the event types you want to filter out in a comma-separated list. The valid event types are <code>METRIC</code>, <code>LOG</code>, and <code>HTTP</code>.</td>
-      </tr>
-      <tr>
-        <td><pre>IDLE_TIMEOUT: 60s</pre></td>
-        <td>(Optional) Set the duration for the Firehose keep-alive connection. The default time is 60 seconds.</td>
-      </tr>
-      <tr>
-        <td><pre>SKIP_SSL_VALIDATION: TRUE-OR-FALSE</pre></td>
-        <td>Set this value to <code>TRUE</code> to allow insecure connections to the UAA and the Traffic Controller. To block insecure connections to the UAA and Traffic Controller, set this value to <code>FALSE</code>.</td>
-      </tr>
-      <tr>
-        <td><pre>LOG_LEVEL: INFO</pre></td>
-        <td>(Optional) Change this value to increase or decrease the amount of logs. Valid log levels in increasing order include <code>INFO</code>, <code>ERROR</code>, and <code>DEBUG</code>. The default value is <code>INFO</code>.</td>
-      </tr>
-      <tr>
-        <td><pre>LOG_EVENT_COUNT: TRUE-OR-FALSE</pre></td>
-        <td>Set this value to <code>TRUE</code> to log the total count of events that the nozzle has sent, received, and lost. OMS logs this value as <code>CounterEvents</code>.
+      </tr><tr>
+        <td><pre>
+        DOPPLER_ADDR: wss://doppler.YOUR-DOMAIN:443</pre></td>
+        <td>Enter the URL of your Loggregator traffic controller endpoint.</td>
+      </tr><tr>
+        <td><pre>
+        EVENT_FILTER: YOUR-LIST</pre></td>
+        <td>(Optional) Enter the event types you want to filter out in a comma-separated list.
+        The valid event types are <code>METRIC</code>, <code>LOG</code>, and <code>HTTP</code>.</td>
+      </tr><tr>
+        <td><pre>
+        IDLE_TIMEOUT: 60s</pre></td>
+        <td>(Optional) Set the duration for the Firehose keepalive connection.
+        The default time is 60 seconds.</td>
+      </tr><tr>
+        <td><pre>
+        SKIP_SSL_VALIDATION: TRUE-OR-FALSE</pre></td>
+        <td>Set this value to <code>TRUE</code> to allow insecure connections to the UAA and the traffic controller. To block insecure connections to the UAA and traffic controller,
+        set this value to <code>FALSE</code>.</td>
+      </tr><tr>
+        <td><pre>
+        LOG_LEVEL: INFO</pre></td>
+        <td>(Optional) Change this value to increase or decrease the amount of
+        logs. Valid log levels in increasing order include <code>INFO</code>,
+        <code>ERROR</code>, and <code>DEBUG</code>. The default value is <code>INFO</code>.</td>
+      </tr><tr>
+        <td><pre>
+        LOG_EVENT_COUNT: TRUE-OR-FALSE</pre></td>
+        <td>Set this value to <code>TRUE</code> to log the total count of events
+        that the nozzle has sent, received, and lost. OMS logs this value as <code>CounterEvents</code>.
         <br><br>
-        For more information, see <a href="#events">Configure Additional Logging</a>.</td>
-      </tr>
-      <tr>
-        <td><pre>LOG_EVENT_COUNT_INTERVAL: 60s</pre></td>
-        <td>(Optional) Set the time interval for logging the event count to OMS. The default interval is 60 seconds.
+        For more information, see the <a href="#events">Configure Additional Logging</a> section below.</td>
+      </tr><tr>
+        <td><pre>
+        LOG_EVENT_COUNT_INTERVAL: 60s</pre></td>
+        <td>(Optional) Set the time interval for logging the event count to OMS.
+        The default interval is 60 seconds.
         <br><br>
-	      For more information, see <a href="#events">Configure Additional Logging</a>.</td>
+	For more information, see the <a href="#events">Configure Additional Logging</a> section below.</td>
       </tr>
     </table>
 
-1. Push the app by running:
+1. Push the app:
 
-    ```
-    cf push
-    ```
-
+    <pre class="terminal">
+    $ cf push
+    </pre>
 
 ## <a id='oms-portal'></a> Step 3: View Logs in OMS Portal
 
-Import the <%= vars.app_runtime_abbr %> OMS view to your OMS Portal to view visualized logs and metrics. You can also create alert rules for specific events.
+Import the Cloud Foundry OMS view to your OMS Portal to view visualized logs and metrics. You can also create alert rules for specific events.
 
-<p class="note"><strong>Note:</strong> The OMS view of <%= vars.app_runtime_abbr %> is not yet available in the OMS Solutions Gallery. You can add it manually to view your logs in OMS Portal.</p>
+<p class="note"><strong>Note</strong>: The OMS view of Cloud Foundry is not yet available in the OMS Solutions Gallery. You can add it manually to view your logs in OMS Portal.</p>
 
 ### <a id='import-view'></a> Import the OMS View
 
-To import the OMS view:
-
-1. From the main OMS Overview page, go to **View Designer**.
-
+1. From the main OMS Overview page, navigate to **View Designer**.
 1. Click **Import**.
-
 1. Click **Browse**.
-
 1. Select the **Cloud Foundry (Preview).omsview** file.
-
 1. Save the view. The main OMS Overview page displays the **Tile**.
-
 1. Click the **Tile** to view visualized metrics.
 
-For more information, see [Create custom views by using View Designer in Azure Monitor](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-view-designer) in the Azure documentation.
+See the [OMS Log Analytics View Designer documentation](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-view-designer) for more information.
 
 ### <a id='alert'></a> Create Alert Rules
 
-For more information about OMS Log Analytics alerts, see [Overview of alerts in Microsoft Azure](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-alerts) in the Azure documentation.
+See [Overview of alerts in Microsoft Azure](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-alerts) for more information about OMS Log Analytics alerts.
 
 ### <a id='queries'></a> Set Alert Queries
 
@@ -211,58 +194,79 @@ This section includes example queries that operators can set in the OMS Portal.
     Type=CF_CounterEvent_CL Name_s="TruncatingBuffer.DroppedMessages"
     ```
 
-
 ## <a id='additional-logging'></a> (Optional) Step 4: Configure Additional Logging
 
-OMS Log Analytics Firehose Nozzle forwards metrics from the Loggregator Firehose to OMS with minimal processing, but the nozzle can push additional metrics to OMS.
+OMS Log Analytics Firehose Nozzle forwards metrics from the Loggregator Firehose to OMS with minimal processing,
+but the nozzle can push additional metrics to OMS.
 
 ### <a id='events'></a> Log Sent, Received, and Lost Events
 
-If you set the `LOG_EVENT_COUNT` environment variable to `TRUE` in the [manifest](#deploy), the nozzle periodically sends the count of sent, received, and lost events to OMS. The value you set for the `LOG_EVENT_COUNT_INTERVAL` determines how frequently the nozzle sends the count.
+If you set the `LOG_EVENT_COUNT` environment variable to `TRUE` in the [manifest](#deploy), the nozzle periodically sends
+the count of sent, received, and lost events to OMS. The value you set for the `LOG_EVENT_COUNT_INTERVAL` determines how
+frequently the nozzle sends the count.
 
-<p class="note"><strong>Note:</strong> The nozzle does not count <strong>CounterEvents</strong> themselves in the sent, received, or lost event count.</p>
+<p class="note"><strong>Note</strong>: The nozzle does not count <strong>CounterEvents</strong> themselves in the sent, received, or lost event count.</p>
 
 The nozzle sends the count as a **CounterEvent** with a **CounterKey** of one of the following:
 
-| CounterEvent | CounterKey |
-| ------------ | ---------- |
-| nozzle.stats.eventsReceived | The number of events the Firehose has received during the interval |
-| nozzle.stats.eventsSent | The number of events the nozzle has successfully sent to OMS during the interval |
-| nozzle.stats.eventsLost | The number of events the nozzle has tried to send to OMS during the interval, but failed to send after 4 attempts |
+<table>
+  <tr>
+    <th>CounterEvent</th>
+    <th>CounterKey</th>
+  </tr><tr>
+    <td><code>nozzle.stats.eventsReceived</td>
+    <td>The number of events the Firehose has received during the interval</td>
+  </tr><tr>
+    <td><code>nozzle.stats.eventsSent</code></td>
+    <td>The number of events the nozzle has successfully sent to OMS during the interval</td>
+  </tr><tr>
+    <td><code>nozzle.stats.eventsLost</code></td>
+    <td>The number of events the nozzle has tried to send to OMS during the interval, but failed to send after 4 attempts</td>
+  </tr>
+</table>
 
-In most cases, the total count of `eventsSent` plus `eventsLost` is less than the total `eventsReceived` at the same time. The nozzle buffers some messages and posts them in a batch to OMS. Operators can adjust the buffer size by adjusting the `OMS_BATCH_TIME` and `OMS_MAX_MSG_NUM_PER_BATCH` environment variables in the manifest).
+In most cases, the total count of `eventsSent` plus `eventsLost` is less than the total `eventsReceived` at the same time.
+The nozzle buffers some messages and posts them in a batch to OMS. Operators can adjust the buffer size by adjusting
+the `OMS_BATCH_TIME` and `OMS_MAX_MSG_NUM_PER_BATCH` environment variables in the [manifest](#deploy).
 
 ### <a id='slow-consumer'></a> Log Slow Consumer Alerts
 
-<p class="note"><strong>Note:</strong> The nozzle does not count <strong>ValueMetrics</strong> in the sent, received, or lost event count.</p>
+<p class="note"><strong>Note</strong>: The nozzle does not count <strong>ValueMetrics</strong> in the sent, received, or lost event count.</p>
 
 Loggregator sends the nozzle a `slowConsumerAlert` in the following situations:
 
-* WebSocket sends the error code `ClosePolicyViolation (1008)`.
-
-* The nozzle receives a **CounterEvent** with the value `TruncatingBuffer.DroppedMessages`.
+* WebSocket sends the error code `ClosePolicyViolation (1008)`
+* The nozzle receives a **CounterEvent** with the value `TruncatingBuffer.DroppedMessages`
 
 In either case, the nozzle sends the `slowConsumerAlert` event to OMS as the following **ValueMetric**:
 
-| ValueMetric | MetricKey |
-| ----------- | --------- |
-| nozzle.alert.slowConsumerAlert | 1 |
+<table>
+  <tr>
+    <th>ValueMetric</th>
+    <th>MetricKey</th>
+  </tr><tr>
+    <td><code>nozzle.alert.slowConsumerAlert</code></td>
+    <td>1</td>
+  </tr>
+</table>
 
-For more information, see the [Slow Nozzle Alerts](../../loggregator/log-ops-guide.html#slow-noz) section of the _Loggregator Guide for <%= vars.app_runtime_abbr %> Operators_ topic.
-
+See the _Slow Nozzle Alerts_ section of the [Loggregator Guide for Cloud Foundry Operators](https://docs.cloudfoundry.org/loggregator/log-ops-guide.html#slow-noz) for more information.
 
 ## <a id='scaling'></a> (Optional) Step 5: Scale the Deployment
 
 ### <a id='scale-nozzle'></a> Scale the Nozzle
 
-If the nozzle is unable to keep up with processing logs from the Firehose, Loggregator alerts the nozzle. When the nozzle receives the alert, it sends a `slowConsumerAlert` to OMS. If this happens, scaling up the nozzle minimizes data loss.
+If the nozzle is unable to keep up with processing logs from the Firehose, Loggregator alerts the nozzle.
+When the nozzle receives the alert, it sends a `slowConsumerAlert` to OMS. If this happens, scaling up the nozzle minimizes data loss.
 
-If an operator chooses to scale up their deployment, the Firehose evenly distributes events across all instances of the nozzle. For more information, see the [Scaling Nozzles](../../loggregator/log-ops-guide.html#scaling-nozzles) section of the _Loggregator Guide for <%= vars.app_runtime_abbr %> Operators_ topic.
+If an operator chooses to scale up their deployment, the Firehose evenly distributes events across all instances of the nozzle.
+See the _Scaling Nozzles_ section of the [Loggregator Guide for Cloud Foundry Operators](https://docs.cloudfoundry.org/loggregator/log-ops-guide.html#scaling-nozzles) for more information.
 
-Operators can create an alert rule for the `slowConsumerAlert` message. For more information, see [Create Alert Rules](#alert).
+Operators can [create an alert rule](#alert) for the `slowConsumerAlert` message.
 
 ### <a id='scale-loggregator'></a> Scale Loggregator
 
-Loggregator sends `LGR` log messages to indicate problems with the logging process. For more information, see the [Scaling Loggregator](../../loggregator/log-ops-guide.html#scaling section of the _Loggregator Guide for <%= vars.app_runtime_abbr %> Operators_ topic.
+Loggregator sends `LGR` log messages to indicate problems with the logging process.
+See the _Scaling Loggregator_ section of the [Loggregator Guide for Cloud Foundry Operators](https://docs.cloudfoundry.org/loggregator/log-ops-guide.html#scaling) for more information.
 
-Operators can create an alert rule for the `LGR` message. For more information, see [Create Alert Rules](#alert).
+Operators can [create an alert rule](#alert) for the `LGR` message.

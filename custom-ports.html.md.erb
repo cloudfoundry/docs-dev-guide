@@ -72,10 +72,17 @@ To configure your app to receive HTTP or TCP traffic on custom ports:
 	```
 	Where `HOST-NAME` is the hostname for the route. By default, this is the name of your app.
 
-1. Update the route mapping for your app by running:
+For TCP route without a hostname, please run the command as follows to retrive its GUID:
+
+        ```
+        cf curl /v2/apps/APP-GUID/routes
+        ```
+
+1. Check and update the route mappings for your app by running:
 
 	```
-	cf curl /v2/route_mappings -X POST -d '{"app_guid": "APP-GUID", "route_guid": "ROUTE-GUID", "app_port": PORT1}'. 
+        cf curl /v2/routes/ROUTE-GUID/route_mappings
+	cf curl /v2/route_mappings -X POST -d '{"app_guid": "APP-GUID", "route_guid": "ROUTE-GUID", "app_port": PORT1}' 
 	```
 	Where:
 	* `APP-GUID` is the GUID of your app.

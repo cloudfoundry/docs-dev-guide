@@ -79,7 +79,7 @@ How you run `cf push` with apps stored in container registries depends on which 
 
 The sections below explain how to push apps under different container registry scenarios.
 
-###<a id='public'></a> Docker Hub
+### <a id='public'></a> Docker Hub
 
 To deploy a Docker image from a Docker Hub repository, run:
 
@@ -166,9 +166,9 @@ Where:
 
 To push an app as a Docker image from ECR, run:
 
-    ```
-    CF_DOCKER_PASSWORD=AWS-SECRET-ACCESS-KEY cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username AWS-ACCESS-KEY-ID
-    ```
+```
+CF_DOCKER_PASSWORD=AWS-SECRET-ACCESS-KEY cf push APP-NAME --docker-image REPO/IMAGE:TAG --docker-username AWS-ACCESS-KEY-ID
+```
 
 Where:
 

@@ -113,20 +113,6 @@ Where:
 * `REPO` is the name of the repository where the image is stored.
 * `IMAGE` is the name of the image being pushed.
 * (Optional, but recommended) `TAG` is the tag or version for the image.
-=======
-### <a id='private'></a> Private Container Registry without Authentication
-
-As an alternative to Docker Hub, you can use any Docker image registry that presents a valid certificate for HTTPS traffic, such as a company-internal Docker registry.
-
-To push an app as a Docker image using a specified Docker registry, run:
-
-```
-cf push APP-NAME --docker-image YOUR-PRIVATE-REGISTRY.DOMAIN:PORT/REPO/IMAGE:TAG
-```
-
-Where:
-
-* `APP-NAME` is the name to give the pushed app on <%= vars.product_short %>.
 
 
 ## <a id='private-repo'></a> Push a Docker Image From a Registry with Authentication

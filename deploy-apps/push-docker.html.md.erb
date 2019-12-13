@@ -3,6 +3,7 @@ title: Deploying an App with Docker
 owner: Diego
 ---
 
+
 This topic describes how to use the [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html) to push an app with a new or updated Docker image. <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) then uses the Docker image to create containers for the app.
 
 For an explanation of how Docker works in <%= vars.app_runtime_abbr %>, see [Using Docker in <%= vars.app_runtime_abbr %>](../../adminguide/docker.html).
@@ -163,8 +164,6 @@ Where:
 ### <a id='ecr'></a> Amazon Elastic Container Registry (ECR)
 
 <%= vars.app_runtime_abbr %> supports pushing apps from images hosted on Amazon Web Services ECR, which authenticates with temporary password tokens.
-
-<%= vars.ecr_support_cf_12_1 %>
 
 To push an app as a Docker image from ECR, run:
 

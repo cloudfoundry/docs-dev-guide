@@ -65,23 +65,23 @@ To configure your app to receive HTTP or TCP traffic on custom ports:
 	* `APP-GUID` is the GUID of your app.
 	*  `PORT1, PORT2, PORT3...` is a comma-separated list of the ports on which you want your app to receive traffic. 
 
-1. Retrieve the GUID of the route to which clients make requests, and for which <%= vars.app_runtime_abbr %> routes requests to the app on a custom port, by running:
+1. Retrieve the GUID of the route to which clients make requests, and for which <%= vars.app_runtime_abbr %> routes requests to the app on a custom port. Use one of the following options:
+      - For a TCP route with a hostname, retrieve its GUID by running:
 
-	```
-	cf curl /v2/routes?q=host:HOST-NAME
-	```
-	Where `HOST-NAME` is the hostname for the route. By default, this is the name of your app.
+          ```
+          cf curl /v2/routes?q=host:HOST-NAME
+          ```
+          Where `HOST-NAME` is the hostname for the route. By default, this is the name of your app.
+      - For a TCP route without a hostname, retrieve its GUID by running:
 
-For TCP route without a hostname, please run the command as follows to retrive its GUID:
-
-        ```
-        cf curl /v2/apps/APP-GUID/routes
-        ```
+          ```
+          cf curl /v2/apps/APP-GUID/routes
+          ```
 
 1. Check and update the route mappings for your app by running:
 
 	```
-        cf curl /v2/routes/ROUTE-GUID/route_mappings
+  cf curl /v2/routes/ROUTE-GUID/route_mappings
 	cf curl /v2/route_mappings -X POST -d '{"app_guid": "APP-GUID", "route_guid": "ROUTE-GUID", "app_port": PORT1}' 
 	```
 	Where:

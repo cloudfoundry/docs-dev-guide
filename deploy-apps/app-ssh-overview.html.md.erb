@@ -3,8 +3,6 @@ title: App SSH Overview
 owner: Diego
 ---
 
-
-
 This topic introduces SSH configuration for apps in your <%= vars.app_runtime_full %> deployment.
 
 If you need to troubleshoot an instance of an app, you can gain SSH access to the app using the SSH proxy and daemon.
@@ -41,17 +39,17 @@ Operators, space managers, and space developers can configure SSH access for <%=
 An app is SSH-accessible only if operators, space managers, and space developers all grant SSH access at their respective levels. For example, the image below shows a deployment where:
 
 * An operator allowed SSH access at the deployment level.
-* A space manager allowed SSH access for apps running in spaces "A" and "B" but not "C."
-* A space developer enabled SSH access for apps that include "Foo," "Bar," and "Baz."
+* A space manager allowed SSH access for apps running in spaces "A" and "B" but not "C".
+* A space developer enabled SSH access for apps that include "Foo", "Bar", and "Baz".
 
-As a result, apps "Foo," "Bar," and "Baz" accept SSH requests.
+As a result, apps "Foo", "Bar", and "Baz" accept SSH requests.
 
 <%= image_tag("../images/ssh-app-access.png") %>
 
 
 ## <a id='app-ssh-config'></a> SSH Access for Apps and Spaces
 
-Space managers and space developers can configure SSH access from the command line. The Cloud Foundry Command Line Interface (cf CLI) also includes commands to return the value of the SSH access setting. See the [Accessing Apps with Diego SSH](./ssh-apps.html) topic to use and configure SSH at both the app level and the space level.
+Space managers and space developers can configure SSH access from the command line. The Cloud Foundry Command Line Interface (cf CLI) also includes commands to return the value of the SSH access setting. To use and configure SSH at both the app level and the space level, see [Accessing Apps with Diego SSH](./ssh-apps.html).
 
 
 ## <a id="platform-ssh-config"></a> Configuring SSH Access for <%= vars.app_runtime_full %>
@@ -61,4 +59,4 @@ Space managers and space developers can configure SSH access from the command li
 
 ## <a id="diego-ssh-concepts"></a> About SSH Access
 
-The SSH system components include the SSH proxy and daemon, and the system also supports authentication, and load balancing of incoming SSH traffic. The [Application SSH Components and Processes](../../concepts/diego/ssh-conceptual.html) topic provides a conceptual overview.
+The SSH system components include the SSH proxy and daemon, and the system also supports authentication and load balancing of incoming SSH traffic. For a conceptual overview, see [App SSH Components and Processes](../../concepts/diego/ssh-conceptual.html).

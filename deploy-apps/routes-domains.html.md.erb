@@ -3,10 +3,9 @@ title: Configuring Routes and Domains
 owner: Routing
 ---
 
-
 <% $this_topic = 'routes-domains' %>
 
-This topic describes how routes and domains work in <%= vars.product_full %>, and how developers and administrators configure routes and domains for their apps using the Cloud Foundry Command Line Interface (cf CLI).
+This topic describes how routes and domains work in <%= vars.product_runtime %> (<%= vars.product_short %>), and how developers and administrators configure routes and domains for their apps using the Cloud Foundry Command Line Interface (cf CLI).
 
 For more information about routing capabilities in <%= vars.product_short %>, see the [HTTP Routing](../../concepts/http-routing.html) topic.
 
@@ -44,7 +43,7 @@ The routing tier compares each request with a list of all the routes mapped to a
   </tr>
 </table>
 
-The Gorouter does not use a route to match requests until the route is mapped to an app. In the above example, `products.<%= vars.app_domain %>` may have been created as a route in Cloud Foundry, but until it is mapped to an app, requests for the route receive a `404`.
+The Gorouter does not use a route to match requests until the route is mapped to an app. In the above example, `products.<%= vars.app_domain %>` may have been created as a route in C<%= vars.product_short %>, but until it is mapped to an app, requests for the route receive a `404`.
 
 The routing tier knows the location of instances for apps mapped to routes. Once the routing tier determines a route as the best match for a request, it makes a load-balancing calculation using a round-robin algorithm, and forwards the request to an instance of the mapped app.
 
@@ -68,7 +67,7 @@ HTTP routes include a domain, an optional hostname, and an optional context path
 * Requests to HTTP routes must be sent to ports 80 or 443.
 * Ports cannot be reserved for HTTP routes.
 
-TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an app pushed to Cloud Foundry listens on. `tcp.shared-domain.example.com:60000` is an example of a TCP route. Just as for HTTP routes, apps should listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. As an example, requests to `tcp.shared-domain.example.com:60000` would be routed to the app container at `localhost:8080`.
+TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an app pushed to <%= vars.product_short %> listens on. `tcp.shared-domain.example.com:60000` is an example of a TCP route. Just as for HTTP routes, apps should listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. As an example, requests to `tcp.shared-domain.example.com:60000` would be routed to the app container at `localhost:8080`.
 
 * Once a port is reserved for a route, it cannot be reserved for another route.
 * Hostname and path are not supported for TCP routes.
@@ -457,9 +456,9 @@ If the cf CLI cannot find the instance the format is incorrect, a `404` status c
 
 ## <a id='domains'></a> Domains
 
-<p class="note"><strong>Note:</strong> The term domain in this topic differs from its common use and is specific to Cloud Foundry. Likewise, shared domain and private domain refer to resources with specific meaning in Cloud Foundry. The use of domain name, root domain, and subdomain refers to DNS records.</p>
+<p class="note"><strong>Note:</strong> The term domain in this topic differs from its common use and is specific to <%= vars.product_short %>. Likewise, shared domain and private domain refer to resources with specific meaning in <%= vars.product_short %>. The use of domain name, root domain, and subdomain refers to DNS records.</p>
 
-Domains indicate to a developer that requests for any route created from the domain will be routed to <%= vars.product_short %>. This requires DNS to be configured out-of-band to resolve the domain name to the IP address of a load balancer configured to forward requests to the CF routers. For more information about configuring DNS, see the [DNS for Domains](#domains-dns) section.
+Domains indicate to a developer that requests for any route created from the domain will be routed to <%= vars.product_short %>. This requires DNS to be configured out-of-band to resolve the domain name to the IP address of a load balancer configured to forward requests to the <%= vars.product_short %> routers. For more information about configuring DNS, see the [DNS for Domains](#domains-dns) section.
 
 ### <a id='list-domains'></a> List Domains for an Org
 

@@ -307,22 +307,23 @@ Cloud Foundry offers one SMB volume service:
 
 The service offers a single plan called `Existing`.
 
-To create an SMB volume service, follow the procedure below.
+To create an SMB volume service:
 
-#### Create with `smb` Service
+1. Create the service. Run:
 
-You can create an SMB volume service using the `Existing` plan of the `smb` service. Run the following command:
+    ```
+    $ cf create-service smb Existing SERVICE-INSTANCE-NAME -c '{"share":"//SERVER/SHARE", "version":"SMB-VERSION"}'
+    ```
 
-```
-$ cf create-service smb Existing SERVICE-INSTANCE-NAME -c '{"share":"//SERVER/SHARE"}'
-```
+    Where:
+      * `SERVICE-INSTANCE-NAME` is a name you provide for this SMB volume service instance.
+      * `//SERVER/SHARE` is the SMB address of your server and share.
+      * (Optional) `SMB-VERSION` is the SMB protocol version you want to use. For example, to use SMB 2.1, set the version to `2.1`. Valid values are `1.0`, `2.0`, `2.1`, or `3.0`. If you do not specify a `version`, the client and server negotiate a protocol version at mount time. The client and server usually select the latest available version.
+1. Confirm that the SMB volume service appears in your list of services. Run:
 
-Where:
-
-* `SERVICE-INSTANCE-NAME` is a name you provide for this SMB volume service instance.
-* `//SERVER/SHARE` is the SMB address of your server and share.
-
-You can run the `cf services` command to confirm that your newly-created SMB volume service displays in the output.
+    ```
+    cf services
+    ```
 
 ### <a id='smb-sample'></a> Deploy and Bind a Sample App
 

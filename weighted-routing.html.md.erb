@@ -27,9 +27,9 @@ The weighted routing feature is available for <%= vars.app_runtime_full %> deplo
 <% else %>
 <% end %>
 
-Weighted routing allows you to map multiple apps to the same route and control the amount of traffic sent to each of them. Some use cases include blue-green deployments, A/B testing, canary releases, or rolling out features over time to incremental user-bases. 
+Weighted routing allows you to map multiple apps to the same route and control the amount of traffic sent to each of them. Some use cases include blue-green deployments, A/B testing, canary releases, or rolling out features over time to incremental user bases. 
 
-### <a id="calculation"></a> How Weights are Calculated
+### <a id="calculation"></a> How Weights are Used to Calculate Percentage of Requests
 
 <%= vars.product_short %> uses numeric weight values to calculate the percentage of requests that each app receives. For a route with multiple apps mapped, the percentage of requests for a given app is calculated as follows:
 
@@ -71,7 +71,7 @@ Consider the following when working with routing weights:
 * The default weight is <code>1</code>. This means that if multiple apps are mapped to the same route and their weights are not updated, traffic is equally distributed between them.  
 * The percentage of requests described above is not applied exactly, but over time the requests reflect the percentage.
 * You cannot set a weight to <code>0</code>. You can stop weighting traffic by deleting apps or unmapping apps from the route. 
-* You cannot exceed <code>100</code> routes mappings for a particular route. This could result in some apps not receiving any requests.
+* You cannot exceed <code>100</code> route mappings for a particular route. This could result in some apps not receiving any requests.
 
 
 ## <a id="procedure"></a> Configure Routing Weights
@@ -164,7 +164,7 @@ This procedure describes how to use `cf curl` to map a route to an app and assig
 	Where:
 	* `APP-GUID` is the app GUID you recorded previously
 	* `ROUTE-GUID` is the route GUID you recorded previously
-	* `WEIGHT` is an integer used to calculate the percentage of requests the app receives. You can enter a value from `1` to `128`. See [How Weights are Calculated](#calculation) above. 
+	* `WEIGHT` is an integer used to calculate the percentage of requests the app receives. You can enter a value from `1` to `128`. See [How Weights are Used to Calculate Percentage of Requests](#calculation) above. 
 
 ### <a id="existing"></a> Update an Existing Route Mapping
 
@@ -248,7 +248,7 @@ To update an existing route mapping with a new weight, do the following:
 	```
 	Where:
 	* `ROUTE_MAPPING_GUID` is the route mapping GUID you got from the previous step.
-	* `WEIGHT` is an integer used to calculate the percentage of requests the app receives. You can enter a value from `1` to `128`. See [How Weights are Calculated](#calculation) above.  
+	* `WEIGHT` is an integer used to calculate the percentage of requests the app receives. You can enter a value from `1` to `128`. See [How Weights are Used to Calculate Percentage of Requests](#calculation) above.  
 
 ## <a id="observe"></a> Confirm Routing Weights
 

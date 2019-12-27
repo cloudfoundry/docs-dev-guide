@@ -3,59 +3,54 @@ title: Considerations for Designing and Running an App in the Cloud
 owner: CAPI
 ---
 
+This topic describes some considerations you should keep in mind when designing and running an app through <%= vars.product_name %>.
 
 
-## <a id="app-design"></a>App Design for the Cloud ##
+## <a id="app-design"></a> App Design for the Cloud
 
-Apps written in supported frameworks often run unmodified on
-Cloud Foundry if the app design follows a few simple guidelines.
-Following these guidelines facilitates app deployment to Cloud Foundry and other cloud platforms.
+Apps written in supported frameworks often run unmodified on <%= vars.product_name %> if the app design follows a few simple guidelines. Following these guidelines facilitates app deployment to <%= vars.product_name %> and other cloud platforms.
 
 The following guidelines represent best practices for developing modern apps for cloud platforms. For more detailed reading about good app design for the cloud, see [The Twelve-Factor App](http://www.12factor.net).
 
-For more information about the features of HTTP routing handled by the Cloud Foundry router, see the [HTTP Routing](../../concepts/http-routing.html) topic. For more information about the lifecycle of app containers, see the [App Container Lifecycle](app-lifecycle.html) topic.
+For more information about the features of HTTP routing handled by the Gorouter in <%= vars.product_name %>, see [HTTP Routing](../../concepts/http-routing.html). For more information about the lifecycle of app containers, see [App Container Lifecycle](app-lifecycle.html).
 
-### <a id="filesystem"></a>Avoid Writing to the Local File System ###
+### <a id="filesystem"></a> Avoid Writing to the Local File System
 
-Apps running on Cloud Foundry should not write files to the local file
-system for the following reasons:
+Apps running on <%= vars.product_name %> should not write files to the local file system for the following reasons:
 
-* **Local file system storage is short-lived.** When an app instance crashes or stops, the resources assigned to that instance are reclaimed by the platform including any local disk changes made since the app started. When the instance is restarted, the app will start with a new disk image. Although your app can write local files while it is running, the files will disappear after the app restarts.
+* **Local file system storage is short-lived.** When an app instance crashes or stops, the resources assigned to that instance are reclaimed by the platform, including any local disk changes made since the app started. When the instance is restarted, the app starts with a new disk image. Although your app can write local files while it is running, the files disappear after the app restarts.
 
-* **Instances of the same app do not share a local file system.** Each app instance runs in its own isolated container. Thus a file written by one instance is not visible to other instances of the same app. If the files are temporary, this should not be a problem. However, if your app needs the data in the files to persist across app restarts, or the data needs to be shared across all running instances of the app, the local file system should not be used. We recommend using a shared data service like a database or blobstore for this purpose.
+* **Instances of the same app do not share a local file system.** Each app instance runs in its own isolated container. Therefore, a file written by one instance is not visible to other instances of the same app. If the files are temporary, this should not be a problem. However, if your app needs the data in the files to persist across app restarts, or the data needs to be shared across all running instances of the app, the local file system should not be used. <%= vars.recommended_by %> recommends using a shared data service like a database or blobstore for this purpose.
 
-For example, instead of using the local file system, you can use a Cloud
-Foundry service such as the MongoDB document database or a relational database like MySQL or Postgres.
-Another option is to use cloud storage providers such as [Amazon S3](http://aws.amazon.com/s3/), [Google Cloud Storage](https://cloud.google.com/products/cloud-storage), [Dropbox](https://www.dropbox.com/developers), or [Box](http://developers.box.com/).
-If your app needs to communicate across different instances of itself, consider a cache like Redis or a messaging-based architecture with RabbitMQ.
+For example, instead of using the local file system, you can use a <%= vars.product_name %> service such as the MongoDB document database or a relational database like MySQL or Postgres. Another option is to use cloud storage providers such as [Amazon S3](http://aws.amazon.com/s3/), [Google Cloud Storage](https://cloud.google.com/products/cloud-storage), [Dropbox](https://www.dropbox.com/developers), or [Box](http://developers.box.com/). If your app needs to communicate across different instances of itself, consider a cache like Redis or a messaging-based architecture with RabbitMQ.
 
-If you must use a file system for your app because for example, your app interacts with other apps through a network attached file system, or because your app is based on legacy code that you cannot rewrite, consider using [Volume Services](../services/using-vol-services.html) to bind a network attached file system to your app.
+If you must use a file system for your app because for example, your app interacts with other apps through a network attached file system, or because your app is based on legacy code that you cannot rewrite, consider using volume services to bind a network attached file system to your app. For more information, see [Using an External File System (Volume Services)](../services/using-vol-services.html)
 
-### <a id="shared-cookies"></a>Cookies Accessible across Apps ###
+### <a id="shared-cookies"></a> Cookies Accessible Across Apps
 
 In an environment with shared domains, cookies might be accessible across apps.
 
-<%= vars.cookies_shared_domain_1 %> Many tracking tools such as Google Analytics and Mixpanel use the highest available domain to set their cookies. <%= vars.cookies_shared_domain_2 %> For example, an app at <code>my-app.<%= vars.app_domain %></code> might be able to access the cookies for an app at <code>your-app.<%= vars.app_domain %></code>.
+<%= vars.cookies_shared_domain_1 %> Many tracking tools such as Google Analytics and Mixpanel use the highest available domain to set their cookies. <%= vars.cookies_shared_domain_2 %> For example, an app at `my-app.<%= vars.app_domain %>` might be able to access the cookies for an app at `your-app.<%= vars.app_domain %>`.
 
 You should decide whether or not you want your apps or tools that use cookies to set and store the cookies at the highest available domain.
 
-### <a id="ports"></a>Port Considerations ###
+### <a id="ports"></a> Port Considerations
 
-Clients connect to apps running on Cloud Foundry by making requests to URLs associated with the app. Cloud Foundry allows HTTP requests to apps on ports 80 and 443. For more information, see the [Routes and Domains](routes-domains.html) topic.
+Clients connect to apps running on <%= vars.product_name %> by making requests to URLs associated with the app. <%= vars.product_name %> allows HTTP requests to apps on ports 80 and 443. For more information, see [Routes and Domains](routes-domains.html).
 
-Cloud Foundry also supports WebSocket handshake requests over HTTP containing the `Upgrade` header. The Cloud Foundry router handles the upgrade and initiates a TCP connection to the app to form a WebSocket connection.
+<%= vars.product_name %> also supports WebSocket handshake requests over HTTP containing the `Upgrade` header. The <%= vars.product_name %> router handles the upgrade and initiates a TCP connection to the app to form a WebSocket connection.
 
 <%= vars.port_limitations %>
 
-### <a id="moving-apps"></a> Cloud Foundry Updates and Your App ###
+### <a id="moving-apps"></a> <%= vars.product_name %> Updates and Your App
 
-For app management purposes, Cloud Foundry may need to stop and restart your app instances. If this occurs, Cloud Foundry performs the following steps:
+For app management purposes, <%= vars.product_name %> may need to stop and restart your app instances. If this occurs, <%= vars.product_name %> performs the following steps:
 
-1. Cloud Foundry sends a single <code>termination signal</code> to the root process that your start command invokes.
+1. <%= vars.product_name %> sends a single `termination signal` to the root process that your start command invokes.
 
-1. Cloud Foundry waits 10 seconds to allow your app to cleanly shut down any child processes and handle any open connections.
+1. <%= vars.product_name %> waits 10 seconds to allow your app to cleanly shut down any child processes and handle any open connections.
 
-1. After 10 seconds, Cloud Foundry forcibly shuts down your app.
+1. After 10 seconds, <%= vars.product_name %> forcibly shuts down your app.
 
 Your app should accept and handle the termination signal to ensure that it shuts down gracefully. To achieve this, the app is expected to follow the steps below when shutting down:
 
@@ -65,13 +60,12 @@ Your app should accept and handle the termination signal to ensure that it shuts
 1. App closes existing connections as their requests complete
 1. App shuts down or is killed
 
-See the [Sample HTTP App](https://github.com/cloudfoundry/sample-http-app) GitHub repository for an implementation of the expected shutdown behavior in Golang.
+For an implementation of the expected shutdown behavior in Golang, see the [Sample HTTP App](https://github.com/cloudfoundry/sample-http-app) repository on GitHub.
 
-## <a id="exclude"></a>Ignore Unnecessary Files When Pushing ##
 
-By default, when you push an app, all files in the app's project
-directory tree are uploaded to your Cloud Foundry instance, except version
-control and configuration files or folders with the following names:
+## <a id="exclude"></a> Ignore Unnecessary Files When Pushing
+
+By default, when you push an app, all files in the app's project directory tree are uploaded to your <%= vars.product_name %> instance, except version control and configuration files or folders with the following names:
 
 * `.cfignore`
 * `_darcs`
@@ -84,9 +78,7 @@ control and configuration files or folders with the following names:
 
 In addition to these, if API request diagnostics are directed to a log file and the file is within the project directory tree, it is excluded from the upload. You can direct these API request diagnostics to a log file using `cf config --trace` or the `CF_TRACE` environment variable.
 
-If the app directory contains other files, such as `temp` or `log`
-files, or complete subdirectories that are not required to build and run your
-app, you might want to add them to a `.cfignore` file to exclude them from upload. Especially with a large app, uploading unnecessary files can slow app deployment.
+If the app directory contains other files, such as `temp` or `log` files, or complete subdirectories that are not required to build and run your app, you might want to add them to a `.cfignore` file to exclude them from upload. Especially with a large app, uploading unnecessary files can slow app deployment.
 
 To use a `.cfignore` file, create a text file named `.cfignore` in the root of your app directory structure. In this file, specify the files or file types you wish to exclude from upload. For example, these lines in a `.cfignore` file exclude the "tmp" and "log" directories.
 
@@ -95,24 +87,22 @@ To use a `.cfignore` file, create a text file named `.cfignore` in the root of y
     log
 </pre>
 
-The file types you will want to exclude vary, based on the app
-frameworks you use. For examples of commonly-used `.gitignore` files, see [https://github.com/github/gitignore](https://github.com/github/gitignore).
+The file types you might want to exclude vary, based on the app frameworks you use. For examples of commonly-used `.gitignore` files, see the [gitignore](https://github.com/github/gitignore) repository on GitHub.
 
-## <a id="increase-availability"></a>Run Multiple Instances to Increase Availability ##
+
+## <a id="increase-availability"></a> Run Multiple Instances to Increase Availability
 
 Singleton apps may become temporarily unavailable for reasons that include:
 
-* During an upgrade, <%= vars.product_name %> gracefully shuts down the apps running on each Diego cell and then restarts them on another Diego cell. Single app instances may become temporarily unavailable if the replacement instance does not become healthy within the cell's evacuation timeout, which defaults to 10 minutes.
+* During an upgrade, <%= vars.product_name %> gracefully shuts down the apps running on each Diego Cell and restarts them on another Diego Cell. Single app instances may become temporarily unavailable if the replacement instance does not become healthy within the Diego Cell's evacuation timeout, which defaults to 10 minutes.
 
-* Unexpected faults in <%= vars.product_name %> system components or underlying infrastructure, such as container-host VMs or IaaS Availability Zones, may cause lone app instances to disappear or become unroutable for a minute or two.
+* Unexpected faults in <%= vars.product_name %> system components or underlying infrastructure, such as container-host VMs or IaaS availability zones, may cause lone app instances to disappear or become unroutable for a minute or two.
 
 To avoid the risk of an app becoming temporarily unavailable, developers can run more than one instance of the app.
 
-## <a id="buildpacks"></a>Using Buildpacks ##
 
-A buildpack consists of bundles of detection and configuration scripts that
-provide framework and runtime support for your apps.
-When you deploy an app that needs a buildpack, Cloud Foundry installs
-the buildpack on the Diego cell where the app runs.
+## <a id="buildpacks"></a> Using Buildpacks
 
-For more information, see the [Buildpacks](../../buildpacks/) topic.
+A buildpack consists of bundles of detection and configuration scripts that provide framework and runtime support for your apps. When you deploy an app that needs a buildpack, <%= vars.product_name %> installs the buildpack on the Diego Cell where the app runs.
+
+For more information, see [Buildpacks](../../buildpacks/).

@@ -1,5 +1,5 @@
 ---
-title: Rolling App Deployments
+title: Rolling App Deployments (Beta)
 owner: CAPI
 ---
 
@@ -18,12 +18,12 @@ This topic includes references to cf CLI v7 beta commands. Consider the followin
 <li>cf CLI v7 beta is developed and tested against the latest CAPI release candidate.</li>
 <li>cf CLI v7 beta does not yet use CAPI v3 for all commands. Some commands still use CAPI v2 during beta.</li>
 </ul>
-For more information, see <a href="../../cf-cli/v7.html">Upgrading to cf CLI v7 (Beta)</a>. 
+For more information, see <a href="../../cf-cli/v7.html">Upgrading to cf CLI v7 (Beta)</a>.
 </div>
 
-This topic describes how developers use beta Cloud Foundry Command Line Interface (cf CLI) commands or the Cloud Controller API (CAPI) to push their apps using a rolling deployment. 
+This topic describes how developers use beta Cloud Foundry Command Line Interface (cf CLI) commands or the Cloud Controller API (CAPI) to push their apps using a rolling deployment.
 
-For information about the traditional method for addressing app downtime while pushing app updates, see [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).   
+For information about the traditional method for addressing app downtime while pushing app updates, see [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).
 
 For more information about CAPI, see the [Cloud Controller API Reference](https://v3-apidocs.cloudfoundry.org/).
 
@@ -32,10 +32,10 @@ For more information about CAPI, see the [Cloud Controller API Reference](https:
 
 The procedures in this topic require one of the following:
 
-* **cf CLI v7**: 
+* **cf CLI v7**:
 	* You must have the cf CLI v7. While in beta, cf CLI v7 is only tested against the latest CAPI release candidate.
-* **cf CLI v6**: 
-	* You must have cf CLI v6.40 or later. 
+* **cf CLI v6**:
+	* You must have cf CLI v6.40 or later.
 	* The rolling deployment feature must be enabled for your installation.
 		* <%= vars.zdt_enable %>
 * **CAPI v3**:
@@ -45,7 +45,7 @@ The procedures in this topic require one of the following:
 
 ## <a id="commands"></a> Commands
 
-This section describes the commands for working with rolling app deployments. 
+This section describes the commands for working with rolling app deployments.
 
 ### <a id="deploy"></a> Deploy an App
 
@@ -55,7 +55,7 @@ To deploy an app without incurring downtime:
 
 	```
 	cf7 push APP-NAME --strategy rolling
-	``` 
+	```
 	<p class="note"><strong>Note:</strong> cf CLI v7 exits when one instance of each process is healthy. It also includes a <code>--no-wait</code> flag on push for users who do not want to wait for the operation to complete. No wait exits as soon as one instance is healthy.</p>
 
 * **cf CLI v6**:
@@ -164,25 +164,25 @@ To deploy an app without incurring downtime:
 
 <p class="note warning"><strong>Warning:</strong> Ensure that you understand the limitations of this feature before running the command. For more information, see <a href="#limitations">Limitations</a>.</p>
 
-For more information about this command, see [How It Works](#how-it-works). 
+For more information about this command, see [How It Works](#how-it-works).
 
 ### <a id="cancel"></a> Cancel a Deployment
 
 To stop the deployment of an app that you pushed:
 
-* **cf7 CLI v7**: 
+* **cf7 CLI v7**:
 
 	```
 	cf7 cancel-deployment APP-NAME
 	```
-* **cf CLI v6**: 
+* **cf CLI v6**:
 
 	```
 	cf v3-cancel-zdt-push APP-NAME
 	```
 
 * **CAPI v3**:
-  
+
     <pre>
     cf curl /v3/deployments/<span class="placeholder">DEPLOYMENT-GUID</span>/actions/cancel" \
     -X POST
@@ -199,7 +199,7 @@ This reverts the app to its state from before the deployment started by doing th
 
 ### <a id="restart"></a> Restart an App
 
-Restart your app without downtime using the command below. This is useful when applying configuration updates that require a restart, such as environment variables or service bindings. 
+Restart your app without downtime using the command below. This is useful when applying configuration updates that require a restart, such as environment variables or service bindings.
 
 * **cf CLI v7**:
 	```
@@ -235,31 +235,31 @@ Restart your app without downtime using the command below. This is useful when a
 
 ## <a id="how-it-works"></a> How It Works
 
-This section describes the rolling deployments and their limitations. 
+This section describes the rolling deployments and their limitations.
 
 ### <a id="deployment-process"></a>  Rolling Deployment Process
 
-This section describes the process of pushing an app with a rolling deployment strategy. 
+This section describes the process of pushing an app with a rolling deployment strategy.
 
 1. The `cf7 push APP-NAME --strategy rolling` command does the following:
 	1. Stages the updated app package
 	1. Creates a droplet with the updated app package
-	1. Creates a deployment with the new droplet and any new configuration. 
-		* This starts a new process with one instance that shares the route with the old process. 
+	1. Creates a deployment with the new droplet and any new configuration.
+		* This starts a new process with one instance that shares the route with the old process.
 		* At this point, if you run `cf app` on your app, you see multiple `web` processes.
-		* For more information about the deployment object, see the [Deployments](http://v3-apidocs.cloudfoundry.org/index.html#deployments) section of the CAPI v3 docs. 
+		* For more information about the deployment object, see the [Deployments](http://v3-apidocs.cloudfoundry.org/index.html#deployments) section of the CAPI v3 docs.
 
 1. Once the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the background, updating deployments as follows:
-	1. Adds another instance of the new web process and removes an instance from the old web process. 
+	1. Adds another instance of the new web process and removes an instance from the old web process.
 		<p class="note"><strong>Note:</strong> This only happens if all instances of the new web process are currently running.</p>
-	1. Repeats the above step until the new web process reaches the desired number of instances. 
+	1. Repeats the above step until the new web process reaches the desired number of instances.
 	1. Removes the old web process. The new web process now fully replaces the old web process.
-	1. Restarts all non-web processes of the app. 
-	1. Sets the deployment to `DEPLOYED`. 
+	1. Restarts all non-web processes of the app.
+	1. Sets the deployment to `DEPLOYED`.
 
 ### <a id="limitations"></a> Limitations
 
-The following table describes the limitations to consider when using the rolling deployments. 
+The following table describes the limitations to consider when using the rolling deployments.
 
 <table>
 	<tr>
@@ -283,13 +283,13 @@ The following table describes the limitations to consider when using the rolling
 	</tr>
 	<tr>
 		<td>Database migrations</td>
-		<td>Deployments do not handle database migrations. If you are migrating an app database and the old app is not compatible with the migration, you may still have downtime. 
+		<td>Deployments do not handle database migrations. If you are migrating an app database and the old app is not compatible with the migration, you may still have downtime.
 		</td>
 	</tr>
 	<tr>
 		<td>Non-web processes</td>
 		<td>Rolling deployments only run web processes through the rolling update sequence described above. The commands restart worker and other non-web processes in bulk after updating all web processes.<br><br>
-		The CAPI v3 API introduces the concept of processes as runnable units of an app. Each app has a web process by default. You can specify additional processes with a procfile, and in some cases buildpacks create additional processes. For more information about processes, see the <a href="http://v3-apidocs.cloudfoundry.org/index.html#processes">Processes</a> section of the CAPI v3 documentation. 
+		The CAPI v3 API introduces the concept of processes as runnable units of an app. Each app has a web process by default. You can specify additional processes with a procfile, and in some cases buildpacks create additional processes. For more information about processes, see the <a href="http://v3-apidocs.cloudfoundry.org/index.html#processes">Processes</a> section of the CAPI v3 documentation.
 		</td>
 	</tr>
 	<tr>

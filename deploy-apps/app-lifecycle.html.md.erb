@@ -3,7 +3,7 @@ title: App Container Lifecycle
 owner: Diego
 ---
 
-This topic describes the lifecycle of an app container for <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) deployments running on the Diego architecture.
+This topic describes the lifecycle of an app container for <%= vars.product_runtime %> (<%= vars.product_short %>) deployments running on the Diego architecture.
 
 
 ## <a id="deployment"></a> Deployment
@@ -21,28 +21,28 @@ Developers can change the time limit for starting apps through an app manifest o
 
 ## <a id="crash-events"></a> Crash Events
 
-If an app instance crashes, <%= vars.app_runtime_abbr %> automatically restarts it by rescheduling the instance on another container three times. After three failed restarts, <%= vars.app_runtime_abbr %> waits thirty seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance.
+If an app instance crashes, <%= vars.product_short %> automatically restarts it by rescheduling the instance on another container three times. After three failed restarts, <%= vars.product_short %> waits thirty seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.product_short %> stops trying to restart the app instance.
 
 
 ## <a id="evacuation"></a> Evacuation
 
-Certain operator actions require restarting VMs with containers hosting app instances. For example, an operator who updates stemcells or installs a new version of <%= vars.app_runtime_abbr %> must restart all the VMs in a deployment.
+Certain operator actions require restarting VMs with containers hosting app instances. For example, an operator who updates stemcells or installs a new version of <%= vars.product_short %> must restart all the VMs in a deployment.
 
-<%= vars.app_runtime_abbr %> automatically relocates the instances on VMs that are shutting down through a process called evacuation. <%= vars.app_runtime_abbr %> recreates the app instances on another VM, waits until they are healthy, and then shuts down the old instances. During an evacuation, developers may see their app instances in a duplicated state for a brief period.
+<%= vars.product_short %> automatically relocates the instances on VMs that are shutting down through a process called evacuation. <%= vars.product_short %> recreates the app instances on another VM, waits until they are healthy, and then shuts down the old instances. During an evacuation, developers may see their app instances in a duplicated state for a brief period.
 
 During this app duplication process, singleton app instances may become temporarily unavailable if the replacement instance does not become healthy within the Diego Cell's evacuation timeout, which defaults to 10 minutes. Because of this, app developers with a low tolerance for brief downtime may prefer to run several instances of their app. See [Run Multiple Instances to Increase Availability](prepare-to-deploy.html#increase-availability).
 
 
 ## <a id="shutdown"></a> Shutdown
 
-<%=vars.product_name %> requests a shutdown of your app instance in the following scenarios:
+<%=vars.product_runtime %> requests a shutdown of your app instance in the following scenarios:
 
 * When a user runs `cf scale`, `cf stop`, `cf push`, `cf delete`, or `cf restart-app-instance`
 
 * As a result of a system event, such as the replacement procedure during Diego Cell evacuation or when an app instance stops because of a failed health check probe
 
-To shut down the app, <%= vars.app_runtime_abbr %> sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, <%= vars.app_runtime_abbr %> sends a SIGKILL.
+To shut down the app, <%= vars.product_short %> sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, <%= vars.product_short %> sends a SIGKILL.
 
-Apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before <%= vars.app_runtime_abbr %> terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests.
+Apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before <%= vars.product_short %> terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests.
 
-<p class="note"><strong>Note:</strong> One exception to the cases mentioned above is when monit restarts a crashed Diego Cell rep or Garden server. In this case, <%= vars.app_runtime_abbr %> immediately stops the apps that are still running using SIGKILL.</p>
+<p class="note"><strong>Note:</strong> One exception to the cases mentioned above is when monit restarts a crashed Diego Cell rep or Garden server. In this case, <%= vars.product_short %> immediately stops the apps that are still running using SIGKILL.</p>

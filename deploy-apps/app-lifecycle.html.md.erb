@@ -3,11 +3,10 @@ title: App Container Lifecycle
 owner: Diego
 ---
 
+This topic describes the lifecycle of an app container for <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) deployments running on the Diego architecture.
 
 
-This topic describes the lifecycle of an app container for Cloud Foundry (CF) deployments running on the Diego architecture.
-
-##<a id="deployment"></a> Deployment
+## <a id="deployment"></a> Deployment
 
 The app deployment process involves uploading, staging, and starting the app in a container. Your app must successfully complete each of these phases within certain time limits. The default time limits for the phases are as follows:
 
@@ -15,31 +14,35 @@ The app deployment process involves uploading, staging, and starting the app in 
 * Stage: 15 minutes
 * Start: 60 seconds
 
-<p class="note"><strong>Note</strong>: Your administrator can change these defaults. Check with your administrator for the actual time limits set for app deployment.</p>
+<p class="note"><strong>Note:</strong> Your administrator can change these defaults. Check with your administrator for the actual time limits set for app deployment.</p>
 
-Developers can change the time limit for starting apps through an app manifest or on the command line. For more information, see [The timeout attribute](manifest.html#timeout) section of the Deploying with App Manifests topic and [Using Application Health Checks](./healthchecks.html).
+Developers can change the time limit for starting apps through an app manifest or on the command line. For more information, see [ Deploying with App Manifests](manifest.html) and [Using App Health Checks](./healthchecks.html).
 
-##<a id="crash-events"></a>Crash Events
 
-If an app instance crashes, CF automatically restarts it by rescheduling the instance on another container three times. After three failed restarts, CF waits thirty seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, CF stops trying to restart the app instance.
+## <a id="crash-events"></a> Crash Events
 
-##<a id="evacuation"></a> Evacuation
+If an app instance crashes, <%= vars.app_runtime_abbr %> automatically restarts it by rescheduling the instance on another container three times. After three failed restarts, <%= vars.app_runtime_abbr %> waits thirty seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance.
 
-Certain operator actions require restarting VMs with containers hosting app instances. For example, an operator who updates stemcells or installs a new version of CF must restart all the VMs in a deployment.
 
-CF automatically relocates the instances on VMs that are shutting down through a process called evacuation. CF recreates the app instances on another VM, waits until they are healthy, and then shuts down the old instances. During an evacuation, developers may see their app instances in a duplicated state for a brief period.
+## <a id="evacuation"></a> Evacuation
 
-During this app duplication process, singleton app instances may become temporarily unavailable if the replacement instance does not become healthy within the cell's evacuation timeout, which defaults to 10 minutes. Because of this, app developers with a low tolerance for brief downtime may prefer to run several instances of their app. See [Run Multiple Instances to Increase Availability](prepare-to-deploy.html#increase-availability).
+Certain operator actions require restarting VMs with containers hosting app instances. For example, an operator who updates stemcells or installs a new version of <%= vars.app_runtime_abbr %> must restart all the VMs in a deployment.
 
-##<a id="shutdown"></a> Shutdown
+<%= vars.app_runtime_abbr %> automatically relocates the instances on VMs that are shutting down through a process called evacuation. <%= vars.app_runtime_abbr %> recreates the app instances on another VM, waits until they are healthy, and then shuts down the old instances. During an evacuation, developers may see their app instances in a duplicated state for a brief period.
 
-<%=vars.product_name%> requests a shutdown of your app instance in the following scenarios:
+During this app duplication process, singleton app instances may become temporarily unavailable if the replacement instance does not become healthy within the Diego Cell's evacuation timeout, which defaults to 10 minutes. Because of this, app developers with a low tolerance for brief downtime may prefer to run several instances of their app. See [Run Multiple Instances to Increase Availability](prepare-to-deploy.html#increase-availability).
+
+
+## <a id="shutdown"></a> Shutdown
+
+<%=vars.product_name %> requests a shutdown of your app instance in the following scenarios:
 
 * When a user runs `cf scale`, `cf stop`, `cf push`, `cf delete`, or `cf restart-app-instance`
-* As a result of a system event, such as the replacement procedure during Diego cell evacuation or when an app instance stops because of a failed health-check probe
 
-To shut down the app, CF sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, CF sends a SIGKILL.
+* As a result of a system event, such as the replacement procedure during Diego Cell evacuation or when an app instance stops because of a failed health check probe
 
-Apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before CF terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests.
+To shut down the app, <%= vars.app_runtime_abbr %> sends the app process in the container a SIGTERM. The process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, <%= vars.app_runtime_abbr %> sends a SIGKILL.
 
-<p class="note"><strong>Note</strong>: One exception to the cases mentioned above is when monit restarts a crashed Diego cell rep or Garden server. In this case, CF immediately stops the apps that are still running using SIGKILL.</p>
+Apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before <%= vars.app_runtime_abbr %> terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests.
+
+<p class="note"><strong>Note:</strong> One exception to the cases mentioned above is when monit restarts a crashed Diego Cell rep or Garden server. In this case, <%= vars.app_runtime_abbr %> immediately stops the apps that are still running using SIGKILL.</p>

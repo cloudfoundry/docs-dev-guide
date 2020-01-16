@@ -24,7 +24,7 @@ If your deployment times out during the upload or staging phase, you may receive
 
 If this happens:
 
-* **Check your network speed.** Depending on the size of your app, your `cf push` could be timing out because the upload is taking too long. An Internet connection speed of at least 768 KB/s (6 Mb/s) for uploads is recommended.
+* **Check your network speed.** Depending on the size of your app, your `cf push` could be timing out because the upload is taking too long. <%= vars.recommended_by %> recommends an Internet connection speed of at least 768 KB/s (6 Mb/s) for uploads.
 
 * **Make sure you are pushing only needed files.** By default, `cf push` will push all the contents of the current working directory. Make sure you are pushing only the directory for your app. If your app is too large, or if it has many small files, Cloud Foundry may time out during the upload. To reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude).
 

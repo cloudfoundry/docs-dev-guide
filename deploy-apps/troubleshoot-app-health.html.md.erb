@@ -7,7 +7,7 @@ owner:
 
 <% $this_topic = 'troubleshoot-app-health' %>
 
-See this topic for help diagnosing and resolving common issues when you deploy and run apps on Cloud Foundry.
+See this topic for help diagnosing and resolving common issues when you deploy and run apps on <%= vars.platform_name %>.
 
 
 ## <a id='scenarios'></a> Common Issues
@@ -26,7 +26,7 @@ If this happens:
 
 * **Check your network speed.** Depending on the size of your app, your `cf push` could be timing out because the upload is taking too long. <%= vars.recommended_by %> recommends an Internet connection speed of at least 768 KB/s (6 Mb/s) for uploads.
 
-* **Make sure you are pushing only needed files.** By default, `cf push` will push all the contents of the current working directory. Make sure you are pushing only the directory for your app. If your app is too large, or if it has many small files, Cloud Foundry may time out during the upload. To reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude).
+* **Make sure you are pushing only needed files.** By default, `cf push` will push all the contents of the current working directory. Make sure you are pushing only the directory for your app. If your app is too large, or if it has many small files, <%= vars.platform_name %> may time out during the upload. To reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude).
 
 * **Set the CF\_STAGING\_TIMEOUT and CF\_STARTUP\_TIMEOUT environment variables.** By default your app has 15 minutes to stage and 5 minutes to start. You can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`. Type `cf push -h` at the command line for more information.
 
@@ -45,7 +45,7 @@ If this happens:
 
 Your total memory usage is the sum of the memory used by all apps in all spaces within the org. Each app's memory usage is the memory allocated to it multiplied by the number of instances. To view the memory usage of all the apps in a space, use `cf apps`.
 
-* **Make sure your app is less than 1&nbsp;GB.** By default, Cloud Foundry deploys all the contents of the current working directory. To reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude). The following limits apply:
+* **Make sure your app is less than 1&nbsp;GB.** By default, <%= vars.platform_name %> deploys all the contents of the current working directory. To reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude). The following limits apply:
 
     * The app files to push cannot exceed 1&nbsp;GB.
 
@@ -55,7 +55,7 @@ Your total memory usage is the sum of the memory used by all apps in all spaces 
 
 ### <a id='detect'></a> Unable to Detect a Supported App Type
 
-If Cloud Foundry cannot identify an appropriate buildpack for your app, you see an error message that states `Unable to detect a supported app type`.
+If <%= vars.platform_name %> cannot identify an appropriate buildpack for your app, you see an error message that states `Unable to detect a supported app type`.
 
 You can view what buildpacks are available with the `cf buildpacks` command.
 
@@ -67,7 +67,7 @@ If you do not see a buildpack for your app, you may still be able to push your a
 
 Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
 
-If you push multiple apps using a manifest and one fails to deploy, CF does not attempt to push apps specified after the app that failed. 
+If you push multiple apps using a manifest and one fails to deploy, <%= vars.platform_name %> does not attempt to push apps specified after the app that failed. 
 
 Common reasons deploying an app fails include:
 
@@ -228,7 +228,7 @@ These examples enable HTTP tracing for a single command only. To enable it for a
 
 ### <a id='zipkin_trace'></a> Analyze Zipkin Trace IDs
 
-When the Zipkin feature is enabled in Cloud Foundry, the Gorouter adds or forwards Zipkin trace IDs and span IDs to HTTP headers. For more information about what the Gorouter provides in the HTTP header, see the [HTTP Headers](../../concepts/http-routing.html#http-headers) section of the _HTTP Routing_ topic.
+When the Zipkin feature is enabled in <%= vars.platform_name %>, the Gorouter adds or forwards Zipkin trace IDs and span IDs to HTTP headers. For more information about what the Gorouter provides in the HTTP header, see the [HTTP Headers](../../concepts/http-routing.html#http-headers) section of the _HTTP Routing_ topic.
 
 After adding Zipkin HTTP headers to app logs, developers can use `cf logs myapp` to correlate the trace and span IDs logged by the Gorouter with the trace IDs logged by their app. To correlate trace IDs for a request through multiple apps, each app must forward appropriate values for the headers with requests to other apps.
 
@@ -246,7 +246,7 @@ Some cf CLI commands may return connection credentials. Remove credentials and o
 
 * `cf env APP-NAME`: Returns environment variables set using `cf set-env` and variables existing in the container environment.
 
-* `cf events APP-NAME`: Returns information about app crashes, including error codes. Shows that an app instance exited. For more detail, look in the app logs. For a list of Cloud Foundry errors, see [https://github.com/cloudfoundry/errors](https://github.com/cloudfoundry/errors).
+* `cf events APP-NAME`: Returns information about app crashes, including error codes. Shows that an app instance exited. For more detail, look in the app logs. For a list of <%= vars.platform_name %> errors, see [https://github.com/cloudfoundry/errors](https://github.com/cloudfoundry/errors).
 
 * `cf logs APP-NAME --recent`: Dumps recent logs. For more information, see [Viewing Logs in the Command Line Interface](./streaming-logs.html#view).
 

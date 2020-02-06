@@ -5,34 +5,35 @@ owner: CAPI
 
 This topic describes app revisions and provides procedures for working with them. 
 
-For additional information, see the [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) section of the CAPI documentation. 
+For additional information, see [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation. 
 
-<p class="note"><strong>Note:</strong> CAPI v3 is the recommended API version for revisions. While revisions work with v2, there are several inconsistencies. For example, revision descriptions for apps with multiple processes may be inaccurate because v2 does not support apps with multiple processes. Additionally, pushing an app for the first time with revisions in v2 creates two revisions.</p>
+<p class="note"><strong>Note:</strong> CAPI v3 is the recommended API version for revisions. While revisions work with CAPI v2, there are several inconsistencies. For example, revision descriptions for apps with multiple processes may be inaccurate because CAPI v2 does not support apps with multiple processes. Additionally, pushing an app for the first time with revisions in CAPI v2 creates two revisions.</p>
 
 
 ## <a id="overview"></a> Overview
 
-A revision represents code and configuration used by an app at a specific time. It is a Cloud Foundry API (CAPI) object that can contain references to a droplet, custom start command, and environment variables. The most recent revision for a running app represents code and configuration currently running in Cloud Foundry.
+A revision represents code and configuration used by an app at a specific time. It is a CAPI object that can contain references to a droplet, custom start command, and environment variables. The most recent revision for a running app represents code and configuration currently running in <%= vars.platform_name %>.
 
 Some use cases for revisions include:
 
-* **Viewing revisions for an app**: This can help you understand how your app has changed over time. 
-* **Rolling back to a previous revision**: This allows you to deploy a version of the app that you had running previously without needing to track that previous state yourself or have multiple apps running. When you create a deployment and reference a revision, the revision deploys as the current version of your app.
+* **Viewing revisions for an app:** This can help you understand how your app has changed over time. 
+
+* **Rolling back to a previous revision:** This allows you to deploy a version of the app that you had running previously without needing to track that previous state yourself or have multiple apps running. When you create a deployment and reference a revision, the revision deploys as the current version of your app.
 
 ### <a id="events"></a> Events that Trigger Revisions
 
-Revisions are generated automatically through the following events:
+Revisions are generated automatically through these events:
 
-* A new droplet is created for an app
-* An app’s environment variables are changed
-* The custom start command for an app is added or changed
-* An app rolls back to a prior revision
+* A new droplet is created for an app.
+* An app's environment variables are changed.
+* The custom start command for an app is added or changed.
+* An app rolls back to a prior revision.
 
-By default, the Cloud Foundry API retains at most 100 revisions per app.
+By default, CAPI retains a maximum of 100 revisions per app.
 
 ### <a id="revision-description"></a> Revision Descriptions
 
-Each revision includes a description of what changed in your app at the time the revision was created. The description includes one or more of the following:
+Each revision includes a description of what changed in your app at the time the revision was created. The description includes one or more of these descriptions:
 
 * `Process type removed`
 * `New process type added`
@@ -45,28 +46,11 @@ Each revision includes a description of what changed in your app at the time the
 
 ### <a id="droplets"></a> Droplet Storage Considerations
 
-By default, Cloud Foundry retains the 5 most recent staged droplets in its droplets bucket. This means that you can roll back to revisions as long as they are using one of those 5 droplets. Note that not all revisions include a change in droplet. 
+By default, <%= vars.platform_name %> retains the five most recent staged droplets in its droplets bucket. This means that you can roll back to revisions as long as they are using one of those five droplets. Not all revisions include a change in droplet. 
 
 <% if vars.platform_code.include? "CF" %>
 Operators can configure Cloud Foundry to retain more droplets if necessary using the <%= vars.droplet_config %> 
 <% end %>
-
-## <a id="enable"></a> Enable Revisions for an App
-
-To enable revisions for an app:
-
-1. Get the GUID of the app:
-
-	```
-	cf app APP-NAME --guid
-	```
-
-1. Run the following command:
-
-	```
-	cf curl /v3/apps/GUID/features/revisions -X PATCH -d '{ "enabled": true }'
-	```
-	Where `GUID` is the GUID you got in the previous step. 
 
 
 ## <a id="view"></a> View Revisions
@@ -83,7 +67,7 @@ To list revisions for an app:
 	cf app APP-NAME --guid
 	```
 
-1. Run the following command:
+1. Run:
 
 	```
 	cf curl /v3/apps/GUID/revisions
@@ -92,45 +76,48 @@ To list revisions for an app:
 
 ### <a id="list-deployed"></a> List Deployed Revisions for an App
 
-Deployed revisions are revisions linked to started processes in an app. To list deployed revisions, do the following:
+Deployed revisions are revisions linked to started processes in an app. To list deployed revisions:
 
-1. Get the GUID of the app:
+1. Retrieve the GUID of the app by running:
 
 	```
 	cf app APP-NAME --guid
 	```
+	Where `APP-NAME` is the name of your app.
 
-1. Run the following command:
+1. Run:
 
 	```
 	cf curl /v3/apps/GUID/revisions/deployed
 	```
 	Where `GUID` is the GUID you got in the previous step.
 
-### <a id="get"></a> Get a Revision
+### <a id="get"></a> Retrieve a Revision
 
-To get a revision:
+To retrieve a revision:
 
-1. Run the following command:
+1. Run:
 
 	```
 	cf curl /v3/revisions/GUID 
 	```
 	Where `GUID` is the GUID of the revision. 
 
-## <a id="push-app"></a> Rollback to a Previous Revision
+
+## <a id="push-app"></a> Roll Back to a Previous Revision
 
 To roll back to a previous revision: 
 
-1. Get the GUID of the app:
+1. Retrieve the GUID of the app by running:
 
 	```
 	cf app APP-NAME --guid
 	```
+	Where `APP-NAME` is the name of your app.
 
-1. Get the GUID of the revision. See [View Revisions](#view). 
+1. Retrieve the GUID of the revision. See [Retrieve a Revision](#get). 
 
-1. Create a deployment using CAPI:
+1. Create a deployment using CAPI by running:
 
 	```
 	cf curl v3/deployments \
@@ -160,3 +147,24 @@ To add metadata to a revision, see [Add Metadata to an Object](../adminguide/met
 <% else %>
 To add metadata to a revision, see [Add Metadata to an Object](https://docs.cloudfoundry.org/adminguide/metadata.html). 
 <% end %>
+
+
+## <a id="disable"></a> Disable Revisions for an App
+
+CAPI enables app revisions by default. To disable revisions for an app, you must manually turn them off.
+
+To disable revisions for an app:
+
+1. Retrieve the GUID of the app by running:
+
+	```
+	cf app APP-NAME --guid
+	```
+	Where `APP-NAME` is the name of your app.
+
+1. Run:
+
+	```
+	cf curl /v3/apps/GUID/features/revisions -X PATCH -d '{ "enabled": false }'
+	```
+	Where `GUID` is the GUID you retrieved in the previous step. 

@@ -49,7 +49,7 @@ Each revision includes a description of what changed in your app at the time the
 By default, <%= vars.platform_name %> retains the five most recent staged droplets in its droplets bucket. This means that you can roll back to revisions as long as they are using one of those five droplets. Not all revisions include a change in droplet. 
 
 <% if vars.platform_code.include? "CF" %>
-Operators can configure Cloud Foundry to retain more droplets if necessary using the <%= vars.droplet_config %> 
+Operators can configure <%= vars.platform_name %> to retain more droplets if necessary using the <%= vars.droplet_config %> 
 <% end %>
 
 
@@ -66,13 +66,14 @@ To list revisions for an app:
 	```
 	cf app APP-NAME --guid
 	```
+	Where `APP-NAME` is the name of your app.
 
 1. Run:
 
 	```
 	cf curl /v3/apps/GUID/revisions
 	```
-	Where `GUID` is the GUID you got in the previous step.
+	Where `GUID` is the GUID you retrieved in the previous step.
 
 ### <a id="list-deployed"></a> List Deployed Revisions for an App
 
@@ -90,7 +91,7 @@ Deployed revisions are revisions linked to started processes in an app. To list 
 	```
 	cf curl /v3/apps/GUID/revisions/deployed
 	```
-	Where `GUID` is the GUID you got in the previous step.
+	Where `GUID` is the GUID you retrieved in the previous step.
 
 ### <a id="get"></a> Retrieve a Revision
 

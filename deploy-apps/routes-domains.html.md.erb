@@ -502,7 +502,7 @@ The following example shows a request made to instance `9` of an app with GUID `
 $ curl myapp.<%= vars.private_app_domain %> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9"
 </pre>
 
-If the cf CLI cannot find the instance the format is incorrect, a `404` error is returned.
+If the Gorouter cannot find the instance or the format is incorrect, a `400` error is returned. (Note, prior to routing release version 0.197.0 a `404` was returned.)
 
 
 ## <a id='domains'></a> Domains

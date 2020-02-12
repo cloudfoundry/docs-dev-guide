@@ -113,14 +113,16 @@ For example:
 2016-06-14T13:44:38.14-0700 [CELL/0]     OUT Successfully created container
 </pre>
 
-The Diego Cell also emits a CELL log message when an app instance exceeds the `max_log_lines_per_second` limit, which is configured on the platform. This message only appears if the limit has been set by a platform operator.
-<%= vars.app_log_limit_config %>
+The Diego Cell also emits a CELL log message when an app instance exceeds the `max_log_lines_per_second` limit, which is configured on the platform.
 
 For example:
 
 <pre class="terminal">
 2020-01-13T16:12:25.86-0800 [APP/PROC/WEB/0] OUT app instance exceeded log rate limit (100 log-lines/sec) set by platform operator
 </pre>
+
+This message only appears if the limit has been set by a platform operator.
+<%= vars.app_log_limit_config %>
 
 ## <a id='writing'></a> Writing to the Log from Your App
 

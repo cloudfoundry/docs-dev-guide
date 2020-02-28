@@ -24,6 +24,8 @@ You can run additional processes in the same container as your app. These are ca
 
 When you provide a sidecar for your app, <%= vars.platform_name %> packages the required code and configuration needed to run the sidecar and app in the same droplet. It deploys this droplet in a single container on Diego. Both processes within the container undergo health checks independently.
 
+This topic describes specifying a sidecar process with an app manifest. As an alternative to this method, you can also push sidecar processes for your apps with a custom buildpack. For more information, see [Sidecar Buildpacks](../buildpacks/sidecar-buildpacks.html). 
+
 For additional information about sidecars, see the _Sidecars_ section of the [CAPI v3 documentation](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#sidecars). 
 
 For sample apps that use sidecars, see the [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository on GitHub. This topic shows you how to push one of these sample apps. 
@@ -55,7 +57,7 @@ Sidecars have these limitations:
 
 ## <a id="create"></a> Push an App with a Sidecar
 
-These sections explain how to push an app with a sidecar. For an example that you can try yourself, see [Sidecar Tutorial](#tutorial). 
+These sections explain how to push an app with a sidecar using an app manifest. For an example that you can try yourself, see [Sidecar Tutorial](#tutorial). 
 
 <p class="note"><strong>Note:</strong> When pushing a Java app, ensure that you follow <a href="#java">Requirements for Java Apps</a>.</p>
 

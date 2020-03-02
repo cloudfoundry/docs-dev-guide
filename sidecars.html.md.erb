@@ -3,7 +3,11 @@ title: Pushing Apps with Sidecar Processes (Beta)
 owner: CAPI
 ---
 
-This topic describes sidecar processes and how to include them when you push your app. 
+This topic describes sidecar processes and how to include them when you push your app.
+
+This topic describes specifying a sidecar process with an app manifest. 
+As an alternative to this method, you can also push sidecar processes for your apps with a custom buildpack. 
+For more information, see [Sidecar Buildpacks](../buildpacks/sidecar-buildpacks.html). 
 
 <div class="note">
 <strong>Note:</strong> This topic includes references to cf CLI v7 beta commands. When using these commands, consider:
@@ -22,9 +26,7 @@ For more information, see <a href="../cf-cli/v7.html">Upgrading to cf CLI v7 (Be
 
 You can run additional processes in the same container as your app. These are called sidecar processes, or sidecars. An example of a sidecar is an Application Performance Monitoring (APM) tool. 
 
-When you provide a sidecar for your app, <%= vars.platform_name %> packages the required code and configuration needed to run the sidecar and app in the same droplet. It deploys this droplet in a single container on Diego. Both processes within the container undergo health checks independently.
-
-This topic describes specifying a sidecar process with an app manifest. As an alternative to this method, you can also push sidecar processes for your apps with a custom buildpack. For more information, see [Sidecar Buildpacks](../buildpacks/sidecar-buildpacks.html). 
+When you provide a sidecar for your app, <%= vars.platform_name %> packages the required code and configuration needed to run the sidecar and app in the same droplet. It deploys this droplet in a single container on Diego. Both processes within the container undergo health checks independently. 
 
 For additional information about sidecars, see the _Sidecars_ section of the [CAPI v3 documentation](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#sidecars). 
 

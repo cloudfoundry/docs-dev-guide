@@ -502,7 +502,11 @@ The following example shows a request made to instance `9` of an app with GUID `
 $ curl myapp.<%= vars.private_app_domain %> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9"
 </pre>
 
-If the Gorouter cannot find the instance or the format is incorrect, a `400` error is returned.
+If the Gorouter cannot find the instance or the format is incorrect, a `400` error is returned. In addition, Gorouter will return a `X-Cf-Routererror` header. 
+If the instance guid provided is incorrectly formatted, the value of the header will be `invalid_cf_app_instance_header`.
+If the instance guid provided is correctly formatted, but the guid does not exist, the value of this header will be `unknown_route`, and 
+the request body will contain `400 Bad Request: Requested instance ('1') with guid ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route ('dora.superman.routing.cf-app.com')`.
+Usage of the `X-Cf-App-Instance` header is only available for users on the Diego architecture.
 Prior to routing release version 0.197.0, a `404` error was returned.
 
 ## <a id='domains'></a> Domains

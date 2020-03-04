@@ -28,7 +28,7 @@ If this happens:
 
 * **Make sure you are pushing only needed files.** By default, `cf push` will push all the contents of the current working directory. Make sure you are pushing only the directory for your app. If your app is too large, or if it has many small files, <%= vars.platform_name %> may time out during the upload. To reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude).
 
-* **Set the CF\_STAGING\_TIMEOUT and CF\_STARTUP\_TIMEOUT environment variables.** By default your app has 15 minutes to stage and 5 minutes to start. You can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`. Type `cf push -h` at the command line for more information.
+* **Set the CF_STAGING_TIMEOUT and CF_STARTUP_TIMEOUT environment variables.** By default your app has 15 minutes to stage and 5 minutes to start. You can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`. Type `cf push -h` at the command line for more information.
 
 * **If your app contains a large number of files, try pushing the app repeatedly.** Each push uploads a few more files. Eventually, all files have uploaded and the push succeeds. This is less likely to work if your app has many small files.
 
@@ -101,7 +101,7 @@ If this happens:
 
 * **Find the reason app is failing and modify your code.** Run `cf events APP-NAME` and `cf logs APP-NAME --recent` and look for messages similar to this:
   <pre class="terminal">
-  2018-07-20T15:53:26.00-0700   app.crash                  app-name   index: 2, reason: CRASHED, cell\_id: d874ad05-d0ca-4c63-9f5a-0b1ddd90dd5d, instance: f406c53e-b1ca-4a0f-6140-dddd, exit\_description: APP/PROC/WEB: Exited with status 1
+  2018-07-20T15:53:26.00-0700   app.crash                  app-name   index: 2, reason: CRASHED, cell_id: d874ad05-d0ca-4c63-9f5a-0b1ddd90dd5d, instance: f406c53e-b1ca-4a0f-6140-dddd, exit_description: APP/PROC/WEB: Exited with status 1
   </pre>
   These messages may identify a memory or port issue. If they do, take that as a starting point when you re-examine and fix your app code.
 
@@ -126,9 +126,9 @@ health check never passed.
 2017-01-30T14:08:23.59-0800 [CELL/0]     OUT Creating container
 2017-01-30T14:08:23.60-0800 [API/0]      OUT App instance exited with guid 91086440-bac0-44f0-808f-a034a1ec2ed0
 payload: {"instance"=>"", "index"=>0, "reason"=>"CRASHED",
-"exit\_description"=>"2 error(s) occurred:\n\n* 1 error(s)
+"exit_description"=>"2 error(s) occurred:\n\n* 1 error(s)
 occurred:\n\n* Exited with status 6\n* 2 error(s)
-occurred:\n\n* cancelled\n* cancelled", "crash\_count"=>1,
+occurred:\n\n* cancelled\n* cancelled", "crash_count"=>1,
 "crash_timestamp"=>1485814103565763172,
 "version"=>"3e6e4232-7e19-4168-9583-1176833d2c71"}
 2017-01-30T14:08:23.83-0800 [CELL/0]     OUT Successfully destroyed container

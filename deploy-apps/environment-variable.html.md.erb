@@ -101,39 +101,39 @@ The table below lists the system variables available to your app container.
 | `VCAP_APPLICATION` | x | x | x |
 | `VCAP_SERVICES` | x | x | x |
 
-### <a id='CF-INSTANCE-ADDR'></a> CF\_INSTANCE\_ADDR
+### <a id='CF-INSTANCE-ADDR'></a> CF_INSTANCE_ADDR
 
-The `CF\_INSTANCE\_IP` and `CF\_INSTANCE\_PORT` of the app instance, in the format `IP:PORT`.
+The `CF_INSTANCE_IP` and `CF_INSTANCE_PORT` of the app instance, in the format `IP:PORT`.
 
 For example: `CF_INSTANCE_ADDR=1.2.3.4:5678`
 
-For more information, see [CF\_INSTANCE\_IP](#CF-INSTANCE-IP) and [CF\_INSTANCE\_PORT](#CF-INSTANCE-PORT).
+For more information, see [CF_INSTANCE_IP](#CF-INSTANCE-IP) and [CF_INSTANCE_PORT](#CF-INSTANCE-PORT).
 
-### <a id='CF-INSTANCE-GUID'></a> CF\_INSTANCE\_GUID
+### <a id='CF-INSTANCE-GUID'></a> CF_INSTANCE_GUID
 
 The UUID of the app instance.
 
 For example: `CF_INSTANCE_GUID=41653aa4-3a3a-486a-4431-ef258b39f042`
 
-### <a id='CF-INSTANCE-INDEX'></a> CF\_INSTANCE\_INDEX
+### <a id='CF-INSTANCE-INDEX'></a> CF_INSTANCE_INDEX
 
 The index number of the app instance.
 
 For example: `CF_INSTANCE_INDEX=0`
 
-### <a id='CF-INSTANCE-IP'></a> CF\_INSTANCE\_IP
+### <a id='CF-INSTANCE-IP'></a> CF_INSTANCE_IP
 
 The external IP address of the host running the app instance.
 
 For example: `CF_INSTANCE_IP=1.2.3.4`
 
-### <a id='CF-INSTANCE-INTERNAL-IP'></a> CF\_INSTANCE\_INTERNAL_IP
+### <a id='CF-INSTANCE-INTERNAL-IP'></a> CF_INSTANCE_INTERNAL_IP
 
 The internal IP address of the container running the app instance.
 
 For example: `CF_INSTANCE_INTERNAL_IP=5.6.7.8`
 
-### <a id='CF-INSTANCE-PORT'></a> CF\_INSTANCE\_PORT
+### <a id='CF-INSTANCE-PORT'></a> CF_INSTANCE_PORT
 
 The external, or *host-side*, port corresponding to the internal, or *container-side*, port with value `PORT`. This value is usually different from the `PORT` of the app instance.
 
@@ -141,13 +141,13 @@ For example: `CF_INSTANCE_PORT=61045`
 
 For more information, see [PORT](#PORT).
 
-### <a id='CF-INSTANCE-PORTS'></a> CF\_INSTANCE\_PORTS
+### <a id='CF-INSTANCE-PORTS'></a> CF_INSTANCE_PORTS
 
 The list of mappings between internal, or *container-side*, and external, or *host-side*, ports allocated to the container running the app instance. Not all of the internal ports are necessarily available for the app to bind to, as some of them may be used by system-provided services that also run inside the container. These internal and external values may differ.
 
 For example: `CF_INSTANCE_PORTS=[{external:61045,internal:8080},{external:61046,internal:2222}]`
 
-### <a id='DATABASE-URL'></a> DATABASE\_URL
+### <a id='DATABASE-URL'></a> DATABASE_URL
 
 For apps bound to certain services that use a database, <%= vars.app_runtime_abbr %> creates a `DATABASE_URL` environment variable based on the `VCAP_SERVICES` environment variable.
 
@@ -228,7 +228,7 @@ The user account under which the app runs.
 
 For example: `USER=vcap`
 
-### <a id='VCAP-APP-PORT'></a> VCAP\_APP\_PORT
+### <a id='VCAP-APP-PORT'></a> VCAP_APP_PORT
 
 Deprecated name for the `PORT` variable.
 
@@ -260,7 +260,7 @@ This environment variable contains the associated attributes for a deployed app.
 | `users` | Deprecated. Not provided on Diego Cells. |
 | `version` | Identical to `application_version`. |
 
-### <a id='VCAP-SERVICES'></a> VCAP\_SERVICES
+### <a id='VCAP-SERVICES'></a> VCAP_SERVICES
 
 For bindable services, <%= vars.app_runtime_abbr %> adds connection details to the `VCAP_SERVICES` environment variable when you restart your app, after binding a service instance to your app. For more information about bindable services, see [Services Overview](../services/).
 

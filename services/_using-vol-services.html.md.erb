@@ -97,7 +97,7 @@ To create and bind an instance for the volume service:
         * (Optional) `"readonly":true` is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
 
         The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`, passing an in-line JSON string:
-        <pre class="terminal">cf bind-service my-app nfs\_service\_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1","readonly":true}'</pre>
+        <pre class="terminal">cf bind-service my-app nfs_service_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1","readonly":true}'</pre>
     * **LDAP-only**: Bind an LDAP service to an app. Run:
 
         ```
@@ -138,22 +138,22 @@ To access the volume service from your app:
     The following is example output of the `cf env` command:
     <pre class="terminal">
     $ cf env YOUR-APP
-    "VCAP\_SERVICES": {
+    "VCAP_SERVICES": {
       "nfs": [
         {
           "credentials": {},
           "label": "nfs",
-          "name": "nfs\_service\_instance",
+          "name": "nfs_service_instance",
           "plan": "Existing",
           "provider": null,
-          "syslog\_drain\_url": null,
+          "syslog_drain_url": null,
           "tags": [
             "nfs"
           ],
-          "volume\_mounts": [
+          "volume_mounts": [
             {
-              "container\_dir": "/var/vcap/data/153e3c4b-1151-4cf7-b311-948dd77fce64",
-              "device\_type": "shared",
+              "container_dir": "/var/vcap/data/153e3c4b-1151-4cf7-b311-948dd77fce64",
+              "device_type": "shared",
               "mode": "rw"
             }
           ]
@@ -173,11 +173,11 @@ To access the volume service from your app:
       </th>
     </tr>
     <tr>
-      <td><code>container\_dir</code></td>
+      <td><code>container_dir</code></td>
       <td>String containing the path to the mounted volume that you bound to your app.</td>
     </tr>
     <tr>
-      <td><code>device\_type</code></td>
+      <td><code>device_type</code></td>
       <td>The NFS volume release. This currently only supports <code>shared</code> devices. A <code>shared</code> device represents a distributed file system that can mount on all app instances simultaneously.</td>
     </tr>
     <tr>

@@ -5,10 +5,6 @@ owner: CAPI
 
 This topic describes sidecar processes and how to include them when you push your app.
 
-This topic describes specifying a sidecar process with an app manifest. 
-As an alternative to this method, you can also push sidecar processes for your apps with a custom buildpack. 
-For more information, see [Sidecar Buildpacks](../buildpacks/sidecar-buildpacks.html). 
-
 <div class="note">
 <strong>Note:</strong> This topic includes references to cf CLI v7 beta commands. When using these commands, consider:
 	<ul>
@@ -28,10 +24,14 @@ You can run additional processes in the same container as your app. These are ca
 
 When you provide a sidecar for your app, <%= vars.platform_name %> packages the required code and configuration needed to run the sidecar and app in the same droplet. It deploys this droplet in a single container on Diego. Both processes within the container undergo health checks independently. 
 
+You can push sidecar processes with your app by using one of two different methods:
+
+* Using an app manifest. For instructions, see [Push an App with a Sidecar Using an App Manifest](#create).
+* With a custom buildpack. For instructions, see [Sidecar Buildpacks (Beta)](../buildpacks/sidecar-buildpacks.html). 
+
 For additional information about sidecars, see the _Sidecars_ section of the [CAPI v3 documentation](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#sidecars). 
 
-For sample apps that use sidecars, see the [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository on GitHub. This topic shows you how to push one of these sample apps. 
-
+For sample apps that use sidecars, see the [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository on GitHub. This topic shows you how to push one of these sample apps using an app manifest. 
 
 ## <a id="use-case"></a> Use Cases
 
@@ -56,8 +56,55 @@ Sidecars have these limitations:
 
 * Sidecars only support PID-based health checks. HTTP health checks for sidecars are not currently supported.
 
+## <a id="java"></a> Requirements for Java Apps
 
-## <a id="create"></a> Push an App with a Sidecar
+These sections describe several requirements that are specific to pushing sidecars with Java apps. 
+
+### <a id="java-sidecar-memory"></a> Reserving Memory
+
+You must allocate memory to the sidecar. If you do not, the Java buildpack allocates all of the available memory to the app. As a result, the sidecar does not have enough memory and the app fails to start.
+
+To allocate memory to the sidecar, use the `memory` property in the app manifest. For example: 
+
+```
+sidecars:
+- name: SIDECAR-NAME
+	process_types: [ 'PROCESS-TYPES' ]
+	command: START-COMMAND
+	memory: 256MB
+```
+
+Where:
+
+* `SIDECAR-NAME` is a name you give your sidecar. 
+
+* `PROCESS-TYPES` is a list of app processes for the sidecar to attach to, such as `web` or `worker`. You can attach multiple sidecars to each process type your app uses. 
+
+* `START-COMMAND` is the command used to start the sidecar. For example, `./binary` or `java -jar java-file.jar`.
+
+You must also allocate memory to sidecars that you push with custom buildpacks. For more information, see [Sidecar Buildpacks (Beta)](../buildpacks/sidecar-buildpacks.html). 
+
+### <a id="java-sidecar-packaging"></a> Packaging Binaries 
+
+If your sidecar is a binary file rather than buildable from source files, then you must package the binary file with your Java app.
+
+The Java buildpack requires you to push a `.jar` file in some cases. If this is the case with your app, you must include the sidecar binary in the `.jar` file. 
+
+To package the sidecar binary with the `.jar` file, run:
+
+```
+zip JAR -u SIDECAR-BINARY
+```
+
+Where:
+
+* `JAR` is your `.jar` file.
+
+* `SIDECAR-BINARY` is your sidecar binary.
+
+For more information about packaging assets with your Java app, see [Tips for Java Developers](https://docs.cloudfoundry.org/buildpacks/java/java-tips.html). 
+
+## <a id="create"></a> Push an App with a Sidecar Using an App Manifest
 
 These sections explain how to push an app with a sidecar using an app manifest. For an example that you can try yourself, see [Sidecar Tutorial](#tutorial). 
 
@@ -149,51 +196,6 @@ To push an app with a sidecar:
 		cf v3-push APP-NAME
 		```
 		Where `APP-NAME` is the name of your app.
-
-
-## <a id="java"></a> Requirements for Java Apps
-
-These sections describe several requirements that are specific to Java apps. 
-
-### <a id="java-sidecar-memory"></a> Reserving Memory
-
-You must allocate memory to the sidecar. If you do not, the Java buildpack allocates all of the available memory to the app. As a result, the sidecar does not have enough memory and the app fails to start.
-
-To allocate memory to the sidecar, use the `memory` property in the app manifest. For example: 
-
-```
-sidecars:
-- name: SIDECAR-NAME
-	process_types: [ 'PROCESS-TYPES' ]
-	command: START-COMMAND
-	memory: 256MB
-```
-
-Where:
-
-* `SIDECAR-NAME` is a name you give your sidecar. 
-
-* `PROCESS-TYPES` is a list of app processes for the sidecar to attach to, such as `web` or `worker`. You can attach multiple sidecars to each process type your app uses. 
-
-* `START-COMMAND` is the command used to start the sidecar. For example, `./binary` or `java -jar java-file.jar`.
-
-### <a id="java-sidecar-packaging"></a> Packaging Binaries 
-
-The Java buildpack requires you to push a `.jar` file in some cases. If this is the case with your app, you must include the sidecar binary in the `.jar` file. 
-
-To package the sidecar binary with the `.jar` file, run:
-
-```
-zip JAR -u SIDECAR-BINARY
-```
-
-Where:
-
-* `JAR` is your `.jar` file.
-
-* `SIDECAR-BINARY` is your sidecar binary.
-
-For more information about packaging assets with your Java app, see [Tips for Java Developers](https://docs.cloudfoundry.org/buildpacks/java/java-tips.html). 
 
 
 ## <a id="tutorial"></a> Sidecar Tutorial

@@ -22,16 +22,16 @@ For more information, see <a href="../cf-cli/v7.html">Upgrading to cf CLI v7 (Be
 
 You can run additional processes in the same container as your app. These are called sidecar processes, or sidecars. An example of a sidecar is an Application Performance Monitoring (APM) tool. 
 
-When you provide a sidecar for your app, <%= vars.platform_name %> packages the required code and configuration needed to run the sidecar and app in the same droplet. It deploys this droplet in a single container on Diego. Both processes within the container undergo health checks independently. 
+When you provide a sidecar for your app, <%= vars.app_runtime_full %> packages the required code and configuration needed to run the sidecar and app in the same droplet. It deploys this droplet in a single container on Diego. Both processes within the container undergo health checks independently. 
 
-You can push sidecar processes with your app by using one of two different methods:
+You can push sidecar processes with your app by using one of two methods:
 
 * Using an app manifest. For instructions, see [Push an App with a Sidecar Using an App Manifest](#create).
 * With a custom buildpack. For instructions, see [Sidecar Buildpacks (Beta)](../buildpacks/sidecar-buildpacks.html). 
 
 For additional information about sidecars, see the _Sidecars_ section of the [CAPI v3 documentation](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#sidecars). 
 
-For sample apps that use sidecars, see the [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository on GitHub. This topic shows you how to push one of these sample apps using an app manifest. 
+For sample apps that use sidecars, see the [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository on GitHub. These sample apps use an app manifest. 
 
 ## <a id="use-case"></a> Use Cases
 
@@ -82,13 +82,13 @@ Where:
 
 * `START-COMMAND` is the command used to start the sidecar. For example, `./binary` or `java -jar java-file.jar`.
 
-You must also allocate memory to sidecars that you push with custom buildpacks. For more information, see [Sidecar Buildpacks (Beta)](../buildpacks/sidecar-buildpacks.html). 
+You must also allocate memory to sidecars that you push with a custom buildpack. For more information, see [Sidecar Buildpacks (Beta)](../buildpacks/sidecar-buildpacks.html). 
 
 ### <a id="java-sidecar-packaging"></a> Packaging Binaries 
 
-If your sidecar is a binary file rather than buildable from source files, then you must package the binary file with your Java app.
+If your sidecar is a binary file rather than a set of buildable source files, then you must package the binary file with your Java app.
 
-The Java buildpack requires you to push a `.jar` file in some cases. If this is the case with your app, you must include the sidecar binary in the `.jar` file. 
+In some cases, the Java buildpack requires you to push a `.jar` file. If this is the case with your app, you must include the sidecar binary in the `.jar` file. 
 
 To package the sidecar binary with the `.jar` file, run:
 
@@ -112,11 +112,11 @@ These sections explain how to push an app with a sidecar using an app manifest. 
 
 ### <a id="prerequisite"></a> Prerequisites
 
-Before you can push an app with a sidecar, you must have:
+Before you can push an app with a sidecar with an app manifest, you must have:
 
 * An app that is currently running or ready to be pushed.
 
-* A file that <%= vars.platform_name %> can execute inside the app container as a sidecar process. For example, an executable binary, a Java .jar file, or Ruby scripts.
+* A file that <%= vars.app_runtime_abbr%> can execute inside the app container as a sidecar process. For example, an executable binary, a Java .jar file, or Ruby scripts.
 
 ### <a id="create"></a> Procedure
 

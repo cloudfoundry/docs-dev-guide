@@ -301,3 +301,71 @@ The following table describes the limitations to consider when using the rolling
 		<td>If you push app before your previous push command for the same app has completed, your first push gets interrupted. Until the last deployment completes, there may be many versions of the app running at once. Eventually, the app runs the code from your most recent push.</td>
 	</tr>
 </table>
+
+
+## <a id="status"></a> View the Status of Rolling Deployments
+
+You can use CAPI to view the status of rolling deployments.
+The following properties provide information about the status of rolling deployments:
+
+* `status.value`: Indicates if the deployment is `ACTIVE` or `FINALIZED`. 
+
+* `status.reason`: Provides additional detail about the reason
+  for the `ACTIVE` or `FINALIZED` state.
+
+* `status.details`: Provides the timestamp for the most recent successful healthcheck.
+  The value of the `status.details` property can be `nil` if there is no successful healthcheck for the deployment.
+  For example, there may be no successful healthcheck if the deployment was cancelled. 
+
+The following table describes the possible values for the `status.value` and `status.reason` properties:
+
+<table class="nice">
+  <th width="20%"><code>status.value</code></th>
+  <th width="20%"><code>status.reason</code></th>
+  <th width="60%">Description</th>
+  <tr>
+    <td><code>ACTIVE</code></td>
+    <td><code>DEPLOYING</code></td>
+    <td>The deployment is deploying.</td>
+  </tr>
+  <tr>
+    <td><code>ACTIVE</code></td>
+    <td><code>CANCELLING</code></td>
+    <td>The deployment is cancelling.</td>
+  </tr>  
+  <tr>
+    <td><code>FINALIZED</code></td>
+    <td><code>DEPLOYED</code></td>
+    <td>The deployment was deployed.</td>
+  </tr>
+  <tr>
+    <td><code>FINALIZED</code></td>
+    <td><code>CANCELED</code></td>
+    <td>The deployment was cancelled.</td>
+  </tr> 
+  <tr>
+    <td><code>FINALIZED</code></td>
+    <td><code>SUPERSEDED</code></td>
+    <td>The deployment was stopped and did not finish deploying because there was another deployment created for the app.</td>
+  </tr> 
+  <tr>
+    <td><code>FINALIZED</code></td>
+    <td><code>DEGENERATE</code></td>
+    <td>The deployment was created incorrectly by the system.</td>
+  </tr>   
+</table>  
+
+To view the status of a rolling deployment:
+
+1. Log in to the cf CLI:
+    
+    ```
+    cf login
+    ```
+
+1. Run:
+  
+    ```
+    cf curl GET /v3/deployments/DEPLOYMENT-GUID
+    ```
+    Where `DEPLOYMENT-GUID` is the GUID of the rolling deployment. 

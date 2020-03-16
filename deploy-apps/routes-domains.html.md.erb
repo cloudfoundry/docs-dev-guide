@@ -502,18 +502,17 @@ The following example shows a request made to instance `9` of an app with GUID `
 $ curl myapp.<%= vars.private_app_domain %> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9"
 </pre>
 
-If the Gorouter cannot find the instance or the format is incorrect, a `400` error is returned.
-In addition, Gorouter returns a `X-Cf-Routererror` header.
-
-If the instance guid provided is incorrectly formatted, the value of the header is `invalid_cf_app_instance_header`.
-
-If the instance guid provided is correctly formatted, but the guid does not exist, the value of this header is `unknown_route`, and
-the request body contains the following:
-`
-400 Bad Request: Requested instance ('1') with guid
-('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route ('dora.superman.routing.cf-app.com')
-`
-
+<br>
+<br>
+If this header is set to an invalid value GoRouter will return a 400 status code and the response from GoRouter will contain a `X-Cf-Routererror` header with more information about why the failure occurred.
+<br>
+<br>
+| **X-Cf-Routererror value** | **Reason for Error** | **Response Body** |
+| --- | --- | --- |
+| invalid_cf_app_instance_header | The value provided for X-Cf-App-Instance was not a properly formatted guid. | none |
+| unknown_route |  The value provided for X-Cf-App-Instance is a correctly formatted guid, but there is no instance found with that guid for the route requested. | `400 Bad Request: Requested instance ('1') with guid ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route ('myroute.cf.com')` |
+<br>
+<br>
 Usage of the `X-Cf-App-Instance` header is only available for users on the Diego architecture.
 
 Prior to routing release version 0.197.0, a `404` error was returned.

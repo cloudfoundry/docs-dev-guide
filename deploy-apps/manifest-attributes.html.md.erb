@@ -14,12 +14,14 @@ For manifest properties for the v7 beta cf CLI, see the [CC API documentation](h
 Manifests are written in YAML. The manifest below illustrates some YAML conventions, as follows:
 
 * The manifest begins with three dashes.
+* The `version` specifies a [manifest schema version](#manifest-schema-version). This field is optional.
 * The `applications` block begins with a heading followed by a colon.
 * The app `name` is preceded by a single dash and one space.
 * Subsequent lines in the block are indented two spaces to align with `name`.
 
 <pre>
 ---
+version: 1
 applications:
 - name: my-app
   memory: 512M
@@ -27,6 +29,14 @@ applications:
 </pre>
 
 <p class="note"><strong>Note</strong>: If your app name begins with the dash character (<code>-</code>), you cannot interact with the app using the cf CLI. This is because the cf CLI interprets the dash as a flag.</p>
+
+### <a id='manifest-schema-version'></a> Add Schema Version to a Manifest
+
+<%= partial 'v3-note' %>
+
+You can specify a schema version in your manifest. This field is optional. 
+
+Currently the only supported version is 1, which is the version described on this page. If not specified, the field will default to this version.
 
 ### <a id='variable-substitution'></a> Add Variables to a Manifest
 

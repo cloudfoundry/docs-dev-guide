@@ -5,12 +5,14 @@ owner: CF Networking
 
 <p class="note"><strong>Note:</strong> This is a beta feature.</p>
 
+<p class="note"><strong>Note:</strong> This feature is only for apps that run on Linux Diego Cells. It does not work for apps that run on Windows Diego Cells.</p>
+
 This topic describes how to administer dynamic egress policies for the apps in your deployment. 
 
 
 ## <a id="overview"></a> Overview
 
-You can create dynamic egress policies to allow your apps to communicate with external services, such as a MySQL database. Note, this feature is only for apps that run on Linux Diego Cells. It does not work for apps that run on Windows Diego Cells. The workflow is as follows:
+You can create dynamic egress policies to allow your apps to communicate with external services, such as a MySQL database. The workflow is as follows:
 
 * Create a destination object with details about the external service that your app or space need access to, including an IP range.   
 * Create an egress policy from the app or space to the destination object. 

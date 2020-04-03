@@ -17,6 +17,7 @@
               <li><a href="#ldap">Configure LDAP Credentials with Service Instance Creation</a></li>
               <li><a href="#bind-parameters">Specify Bind Parameters During Service Instance Creation</a></li>
               <li><a href="#flock">File Locking with `flock()` and `lockf()`/`fcntl()`</a></li>
+              <li><a href="#hard-links">Hard Links in the NFS Service</a></li>
             </ul>
         </ul>
       <li><a href="#smb">Create and Use SMB Volume Services</a></li>
@@ -346,7 +347,7 @@ As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, w
 
 Apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock` may use the `nfs` service. The `nfs-legacy` service uses a fuse mounting process that does not enforce locks across Diego Cells.
 
-#### Hard Links in the NFS Service
+#### <a id='hard-links'></a> Hard Links in the NFS Service
 
 The mapfs UID mapping layer used by the NFS service does not support hard link operations.
 You get a `Function not implemented` error if you try to create a hard link in an NFS share

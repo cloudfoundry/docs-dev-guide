@@ -97,7 +97,8 @@ To create and bind an instance for the volume service:
           If you omit `uid` and `gid`, the driver skips `mapfs` mounting and performs
           just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
         <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support `uid` and `gid` values of `0`.</p>
-        <p class="note"><strong>Note:</strong> The UID must have access to the files on the share.
+        <p class="note"><strong>Note:</strong> The user specified by UID must have access
+           to the files on the share.
            When `uid` and `gid` are omitted,
            the app file operations use the UID of the running app process.
            For buildpack apps, this UID is always `2000`.

@@ -18,6 +18,7 @@
               <li><a href="#ldap">Configure LDAP Credentials with Service Instance Creation</a></li>
               <li><a href="#bind-parameters">Specify Bind Parameters During Service Instance Creation</a></li>
               <li><a href="#flock">File Locking with `flock()` and `lockf()`/`fcntl()`</a></li>
+              <li><a href="#hard-links">Hard Links in the NFS Service</a></li>
             </ul>
         </ul>
       <li><a href="#smb">SMB Volume Service</a></li>
@@ -68,19 +69,50 @@ To use a volume service deployed by <%= vars.admin %>, you must first create an 
     The following example shows creating an instance of the `Existing` NFS service plan, passing an in-line JSON string:
     <pre class="terminal">$ cf create-service nfs Existing nfs_service_instance -c '{"share": "10.10.10.10/export/myshare"}'</pre>
 
-1. Run `cf bind-service YOUR-APP SERVICE-NAME -c GID-AND-UID-JSON MOUNT-PATH READ-ONLY-TRUE` to bind your service instance to an app. Replace the following with the specified values:
-  * `YOUR-APP`: The name of the <%= vars.product_name %> app for which you want to use the volume service.
-  * `SERVICE-NAME`: The name of the volume service instance you created in the previous step.
-  * (NFS only) `GID-AND-UID-JSON`: If you bind an instance of the NFS volume service, you must supply two extra parameters: `gid` and `uid`. You can specify these parameters with the `-c` flag and a JSON string. The JSON can be inline or from a file. This parameter specifies the `gid` and `uid` to use when mounting the share to the app. `UID` and `GID` must be positive integer values.
-  <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support `uid` and `gid` values of `0`.</p>
-  * (Optional) `MOUNT-PATH`: To mount the volume to a particular path within your app rather than the default path, you supply the `mount` parameter. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
-    <p class="note"><strong>Note</strong>: Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory. For more information, see <a href="#mount-path">Mount Path Limitation</a>.</p>
-  * (Optional) `READ-ONLY-TRUE`: When you issue the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.
+1. Bind your service instance to an app:
+    * **NFS-only**: Bind an NFS service instance to an app. Run:
 
-    The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`, passing an in-line JSON string:
-    <pre class="terminal">$ cf bind-service my-app nfs_service_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1","readonly":true}'</pre>
-    If you use an LDAP server, you must specify `username` and `password` instead of a UID and GID in this command. For example:
-    <pre class="terminal">$ cf bind-service my-app nfs_service_instance -c '{"username":"user1000","password":"secret","mount":"/var/volume1","readonly":true}'</pre>
+        ```
+        cf bind-service YOUR-APP SERVICE-NAME -c '{"uid":"UID","gid":"GID","mount":"OPTIONAL-MOUNT-PATH","readonly":true}'
+        ```
+
+        Where:
+        * `YOUR-APP` is the name of the <%= vars.product_name %> app for which you want to use the volume service.
+        * `SERVICE-NAME` is the name of the volume service instance you created in the previous step.
+        * (Optional) `UID` and `GID` are the `uid` and `gid` to use when mounting the share to the app.
+          The `GID` and `UID` must be positive integer values.
+          Provide the `uid` and `gid` as a JSON string in-line or in a file.
+          If you omit `uid` and `gid`, the driver skips `mapfs` mounting and performs
+          just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
+        <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support `uid` and `gid` values of `0`.</p>
+        <p class="note"><strong>Note:</strong> The user specified by UID must have access
+           to the files on the share.
+           When `uid` and `gid` are omitted,
+           the app file operations use the UID of the running app process.
+           For buildpack apps, this UID is always `2000`.
+           For Docker apps, the effective UID is the same as the UID of the process
+           inside the Docker container, except for `root`, which is mapped to `4294967294`
+           outside the Docker container.
+        </p>
+        * (Optional) `OPTIONAL-MOUNT-PATH` is a JSON string that indicates the volume should be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
+          <p class="note"><strong>Note</strong>: Do not specify a `MOUNT-PATH` within the `/app` directory, which is where <%= vars.product_short %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
+        * (Optional) `"readonly":true` is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
+
+        The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`, passing an in-line JSON string:
+        <pre class="terminal">cf bind-service my-app nfs_service_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1","readonly":true}'</pre>
+    * **LDAP-only**: Bind an LDAP service to an app. Run:
+
+        ```
+        cf bind-service YOUR-APP SERVICE-NAME -c '{"username":"USERNAME","password":"PASSWORD","mount":"OPTIONAL-MOUNT-PATH","readonly":true}'
+        ```
+
+        Where:
+        * `YOUR-APP` is the name of the <%= vars.product_name %> app for which you want to use the volume service.
+        * `SERVICE-NAME` is the name of the volume service instance you created in the previous step.
+        * `USERNAME` and `PASSWORD` are the username and password for the LDAP server. If you omit `username` and `password`, the driver skips `mapfs` mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
+        * (Optional) `OPTIONAL-MOUNT-PATH` is a JSON string that indicates the volume should be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
+          <p class="note"><strong>Note</strong>: Do not specify a `MOUNT-PATH` within the `/app` directory, which is where <%= vars.product_short %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
+        * (Optional) `"readonly":true` is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
 
 1. Run `cf restage YOUR-APP` to complete the service binding by restaging your app. Replace `YOUR-APP` with the name of your app.
   <pre class="terminal">$ cf restage YOUR-APP</pre>
@@ -294,6 +326,17 @@ As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, w
 
 Apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock` may use the `nfs` service. The `nfs-legacy` service uses a fuse mounting process that does not enforce locks across Diego Cells.
 
+#### <a id='hard-links'></a> Hard Links in the NFS Service
+
+The mapfs UID mapping layer used by the NFS service does not support hard link operations.
+You get a `Function not implemented` error if you try to create a hard link in an NFS share
+when `uid` or `username` has been specified for the service.
+
+Workarounds for this issue:
+
+* Use symbolic links, `ln -s`, instead of hard links.
+* Omit the `uid` and `gid` or the `username` and `password` parameters to mount the share without UID mapping.
+  For this workaround, the app user must have access to the files on the share.
 
 ## <a id='smb'></a> SMB Volume Service
 

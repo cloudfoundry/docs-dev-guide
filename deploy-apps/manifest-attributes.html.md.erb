@@ -252,6 +252,20 @@ The command line option that overrides this attribute is `-u`.
 
 The value of `none` is deprecated in favor of `process`.
 
+### <a id='instances'></a> instances
+
+Use the `instances` attribute to set the number of application instances.
+
+<pre>
+---
+  ...
+  instances: 2
+</pre>
+
+The default number of instances is 1.
+
+To ensure that platform maintenance does not interrupt your app, run at least two instances.
+
 ### <a id='memory'></a> memory
 
 Use the `memory` attribute to specify the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case. For example:

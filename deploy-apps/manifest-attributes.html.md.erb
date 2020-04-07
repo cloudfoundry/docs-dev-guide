@@ -256,6 +256,16 @@ The command line option that overrides this attribute is `-u`.
 
 In cf CLI v6, the value of `none` is deprecated in favor of `process`. In cf CLI v7, `none` is removed.
 
+### <a id='instances'></a> instances
+
+Use the `instances` attribute to set the number of application instances.
+
+<pre>
+---
+  ...
+  instances: 2
+</pre>
+
 ### <a id='memory'></a> memory
 
 Use the `memory` attribute to specify the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case. For example:

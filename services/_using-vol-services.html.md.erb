@@ -91,13 +91,13 @@ To create and bind an instance for the volume service:
         Where:
         * `YOUR-APP` is the name of the <%= vars.product_name %> app for which you want to use the volume service.
         * `SERVICE-NAME` is the name of the volume service instance you created in the previous step.
-        * (Optional) `UID` and `GID` are the `uid` and `gid` to use when mounting the share to the app.
+        * (Optional) `UID` and `GID` are the UID and GID to use when mounting the share to the app.
           The `GID` and `UID` must be positive integer values.
-          Provide the `uid` and `gid` as a JSON string in-line or in a file.
+          Provide the UID and GID as a JSON string in-line or in a file.
           If you omit `uid` and `gid`, the driver skips `mapfs` mounting and performs
           just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
-        <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support `uid` and `gid` values of `0`.</p>
-        <p class="note"><strong>Note:</strong> The user specified by UID must have access
+        <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support UID and GID values of `0`.</p>
+        <p class="note"><strong>Note:</strong> The user specified by <code>uid</code> must have access
            to the files on the share.
            When `uid` and `gid` are omitted,
            the app file operations use the UID of the running app process.

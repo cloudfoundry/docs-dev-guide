@@ -108,7 +108,7 @@ In <%= vars.app_runtime_abbr %>, a hostname is the label that indicates a subdom
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf create-route <%= vars.app_domain %> --hostname myapp
+  $ cf7 create-route <%= vars.app_domain %> --hostname myapp
   Creating route myapp.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
@@ -134,7 +134,7 @@ A developer can create a route from the domain `<%= vars.private_app_domain %>` 
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf create-route <%= vars.private_app_domain %>
+  $ cf7 create-route <%= vars.private_app_domain %>
   Creating route <%= vars.private_app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
@@ -608,7 +608,7 @@ Org managers can create a private domain with the following command:
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf create-private-domain my-org <%= vars.private_app_domain %>
+  $ cf7 create-private-domain my-org <%= vars.private_app_domain %>
   </pre>
 * **cf CLI v6**
   <pre class="terminal">

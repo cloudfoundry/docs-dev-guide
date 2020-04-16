@@ -315,12 +315,27 @@ To view the status of a rolling deployment:
     cf login
     ```
 
+1. Find the GUID of your app by running:
+
+    ```
+    cf app APP-NAME --guid
+    ```
+    Where APP-NAME is the name of the app.
+
+1. Find the deployment for that app by running:
+
+    ```
+    cf curl GET /v3/deployments?app_guids=APP-GUID&status_values=ACTIVE
+    ```
+    Where `APP-GUID` is the GUID of the app. Deployments are listed in chronological order, with the latest deployment
+    displayed as the last in a list.
+ 
 1. Run:
   
     ```
     cf curl GET /v3/deployments/DEPLOYMENT-GUID
     ```
-    Where `DEPLOYMENT-GUID` is the GUID of the rolling deployment. 
+    Where `DEPLOYMENT-GUID` is the GUID of the rolling deployment.
 
 `cf curl GET /v3/deployments/DEPLOYMENT-GUID` returns the following properties about the status of rolling deployments:
 

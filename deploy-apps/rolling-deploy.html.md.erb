@@ -217,13 +217,17 @@ original state as quickly as possible and does not guarantee zero downtime.</p>
 
 ### <a id="restart"></a> Restart an App
 
-To restart your app without downtime, run the appropiate comannd below. Restart an app to apply
+To restart your app without downtime, run the appropriate command below. Restart an app to apply
 configuration updates that require a restart, such as environment variables or service bindings.
 
 * **cf CLI v7**:
-  * As of the cf CLI v7 beta, there is no way to restart with a rolling deploy strategy. For more
-  information, see the [cf CLI release notes](https://github.com/cloudfoundry/cli/releases) on
-  GitHub.
+
+1. Run:
+
+    ```
+    cf7 restart APP-NAME --strategy rolling
+    ```
+    Where `APP-NAME` is the name of the app.
 
 * **cf CLI v6**:
 
@@ -392,7 +396,7 @@ To view the status of a rolling deployment:
 
 * `status.details`: Provides the timestamp for the most recent successful health check.
   The value of the `status.details` property can be `nil` if there is no successful health check
-  for the deployment. For example, there might be no successful healthcheck if the deployment was
+  for the deployment. For example, there might be no successful health check if the deployment was
   cancelled.
 
 The following table describes the possible values for the `status.value` and `status.reason`

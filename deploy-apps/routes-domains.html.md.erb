@@ -550,7 +550,12 @@ TCP domains indicate to a developer that requests over any TCP protocol, includi
 
 Admins manage shared domains, which are available to users in all orgs of a <%= vars.app_runtime_abbr %> deployment. An admin can offer multiple shared domains to users. For example, an admin may offer developers the choice of creating routes for their apps from `<%= vars.app_domain %>` and `cf.some-company.com`.
 
-There is not technically a default shared domain. If a developer pushes an app without specifying a domain (see [Map a Route with App Push](#map-route-on-push)), a route is created for it from the first shared domain created in the system. All other operations involving route require the domain be specified (see [Routes](#routes)).
+If a developer pushes an app without specifying a domain,
+a route is created for it from the first shared domain created in the system.
+All other operations involving route require the domain be specified (see [Routes](#routes)).
+
+When using shared domains, you cannot have routes with the same hostname and domain
+across different orgs and spaces.
 
 Shared domains are HTTP by default, but can be configured to be TCP when associated with the TCP router group.
 
@@ -598,7 +603,14 @@ The `--router-group` option is not used with internal domains.
 
 ### <a id='private-domains'></a> Private Domains
 
-Org managers can add private domains, or custom domains, and give members of the org permission to create routes for privately registered domain names. Private domains can be shared with other orgs, enabling users of those orgs to create routes from the domain.
+Org managers can add private domains, or custom domains,
+and give members of the org permission to create routes for privately registered domain names.
+
+Private domains can be shared with other orgs and spaces.
+When using private domains, you can have routes with the same hostname
+and domain name across different orgs and spaces.
+This cannot be done with shared domains.
+See [Shared Domains](#shared-domains) above.
 
 Private domains can be HTTP or HTTPS only. TCP Routing is supported for shared domains only.
 

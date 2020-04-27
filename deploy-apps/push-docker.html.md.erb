@@ -193,15 +193,20 @@ Running `cf push` with an ECR registry triggers <%= vars.app_runtime_abbr %> to:
 
 ### <a id='gcr'></a> Google Container Registry (GCR)
 
-<%= vars.product_name %> supports pushing apps from images hosted on Google Container Registry (GCR) service. This feature requires that you use JSON key-based authentication. For more information, see the [JSON key file](https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file) section of the _Authentication methods_ topic in the Google Cloud documentation.
+<%= vars.app_runtime %> supports pushing apps from images hosted on Google Container Registry (GCR) service.
+This feature requires that you use JSON key-based authentication.
+For more information about JSON key authentication,
+see the [Google Cloud documentation](https://cloud.google.com/container-registry/docs/advanced-authentication#json_key).
 
 #### <a id='authenticate'></a> Step 1: Authenticate with GCR
 
-To authenticate with GCR using <%= vars.platform_name %>, you must create a JSON key file and associate it with your project.
+To authenticate with GCR, you must create a JSON key file and associate it with your project.
 
 To create a JSON key file and associate it with your project:
 
-1. Create a GCP service account. To create a GCP service account, see [Creating and enabling service accounts for instances](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances) in the Google Cloud documenation. Run: 
+1. Create a GCP service account. To create a GCP service account,
+   see the [Google Cloud documentation](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances).
+   Run:
   
     ```
     gcloud iam service-accounts create YOUR-ACCOUNT --display-name "YOUR-DISPLAY-NAME"

@@ -29,7 +29,9 @@
   </div>
 </div>
 
-This topic describes how <%= vars.product_name %> app developers can read and write to a mounted file system from their apps. In <%= vars.product_name %>, a volume service provides a volume so your app can read or write to a reliable, persistent file system.
+This topic describes how app developers can read and write to a mounted file system from their apps.
+In <%= vars.app_runtime_full %>, a volume service provides a volume so your app can read
+or write to a reliable, persistent file system.
 
 <p class="note"><strong>Note:</strong> NFS and SMB volume services are available for Linux cells only. These services are not available for Windows cells.</p>
 
@@ -89,7 +91,7 @@ To create and bind an instance for the volume service:
         ```
 
         Where:
-        * `YOUR-APP` is the name of the <%= vars.product_name %> app for which you want to use the volume service.
+        * `YOUR-APP` is the name of the app for which you want to use the volume service.
         * `SERVICE-NAME` is the name of the volume service instance you created in the previous step.
         * (Optional) `UID` and `GID` are the UID and GID to use when mounting the share to the app.
           The `GID` and `UID` must be positive integer values.
@@ -119,7 +121,7 @@ To create and bind an instance for the volume service:
         ```
 
         Where:
-        * `YOUR-APP` is the name of the <%= vars.product_name %> app for which you want to use the volume service.
+        * `YOUR-APP` is the name of the app for which you want to use the volume service.
         * `SERVICE-NAME` is the name of the volume service instance you created in the previous step.
         * `USERNAME` and `PASSWORD` are the username and password for the LDAP server. If you omit `username` and `password`, the driver skips `mapfs` mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
         * (Optional) `OPTIONAL-MOUNT-PATH` is a JSON string that indicates the volume should be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
@@ -223,7 +225,7 @@ To mount a volume in the `/app` directory:
 
 This section describes how to use the NFS volume service.
 
-<%= vars.product_name %> offers two NFS volume services:
+<%= vars.app_runtime %> offers two NFS volume services:
 
 * `nfs`: This volume service provides support for NFS volumes using both v3 and v4.x protocols.
 
@@ -258,7 +260,8 @@ To create an NFS volume service using the `Existing` plan of the `nfs` service:
 
 With the release of NFS Volume Service v1.5.4, the original fuse-based NFS service is deprecated in favor of the newer kernel mount-based NFS service. Existing NFS volume service bindings are listed as `nfs-legacy`.
 
-To migrate from `nfs-legacy` to the newer `nfs` service, Pivotal recommends you re-create and re-bind your `nfs` service instances.
+To migrate from `nfs-legacy` to the newer `nfs` service,
+<%= vars.company_name %> recommends that you re-create and re-bind your `nfs` service instances.
 
 With the release of NFS Volume Service v2.0.0, the `nfs-legacy` service uses the `nfs` service. To avoid being affected when the `nfs-legacy` service is retired, re-create and re-bind your service instances using the `nfs` service.
 
@@ -287,7 +290,11 @@ To deploy and bind a sample app:
     * `SERVICE-INSTANCE-NAME`: The name of the volume service instance you created previously.
     * `UID` and `GID`: The `UID` and `GID` to use when mounting the share to the app. The NFS driver uses these values in the following ways:
       * When sending traffic to the NFS server, the NFS driver translates the app user ID and group ID to the `UID` and `GID` values.
-      * When returning attributes from the NFS server, the NFS driver translates the `UID` and `GID` back to the running user UID and default GID. This allows you to interact with your NFS server as a specific user while allowing <%= vars.product_name %> to run your app as an arbitrary user. `UID` and `GID` must be positive integer values.
+      * When returning attributes from the NFS server, the NFS driver translates the `UID` and `GID` back
+        to the running user UID and default GID.
+        This allows you to interact with your NFS server as a specific user
+        while allowing <%= vars.app_runtime %> to run your app as an arbitrary user.
+        `UID` and `GID` must be positive integer values.
 <p class="note"><strong>Note:</strong> In NFS v2.0.0 and later, `UID` and `GID` values of 0 are no longer permissible due to security reasons.</p>
     * (Optional) `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example:
 
@@ -324,7 +331,7 @@ This section describes using the NFS Volume Service.
 
 #### <a id='ldap'></a> Configure LDAP Credentials with Service Instance Creation
 
-If your <%= vars.product_name %> deployment has LDAP enabled, you can configure LDAP credentials for your NFS Volume Service instance.
+If your deployment has LDAP enabled, you can configure LDAP credentials for your NFS Volume Service instance.
 
 To configure LDAP credentials while creating your NFS Volume Service instance:
 
@@ -367,7 +374,8 @@ This section describes how to use a Server Message Block (SMB) volume service. F
 
 ### <a id='create-smb'></a> Create an SMB Volume Service
 
-<%= vars.product_name %> offers an `smb` volume service. This volume service provides support for existing SMB shares.
+<%= vars.app_runtime %> offers an `smb` volume service.
+This volume service provides support for existing SMB shares.
 
 The service offers a single plan called `Existing`.
 
@@ -412,7 +420,9 @@ To deploy and bind a sample app:
     ```
     Where:
     * `SERVICE-INSTANCE-NAME`: The name of the volume service instance you created previously.
-    * `USERNAME` and `PASSWORD`: The username and password to use when mounting the share to the app. This allows you to interact with your SMB server as a specific user while allowing <%= vars.product_name %> to run your app as an arbitrary user.
+    * `USERNAME` and `PASSWORD`: The username and password to use when mounting the share to the app.
+       This allows you to interact with your SMB server as a specific user
+       while allowing <%= vars.app_runtime %> to run your app as an arbitrary user.
     * (Optional) `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example, run:
 
           ```

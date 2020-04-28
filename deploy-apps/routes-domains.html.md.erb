@@ -502,20 +502,32 @@ The following example shows a request made to instance `9` of an app with GUID `
 $ curl myapp.<%= vars.private_app_domain %> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9"
 </pre>
 
-<br>
-<br>
-If this header is set to an invalid value GoRouter will return a 400 status code and the response from GoRouter will contain a `X-Cf-Routererror` header with more information about why the failure occurred.
-<br>
-<br>
-| **X-Cf-Routererror value** | **Reason for Error** | **Response Body** |
-| --- | --- | --- |
-| invalid_cf_app_instance_header | The value provided for X-Cf-App-Instance was not a properly formatted guid. | none |
-| unknown_route |  The value provided for X-Cf-App-Instance is a correctly formatted guid, but there is no instance found with that guid for the route requested. | `400 Bad Request: Requested instance ('1') with guid ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route ('myroute.cf.com')` |
-<br>
-<br>
-Usage of the `X-Cf-App-Instance` header is only available for users on the Diego architecture.
+<p class="note">Use of the <code>X-Cf-App-Instance</code> header is only available for users on the Diego architecture.
+</p>
 
-Prior to routing release version 0.197.0, a `404` error was returned.
+If this header is set to an invalid value, Gorouter resturns a `400` status code and the
+response from Gorouter contains a `X-Cf-Routererror` header with more information about the error.
+Prior to routing release version 0.197.0, Gorouter returned a `404` error.
+
+The following table describes the possible error responses:
+
+<table>
+  <tr>
+    <th>X-Cf-Routererror Value</th>
+    <th>Reason for Error</th>
+    <th>Response Body</th>
+  </tr> 
+  <tr>
+    <td><code>invalid_cf_app_instance_header</code></td>
+    <td>The value provided for <code>X-CF-APP-INSTANCE</code> was not a properly formatted GUID.</td>
+    <td>None</td>
+  </tr>
+  <tr>
+    <td><code>unknown_route</code></td>
+    <td>The value provided for <code>X-CF-APP-INSTANCE</code> is a correctly formatted GUID, but there is no instance found with that guid for the route requested.</td>
+    <td><code>400 Bad Request: Requested instance ('1') with guid ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route ('myroute.cf.com')</code></td>
+  </tr>  
+</table> 
 
 ## <a id='domains'></a> Domains
 

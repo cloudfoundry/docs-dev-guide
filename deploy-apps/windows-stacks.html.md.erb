@@ -23,12 +23,12 @@ A stack is a prebuilt root file system (rootfs) that supports a specific operati
 
 ## <a id='available-stacks'></a> Available Stacks
 
-If you push your <%= vars.windows_runtime %> <%= vars.current_major_version ? "v#{vars.current_major_version}" : "" %> app to a Windows stack, you must use `windows`.
-The `windows2016` stack is not supported on <%= vars.windows_runtime %>.
+If you push your <%= vars.windows_runtime_abbr %> <%= vars.current_major_version ? "v#{vars.current_major_version}" : "" %> app to a Windows stack, you must use `windows`.
+The `windows2016` stack is not supported on <%= vars.windows_runtime_abbr %>.
 
 ## <a id='cli-commands'></a> Restaging Apps on a New Stack
 
-For security, stacks receive regular updates to address Common Vulnerabilities and Exposures ([CVEs](http://www.ubuntu.com/usn/)). Apps pick up on these stack changes through new releases of <%= vars.windows_runtime %>. However, if your app links statically to a library provided in the rootfs, you may have to manually restage it to pick up the changes.
+For security, stacks receive regular updates to address Common Vulnerabilities and Exposures ([CVEs](http://www.ubuntu.com/usn/)). Apps pick up on these stack changes through new releases of <%= vars.windows_runtime_abbr %>. However, if your app links statically to a library provided in the rootfs, you may have to manually restage it to pick up the changes.
 
 It can be difficult to know what libraries an app statically links to, and it depends on the languages you are using. One example is an app that uses a Ruby or Python binary, and links out to part of the C standard library. If the C library requires an update, you may need to recompile the app and restage it.
 

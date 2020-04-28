@@ -108,7 +108,7 @@ In <%= vars.app_runtime_abbr %>, a hostname is the label that indicates a subdom
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf create-route <%= vars.app_domain %> --hostname myapp
+  $ cf7 create-route <%= vars.app_domain %> --hostname myapp
   Creating route myapp.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
@@ -134,7 +134,7 @@ A developer can create a route from the domain `<%= vars.private_app_domain %>` 
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf create-route <%= vars.private_app_domain %>
+  $ cf7 create-route <%= vars.private_app_domain %>
   Creating route <%= vars.private_app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
@@ -562,7 +562,12 @@ TCP domains indicate to a developer that requests over any TCP protocol, includi
 
 Admins manage shared domains, which are available to users in all orgs of a <%= vars.app_runtime_abbr %> deployment. An admin can offer multiple shared domains to users. For example, an admin may offer developers the choice of creating routes for their apps from `<%= vars.app_domain %>` and `cf.some-company.com`.
 
-There is not technically a default shared domain. If a developer pushes an app without specifying a domain (see [Map a Route with App Push](#map-route-on-push)), a route is created for it from the first shared domain created in the system. All other operations involving route require the domain be specified (see [Routes](#routes)).
+If a developer pushes an app without specifying a domain,
+a route is created for it from the first shared domain created in the system.
+All other operations involving route require the domain be specified (see [Routes](#routes)).
+
+When using shared domains, you cannot have routes with the same hostname and domain
+across different orgs and spaces.
 
 Shared domains are HTTP by default, but can be configured to be TCP when associated with the TCP router group.
 
@@ -610,7 +615,16 @@ The `--router-group` option is not used with internal domains.
 
 ### <a id='private-domains'></a> Private Domains
 
-Org managers can add private domains, or custom domains, and give members of the org permission to create routes for privately registered domain names. Private domains can be shared with other orgs, enabling users of those orgs to create routes from the domain.
+Org managers can add private domains, or custom domains,
+and give members of the org permission to create routes for privately registered domain names.
+
+Private domains can be shared with other orgs and spaces.
+These are referred to as shared private domains and are not the same as shared domains.
+See [Shared Domains](#shared-domains) above.
+
+When using private domains, you can have routes with the same hostname
+and domain name across different orgs and spaces.
+This cannot be done with shared domains.
 
 Private domains can be HTTP or HTTPS only. TCP Routing is supported for shared domains only.
 
@@ -620,7 +634,7 @@ Org managers can create a private domain with the following command:
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf create-private-domain my-org <%= vars.private_app_domain %>
+  $ cf7 create-private-domain my-org <%= vars.private_app_domain %>
   </pre>
 * **cf CLI v6**
   <pre class="terminal">
@@ -660,7 +674,7 @@ Org managers can delete a domain from <%= vars.app_runtime_abbr %> with the `cf 
 * **cf CLI v6**:
   <pre class="terminal">
   $ cf delete-domain <%= vars.private_app_domain %>
-  </pre
+  </pre>
 
 ### <a id='parent-child-domains'></a> Requirements for Parent and Child Domains
 

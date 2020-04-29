@@ -506,9 +506,9 @@ The following example shows a request made to instance `9` of an app with GUID `
 $ curl myapp.<%= vars.private_app_domain %> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9"
 </pre>
 
-If the `X-Cf-App-Instance` header is set to an invalid value, Gorouter resturns a `400` status code and the
+If the `X-Cf-App-Instance` header is set to an invalid value, Gorouter returns a `400` status code and the
 response from Gorouter contains a `X-Cf-Routererror` header with more information about the error.
-Prior to routing release version 0.197.0, Gorouter returned a `404` error.
+Before the routing release v0.197.0, Gorouter returned a `404` error.
 
 The following table describes the possible error responses:
 
@@ -520,12 +520,12 @@ The following table describes the possible error responses:
   </tr> 
   <tr>
     <td><code>invalid_cf_app_instance_header</code></td>
-    <td>The value provided for <code>X-Cf-App-Instance</code> was not a properly formatted GUID.</td>
+    <td>The value provided for <code>X-Cf-App-Instance</code> was an incorrectly formatted GUID.</td>
     <td>None</td>
   </tr>
   <tr>
     <td><code>unknown_route</code></td>
-    <td>The value provided for <code>X-Cf-App-Instance</code> is a correctly formatted GUID, but there is no instance found with that guid for the route requested.</td>
+    <td>The value provided for <code>X-Cf-App-Instance</code> is a correctly formatted GUID, but there is no instance found with that GUID for the route requested.</td>
     <td><code>400 Bad Request: Requested instance ('1') with guid ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route ('myroute.cf.com')</code></td>
   </tr>  
 </table> 

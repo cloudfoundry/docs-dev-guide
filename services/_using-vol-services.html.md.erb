@@ -26,6 +26,8 @@
 
 This topic describes how <%= vars.first_product_name %> app developers can read and write to a mounted file system from their apps. In <%= vars.product_name %>, a volume service provides a volume so your app can read or write to a reliable, non-ephemeral file system.
 
+<%= vars.external_vol_win_note %>
+
 <p class="note"><strong>Note</strong>: NFS and SMB volume services are available for Linux cells only. These services are not available for Windows cells.</p>
 
 ## <a id="pre"></a> Prerequisite
@@ -155,6 +157,8 @@ If your app requires the shared volume to be placed within the <code>/app</code>
 ## <a id='nfs'></a> NFS Volume Service
 
 This section describes how to use the NFS volume service.
+
+<p class="note"><strong>Note:</strong> NFS is not available on Windows systems.</p>
 
 ### <a id='create-nfs'></a> Create an NFS Volume Service
 
@@ -311,6 +315,8 @@ Workarounds for this issue:
 ## <a id='smb'></a> SMB Volume Service
 
 This section describes how to use an SMB ([Server Message Block](https://docs.microsoft.com/en-us/windows/desktop/fileio/microsoft-smb-protocol-and-cifs-protocol-overview)) volume service.
+
+<%= vars.external_vol_smb_note %>
 
 ### <a id='create-smb'></a> Create an SMB Volume Service
 

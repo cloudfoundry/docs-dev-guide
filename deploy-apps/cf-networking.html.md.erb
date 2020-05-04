@@ -21,6 +21,7 @@ owner: Container-to-Container Networking
       <li><a href="#list-policies">List Network Policies</a></li>
       <li><a href="#rm-policy">Remove a Network Policy</a></li>
       <li><a href="#disable-policy">Disable Network Policy Enforcement</a></li>
+      <li><a href="#policy-quotas">Manage Network Policy Quotas</a></li>
     </ul>
     <li><a href="#discovery">App Service Discovery</a>
       <% if vars.platform_code.include? "CF" %>
@@ -216,6 +217,14 @@ To disable network policy enforcement between apps, do the following:
 
 <% end %>
 
+### <a name="policy-quotas"></a> Manage Network Policy Quotas
+
+For space developers, the default maximum quota per space is 50 network
+policies. Users with the `network.admin` scope can bypass this quota.
+
+To change the network policy quota for space developers you can configure the
+`max_policies_per_app_source` property on the `policy-server` job. The default
+value is 50.
 
 ## <a name="discovery"></a> App Service Discovery
 

@@ -304,6 +304,7 @@ To deploy and bind a sample app:
           cf bind-service pora myVolume -c '{"mount":"/var/path"}'
           ```
     * (Optional) `readonly`: When you issue the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.
+    * (Optional) `cache`: When you issue the `cf bind-service` command, Volume Services mounts the remote file system with attribute caching turned off by default.  You can specify that you would like attribute caching on (with default values) by adding `"cache":true` to the bind configuration JSON string.
 
 1. Start the app. Run:
 

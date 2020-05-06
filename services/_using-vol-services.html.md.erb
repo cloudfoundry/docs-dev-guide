@@ -30,7 +30,7 @@
 </div>
 
 This topic describes how app developers can read and write to a mounted file system from their apps.
-In <%= vars.app_runtime_full %>, a volume service provides a volume so your app can read
+In <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>), a volume service provides a volume so your app can read
 or write to a reliable, persistent file system.
 
 <%= vars.external_vol_win_note %>
@@ -98,18 +98,18 @@ To create and bind an instance for the volume service:
           Provide the UID and GID as a JSON string in-line or in a file.
           If you omit `uid` and `gid`, the driver skips `mapfs` mounting and performs
           just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
-        <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support UID and GID values of `0`.</p>
-        <p class="note"><strong>Note:</strong> The user specified by <code>uid</code> must have access
-           to the files on the share.
-           When `uid` and `gid` are omitted,
-           the app file operations use the UID of the running app process.
-           For buildpack apps, this UID is always `2000`.
-           For Docker apps, the effective UID is the same as the UID of the process
-           inside the Docker container, except for `root`, which is mapped to `4294967294`
-           outside the Docker container.
-        </p>
+          <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support UID and GID values of <code>0</code>.</p>
+          <p class="note"><strong>Note:</strong> The user specified by <code>uid</code> must have access
+             to the files on the share.
+             When <code>uid</code> and <code>gid</code> are omitted,
+             the app file operations use the UID of the running app process.
+             For buildpack apps, this UID is always <code>2000</code>.
+             For Docker apps, the effective UID is the same as the UID of the process
+             inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code>
+             outside the Docker container.
+          </p>
         * (Optional) `OPTIONAL-MOUNT-PATH` is a JSON string that indicates the volume should be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
-          <p class="note"><strong>Note</strong>: Do not specify a `MOUNT-PATH` within the `/app` directory, which is where <%= vars.product_short %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
+          <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.product_short %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
         * (Optional) `"readonly":true` is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
 
         The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`, passing an in-line JSON string:
@@ -125,7 +125,7 @@ To create and bind an instance for the volume service:
         * `SERVICE-NAME` is the name of the volume service instance you created in the previous step.
         * `USERNAME` and `PASSWORD` are the username and password for the LDAP server. If you omit `username` and `password`, the driver skips `mapfs` mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
         * (Optional) `OPTIONAL-MOUNT-PATH` is a JSON string that indicates the volume should be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
-          <p class="note"><strong>Note</strong>: Do not specify a `MOUNT-PATH` within the `/app` directory, which is where <%= vars.product_short %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
+          <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.product_short %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
         * (Optional) `"readonly":true` is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
 
 1. Restage your app. Run:
@@ -249,7 +249,7 @@ To create an NFS volume service using the `Existing` plan of the `nfs` service:
     Where:
     * `SERVICE-INSTANCE-NAME` is a name you provide for this NFS volume service instance.
     * `SERVER/SHARE` is the NFS address of your server and share.
-    <p class="note"><strong>Note:</strong> Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
+      <p class="note"><strong>Note:</strong> Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
     * (Optional) `NFS-PROTOCOL` is the NFS protocol you want to use. For example, if you want to use NFSv4, set the version to `4.1`. Valid values are `3.0`, `4.0`, `4.1` or `4.2`. If you do not specify a `version`, the protocol version used is negotiated between client and server at mount time. This usually results in the latest available version being used.
 
 1. Confirm that the NFS volume service appears in your list of services. Run:
@@ -297,7 +297,7 @@ To deploy and bind a sample app:
         This allows you to interact with your NFS server as a specific user
         while allowing <%= vars.app_runtime %> to run your app as an arbitrary user.
         `UID` and `GID` must be positive integer values.
-<p class="note"><strong>Note:</strong> In NFS v2.0.0 and later, `UID` and `GID` values of 0 are no longer permissible due to security reasons.</p>
+        <p class="note"><strong>Note:</strong> In NFS v2.0.0 and later, <code>UID</code> and <code>GID</code> values of <code>0</code> are no longer permissible due to security reasons.</p>
     * (Optional) `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example:
 
           ```

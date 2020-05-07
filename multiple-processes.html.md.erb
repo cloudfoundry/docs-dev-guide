@@ -1,22 +1,9 @@
 ---
-title: Pushing an App with Multiple Processes (Beta)
+title: Pushing an App with Multiple Processes
 owner: CAPI
 ---
 
 This topic describes how to push and manage apps with multiple processes. 
-
-<p class="note"><strong>Note</strong>: This is a beta feature. Because the CLI may change, this feature is not recommended for use in scripts until it is generally available.</p>
-
-<div class="note">
-<strong>Note:</strong>
-This topic includes references to cf CLI v7 beta commands. Consider the following when using these commands:
-<ul>
-<li> cf CLI v7 beta and CAPI v3 are both in active development and subject to change. </li>
-<li> cf CLI v7 beta is developed and tested against the latest CAPI release candidate. </li>
-<li> cf CLI v7 beta does not yet use CAPI v3 for all commands. Some commands still use CAPI v2 during beta. </li>
-</ul>
-For more information, see <a href="../../cf-cli/v7.html">Upgrading to cf CLI v7 (Beta)</a>. 
-</div>
 
 ## <a id="about-processes"></a> About Processes 
 
@@ -29,7 +16,7 @@ For more information about processes, see the <a href="http://v3-apidocs.cloudfo
 You can push an app with multiple processes using a Procfile.
 Follow the procedure below. 
 
-<p class="note"><strong>Note</strong>: You can also push an app with multiple processes using an app manifest. See <a href="https://v3-apidocs.cloudfoundry.org/index.html#the-app-manifest-specification">The app manifest specification</a> in the CAPI v3 docs.</p>
+<p class="note"><strong>Note</strong>: You can also push an app with multiple processes using an app manifest. See the processes section in <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#-processes">App Manifest Attribute Reference</a>.</p>
 
 
 1. Create a file named `Procfile` in the root of your app directory. 
@@ -49,7 +36,7 @@ Follow the procedure below.
 	* **cf CLI v6**:
 
 		```
-		cf v3-push myapp
+		cf6 v3-push myapp
 		```
 
 By default, the web process has a route and one instance. Other processes have zero instances by default. 
@@ -66,14 +53,12 @@ To scale an app process, run the following command:
 * **cf CLI v6**:
 
 	```
-	cf v3-scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
+	cf6 v3-scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
 	```
 
 ## <a id="view-processes"></a>View Processes
 
-To view the processes running as part of an app, run `cf APP-NAME`. See the following example in which the app has a `web` and a `worker` process. 
-
-<p class="note"><strong>Note</strong>: In cf CLI v7, the <code>v3-prefix</code> is not required.</p>
+To view the processes running as part of an app, run `cf APP-NAME`. See the following example in which the app has a `web` and a `worker` process.
 
 ```
 $ cf app myapp

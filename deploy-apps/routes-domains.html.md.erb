@@ -7,18 +7,7 @@ owner: Routing
 
 This topic describes how routes and domains work in <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>), and how developers and administrators configure routes and domains for their apps using the Cloud Foundry Command Line Interface (cf CLI).
 
-<div class="note">
-<strong>Note:</strong>
-This topic includes references to cf CLI v7 beta commands. When using these commands, consider:
-<ul>
-<li>cf CLI v7 beta and CAPI v3 are both in active development and subject to change.</li>
-<li>cf CLI v7 beta is developed and tested against the latest CAPI release candidate.</li>
-<li>cf CLI v7 beta does not yet use CAPI v3 for all commands. Some commands still use CAPI v2 during beta.</li>
-</ul>
-For more information, see <a href="../../cf-cli/v7.html">Upgrading to cf CLI v7 (Beta)</a>. 
-</div>
-
-<p class="note"><strong>Note:</strong> cf CLI v7 beta does not support TCP routing. The commands in this topic related to TCP routing only work in cf CLI v6.</p>
+<p class="note"><strong>Note:</strong> cf CLI v7 does not support TCP routing. The commands in this topic related to TCP routing only work in cf CLI v6.</p>
 
 For more information about routing capabilities in <%= vars.app_runtime_abbr %>, see [HTTP Routing](../../concepts/http-routing.html).
 
@@ -250,7 +239,7 @@ If the developer maps the first route with path `products` to the `products` app
 
 #### <a id='create-route-with-port'></a> Create a TCP Route with a Port
 
-<p class="note"><strong>Note:</strong> cf CLI v7 beta does not support TCP routing. The commands in this section related to TCP routing only work in cf CLI v6.</p>
+<p class="note"><strong>Note:</strong> cf CLI v7 does not support TCP routing. The commands in this section related to TCP routing only work in cf CLI v6.</p>
 
 A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. If the clients of the app can accommodate addressing an arbitrary port, then developers should use the `--random-port` to instruct <%= vars.app_runtime_abbr %> to pick a port for your route. To create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port, run:
 
@@ -581,7 +570,7 @@ $ cf create-shared-domain <%= vars.app_domain %>
 
 To create a TCP shared domain, first discover the name of the TCP router group.
 
-<p class="note"><strong>Note</strong>: cf CLI v7 beta does not support TCP routing or creating shared domains with router groups.</p>
+<p class="note"><strong>Note</strong>: cf CLI v7 does not support TCP routing or creating shared domains with router groups.</p>
 
 <pre class="terminal">
 $ cf router-groups

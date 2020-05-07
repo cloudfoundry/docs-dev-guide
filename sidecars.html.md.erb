@@ -5,16 +5,6 @@ owner: CAPI
 
 This topic describes sidecar processes and how to include them when you push your app.
 
-<div class="note">
-<strong>Note:</strong> This topic includes references to cf CLI v7 beta commands. When using these commands, consider:
-	<ul>
-		<li>cf CLI v7 beta and CAPI v3 are both in active development and subject to change.</li>
-		<li>cf CLI v7 beta is developed and tested against the latest CAPI release candidate.</li>
-		<li>cf CLI v7 beta does not yet use CAPI v3 for all commands. Some commands still use CAPI v2 during beta.</li>
-	</ul>
-For more information, see <a href="../cf-cli/v7.html">Upgrading to cf CLI v7 (Beta)</a>. 
-</div>
-
 <%= vars.capi_sidecar_req %>
 
 
@@ -122,8 +112,6 @@ Before you can push an app with a sidecar with an app manifest, you must have:
 
 To push an app with a sidecar:
 
-<p class="note"><strong>Note:</strong> This procedure uses <code>v3</code> commands because it requires the server-side manifest support in CAPI v3.</p>
-
 1. Create an app or use an existing app. To create an app:
 	* If you are using cf CLI v7, run:
 
@@ -134,7 +122,7 @@ To push an app with a sidecar:
 	* If you are using cf CLI v6, run:
 
 		```
-		cf v3-create-app APP-NAME
+		cf6 v3-create-app APP-NAME
 		```
 		Where `APP-NAME` is the name you give your app.
 
@@ -179,7 +167,7 @@ To push an app with a sidecar:
 	* If you are using cf CLI v6, run:
 	
 		```
-		cf v3-apply-manifest -f PATH-TO-MANIFEST
+		cf6 v3-apply-manifest -f PATH-TO-MANIFEST
 		```
 		Where `PATH-TO-MANIFEST` is the path to your manifest file.
 
@@ -193,7 +181,7 @@ To push an app with a sidecar:
 	* If you are using cf CLI v6, run:
 
 		```
-		cf v3-push APP-NAME
+		cf6 v3-push APP-NAME
 		```
 		Where `APP-NAME` is the name of your app.
 
@@ -253,7 +241,7 @@ To push the app and sidecar:
 	* If you are using cf CLI v6, run:
 
 		```
-		cf v3-create-app sidecar-dependent-app
+		cf6 v3-create-app sidecar-dependent-app
 		```
 
 1. Navigate to the `sidecar-dependent-app` directory. 
@@ -269,7 +257,7 @@ To push the app and sidecar:
 	* If you are using cf CLI v6, run:
 
 		```
-		cf v3-apply-manifest
+		cf6 v3-apply-manifest
 		```
 
 1. To push the app: 
@@ -281,7 +269,7 @@ To push the app and sidecar:
 	* If you are using cf CLI v6, run:
 	
 		```
-		cf v3-push sidecar-dependent-app
+		cf6 v3-push sidecar-dependent-app
 		```
 
 After you push the app, you can further explore it in [View the Processes Running in the Container](#view-processes) and [View the Web URL and App Logs](#view-logs).

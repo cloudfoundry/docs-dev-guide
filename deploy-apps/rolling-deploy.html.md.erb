@@ -1,21 +1,9 @@
 ---
-title: Rolling App Deployments (Beta)
+title: Rolling App Deployments
 owner: CAPI
 ---
 
-<div class="note">
-<strong>Note:</strong>
-This topic includes references to cf CLI v7 beta commands. Consider the following when using these
-commands:
-<ul>
-  <li>cf CLI v7 beta and CAPI v3 are both in active development and subject to change.</li>
-  <li>cf CLI v7 beta is developed and tested against the latest CAPI release candidate.</li>
-  <li>cf CLI v7 beta does not currently use CAPI v3 for all commands. Some commands still use CAPI v2 during beta.</li>
-</ul>
-For more information, see <a href="../../cf-cli/v7.html">Upgrading to cf CLI v7 (Beta)</a>.
-</div>
-
-This topic describes how developers use beta Cloud Foundry Command Line Interface (cf CLI) commands
+This topic describes how developers use Cloud Foundry Command Line Interface (cf CLI) commands
 or the Cloud Foundry API (CAPI) to push their apps using a rolling deployment.
 
 For information about the traditional method for addressing app downtime while pushing app updates,
@@ -28,8 +16,7 @@ For more information about CAPI, see the
 
 The procedures in this topic require one of the following:
 
-* **cf CLI v7**: If you use cf CLI v7, you must install cf CLI v7. While in beta, cf CLI v7 is only
-    tested against the latest CAPI release candidate.
+* **cf CLI v7**: If you use cf CLI v7, you must install cf CLI v7.
 * **cf CLI v6**: If you use cf CLI v6:
   * You must install cf CLI v6.40 or later.
   * The rolling deployment feature must be enabled for your deployment. <%= vars.zdt_enable %>
@@ -61,7 +48,7 @@ as soon as one instance is healthy.</p>
   1. Run:
 
     ```
-    cf v3-zdt-push APP-NAME
+    cf6 v3-zdt-push APP-NAME
     ```
     Where `APP-NAME` is the name that you want to give your app.
 
@@ -192,7 +179,7 @@ To stop the deployment of an app that you pushed:
   1. Run:
 
     ```
-    cf v3-cancel-zdt-push APP-NAME
+    cf6 v3-cancel-zdt-push APP-NAME
     ```
     Where `APP-NAME` is the name of the app.
 
@@ -234,7 +221,7 @@ configuration updates that require a restart, such as environment variables or s
   1. Run:
 
     ```
-    cf v3-zdt-restart APP-NAME
+    cf6 v3-zdt-restart APP-NAME
     ```
     Where `APP-NAME` is the name of the app.
 
@@ -301,16 +288,16 @@ The following table describes the limitations of when using rolling deployments.
   </tr>
   <tr>
     <td>App Manifests</td>
-    <td>The <code>v3-zdt-push</code> command does not support providing an app manifest with the
+    <td>The <code>cf6 v3-zdt-push</code> command does not support providing an app manifest with the
     <code>-f</code> flag. If you have a <code>manifest.yml</code> file in your app directory, it is
-    ignored. The cf CLI v7 beta does not have this limitation. However, the cf CLI v7 beta does not
-    support multi-app manifests.</td>
+    ignored.</td>
+    <p class="note"><strong>Note:</strong> This limitation only applies to cf CLI v6.</p>
   </tr>
   <tr>
     <td>SSH to app instances</td>
-    <td>Pushing updates to your app with a <code>v3-zdt</code> command causes the new web process
-    and app GUID to mismatch. <code>cf ssh</code> does not handle this scenario. You must use the
-    <code>cf v3-ssh</code> command instead.
+    <td>Pushing updates to your app with a <code>cf6 v3-zdt-push</code> command causes the new web process
+    and app GUID to mismatch. <code>cf6 ssh</code> does not handle this scenario. You must use the
+    <code>cf6 v3-ssh</code> command instead.
     <p class="note"><strong>Note:</strong> This limitation only applies to cf CLI v6.</p>
     </td>
   </tr>

@@ -256,10 +256,8 @@ This section describes how to deploy a sample app and bind it to the NFS volume 
         </p>
         * (Optional) `OPTIONAL-MOUNT-PATH` is a JSON string that indicates the volume should be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
           <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
-        * (Optional) `"readonly":true` is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
-
-        The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`, passing an in-line JSON string:
-        <pre class="terminal">cf bind-service my-app nfs_service_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1","readonly":true}'</pre>
+        * (Optional) `"readonly":true` is a JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
+        * (Optional) `cache` is a parameter that enables attribute caching for read-write mounts using your operating system's default values. When you run the `cf bind-service` command, Volume Services mounts the remote file system with attribute caching disabled by default. You can enable attribute caching for read-write mounts by adding `"cache":true` to the bind configuration JSON string.
 
 1. Start the app:
 

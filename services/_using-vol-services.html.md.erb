@@ -72,7 +72,7 @@ To use a volume service deployed by your <%= vars.admin %>, you must first creat
   * `YOUR-APP`: The name of the app for which you want to use the volume service.
   * `SERVICE-NAME`: The name of the volume service instance you created in the previous step.
   * (NFS only) `GID-AND-UID-JSON`: If you bind an instance of the NFS volume service, you must supply two extra parameters: `gid` and `uid`. You can specify these parameters with the `-c` flag and a JSON string. The JSON can be inline or from a file. This parameter specifies the `gid` and `uid` to use when mounting the share to the app. `UID` and `GID` must be positive integer values.
-    <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support <code>uid</code> and <code>gid</code> values of <code>0`</code>.</p>
+    <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support <code>uid</code> and <code>gid</code> values of <code>0</code>.</p>
   * (Optional) `MOUNT-PATH`: To mount the volume to a particular path within your app rather than the default path, you supply the `mount` parameter. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
     <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory. For more information, see <a href="#mount-path">Mount Path Limitation</a>.</p>
   * (Optional) `READ-ONLY-TRUE`: When you issue the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.

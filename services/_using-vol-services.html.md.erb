@@ -165,7 +165,7 @@ This section describes how to use the NFS volume service.
 
 ### <a id='create-nfs'></a> Create an NFS Volume Service
 
-Cloud Foundry offers two NFS volume services:
+<%= vars.app_runtime_abbr %> offers two NFS volume services:
 
 * `nfs`: This volume service provides support for NFS volumes using both v3 and v4.x protocols.
   * If you do not specify a `version` parameter in the create configuration, the protocol version used is negotiated between client and server at mount time. This usually results in the latest available version being used.
@@ -283,7 +283,7 @@ This section provides additional information about using the NFS Volume Service.
 
 #### <a id='ldap'></a> Configure LDAP Credentials with Service Instance Creation
 
-If your Cloud Foundry deployment has LDAP enabled, you can configure LDAP credentials for your NFS Volume Service instance.
+If your <%= vars.platform_name %> deployment has LDAP enabled, you can configure LDAP credentials for your NFS Volume Service instance.
 
 To configure LDAP credentials while creating your NFS Volume Service instance:
 
@@ -327,7 +327,7 @@ This section describes how to use a Server Message Block (SMB) volume service. F
 
 ### <a id='create-smb'></a> Create an SMB Volume Service
 
-Cloud Foundry offers one SMB volume service:
+<%= vars.app_runtime_abbr %> offers one SMB volume service:
 
 * `smb`: This volume service provides support for existing SMB shares.
 
@@ -368,7 +368,7 @@ This section describes how to deploy a sample app and bind it to the SMB volume 
     ```
     Where:
     * `SERVICE-INSTANCE-NAME`: The name of the volume service instance you created previously.
-    * `USERNAME` and `PASSWORD`: The username and password to use when mounting the share to the app. This allows you to interact with your SMB server as a specific user while allowing Cloud Foundry to run your app as an arbitrary user.
+    * `USERNAME` and `PASSWORD`: The username and password to use when mounting the share to the app. This allows you to interact with your SMB server as a specific user while allowing <%= vars.app_runtime_abbr %> to run your app as an arbitrary user.
     * **Optional parameters**:
       * `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example:
 

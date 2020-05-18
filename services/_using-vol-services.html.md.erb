@@ -109,7 +109,7 @@ To create and bind an instance for the volume service:
              outside the Docker container.
           </p>
         * (Optional) `OPTIONAL-MOUNT-PATH` is a JSON string that indicates the volume should be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
-          <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.product_short %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
+          <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
         * (Optional) `"readonly":true` is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
 
         The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`, passing an in-line JSON string:
@@ -125,7 +125,7 @@ To create and bind an instance for the volume service:
         * `SERVICE-NAME` is the name of the volume service instance you created in the previous step.
         * `USERNAME` and `PASSWORD` are the username and password for the LDAP server. If you omit `username` and `password`, the driver skips `mapfs` mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
         * (Optional) `OPTIONAL-MOUNT-PATH` is a JSON string that indicates the volume should be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
-          <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.product_short %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
+          <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
         * (Optional) `"readonly":true` is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
 
 1. Restage your app. Run:
@@ -205,7 +205,7 @@ To access the volume service from your app:
 
 ### <a id='mount-path'></a> Mount a Shared Volume in the /app Directory
 
-If you specify a mount inside the `/app` directory, the app may fail to start and parts of the app droplet may be written to the remote file share. This is because <%= vars.product_short %> mounts the volume before moving your compiled app into the droplet.
+If you specify a mount inside the `/app` directory, the app may fail to start and parts of the app droplet may be written to the remote file share. This is because <%= vars.app_runtime_abbr %> mounts the volume before moving your compiled app into the droplet.
 
 If your app requires the shared volume to be placed within the `/app` directory, you can use a symbolic link at app startup.
 
@@ -334,7 +334,7 @@ This section describes using the NFS Volume Service.
 
 #### <a id='ldap'></a> Configure LDAP Credentials with Service Instance Creation
 
-If your deployment has LDAP enabled, you can configure LDAP credentials for your NFS Volume Service instance.
+If your <%= vars.platform_name %> deployment has LDAP enabled, you can configure LDAP credentials for your NFS Volume Service instance.
 
 To configure LDAP credentials while creating your NFS Volume Service instance:
 

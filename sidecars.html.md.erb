@@ -1,5 +1,5 @@
 ---
-title: Pushing Apps with Sidecar Processes (Beta)
+title: Pushing Apps with Sidecar Processes
 owner: CAPI
 ---
 
@@ -17,7 +17,7 @@ When you provide a sidecar for your app, <%= vars.app_runtime_full %> packages t
 You can push sidecar processes with your app by using one of two methods:
 
 * Using an app manifest. For instructions, see [Push an App with a Sidecar Using an App Manifest](#create).
-* With a custom buildpack. For instructions, see [Sidecar Buildpacks (Beta)](../buildpacks/sidecar-buildpacks.html). 
+* With a custom buildpack. For instructions, see [Sidecar Buildpacks](../buildpacks/sidecar-buildpacks.html).
 
 For additional information about sidecars, see the _Sidecars_ section of the [CAPI v3 documentation](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#sidecars). 
 
@@ -72,7 +72,8 @@ Where:
 
 * `START-COMMAND` is the command used to start the sidecar. For example, `./binary` or `java -jar java-file.jar`.
 
-You must also allocate memory to sidecars that you push with a custom buildpack. For more information, see [Sidecar Buildpacks (Beta)](../buildpacks/sidecar-buildpacks.html). 
+You must also allocate memory to sidecars that you push with a custom buildpack.
+For more information, see [Sidecar Buildpacks](../buildpacks/sidecar-buildpacks.html).
 
 ### <a id="java-sidecar-packaging"></a> Packaging Binaries 
 

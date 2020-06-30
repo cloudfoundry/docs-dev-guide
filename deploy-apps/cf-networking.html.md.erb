@@ -133,6 +133,11 @@ Adding network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>
 
+<%= vars.network_policy_quota %>
+This limit does not apply to users with the `network.admin` scope.
+
+<%= vars.network_policy_quota_config %>
+
 ### <a name="list-policies"></a> List Policies
 
 You can list all the policies in your space, or just the policies for which a single app is the source:
@@ -216,16 +221,6 @@ To disable network policy enforcement between apps, do the following:
 <%= partial '../../console/disable_network_policy_enforcement' %>
 
 <% end %>
-
-### <a name="policy-quotas"></a> Manage Network Policy Quotas
-
-The network policy quota is the maximum number of network policies that a
-Space Developer can create within a space.
-By default, the network policy quota for Space Developers is a maximum of
-50 network policies per space.
-This network policy quota does not apply to users with the `network.admin` scope.
-
-<%= vars.network_policy_quota_config %>
 
 
 ## <a name="discovery"></a> App Service Discovery

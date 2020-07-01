@@ -3,23 +3,23 @@ title: Pushing an App with Multiple Processes
 owner: CAPI
 ---
 
-This topic describes how to push and manage apps with multiple processes. 
+This topic describes how to push and manage apps with multiple processes.
 
-## <a id="about-processes"></a> About Processes 
+## <a id="about-processes"></a> About Processes
 
-The CAPI v3 API supports using a single command to push apps that run multiple processes, such as a web app that has a UI process and a worker process. To push an app that creates multiple processes from the same codebase, you first define its processes in a Procfile. See [Push an App with Multiple Processes](#push-with-multiple-processes). 
+The CAPI v3 API supports using a single command to push apps that run multiple processes, such as a web app that has a UI process and a worker process. To push an app that creates multiple processes from the same codebase, you first define its processes in a Procfile. See [Push an App with Multiple Processes](#push-with-multiple-processes).
 
-For more information about processes, see the <a href="http://v3-apidocs.cloudfoundry.org/index.html#processes">Processes</a> section of the CAPI v3 documentation. 
+For more information about processes, see the <a href="http://v3-apidocs.cloudfoundry.org/index.html#processes">Processes</a> section of the CAPI v3 documentation.
 
 ## <a id="push-with-multiple-processes"></a> Push an App with Multiple Processes
 
 You can push an app with multiple processes using a Procfile.
-Follow the procedure below. 
+Follow the procedure below.
 
 <p class="note"><strong>Note</strong>: You can also push an app with multiple processes using an app manifest. See the processes section in <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#-processes">App Manifest Attribute Reference</a>.</p>
 
 
-1. Create a file named `Procfile` in the root of your app directory. 
+1. Create a file named `Procfile` in the root of your app directory.
 	<p class="note"><strong>Note</strong> For more information about Procfiles, see the <a href="https://v3-apidocs.cloudfoundry.org/index.html#procfiles">Procfiles</a> section of the CAPI v3 documentation.</p>
 1. Add each process and its start command to the Procfile. See the following example:
 
@@ -27,34 +27,21 @@ Follow the procedure below.
 	web: bundle exec rackup config.ru -p $PORT
  	worker: bundle exec rake worker:start
  	```
-1. Push the app:
-	* **cf CLI v7**:
-
-		```
-		cf7 push myapp
-		```
-	* **cf CLI v6**:
-
-		```
-		cf6 v3-push myapp
-		```
-
-By default, the web process has a route and one instance. Other processes have zero instances by default. 
-
-## <a id="scale-a-process"></a>Scale a Process 
-
-To scale an app process, run the following command:
-
-* **cf CLI v7**:
+1. To push the app, run:
 
 	```
-	cf7 scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
+	cf push myapp
 	```
-* **cf CLI v6**:
 
-	```
-	cf6 v3-scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
-	```
+By default, the web process has a route and one instance. Other processes have zero instances by default.
+
+## <a id="scale-a-process"></a>Scale a Process
+
+To scale an app process, run:
+
+```
+cf scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
+```
 
 ## <a id="view-processes"></a>View Processes
 

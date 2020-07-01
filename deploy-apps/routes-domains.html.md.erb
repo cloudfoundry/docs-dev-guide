@@ -97,7 +97,7 @@ In <%= vars.app_runtime_abbr %>, a hostname is the label that indicates a subdom
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf7 create-route <%= vars.app_domain %> --hostname myapp
+  $ cf create-route <%= vars.app_domain %> --hostname myapp
   Creating route myapp.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
@@ -123,7 +123,7 @@ A developer can create a route from the domain `<%= vars.private_app_domain %>` 
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf7 create-route <%= vars.private_app_domain %>
+  $ cf create-route <%= vars.private_app_domain %>
   Creating route <%= vars.private_app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
@@ -171,7 +171,7 @@ A developer can create a wildcard route from the domain `foo.<%= vars.app_domain
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf7 create-route foo.<%= vars.app_domain %> --hostname '*'
+  $ cf create-route foo.<%= vars.app_domain %> --hostname '*'
   Creating route *.foo.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
@@ -192,17 +192,17 @@ A developer can create three routes using the same hostname and domain in the sp
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf7 create-route <%= vars.app_domain %> --hostname store --path products
+  $ cf create-route <%= vars.app_domain %> --hostname store --path products
   Creating route store.<%= vars.app_domain %>/products for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
   <pre class="terminal">
-  $ cf7 create-route <%= vars.app_domain %> --hostname store --path orders
+  $ cf create-route <%= vars.app_domain %> --hostname store --path orders
   Creating route store.<%= vars.app_domain %>/orders for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
   <pre class="terminal">
-  $ cf7 create-route <%= vars.app_domain %> --hostname store
+  $ cf create-route <%= vars.app_domain %> --hostname store
   Creating route store.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
@@ -289,7 +289,7 @@ To check whether a route with the hostname `store` and the domain `<%= vars.app_
 
 * **cf CLI v7**:
   <pre class="terminal">
-  $ cf7 check-route <%= vars.app_domain %> --hostname store --path /products
+  $ cf check-route <%= vars.app_domain %> --hostname store --path /products
   Checking for route...
   OK
   Route store.<%= vars.app_domain %>/products does exist
@@ -506,7 +506,7 @@ The following table describes the possible error responses:
     <th width="30%">X-Cf-Routererror Value</th>
     <th width="30%">Reason for Error</th>
     <th width="40%">Response Body</th>
-  </tr> 
+  </tr>
   <tr>
     <td><code>invalid_cf_app_instance_header</code></td>
     <td>The value provided for <code>X-Cf-App-Instance</code> was an incorrectly formatted GUID.</td>
@@ -516,8 +516,8 @@ The following table describes the possible error responses:
     <td><code>unknown_route</code></td>
     <td>The value provided for <code>X-Cf-App-Instance</code> is a correctly formatted GUID, but there is no instance found with that GUID for the route requested.</td>
     <td><code>400 Bad Request: Requested instance ('1') with guid ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route ('myroute.cf.com')</code></td>
-  </tr>  
-</table> 
+  </tr>
+</table>
 
 ## <a id='domains'></a> Domains
 
@@ -624,7 +624,7 @@ Org managers can create a private domain with the following command:
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf7 create-private-domain my-org <%= vars.private_app_domain %>
+  $ cf create-private-domain my-org <%= vars.private_app_domain %>
   </pre>
 * **cf CLI v6**
   <pre class="terminal">
@@ -635,7 +635,7 @@ Org managers can create a private domain for a subdomain with the following comm
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf7 create-private-domain my-org foo.<%= vars.private_app_domain %>
+  $ cf create-private-domain my-org foo.<%= vars.private_app_domain %>
   </pre>
 * **cf CLI v6**
   <pre class="terminal">
@@ -658,7 +658,7 @@ Org managers can delete a domain from <%= vars.app_runtime_abbr %> with the `cf 
 
 * **cf CLI v7**:
   <pre class="terminal">
-  $ cf7 delete-private-domain <%= vars.private_app_domain %>
+  $ cf delete-private-domain <%= vars.private_app_domain %>
   </pre>
   <p class="note"><strong>Note</strong>: cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</p>
 * **cf CLI v6**:

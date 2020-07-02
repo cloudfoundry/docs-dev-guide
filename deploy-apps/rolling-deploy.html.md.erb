@@ -48,7 +48,7 @@ as soon as one instance is healthy.</p>
   1. Run:
 
     ```
-    cf zdt-push APP-NAME
+    cf v3-zdt-push APP-NAME
     ```
     Where `APP-NAME` is the name that you want to give your app.
 
@@ -179,7 +179,7 @@ To stop the deployment of an app that you pushed:
   1. Run:
 
     ```
-    cf cancel-zdt-push APP-NAME
+    cf v3-cancel-zdt-push APP-NAME
     ```
     Where `APP-NAME` is the name of the app.
 
@@ -221,7 +221,7 @@ configuration updates that require a restart, such as environment variables or s
   1. Run:
 
     ```
-    cf zdt-restart APP-NAME
+    cf v3-zdt-restart APP-NAME
     ```
     Where `APP-NAME` is the name of the app.
 
@@ -288,16 +288,16 @@ The following table describes the limitations of when using rolling deployments.
   </tr>
   <tr>
     <td>App Manifests</td>
-    <td>The <code>cf zdt-push</code> command does not support providing an app manifest with the
+    <td>The <code>cf v3-zdt-push</code> command does not support providing an app manifest with the
     <code>-f</code> flag. If you have a <code>manifest.yml</code> file in your app directory, it is
     ignored.</td>
     <p class="note"><strong>Note:</strong> This limitation only applies to cf CLI v6.</p>
   </tr>
   <tr>
     <td>SSH to app instances</td>
-    <td>Pushing updates to your app with a <code>cf zdt-push</code> command causes the new web process
-    and app GUID to mismatch. <code>cf ssh</code> does not handle this scenario. You must use the
-    <code>cf ssh</code> command instead.
+    <td>Pushing updates to your app with a <code>cf v3-zdt-push</code> command causes the new web process
+    and app GUID to mismatch. <code>cf v3-ssh</code> does not handle this scenario. You must use the
+    <code>cf v3-ssh</code> command instead.
     <p class="note"><strong>Note:</strong> This limitation only applies to cf CLI v6.</p>
     </td>
   </tr>

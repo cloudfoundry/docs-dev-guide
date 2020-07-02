@@ -113,12 +113,19 @@ Before you can push an app with a sidecar with an app manifest, you must have:
 
 To push an app with a sidecar:
 
-1. Create an app or use an existing app. To create an app, run:
+1. Create an app or use an existing app. To create an app:
+	* If you are using cf CLI v7, run:
 
-	```
-	cf create-app APP-NAME
-	```
-	Where `APP-NAME` is the name you give your app.
+		```
+		cf create-app APP-NAME
+		```
+		Where `APP-NAME` is the name you give your app.
+	* If you are using cf CLI v6, run:
+
+		```
+		cf v3-create-app APP-NAME
+		```
+		Where `APP-NAME` is the name you give your app.
 
 1. Create a manifest file in the root directory of your app, such as `manifest.yml`. Otherwise, use an existing manifest file for your app. For more information, see [Deploying with App Manifests](./deploy-apps/manifest.html).
 
@@ -151,19 +158,34 @@ To push an app with a sidecar:
          command: bundle exec run-performance-monitor
 	```
 
-1. To apply the manifest file to your app, run:
+1. To apply the manifest file to your app:
+	* If you are using cf CLI v7, run:
 
-	```
-	cf apply-manifest -f PATH-TO-MANIFEST
-	```
-	Where `PATH-TO-MANIFEST` is the path to your manifest file.
+		```
+		cf apply-manifest -f PATH-TO-MANIFEST
+		```
+		Where `PATH-TO-MANIFEST` is the path to your manifest file.
+	* If you are using cf CLI v6, run:
 
-1. To push your app, run:
+		```
+		cf v3-apply-manifest -f PATH-TO-MANIFEST
+		```
+		Where `PATH-TO-MANIFEST` is the path to your manifest file.
 
-	```
-	cf push APP-NAME
-	```
-	Where `APP-NAME` is the name of your app.
+1. To push your app:
+	* If you are using cf CLI v7, run:
+
+		```
+		cf push APP-NAME
+		```
+		Where `APP-NAME` is the name of your app.
+	* If you are using cf CLI v6, run:
+
+		```
+		cf v3-push APP-NAME
+		```
+		Where `APP-NAME` is the name of your app.
+
 
 ## <a id="tutorial"></a> Sidecar Tutorial
 
@@ -211,27 +233,45 @@ To push the app and sidecar:
 	```
 	<p class="note"><strong>Note:</strong> If you do not have Go installed, download the <code>config-server_linux_x86-64</code> binary from the <a href="https://github.com/cloudfoundry-samples/capi-sidecar-samples/releases">Releases</a> section of the <code>capi-sidecar-samples</code> repository in GitHub.</p>
 
-1. To create the app, run:
+1. To create the app:
+	* If you are using cf CLI v7, run:
 
-	```
-	cf create-app sidecar-dependent-app
-	```
+		```
+		cf create-app sidecar-dependent-app
+		```
+	* If you are using cf CLI v6, run:
+
+		```
+		cf v3-create-app sidecar-dependent-app
+		```
 
 1. Navigate to the `sidecar-dependent-app` directory.
 
 1. Open and review the `manifest.yml` file. Under `sidecars`, the sidecar is specified with a name, process type, and start command. Under `env`, there is an environment variable that defines the port on which the app and sidecar communicate.
 
-1. To apply the manifest to the app, run:
+1. To apply the manifest to the app:
+	* If you are using cf CLI v7, run:
 
-	```
-	cf apply-manifest
-	```
+		```
+		cf apply-manifest
+		```
+	* If you are using cf CLI v6, run:
 
-1. To push the app, run:
+		```
+		cf v3-apply-manifest
+		```
 
-	```
-	cf push sidecar-dependent-app
-	```
+1. To push the app:
+	* If you are using cf CLI v7, run:
+
+		```
+		cf push sidecar-dependent-app
+		```
+	* If you are using cf CLI v6, run:
+
+		```
+		cf v3-push sidecar-dependent-app
+		```
 
 After you push the app, you can further explore it in [View the Processes Running in the Container](#view-processes) and [View the Web URL and App Logs](#view-logs).
 
@@ -314,5 +354,5 @@ To view the Web URL and logs for the app:
 	"cell_id"=>"86808ce7-afc2-47da-9e79-522a62a48cff", "reason"=>"CRASHED",
 	"exit_description"=>"APP/PROC/WEB/SIDECAR/CONFIG-SERVER: Exited with status 137",
 	"crash_count"=>1, "crash_timestamp"=>1555544935367052708,
-	"version"=>"50892dcb-274d-4cf-b944-3eda1e000283"}
+	"version"=>"50892dcb-274d-4cf6-b944-3eda1e000283"}
 	</pre>

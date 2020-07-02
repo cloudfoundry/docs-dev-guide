@@ -27,21 +27,34 @@ Follow the procedure below.
 	web: bundle exec rackup config.ru -p $PORT
  	worker: bundle exec rake worker:start
  	```
-1. To push the app, run:
+1. Push the app:
+	* **cf CLI v7**:
 
-	```
-	cf push myapp
-	```
+		```
+		cf push myapp
+		```
+	* **cf CLI v6**:
+
+		```
+		cf v3-push myapp
+		```
 
 By default, the web process has a route and one instance. Other processes have zero instances by default.
 
 ## <a id="scale-a-process"></a>Scale a Process
 
-To scale an app process, run:
+To scale an app process, run the following command:
 
-```
-cf scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
-```
+* **cf CLI v7**:
+
+	```
+	cf scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
+	```
+* **cf CLI v6**:
+
+	```
+	cf v3-scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
+	```
 
 ## <a id="view-processes"></a>View Processes
 

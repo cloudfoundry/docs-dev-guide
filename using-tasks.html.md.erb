@@ -133,14 +133,14 @@ To run a task on an app with cf CLI v6:
 	</pre>
 	If your task name is unique, you can `grep` the output of the `cf logs` command for the task name to view task-specific logs.
 
-### <a id='run-tasks-v7'></a> Run a Task on an App with cf CLI v7 
+### <a id='run-tasks-v7'></a> Run a Task on an App with cf CLI v7
 
 To run a task on an app with cf CLI v7:
 
 1. Configure your v3 API manifest with a task as a process type. For more information, see [The app manifest specification](https://v3-apidocs.cloudfoundry.org/version/3.78.0/index.html#the-app-manifest-specification) in the Cloud Foundry API documentation.
 
 1. Push your app by running:
-	
+
 	```
 	cf push APP-NAME --task
 	```
@@ -150,7 +150,7 @@ To run a task on an app with cf CLI v7:
 	```
 	cf run-task APP-NAME --name TASK-NAME
 	```
-	<p class="note"><strong>Note:</strong> <code>cf7 run-task</code> allows the optional flags <code>--process</code> and <code>--command</code>. If provided, <code>--command</code> overrides the manifest property.</p>
+	<p class="note"><strong>Note:</strong> <code>cf run-task</code> allows the optional flags <code>--process</code> and <code>--command</code>. If provided, <code>--command</code> overrides the manifest property.</p>
 	The following example runs a database migration as a task on the `my-app` app:
 	<pre class="terminal">
 	$ cf run-task my-app --name my-task

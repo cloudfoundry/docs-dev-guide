@@ -225,7 +225,7 @@ To create a JSON key file and associate it with your project:
 1. Create a JSON key file and associate it with the service account by running:
   
     ```
-    gcloud iam service-accounts keys create key.json --iam-account=YOUR-ACCOUNT​@​YOUR-PROJECT-ID.iam.gserviceaccount.com
+    gcloud iam service-accounts keys create key.json --iam-account=YOUR-ACCOUNT@YOUR-PROJECT-ID.iam.gserviceaccount.com
     ```
     Where:
     * `YOUR-ACCOUNT` is the name of your service account.
@@ -234,7 +234,7 @@ To create a JSON key file and associate it with your project:
 1. Add the IAM policy binding for your project and service account by running:
 
     ```
-    gcloud projects add-iam-policy-binding YOUR-PROJECT --member serviceAccount:YOUR-ACCOUNT​@​YOUR-PROJECT-ID.iam.gserviceaccount.com --role roles/storage.objectViewer
+    gcloud projects add-iam-policy-binding YOUR-PROJECT --member serviceAccount:YOUR-ACCOUNT@YOUR-PROJECT-ID.iam.gserviceaccount.com --role roles/storage.objectViewer
     ```
     Where:
     * `YOUR-PROJECT` is the name of your project.

@@ -610,7 +610,7 @@ Previously, you could specify routes by listing them all at once using the `rout
 
 <pre>
 ---
-applications
+applications:
 - name: webapp
   host: www
   domains:
@@ -631,7 +631,7 @@ Now you can only specify routes by using the `routes` attribute:
 
 <pre>
 ---
-applications
+applications:
 - name: webapp
   routes:
   - route: www.example.com/foo

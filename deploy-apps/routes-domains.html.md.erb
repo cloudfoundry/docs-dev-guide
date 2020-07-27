@@ -7,8 +7,6 @@ owner: Routing
 
 This topic describes how routes and domains work in <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>), and how developers and administrators configure routes and domains for their apps using the Cloud Foundry Command Line Interface (cf CLI).
 
-<p class="note"><strong>Note:</strong> cf CLI v7 does not support TCP routing. The commands in this topic related to TCP routing only work in cf CLI v6.</p>
-
 For more information about routing capabilities in <%= vars.app_runtime_abbr %>, see [HTTP Routing](../../concepts/http-routing.html).
 
 
@@ -238,8 +236,6 @@ If the developer maps the first route with path `products` to the `products` app
 <p class="note"><strong>Note:</strong> <%= vars.app_runtime_abbr %> does not route requests for context paths to the root context of an app. Apps must serve requests on the context path.</p>
 
 #### <a id='create-route-with-port'></a> Create a TCP Route with a Port
-
-<p class="note"><strong>Note:</strong> cf CLI v7 does not support TCP routing. The commands in this section related to TCP routing only work in cf CLI v6.</p>
 
 A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. If the clients of the app can accommodate addressing an arbitrary port, then developers should use the `--random-port` to instruct <%= vars.app_runtime_abbr %> to pick a port for your route. To create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port, run:
 

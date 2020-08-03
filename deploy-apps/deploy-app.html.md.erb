@@ -212,7 +212,7 @@ You can configure `cf push` to run custom initialization tasks for an app.
 
 These tasks run after <%= vars.app_runtime_abbr %> loads the app droplet but before it launches the app itself to let the initialization script access the app language runtime environment. For example, your script can map values from `$VCAP_SERVICES` into other environment variables or a config file that the app uses.
 
-<p class="note"><strong>Note</strong>: <%= vars.app_runtime_abbr %> does not support initialization scripts for the Java buildpack or PHP buildpack versions prior to v4.3.18. If you use these buildpack versions, your app hosts the <code>.profile</code> script's contents. This means that any app staged using the affected buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
+<p class="note"><strong>Note</strong>: <%= vars.app_runtime_abbr %> does not support initialization scripts for the PHP buildpack versions prior to v4.3.18. If you use one of these buildpack versions, your app hosts the <code>.profile</code> script's contents. This means that any app staged using the affected buildpack versions can leak credentials placed in the <code>.profile</code> script.</p>
 
 To run initialization tasks:
 

@@ -3,8 +3,7 @@ title: Using Experimental cf CLI Commands
 owner: CF CLI
 ---
 
-
-<p class="note"><strong>Note</strong>: This topic only applies to cf CLI v6. Commands with <code>v3-</code> prefixes do not exist in cf CLI v7. For more information, see <a href="../cf-cli/v7.html">Upgrading to cf CLI v7</a>.</p>
+<p class="note"><strong>Note:</strong> This topic only applies to cf CLI v6. Commands with <code>v3-</code> prefixes do not exist in cf CLI v7. Because these commands are experimental, they are not guaranteed to be available or compatible in subsequent cf CLI releases. <%= vars.company_name %> recommends upgrading to cf CLI v7. For more information, see <a href="../cf-cli/v7.html">Upgrading to cf CLI v7</a>.</p>
 
 This topic describes how to use the experimental Cloud Foundry Command Line Interface (cf CLI) commands offered by the Cloud Controller V3 API.
 
@@ -12,19 +11,17 @@ These commands provide developers with the ability to better orchestrate app dep
 
 <%= vars.v3_cli_versions %>
 
-For more information about cf CLI commands, see the [Cloud Foundry CLI Reference Guide](../cf-cli/cf-help.html). For more information about the Cloud Controller V3 API, see the [API documentation](http://v3-apidocs.cloudfoundry.org/).
+For more information about cf CLI commands, see the [Cloud Foundry CLI Reference Guide](../cf-cli/cf-help.html). For more information about the Cloud Controller V3 API, see the [CAPI documentation](http://v3-apidocs.cloudfoundry.org/).
 
-<p class="note"><strong>Note</strong>: Because these commands are experimental, they are not guaranteed to be available or compatible in subsequent cf CLI releases.</p>
 
-##<a id='overview'></a> Overview
+## <a id='overview'></a> Overview
 
 The new commands include a `v3-` prefix. While the syntax of some experimental commands is based on the existing cf CLI, these commands call the V3 API and support new flags to unlock additional features. Other commands expose the new primitives of apps, such as by performing operations on an app's packages and droplets.
 
 In the V2 APIs, running and staging an app are tightly coupled operations. As a result, an app cannot be staging and running at the same time. The V3 APIs offer developers more granular control over the uploading, staging, and running of an app.
 
-##<a id='commands'></a> Commands
 
-<p class="note"><strong>Note</strong>: This topic only applies to cf CLI v6. Commands with <code>v3-</code> prefixes do not exist in cf CLI v7. For more information, see <a href="../cf-cli/v7.html">Upgrading to cf CLI v7</a>.</p>
+## <a id='commands'></a> Commands
 
 Consult the following table for a description of the experimental commands.
 

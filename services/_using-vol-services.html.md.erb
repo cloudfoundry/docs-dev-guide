@@ -14,6 +14,14 @@
           <li><a href="#create-nfs">Create an NFS Volume Service</a></li>
           <li><a href="#nfs-sample">Deploy and Bind Sample App</a></li>
           <li><a href="#nfs-additional">Additional Information</a></li>
+<<<<<<< HEAD
+=======
+            <ul>
+              <li><a href="#ldap">Configure LDAP Credentials with Service Instance Creation</a></li>
+              <li><a href="#bind-parameters">Specify Bind Parameters During Service Instance Creation</a></li>
+              <li><a href="#flock">File Locking with flock() and lockf()/fcntl()</a></li>
+            </ul>
+>>>>>>> b50500c... [#172157580] Removes code tag from headers.
         </ul>
       <li><a href="#smb">SMB Volume Service</a></li>
         <ul>
@@ -173,9 +181,9 @@ Both services offer a single plan called `Existing`.
 
 To create an NFS volume service, follow the procedure below that corresponds to your use case.
 
-#### Create an `nfs` Service (auto-negotiated version)
+#### Create an nfs Service (Auto-Negotiated Version)
 
-You can create a NFS volume service using the `Existing` plan of the `nfs` service. Run the following command:
+You can create an NFS volume service using the `Existing` plan of the `nfs` service. Run the following command:
 
 ```
 $ cf create-service nfs Existing SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE"}'
@@ -190,9 +198,9 @@ Where:
 
 You can run the `cf services` command to confirm that your newly-created NFS volume service displays in the output.
 
-#### Create an `nfs` Service (explicit version)
+#### Create an nfs Service (Explicit Version)
 
-You can create a NFS volume service with a specific NFS protocol version using the `Existing` plan of the `nfs` service. Run the following command:
+You can create an NFS volume service with a specific NFS protocol version using the `Existing` plan of the `nfs` service. Run the following command:
 
 ```
 $ cf create-service nfs Existing SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "version":"NFS-PROTOCOL"}'
@@ -209,7 +217,7 @@ set the version to `4.1`. Valid values are `3.0`, `4.0`, `4.1` or `4.2`.
 
 You can run the `cf services` command to confirm that your newly-created NFS volume service displays in the output.
 
-#### Existing `nfs-legacy` Services:
+#### Existing nfs-legacy Services:
 
 With the release of NFS Volume Service 1.5.4, the original fuse-based NFS service has been deprecated in favor of the newer kernel-mount based NFS service and will eventually be removed.  Existing NFS volume service bindings will now be listed as `nfs-legacy`.  To switch over from `nfs-legacy` to the newer `nfs` service, we recommend that you re-create and re-bind your `nfs` service instances.
 
@@ -294,7 +302,7 @@ $ cf bind-service pora myVolume -c '{"username":"USERNAME","password":"PASSWORD"
 
 As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, when you create a service instance. Use this option if you bind the service to your app in an app manifest, where bind configuration is not supported.
 
-#### File Locking with `flock()` and `lockf()`/`fcntl()`
+#### File Locking with flock() and lockf()/fcntl()
 
 Apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock` may use the `nfs` service.  The `nfs-legacy` service uses a fuse mounting process that does not enforce locks across Diego cells.
 

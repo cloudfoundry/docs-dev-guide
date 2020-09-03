@@ -258,7 +258,7 @@ To create an NFS volume service using the `Existing` plan of the `nfs` service:
     cf services
     ```
 
-### <a id='migrate'></a> Migrate `nfs-legacy` Services to `nfs`
+### <a id='migrate'></a> Migrate nfs-legacy Services to nfs
 
 With the release of NFS Volume Service v1.5.4, the original fuse-based NFS service is deprecated in favor of the newer kernel mount-based NFS service. Existing NFS volume service bindings are listed as `nfs-legacy`.
 
@@ -354,7 +354,7 @@ To configure LDAP credentials while creating your NFS Volume Service instance:
 
 As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, when you create a service instance. Use this option if you bind the service to your app in an app manifest, where bind configuration is not supported.
 
-#### <a id='flock'></a> File Locking with `flock()` and `lockf()`/`fcntl()`
+#### <a id='flock'></a> File Locking with flock() and lockf()/fcntl()
 
 Apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock` may use the `nfs` service. The `nfs-legacy` service uses a fuse mounting process that does not enforce locks across Diego Cells.
 

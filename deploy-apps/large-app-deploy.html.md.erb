@@ -23,6 +23,8 @@ To deploy large apps to <%=vars.product_short%>, ensure the following:
 
 * If you use an app manifest file, `manifest.yml`, be sure to specify adequate values for your app for attributes such as app memory, app start timeout, and disk space allocation. For more information about using manifests, see [Deploying with App Manifests](./manifest.html).
 
+* The total size of [environment variables](./environment-variable.html) for your application does not exceed 130kb. This includes CF system environment variables like `VCAP_SERVICES` and `VCAP_APPLICATION`.
+
 * You push only the files that are necessary for your app. To meet this requirement, push only the directory for your app, and remove unneeded files or use the `.cfignore` file to specify excluded files. For more information about specifying excluded files, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section in the _Considerations for Designing and Running an App in the Cloud_ topic.
 
 * You configure Cloud Foundry Command Line Interface (cf CLI) staging, startup, and timeout settings to override settings in the manifest, as necessary.

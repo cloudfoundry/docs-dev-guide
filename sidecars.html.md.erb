@@ -240,6 +240,12 @@ To push the app and sidecar:
 	```
 	<p class="note"><strong>Note:</strong> If you do not have Go installed, download the <code>config-server_linux_x86-64</code> binary from <a href="https://github.com/cloudfoundry-samples/capi-sidecar-samples/releases">Releases</a> in the <code>capi-sidecar-samples</code> repository in GitHub.</p>
 
+1. Copy the binary to `sidecar-dependent-app` directory:
+
+	```
+	cp config-server ../sidecar-dependent-app
+	```
+
 1. To create the app:
 	* If you are using cf CLI v7, run:
 

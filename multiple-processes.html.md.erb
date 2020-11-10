@@ -24,22 +24,22 @@ To push an app with multiple processes using a Procfile:
 
 1. Add each process and its start command to the Procfile. See the following example:
 
-		```
-		web: bundle exec rackup config.ru -p $PORT
-	 	worker: bundle exec rake worker:start
-	 	```
+    ```
+    web: bundle exec rackup config.ru -p $PORT
+    worker: bundle exec rake worker:start
+    ```
 
 1. Push the app.
 	* If you are using cf CLI v7, run:
 
-		```
-		cf push myapp
-		```
+        ```
+        cf push myapp
+        ```
 	* If you are using cf CLI v6, run:
 
-		```
-		cf v3-push myapp
-		```
+        ```
+        cf v3-push myapp
+        ```
 		<p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
 By default, the web process has a route and one instance. Other processes have zero instances by default.
@@ -79,7 +79,7 @@ To scale an app process:
 
 To view the processes running as part of an app, run `cf APP-NAME`, where `APP-NAME` is the name of your app. See the following example in which the app has a `web` and a `worker` process.
 
-```
+<pre class="terminal">
 $ cf app myapp
  Showing health and status for app myapp in org test / space test as admin...
 
@@ -99,4 +99,4 @@ worker:2/2
  state since cpu memory disk
  #0 running 2017-09-25 15:49:46 PM 0.1% 5M of 256M 73M of 1G
  #1 running 2017-09-25 15:49:46 PM 0.1% 5M of 256M 73M of 1G
-```
+</pre>

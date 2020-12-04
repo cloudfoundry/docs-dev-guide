@@ -22,7 +22,7 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
 1. Authenticate to your <%= vars.app_runtime_abbr %> instance. <%= vars.uaa_cli %> Run:
 
     ```
-    cf login -a https://api.YOUR-DOMAIN -u YOUR-USERNAME --skip-ssl-validation
+    cf login -a https://api.YOUR-DOMAIN -u YOUR-USERNAME
     ```
     Where:
     * `YOUR-DOMAIN` is your domain.
@@ -32,7 +32,7 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
     1. Target your UAA server by running:
       
         ```
-        uaac target uaa.YOUR-DOMAIN --skip-ssl-validation
+        uaac target uaa.YOUR-DOMAIN
         ```
         Where `YOUR-DOMAIN` is your domain.
     1. Obtain an access token for the admin client by running:

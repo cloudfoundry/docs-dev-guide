@@ -1,9 +1,7 @@
 ---
-title: Streaming App Logs to Azure OMS Log Analytics (Beta)
+title: Streaming App Logs to Azure OMS Log Analytics
 owner: Logging and Metrics
 ---
-
-<p class="note warning"><strong>Warning:</strong> The OMS Log Analytics Firehose Nozzle is currently intended for evaluation and test purposes only. Do not use this product in a production environment.</p>
 
 This topic explains how to integrate your <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) apps with [OMS Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/).
 
@@ -24,7 +22,7 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
 1. Authenticate to your <%= vars.app_runtime_abbr %> instance. <%= vars.uaa_cli %> Run:
 
     ```
-    cf login -a https://api.YOUR-DOMAIN -u YOUR-USERNAME --skip-ssl-validation
+    cf login -a https://api.YOUR-DOMAIN -u YOUR-USERNAME
     ```
     Where:
     * `YOUR-DOMAIN` is your domain.
@@ -34,7 +32,7 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
     1. Target your UAA server by running:
       
         ```
-        uaac target uaa.YOUR-DOMAIN --skip-ssl-validation
+        uaac target uaa.YOUR-DOMAIN
         ```
         Where `YOUR-DOMAIN` is your domain.
     1. Obtain an access token for the admin client by running:
@@ -63,14 +61,14 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
         ```
         Where `USERNAME` is the username you set.
 
-1. Download the [OMS Log Analytics Firehose Nozzle BOSH release](https://github.com/Azure/oms-log-analytics-firehose-nozzle) from Github. Clone the repository and navigate to the `oms-log-analytics-firehose-nozzle` directory by running:
+1. Download the [OMS Log Analytics Firehose Nozzle](https://github.com/vmware-tanzu/nozzle-for-microsoft-azure-log-analytics) from Github. Clone the repository and navigate to the `nozzle-for-microsoft-azure-log-analytics` directory by running:
 
     ```
-    git clone https://github.com/Azure/oms-log-analytics-firehose-nozzle.git
-    cd oms-log-analytics-firehose-nozzle
+    git clone https://github.com/vmware-tanzu/nozzle-for-microsoft-azure-log-analytics
+    cd nozzle-for-microsoft-azure-log-analytics
     ```
 
-1. Set the following environment variables in the [OMS Log Analytics Firehose Nozzle manifest](https://github.com/Azure/oms-log-analytics-firehose-nozzle/blob/master/manifest.yml):
+1. Set the following environment variables in the [OMS Log Analytics Firehose Nozzle manifest](https://github.com/vmware-tanzu/nozzle-for-microsoft-azure-log-analytics/blob/main/manifest.yml):
 
     <table>
       <tr>

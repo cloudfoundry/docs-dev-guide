@@ -171,7 +171,7 @@ For more information about app manifests, see [Deploying with App Manifests](../
 
 ### <a id='route-binding'></a>Bind a Service Instance to a Route ###
 
-Binding a service instance to a route will cause app requests and responses to be proxied through the service instance, where it may be used to transform or intermediate requests. For more information, see [Manage App Requests with Route Services](./route-binding.html).
+Binding a service instance to a route will cause app requests and responses to be proxied through the service instance, where it may be used to transform or intermediate requests. For more information, see [Managing App Requests with Route Services](./route-binding.html).
 
 <pre class="terminal">
 $ cf bind-route-service <%=vars.app_domain%> --hostname my-app my-service-instance
@@ -216,7 +216,7 @@ OK
 
 ### <a id='route-unbinding'></a>Unbind a Service Instance from a Route ###
 
-Unbinding a service instance from a route will result in requests and responses no longer being proxied through the service instance. For more information, see [Manage App Requests with Route Services](./route-binding.html).
+Unbinding a service instance from a route will result in requests and responses no longer being proxied through the service instance. For more information, see [Managing App Requests with Route Services](./route-binding.html).
 
 <p class='note'><strong>Note</strong>: If your bound service instance is providing security features, like authorization, unbinding the service instance may leave your app vulnerable.</p>
 
@@ -288,7 +288,7 @@ OK
 
 _Upgrading a Service Instance requires cf CLI v6.46.0+ and CAPI release 1.83.0+_
 
-Some service brokers support upgrading service instances to the latest version of a service plan. For example, a broker may want to provide a way for users of the service to upgrade the underlying operating system that their service instances run on. 
+Some service brokers support upgrading service instances to the latest version of a service plan. For example, a broker may want to provide a way for users of the service to upgrade the underlying operating system that their service instances run on.
 
 To upgrade your service instances, do the following:
 

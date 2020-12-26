@@ -97,6 +97,23 @@ For CF Drain commands, see the [Usage](https://github.com/cloudfoundry/cf-drain-
 <pre class="terminal">
 $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL
 </pre>
+
+Syslog sample urls, eg: your syslog server url is log.uat.com:514
+Only PCF application log, which is the default
+<pre class="terminal">
+$ cf create-user-provided-service DRAIN-NAME -l syslog://log.uat.com:514?drain-type=logs
+</pre>
+
+Only PCF metrics log
+<pre class="terminal">
+$ cf create-user-provided-service DRAIN-NAME -l syslog://log.uat.com:514?drain-type=metrics
+</pre>
+
+<pre class="terminal">
+$ cf create-user-provided-service DRAIN-NAME -l syslog://log.uat.com:514?drain-type=all
+</pre>
+
+
 For more information, see [User-Provided Service Instances](./user-provided.html).
 
 1. To bind an app to the service instance, do one of the following:

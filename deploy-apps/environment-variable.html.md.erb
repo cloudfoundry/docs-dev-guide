@@ -270,13 +270,18 @@ The table below defines the attributes that describe a bound service. The key fo
 
 | Attribute | Description |
 | --------- | ----------- |
+| `binding_guid` | The guid of the service binding. |
 | `binding_name` | The name assigned to the service binding by the user. |
+| `instance_guid` | The guid of the service instance. |
 | `instance_name` | The name assigned to the service instance by the user. |
 | `name` | The `binding_name`, if it exists. Otherwise, the `instance_name`. |
 | `label` | The name of the service offering. |
 | `tags` | An array of strings an app can use to identify a service instance. |
 | `plan` | The service plan selected when the service instance was created. |
 | `credentials` | A JSON object containing the service-specific credentials needed to access the service instance. |
+| `syslog_drain_url` | The service-specific syslog drain url. |
+| `volume_mounts` | An array of service-specific volume mounts. |
+
 
 To see the value of the `VCAP_SERVICES` environment variable for an app pushed to <%= vars.app_runtime_abbr %>, see [View Environment Variable Values](#view-env).
 
@@ -288,7 +293,9 @@ VCAP_SERVICES=
   "elephantsql": [
     {
       "name": "elephantsql-binding-c6c60",
+      "binding_guid": "44ceb72f-100b-4f50-87a2-7809c8b42b8d",
       "binding_name": "elephantsql-binding-c6c60",
+      "instance_guid": "391308e8-8586-4c42-b464-c7831aa2ad22",
       "instance_name": "elephantsql-c6c60",
       "label": "elephantsql",
       "tags": [
@@ -299,13 +306,17 @@ VCAP_SERVICES=
       "plan": "turtle",
       "credentials": {
         "uri": "postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampleuser"
-      }
+      },
+      "syslog_drain_url": null,
+      "volume_mounts": []
     }
   ],
   "sendgrid": [
     {
       "name": "mysendgrid",
+      "binding_guid": "6533b1b6-7916-488d-b286-ca33d3fa0081",
       "binding_name": null,
+      "instance_guid": "8c907d0f-ec0f-44e4-87cf-e23c9ba3925d",
       "instance_name": "mysendgrid",
       "label": "sendgrid",
       "tags": [
@@ -316,7 +327,9 @@ VCAP_SERVICES=
         "hostname": "smtp.sendgrid.net",
         "username": "QvsXMbJ3rK",
         "password": "HCHMOYluTv"
-      }
+      },
+      "syslog_drain_url": null,
+      "volume_mounts": []
     }
   ]
 }

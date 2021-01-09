@@ -1,9 +1,7 @@
 ---
-title: Streaming App Logs to Azure OMS Log Analytics (Beta)
+title: Streaming App Logs to Azure OMS Log Analytics
 owner: Logging and Metrics
 ---
-
-<p class="note warning"><strong>Warning:</strong> The OMS Log Analytics Firehose Nozzle is currently intended for evaluation and test purposes only. Do not use this product in a production environment.</p>
 
 This topic explains how to integrate your <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) apps with [OMS Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/).
 
@@ -32,13 +30,13 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
 
 1. To create a new <%= vars.app_runtime_abbr %> user and grant it access to the Loggregator Firehose using the UAA CLI (UAAC):
     1. Target your UAA server by running:
-      
+
         ```
         uaac target uaa.YOUR-DOMAIN --skip-ssl-validation
         ```
         Where `YOUR-DOMAIN` is your domain.
     1. Obtain an access token for the admin client by running:
-      
+
         ```
         uaac token client get admin
         ```

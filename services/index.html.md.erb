@@ -79,7 +79,7 @@ To perform a database schema migration with the cf CLI:
 
 1. Perform a database schema migration as a task on the app:
 	<pre class="terminal">
-	$ cf run-task APP-NAME "bin/rails db:migrate" --name TASK-NAME
+	$ cf run-task APP-NAME --command "bin/rails db:migrate" --name TASK-NAME
 	Creating task for app APP-NAME in org jdoe-org / space development as jdoe@pivotal.io...
 	OK
 	Task 1 has been submitted successfully for execution.

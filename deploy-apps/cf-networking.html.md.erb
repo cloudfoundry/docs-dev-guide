@@ -104,6 +104,10 @@ If you are a CF admin, you already have the `network.admin` scope. An admin can 
 
 To grant all Space Developers permissions to configure network policies, <%=  vars.grant_devs_c2c %>.
 
+<% else %>
+<%= partial '../../appsman-services/c2c_pws_create' %>
+<% end %>
+
 
 ### <a name="add-policy"></a> Add a Network Policy
 
@@ -213,8 +217,6 @@ To disable network policy enforcement between apps, do the following:
    </pre>
 
 <% else %>
-
-<%= partial '../../console/disable_network_policy_enforcement' %>
 
 <% end %>
 

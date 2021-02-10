@@ -5,13 +5,13 @@ owner: CF for VMs Networking
 
 <% if vars.platform_code = "CF" %>
 
-The topic that you were looking for does not exist in the <%= vars.product_full %> documentation.
+The topic that you were looking for, titled _Administering Dynamic Egress Policies_, does not exist.
 
 The feature this topic covers is discontinued.
 
 <% else %>
 
-<%= partial '/${product_name_lc}/topic-does-not-exist',  :locals => { :topic  => "Administering Dynamic Egress Policies", :closest_available_version => "2.10" }) %> %>
+<%= partial(vars.product_name_lc + "/topic-does-not-exist", :locals => { :topic  => "Administering Dynamic Egress Policies", :closest_available_version => "2.10" })  %>
 
 <% end %>
 

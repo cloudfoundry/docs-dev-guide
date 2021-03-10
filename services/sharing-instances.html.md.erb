@@ -69,8 +69,8 @@ you cannot share that service instance.
 
 ## <a id="info-sharing"></a> Information about Service Instance Sharing
 
-To get details of the service instance sharing, run the following Cloud 
-Foundry Command Line Interface (cf CLI) command:
+To get details of the service instance sharing on the originating space, run the following Cloud 
+Foundry Command Line Interface (cf CLI) command targeting the originating space:
 
 <pre class="terminal">
 $ cf service mydb 
@@ -135,6 +135,9 @@ my-library-app                   create succeeded   Operation succeeded
 
 There is no upgrade available for this service.
 </pre>
+
+* In this case, no information about other spaces the service instance might have been shared to will be exposed.
+
 
 ## <a id="unsharing"></a> Unsharing a Service Instance
 

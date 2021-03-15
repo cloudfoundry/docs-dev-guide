@@ -67,6 +67,77 @@ service and service plan of the service instance that you are sharing. Run the `
 * If you no longer have access to the service or service plan used to create your service instance,
 you cannot share that service instance.
 
+## <a id="info-sharing"></a> Information about Service Instance Sharing
+
+To get details of the service instance sharing on the originating space, run the following Cloud 
+Foundry Command Line Interface (cf CLI) command targeting the originating space:
+
+<pre class="terminal">
+$ cf service mydb 
+
+name:             mydb
+service:          p-mysql
+tags:
+plan:             100mb
+description:      mysql databases on demand been created by a platform.
+documentation:
+dashboard:        
+service broker:   mysql-broker
+
+shared with spaces:
+org        space        bindings
+org-1      space-1      0
+org-1      space-2      2
+
+Showing status of last operation from service my-service-3...
+
+status:    create succeeded
+message:   Operation succeeded
+started:   2021-03-01T15:10:15Z
+updated:   2021-03-01T15:10:17Z
+
+bound apps:
+name              binding name   status             message
+my-music-app                     create succeeded   Operation succeeded
+
+There is no upgrade available for this service.
+</pre>
+
+* For each of the spaces the service instance is shared into the output shows the number of bindings to apps of that service instance in that space. 
+* When the service instance is not shared the sentence `This service is not currently shared.` appears instead of the `shared with spaces` block. 
+
+Running this command while targeting the space where the service instance has been shared into, will show the originating space and organization: 
+
+
+<pre class="terminal">
+$ cf service mydb 
+
+name:                     mydb
+shared from org/space:    acceptance / dev
+service:                  p-mysql
+tags:
+plan:                     100mb
+description:              mysql databases on demand been created by a platform.
+documentation:
+dashboard:        
+service broker:           mysql-broker
+
+Showing status of last operation from service my-service-3...
+
+status:    create succeeded
+message:   Operation succeeded
+started:   2021-03-01T15:10:15Z
+updated:   2021-03-01T15:10:17Z
+
+bound apps:
+name              binding name   status             message
+my-library-app                   create succeeded   Operation succeeded
+
+There is no upgrade available for this service.
+</pre>
+
+* In this case, no information about other spaces the service instance might have been shared to will be exposed.
+
 
 ## <a id="unsharing"></a> Unsharing a Service Instance
 

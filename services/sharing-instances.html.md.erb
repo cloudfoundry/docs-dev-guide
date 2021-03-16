@@ -71,11 +71,16 @@ you cannot share that service instance.
 
 To get information about service instance sharing on the originating space, run the following cf CLI command from that originating space:
 
+```
+cf service SERVICE-INSTANCE-NAME
+```
+
+For example:
 
 <pre class="terminal">
-$ cf service YOUR-DATABASE 
+$ cf service mydb
 
-name:             YOUR-DATABASE
+name:             mydb
 service:          p-mysql
 tags:
 plan:             100mb

@@ -53,7 +53,9 @@ For more information, see [Using an External File System (Volume Services)](../s
 
 In an environment with shared domains, cookies might be accessible across apps.
 
-<%= vars.cookies_shared_domain_1 %> Many tracking tools such as Google Analytics and Mixpanel use the highest available domain to set their cookies. <%= vars.cookies_shared_domain_2 %> For example, an app at `my-app.<%= vars.app_domain %>` might be able to access the cookies for an app at `your-app.<%= vars.app_domain %>`.
+Many tracking tools such as Google Analytics and Mixpanel use the highest available domain to set their cookies.
+For an app using a shared domain such as `example.com`, a cookie set to use the highest domain has a `Domain` attribute of `.example.com` in its HTTP response header.
+For example, an app at `my-app.<%= vars.app_domain %>` might be able to access the cookies for an app at `your-app.<%= vars.app_domain %>`.
 
 You should decide whether or not you want your apps or tools that use cookies to set and store the cookies at the highest available domain.
 

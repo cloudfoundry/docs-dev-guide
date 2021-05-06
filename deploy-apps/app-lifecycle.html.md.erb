@@ -44,6 +44,12 @@ During this app duplication process, singleton app instances may become temporar
 To shut down the app, <%= vars.app_runtime_abbr %> sends the app process in the container a SIGTERM. By default, the process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, <%= vars.app_runtime_abbr %> sends a SIGKILL.
 
 By default, apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before <%= vars.app_runtime_abbr %> terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests.
+<% if vars.platform_code == 'PCF' %>
+  To modify the timeout period on the <%= vars.app_runtime_abbr %> tile or IST tile, go to the Advanced Settings tab and edit the "app graceful shutdown period" property.
+<% else %>
+To modify the timeout period, change the bosh property `containers.graceful_shutdown_interval_in_seconds` on the rep jobs.
+<% end %>
+NOTE: This may increase the time it takes to drain diego cells causing increased deployment time.
 
 <%= vars.app_graceful_shutdown_config %>
 

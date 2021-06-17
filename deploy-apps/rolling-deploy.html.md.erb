@@ -47,6 +47,9 @@ healthy. It also includes a <code>--no-wait</code> flag on push for users who do
 for the operation to complete. <code>cf push</code> used with the <code>--no-wait</code> flag exits
 as soon as one instance is healthy.</p>
 
+1. If the deployment hangs indefinitely, cancel the process and run it again with the step above. 
+To cancel, see [Cancel a Deployment](#cancel) below.
+
 * **cf CLI v6:**
 
 1. Run:
@@ -55,7 +58,9 @@ as soon as one instance is healthy.</p>
     cf v3-zdt-push APP-NAME
     ```
     Where `APP-NAME` is the name that you want to give your app.
-    <p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
+    <p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider 
+      upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see 
+      <a href="../../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
 * **CAPI V3:**
 
@@ -186,7 +191,10 @@ To stop the deployment of an app that you pushed:
     cf v3-cancel-zdt-push APP-NAME
     ```
     Where `APP-NAME` is the name of the app.
-    <p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
+    <p class='note'><strong>Note:</strong> This command is experimental and unsupported. 
+      Consider upgrading to cf CLI v7 to use a supported version of this command. To 
+      upgrade to cf CLI v7, see <a href="../../cf-cli/v7.html#install">Install cf CLI v7</a> 
+      in <em>Upgrading to cf CLI v7</em>.</p>
 
 * **CAPI V3:**
 
@@ -229,7 +237,10 @@ configuration updates that require a restart, such as environment variables or s
     cf v3-zdt-restart APP-NAME
     ```
     Where `APP-NAME` is the name of the app.
-    <p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
+    <p class='note'><strong>Note:</strong> This command is experimental and unsupported. 
+      Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade 
+      to cf CLI v7, see <a href="../../cf-cli/v7.html#install">Install cf CLI v7</a> in 
+      <em>Upgrading to cf CLI v7</em>.</p>
 
 * **CAPI V3:**
 

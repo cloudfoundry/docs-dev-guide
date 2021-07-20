@@ -105,8 +105,13 @@ For details on consuming credentials specific to your development framework, ref
 
 ## <a id='update-credentials'></a>Update Service Credentials
 
-### <a id='update-credentials-with-downtime'></a>With Downtime ###
-To update your service credentials, perform the following steps:
+This section describes how to update service instance credentials.
+When updating the credentials, you can restage the app immediately and experience app downtime.
+If your app uses blue-green deployment, you can update service instance credentials with no downtime.
+
+### <a id='update-credentials-with-downtime'></a>With Downtime
+
+To update your service credentials:
 
   1. [Unbind the service instance](#unbind) using the credentials you are updating with the following command:
 
@@ -122,30 +127,29 @@ To update your service credentials, perform the following steps:
 
   1. Restart or re-push the app bound to the service instance so that the app recognizes your environment variable updates.
 
-### <a id='update-credentials-without-downtime'></a>Without Downtime ###
-To update your service credentials, perform the following steps:
+### <a id='update-credentials-without-downtime'></a>Without Downtime
 
-  1. Start a [blue-green](../deploy-apps/blue-green.html) update of the application.
+To update your service credentials without experiencing app downtime:
 
-  1. Execute step 2 in the [blue-green](../deploy-apps/blue-green.html) documentation with the `--no-start` parameter to prevent the application from starting right away.
+  1. Start a blue-green update of the app. For more information, see [Using Blue-Green Deployment to Reduce Downtime and Risk](../deploy-apps/blue-green.html). Push the "Green" version of the app with the `--no-start` parameter to prevent the app from starting right away:
 
     <pre class='terminal'>
     $ cf push YOUR-APP --no-start
     </pre>
 
-  1. Bind the reguired service instances to the newly deployed `Green` application with the following command.
+  1. Bind the service instances to the newly-deployed "Green" app with the following command:
 
     <pre class='terminal'>
     $ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
     </pre>
 
-  1. Start the `Green` applicaiton with `cf start` and continue with the rest of the documentation for [blue-green](../deploy-apps/blue-green.html) updates.
+  1. Start the "Green" app with `cf start`:
 
     <pre class='terminal'>
     $ cf start YOUR-APP
     </pre>
 
-  1. Unbind the service instances from the `Blue` applicaiton with the following command:
+  1. Unbind the service instances from the `Blue` app:
 
     <pre class='terminal'>
     $ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE

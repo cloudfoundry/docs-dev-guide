@@ -45,7 +45,7 @@ Binding service my-db to app rails-sample in org console / space development as 
 
 ### <a id='bind-with-manifest'></a> Binding with App Manifest ###
 
-As an alternative to binding a service instance after pushing an app, you can use the app manifest to bind the service instance during `cf push`. 
+As an alternative to binding a service instance after pushing an app, you can use the app manifest to bind the service instance during `cf push`.
 
 <p class="note"><strong>Note:</strong> Arbitrary parameters are not supported in app manifests in cf CLI v6.x. Arbitrary parameters are supported in app manifests in cf CLI v7.0 and later.</p>
 
@@ -105,7 +105,13 @@ For details on consuming credentials specific to your development framework, ref
 
 ## <a id='update-credentials'></a>Update Service Credentials
 
-To update your service credentials, perform the following steps:
+This section describes how to update service instance credentials.
+When updating the credentials, you can restage the app immediately and experience app downtime.
+If your app uses blue-green deployment, you can update service instance credentials with no downtime.
+
+### <a id='update-credentials-with-downtime'></a>With Downtime
+
+To update your service credentials:
 
   1. [Unbind the service instance](#unbind) using the credentials you are updating with the following command:
 
@@ -120,6 +126,34 @@ To update your service credentials, perform the following steps:
     </pre>
 
   1. Restart or re-push the app bound to the service instance so that the app recognizes your environment variable updates.
+
+### <a id='update-credentials-without-downtime'></a>Without Downtime
+
+To update your service credentials without experiencing app downtime:
+
+  1. Start a blue-green update of the app. For more information, see [Using Blue-Green Deployment to Reduce Downtime and Risk](../deploy-apps/blue-green.html). Push the "Green" version of the app with the `--no-start` parameter to prevent the app from starting right away:
+
+    <pre class='terminal'>
+    $ cf push YOUR-APP --no-start
+    </pre>
+
+  1. Bind the service instances to the newly-deployed "Green" app with the following command:
+
+    <pre class='terminal'>
+    $ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
+    </pre>
+
+  1. Start the "Green" app with `cf start`:
+
+    <pre class='terminal'>
+    $ cf start YOUR-APP
+    </pre>
+
+  1. Unbind the service instances from the `Blue` app:
+
+    <pre class='terminal'>
+    $ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
+    </pre>
 
 ## <a id='unbind'></a>Unbind a Service Instance ##
 

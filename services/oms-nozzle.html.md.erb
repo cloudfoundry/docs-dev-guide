@@ -43,11 +43,12 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
     1. Create a new user by running:
 
         ```
-        cf create-user USERNAME PASSWORD
+        uaac user add USERNAME -p PASSWORD  --email EMAIL
         ```
         Where:
         * `USERNAME` is a new username.
         * `PASSWORD` is a password.
+        * `EMAIL` is an email address. 
     1. Grant the new user admin permissions by running:
 
         ```

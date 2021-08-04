@@ -181,7 +181,7 @@ E1x89n
   <br>
   <br>
   Or you can use `ssh` piped with `cat` command to transfer file by running:
-  * `cat local_file_path | cf ssh MY-AWESOME-APP -c "cat > remote_file_path"``
+  * `cat local_file_path | cf ssh MY-AWESOME-APP -c "cat > remote_file_path"`
 
 1. When the SSH proxy reports its RSA fingerprint, confirm that it matches the `app_ssh_host_key_fingerprint` recorded above. When prompted for a password, paste in the authorization code returned by `cf ssh-code`.
 <pre class="terminal">

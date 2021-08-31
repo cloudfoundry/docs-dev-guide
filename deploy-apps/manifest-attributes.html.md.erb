@@ -34,7 +34,7 @@ applications:
 <%= partial 'v3-note' %>
 
 You can specify the schema version in the `versions` property of the manifest.
-This property is optional. 
+This property is optional.
 
 The only supported version is `1`.
 If not specified, the `versions` property defaults to `1`.
@@ -394,11 +394,16 @@ Use the `routes` attribute to provide multiple HTTP and TCP routes. Each route f
 
 This attribute is a combination of `push` options that include `--hostname`, `-d`, and `--route-path`.
 
+Optionally, specify the `protocol` attribute to configure what network protocol the route uses for app ingress traffic. The available protocols are `http2`, `http1`, and `tcp`.
+
+<p class="note"><strong>Note</strong>: The `protocol` route attribute is only available for Cloud Foundry deployments with HTTP/2 routing enabled. See [Supporting HTTP/2](../../adminguide/supporting-http2.html) for details. </p>
+
 <pre>
 ---
   ...
   routes:
   - route: example.com
+    protocol: http2
   - route: www.example.com/foo
   - route: tcp-example.com:1234
 </pre>

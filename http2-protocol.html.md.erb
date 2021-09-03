@@ -5,61 +5,57 @@ owner: CF for VMs Networking
 
 <% current_page.data.title = "Routing HTTP/2 and gRPC Traffic to Apps" %>
 
-
-## <a id="http2"></a> What is HTTP/2?
+## <a id="http2"></a> HTTP/2
 
 HTTP/2 is the second major version of the the HTTP protocol.
 
 It features several improvements over HTTP/1.1, including:
-- Using a binary data format instead of plain text
-- Compressing duplicate headers
-- Multiplexing multiple HTTP requests over a single TCP connection
-- And more
+
+* Using a binary data format instead of plain text
+* Compressing headers
+* Multiplexing multiple HTTP requests over a single TCP connection
+* And more
 
 Together, these improvements can improve response times for some applications.
 
-See [RFC 7540](https://datatracker.ietf.org/doc/html/rfc7540) for more details about the protocol.
+See [RFC 7540](https://datatracker.ietf.org/doc/html/rfc7540) for more details about the HTTP/2 protocol.
 
-### <a id="grpc"></a> What is gRPC?
+### <a id="grpc"></a> gRPC
 
 [gRPC](https://grpc.io/) is a popular RPC framework that uses HTTP/2 for as its transport medium.
 It is especially useful for managing communication between applications in a microservices cluster.
 In order for applications to serve gRPC traffic, every network hop between the client and application must use HTTP/2.
 
-## <a id="http2-on-cf"></a> How Can I use HTTP/2 in <%= vars.app_runtime_abbr %>?
+## <a id="http2-with-cf"></a> Using HTTP/2 With <%= vars.app_runtime_abbr %>
 
 If your <%= vars.app_runtime_abbr %> administrator has configured <%= vars.app_runtime_abbr %> to support HTTP/2,
-then routes should automatically support HTTP/2 traffic.
-The traffic will be automatically downgraded to HTTP/1.1 before reaching your application,
-so not changes need to be made to existing applications to support HTTP/2.
+then all traffic ingressing to <%= vars.app_runtime_abbr %> will support HTTP/2 traffic.
+The traffic will be forwarded as HTTP/1.1 before reaching your application unless configured otherwise.
+Therefore, no changes need to be made to existing applications to support HTTP/2.
 
-<marquee behavior="alternate" direction="up">
-  <marquee behavior="alternate">Weyman!!!! 💸</marquee>
-<marquee>
-
-<p class="note"><strong>Note:</strong> Administrators, see [Kocher's Doc](../kochers_doc) for details on how to configure <%= vars.app_runtime_abbr %> to support HTTP/2. </p>
+<p class="note"><strong>Note:</strong> Administrators, see <a href="../adminguide/supporting-http2.html">Supporting HTTP/2</a> for details on how to configure <%= vars.app_runtime_abbr %> to support HTTP/2. </p>
 
 #### <a id="example-1"></a> Example 1: Serving HTTP/2 for a HTTP/1.1 Application
 
 1. Push an application that serves HTTP/1.1:
 
-```
-cf push my-app
-```
+	```
+	cf push my-app
+	```
 
 1. Issue a HTTP/2 request to the application:
 
-```
-curl my-app.example.com --http2 -v
-```
+	```
+	curl my-app.example.com --http2 -v
+	```
 
 1. Note that the request and response are issued over HTTP/2.
 
 1. Review the logs for the application:
 
-```
-cf logs my-app
-```
+	```
+	cf logs my-app
+	```
 
 1. Note that the request to the application is issued over HTTP/1.1.
 
@@ -71,106 +67,114 @@ If you want traffic to your application to be HTTP/2 for all network hops
 (for example, if you need to serve gRPC traffic),
 then you will need to configure your route to send HTTP/2 traffic to your application.
 
-<p class="note"><strong>Note:</strong> All requests to the route will be sent over HTTP/2 to the application,
-regardless of original protocol.
-Even external HTTP/1.1 requests will be issued as HTTP/2 request to the application. </p>
-
-When configured, traffic matching that route will always be sent to your application over HTTP/2.
-Your app will not have the opportunity to negotiate what protocol it responds with.
+When configured, traffic matching that route will always be sent to your application over HTTP/2,
+regardless of original ingress protocol.
+For example, external HTTP/1.1 requests will be forwarded to your application over HTTP/2.
+Your app will not have the opportunity to negotiate what protocol it receives.
 
 <p class="note"><strong>Note:</strong>
 For those familiar with the HTTP/2 specification,
 your application will be receiving HTTP/2 with prior knowledge,
-as described in [RFC 7540, Section 3.4](https://datatracker.ietf.org/doc/html/rfc7540#section-3.4).</p>
+as described in <a href="https://datatracker.ietf.org/doc/html/rfc7540#section-3.4">RFC 7540, Section 3.4</a>.</p>
 
 There are multiple ways to configure end-to-end HTTP/2 for your application:
 
 #### <a id="example-2"></a> Example 2: End-to-End HTTP/2 Using Application Manifest
 
-1. Acquire an application that supports serving HTTP/2 traffic with prior knowledge. For example [Spring Music with H2C Support](https://github.com/cloudfoundry-samples/spring-music/tree/h2c_support).
+1. Acquire an application that supports serving HTTP/2 traffic with prior knowledge.
+For this example, we will use [the HTTP/2 test app from Cloud Foundry Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests/tree/http2_routing/assets/http2).
 
-1. Configure the application manifest with a HTTP/2 route:
+1. Create an application manifest, `manifest.yml`, with a route mapped to the application with HTTP/2:
 
-```yaml
----
-applications:
-- name: my-app
-  routes:
-    - route: my-app.example.com
-      protocol: http2
-```
+	```yaml
+	---
+	applications:
+	- name: my-app
+	  routes:
+	    - route: my-app.example.com
+	      protocol: http2
+	```
 
 1. Push the application with the manifest:
-```
-cf push -f manifest.yml
-```
+
+	```
+	cf push -f manifest.yml
+	```
 
 1. Issue a HTTP/2 request to the application:
 
-```
-curl my-app.example.com --http2 -v
-```
+	```
+	curl my-app.example.com --http2 -v
+	```
 
 1. Note that the request and response are issued over HTTP/2.
 
-1. Review the logs for the application:
+1. The response from the test application will include the request's protocol.
+Note that it recieved the request over HTTP/2:
 
-```
-cf logs my-app
-```
-
-1. Note that the request to the application is issued over HTTP/2
+	```
+	Hello, /, TLS: false, Protocol: HTTP/2.0
+	```
 
 #### <a id="example-3"></a> Example 3: End-to-End HTTP/2 Using CLI
 
-1. Acquire an application that supports serving HTTP/2 traffic with prior knowledge. For example [Spring Music with H2C Support](https://github.com/cloudfoundry-samples/spring-music/tree/h2c_support).
+1. Acquire an application that supports serving HTTP/2 traffic with prior knowledge.
+For this example, we will use [the HTTP/2 test app from Cloud Foundry Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests/tree/http2_routing/assets/http2).
 
-1. Push the application without a default route
-```
-cf push --no-route
-```
+1. Push the application without a default route:
 
-1. Map a route with destination protocol `http2`
+	```
+	cf push --no-route
+	```
 
-```
-cf map-route my-app example.com --hostname host --destination-protocol http2
-```
+1. Map a route with destination protocol `http2`:
+
+	```
+	cf map-route my-app example.com --hostname host --destination-protocol http2
+	```
 
 1. Issue a HTTP/2 request to the application:
 
-```
-curl host.example.com --http2 -v
-```
+	```
+	curl host.example.com --http2 -v
+	```
 
 1. Note that the request and response are issued over HTTP/2.
 
-1. Review the logs for the application:
+1. The response from the test application will include the request's protocol.
+Note that it recieved the request over HTTP/2:
 
-```
-cf logs my-app
-```
-
-1. Note that the request to the application is issued over HTTP/2
-
+	```
+	Hello, /, TLS: false, Protocol: HTTP/2.0
+	```
 
 #### <a id="example-4"></a> Example 4: Pushing a gRPC Application
 
-1. Acquire an application that supports serving gRPC traffic. For example [the gRPC test app from Cloud Foundry Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests/tree/http2_routing/assets/grpc).
+1. Acquire an application that supports serving gRPC traffic.
+For this example, we will use [the gRPC test app from Cloud Foundry Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests/tree/http2_routing/assets/grpc).
 
 1. Push the app with HTTP/2 enabled using one of the methods described above.
 
 1. Issues a gRPC request to the application using [grpcurl](https://github.com/fullstorydev/grpcurl):
 
-```
-grpcurl -vv -import-path ./test/ -proto test.proto my-app.example.com:443 test.Test.Run
-```
+	```
+	grpcurl -vv -import-path ./test/ -proto test.proto my-app.example.com:443 test.Test.Run
+	```
 
-1. Note that the request succeeds
+1. Note that the gRPC request succeeds:
+
+	```
+	Response contents:
+	{
+	  "body": "Hello"
+	}
+	```
 
 ## <a id="performance"></a> Performance
 
 HTTP/2 can provide modest performance gains for applications that are built to take advantage of it.
 This is especially true for applications that:
+
 1. Load many resources in parallel. For example a HTML page that loads many images and/or javascript files.
 1. Use large and repetitive headers.
 

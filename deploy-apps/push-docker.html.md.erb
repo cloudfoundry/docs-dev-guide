@@ -160,6 +160,8 @@ Where:
 
 * `USER` is the username to use for authentication with the registry.
 
+<p class="note"><strong>Note:</strong> If container registry credentials change the application have to be pushed with the new credentials. Otherwise Cloud Foundry will fail to start the application because during start access to the container registry is required. For container credentials rotation we recommend a set of two credentials (old/new) where the <code>old</code> credentials can be deactivated after all application have been pushed with the <code>new</code> credentials.</p>
+
 ### <a id='ecr'></a> Amazon Elastic Container Registry (ECR)
 
 <%= vars.app_runtime_abbr %> supports pushing apps from images hosted on Amazon Web Services ECR, which authenticates with temporary password tokens.

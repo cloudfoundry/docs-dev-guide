@@ -27,7 +27,7 @@ To push apps with Docker, you need:
 
 ### <a id='cf-ssh'></a> Requirement for cf ssh Support
 
-If you want to log in to your app container using the `cf ssh` command, you must make a shell such as `sh` or `bash` available in the container. 
+If you want to log in to your app container using the `cf ssh` command, you must make a shell such as `sh` or `bash` available in the container.
 
 The SSH server in the container looks for the following executables in absolute locations or the `PATH` environment variable:
 
@@ -56,7 +56,7 @@ By default, apps listen for connections on the port specified in the `PORT` envi
 When configuring a Docker image for <%= vars.app_runtime_abbr %>, you can control the exposed port and the corresponding value of `PORT` by specifying the `EXPOSE` directive in the image Dockerfile. If you specify the `EXPOSE` directive, then the corresponding app pushed to <%= vars.app_runtime_abbr %> listens on that exposed port. For example, if you set `EXPOSE` to `7070`, then the app listens for connections on port 7070.
 
 If you do not specify a port in the `EXPOSE` directive, then the app listens on the value of the `PORT` environment variable as determined by <%= vars.app_runtime_abbr %>.
- 
+
 If you set the `PORT` environment variable via an `ENV` directive in a Dockerfile, <%= vars.app_runtime_abbr %> overrides the value with the system-determined value.
 
 <%= vars.app_runtime_abbr %> supports only one exposed port on the image.
@@ -160,7 +160,10 @@ Where:
 
 * `USER` is the username to use for authentication with the registry.
 
-<p class="note"><strong>Note:</strong> If container registry credentials change the application have to be pushed with the new credentials. Otherwise Cloud Foundry will fail to start the application because during start access to the container registry is required. For container credentials rotation we recommend a set of two credentials (old/new) where the <code>old</code> credentials can be deactivated after all application have been pushed with the <code>new</code> credentials.</p>
+<p class="note"><strong>Note:</strong> If container registry credentials change, you must push the app with the new credentials.
+Apps require access to the container registry when starting.
+If you do not push the app with the new credentials, <%= vars.app_runtime_abbr %> fails to start the app.
+When you rotate container credentials, <%= vars.recommended_by %> recommends using a set of two credentials, where the <code>old</code> credentials can be deactivated after all apps have been pushed with the <code>new</code> credentials.</p>
 
 ### <a id='ecr'></a> Amazon Elastic Container Registry (ECR)
 
@@ -209,7 +212,7 @@ To create a JSON key file and associate it with your project:
 1. Create a GCP service account. To create a GCP service account,
    see the [Google Cloud documentation](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances).
    Run:
-  
+
     ```
     gcloud iam service-accounts create YOUR-ACCOUNT --display-name "YOUR-DISPLAY-NAME"
     ```
@@ -225,7 +228,7 @@ To create a JSON key file and associate it with your project:
     Where `YOUR-PROJECT-ID` is your project ID.
 
 1. Create a JSON key file and associate it with the service account by running:
-  
+
     ```
     gcloud iam service-accounts keys create key.json --iam-account=YOUR-ACCOUNT@YOUR-PROJECT-ID.iam.gserviceaccount.com
     ```

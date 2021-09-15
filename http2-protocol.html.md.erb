@@ -9,24 +9,10 @@ This topic describes how to route HTTP/2 and gRPC traffic to <%= vars.app_runtim
 
 ## <a id="overview"></a> Overview
 
-
-
-### <a id="http2"></a> HTTP/2
-
 HTTP/2 is the second major version of the the HTTP protocol.
-<%= vars.http2_support_version %>.
-
-HTTP/2 features the following improvements over HTTP/1.1:
-
-* Using a binary data format instead of plain text
-* Compressing headers
-* Multiplexing multiple HTTP requests over a single TCP connection
-
-Together, these improvements can improve response times for some apps.
+<%= vars.http2_support_version %>
 
 For more information about the HTTP/2 protocol, see [RFC 7540](https://datatracker.ietf.org/doc/html/rfc7540).
-
-### <a id="grpc"></a> gRPC
 
 gRPC is a Remote Procedure Call (RPC) framework that uses HTTP/2 as its transport medium.
 It is especially useful for managing communication between apps in a microservices cluster.
@@ -34,17 +20,20 @@ For apps to serve gRPC traffic, every network hop between the client and app mus
 
 For more information, see [gRPC](https://grpc.io/).
 
+
 ## <a id="http2-with-cf"></a> Using HTTP/2 with <%= vars.app_runtime_abbr %> Apps
 
 If your <%= vars.app_runtime_abbr %> deployment is configured to support HTTP/2,
 then all traffic ingressing to <%= vars.app_runtime_abbr %> supports HTTP/2.
-The traffic is forwarded as HTTP/1.1 before it reaches your app unless configured otherwise.
 You do not need to make changes to existing apps to support HTTP/2.
+The traffic is forwarded as HTTP/1.1 before it reaches your app unless configured otherwise.
 
 <%= vars.http2_admin_link %>
 
 
-#### <a id="example-1"></a> Example 1: Serving HTTP/2 for a HTTP/1.1 Application
+### <a id="example-1"></a> Serve HTTP/2 for a HTTP/1.1 Application
+
+To serve HTTP/2 for an HTTP/1.1 app:
 
 1. Push an application that serves HTTP/1.1:
 
@@ -70,25 +59,31 @@ You do not need to make changes to existing apps to support HTTP/2.
 
 <p class="note"><strong>Note:</strong> You will need a version of curl that supports HTTP/2 in order to issue this request. </p>
 
-### <a id="e2e-http2"></a> End-to-End HTTP/2
+### <a id="e2e-http2"></a> Configure End-to-End HTTP/2
 
-If you want traffic to your application to be HTTP/2 for all network hops
-(for example, if you need to serve gRPC traffic),
-then you will need to configure your route to send HTTP/2 traffic to your application.
+To serve gRPC traffic, your app must use HTTP/2 for all network hops.
+Configure your route to send HTTP/2 traffic to your app.
+When configured, traffic that matches the route is always sent to your app over HTTP/2 regardless of the original ingress protocol.
 
-When configured, traffic matching that route will always be sent to your application over HTTP/2,
-regardless of original ingress protocol.
-For example, external HTTP/1.1 requests will be forwarded to your application over HTTP/2.
-Your app will not have the opportunity to negotiate what protocol it receives.
+For example, external HTTP/1.1 requests are forwarded to your app over HTTP/2.
+Your app does not have the opportunity to negotiate what protocol it receives.
+Apps receive HTTP/2
 
 <p class="note"><strong>Note:</strong>
-For those familiar with the HTTP/2 specification,
-your application will be receiving HTTP/2 with prior knowledge,
-as described in <a href="https://datatracker.ietf.org/doc/html/rfc7540#section-3.4">RFC 7540, Section 3.4</a>.</p>
+If a client is familiar with the HTTP/2 specification,
+your app receives HTTP/2 with prior knowledge.
+For more information, see <a href="https://datatracker.ietf.org/doc/html/rfc7540#section-3.4">Starting HTTP/2 with Prior Knowledge</a> in
+<em>RFC 7540: Hypertext Transfer Protocol Version 2 (HTTP/2)</em>.</p>
 
-There are multiple ways to configure end-to-end HTTP/2 for your application:
+There are multiple ways to configure end-to-end HTTP/2 for your app.
 
-#### <a id="example-2"></a> Example 2: End-to-End HTTP/2 Using Application Manifest
+See the following sections:
+
+- [Configure End-to-End HTTP/2 Using the App Manifest](#e2e-manifest)
+
+### <a id="e2e-manifest"></a> Configure End-to-End HTTP/2 Using the App Manifest
+
+To configure end-to-end HTTP/2 using the app manifest:
 
 1. Acquire an application that supports serving HTTP/2 traffic with prior knowledge.
 For this example, we will use [the HTTP/2 test app from Cloud Foundry Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests/tree/http2_routing/assets/http2).

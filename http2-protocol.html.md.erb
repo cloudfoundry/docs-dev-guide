@@ -5,35 +5,44 @@ owner: CF for VMs Networking
 
 <% current_page.data.title = "Routing HTTP/2 and gRPC Traffic to Apps" %>
 
-## <a id="http2"></a> HTTP/2
+This topic describes how to route HTTP/2 and gRPC traffic to <%= vars.app_runtime_first %> apps.
+
+## <a id="overview"></a> Overview
+
+
+
+### <a id="http2"></a> HTTP/2
 
 HTTP/2 is the second major version of the the HTTP protocol.
+<%= vars.http2_support_version %>.
 
-It features several improvements over HTTP/1.1, including:
+HTTP/2 features the following improvements over HTTP/1.1:
 
 * Using a binary data format instead of plain text
 * Compressing headers
 * Multiplexing multiple HTTP requests over a single TCP connection
-* And more
 
-Together, these improvements can improve response times for some applications.
+Together, these improvements can improve response times for some apps.
 
-See [RFC 7540](https://datatracker.ietf.org/doc/html/rfc7540) for more details about the HTTP/2 protocol.
+For more information about the HTTP/2 protocol, see [RFC 7540](https://datatracker.ietf.org/doc/html/rfc7540).
 
 ### <a id="grpc"></a> gRPC
 
-[gRPC](https://grpc.io/) is a popular RPC framework that uses HTTP/2 for as its transport medium.
-It is especially useful for managing communication between applications in a microservices cluster.
-In order for applications to serve gRPC traffic, every network hop between the client and application must use HTTP/2.
+gRPC is a Remote Procedure Call (RPC) framework that uses HTTP/2 as its transport medium.
+It is especially useful for managing communication between apps in a microservices cluster.
+For apps to serve gRPC traffic, every network hop between the client and app must use HTTP/2.
 
-## <a id="http2-with-cf"></a> Using HTTP/2 With <%= vars.app_runtime_abbr %>
+For more information, see [gRPC](https://grpc.io/).
 
-If your <%= vars.app_runtime_abbr %> administrator has configured <%= vars.app_runtime_abbr %> to support HTTP/2,
-then all traffic ingressing to <%= vars.app_runtime_abbr %> will support HTTP/2 traffic.
-The traffic will be forwarded as HTTP/1.1 before reaching your application unless configured otherwise.
-Therefore, no changes need to be made to existing applications to support HTTP/2.
+## <a id="http2-with-cf"></a> Using HTTP/2 with <%= vars.app_runtime_abbr %> Apps
 
-<p class="note"><strong>Note:</strong> Administrators, see <a href="../adminguide/supporting-http2.html">Supporting HTTP/2</a> for details on how to configure <%= vars.app_runtime_abbr %> to support HTTP/2. </p>
+If your <%= vars.app_runtime_abbr %> deployment is configured to support HTTP/2,
+then all traffic ingressing to <%= vars.app_runtime_abbr %> supports HTTP/2.
+The traffic is forwarded as HTTP/1.1 before it reaches your app unless configured otherwise.
+You do not need to make changes to existing apps to support HTTP/2.
+
+<%= vars.http2_admin_link %>
+
 
 #### <a id="example-1"></a> Example 1: Serving HTTP/2 for a HTTP/1.1 Application
 
@@ -186,4 +195,3 @@ See the [Cloud Foundry HTTP/2 Tile Demo App](https://github.com/Gerg/http2_tile_
 
 1. End-to-end HTTP/2 is currently not available for Windows cells. Routes with HTTP/2 mappings will continue to send HTTP/1.1 traffic to applications on Windows cells.
 2. Routes with [route services](https://docs.cloudfoundry.org/services/route-services.html) bound to them may not have end-to-end HTTP/2, depending on what protocols the bound service supports.
-

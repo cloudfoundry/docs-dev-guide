@@ -394,9 +394,9 @@ Use the `routes` attribute to provide multiple HTTP and TCP routes. Each route f
 
 This attribute is a combination of `push` options that include `--hostname`, `-d`, and `--route-path`.
 
-Optionally, specify the `protocol` attribute to configure what network protocol the route uses for app ingress traffic. The available protocols are `http2`, `http1`, and `tcp`.
+Optionally, specify the `protocol` attribute to configure which network protocol the route uses for app ingress traffic. The available protocols are `http2`, `http1`, and `tcp`.
 
-<p class="note"><strong>Note</strong>: The `protocol` route attribute is only available for Cloud Foundry deployments with HTTP/2 routing enabled. See [Supporting HTTP/2](../../adminguide/supporting-http2.html) for details. </p>
+<p class="note"><strong>Note</strong>: The <code>protocol</code> route attribute is only available for <%= vars.app_runtime_abbr %> deployments with HTTP/2 routing enabled. <%= vars.http2_admin_link %> </p>
 
 <pre>
 ---

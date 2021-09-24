@@ -277,6 +277,29 @@ Developers can only see routes in spaces where they are members.
 
 <p class="note"><strong>Note:</strong> cf CLI v7 removes the <code>port</code> and <code>path</code> columns from the output.</p>
 
+### <a id='view-route'></a> View a Route
+
+Developers can view a route, and its destinations, within the current space with the <code>cf route</code> command. A route is uniquely identified by the combination of hostname, domain, port, and path.
+
+<pre class="terminal">
+$ cf route <%= vars.app_domain %> --hostname myapp
+Showing route myapp.<%= vars.app_domain %> in org o / space my-space as admin...
+
+domain:     <%= vars.app_domain %>
+host:       myapp
+port:
+path:
+protocol:   http
+
+Destinations:
+        app      process   port   protocol
+        mystore  web       8080   http1
+</pre>
+
+Developers can only view a route when it's within a space where they are a member.
+
+<p class="note"><strong>Note:</strong> this is only available in cf CLI v8.</p>
+
 ### <a id='check-routes'></a> Check Routes
 
 Developers cannot create a route that is already taken. To check whether a route is available, developers can use the [cf check-route](https://cli.cloudfoundry.org/en-US/cf/check-route.html) command.
@@ -349,6 +372,12 @@ The following command maps the wildcard route `*.foo.<%= vars.app_domain %>` to 
 
 <pre class="terminal">
 $ cf map-route myfallbackapp foo.<%= vars.app_domain %> --hostname '*'
+</pre>
+
+As of cf CLI v8, the following command maps the route `h2app.<%= vars.app_domain %>` as an HTTP/2 route to the HTTP/2 app `h2app`.
+
+<pre class="terminal">
+$ cf map-route h2app <%= vars.app_domain %> --hostname h2app --destination-protocol http2
 </pre>
 
 #### <a id='map-route-on-push'></a> Map a Route with App Push

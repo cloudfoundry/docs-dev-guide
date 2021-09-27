@@ -279,7 +279,7 @@ Developers can only see routes in spaces where they are members.
 
 ### <a id='view-route'></a> View a Route
 
-Developers can view a route, and its destinations, within the current space with the <code>cf route</code> command. A route is uniquely identified by the combination of hostname, domain, port, and path.
+Developers can view a route and its destinations within the current space with the <code>cf route</code> command. A route is uniquely identified by the combination of a hostname, domain, port, and path.
 
 <pre class="terminal">
 $ cf route <%= vars.app_domain %> --hostname myapp
@@ -296,9 +296,9 @@ Destinations:
         mystore  web       8080   http1
 </pre>
 
-Developers can only view a route when it's within a space where they are a member.
+Developers can only view a route within a space where they are a member.
 
-<p class="note"><strong>Note:</strong> this is only available in cf CLI v8.</p>
+<p class="note"><strong>Note:</strong> The <code>cf route</code> command is available in cf CLI v8 only.</p>
 
 ### <a id='check-routes'></a> Check Routes
 
@@ -374,7 +374,7 @@ The following command maps the wildcard route `*.foo.<%= vars.app_domain %>` to 
 $ cf map-route myfallbackapp foo.<%= vars.app_domain %> --hostname '*'
 </pre>
 
-As of cf CLI v8, the following command maps the route `h2app.<%= vars.app_domain %>` as an HTTP/2 route to the HTTP/2 app `h2app`.
+In cf CLI v8, the following command maps the route `h2app.<%= vars.app_domain %>` as an HTTP/2 route to the HTTP/2 app `h2app`.
 
 <pre class="terminal">
 $ cf map-route h2app <%= vars.app_domain %> --hostname h2app --destination-protocol http2

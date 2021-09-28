@@ -5,7 +5,8 @@ owner: Diego
 
 
 
-This topic describes enabling the Instance Identity system for your Cloud Foundry (CF) deployment.  The Instance Identity system provides each app instance with a unique PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS#1](https://tools.ietf.org/html/rfc3447) RSA private key pair that encodes its identity in the CF deployment.
+This topic describes enabling the Instance Identity system for your <%= vars.app_runtime_first %> deployment.
+The Instance Identity system provides each app instance with a unique PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS#1](https://tools.ietf.org/html/rfc3447) RSA private key pair that encodes its identity in the CF deployment.
 
 The environment variable `CF_INSTANCE_CERT` contains the absolute path to the certificate. The environment variable `CF_INSTANCE_KEY` contains the absolute path to the key file. The provided certificate has the following properties:
 

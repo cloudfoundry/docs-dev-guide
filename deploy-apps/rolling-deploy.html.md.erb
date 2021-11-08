@@ -351,6 +351,12 @@ The following table describes the limitations of when using rolling deployments.
     of the app running at the same time. Eventually, the app runs the code from your most recent
     push.</td>
   </tr>
+  <tr>
+    <td>V3 APIs</td>
+    <td>During a rolling deploy for an app requests to <a href="https://v3-apidocs.cloudfoundry.org/version/3.109.0/index.html#scale-a-process">scale a process</a>
+    or <a href="https://v3-apidocs.cloudfoundry.org/version/3.109.0/index.html#update-a-process">update a process</a> V3 APIs will fail with an error message
+    like <code>Cannot scale this process while a deployment is in flight.</code>.</td>
+  </tr>
 </table>
 
 

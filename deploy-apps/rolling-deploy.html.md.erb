@@ -4,7 +4,7 @@ owner: CAPI
 ---
 
 This topic describes how developers use Cloud Foundry Command Line Interface (cf CLI) commands
-or the Cloud Foundry API (CAPI) to push their apps using a rolling deployment.
+or the Cloud Foundry API (CAPI) to push their apps to <%= vars.app_runtime_first %> using a rolling deployment.
 
 For information about the traditional method for addressing app downtime while pushing app updates,
 see [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).
@@ -319,7 +319,7 @@ The following table describes the limitations of when using rolling deployments.
   </tr>
   <tr>
     <td>Multiple app versions</td>
-    <td>During a deployment, Cloud Foundry serves both the old and new version of your app at the
+    <td>During a deployment, <%= vars.app_runtime_abbr %> serves both the old and new version of your app at the
     same route. This could lead to user issues if you push backwards-incompatible API changes.</td>
   </tr>
   <tr>

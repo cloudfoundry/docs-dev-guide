@@ -239,6 +239,20 @@ it uses endpoint '/'.
   health-check-http-endpoint: /health
 </pre>
 
+### <a id='health-check-invocation-timeout'></a> health-check-invocation-timeout
+
+Use the `health-check-invocation-timeout` attribute to set the timeout in seconds for individual health check requests for http and port health checks.
+
+<pre>
+---
+  ...
+  health-check-invocation-timeout: 30
+</pre>
+
+The command line command that overrides this attribute is `cf set-health-check my-web-app http --invocation-timeout 10`.
+
+Note that the health check timeout is controlled within manifest by the `timeout` attribute.
+
 ### <a id='health-check-type'></a> health-check-type
 
 Use the `health-check-type` attribute to set the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type` attribute,
@@ -253,6 +267,7 @@ it defaults to `port`.
 The command line option that overrides this attribute is `-u`.
 
 In cf CLI v6, the value of `none` is deprecated in favor of `process`. In cf CLI v7, `none` is removed.
+
 
 ### <a id='instances'></a> instances
 

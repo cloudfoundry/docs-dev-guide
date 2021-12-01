@@ -15,35 +15,41 @@ For more information about processes, see [Processes](http://v3-apidocs.cloudfou
 
 ## <a id="push-with-multiple-processes"></a> Push an App with Multiple Processes
 
-### To push an app with multiple processes using Manifests:
+This section describes how to push an app with multiple processes using either a manifest or a Procfile.
 
-1. Create file defining a Manifest.  Include each process with its start command. See the following example which defines the app `example-app` with two processes.
+### <a id="manifest"></a>Push an App with Multiple Processes Using a Manifest
 
-```
-version: 1
-- name: example-app
-  processes:
-  - type: web
-    command: bundle exec rackup config.ru -p $PORT
-    instances: 3
-  - type: worker
-    command: bundle exec rake worker:start
-    health-check-type: process
-    instances: 2
-```
+To push an app with multiple processes using a manifest:
 
-1. Push the app using your Manifest:
+1. Create a file that defines a manifest. Include each process with its start command. See the following example, which defines the app `example-app` with two processes:
 
-```
-cf push -f example-manifest.yml
-```
+    ```yaml
+    version: 1
+    - name: example-app
+      processes:
+      - type: web
+        command: bundle exec rackup config.ru -p $PORT
+        instances: 3
+      - type: worker
+        command: bundle exec rake worker:start
+        health-check-type: process
+        instances: 2
+    ```
 
-For more information about defining processes with Manifests, see <a href="deploy-apps/manifest-attributes.html#-processes">processes</a> in <em>App Manifest Attribute Reference</em>.
+1. Push the app using your manifest:
+
+    ```console
+    cf push -f example-manifest.yml
+    ```
+
+For more information about defining processes with manifests, see [processes](deploy-apps/manifest-attributes.html#processes") in _App Manifest Attribute Reference_.
 
 
-### To push an app with multiple processes using a Procfile:
+### <a id="procfile"></a>Push an App with Multiple Processes Using a Procfile
 
-<p class="note"><strong>Note:</strong> Procfile support may vary depending on the buildpack used. In particular, the <a href="/buildpacks/staticfile/index.html">Staticfile buildpack</a> requires a Staticfile instead of a Procfile.</p>
+To push an app with multiple processes using a Procfile:
+
+<p class="note"><strong>Note:</strong> Procfile support varies depending on the buildpack you use. For example, the Staticfile buildpack requires a Staticfile instead of a Procfile. For more information, see <a href="../buildpacks/staticfile/index.html">Staticfile Buildpack</a>.</p>
 
 1. Create a file named `Procfile` in the root of your app directory.
 	<p class="note"><strong>Note:</strong> For more information about Procfiles, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#procfiles">Procfiles</a> in the CAPI V3 documentation.</p>
@@ -55,12 +61,11 @@ For more information about defining processes with Manifests, see <a href="deplo
     worker: bundle exec rake worker:start
     ```
 
-1. Push the app.
+1. Push the app:
 
-        ```
-        cf push myapp
-        ```
-
+    ```
+    cf push myapp
+    ```
 
 By default, the web process has a route and one instance. Other processes have zero instances by default.
 

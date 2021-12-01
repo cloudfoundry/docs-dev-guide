@@ -5,7 +5,7 @@ owner: CLI
 
 This topic describes manifest formatting and provides a full list of attributes available for app manifests. You can use it alongside the [Deploying with App Manifests](./manifest.html) topic, which provides basic procedures and guidance for deploying apps with manifests.
 
-See the [CC API documentation](http://v3-apidocs.cloudfoundry.org/index.html#space-manifest) for more information on v3 manifest properties.
+For more information about V3 manifest properties, see the [Cloud Foundry API (CAPI) V3 documentation](http://v3-apidocs.cloudfoundry.org/index.html#space-manifest).
 
 ## <a id='minimal-manifest'></a> Manifest Format
 
@@ -230,7 +230,7 @@ The manifest attribute `docker.username` is optional.  If it is used, then the p
 ### <a id='health-check-http-endpoint'></a> health-check-http-endpoint
 
 Use the `health-check-http-endpoint` attribute to customize the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint` attribute,
-it uses endpoint '/'.
+it uses endpoint `/`.
 
 <pre>
 ---
@@ -241,7 +241,7 @@ it uses endpoint '/'.
 
 ### <a id='health-check-invocation-timeout'></a> health-check-invocation-timeout
 
-Use the `health-check-invocation-timeout` attribute to set the timeout in seconds for individual health check requests for http and port health checks.
+Use the `health-check-invocation-timeout` attribute to set the timeout in seconds for individual health check requests for HTTP and port health checks.
 
 <pre>
 ---
@@ -249,9 +249,9 @@ Use the `health-check-invocation-timeout` attribute to set the timeout in second
   health-check-invocation-timeout: 30
 </pre>
 
-The command line command that overrides this attribute is `cf set-health-check my-web-app http --invocation-timeout 10`.
+The cf CLI command that overrides this attribute is `cf set-health-check my-web-app http --invocation-timeout 10`.
 
-Note that the health check timeout is controlled within manifest by the `timeout` attribute.
+Within the manifest, the health check timeout is controlled by the `timeout` attribute.
 
 ### <a id='health-check-type'></a> health-check-type
 

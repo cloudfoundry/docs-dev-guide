@@ -54,6 +54,8 @@ To set up a communication channel between the log management service and your Cl
 
 <%=vars.pas_ssl_note%>
 
+<p class='note'><strong>Note:</strong> If the URL is an IP address, then it must not contain any leading zeros (ie. 10.0.01.14), or it will fail to be parsed.</p>
+
 ### <a id='step2'></a> Step 2: Create and Bind a User-Provided Service Instance
 
 You can create a syslog drain service and bind apps to it using either generic Cloud Foundry Command Line Interface (cf CLI) commands, or drain-specific commands enabled by the CF Drain plugin for the cf CLI.

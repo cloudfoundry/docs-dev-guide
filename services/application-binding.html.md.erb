@@ -47,13 +47,22 @@ Binding service my-db to app rails-sample in org console / space development as 
 
 As an alternative to binding a service instance after pushing an app, you can use the app manifest to bind the service instance during `cf push`.
 
-<p class="note"><strong>Note:</strong> Arbitrary parameters are not supported in app manifests in cf CLI v6.x. Arbitrary parameters are supported in app manifests in cf CLI v7.0 and later.</p>
-
-The following excerpt from an app manifest would bind a service instance called `test-mysql-01` to the app on push.
+The following excerpt from an app manifest binds a service instance called `test-mysql-01` to the app on push.
 
 ```
 services:
  - test-mysql-01
+```
+
+The following excerpt from an app manifest binds a service instance called `db-test` with arbitrary parameters to the app on push.
+
+<p class="note"><strong>Note:</strong> Arbitrary parameters are supported in app manifests in cf CLI v7.0 and later.</p>
+
+```
+services:
+  - name: db-test
+    parameters:
+      schema: customschema
 ```
 
 The following excerpt from the `cf push` command and response demonstrates that the cf CLI reads the manifest and binds the service instance to an app called `test-msg-app`.

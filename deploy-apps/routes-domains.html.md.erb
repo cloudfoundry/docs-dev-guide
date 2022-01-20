@@ -204,7 +204,12 @@ A developer can create three routes using the same hostname and domain in the sp
   Creating route store.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
-* **cf CLI v6**
+* **cf CLI v6**: With this version of the cf CLI, you must create a route without a path first, and then you can create a route with a path. Run the commands in the following order:
+  <pre class="terminal">
+  $ cf create-route my-space <%= vars.app_domain %> --hostname store
+  Creating route store.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
+  OK
+  </pre>
   <pre class="terminal">
   $ cf create-route my-space <%= vars.app_domain %> --hostname store --path products
   Creating route store.<%= vars.app_domain %>/products for org my-org / space my-space as username<span>@</span>example.com...
@@ -213,11 +218,6 @@ A developer can create three routes using the same hostname and domain in the sp
   <pre class="terminal">
   $ cf create-route my-space <%= vars.app_domain %> --hostname store --path orders
   Creating route store.<%= vars.app_domain %>/orders for org my-org / space my-space as username<span>@</span>example.com...
-  OK
-  </pre>
-  <pre class="terminal">
-  $ cf create-route my-space <%= vars.app_domain %> --hostname store
-  Creating route store.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
   OK
   </pre>
 

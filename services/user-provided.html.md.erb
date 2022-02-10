@@ -78,8 +78,8 @@ For more information, see [Managing App Requests with Route Services](./route-bi
 
 You can use [cf update-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/update-user-provided-service.html) to update the attributes of an instance of a user-provided service. New credentials overwrite old credentials, and parameters that are not provided are deleted.
 
-<p class="note"><strong>Note</strong>: If you are rotating credentials, the old credentials must be active until the restart is finished.</p>
-
 The alias for `update-user-provided-service` is `uups`. Bound apps can access the new configuration after restart.
 You can use rolling restarts to avoid any app downtime.
 For more information, see [Restart an App](../deploy-apps/rolling-deploy.html#restart) in _Rolling App Deployments_.
+
+<p class="note"><strong>Note</strong>: If you are rotating credentials, the old credentials must be active until the restart is finished.</p>

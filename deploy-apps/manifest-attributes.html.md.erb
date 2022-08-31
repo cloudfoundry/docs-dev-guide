@@ -281,6 +281,22 @@ The default number of instances is 1.
 
 To ensure that platform maintenance does not interrupt your app, run at least two instances.
 
+### <a id='log-rate-limit'></a> Log Rate Limit
+
+Use the `log-rate-limit` attribute to specify the log rate limit for all instances of an app. This attribute requires a unit of measurement: `B`, `K`, `KB`, `M`, `MB`, `G`, or `GB` in upper case or lower case. For example:
+
+<pre>
+---
+  ...
+  log-rate-limit: 24KB
+</pre>
+
+You can also use `-1` to specify a unlimited log quota.
+
+The default log rate limit is 9.999KB. You might want to specify a smaller limit to conserve <%= vars.quota_resource %> if you know that your app instances do not require 9.999KB of logs/s.
+
+The command line option that overrides this attribute is `-l`.
+
 ### <a id='memory'></a> memory
 
 Use the `memory` attribute to specify the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case. For example:

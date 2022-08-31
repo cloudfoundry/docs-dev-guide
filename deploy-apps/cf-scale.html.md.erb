@@ -5,7 +5,7 @@ owner: CAPI
 
 
 
-Factors such as user load, or the number and nature of tasks performed by an app, can change the disk space and memory the app uses.
+Factors such as user load, or the number and nature of tasks performed by an app, can change the disk space, log rate limit, and memory the app uses.
 For many apps, increasing the available disk space or memory can improve
 overall performance.
 Similarly, running additional instances of an app can allow the
@@ -38,7 +38,7 @@ $ cf scale myApp -i 5
 
 ## <a id="vertical"></a>Scaling Vertically ##
 
-Vertically scaling an app changes the disk space limit or memory limit
+Vertically scaling an app changes the disk space limit, log rate limit, or memory limit
 that Cloud Foundry applies to all instances of the app.
 
 Use `cf scale APP -k DISK` to change the disk space limit applied to all
@@ -49,6 +49,17 @@ for gigabytes.
 <pre class='terminal'>
 $ cf scale myApp -k 512M
 </pre>
+
+Use `cf scale APP -l LOG_RATE` to change the log rate limit applied to all
+instances of your app.
+`LOG_RATE` must be an integer followed by either a **B**, for bytes, **K**, for kilobytes, **M**, for megabytes, or **G**,
+for gigabytes.
+
+<pre class='terminal'>
+$ cf scale myApp -l 12K
+</pre>
+
+You can also use `-1` to specify a unlimited log quota.
 
 Use `cf scale APP -m MEMORY` to change the memory limit applied to all instances
 of your app.

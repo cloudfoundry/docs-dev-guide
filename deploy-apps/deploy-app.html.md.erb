@@ -13,7 +13,7 @@ There are two main ways to run the `cf push` command:
 
 - Run `cf push APP-NAME` to push an app the easiest way, using default settings.
 - Run the `cf push` command with flags and helper files to customize:
-    - How the pushed app runs, including its route (URL), instance count, and memory limits.
+    - How the pushed app runs, including its route (URL), instance count, disk size limits, log rate limits and memory limits.
     - How the push process works: whether it's configured with a manifest, runs a startup script, or limits files uploaded to the Cloud Controller.
 
 The [Push with Defaults](#default-push) and [Push with Custom Settings](#custom-push) sections below detail both of these options.
@@ -170,6 +170,14 @@ app can consume.
 If an instance exceeds this limit, <%= vars.app_runtime_abbr %> restarts the instance.
 If an instance exceeds its memory limit repeatedly in a short period of time, <%= vars.app_runtime_abbr %>
 	delays restarting the instance.
+* **Disk Space Limit**: The maximum amount of disk space that each instance of your
+app can consume.
+If an instance exceeds this limit, <%= vars.app_runtime_abbr %> restarts the instance.
+If an instance exceeds its disk space limit repeatedly in a short period of time, <%= vars.app_runtime_abbr %>
+	delays restarting the instance.
+* **Log Rate Limit**: The maximum amount of logging that each instance of your
+app can emit.
+If an instance exceeds this limit, <%= vars.app_runtime_abbr %> will drop the excess logs and report it is dropping logs.
 * **Start Command**: This is the command that <%= vars.app_runtime_abbr %> uses to start each
 instance of your app.
 This start command differs by app framework.

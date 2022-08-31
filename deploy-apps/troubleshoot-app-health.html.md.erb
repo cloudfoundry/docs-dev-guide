@@ -37,13 +37,13 @@ If this happens:
 If your app is too large, you may receive one of the following error messages on `cf push`:
 
 * `413 Request Entity Too Large`
-* `You have exceeded your organization's memory limit`
+* `You have exceeded your (organization/space)'s (memory/disk/log rate) limit`
 
 If this happens:
 
-* **Make sure your org has enough memory for all instances of your app.** You will not be able to use more memory than is allocated for your organization. To view the memory quota for your org, use `cf org ORG_NAME`.
+* **Make sure your org and space have enough resources for all instances of your app.** You will not be able to use more resources in a space than is allocated for your organization. To view the resource quota name for your org, use `cf org ORG_NAME`, then `cf quota QUOTA_NAME`. To view resource quota name for your space, use `cf space SPACE_NAME`, then `cf space-quota QUOTA_NAME`.
 
-Your total memory usage is the sum of the memory used by all apps in all spaces within the org. Each app's memory usage is the memory allocated to it multiplied by the number of instances. To view the memory usage of all the apps in a space, use `cf apps`.
+Your total organization resource usage is the sum of the resources used by all apps in all spaces within the org. Each app's resource usage is the resources allocated to it multiplied by the number of instances. To view the resource usage of all the apps in a space, use `cf apps`, then `cf app APP_NAME` on each application.
 
 * **Make sure your app is less than 1&nbsp;GB.** By default, <%= vars.platform_name %> deploys all the contents of the current working directory. To reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to [specify excluded files](prepare-to-deploy.html#exclude). The following limits apply:
 

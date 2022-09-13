@@ -293,7 +293,8 @@ Use the `log-rate-limit` attribute to specify the log rate limit for all instanc
 
 You can also use `-1` to specify a unlimited log quota.
 
-The default log rate limit is 9.999KB. You might want to specify a smaller limit to conserve <%= vars.quota_resource %> if you know that your app instances do not require 9.999KB of logs/s.
+The default log rate limit is configured by your platform operator. You might want to specify a smaller limit in your manifest
+to conserve <%= vars.quota_resource %> if you know that your app instances do not require the default log rate limit.
 
 The command line option that overrides this attribute is `-l`.
 

@@ -21,6 +21,9 @@ To deploy large apps to <%=vars.product_short%>, ensure the following:
 
 * You allocate enough disk space for all instances of your app. Use either the `-k` flag with `cf push` or set a disk space allocation value in your `manifest.yml` file.
 
+* You allocate enough log quota for all instances of your app. Use either the `-l` flag with `cf push` or set a log rate
+limit per second value in your `manifest.yml` file.
+
 * If you use an app manifest file, `manifest.yml`, be sure to specify adequate values for your app for attributes such as app memory, app start timeout, and disk space allocation. For more information about using manifests, see [Deploying with App Manifests](./manifest.html).
 
 * The total size of [environment variables](./environment-variable.html) for your application does not exceed

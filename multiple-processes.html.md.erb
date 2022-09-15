@@ -89,22 +89,29 @@ To view the processes running as part of an app, run `cf APP-NAME`, where `APP-N
 
 <pre class="terminal">
 $ cf app myapp
- Showing health and status for app myapp in org test / space test as admin...
+Showing health and status for app myapp in org test / space test as admin...
 
-name: myapp
- requested state: started
- processes: web:1/1, worker:2/2
- memory usage: 256M x 1, 256M x 2
- routes: myapp.cloudfoundry.example.com
- stack: cflinuxfs3
- buildpacks: ruby
+name:              myapp
+requested state:   started
+routes:            myapp.cloudfoundry.example.com
+last uploaded:     Thu 15 Sep 02:34:18 UTC 2022
+stack:             cflinuxfs3
+buildpacks:
+        name             version   detect output   buildpack name
+        ruby_buildpack   1.8.57    ruby            ruby
 
-web:1/1
- state since cpu memory disk
- #0 running 2017-09-25 15:43:26 PM 0.2% 18.9M of 256M 84.4M of 1G
+type:           web
+sidecars:
+instances:      1/1
+memory usage:   1024M
+     state     since                  cpu    memory        disk          logging            details
+#0   running   2022-09-15T02:34:27Z   0.3%   36.3M of 1G   90.2M of 1G   0/s of unlimited
 
-worker:2/2
- state since cpu memory disk
- #0 running 2017-09-25 15:49:46 PM 0.1% 5M of 256M 73M of 1G
- #1 running 2017-09-25 15:49:46 PM 0.1% 5M of 256M 73M of 1G
+type:           worker
+sidecars:
+instances:      2/2
+memory usage:   1024M
+     state     since                  cpu    memory        disk          logging              details
+#0   running   2022-09-15T02:35:29Z   0.0%   36.1M of 1G   90.2M of 1G   15B/s of unlimited
+#1   running   2022-09-15T02:35:29Z   0.0%   36.1M of 1G   90.2M of 1G   15B/s of unlimited
 </pre>

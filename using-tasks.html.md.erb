@@ -65,7 +65,7 @@ Admins can set the default memory, disk usage and log rate quotas for tasks on a
 Tasks use the same memory, disk usage and log rate defaults as apps unless customized using [run-task](https://cli.cloudfoundry.org/en-US/v8/run-task.html) in the cf CLI.
 
 <% if vars.platform_code == 'PCF' %>
-<%= partial '/pcf/core/2-7/tasks_rec_alloc_pcf' %>
+<%= partial '/pcf/core/3-0/tasks_rec_alloc_pcf' %>
 <% else %>
 <%= partial 'tasks_rec_alloc_oss' %>
 <% end %>

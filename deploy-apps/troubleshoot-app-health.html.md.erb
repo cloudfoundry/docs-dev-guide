@@ -239,9 +239,9 @@ You can investigate app deployment and health using the cf CLI.
 
 Some cf CLI commands may return connection credentials. Remove credentials and other sensitive information from command output before you post the output a public forum.
 
-* `cf apps`: Returns a list of the apps deployed to the current space with deployment options, including the name, current state, number of instances, memory and disk allocations, and URLs of each app.
+* `cf apps`: Returns a list of the apps deployed to the current space with deployment options, including the name, current state, number of instances, and URLs of each app.
 
-* `cf app APP-NAME`: Returns the health and status of each instance of a specific app in the current space, including instance ID number, current state, how long it has been running, and how much CPU, memory, and disk it is using.
+* `cf app APP-NAME`: Returns the health and status of each instance of a specific app in the current space, including instance ID number, current state, how long it has been running, and how much CPU, memory, disk and logging it is using.
     <p class="note"><strong>Note:</strong> CPU values returned by <code>cf app</code> show the total usage of each app instance on all CPU cores on a host VM, where each core contributes 100%. For example, the CPU of a single-threaded app instance on a Diego cell with one core cannot exceed 100%, and four instances sharing the cell cannot exceed an average CPU of 25%. A multi-threaded app instance running alone on a cell with eight cores can draw up to 800% CPU.</p>
 
 * `cf env APP-NAME`: Returns environment variables set using `cf set-env` and variables existing in the container environment.

@@ -30,7 +30,7 @@ The routing tier knows the location of instances for apps mapped to routes. Once
 
 Developers can map many apps to a single route, resulting in load-balanced requests for the route across all instances of all mapped apps. This approach enables the blue/green rolling deployment strategy. Developers can also map an individual app to multiple routes, enabling access to the app from many URLs. The number of routes that can be mapped to each app is approximately 1000 (128&nbsp;KB).
 
-Routes belong to a space, and developers can only map apps to a route in the same space.
+Routes belong to a space, and developers can only map apps to a route created in, or shared with, the same space. For information about sharing routes across spaces, see [Share a Route with Another Space](#share-route) below.
 
 <p class="note"><strong>Note:</strong> Routes are globally unique. Developers in one space cannot create a route with the same URL as developers in another space, regardless of which orgs control these spaces.</p>
 
@@ -475,6 +475,36 @@ To unmap a TCP route from an app, identify the route using the domain and port:
 
 <pre class="terminal">
 $ cf unmap-route tcp-app <%= vars.tcp_app_domain %> --port 60000
+</pre>
+
+### <a id='share-route'></a> Share a Route with Another Space
+
+<p class='note'><strong>Note:</strong> This section requires cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, go to the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Releases</a> section of the Cloud Foundry CLI repository on GitHub.</p>
+
+You can share a route with another space using the `cf share-route` command. If you want to move an app to another space, you can use route sharing to prevent downtime during the transition. Rather than deleting the route in the original space and then re-creating the route in the new space, you can share the route with the new space and map it to the app running in that space.
+
+To use the `cf share-route` command, you must enable the `route_sharing` feature flag:
+
+<pre class="terminal">
+$ cf enable-feature-flag route_sharing
+</pre>
+
+To share a route, run `cf share-route` and specify the route, the space with which to share the route, and the org, if that space is not in the currently targeted org. The following command shares the route `myapp.example.com/mypath` with the `other-space` space in the `other-org` org.
+
+<pre class="terminal">
+$ cf share-route example.com --hostname myapp --path mypath -s other-space -o other-org
+</pre>
+
+### <a id='move-route'></a> Transfer Ownership of a Route to Another Space
+
+<p class='note'><strong>Note:</strong> This section requires cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, go to the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Releases</a> section of the Cloud Foundry CLI repository on GitHub.</p>
+
+After sharing a route with another space, you can transfer ownership of the route to that space using the `cf move-route` command. You can use this command if you are unable to maintain or delete a shared route within the space with which it was shared. For information about sharing routes across spaces, see [Share a Route with Another Space](#share-route) above.
+
+You must run `cf move-route` from the space that originally shared the route. To move a route, run `cf move-route` and specify the route, the space to which to move the route, and the org, if that space is not in the currently targeted org. The following command moves the route `myapp.example.com/mypath` to the `other-space` space in the `other-org` org.
+
+<pre class="terminal">
+$ cf move-route example.com --hostname myapp --path mypath -s other-space -o other-org
 </pre>
 
 ### <a id='delete-route'></a> Delete a Route

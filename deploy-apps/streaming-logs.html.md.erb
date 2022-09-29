@@ -112,6 +112,15 @@ For example:
 2016-06-14T14:10:15.18-0700 [APP/0]      OUT Exit status 0
 </pre>
 
+Each app may have a log rate limit defined. If the app logs exceed the defined log rate limit then a log message is
+output indicating that the limit was exceeded.
+
+For example:
+
+<pre class="terminal">
+2022-09-15T01:59:33.99+0000 [APP/PROC/WEB/0] OUT app instance exceeded log rate limit (16384 bytes/sec)
+</pre>
+
 ### <a id="ssh"></a> SSH
 
 The Diego Cell emits SSH logs when a user accesses an app container through SSH by using the Cloud Foundry Command Line

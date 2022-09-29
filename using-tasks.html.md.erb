@@ -60,11 +60,12 @@ The task execution history is retained for one month.
 
 At the system level, a user with admin-level privileges can use the Cloud Controller v3 API to view all tasks that are running within an org or space. For more information, see [List tasks](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#list-tasks) in the Cloud Foundry API documentation.
 
-Admins can set the default memory and disk usage quotas for tasks on a global level.
-Tasks use the same memory and disk usage defaults as apps unless customized using [run-task](https://cli.cloudfoundry.org/en-US/v7/run-task.html) in the cf CLI. 
+Admins can set the default memory, disk usage and log rate quotas for tasks on a global level.
+
+Tasks use the same memory, disk usage and log rate defaults as apps unless customized using [run-task](https://cli.cloudfoundry.org/en-US/v8/run-task.html) in the cf CLI.
 
 <% if vars.platform_code == 'PCF' %>
-<%= partial '/pcf/core/2-7/tasks_rec_alloc_pcf' %>
+<%= partial '/pcf/core/3-0/tasks_rec_alloc_pcf' %>
 <% else %>
 <%= partial 'tasks_rec_alloc_oss' %>
 <% end %>

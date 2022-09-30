@@ -87,8 +87,8 @@ To add variables to an app manifest:
 
 ### <a id='minimize-duplication'></a> Minimize Duplication with YAML Anchors
 
-<p class='note'><strong>Note:</strong> Top-level attributes have been deprecated in favor of YAML anchors. For more information, see
-  <a href="#deprecated">Deprecated App Manifest Features</a> below.</p>
+<p class='note'><strong>Note:</strong> Top-level attributes are deprecated in favor of YAML anchors. For more information, see
+  <a href="#top-level-attributes">Top-Level Attributes</a> below.</p>
 
 In manifests where multiple apps share settings or services, you may see duplicated content. While the manifests still work, duplication increases the risk of
 typographical errors, which cause deployments to fail.
@@ -120,8 +120,8 @@ This section explains how to describe optional app attributes in manifests. Each
 Command-line options override the manifest.
 
 <p class='note'><strong>Note:</strong> In cf CLI v6, the route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>,
-  <code>hosts</code>, and <code>no-hostname</code> have been deprecated in favor of the <code>routes</code> attribute. In cf CLI v7, these attributes are
-  removed. For more information, see <a href="#deprecated">Deprecated App Manifest Features</a> below.</p>
+  <code>hosts</code>, and <code>no-hostname</code> are deprecated in favor of the <code>routes</code> attribute. In cf CLI v7, these attributes are
+  removed. For more information, see <a href="#route-attribute">domain, domains, host, hosts, and no-hostname</a> below.</p>
 
 ### <a id='buildpacks'></a> buildpacks
 
@@ -150,8 +150,8 @@ You can refer to a buildpack by name in a manifest or a command-line option. The
       ```
       <div class='note'><strong>Notes:</strong>
         <ul>
-          <li>This feature does not work with deprecated app manifest features. For more information, see <a href="#deprecated">Deprecated App Manifest
-            Features</a> below.</li>
+          <li>This feature does not work with the deprecated <code>buildpack</code> attribute. For more information, see
+            <a href="#buildpack-deprecated">buildpack</a> below.</li>
           <li>You must specify multiple buildpacks in the correct order: the buildpack uses the app start command given by the final buildpack. For more
             information, see the <a href=https://github.com/cloudfoundry/multi-buildpack#usageapp>multi-buildpack</a> repository on GitHub.</li>
         </ul>
@@ -697,12 +697,12 @@ Service](../services/application-binding.html#bind) in _Delivering Service Crede
 
 ## <a id='deprecated'></a> Deprecated App Manifest Features
 
-This section describes app manifest features that have been deprecated in favor of other features.
+This section describes app manifest features that are deprecated in favor of other features.
 
 <p class='note warning'><strong>Warning:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated
   features along with the feature that replaces it.</p>
 
-### <a id='yaml-anchors'></a> Top-Level Attributes
+### <a id='top-level-attributes'></a> Top-Level Attributes
 
 Previously, you could declare top-level attributes, which are also known as global attributes. For example, you can move an attribute above the `applications`
 block, where it need appear only once.
@@ -766,15 +766,19 @@ applications:
   - example.io
 ```
 
-The following route component attributes have been deprecated:
+The following route component attributes are deprecated:
 
 * `domain`
+
 * `domains`
+
 * `host`
+
 * `hosts`
+
 * `no-hostname`
 
-Now you can only specify routes by using the `routes` attribute:
+You can only specify routes by using the `routes` attribute:
 
 ```
 ---
@@ -785,17 +789,14 @@ applications:
   - route: tcp.example.com:1234
 ```
 
-This app manifest feature has been deprecated, and a replacement option is under consideration.
-
 ### <a id='inheritance-deprecated'></a> Inheritance
 
-This feature has been deprecated, and has been replaced by variable substitution. For more information, see [Variable
-Substitution](#variable-substitution) above.
+This feature is deprecated and replaced by variable substitution. For more information, see [Variable Substitution](#variable-substitution) above.
 
 With inheritance, child manifests inherited configurations from a parent manifest. The child manifests can use the inherited configurations as provided,
 extend them, or override them.
 
 ### <a id='buildpack-deprecated'></a> buildpack
 
-The singular `buildpack` attribute is deprecated. It has been replaced by `buildpacks`, which specifies multiple buildpacks. For more information, see
+The singular `buildpack` attribute is deprecated. It is replaced by `buildpacks`, which specifies multiple buildpacks. For more information, see
 [buildpacks](#buildpacks) above.

@@ -5,186 +5,184 @@ owner: PCF Metrics
 
 <% current_page.data.title = "App Logging in " + vars.app_runtime_abbr %>
 
-This topic describes how Loggregator, the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) component
-responsible for logging, provides a stream of log output from your app and from <%= vars.app_runtime_abbr %> system
-components that interact with your app during updates and execution.
+This topic describes how Loggregator, the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) component responsible for logging, provides a stream of log output from your app and from <%= vars.app_runtime_abbr %> system components that interact with your app during updates and execution.
 
 
 ## <a id='overview'></a> Overview
 
-By default, Loggregator streams logs to your terminal. If you want to persist more than the limited amount of logging
-information that Loggregator can buffer, you can drain logs to a third-party log management service. For more
-information, see [Third-Party Log Management Services](../services/log-management.html).
+By default, Loggregator streams logs to your terminal. If you want to persist more than the limited amount of logging information that Loggregator can buffer,
+you can drain logs to a third-party log management service. For more information, see [Third-Party Log Management Services](../services/log-management.html).
 
-<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log lines
-quickly enough, the Loggregator buffer may need to overwrite some lines before the client has consumed them. A syslog
-drain or a CLI tail can usually keep up with the flow of app logs.
+<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log lines quickly enough, the Loggregator buffer may
+need to overwrite some lines before the client has consumed them. A syslog drain or a command-line interface (CLI) tail can usually keep up with the flow of
+app logs.
+
 
 ## <a id='types'></a> Contents of a Log Line
 
 Every log line contains four fields:
 
 * Timestamp
+
 * Log type (origin code)
+
 * Channel: either `OUT`, for logs emitted on `stdout`, or `ERR`, for logs emitted on `stderr`
+
 * Message
 
-Loggregator assigns the timestamp when it receives log data. The log data is opaque to Loggregator, which only puts it
-in the message field of the log line. Apps or system components sending log data to Loggregator may include their own
-timestamps, which then appear in the message field.
+Loggregator assigns the timestamp when it receives log data. The log data is opaque to Loggregator, which only puts it in the message field of the log line.
+Apps or system components sending log data to Loggregator may include their own timestamps, which then appear in the message field.
 
 <%= vars.human_readable_timestamp %>
 
-Origin codes distinguish the different log types. Origin codes from system components have three letters. The app
-origin code is `APP` followed by slash and a digit that indicates the app instance.
+Origin codes distinguish the different log types. Origin codes from system components have three letters. The app origin code is `APP`, followed by slash and
+a digit that indicates the app instance.
 
-Many frameworks write to an app log that is separate from `stdout` and `stderr`. This is not supported by Loggregator.
-Your app must write to `stdout` or `stderr` for its logs to be included in the Loggregator stream. Check the buildpack
-your app uses to determine whether it automatically ensures that your app correctly writes logs to `stdout` and
-`stderr` only. Some buildpacks do this, and some do not.
+Many frameworks write to an app log that is separate from `stdout` and `stderr`. This is not supported by Loggregator. Your app must write to `stdout` or
+`stderr` for its logs to be included in the Loggregator stream. Check the buildpack your app uses to determine whether it automatically ensures that your app
+correctly writes logs to `stdout` and `stderr` only. Some buildpacks do this, and some do not.
 
 
 ## <a id='format'></a> Log Types and Their Messages
 
-Different types of logs have different message formats, as shown in the examples below. The digit appended to the code
-indicates the instance index: 0 is the first instance, 1 is the second, and so on.
+Different types of logs have different message formats, as shown in the examples below. The digit appended to the code indicates the instance index: `0` is
+the first instance, `1` is the second, and so on.
 
 ### <a id='api'></a> API
 
-Users make API calls to request changes in app state. Cloud Controller, the <%= vars.app_runtime_abbr %> component
-responsible for the API, logs the actions that Cloud Controller takes in response.
+Users make API calls to request changes in app state. The Cloud Controller, the <%= vars.app_runtime_abbr %> component responsible for the API, logs the
+actions that the Cloud Controller takes in response.
 
 For example:
 
-<pre class="terminal">
+<pre class='terminal'>
 2016-06-14T14:10:05.36-0700 [API/0]      OUT Updated app with guid cdabc600-0b73-48e1-b7d2-26af2c63f933 ({"name"=>"spring-music", "instances"=>1, "memory"=>512, "environment_json"=>"PRIVATE DATA HIDDEN"})
 </pre>
 
 ### <a id='stg'></a> STG
 
-The Diego Cell or the Droplet Execution Agent emits STG logs when staging or restaging an app. These actions implement
-the desired state requested by the user. After the droplet has been uploaded, STG messages end and CELL messages begin.
-For STG, the instance index is almost always 0.
+The Diego Cell or the Droplet Execution Agent emits STG logs when staging or restaging an app. These actions implement the desired state requested by the
+user. After the droplet has been uploaded, STG messages end and CELL messages begin. For STG, the instance index is almost always `0`.
 
 For example:
 
-<pre class="terminal">
+<pre class='terminal'>
 2016-06-14T14:10:27.91-0700 [STG/0]      OUT Staging...
 </pre>
 
 ### <a id='rtr'></a> RTR
 
-The Gorouter emits RTR logs when it routes HTTP requests to the app. Gorouter messages include the app name followed by
-a Gorouter timestamp and selections from the HTTP request.
+The Gorouter emits RTR logs when it routes HTTP requests to the app. Gorouter messages include the app name followed by a Gorouter timestamp and selections
+from the HTTP request.
 
 For example:
 
-<pre class="terminal">
+<pre class='terminal'>
 2016-06-14T10:51:32.51-0700 [RTR/1]      OUT www.example.com - [14/06/2016:17:51:32.459 +0000] "GET /user/ HTTP/1.1" 200 0 103455 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.123 Safari/537.30" 192.0.2.132:46359 x_forwarded_for:"198.51.100.120" x_forwarded_proto:"http" vcap_request_id:9365d216-623a-45cb-6ef6-eba495c19fa8 response_time:0.059468637 app_id:79cc58aa-3737-43ae-ac71-39a2843b5178
 </pre>
 
 #### <a id="traceid"></a> Zipkin Trace Logging
 
-If Zipkin trace logging is enabled in <%= vars.app_runtime_abbr %>, then Gorouter access log messages contain Zipkin
-HTTP headers.
+If Zipkin trace logging is allowed in <%= vars.app_runtime_abbr %>, Gorouter access log messages contain Zipkin HTTP headers.
 
 The following is an example access log message containing Zipkin headers:
 
-<pre class="terminal">
+<pre class='terminal'>
 2016-11-23T16:04:01.49-0800 [RTR/0]      OUT www.example.com - [24/11/2016:00:04:01.227 +0000] "GET / HTTP/1.1" 200 0 109 "-" "curl/7.43.0" 10.0.2.150:4070 10.0.48.66:60815 x_forwarded_for:"198.51.100.120" x_forwarded_proto:"http" vcap_request_id:87f9d899-c7a4-46cd-7b76-4ec35ce9921b response_time:0.263000966 app_id:8e5d6451-b369-4423-bce8-3a7a9e479dbb app_index:0 x_b3_traceid:"2d5610bf5e0f7241" x_b3_spanid:"2d5610bf5e0f7241" x_b3_parentspanid:"-"
 </pre>
 
-For more information about Zipkin tracing,
-see [Zipkin Tracking in HTTP Headers](../../concepts/http-routing.html#zipkin-headers) in _HTTP Routing_.
+For more information about Zipkin tracing, see [Zipkin Tracking in HTTP Headers](../../concepts/http-routing.html#zipkin-headers) in _HTTP Routing_.
 
 ### <a id='lgr'></a> LGR
 
-Loggregator emits LGR to indicate problems with the logging process. Examples include `can't reach syslog drain url`
-and `dropped log messages due to high rate`.
+Loggregator emits LGR to indicate problems with the logging process. Examples include `can't reach syslog drain url` and `dropped log messages due to high
+rate`.
 
 ### <a id='app'></a> APP
 
-Every app emits logs according to choices by the developer.
+Every app emits logs to Loggregator.
 
 For example:
 
-<pre class="terminal">
+<pre class='terminal'>
 2016-06-14T14:10:15.18-0700 [APP/0]      OUT Exit status 0
 </pre>
 
-Each app may have a log rate limit defined. If the app logs exceed the defined log rate limit then a log message is
-output indicating that the limit was exceeded.
+Each app may have a configured log rate limit. If the app logs exceed the configured log rate limit, you see a log message indicating that the limit was
+exceeded.
 
 For example:
 
-<pre class="terminal">
+<pre class='terminal'>
 2022-09-15T01:59:33.99+0000 [APP/PROC/WEB/0] OUT app instance exceeded log rate limit (16384 bytes/sec)
 </pre>
 
 ### <a id="ssh"></a> SSH
 
-The Diego Cell emits SSH logs when a user accesses an app container through SSH by using the Cloud Foundry Command Line
-Interface (cf CLI) `cf ssh` command.
+The Diego Cell emits SSH logs when a user accesses an app container through SSH by using the Cloud Foundry Command Line Interface (cf CLI) `cf ssh` command.
 
 For example:
 
-<pre class="terminal">
+<pre class='terminal'>
 2016-06-14T14:16:11.49-0700 [SSH/0]      OUT Successful remote access by 192.0.2.33:7856
 </pre>
 
-For more information about the `cf ssh` command, see [ssh](https://cli.cloudfoundry.org/en-US/cf/ssh.html) in the Cloud
-Foundry CLI Reference Guide.
+For more information about the `cf ssh` command, see the [Cloud Foundry CLI Reference Guide](https://cli.cloudfoundry.org/en-US/cf/ssh.html).
 
 ### <a id='cell'></a> CELL
 
-The Diego Cell emits CELL logs when it starts or stops the app. These actions implement the desired state requested by
-the user. The Diego Cell also emits messages when an app crashes.
+The Diego Cell emits CELL logs when it starts or stops the app. These actions implement the desired state requested by the user. The Diego Cell also emits
+messages when an app crashes.
 
 For example:
 
-<pre class="terminal">
+<pre class='terminal'>
 2016-06-14T13:44:38.14-0700 [CELL/0]     OUT Successfully created container
 </pre>
 
-The Diego Cell also emits a CELL log message when an app instance exceeds the `max_log_lines_per_second` limit, which
-is configured on the platform.
+The Diego Cell also emits a CELL log message when an app instance exceeds the `max_log_lines_per_second` limit, which is configured on the platform.
 
 For example:
 
-<pre class="terminal">
+<pre class='terminal'>
 2020-01-13T16:12:25.86-0800 [APP/PROC/WEB/0] OUT app instance exceeded log rate limit (100 log-lines/sec) set by platform operator
 </pre>
 
 This message only appears if the limit has been set by a platform operator. <%= vars.app_log_limit_config %>
 
+
 ## <a id='writing'></a> Writing to the Log from Your App
 
-Your app must write logs to `stderr` or `stdout`. Both are typically buffered, and you should flush the buffer before
-delivering the message to Loggregator.
+Your app must write logs to `stderr` or `stdout`. Both are typically buffered, and you should flush the buffer before delivering the message to Loggregator.
 
-Alternatively, you can write log messages to `stderr` or `stdout` synchronously. This approach is mainly used for
-debugging because it may affect app performance.
+Alternatively, you can write log messages to `stderr` or `stdout` synchronously. This approach is mainly used for debugging because it may affect app
+performance.
+
 
 ## <a id='container-metrics'></a> Including Container Metrics in Syslog Drains
 
-By default, app logs are included in syslog drains. Syslog Agents forward logs to configured syslog drains and
-Loggregator. For more information about Syslog Agents, see
-[Loggregator Architecture and Components](http://docs.pivotal.io/application-service/loggregator/architecture.html#components) in _Loggregator Architecture_.
+By default, app logs are included in syslog drains. Syslog Agents forward logs to configured syslog drains and Loggregator. For more information about Syslog Agents, see [Loggregator Architecture and Components](http://docs.pivotal.io/application-service/loggregator/architecture.html#components) in _Loggregator Architecture_.
+
 
 ## <a id='view'></a> Viewing Logs in the Command Line Interface
 
-Use the cf CLI `cf logs` command to view logs. You can tail, dump, or filter log output. For more information about the
- `cf logs` command, see [cf logs](https://cli.cloudfoundry.org/en-US/cf/logs.html) in the Cloud Foundry CLI Reference
-Guide.
+To view logs, run the `cf logs` command. You can tail, dump, or filter log output. For more information about the  `cf logs` command, see the [Cloud Foundry
+CLI Reference Guide](https://cli.cloudfoundry.org/en-US/cf/logs.html).
 
 ### <a id="tail-log"></a> Tailing Logs
 
-To stream Loggregator output to the terminal, run `cf logs APP-NAME` and replace `APP-NAME` with the name of your app.
+To stream Loggregator output to the terminal:
 
-For example:
+1. Run:
 
-<pre class="terminal">
-$ cf logs spring-music
+    ```
+    cf logs APP-NAME
+    ```
+    Where `APP-NAME` is the name of your app.
+
+The command returns output similar to the following example:
+
+<pre class='terminal'>
 Connected, tailing logs for app spring-music in org example / space development as admin@example.com...
 
 2016-06-14T15:16:12.70-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:16:12.582 +0000] "GET / HTTP/1.1" 200 0 103455 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:27743 x_forwarded_for:"203.0.113.222" x_forwarded_proto:"http" vcap_request_id:bd3e6ed1-5dd0-43ab-70ed-5d232b577b09 response_time:0.12050583 app_id:79bb58ab-3737-43be-ac70-39a2843b5177
@@ -197,15 +195,21 @@ Use **Ctrl-C** (^C) to exit the real-time stream.
 
 ### <a id="dump-log"></a> Dumping Logs
 
-To display all of the lines in the Loggregator buffer, run `cf logs APP-NAME --recent`, where `APP-NAME` is the name of
-your app.
+To display all of the lines in the Loggregator buffer:
+
+1. Run:
+
+    ```
+    cf logs APP-NAME --recent
+    ```
+    Where `APP-NAME` is the name of your app.
 
 ### <a id="filter"></a> Filtering Logs
 
-To view some subset of log output, run `cf logs APP-NAME` in conjunction with filtering commands of your choice.
-Replace `APP-NAME` with the name of your app. In the example below, `grep -v RTR` excludes all Gorouter logs:
+To view some subset of log output, run `cf logs APP-NAME` in conjunction with filtering commands of your choice, where `APP-NAME` is the name of your app. In
+the example below, `grep -v RTR` excludes all Gorouter logs:
 
-<pre class="terminal">
+<pre class='terminal'>
 $ cf logs spring-music --recent | grep -v RTR
 2016-06-14T14:10:05.36-0700 [API/0]      OUT Updated app with guid cdabc604-0b73-47e1-a7d5-24af2c63f723 ({"name"=>"spring-music", "instances"=>1, "memory"=>512, "environment_json"=>"PRIVATE DATA HIDDEN"})
 2016-06-14T14:10:14.52-0700 [APP/0]      OUT - Gracefully stopping, waiting for requests to finish
@@ -220,31 +224,22 @@ $ cf logs spring-music --recent | grep -v RTR
 
 Ensuring log ordering in drains can be an important consideration for both operators and developers.
 
-* Diego uses a nanosecond-based timestamp that can be ingested properly by Splunk. For more information, see
-  [TIME_FORMAT and subseconds](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html) in the Splunk
-  documentation.
+* Diego uses a nanosecond-based timestamp that can be ingested properly by Splunk. For more information, see the [Splunk
+documentation](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html).
 
-* The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are
-  truncated. For more information, see the
-  [Date datatype](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) in the Elasticsearch
-  documentation and the
-  [Date type has not enough precision for the logging use case](https://github.com/elastic/elasticsearch/issues/10005)
-  GitHub issue.
+* The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are truncated. For more information, see the
+[Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) and [Date type has not enough precision for the
+logging use case](https://github.com/elastic/elasticsearch/issues/10005) on GitHub.
 
-If you are developing a client that displays a stream of <%= vars.app_runtime_abbr %> logs to users, you can order the
-logs to improve the debugging experience for your user. The following are general tips for ordering logs:
+If you are developing a client that displays a stream of <%= vars.app_runtime_abbr %> logs to users, you can order the logs to improve the debugging
+experience for your user. The following are general tips for ordering logs:
 
 * For CLIs, batch the logs and display the logs you have in that timeframe, sorted by timestamp.
 
-* For web clients, use dynamic HTML to insert older logs into the sorting as they appear. This creates complete,
-  ordered logs.
+* For web clients, use dynamic HTML to insert older logs into the sorting as they appear. This creates complete, ordered logs.
 
-* Java app developers may want to convert stack traces into a single log entity. To simplify log ordering for Java
-  apps, use the multi-line Java message workaround to convert your multi-line stack traces into a single log entity.
-  For more information, see
-  [Multi-line Java message workaround](https://github.com/cloudfoundry/loggregator-release/blob/main/docs/java-multi-line-work-around.md)
-  in the loggregator-release repository on GitHub.
-  <br><br>
-  By modifying the Java log output, you can force your app to reformat stack trace messages, replacing newline
-  characters with a token. Set your log parsing code to replace that token with newline characters again to display the
-  logs properly in Kibana.
+* Java app developers may want to convert stack traces into a single log entity. To simplify log ordering for Java apps, use the multi-line Java message
+workaround to convert your multi-line stack traces into a single log entity. For more information, see [Multi-line Java message
+workaround](https://github.com/cloudfoundry/loggregator-release/blob/main/docs/java-multi-line-work-around.md) on GitHub.<br><br>By modifying the Java log
+output, you can force your app to reformat stack trace messages, replacing newline characters with a token. Set your log parsing code to replace that token
+with newline characters again to display the logs properly in Kibana.

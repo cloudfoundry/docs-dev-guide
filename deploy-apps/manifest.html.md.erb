@@ -5,50 +5,55 @@ owner:
   - CLI
 ---
 
-This topic provides basic procedures and guidance for deploying apps with a manifest file. 
+This topic provides basic procedures and guidance for deploying apps with a manifest file to <%= vars.app_runtime_first %>.
 
 
 ## <a id='overview'></a> Overview
 
-Manifests provide consistency and reproducibility, and can help you automate deploying apps. Both manifests and command line options allow you to override the default attribute values of `cf push`. These attributes include things like  number of instances, disk space limit, log rate limit, and memory limit.
+Manifests provide consistency and reproducibility, and can help you automate deploying apps. Both manifests and command line options allow you to override the
+default attribute values of `cf push`. These attributes include the number of app instances, disk space limit, memory limit, and log rate limit.
 
 `cf push` follows rules of precedence when setting attribute values:
 
 * Manifests override most recent values, including defaults and values set by commands such as `cf scale`.
+
 * Command line options override manifests.
 
-For a full list of attributes you can specify in an app manifest, see [App Manifest Attribute Reference](./manifest-attributes.html).
+For a full list of attributes you can specify in an app manifest, see [App Manifest Attribute Reference](manifest-attributes.html).
 
 
 ## <a id='procedure'></a> Deploy an App with a Manifest
 
-The following procedure describes how to deploy an app with a minimal manifest. For more information about manifest format and attributes, see [App Manifest Attribute Reference](./manifest-attributes.html). 
-
 To deploy an app with a manifest:
 
-1. Create a `manifest.yml` file in the root directory of your app. 
-  <p class="note"><strong>Note:</strong> By default, the <code>cf push</code> command uses the <code>manifest.yml</code> file in the app directory. To specify a different location for the manifest, pass its local path to the <code>-f</code> flag when you run <code>cf push</code>.</p>
+1. Create a `manifest.yml` file in the root directory of your app.
+  <p class='note'><strong>Note:</strong> By default, the <code>cf push</code> command uses the <code>manifest.yml</code> file in the app directory. To specify
+    a different location for the manifest, pass its local path to the <code>-f</code> flag when you run <code>cf push</code>.</p>
 
 1. Add the following content to the file:
 
     ```
     ---
     applications:
-    - name: YOUR-APP
+    - name: APP-NAME
     ```
-    Where `YOUR-APP` is the name of your app.
+    Where `APP-NAME` is the name of your app.
 
 1. Run:
 
-  ```
-  cf push
-  ```
-  If you specify any command line options, they override the values specified in the manifest. For more information, see [Deploy Multiple Apps with One Manifest](#multi-apps).
+    ```
+    cf push
+    ```
+    If you specify any values with command-line flags, they override the values specified in the manifest. For more information, see [Deploy Multiple Apps
+    with One Manifest](#multi-apps) below.
+
+For more information about manifest format and attributes, see [App Manifest Attribute Reference](manifest-attributes.html).
 
 
 ## <a id='multi-apps'></a> Deploy Multiple Apps with One Manifest
 
-This section describes how to deploy multiple apps with a minimal manifest. For more information about manifest format and attributes, see [App Manifest Attribute Reference](./manifest-attributes.html). 
+This section describes how to deploy multiple apps with a minimal manifest. For more information about manifest format and attributes, see [App Manifest
+Attribute Reference](manifest-attributes.html).
 
 ### <a id='general-rules'></a> General Rules
 
@@ -56,23 +61,23 @@ Follow these general rules when deploying multiple apps with one manifest:
 
 * Use a `no-route` line in the description of any app that provides background services to another app.
 
-* You cannot use any command line options with `cf push` except for `-f` and `--no-start`. 
+* You cannot use any command line options with `cf push` except for `-f` and `--no-start`.
   * If your manifest is not named `manifest.yml` or not in the current working directory, use the `-f` command line option.
 
-* To push a single app rather than all of the apps described in the manifest, provide the desired app name by running `cf push YOUR-APP`.
+* To push a single app rather than all of the apps described in the manifest, provide the desired app name by running `cf push APP-NAME`, where `APP-NAME` is
+the name of your app.
 
 ### <a id='procedure-multi'></a> Procedure
 
 To deploy multiple apps with a manifest:
 
-<p class="note"><strong>Note:</strong> Each app must be in a subdirectory under the same parent directory.</p>
+<p class='note'><strong>Note:</strong> Each app must be in a subdirectory under the same parent directory.</p>
 
 1. Create a `manifest.yml` file in the directory that contains the apps.
 
-1. Add each app and its directory to the file. <%= vars.app_runtime_full %> pushes the apps
-   in the order specified in the manifest.
-  <p class="note"><strong>Note:</strong> If you push multiple apps using a manifest and one fails to deploy,
-     <%= vars.app_runtime %> does not attempt to push apps specified after the app that failed.</p>
+1. Add each app and its directory to the file. <%= vars.app_runtime_abbr %> pushes the apps in the order specified in the manifest.
+  <p class='note'><strong>Note:</strong> If you push multiple apps using a manifest and one fails to deploy, <%= vars.app_runtime_abbr %> does not attempt to
+    push apps specified after the app that failed.</p>
 
     ```
     ---
@@ -82,15 +87,14 @@ To deploy multiple apps with a manifest:
     - name: APP-TWO
       path: ./APP-TWO-DIRECTORY
     ```
-
-    Where: 
-    * `APP-ONE` is the name of the first app you want <%= vars.app_runtime %> to push.
+    Where:
+    * `APP-ONE` is the name of the first app you want <%= vars.app_runtime_abbr %> to push.
     * `APP-ONE-DIRECTORY` is the directory containing the first app.
-    * `APP-TWO` is the name of the second app you want <%= vars.app_runtime %> to push.
+    * `APP-TWO` is the name of the second app you want <%= vars.app_runtime_abbr %> to push.
     * `APP-TWO-DIRECTORY` is the directory containing the second app.
 
 1. From the directory that contains the apps and the manifest, run:
 
-  ```
-  cf push
-  ```
+    ```
+    cf push
+    ```

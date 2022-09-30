@@ -3,82 +3,93 @@ title: Deploying a Large App
 owner: CAPI
 ---
 
-This topic describes constraints and recommended settings for deploying apps above 750&nbsp;MB.
+This topic describes constraints and recommended settings for deploying apps above 750&nbsp;MB to <%= vars.app_runtime_first %>.
 
 
-## <a id="consid_limits"></a> Deployment Considerations and Limitations
+## <a id='considerations'></a> Deployment Considerations and Limitations
 
-The deployment process involves uploading, staging, and starting the app. For more information about the default time limits for uploading, staging, and starting an app, see the <a href="app-lifecycle.html#deployment">Deployment</a> section of the _App Container Lifecycle_ topic.
+The deployment process involves uploading, staging, and starting the app. For more information about the default time limits for uploading, staging, and starting an app, see [Deployment](app-lifecycle.html#deployment) in _App Container Lifecycle_.
 
-To deploy large apps to <%=vars.product_short%>, ensure the following:
+To deploy large apps to <%= vars.app_runtime_abbr %>, ensure the following:
 
 * The total size of the files to upload for your app does not exceed <%= vars.max_app_size %>.
 
-* Your network connection speed is sufficient to upload your app within the 15-minute limit. The minimum recommended speed is 874 KB per second.
-    <p class="note"><strong>Note:</strong> <%= vars.product_short %> provides an authorization token that is valid for a minimum of 20 minutes.</p>
+* Your network connection speed is sufficient to upload your app within the 15-minute limit. The minimum recommended speed is 874&nbsp;KB per second.
+    <p class='note'><strong>Note:</strong> <%= vars.app_runtime_abbr %> provides an authorization token that is valid for a minimum of 20 minutes.</p>
 
 * You allocate enough memory for all instances of your app. Use either the `-m` flag with `cf push` or set an app memory value in your `manifest.yml` file.
 
-* You allocate enough disk space for all instances of your app. Use either the `-k` flag with `cf push` or set a disk space allocation value in your `manifest.yml` file.
+* You allocate enough disk space for all instances of your app. Use either the `-k` flag with `cf push` or set a disk space allocation value in your
+`manifest.yml` file.
 
-* You allocate enough log quota for all instances of your app. Use either the `-l` flag with `cf push` or set a log rate
-limit per second value in your `manifest.yml` file.
+* You allocate enough log quota for all instances of your app. Use either the `-l` flag with `cf push` or set a log rate limit in your `manifest.yml` file.
 
-* If you use an app manifest file, `manifest.yml`, be sure to specify adequate values for your app for attributes such as app memory, app start timeout, and disk space allocation. For more information about using manifests, see [Deploying with App Manifests](./manifest.html).
+* If you use an app manifest file, `manifest.yml`, specify adequate values for your app for attributes such as app memory, app start timeout, and disk space
+allocation. For more information about using app manifests, see [Deploying with App Manifests](manifest.html).
 
-* The total size of [environment variables](./environment-variable.html) for your application does not exceed
-130&nbsp;KB. This includes <%=vars.product_short%> system environment variables like `VCAP_SERVICES` and
-`VCAP_APPLICATION`.
+* The total size of environment variables for your app does not exceed 130&nbsp;KB. This includes <%= vars.app_runtime_abbr %> system environment variables
+such as `VCAP_SERVICES` and `VCAP_APPLICATION`. For more information, see [<%= vars.app_runtime_abbr %> Environment Variables](environment-variable.html).
 
-* You push only the files that are necessary for your app. To meet this requirement, push only the directory for your app, and remove unneeded files or use the `.cfignore` file to specify excluded files. For more information about specifying excluded files, see the [Ignore Unnecessary Files When Pushing](./prepare-to-deploy.html#exclude) section in the _Considerations for Designing and Running an App in the Cloud_ topic.
+* You push only the files that are necessary for your app. To meet this requirement, push only the directory for your app, and remove unneeded files or use
+the `.cfignore` file to specify excluded files. For more information about specifying excluded files, see [Ignore Unnecessary Files When
+Pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and Running an App in the Cloud_.
 
-* You configure Cloud Foundry Command Line Interface (cf CLI) staging, startup, and timeout settings to override settings in the manifest, as necessary.
-  	* `CF_STAGING_TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to stage after Cloud Foundry successfully uploads and packages the app. Value set in minutes.
-  	* `CF_STARTUP_TIMEOUT`: Controls the maximum time that the cf CLI waits for an app to start. Value set in minutes.
-  	* `cf push -t TIMEOUT`: Controls the maximum time that Cloud Foundry allows to elapse between starting an app and the first healthy response from the app. When you use this flag, the cf CLI ignores any app start timeout value set in the manifest. Value set in seconds.
+* You configure Cloud Foundry Command Line Interface (cf CLI) staging, startup, and timeout settings to override settings in the manifest, as necessary:
+  	* `CF_STAGING_TIMEOUT`: The maximum time in minutes that the cf CLI waits for an app to stage after <%= vars.app_runtime_abbr %> successfully uploads and
+    packages the app.
+  	* `CF_STARTUP_TIMEOUT`: The maximum time in minutes that the cf CLI waits for an app to start.
+  	* `cf push -t TIMEOUT`: The maximum time in seconds that <%= vars.app_runtime_abbr %> allows to elapse between starting an app and the first healthy
+    response from the app. When you use this flag, the cf CLI ignores any app start timeout value set in the manifest.
 
-    For more information about using the cf CLI to deploy apps, see the [Push](../../cf-cli/getting-started.html#push) section of the _Getting Started with the cf CLI_ topic.
+For more information about using the cf CLI to deploy apps, see [Push](../../cf-cli/getting-started.html#push) in _Getting Started with the cf CLI_.
 
-    <p class="note"><strong>Note:</strong> Changing the timeout setting for the cf CLI does not change the timeout limit for Cloud Foundry server-side jobs such as staging or starting apps. You must change server-side timeouts in the manifest. Because of the differences between the Cloud Foundry and cf CLI timeout values, your app might successfully start even though the cf CLI reports <code>App failed</code>. Run <code>cf apps APP_NAME</code> to review the actual status of your app.</p>
+<p class='note'><strong>Note:</strong> Changing the timeout setting for the cf CLI does not change the timeout limit for <%= vars.app_runtime_abbr %>
+  server-side jobs such as staging or starting apps. You must change server-side timeouts in the manifest. Because of the differences between the
+  <%= vars.app_runtime_abbr %> and cf CLI timeout values, your app might successfully start even though the cf CLI reports <code>App failed</code>. To review
+  the actual status of your app, run <code>cf apps APP-NAME</code>, where <code>APP-NAME</code> is the name of your app.</p>
 
 
-## <a id="limits_table"></a> Default Settings and Limitations Summary Table
+## <a id='limits_table'></a> Default Settings and Limitations Summary Table
 
-This table provides summary information of constraints and default settings to consider when you deploy a large app to <%=vars.product_short%>.
+The following table provides a summary of the constraints and default settings to consider when you deploy a large app to <%= vars.app_runtime_abbr %>:
 
 <table border="1" class="nice" >
-<tr>
-<th>Setting</th>
-<th>Note</th>
-</tr>
-<tr>
-<td>App Package Size</td>
-<td>Maximum: <%= vars.max_app_size_table %></td>
-</tr>
-<td>Authorization Token Grace Period</td>
-<td>Default: 20 minutes, minimum</td>
-</tr>
-<tr>
-<td><code>CF_STAGING_TIMEOUT</code></td>
-<td>cf CLI environment variable<br />
-Default: 15 minutes</td>
-</tr>
-<tr>
-<td><code>CF_STARTUP_TIMEOUT</code></td>
-<td>cf CLI environment variable<br />
-Default: 5 minutes</td>
-</tr>
-<tr>
-<td><code>cf push -t TIMEOUT</code></td>
-<td>App start timeout maximum<br />
-Default: 60 seconds<br /></td>
-</tr>
-<tr>
-<td>Disk Space Allocation</td>
-<td>Default: 1024&nbsp;MB</td>
-</tr>
-<tr>
-<td>Internet Connection Speed</td>
-<td>Recommended Minimum: 874 KB per second</td>
-</tr>
+  <tr>
+    <th>Setting</th>
+    <th>Note</th>
+  </tr>
+  <tr>
+    <td>App package size</td>
+    <td>Maximum: <%= vars.max_app_size_table %></td>
+  </tr>
+  <tr>
+    <td>Authorization token grace period</td>
+    <td>Default: 20 minutes, minimum</td>
+  </tr>
+  <tr>
+    <td><code>CF_STAGING_TIMEOUT</code></td>
+    <td>cf CLI environment variable
+      <br>
+      Default: 15 minutes</td>
+  </tr>
+  <tr>
+    <td><code>CF_STARTUP_TIMEOUT</code></td>
+    <td>cf CLI environment variable
+      <br>
+      Default: 5 minutes</td>
+  </tr>
+  <tr>
+    <td><code>cf push -t TIMEOUT</code></td>
+    <td>App start timeout maximum
+      <br>
+      Default: 60 seconds</td>
+  </tr>
+  <tr>
+    <td>Disk space allocation</td>
+    <td>Default: 1024&nbsp;MB</td>
+  </tr>
+  <tr>
+    <td>Internet connection speed</td>
+    <td>Recommended minimum: 874&nbsp;KB per second</td>
+  </tr>
 </table>

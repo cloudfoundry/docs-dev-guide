@@ -3,58 +3,65 @@ title: App Manifest Attribute Reference
 owner: CLI
 ---
 
-This topic describes manifest formatting and provides a full list of attributes available for app manifests. You can use it alongside the [Deploying with App Manifests](./manifest.html) topic, which provides basic procedures and guidance for deploying apps with manifests.
+This topic describes manifest formatting and provides a full list of attributes available for app manifests. You can use it alongside [Deploying with App
+Manifests](manifest.html), which provides basic procedures and guidance for deploying apps with manifests.
 
-For more information about V3 manifest properties, see the [Cloud Foundry API (CAPI) V3 documentation](http://v3-apidocs.cloudfoundry.org/index.html#space-manifest).
+For more information about V3 manifest properties, see the [Cloud Foundry API (CAPI) V3
+documentation](http://v3-apidocs.cloudfoundry.org/index.html#space-manifest).
+
 
 ## <a id='minimal-manifest'></a> Manifest Format
 
-Manifests are written in YAML. The manifest below illustrates some YAML conventions, as follows:
+Manifests are written in YAML. The manifest below demonstrates some YAML conventions, as follows:
 
 * The manifest begins with three dashes.
-* The `version` property specifies a manifest schema version. This property is optional.
-  For more information, see [Add Schema Version to a Manifest](#manifest-schema-version) below.
+
+* The `version` property specifies a manifest schema version. This property is optional. For more information, see [Add Schema Version to a
+Manifest](#manifest-schema-version) below.
+
 * The `applications` block begins with a heading followed by a colon.
+
 * The app `name` is preceded by a single dash and one space.
+
 * Subsequent lines in the block are indented two spaces to align with `name`.
 
-<pre>
+```
 ---
 version: 1
 applications:
 - name: my-app
   memory: 512M
   instances: 2
-</pre>
+```
 
-<p class="note"><strong>Note</strong>: If your app name begins with the dash character (<code>-</code>), you cannot interact with the app using the cf CLI. This is because the cf CLI interprets the dash as a flag.</p>
+<p class='note'><strong>Note:</strong> If your app name begins with the dash character (<code>-</code>), you cannot interact with the app using the cf CLI.
+  This is because the cf CLI interprets the dash as a flag.</p>
 
 ### <a id='manifest-schema-version'></a> Add Schema Version to a Manifest
 
 <%= partial 'v3-note' %>
 
-You can specify the schema version in the `versions` property of the manifest.
-This property is optional.
+You can specify the schema version in the `versions` property of the manifest. This property is optional.
 
-The only supported version is `1`.
-If not specified, the `versions` property defaults to `1`.
+The only supported version is `1`. If not specified, the `versions` property defaults to `1`.
 
 ### <a id='variable-substitution'></a> Add Variables to a Manifest
 
-You can use variables to create app manifests with values shared across all applicable environments in combination with references to environment-specific differences defined in separate files.
+You can use variables to create app manifests with values shared across all applicable environments in combination with references to environment-specific
+differences defined in separate files.
 
-To add variables to an app manifest, do the following:
+To add variables to an app manifest:
 
 1. Create a file called `vars.yml`.
 
-1. Add attributes to your `vars.yml` file. See the following example:
+1. Add attributes to your `vars.yml` file. For example:
 
     ```
     instances: 2
     memory: 1G
     ```
 
-1. Add the variables to your app manifest file using the following format: `((VARIABLE-NAME))`. See the following example:
+1. Add the variables to your app manifest file using the following format: `((VARIABLE-NAME))`. For example:
 
     ```
     ---
@@ -68,10 +75,10 @@ To add variables to an app manifest, do the following:
         GOPACKAGENAME: go_calls_ruby
       command: go_calls_ruby
     ```
+    <p class='note'><strong>Note:</strong> You can also use variables for partial values. For example, you can specify <code>host</code> in your variables
+      file and <code>- route: ((host)).env.com</code> in your manifest file.</p>
 
-    <p class="note"><strong>Note</strong>: You can also use variables for partial values. For example, you can specify <code>host</code> in your variables file and <code>- route: ((host)).env.com</code> in your manifest file.</p>
-
-1. Run `cf push`:
+1. Run:
 
     ```
     cf push --vars-file /PATH/vars.yml
@@ -80,19 +87,20 @@ To add variables to an app manifest, do the following:
 
 ### <a id='minimize-duplication'></a> Minimize Duplication with YAML Anchors
 
-<p class='note'><strong>Note:</strong> Top-level attributes have been deprecated in favor of YAML anchors. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
+<p class='note'><strong>Note:</strong> Top-level attributes have been deprecated in favor of YAML anchors. For more information, see
+  <a href="#deprecated">Deprecated App Manifest Features</a> below.</p>
 
-In manifests where multiple apps share settings or services, you may see duplicated content. While the manifests still work, duplication increases the risk of typographical errors, which cause deployments to fail.
+In manifests where multiple apps share settings or services, you may see duplicated content. While the manifests still work, duplication increases the risk of
+typographical errors, which cause deployments to fail.
 
 You can declare shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an alias.
 
-<pre>
+```
 ---
 defaults: &amp;defaults
   buildpacks:
     - staticfile_buildpack
   memory: 1G
-
 
 applications:
 - name: bigapp
@@ -100,27 +108,27 @@ applications:
 - name: smallapp
   &lt;&lt;: *defaults
   memory: 256M
-</pre>
+```
 
-This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpack but with 256M memory for smallapp and 1G for bigapp.
+The example manifest above pushes two apps with the `staticfile` buildpack, `smallapp` and `bigapp`, with 256&nbsp;M of memory for `smallapp` and 1&nbsp;G of
+memory for `bigapp`.
 
 
+## <a id='optional-attributes'></a> App Attributes
 
+This section explains how to describe optional app attributes in manifests. Each of these attributes can also be specified by a command line option.
+Command-line options override the manifest.
 
-## <a id='optional-attributes'></a> Application Attributes
+<p class='note'><strong>Note:</strong> In cf CLI v6, the route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>,
+  <code>hosts</code>, and <code>no-hostname</code> have been deprecated in favor of the <code>routes</code> attribute. In cf CLI v7, these attributes are
+  removed. For more information, see <a href="#deprecated">Deprecated App Manifest Features</a> below.</p>
 
-This section explains how to describe optional app attributes in manifests. Each of these attributes can also be specified by a command line option. Command line options override the manifest.
+### <a id='buildpacks'></a> buildpacks
 
-<p class='note'><strong>Note:</strong> In cf CLI v6, the route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>, <code>hosts</code>, and <code>no-hostname</code> have been deprecated in favor of the <code>routes</code> attribute. In cf CLI v7, these attributes are removed. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
+You can refer to a buildpack by name in a manifest or a command-line option. The `cf buildpacks` command lists the buildpacks that you can use.
 
-### <a id='buildpack'></a> buildpacks
-
-You can refer to a buildpack by name in a manifest or a command line option. The <code>cf buildpacks</code> command lists the buildpacks that you can use.
-
-See below for information on referencing buildpacks in a manifest. The command line option that overrides this attribute is `-b`.
-
-* **Custom buildpacks**: If your app requires a custom buildpack, you can use the `buildpacks` attribute to specify it in a number of ways:
-  * By name: `MY-BUILDPACK`.
+* **Custom buildpacks:** If your app requires a custom buildpack, you can use the `buildpacks` attribute to specify it in a number of ways:
+  * By name: `BUILDPACK`.
   * By GitHub URL: `https://github.com/cloudfoundry/java-buildpack.git`.
   * By GitHub URL with a branch or tag: `https://github.com/cloudfoundry/java-buildpack.git#v3.3.0` for the `v3.3.0` tag.
 
@@ -130,7 +138,8 @@ See below for information on referencing buildpacks in a manifest. The command l
         buildpacks:
           - buildpack_URL
       ```
-* **Multiple buildpacks**: If you are using multiple buildpacks, you can provide an additional `-b` flag or add an additional value to your manifest:
+
+* **Multiple buildpacks:** If you are using multiple buildpacks, you can provide an additional `-b` flag or add an additional value to your manifest:
 
       ```
       ---
@@ -139,184 +148,218 @@ See below for information on referencing buildpacks in a manifest. The command l
           - buildpack_URL
           - buildpack_URL
       ```
+      <div class='note'><strong>Notes:</strong>
+        <ul>
+          <li>This feature does not work with deprecated app manifest features. For more information, see <a href="#deprecated">Deprecated App Manifest
+            Features</a> below.</li>
+          <li>You must specify multiple buildpacks in the correct order: the buildpack uses the app start command given by the final buildpack. For more
+            information, see the <a href=https://github.com/cloudfoundry/multi-buildpack#usageapp>multi-buildpack</a> repository on GitHub.</li>
+        </ul>
+      </div>
 
-      <p class="note"><strong>Note</strong>: This feature does not work with <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
+The `-b` command-line flag overrides this attribute.
 
-      <p class="note"><strong>Note</strong>: You must specify multiple buildpacks in the correct order: the buildpack will use the app start command given by the final buildpack. See <a href=https://github.com/cloudfoundry/multi-buildpack#usageapp>the multi-buildpack repository</a> for more information.</p>
-
-Also see [Pushing an App with Multiple Buildpacks](https://docs.cloudfoundry.org/buildpacks/use-multiple-buildpacks.html) for more information.
+For more information, see [Pushing an App with Multiple Buildpacks](../../buildpacks/use-multiple-buildpacks.html).
 
 ### <a id='start-commands'></a> command
 
-Some languages and frameworks require that you provide a custom command to start an app. Refer to the [buildpack](../../buildpacks/index.html) documentation to determine if you need to provide a custom start command.
+Some languages and frameworks require that you provide a custom command to start an app. To determine if you need to provide a custom start command, see
+[Buildpacks](../../buildpacks/index.html).
 
-You can provide the custom start command in your app manifest or on the command line. See <a href="./start-restart-restage.html">Starting, Restarting, and Restaging Apps</a> for more information about how Cloud Foundry determines its default start command.
+You can provide the custom start command in your app manifest or on the command line. For more information about how <%= vars.app_runtime_abbr %> determines
+its default start command, see [Starting, Restarting, and Restaging Apps](start-restart-restage.html).
 
-To specify the custom start command in your app manifest, add it in the `command: START-COMMAND` format as the following example shows:
+To specify the custom start command in your app manifest, add it in the `command: START-COMMAND` format. For example:
 
-<pre>
+```
 ---
   ...
   command: bundle exec rake VERBOSE=true
-</pre>
+```
 
-The start command you specify becomes the default for your app. To return to using the original default start command set by your buildpack, you must explicitly set the attribute to `null` as follows:
+The start command you specify becomes the default for your app. To return to using the original default start command set by your buildpack, you must
+explicitly set the attribute to `null`. For example:
 
-
-<pre>
+```
 ---
   ...
   command: null
+```
+
+On the command line, you can specify the custom start command by including the `-c` flag, similar to the following example:
+
+<pre class='terminal'>
+cf push my-app -c "bundle exec rake VERBOSE=true"
 </pre>
 
-On the command line, use the `-c` option to specify the custom start command as the following example shows:
+<p class='note'><strong>Note:</strong> The <code>-c</code> option with a value of 'null' forces <code>cf push</code> to use the buildpack start command. For
+  more information, see <a href="start-restart-restage.html#revert">Forcing cf push to use the Buildpack Start Command</a> in <em>Starting, Restarting, and
+  Restaging Apps</em>.</p>
 
-<pre class="terminal">
-$ cf push my-app -c "bundle exec rake VERBOSE=true"
-</pre>
+If you override the start command for a Buildpack app, Linux uses `bash -c COMMAND`</code> `to invoke your app. If you override the start command for a Docker
+app, Linux uses `sh -c COMMAND` to invoke your app. Because of this, if you override a start command, you should prefix `exec` to the final command in your
+custom composite start command.
 
-<p class="note"><strong>Note</strong>: The <code>-c</code> option with a value of 'null' forces <code>cf push</code> to use the buildpack start command. See <a href="./start-restart-restage.html#revert">Forcing cf push to use the Buildpack Start Command</a> for more information.</p>
-
-If you override the start command for a Buildpack app, Linux uses
-<code>bash -c YOUR-COMMAND</code> to invoke your app.
-If you override the start command for a Docker app, Linux uses <code>sh -c YOUR-COMMAND</code> to invoke your app.
-Because of this, if you override a start command, you should prefix <code>exec</code> to the final command in your custom composite start command.
-
-An app needs to catch [termination signals](./prepare-to-deploy.html#moving-apps) and clean itself up appropriately. Because of the way that shells manage process trees, the use of custom composite shell commands, particularly those that create child processes using `&`, `&&`, `||`, etc., can prevent your app from receiving signals that are sent to the top level bash process.
+An app needs to catch termination signals and clean itself up appropriately. Because of the way that shells manage process trees, the use of custom composite
+shell commands, particularly those that create child processes using `&`, `&&`, `||`, and so on, can prevent your app from receiving signals that are sent to
+the top-level bash process. For more information, see [Considerations for Designing and Running an App in the Cloud](prepare-to-deploy.html#moving-apps).
 
 To resolve this issue, you can use `exec` to replace the bash process with your own process. For example:
 
-  * `bin/rake cf:on_first_instance db:migrate && bin/rails server -p $PORT -e $RAILS_ENV` The process tree is bash -> ruby, so on graceful shutdown only the bash process receives the TERM signal, not the ruby process.
+* `bin/rake cf:on_first_instance db:migrate && bin/rails server -p $PORT -e $RAILS_ENV`: The process tree is bash -> ruby, so on graceful shutdown only the
+bash process receives the TERM signal, not the ruby process.
 
-  * `bin/rake cf:on_first_instance db:migrate && exec bin/rails server -p $PORT -e $RAILS_ENV` Because of the `exec` prefix included on the final command, the ruby process invoked by rails takes over the bash process managing the execution of the composite command. The process tree is only ruby, so the ruby web server receives the TERM signal and can shutdown gracefully for 10 seconds.
+* `bin/rake cf:on_first_instance db:migrate && exec bin/rails server -p $PORT -e $RAILS_ENV`: Because of the `exec` prefix included on the final command, the
+Ruby process invoked by Rails takes over the bash process managing the execution of the composite command. The process tree is only Ruby, so the Ruby web
+server receives the TERM signal and can shutdown gracefully for 10 seconds.
 
-In more complex situations, like making a custom buildpack, you may want to use bash `trap`, `wait`, and backgrounded processes to manage your process tree and shut down apps gracefully. In most situations, however, a well-placed `exec` should be sufficient.
+In more complex situations, like making a custom buildpack, you may want to use bash `trap`, `wait`, and backgrounded processes to manage your process tree
+and shut down apps gracefully. In most situations, however, a well-placed `exec` should be sufficient.
 
 ### <a id='disk-quota'></a> disk_quota
 
-Use the `disk_quota` attribute to allocate the disk space for your app instance. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case.
+The `disk_quota` attribute allocates the disk space for your app instance. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in either
+uppercase or lowercase.
 
-<pre>
+For example:
+
+```
 ---
   ...
   disk_quota: 1024M
-</pre>
+```
 
-The command line option that overrides this attribute is `-k`.
+The `-k` command-line flag overrides this attribute.
 
 ### <a id='docker'></a> docker
 
-If your app is contained in a Docker image, then you may use the `docker` attribute to specify it and an optional Docker username.
+If your app is contained in a Docker image, the `docker` attribute specifies it and an optional Docker username. This attribute is a combination of `push`
+options that include `--docker-image` and `--docker-username`.
 
-This attribute is a combination of `push` options that include `--docker-image` and `--docker-username`.
+For example:
 
-<pre>
+```
 ---
   ...
   docker:
     image: docker-image-repository/docker-image-name
     username: docker-user-name
-</pre>
+```
 
-The command line option `--docker-image` or `-o` overrides `docker.image`.  The command line option `--docker-username` overrides `docker.username`.
+The `--docker-image` or `-o` command-line flag overrides `docker.image`.  The `--docker-username` command-line flag overrides `docker.username`.
 
-The manifest attribute `docker.username` is optional.  If it is used, then the password must be provided in the environment variable `CF_DOCKER_PASSWORD`.  Additionally, if a Docker username is specified, then a Docker image must also be specified.
+The manifest attribute `docker.username` is optional. If it is used, the password must be provided in the environment variable `CF_DOCKER_PASSWORD`.
+Additionally, if a Docker username is specified, then a Docker image must also be specified.
 
-<p class="note"><strong>Note</strong>: Using the <code>docker</code> attribute in conjunction with the <code>buildpacks</code> or <code>path</code> attributes will result in an error.</p>
-
+<p class='note'><strong>Note:</strong> Using the <code>docker</code> attribute in conjunction with the <code>buildpacks</code> or <code>path</code> attributes
+  results in an error.</p>
 
 ### <a id='health-check-http-endpoint'></a> health-check-http-endpoint
 
-Use the `health-check-http-endpoint` attribute to customize the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint` attribute,
-it uses endpoint `/`.
+The `health-check-http-endpoint` attribute customizes the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint`
+attribute, it uses endpoint `/`.
 
-<pre>
+For example:
+
+```
 ---
   ...
   health-check-type: http
   health-check-http-endpoint: /health
-</pre>
+```
 
 ### <a id='health-check-invocation-timeout'></a> health-check-invocation-timeout
 
-Use the `health-check-invocation-timeout` attribute to set the timeout in seconds for individual health check requests for HTTP and port health checks.
+The `health-check-invocation-timeout` attribute configures the timeout in seconds for individual health check requests for HTTP and port health checks.
 
-<pre>
+For example:
+
+```
 ---
   ...
   health-check-invocation-timeout: 30
-</pre>
+```
 
-The cf CLI command that overrides this attribute is `cf set-health-check my-web-app http --invocation-timeout 10`.
+To override this attribute, run `cf set-health-check APP-NAME http --invocation-timeout 10`, where `APP-NAME` is the name of your app.
 
 Within the manifest, the health check timeout is controlled by the `timeout` attribute.
 
 ### <a id='health-check-type'></a> health-check-type
 
-Use the `health-check-type` attribute to set the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type` attribute,
-it defaults to `port`.
+The `health-check-type` attribute sets the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type`
+attribute, it defaults to `port`.
 
-<pre>
+For example:
+
+```
 ---
   ...
   health-check-type: port
-</pre>
+```
 
-The command line option that overrides this attribute is `-u`.
+The `-u` command-line flag overrides this attribute.
 
 In cf CLI v6, the value of `none` is deprecated in favor of `process`. In cf CLI v7, `none` is removed.
 
-
 ### <a id='instances'></a> instances
 
-Use the `instances` attribute to set the number of app instances.
+The `instances` attribute configures the number of app instances.
 
-<pre>
+For example:
+
+```
 ---
   ...
   instances: 2
-</pre>
+```
 
 The default number of instances is 1.
 
-To ensure that platform maintenance does not interrupt your app, run at least two instances.
+To ensure that platform maintenance does not interrupt your app, <%= vars.recommended_by %> recommends running at least two instances.
 
 ### <a id='log-rate-limit'></a> Log Rate Limit
 
-Use the `log-rate-limit` attribute to specify the log rate limit for all instances of an app. This attribute requires a unit of measurement: `B`, `K`, `KB`, `M`, `MB`, `G`, or `GB` in upper case or lower case. For example:
+The `log-rate-limit` attribute specifies the log rate limit for all instances of an app. This attribute requires a unit of measurement: `B`, `K`, `KB`, `M`,
+`MB`, `G`, or `GB`, in either uppercase or lowercase.
 
-<pre>
+For example:
+
+```
 ---
   ...
   log-rate-limit: 24KB
-</pre>
+```
 
-You can also use `-1` to specify a unlimited log quota.
+To configure each app instance to send an unlimited number of logs to Loggregator, specify `-1`.
 
-The default log rate limit is configured by your platform operator. You might want to specify a smaller limit in your manifest
-to conserve <%= vars.quota_resource %> if you know that your app instances do not require the default log rate limit.
+Your platform operator configures the default log rate limit. If you know that your app instances do not require the default log rate limit, you might want to
+specify a smaller limit in your manifest to conserve <%= vars.quota_resource %>.
 
-The command line option that overrides this attribute is `-l`.
+The `-l` command-line flag overrides this attribute.
 
 ### <a id='memory'></a> memory
 
-Use the `memory` attribute to specify the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in upper case or lower case. For example:
+The `memory` attribute specifies the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in
+either uppercase or lowercase.
 
-<pre>
+For example:
+
+```
 ---
   ...
   memory: 1024M
-</pre>
+```
 
-The default memory limit is 1G. You might want to specify a smaller limit to conserve <%= vars.quota_resource %> if you know that your app instances do not require 1G of memory.
+The default memory limit is 1&nbsp;G. If you know that your app instances do not require 1&nbsp;G of memory, you might want to specify a smaller limit to conserve <%= vars.quota_resource %>.
 
-The command line option that overrides this attribute is `-m`.
+The `-m` command-line flag overrides this attribute.
 
 ### <a id='metadata'></a> metadata
 
-Use the `metadata` information to tag your apps with additional information. You can specify two types of metadata: `labels` and `annotations`. For more information, see [Types of Metadata](../../adminguide/metadata.html#types) in _Using Metadata_.
+The `metadata` attribute tags your apps with additional information. You can specify two types of metadata: `labels` and `annotations`. For more information,
+see [Types of Metadata](../../adminguide/metadata.html#types) in _Using Metadata_.
 
-See the following example:
+For example:
 
 ```
 metadata:
@@ -328,51 +371,62 @@ metadata:
 
 For more information about metadata, see [Using Metadata](../../adminguide/metadata.html).
 
-### <a id='no-route'></a>no-route
+### <a id='no-route'></a> no-route
 
-<p class="note"><strong>Note</strong>: If you use the `no-route` flag attribute in the manifest or the flag option, it will override all route-related attributes.</p>
+<p class='note'><strong>Note:</strong> If you use the `no-route` flag attribute in the manifest or the flag option, it overrides all route-related
+  attributes.</p>
 
 By default, `cf push` assigns a route to every app. But, some apps process data while running in the background and should not be assigned routes.
 
 You can use the `no-route` attribute with a value of `true` to prevent a route from being created for your app.
 
-<pre>
+For example:
+
+```
 ---
   ...
   no-route: true
-</pre>
-The command line option that overrides this attribute is `--no-route`.
+```
 
-In the Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check and Cloud Foundry marks it as crashed. To prevent this, disable the port-based health check with `cf set-health-check APP_NAME process`.
+The `--no-route` command-line flag overrides this attribute.
 
-To remove a route from an existing app, perform the following steps:
+In the Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app
+does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check, and <%= vars.app_runtime_abbr %>
+marks it as crashed. To prevent this, disable the port-based health check by running `cf set-health-check APP-NAME process`, where `APP-NAME` is the name of
+your app.
+
+To remove a route from an existing app:
 
 1. Remove the route using the `cf unmap-route` command.
+
 1. Push the app again with the `no-route: true` attribute in the manifest or the `--no-route` command line option.
 
-For more information, see [Deploy Multiple Apps with One Manifest](manifest.html#multi-apps).
+For more information, see [Deploy Multiple Apps with One Manifest](manifest.html#multi-apps) in _Deploying with App Manifests_.
 
 ### <a id='path'></a> path
 
-You can use the `path` attribute to tell Cloud Foundry the directory location where it can find your app.
+The `path` attribute tells <%= vars.app_runtime_abbr %> the directory location in which it can find your app. The directory specified as the `path`, either as
+an attribute or as a parameter on the command line, becomes the location where the buildpack `Detect` script executes.
 
-The directory specified as the `path`, either as an attribute or as a parameter on the command line, becomes the location where the buildpack `Detect` script executes.
+For example:
 
-The command line option that overrides this attribute is `-p`.
-
-<pre>
+```
 ---
   ...
   path: /path/to/app/bits
-</pre>
+```
 
-For more information, see [How cf push Finds the App](../../cf-cli/getting-started.html#find-app).
+The `-p` command-line flag overrides this attribute.
+
+For more information, see [How cf push Finds the App](../../cf-cli/getting-started.html#find-app) in _Getting Started with the cf CLI_.
 
 ### <a id='processes'></a> processes
 
 <%= partial 'v3-note' %>
 
-Use the `processes` attribute to push apps that run multiple processes, such as a web app that has a UI process and a worker process. See the following example:
+The `processes` attribute pushes apps that run multiple processes, such as a web app that has a UI process and a worker process.
+
+For example:
 
 ```
 processes:
@@ -394,41 +448,51 @@ processes:
   timeout: 15
 ```
 
-For detailed information about the process-level configuration, see [The app manifest specification](https://v3-apidocs.cloudfoundry.org/version/3.76.0/index.html#app-manifest) in the CAPI documentation.
+For detailed information about the process-level configuration, see the [CAPI
+documentation](https://v3-apidocs.cloudfoundry.org/version/3.76.0/index.html#app-manifest).
 
 For more information about pushing an app with multiple processes, see [Pushing an App with Multiple Processes](../multiple-processes.html).
 
 ### <a id='random-route'></a> random-route
 
-If you push your app without specifying any route-related CLI options or app manifest flags, the cf CLI attempts to generate a route based on the app name, which can cause collisions.
+If you push your app without specifying any route-related CLI options or app manifest flags, the cf CLI attempts to generate a route based on the app name,
+which can cause collisions.
 
-You can use the `random-route` attribute to generate a unique route and avoid name collisions.
-When you use `random-route`, the cf CLI generates an HTTP route with a random host (if `host` is not set) or a TCP route with an unused port number.
+You can use the `random-route` attribute to generate a unique route and avoid name collisions. When you use `random-route`, the cf CLI generates an HTTP route
+with a random host (if `host` is not set) or a TCP route with an unused port number.
 
-See the following example use cases:
+For example:
 
-* You deploy the same app to multiple spaces for testing purposes. In this situation, you can use `random-route` to randomize routes declared with the route attribute in the app manifest.
-* You use an app manifest for a classroom training exercise in which multiple users deploy the same app to the same space.
-
-The command line option that overrides this attribute is `--random-route`.
-
-<pre>
+```
 ---
   ...
   random-route: true
-</pre>
+```
+
+The following example use cases demonstrate when you might use the `random-route` attribute:
+
+* You deploy the same app to multiple spaces for testing purposes. In this situation, you can use `random-route` to randomize routes declared with the route
+attribute in the app manifest.
+
+* You use an app manifest for a classroom training exercise in which multiple users deploy the same app to the same space.
+
+The `--random-route` command-line flag overrides this attribute.
 
 ### <a id='routes'></a> routes
 
-Use the `routes` attribute to provide multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
+The `routes` attribute provides multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
 
 This attribute is a combination of `push` options that include `--hostname`, `-d`, and `--route-path`.
 
-Optionally, specify the `protocol` attribute to configure which network protocol the route uses for app ingress traffic. The available protocols are `http2`, `http1`, and `tcp`.
+Optionally, specify the `protocol` attribute to configure which network protocol the route uses for app ingress traffic. The available protocols are `http2`,
+`http1`, and `tcp`.
 
-<p class="note"><strong>Note</strong>: The <code>protocol</code> route attribute is only available for <%= vars.app_runtime_abbr %> deployments with HTTP/2 routing enabled. <%= vars.http2_admin_link %> </p>
+<p class='note'><strong>Note:</strong> The <code>protocol</code> route attribute is only available for <%= vars.app_runtime_abbr %> deployments that use
+  HTTP/2 routing. <%= vars.http2_admin_link %> </p>
 
-<pre>
+For example:
+
+```
 ---
   ...
   routes:
@@ -436,50 +500,51 @@ Optionally, specify the `protocol` attribute to configure which network protocol
     protocol: http2
   - route: www.example.com/foo
   - route: tcp-example.com:1234
-</pre>
+```
 
 #### <a id='manifest-attibutes-2'></a> Manifest Attributes
-The `routes` attribute cannot be used in conjunction with the following attributes: `host`, `hosts`, `domain`, `domains`, and `no-hostname`. An error will result.
+
+If you use the `routes` attribute in conjunction with the `host`, `hosts`, `domain`, `domains`, or `no-hostname` attributes, an error results.
 
 #### <a id='push-flag-options'></a> Push Flag Options
+
 This attribute has unique interactions with different command line options.
+
 <table border="1" class="nice" >
-<tr>
-<th>Push Flag Option</th>
-<th>Resulting Behaviour</th>
-</tr>
-<tr>
-<td><code>--no-route</code></td>
-<td>All declared routes are ignored.</td>
-</tr>
-<tr>
-<td><code>-d</code></td>
-<td>Overrides DOMAIN part of all declared HTTP and TCP routes.</td>
-</tr>
-<tr>
-<td><code>--hostname, -n</code></td>
-<td>Sets or overrides HOSTNAME in all HTTP routes. <br />
-It has no impact on TCP routes.</td>
-</tr>
-<tr>
-<td><code>--route-path</code></td>
-<td>Sets or overrides the PATH in all HTTP routes.<br />
-It has no impact on TCP routes.</td>
-</tr>
-<tr>
-<td><code>--random-route</code></td>
-<td>Sets or overrides the HOSTNAME in all HTTP routes.<br />
-Sets or overrides the PORT in all TCP routes.<br />
-The PORT and HOSTNAME will be randomly generated.</td>
-</tr>
-<tr>
+  <tr>
+    <th>Push Flag Option</th>
+    <th>Resulting Behaviour</th>
+  </tr>
+  <tr>
+    <td><code>--no-route</code></td>
+    <td>All declared routes are ignored.</td>
+  </tr>
+  <tr>
+    <td><code>-d</code></td>
+    <td>Overrides DOMAIN part of all declared HTTP and TCP routes.</td>
+  </tr>
+  <tr>
+    <td><code>--hostname, -n</code></td>
+    <td>Sets or overrides HOSTNAME in all HTTP routes. Does not impact TCP routes.</td>
+  </tr>
+  <tr>
+    <td><code>--route-path</code></td>
+    <td>Sets or overrides the PATH in all HTTP routes. Does not impact TCP routes.</td>
+  </tr>
+  <tr>
+    <td><code>--random-route</code></td>
+    <td>Sets or overrides the HOSTNAME in all HTTP routes. Sets or overrides the PORT in all TCP routes. The PORT and HOSTNAME are randomly generated.</td>
+  </tr>
 </table>
 
 ### <a id='sidecars'></a> sidecars
 
 <%= partial 'v3-note' %>
 
-Use the `sidecars` attribute to specify additional processes to run in the same container as your app. Each sidecar must have values for `name`, `process_types`, and `command`, whereas `memory` is optional. See the following example:
+The `sidecars` attribute specifies additional processes to run in the same container as your app. Each sidecar must have values for `name`, `process_types`,
+and `command`, whereas `memory` is optional.
+
+For example:
 
 ```
 sidecars:
@@ -497,40 +562,40 @@ For more information about sidecars, see [Pushing Apps with Sidecar Processes](.
 
 ### <a id='stack'></a> stack
 
-Use the `stack` attribute to specify which stack to deploy your app to.
+The `stack` attribute specifies the stack to which your app deploys.
 
-To see a list of available stacks, run `cf stacks` from the cf CLI.
-
-<pre>
+```
 ---
   ...
   stack: cflinuxfs3
-</pre>
+```
 
-The command line option that overrides this attribute is `-s`.
+To see a list of available stacks, run `cf stacks`.
+
+The `-s` command-line flag overrides this attribute.
 
 ### <a id='timeout'></a> timeout
 
-The `timeout` attribute defines the number of seconds that Cloud Foundry allocates for starting your app. It is related to the `health-check-type` attribute.
+The `timeout` attribute defines the number of seconds that <%= vars.app_runtime_abbr %> allocates for starting your app. It is related to the
+`health-check-type` attribute.
 
 For example:
 
-<pre>
+```
 ---
   ...
   timeout: 80
-</pre>
+```
 
-You can increase the timeout length for very large apps that require more time to start. The `timeout` attribute defaults to 60, but you can set it to any value up to the Cloud Controller's `cc.maximum_health_check_timeout` property.
+You can increase the timeout length for very large apps that require more time to start. The `timeout` attribute defaults to `60`, but you can set it to any
+value up to the Cloud Controller's `cc.maximum_health_check_timeout` property.
 
 <%= vars.max_healthcheck_timeout %>
 
-The command line option that overrides the timeout attribute is `-t`.
+The `-t` command-line flag overrides this attribute.
 
-<p class="warning note"><strong>Warning:</strong> Cloud Controller reports a validation error
-   with the maximum limit if you configure <code>timeout</code> with a value greater than
-   <code>cc.maximum_health_check_timeout</code>.
-</p>
+<p class='warning note'><strong>Warning:</strong> If you configure <code>timeout</code> with a value greater than
+  <code>cc.maximum_health_check_timeout</code>, the Cloud Controller reports a validation error with the maximum limit.</p>
 
 
 ## <a id='env-block'></a> Environment Variables
@@ -539,30 +604,40 @@ The `env` block consists of a heading, then one or more environment variable/val
 
 For example:
 
-<pre>
+```
 ---
   ...
   env:
     RAILS_ENV: production
     RACK_ENV: production
-</pre>
+```
 
 `cf push` deploys the app to a container on the server. The variables belong to the container environment.
 
-<p class="note"><strong>Note</strong>: You must name variables with alphanumeric characters and underscores. Non-conforming variable names may cause unpredictable behavior.</p>
+<div class='note'><strong>Notes:</strong>
+  <ul>
+    <li>You must name variables with alphanumeric characters and underscores. Non-conforming variable names may cause unpredictable behavior.</li>
+    <li>Do not use user-provided environment variables for security sensitive information such as credentials, because they might unintentionally show up in
+      cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided
+      environment variable <a href="./environment-variable.html#VCAP-SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter
+      and in Cloud Controller log files.</li>
+  </ul>
+</div>
 
-<p class="note"><strong>Note</strong>: Do not use user-provided environment variables for security sensitive information such as credentials as they might unintentionally show up in cf cli output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided environment variable <a href="./environment-variable.html#VCAP-SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter and in Cloud Controller log files.</p>
+While the app is running, you can modify environment variables in the following ways:
 
-While the app is running, you can modify environment variables.
+* To view all variables, run `cf env APP-NAME`, where `APP-NAME` is the name of your app.
 
-* View all variables: `cf env my-app`
-* Set an individual variable: `cf set-env my-app my-variable_name my-variable_value`
-* Unset an individual variable: `cf unset-env my-app my-variable_name my-variable_value`
+* To set an individual variable, run `cf set-env APP-NAME VARIABLE-NAME VARIABLE-VALUE`, where `APP-NAME` is the name of your app, `VARIABLE-NAME` is the
+environment variable you want to set, and `VARIABLE-VALUE` is the value of the environment value.
+
+* To unset an individual variable, run `cf unset-env APP-NAME VARIABLE-NAME VARIABLE-VALUE`, where `APP-NAME` is the name of your app, `VARIABLE-NAME` is the
+environment variable you want to set, and `VARIABLE-VALUE` is the value of the environment value.
 
 Environment variables interact with manifests in the following ways:
 
-* When you deploy an app for the first time, Cloud Foundry reads the variables described in the environment block of the manifest and adds them to
-the environment of the container where the app is staged, and the environment of the container where the app is deployed.
+* When you deploy an app for the first time, <%= vars.app_runtime_abbr %> reads the variables described in the environment block of the manifest and adds them
+to the environment of the container where the app is staged, and the environment of the container where the app is deployed.
 
 * When you stop and then restart an app, its environment variables persist.
 
@@ -571,40 +646,41 @@ the environment of the container where the app is staged, and the environment of
 
 Apps can bind to services such as databases, messaging, and key-value stores.
 
-Apps are deployed into App Spaces. An app can only bind to services instances that exist in the target App Space before the app is deployed.
+Apps are deployed into app spaces. An app can only bind to services instances that exist in the target app space before the app is deployed.
 
 The `services` block consists of a heading, then one or more service instance names.
 
-Whoever creates the service chooses the service instance names. These names can convey logical information, as in `backend_queue`, describe the nature of the service, as in `mysql_5.x`, or do neither, as in the example below.
+Whoever creates the service chooses the service instance names. These names can convey logical information, as in `backend_queue`; describe the nature of the
+service, as in `mysql_5.x`; or do neither, as in the following example:
 
-<pre>
+```
 ---
   ...
   services:
    - instance_ABC
    - instance_XYZ
-</pre>
+```
 
-Binding to a service instance is a special case of setting an environment variable, namely `VCAP_SERVICES`. See the [Bind a Service](../services/application-binding.html#bind) section of the _Delivering Service Credentials to an App_ topic.
-
-
+Binding to a service instance is a special case of setting an environment variable, namely `VCAP_SERVICES`. For more information, see [Bind a
+Service](../services/application-binding.html#bind) in _Delivering Service Credentials to an App_.
 
 
 ## <a id='deprecated'></a> Deprecated App Manifest Features
 
-These app manifest features have been deprecated in favor of other options, as described below.
+This section describes app manifest features that have been deprecated in favor of other features.
 
-<p class="note warning"><strong>WARNING:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated features along with the feature that replaces it.</p>
+<p class='note warning'><strong>Warning:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated
+  features along with the feature that replaces it.</p>
 
 ### <a id='yaml-anchors'></a> YAML Anchors Replace Top-Level Attributes
 
-Previously, you could declare top-level attributes, which are also known as global attributes. For example, you can move an attribute above the `applications` block, where it need appear only once.
+Previously, you could declare top-level attributes, which are also known as global attributes. For example, you can move an attribute above the `applications`
+block, where it need appear only once.
 
-The following example illustrates how this was used to manage duplicated settings.
+The following example demonstrates how this was used to manage duplicated settings:
 
-<pre>
+```
 ---
-# all apps use these settings and services
 domain: shared-domain.example.com
 memory: 1G
 instances: 1
@@ -617,19 +693,19 @@ applications:
 - name: springtick
   host: tick09875
   path: ./spring-music/build/libs/spring-music.war
-</pre>
+```
 
-Now, you can use YAML aliases instead.
+Top-level attributes are deprecated in favor of YAML aliases.
 
-The following example illustrates how to declare shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an alias.
+The following example demonstrates how to specify a shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an
+alias:
 
-<pre>
+```
 ---
 defaults: &amp;defaults
   buildpacks:
     - staticfile_buildpack
   memory: 1G
-
 
 applications:
 - name: bigapp
@@ -637,17 +713,20 @@ applications:
 - name: smallapp
   &lt;&lt;: *defaults
   memory: 256M
-</pre>
+```
 
-When pushing the app, make explicit the attributes in each app’s declaration. To do this, assign the anchors and include the app-level attributes with YAML aliases in each app declaration.
+When pushing the app, make explicit the attributes in each app's declaration. To do this, assign the anchors and include the app-level attributes with YAML
+aliases in each app declaration.
 
 ### <a id='route-attribute'></a> Attribute routes Replaces domain, domains, host, hosts, and no-hostname
 
-<p class="note"><strong>Note</strong>: These properties are removed in cf CLI v7.</p>
+<p class='note'><strong>Note:</strong> These properties are removed in cf CLI v7.</p>
 
-Previously, you could specify routes by listing them all at once using the `routes` attribute, or by using their hosts and domains as shown below.
+Previously, you could specify routes by listing them all at once using the `routes` attribute, or by using their hosts and domains.
 
-<pre>
+For example:
+
+```
 ---
 applications:
 - name: webapp
@@ -655,37 +734,38 @@ applications:
   domains:
   - example.com
   - example.io
-</pre>
+```
 
 The following route component attributes have been deprecated:
-<ul>
-  <li><code>domain</code></li>
-  <li><code>domains</code></li>
-  <li><code>host</code></li>
-  <li><code>hosts</code></li>
-  <li><code>no-hostname</code></li>
-</ul>
+
+* `domain`
+* `domains`
+* `host`
+* `hosts`
+* `no-hostname`
 
 Now you can only specify routes by using the `routes` attribute:
 
-<pre>
+```
 ---
 applications:
 - name: webapp
   routes:
   - route: www.example.com/foo
   - route: tcp.example.com:1234
-</pre>
+```
 
 This app manifest feature has been deprecated, and a replacement option is under consideration.
 
 ### <a id='inheritance-deprecated'></a> Inheritance
 
-This feature has been deprecated, and has been replaced by [Variable Substitution](#variable-substitution).
+This feature has been deprecated, and has been replaced by variable substitution. For more information, see [Variable
+Substitution](#variable-substitution) above.
 
-With inheritance, child manifests inherited configurations from a parent manifest, and the child manifests could use inherited configurations as provided, extend them, or override them. This feature has been deprecated, and has been replaced by [Variable Substitution](#variable-substitution).
+With inheritance, child manifests inherited configurations from a parent manifest. The child manifests can use the inherited configurations as provided,
+extend them, or override them.
 
+### <a id='buildpack-deprecated'></a> buildpack Attribute Is Deprecated
 
-### <a id='buildpack-deprecated'></a> Buildpack Field in Manifest Is Deprecated
-
-The singular `buildpack` field in manifests is deprecated. It has been replaced by `buildpacks`, which is now an array which takes as a value [multiple buildpacks](#buildpack).
+The singular `buildpack` attribute is deprecated. It has been replaced by `buildpacks`, which specifies multiple buildpacks. For more information, see
+[buildpacks](#buildpacks) above.

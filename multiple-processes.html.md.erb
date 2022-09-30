@@ -6,24 +6,27 @@ owner: CAPI
 This topic describes how to push and manage apps with multiple processes.
 
 
-## <a id="about-processes"></a> About Processes
+## <a id='about-processes'></a> About Processes
 
-The Cloud Foundry API (CAPI) V3 supports using a single command to push apps that run multiple processes, such as a web app that has a UI process and a worker process. To push an app that creates multiple processes from the same codebase, you first define its processes in a Procfile. For more information, see [Push an App with Multiple Processes](#push-with-multiple-processes) below.
+The Cloud Foundry API (CAPI) V3 supports using a single command to push apps that run multiple processes, such as a web app that has a UI process and a worker
+process. To push an app that creates multiple processes from the same codebase, you first define its processes in a Procfile. For more information, see [Push
+an App with Multiple Processes](#push-with-multiple-processes) below.
 
-For more information about processes, see [Processes](http://v3-apidocs.cloudfoundry.org/index.html#processes) in the CAPI V3 documentation.
+For more information about processes, see the [CAPI V3 documentation](http://v3-apidocs.cloudfoundry.org/index.html#processes).
 
 
-## <a id="push-with-multiple-processes"></a> Push an App with Multiple Processes
+## <a id='push-with-multiple-processes'></a> Push an App with Multiple Processes
 
 This section describes how to push an app with multiple processes using either a manifest or a Procfile.
 
-### <a id="manifest"></a>Push an App with Multiple Processes Using a Manifest
+### <a id='manifest'></a> Push an App with Multiple Processes Using a Manifest
 
 To push an app with multiple processes using a manifest:
 
-1. Create a file that defines a manifest. Include each process with its start command. See the following example, which defines the app `example-app` with two processes:
+1. Create a file in YAML format that defines a manifest. Include each process with its start command. The following example manifest file defines the app
+`example-app` with two processes:
 
-    ```yaml
+    ```
     version: 1
     - name: example-app
       processes:
@@ -36,82 +39,93 @@ To push an app with multiple processes using a manifest:
         instances: 2
     ```
 
-1. Push the app using your manifest:
+1. Push the app with your manifest by running:
 
-    ```console
-    cf push -f example-manifest.yml
     ```
+    cf push -f MANIFEST.yml
+    ```
+    Where `MANIFEST` is the filename of your manifest file.
 
-For more information about defining processes with manifests, see [processes](deploy-apps/manifest-attributes.html#processes") in _App Manifest Attribute Reference_.
+For more information about defining processes with manifests, see [processes](deploy-apps/manifest-attributes.html#processes) in _App Manifest Attribute
+Reference_.
 
-
-### <a id="procfile"></a>Push an App with Multiple Processes Using a Procfile
+### <a id='procfile'></a>Push an App with Multiple Processes Using a Procfile
 
 To push an app with multiple processes using a Procfile:
 
-<p class="note"><strong>Note:</strong> Procfile support varies depending on the buildpack you use. For example, the Staticfile buildpack requires a Staticfile instead of a Procfile. For more information, see <a href="../buildpacks/staticfile/index.html">Staticfile Buildpack</a>.</p>
+<p class='note'><strong>Note:</strong> Procfile support varies depending on the buildpack you use. For example, the Staticfile buildpack requires a Staticfile
+  instead of a Procfile. For more information, see <a href="../buildpacks/staticfile/index.html">Staticfile Buildpack</a>.</p>
 
 1. Create a file named `Procfile` in the root of your app directory.
-	<p class="note"><strong>Note:</strong> For more information about Procfiles, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#procfiles">Procfiles</a> in the CAPI V3 documentation.</p>
+	<p class='note'><strong>Note:</strong> For more information about Procfiles, see the
+    <a href="https://v3-apidocs.cloudfoundry.org/index.html#procfiles">CAPI V3 documentation</a>.</p>
 
-1. Add each process and its start command to the Procfile. See the following example:
+1. Add each process and its start command to the Procfile. For example:
 
     ```
     web: bundle exec rackup config.ru -p $PORT
     worker: bundle exec rake worker:start
     ```
 
-1. Push the app:
+1. Push the app by running:
 
     ```
-    cf push myapp
+    cf push APP-NAME
     ```
+    Where `APP-NAME` is the name of your app.
 
 By default, the web process has a route and one instance. Other processes have zero instances by default.
 
-## <a id="scale-a-process"></a> Scale a Process
+
+## <a id='scale-a-process'></a> Scale a Process
 
 To scale an app process:
 
 1. Run:
 
-	```
-	cf scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
-	```
-	Where:
-	* `APP-NAME` is the name of your app.
-	* `PROCESS-NAME` is the name of the process you want to scale.
-	* `INSTANCE-COUNT` is the number of instances to which you want to scale the process.
+  	```
+  	cf scale APP-NAME --process PROCESS-NAME -i INSTANCE-COUNT
+  	```
+  	Where:
+  	* `APP-NAME` is the name of your app.
+  	* `PROCESS-NAME` is the name of the process you want to scale.
+  	* `INSTANCE-COUNT` is the number of instances to which you want to scale the process.
 
-## <a id="view-processes"></a> View Processes
 
-To view the processes running as part of an app, run `cf APP-NAME`, where `APP-NAME` is the name of your app. See the following example in which the app has a `web` and a `worker` process.
+## <a id='view-processes'></a> View Processes
 
-<pre class="terminal">
-$ cf app myapp
-Showing health and status for app myapp in org test / space test as admin...
+To view the processes running as part of an app:
 
-name:              myapp
-requested state:   started
-routes:            myapp.cloudfoundry.example.com
-last uploaded:     Thu 15 Sep 02:34:18 UTC 2022
-stack:             cflinuxfs3
-buildpacks:
-        name             version   detect output   buildpack name
-        ruby_buildpack   1.8.57    ruby            ruby
+1. Run:
 
-type:           web
-sidecars:
-instances:      1/1
-memory usage:   1024M
-     state     since                  cpu    memory        disk          logging            details
-#0   running   2022-09-15T02:34:27Z   0.3%   36.3M of 1G   90.2M of 1G   0/s of unlimited
+    ```
+    cf app APP-NAME
+    ```
+    Where `APP-NAME` is the name of your app. The following example shows return output for an app that has a `web` and a `worker` process:
+    <pre class='terminal'>
+    Showing health and status for app example-app in org test / space test as admin...
 
-type:           worker
-sidecars:
-instances:      2/2
-memory usage:   1024M
-     state     since                  cpu    memory        disk          logging              details
-#0   running   2022-09-15T02:35:29Z   0.0%   36.1M of 1G   90.2M of 1G   15B/s of unlimited
-#1   running   2022-09-15T02:35:29Z   0.0%   36.1M of 1G   90.2M of 1G   15B/s of unlimited
-</pre>
+    name:              example-app
+    requested state:   started
+    routes:            example-app.cloudfoundry.example.com
+    last uploaded:     Thu 15 Sep 02:34:18 UTC 2022
+    stack:             cflinuxfs3
+    buildpacks:
+            name             version   detect output   buildpack name
+            ruby_buildpack   1.8.57    ruby            ruby
+
+    type:           web
+    sidecars:
+    instances:      1/1
+    memory usage:   1024M
+         state     since                  cpu    memory        disk          logging            details
+    &#35;0   running   2022-09-15T02:34:27Z   0.3%   36.3M of 1G   90.2M of 1G   0/s of unlimited
+
+    type:           worker
+    sidecars:
+    instances:      2/2
+    memory usage:   1024M
+         state     since                  cpu    memory        disk          logging              details
+    &#35;0   running   2022-09-15T02:35:29Z   0.0%   36.1M of 1G   90.2M of 1G   15B/s of unlimited
+    &#35;1   running   2022-09-15T02:35:29Z   0.0%   36.1M of 1G   90.2M of 1G   15B/s of unlimited
+    </pre>

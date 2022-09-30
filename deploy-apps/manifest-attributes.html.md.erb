@@ -373,7 +373,7 @@ For more information about metadata, see [Using Metadata](../../adminguide/metad
 
 ### <a id='no-route'></a> no-route
 
-<p class='note'><strong>Note:</strong> If you use the `no-route` flag attribute in the manifest or the flag option, it overrides all route-related
+<p class='note'><strong>Note:</strong> If you use the <code>no-route</code> flag attribute in the manifest or the flag option, it overrides all route-related
   attributes.</p>
 
 By default, `cf push` assigns a route to every app. But, some apps process data while running in the background and should not be assigned routes.
@@ -458,8 +458,12 @@ For more information about pushing an app with multiple processes, see [Pushing 
 If you push your app without specifying any route-related CLI options or app manifest flags, the cf CLI attempts to generate a route based on the app name,
 which can cause collisions.
 
-You can use the `random-route` attribute to generate a unique route and avoid name collisions. When you use `random-route`, the cf CLI generates an HTTP route
-with a random host (if `host` is not set) or a TCP route with an unused port number.
+You can use the `random-route` attribute to generate a unique route and avoid name collisions. When you use `random-route`, the cf CLI generates one of the
+following:
+
+* An HTTP route with a random host, if no value is specified for `host`
+
+* A TCP route with an unused port number.
 
 For example:
 
@@ -508,12 +512,12 @@ If you use the `routes` attribute in conjunction with the `host`, `hosts`, `doma
 
 #### <a id='push-flag-options'></a> Push Flag Options
 
-This attribute has unique interactions with different command line options.
+This attribute has unique interactions with different command-line options.
 
-<table border="1" class="nice" >
+<table border="1" class="nice" style="width:25%">
   <tr>
-    <th>Push Flag Option</th>
-    <th>Resulting Behaviour</th>
+    <th>Flag</th>
+    <th>Result</th>
   </tr>
   <tr>
     <td><code>--no-route</code></td>
@@ -521,19 +525,20 @@ This attribute has unique interactions with different command line options.
   </tr>
   <tr>
     <td><code>-d</code></td>
-    <td>Overrides DOMAIN part of all declared HTTP and TCP routes.</td>
+    <td>Overrides the <code>DOMAIN</code> in all declared HTTP and TCP routes.</td>
   </tr>
   <tr>
     <td><code>--hostname, -n</code></td>
-    <td>Sets or overrides HOSTNAME in all HTTP routes. Does not impact TCP routes.</td>
+    <td>Sets or overrides the <code>HOSTNAME</code> in all HTTP routes. Does not impact TCP routes.</td>
   </tr>
   <tr>
     <td><code>--route-path</code></td>
-    <td>Sets or overrides the PATH in all HTTP routes. Does not impact TCP routes.</td>
+    <td>Sets or overrides the <code>PATH</code> in all HTTP routes. Does not impact TCP routes.</td>
   </tr>
   <tr>
     <td><code>--random-route</code></td>
-    <td>Sets or overrides the HOSTNAME in all HTTP routes. Sets or overrides the PORT in all TCP routes. The PORT and HOSTNAME are randomly generated.</td>
+    <td>Sets or overrides the <code>HOSTNAME</code> in all HTTP routes. Sets or overrides the <code>PORT</code> in all TCP routes. The <code>PORT</code> and
+      <code>HOSTNAME</code> are randomly generated.</td>
   </tr>
 </table>
 
@@ -563,6 +568,8 @@ For more information about sidecars, see [Pushing Apps with Sidecar Processes](.
 ### <a id='stack'></a> stack
 
 The `stack` attribute specifies the stack to which your app deploys.
+
+For example:
 
 ```
 ---
@@ -626,13 +633,35 @@ For example:
 
 While the app is running, you can modify environment variables in the following ways:
 
-* To view all variables, run `cf env APP-NAME`, where `APP-NAME` is the name of your app.
+* To view all variables:
+  1. Run:
 
-* To set an individual variable, run `cf set-env APP-NAME VARIABLE-NAME VARIABLE-VALUE`, where `APP-NAME` is the name of your app, `VARIABLE-NAME` is the
-environment variable you want to set, and `VARIABLE-VALUE` is the value of the environment value.
+      ```
+      cf env APP-NAME
+      ```
+      Where `APP-NAME` is the name of your app.
 
-* To unset an individual variable, run `cf unset-env APP-NAME VARIABLE-NAME VARIABLE-VALUE`, where `APP-NAME` is the name of your app, `VARIABLE-NAME` is the
-environment variable you want to set, and `VARIABLE-VALUE` is the value of the environment value.
+* To set an individual variable:
+  1. Run:
+
+      ```
+      cf set-env APP-NAME VARIABLE-NAME VARIABLE-VALUE
+      ```
+      Where:
+      * `APP-NAME` is the name of your app.
+      * `VARIABLE-NAME` is the environment variable you want to set.
+      * `VARIABLE-VALUE` is the value of the environment value.
+
+* To unset an individual variable:
+  1. Run:
+
+      ```
+      cf unset-env APP-NAME VARIABLE-NAME VARIABLE-VALUE
+      ```
+      Where:
+      * `APP-NAME` is the name of your app.
+      * `VARIABLE-NAME` is the environment variable you want to set.
+      * `VARIABLE-VALUE` is the value of the environment value.
 
 Environment variables interact with manifests in the following ways:
 
@@ -648,10 +677,11 @@ Apps can bind to services such as databases, messaging, and key-value stores.
 
 Apps are deployed into app spaces. An app can only bind to services instances that exist in the target app space before the app is deployed.
 
-The `services` block consists of a heading, then one or more service instance names.
+The `services` block consists of a heading and one or more service instance names.
 
-Whoever creates the service chooses the service instance names. These names can convey logical information, as in `backend_queue`; describe the nature of the
-service, as in `mysql_5.x`; or do neither, as in the following example:
+Whoever creates the service chooses the service instance names. These names can convey logical information, describe the nature of the service, or neither.
+
+For example:
 
 ```
 ---
@@ -661,7 +691,7 @@ service, as in `mysql_5.x`; or do neither, as in the following example:
    - instance_XYZ
 ```
 
-Binding to a service instance is a special case of setting an environment variable, namely `VCAP_SERVICES`. For more information, see [Bind a
+You can bind an app to a service instance by setting the `VCAP_SERVICES` environment variable. For more information, see [Bind a
 Service](../services/application-binding.html#bind) in _Delivering Service Credentials to an App_.
 
 
@@ -672,7 +702,7 @@ This section describes app manifest features that have been deprecated in favor 
 <p class='note warning'><strong>Warning:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated
   features along with the feature that replaces it.</p>
 
-### <a id='yaml-anchors'></a> YAML Anchors Replace Top-Level Attributes
+### <a id='yaml-anchors'></a> Top-Level Attributes
 
 Previously, you could declare top-level attributes, which are also known as global attributes. For example, you can move an attribute above the `applications`
 block, where it need appear only once.
@@ -718,7 +748,7 @@ applications:
 When pushing the app, make explicit the attributes in each app's declaration. To do this, assign the anchors and include the app-level attributes with YAML
 aliases in each app declaration.
 
-### <a id='route-attribute'></a> Attribute routes Replaces domain, domains, host, hosts, and no-hostname
+### <a id='route-attribute'></a> domain, domains, host, hosts, and no-hostname
 
 <p class='note'><strong>Note:</strong> These properties are removed in cf CLI v7.</p>
 
@@ -765,7 +795,7 @@ Substitution](#variable-substitution) above.
 With inheritance, child manifests inherited configurations from a parent manifest. The child manifests can use the inherited configurations as provided,
 extend them, or override them.
 
-### <a id='buildpack-deprecated'></a> buildpack Attribute Is Deprecated
+### <a id='buildpack-deprecated'></a> buildpack
 
 The singular `buildpack` attribute is deprecated. It has been replaced by `buildpacks`, which specifies multiple buildpacks. For more information, see
 [buildpacks](#buildpacks) above.

@@ -35,24 +35,25 @@ reduce the number of files you are pushing, ensure that you push only the direct
 specify excluded files. For more information, see [Ignore Unnecessary Files When Pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and
 Running an App in the Cloud_.
 
-* **Set the CF_STAGING_TIMEOUT and CF_STARTUP_TIMEOUT environment variables.** By default, your app has 15 minutes to stage and 5 minutes to start. You can
-increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`. For more information, run `cf push -h`.
+* **Set the `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT` environment variables.** By default, your app has 15 minutes to stage and 5 minutes to start. You
+can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`. For more information, run `cf push -h`.
 
 * **If your app contains a large number of files, try pushing the app repeatedly.** Each push uploads a few more files. Eventually, all files upload, and the
 push succeeds. This is less likely to work if your app has many small files.
 
 ### <a id='upload'></a> App Too Large
 
-If your app is too large, you may receive an error message on `cf push`, for example:
+If your app is too large, you may receive an error message on `cf push`. For example:
 
 * `413 Request Entity Too Large`
+
 * `You have exceeded your organization's memory limit`
 
 If this happens:
 
 * **Make sure your org and space have enough resources for all instances of your app.** You cannot use more resources in a space than is allocated for your
-org. To view the resource quota name for your org, use `cf org ORG_NAME`, then `cf quota QUOTA_NAME`. To view resource quota name for your space, use `cf
-space SPACE_NAME`, then `cf space-quota QUOTA_NAME`. Your total organization resource usage is the sum of the resources used by all apps in all spaces within
+org. To view the resource quota name for your org, use `cf org ORG-NAME`, then `cf quota QUOTA-NAME`. To view resource quota name for your space, use `cf
+space SPACE-NAME`, then `cf space-quota QUOTA-NAME`. Your total organization resource usage is the sum of the resources used by all apps in all spaces within
 the org. Each app's resource usage is the resources allocated to it multiplied by the number of instances. To view the resource usage of all the apps in a
 space, use `cf apps`, then `cf app APP-NAME` for each app.
 
@@ -196,7 +197,7 @@ container environment.
 Run `cf env APP-NAME` to view the environment variables that you have set using the `cf set-env` command and the variables in the container environment:
 
 <pre class='terminal'>
-Getting env variables for app my-app in org My-Org / space development as admin...
+Getting env variables for app example-app in org example-org / space development as admin...
 OK
 
 System-Provided:
@@ -225,7 +226,7 @@ my-drain: http://drain.example.com
 
 To view app logs streamed in real-time, run `cf logs APP-NAME`.
 
-To aggregate your app logs to view log history, bind your app to a syslog drain service. For more information, see [Streaming app Logs to Log Management
+To aggregate your app logs to view log history, bind your app to a syslog drain service. For more information, see [Streaming App Logs to Log Management
 Services](./../services/log-management.html).
 
 <p class='note'><strong>Note:</strong> The Diego architecture does not support the <code>cf files</code> command.</p>
@@ -295,7 +296,8 @@ logs. For a list of <%= vars.app_runtime_abbr %> errors, see the [cloudfoundry-a
 * `cf logs APP-NAME --recent`: Dumps recent logs. For more information, see [Viewing Logs in the Command Line Interface](streaming-logs.html#view) in _App
 Logging in <%= vars.app_runtime_abbr %>_.
 
-* `cf logs APP-NAME`: Returns a real-time stream of the app STDOUT and STDERR. Use **Ctrl-C** (^C) to exit the real-time stream.
+* `cf logs APP-NAME`: Returns a real-time stream of the app STDOUT and STDERR. Press **Ctrl+C** or **Command+C** on your keyboard to exit the real-time
+stream.
 
 * `cf files APP-NAME`: Lists the files in an app directory. Given a path to a file, outputs the contents of that file. Given a path to a subdirectory, lists
 the files within. Use this to view individual logs. For more information, see [View Logs](#logs) above.

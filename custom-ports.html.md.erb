@@ -5,105 +5,122 @@ owner: CF for VMs Networking
 
 <% current_page.data.title = "Configuring " + vars.app_runtime_abbr + " to Route Traffic to Apps on Custom Ports" %>
 
-This topic describes how to configure <%= vars.app_runtime_first %> to route traffic to your apps listening on custom ports. 
+This topic describes how to configure <%= vars.app_runtime_first %> to route requests to apps that receive requests on custom ports.
 
 
-## <a id="overview"></a> Overview
+## <a id='overview'></a> Overview
 
-By default, apps only receive requests on port 8080 for both HTTP and TCP routing, and so must be configured, or hardcoded, to listen on this port. Configuring custom app ports allows developers to bring workloads onto <%= vars.app_runtime_abbr %> that listen on ports other than 8080. Some example use cases are:
+By default, apps only receive requests on port `8080` for both HTTP and TCP routing. Configuring custom app ports allows developers to bring workloads onto
+<%= vars.app_runtime_abbr %> that receive requests on ports other than `8080`. The following list describes some example use cases:
 
-* Serving web client requests on one port and offering stats/debug on another
+* Serving web client requests on one port and offering stats and debugging on another
 
 * Using TCP protocols that require multiple ports
 
 * Running Docker images on <%= vars.app_runtime_abbr %>
 
-The procedure below describes how to use the `apps` and `route_mappings` Cloud Controller API endpoints to update the ports the app can receive requests on. 
+To use the `apps` and `route_mappings` Cloud Controller API endpoints to update the ports on which the app can receive requests, see [Procedure](#procedure) below.
 
-### <a id="flow"></a> Flow of a Request to an App
+### <a id='flow'></a> Flow of a Request to an App
 
-The following table describes the Network Address Translation that occurs in the data path of a client request. The procedure in this document discusses configuring _app ports_ specifically.
+The following table describes the Network Address Translation that occurs in the data path of a client request.
 
 | Port Type | Description | Network Hop |
 | --------- | ----------- | ----------- |
-| Route port | The port a client sends a request to | Client to load balancer, load balancer to Gorouter |
+| Route port | The port to which a client sends a request | Client to load balancer, load balancer to Gorouter |
 | Back end port | The port on the VM where an app container is hosted, which is unique to the container | Gorouter to Diego Cell |
-| App port | The port on the container; this must match a port the app is configured to listen on | Diego Cell to app container |
+| App port | The port on the container, which must match a port on which the app is configured to receive requests | Diego Cell to app container |
 
-The following diagram provides an example data path and Network Address Translation for TCP routing. For HTTP routing, the route port is always 80 or 443.  
+The procedure in this document discusses configuring app ports.
+
+The following diagram shows an example data path and Network Address Translation for TCP routing:
 
 ![Traffic-flow-diagram](route_ports.png)
 
+For HTTP routing, the route port is always `80` or `443`.
 
-## <a id="prerequisite"></a> Prerequisites
 
-Before following the procedure to configure routing to your app on custom ports, you must have:
+## <a id='prerequisite'></a> Prerequisites
 
-* An app pushed to <%= vars.app_runtime_abbr %> that can listen on one or more custom ports.
+Before following the procedure to configure routing to your app on custom ports, ensure that you have the following:
+
+* An app pushed to <%= vars.app_runtime_abbr %> that can receive requests on one or more custom ports.
 
 * Routes for which you want traffic forwarded to your app on custom ports, which are mapped to the app.
-	* If your app listens on two ports and you want clients to be able to send requests to both of them, create two routes. These can be from HTTP or TCP domains. Consider an example in which you have two routes: `foo.example.com` and `bar.example.com`. In the following procedure, you use API endpoints to map these routes to your app on the ports it is listening. For more information, see [Routes and Domains](./deploy-apps/routes-domains.html).
+	<p class='note'><strong>Note:</strong> If your app receives requests on two ports, and you want clients to be able to send requests to both of them, create
+		two routes. These routes can be from HTTP or TCP domains. In <a href="#procedure">Procedure</a> below, you use API endpoints to map these routes to your app on the ports it uses to receive requests. For more information, see <a href="deploy-apps/routes-domains.html">Routes and Domains</a>.</p>
 
 
-## <a id="procedure"></a> Procedure
+## <a id='procedure'></a> Procedure
 
-To configure your app to receive HTTP or TCP traffic on custom ports:
+To configure your app to receive HTTP or TCP requests on custom ports:
 
-1. Retrieve the GUID of your app by running:
+1. In a terminal window, run:
 
-	```
-	cf app APP-NAME --guid
-	``` 
-	Where `APP-NAME` is the name of your app.
+		```
+		cf app APP-NAME --guid
+		```
+		Where `APP-NAME` is the name of your app.
 
-1. Retrieve the GUID(s) of your route(s) by running:
+1. From the terminal output, record the following:
+ 	* Under `guid`, the global unique identifier (GUID) of your app.
+	* Under `type`, the process type your app uses.
 
-  For HTTP routes:
-	```
-	cf curl /v3/apps/APP-GUID/routes?hosts=ROUTE-HOSTNAME
-	```
+1. Retrieve the GUIDs of the routes for your app by running one of the following commands, depending on whether your app uses HTTP or TCP routes:
+		* For HTTP routes, run:
 
-  For `tcp` routes:
-  ```
-  cf curl /v3/apps/APP-GUID/routes?port=PORT
-  ```
+				```
+				cf curl /v3/apps/APP-GUID/routes?hosts=ROUTE-HOSTNAME
+				```
+				Where:
+				* `APP-GUID` is the GUID of your app that you recorded in the previous step.
+				* `ROUTE-HOSTNAME` is the subdomain of the domain associated with the route. For example, in the route `example-app.<%= vars.app_domain %>`, the
+				hostname is `example-app`.
+		* For TCP routes, run:
 
-	Where:
-	* `APP-GUID` is the GUID of your app.
-	* `ROUTE-HOSTNAME` is the subdomain of the domain associated with a route. In the route myapp.<%= vars.app_domain %>, the hostname is "myapp".
-  * `PORT` is the port the TCP route listens on (specified when the route was created)
+			  ```
+			  cf curl /v3/apps/APP-GUID/routes?port=PORT
+			  ```
+				Where:
+				* `APP-GUID` is the GUID of your app that you recorded in the previous step.
+			  * `PORT` is the port to which the TCP route sends requests.
 
-1. Update each route's ports:
+1. From the terminal output, record the GUIDs of the routes for your app.
 
-	```
-  cf curl -X PATCH /v3/routes/ROUTE-GUID/destinations -d '{
-  "destinations": [
-      {
-        "app": {
-          "guid": "APP-GUID",
-          "process": {
-            "type": "PROCESS-TYPE"
-          }
-        },
-        "port": PORT,
-        "protocol": "PROTOCOL"
-      }
-    ]
-  }'
-	```
-	Where:
-	* `APP-GUID` is the GUID of your app.
-	* `ROUTE-GUID` is a route GUID retrieved in the previous step.
-	* `PORT` is a custom port on which your app is configured to listen.
-  * `PROTOCOL` is either `http1` or `http2` (for HTTP routes) or `tcp` (for TCP routes)
-  * `PROCESS-TYPE` is usually `web`. Must match the `type` given in the output of `cf app APP-NAME`.
+1. For each route, update the ports to which it sends requests by running:
 
-<p class="note"><strong>Note</strong>: This API call will remove _all_ destinations for a given route and replace them with the destinations provided in the request</p>
+		```
+	  cf curl -X PATCH /v3/routes/ROUTE-GUID/destinations -d '{
+	  "destinations": [
+	      {
+	        "app": {
+	          "guid": "APP-GUID",
+	          "process": {
+	            "type": "PROCESS-TYPE"
+	          }
+	        },
+	        "port": PORT,
+	        "protocol": "PROTOCOL"
+	      }
+	    ]
+	  }'
+		```
+		Where:
+		* `APP-GUID` is the GUID of your app that you recorded in a previous step.
+		* `ROUTE-GUID` is the GUID of a route that you recorded in the previous step.
+		* `PORT` is a custom port on which your app is configured to receive requests.
+	  * `PROTOCOL` is the protocol that the route uses. For HTTP routes, this value is either `http1` or `http2`. For TCP routes, this value is `tcp`.
+	  * `PROCESS-TYPE` is the value of `type` that you recorded in a previous step. This value is usually `web`.
+		<p class='note'><strong>Note:</strong> This API call removes all destinations for a route and replaces them with the destinations you provide in the API
+			request.</p>
 
-## <a id="additional-resources"></a> Additional Resources
 
-For additional resources related to configuring custom app ports:
+## <a id='additional-resources'></a> Additional Resources
 
-* For more information about making requests to the Cloud Controller API's `apps` endpoints, see [Updating an App](https://v3-apidocs.cloudfoundry.org/index.html#apps).
+The following additional resources provide more information about configuring custom app ports:
 
-* For more information about making requests to the Cloud Controller API's `routes` endpoints, see [Mapping an App and a Route](https://v3-apidocs.cloudfoundry.org/index.html#routes).
+* For more information about making requests to the Cloud Controller API's `apps` endpoints, see the [CAPI V3
+documentation](https://v3-apidocs.cloudfoundry.org/index.html#apps).
+
+* For more information about making requests to the Cloud Controller API's `routes` endpoints, see the [CAPI V3
+documentation](https://v3-apidocs.cloudfoundry.org/index.html#routes).

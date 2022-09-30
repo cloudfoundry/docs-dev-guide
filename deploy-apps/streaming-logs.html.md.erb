@@ -24,7 +24,7 @@ Every log line contains four fields:
 
 * Timestamp
 
-* Log type (origin code)
+* Log type, or origin code
 
 * Channel: either `OUT`, for logs emitted on `stdout`, or `ERR`, for logs emitted on `stderr`
 
@@ -61,8 +61,8 @@ For example:
 
 ### <a id='stg'></a> STG
 
-The Diego Cell or the Droplet Execution Agent emits STG logs when staging or restaging an app. These actions implement the desired state requested by the
-user. After the droplet has been uploaded, STG messages end and CELL messages begin. For STG, the instance index is almost always `0`.
+The Diego Cell or the Droplet Execution Agent emits `STG` logs when staging or restaging an app. These actions implement the desired state requested by the
+user. After the droplet has been uploaded, `STG` messages end and `CELL` messages begin. For `STG`, the instance index is almost always `0`.
 
 For example:
 
@@ -72,7 +72,7 @@ For example:
 
 ### <a id='rtr'></a> RTR
 
-The Gorouter emits RTR logs when it routes HTTP requests to the app. Gorouter messages include the app name followed by a Gorouter timestamp and selections
+The Gorouter emits `RTR` logs when it routes HTTP requests to the app. Gorouter messages include the app name followed by a Gorouter timestamp and selections
 from the HTTP request.
 
 For example:
@@ -81,7 +81,7 @@ For example:
 2016-06-14T10:51:32.51-0700 [RTR/1]      OUT www.example.com - [14/06/2016:17:51:32.459 +0000] "GET /user/ HTTP/1.1" 200 0 103455 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.123 Safari/537.30" 192.0.2.132:46359 x_forwarded_for:"198.51.100.120" x_forwarded_proto:"http" vcap_request_id:9365d216-623a-45cb-6ef6-eba495c19fa8 response_time:0.059468637 app_id:79cc58aa-3737-43ae-ac71-39a2843b5178
 </pre>
 
-#### <a id="traceid"></a> Zipkin Trace Logging
+#### <a id='traceid'></a> Zipkin Trace Logging
 
 If Zipkin trace logging is allowed in <%= vars.app_runtime_abbr %>, Gorouter access log messages contain Zipkin HTTP headers.
 
@@ -95,12 +95,12 @@ For more information about Zipkin tracing, see [Zipkin Tracking in HTTP Headers]
 
 ### <a id='lgr'></a> LGR
 
-Loggregator emits LGR to indicate problems with the logging process. Examples include `can't reach syslog drain url` and `dropped log messages due to high
-rate`.
+Loggregator emits `LGR` logs to indicate problems with the logging process. Examples include `can't reach syslog drain url` and `dropped log messages due to
+high rate`.
 
 ### <a id='app'></a> APP
 
-Every app emits logs to Loggregator.
+Every app emits `APP` logs to Loggregator.
 
 For example:
 
@@ -117,9 +117,9 @@ For example:
 2022-09-15T01:59:33.99+0000 [APP/PROC/WEB/0] OUT app instance exceeded log rate limit (16384 bytes/sec)
 </pre>
 
-### <a id="ssh"></a> SSH
+### <a id='ssh'></a> SSH
 
-The Diego Cell emits SSH logs when a user accesses an app container through SSH by using the Cloud Foundry Command Line Interface (cf CLI) `cf ssh` command.
+The Diego Cell emits `SSH` logs when a user accesses an app container through SSH by using the Cloud Foundry Command Line Interface (cf CLI) `cf ssh` command.
 
 For example:
 
@@ -131,7 +131,7 @@ For more information about the `cf ssh` command, see the [Cloud Foundry CLI Refe
 
 ### <a id='cell'></a> CELL
 
-The Diego Cell emits CELL logs when it starts or stops the app. These actions implement the desired state requested by the user. The Diego Cell also emits
+The Diego Cell emits `CELL` logs when it starts or stops the app. These actions implement the desired state requested by the user. The Diego Cell also emits
 messages when an app crashes.
 
 For example:
@@ -140,7 +140,7 @@ For example:
 2016-06-14T13:44:38.14-0700 [CELL/0]     OUT Successfully created container
 </pre>
 
-The Diego Cell also emits a CELL log message when an app instance exceeds the `max_log_lines_per_second` limit, which is configured on the platform.
+The Diego Cell also emits a `CELL` log message when an app instance exceeds the `max_log_lines_per_second` limit, which is configured on the platform.
 
 For example:
 
@@ -161,15 +161,16 @@ performance.
 
 ## <a id='container-metrics'></a> Including Container Metrics in Syslog Drains
 
-By default, app logs are included in syslog drains. Syslog Agents forward logs to configured syslog drains and Loggregator. For more information about Syslog Agents, see [Loggregator Architecture and Components](http://docs.pivotal.io/application-service/loggregator/architecture.html#components) in _Loggregator Architecture_.
+By default, app logs are included in syslog drains. Syslog Agents forward logs to configured syslog drains and Loggregator. For more information about Syslog
+Agents, see [Loggregator Architecture and Components](../../loggregator/architecture.html#components) in _Loggregator Architecture_.
 
 
-## <a id='view'></a> Viewing Logs in the Command Line Interface
+## <a id='view'></a> Viewing Logs
 
 To view logs, run the `cf logs` command. You can tail, dump, or filter log output. For more information about the  `cf logs` command, see the [Cloud Foundry
 CLI Reference Guide](https://cli.cloudfoundry.org/en-US/cf/logs.html).
 
-### <a id="tail-log"></a> Tailing Logs
+### <a id='tail-log'></a> Tailing Logs
 
 To stream Loggregator output to the terminal:
 
@@ -178,22 +179,19 @@ To stream Loggregator output to the terminal:
     ```
     cf logs APP-NAME
     ```
-    Where `APP-NAME` is the name of your app.
+    Where `APP-NAME` is the name of your app. The command returns output similar to the following example:
+    <pre class='terminal'>
+    Connected, tailing logs for app spring-music in org example / space development as admin@example.com...
 
-The command returns output similar to the following example:
+    2016-06-14T15:16:12.70-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:16:12.582 +0000] "GET / HTTP/1.1" 200 0 103455 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:27743 x_forwarded_for:"203.0.113.222" x_forwarded_proto:"http" vcap_request_id:bd3e6ed1-5dd0-43ab-70ed-5d232b577b09 response_time:0.12050583 app_id:79bb58ab-3737-43be-ac70-39a2843b5177
+    2016-06-14T15:16:20.06-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:16:20.034 +0000] "GET /test/ HTTP/1.1" 200 0 6879 "http://www.example.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:2228 x_forwarded_for:"203.0.113.222" x_forwarded_proto:"http" vcap_request_id:a31f0b1d-3827-4b8f-57e3-6f42d189f025 response_time:0.033311281 app_id:79bb58aa-3747-43be-ac70-39a3843b5178
+    2016-06-14T15:16:22.44-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:17:22.415 +0000] "GET /test5/ HTTP/1.1" 200 0 5461 "http://www.example.com/test5" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:2228 x_forwarded_for:"203.0.113.322" x_forwarded_proto:"http" vcap_request_id:5d6855a2-4a79-4432-7927-de8215f5a2c7 response_time:0.029211609 app_id:79bb58aa-3737-43bb-ac70-39a2943b5178
+        ...
+    </pre>
 
-<pre class='terminal'>
-Connected, tailing logs for app spring-music in org example / space development as admin@example.com...
+Press **Ctrl+C** or **Command+C** on your keyboard to exit the real-time stream.
 
-2016-06-14T15:16:12.70-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:16:12.582 +0000] "GET / HTTP/1.1" 200 0 103455 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:27743 x_forwarded_for:"203.0.113.222" x_forwarded_proto:"http" vcap_request_id:bd3e6ed1-5dd0-43ab-70ed-5d232b577b09 response_time:0.12050583 app_id:79bb58ab-3737-43be-ac70-39a2843b5177
-2016-06-14T15:16:20.06-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:16:20.034 +0000] "GET /test/ HTTP/1.1" 200 0 6879 "http://www.example.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:2228 x_forwarded_for:"203.0.113.222" x_forwarded_proto:"http" vcap_request_id:a31f0b1d-3827-4b8f-57e3-6f42d189f025 response_time:0.033311281 app_id:79bb58aa-3747-43be-ac70-39a3843b5178
-2016-06-14T15:16:22.44-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:17:22.415 +0000] "GET /test5/ HTTP/1.1" 200 0 5461 "http://www.example.com/test5" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:2228 x_forwarded_for:"203.0.113.322" x_forwarded_proto:"http" vcap_request_id:5d6855a2-4a79-4432-7927-de8215f5a2c7 response_time:0.029211609 app_id:79bb58aa-3737-43bb-ac70-39a2943b5178
-    ...
-</pre>
-
-Use **Ctrl-C** (^C) to exit the real-time stream.
-
-### <a id="dump-log"></a> Dumping Logs
+### <a id='dump-log'></a> Dump Logs
 
 To display all of the lines in the Loggregator buffer:
 
@@ -204,13 +202,12 @@ To display all of the lines in the Loggregator buffer:
     ```
     Where `APP-NAME` is the name of your app.
 
-### <a id="filter"></a> Filtering Logs
+### <a id='filter'></a> Filter Logs
 
 To view some subset of log output, run `cf logs APP-NAME` in conjunction with filtering commands of your choice, where `APP-NAME` is the name of your app. In
-the example below, `grep -v RTR` excludes all Gorouter logs:
+the example below, running `cf logs spring-music --recent | grep -v RTR` excludes all Gorouter logs:
 
 <pre class='terminal'>
-$ cf logs spring-music --recent | grep -v RTR
 2016-06-14T14:10:05.36-0700 [API/0]      OUT Updated app with guid cdabc604-0b73-47e1-a7d5-24af2c63f723 ({"name"=>"spring-music", "instances"=>1, "memory"=>512, "environment_json"=>"PRIVATE DATA HIDDEN"})
 2016-06-14T14:10:14.52-0700 [APP/0]      OUT - Gracefully stopping, waiting for requests to finish
 2016-06-14T14:10:14.52-0700 [CELL/0]     OUT Exit status 0

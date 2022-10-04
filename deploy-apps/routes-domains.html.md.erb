@@ -1,4 +1,4 @@
-example-org---
+---
 title: Configuring Routes and Domains
 owner: CF for VMs Networking
 ---
@@ -37,7 +37,8 @@ Developers can map many apps to a single route, resulting in load-balanced reque
 enables the blue/green rolling deployment strategy. Developers can also map an individual app to multiple routes, enabling access to the app from many URLs.
 The number of routes that can be mapped to each app is approximately 1000 (128&nbsp;KB).
 
-Routes belong to a space, and developers can only map apps to a route in the same space.
+Routes belong to a space, and developers can only map apps to a route created in or shared with the same space. For more information about sharing routes
+across spaces, see [Share a Route with Another Space](#share-route) below.
 
 <p class='note'><strong>Note:</strong> Routes are globally unique. Developers in one space cannot create a route with the same URL as developers in another
   space, regardless of which orgs control these spaces.</p>
@@ -527,6 +528,76 @@ To unmap a TCP route from an app, identify the route using the domain and port:
 <pre class="terminal">
 $ cf unmap-route tcp-app <%= vars.tcp_app_domain %> --port 60000
 </pre>
+
+### <a id='share-route'></a> Share a Route with Another Space
+
+<p class='note'><strong>Note:</strong> To follow the procedures in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see
+  the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
+
+You can share a route with another space using the `cf share-route` command. If you want to move an app to another space, you can share routes with that
+space to prevent downtime during the transition. Rather than deleting the route in the original space and re-creating the route in the new space, you can
+share the route with the new space and map it to the app running in that space.
+
+To share a route with another space:
+
+1. In a terminal window, allow route-sharing run:
+
+    ```
+    cf enable-feature-flag route_sharing
+    ```
+
+1. Run:
+
+    ```
+    cf share-route DOMAIN --hostname HOSTNAME --path PATH -s SPACE -o ORG
+    ```
+    Where:
+    * `DOMAIN` is the domain included in the route for your app.
+    * `HOSTNAME` is the hostname included in the route for your app.
+    * `PATH` is the path included in the route for your app.
+    * `SPACE` is the space with which you want to share the route for your app.
+    * `ORG` is the org containing space with which you want to share the route for your app. If the space with which you want to share the route is within the
+    same org as the space that currently contains the route, do not include the `-o` flag.
+    <br>
+    <br>
+    The following example command shares the route `example-app.example.com/example-path` with the `other-space` space in the `other-org` org:
+
+    ```
+    cf share-route example.com --hostname example-app --path example-path -s other-space -o other-org
+    ```
+
+### <a id='move-route'></a> Transfer Ownership of a Route to Another Space
+
+<p class='note'><strong>Note:</strong> To follow the procedures in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see
+  the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
+
+After sharing a route with another space, you can transfer ownership of the route to that space using the `cf move-route` command. You can use this command if
+you are unable to maintain or delete a shared route within the space with which it was shared. For information about sharing routes across spaces, see [Share
+a Route with Another Space](#share-route) above.
+
+You must run `cf move-route` from the space that originally shared the route.
+
+To move a route:
+
+1. In a terminal window, run:
+
+    ```
+    cf move-route DOMAIN --hostname HOSTNAME --path PATH -s SPACE -o ORG
+    ```
+    Where:
+    * `DOMAIN` is the domain included in the route for your app.
+    * `HOSTNAME` is the hostname included in the route for your app.
+    * `PATH` is the path included in the route for your app.
+    * `SPACE` is the space to which you want to move the route for your app.
+    * `ORG` is the org containing space to which you want to move the route for your app. If the space to which you want to move the route is within the same
+    org as the space that currently contains the route, do not include the `-o` flag.
+    <br>
+    <br>
+    The following example command moves the route `example-app.example.com/example-path` with the `other-space` space in the `other-org` org:
+
+    ```
+    cf move-route example.com --hostname example-app --path example-path -s other-space -o other-org
+    ```
 
 ### <a id='delete-route'></a> Delete a Route
 

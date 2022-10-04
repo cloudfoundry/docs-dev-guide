@@ -57,15 +57,17 @@ variable, which is `8080` on Diego. As an example, requests to `example-app.<%= 
 <p class='note'><strong>Note:</strong> Developers can use the Cloud Controller API to update the ports an app can receive requests on. For more information,
   see <a href="../custom-ports.html">Configuring Apps to Listen on Custom Ports (Beta)</a>.</p>
 
-* Requests to HTTP routes must be sent to ports 80 or 443.
+* Requests to HTTP routes must be sent to ports `80` or `443`.
+
 * Ports cannot be reserved for HTTP routes.
 
 TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an app pushed to Cloud
 Foundry listens on. `tcp.shared-domain.example.com:60000` is an example of a TCP route. Just as for HTTP routes, apps should listen to the `localhost` port
-defined by the `$PORT` environment variable, which is `8080` on Diego. As an example, requests to `tcp.shared-domain.example.com:60000` would be routed to the
+defined by the `$PORT` environment variable, which is `8080` on Diego. For example, requests to `tcp.shared-domain.example.com:60000` would be routed to the
 app container at `localhost:8080`.
 
 * Once a port is reserved for a route, it cannot be reserved for another route.
+
 * Hostname and path are not supported for TCP routes.
 
 ### <a id='internal-routes'></a> Internal Container-to-Container Routes
@@ -133,7 +135,9 @@ In <%= vars.app_runtime_abbr %>, a hostname is the label that indicates a subdom
 This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for the following URLs:
 
 * `http://example-app.<%= vars.app_domain %>`
+
 * `https://example-app.<%= vars.app_domain %>`
+
 * Any path under either of the above URLs, such as `http://example-app.<%= vars.app_domain %>/bar`
 
 #### <a id='create-route-without-hostname'></a> Create an HTTP Route without Hostname
@@ -160,7 +164,9 @@ A developer can create a route from the domain `<%= vars.private_app_domain %>` 
 If DNS has been configured correctly, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
 
 * `http://<%= vars.private_app_domain %>`
+
 * `https://<%= vars.private_app_domain %>`
+
 * Any path under either of the above URLs, such as `http://<%= vars.private_app_domain %>/foo`
 
 If there are no other routes for the domain, requests to any subdomain, such as `http://foo.<%= vars.private_app_domain %>`, fail.
@@ -185,7 +191,9 @@ Assuming DNS has been configured for this subdomain, this command instructs <%= 
 these URLs:
 
 * `http://foo.<%= vars.private_app_domain %>`
+
 * `https://foo.<%= vars.private_app_domain %>`
+
 * Any path under either of the above URLs, such as `http://foo.<%= vars.private_app_domain %>/foo`
 
 #### <a id='create-route-with-wildcard-hostname'></a> Create an HTTP Route with Wildcard Hostname
@@ -252,13 +260,15 @@ A developer can create three routes using the same hostname and domain in the sp
   OK
   </pre>
 
-The developer can then map the new routes to different apps by following the steps in [Map a Route to Your App](#map-route).
+The developer can then map the new routes to different apps by following the procedure in [Map a Route to Your App](#map-route) below.
 
 If the developer maps the first route with path `products` to the `products` app, the second route with path `orders` to the `orders` app, and the last route
 to the `storefront` app. After this:
 
 * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/products` to the `products` app.
+
 * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/orders` to the `orders` app.
+
 * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>` to the `storefront` app.
 
 <%= vars.app_runtime_abbr %> attempts to match routes with a path first, and then attempts to match host and domain.
@@ -369,11 +379,11 @@ map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) command. If the
 <p class='note'><strong>Note:</strong> Any app that is not routed to port <code>80</code> or port <code>443</code> must be explicitly mapped using the
   <code>cf map-route</code> command. Otherwise, the route is automatically mapped to port <code>443</code>.</p>
 
-Developers can create and reserve routes for later use by following the steps in [Manually Map a Route](#map-route-manually) below. Or they can map routes to
-their app immediately as part of a push by following the steps in [Map a Route with App Push](#map-route-on-push).
+You can create and reserve routes for later use by following the procedure in [Manually Map a Route](#map-route-manually) below. You can also map routes to
+their app immediately as part of a push by following the procedure in [Map a Route with App Push](#map-route-on-push) below.
 
-<p class='note'><strong>Note:</strong> Changes to route mappings are executed asynchronously. On startup, an app will be accessible at its route within a few
-  seconds. Similarly, upon mapping a new route to a running app, the app will be accessible at this route within a few seconds of the CLI exiting
+<p class='note'><strong>Note:</strong> Changes to route mappings are executed asynchronously. On startup, an app becomes accessible at its route within a few
+  seconds. Similarly, upon mapping a new route to a running app, the app becomes accessible at this route within a few seconds of the CLI exiting
   successfully.</p>
 
 #### <a id='map-route-manually'></a> Manually Map a Route
@@ -445,7 +455,7 @@ $ cf push example-app -d <%= vars.private_app_domain %> --hostname foo
 </pre>
 
 To map a TCP route during `push`, specify a TCP domain and request a random port using `--random-route`. To specify a port, push the app without a route, then
-create and map the route manually by following the steps in [Create a TCP Route with a Port](#create-route-with-port) above.
+create and map the route manually by following the procedure in [Create a TCP Route with a Port](#create-route-with-port) above.
 
 <pre class="terminal">
 $ cf push tcp-app -d <%= vars.tcp_app_domain %> --random-route
@@ -484,7 +494,7 @@ The following routes are valid for a single app:
   </tr>
 </table>
 
-The following routes are **not** valid for a single app:
+The following routes are _not_ valid for a single app:
 
 <table>
   <tr>

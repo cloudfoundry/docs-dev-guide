@@ -19,13 +19,32 @@ the cf CLI [cf map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) 
 The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the Gorouter would make
 the following matches for the two routes `example-app.<%= vars.app_domain %>` and `example-app.<%= vars.app_domain %>/products`:
 
-| Request | Matched Route |
-| ------- | ------------- |
-| http://example-app.<%= vars.app_domain %> | example-app.<%= vars.app_domain %> |
-| http://example-app.<%=vars.app_domain%>/contact | example-app.<%=vars.app_domain%> |
-| http://example-app.<%= vars.app_domain %>/products | example-app.<%= vars.app_domain %>/products |
-| http://example-app.<%= vars.app_domain %>/products/123 | example-app.<%= vars.app_domain %>/products |
-| http://products.<%= vars.app_domain %> | No match; 404 |
+<table>
+  <tr>
+    <th>Request</th>
+    <th>Matched Route</th>
+  </tr>
+  <tr>
+    <td><code>http://example-app.<%= vars.app_domain %></code></td>
+    <td><code>example-app.<%= vars.app_domain %></code></td>
+  </tr>
+  <tr>
+    <td><code>http://example-app.<%= vars.app_domain %>/contact</code></td>
+    <td><code>example-app.<%= vars.app_domain %></code></td>
+  </tr>
+  <tr>
+    <td><code>http://example-app.<%= vars.app_domain %>/products</code></td>
+    <td><code>example-app.<%= vars.app_domain %>/products</code></td>
+  </tr>
+  <tr>
+    <td><code>http://example-app.<%= vars.app_domain %>/products/123</code></td>
+    <td><code>example-app.<%= vars.app_domain %>/products</code></td>
+  </tr>
+  <tr>
+    <td><code>http://products.<%= vars.app_domain %></code></td>
+    <td>No match; <code>404</code></td>
+  </tr>
+</table>
 
 The Gorouter does not use a route to match requests until the route is mapped to an app. In the above example, `products.<%= vars.app_domain %>` may have been
 created as a route in <%= vars.app_runtime_abbr %>, but until it is mapped to an app, requests for the route receive a `404` error.
@@ -40,8 +59,8 @@ The number of routes that can be mapped to each app is approximately 1000 (128&n
 Routes belong to a space, and developers can only map apps to a route created in or shared with the same space. For more information about sharing routes
 across spaces, see [Share a Route with Another Space](#share-route) below.
 
-<p class='note'><strong>Note:</strong> Routes are globally unique. Developers in one space cannot create a route with the same URL as developers in another
-  space, regardless of which orgs control these spaces.</p>
+Routes are globally unique. Developers in one space cannot create a route with the same URL as developers in another space, regardless of which orgs control
+these spaces.
 
 ### <a id='http-vs-tcp-routes'></a> HTTP vs. TCP Routes
 
@@ -54,21 +73,16 @@ HTTP routes include a domain, an optional hostname, and an optional context path
 `example-app.<%= vars.app_domain %>/products` are all examples of HTTP routes. Apps should listen to the `localhost` port defined by the `$PORT` environment
 variable, which is `8080` on Diego. As an example, requests to `example-app.<%= vars.app_domain %>` would be routed to the app container at `localhost:8080`.
 
-<p class='note'><strong>Note:</strong> Developers can use the Cloud Controller API to update the ports an app can receive requests on. For more information,
-  see <a href="../custom-ports.html">Configuring Apps to Listen on Custom Ports (Beta)</a>.</p>
+<p class='note'><strong>Note:</strong> You can update the ports on which an app can receive requests through the Cloud Controller API. For more information, see <a href="../custom-ports.html">Configuring Apps to Listen on Custom Ports (Beta)</a>.</p>
 
-* Requests to HTTP routes must be sent to ports `80` or `443`.
+Requests to HTTP routes must be sent to ports `80` or `443`. Ports cannot be reserved for HTTP routes.
 
-* Ports cannot be reserved for HTTP routes.
+TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an app pushed to
+<%= vars.app_runtime_abbr %> listens on. `tcp.shared-domain.example.com:60000` is an example of a TCP route. Just as for HTTP routes, apps should listen to
+the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. For example, requests to `tcp.shared-domain.example.com:60000`
+would be routed to the app container at `localhost:8080`.
 
-TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an app pushed to Cloud
-Foundry listens on. `tcp.shared-domain.example.com:60000` is an example of a TCP route. Just as for HTTP routes, apps should listen to the `localhost` port
-defined by the `$PORT` environment variable, which is `8080` on Diego. For example, requests to `tcp.shared-domain.example.com:60000` would be routed to the
-app container at `localhost:8080`.
-
-* Once a port is reserved for a route, it cannot be reserved for another route.
-
-* Hostname and path are not supported for TCP routes.
+Once a port is reserved for a route, it cannot be reserved for another route. Hostname and path are not supported for TCP routes.
 
 ### <a id='internal-routes'></a> Internal Container-to-Container Routes
 
@@ -78,8 +92,7 @@ app container at `localhost:8080`.
 
 To create an internal route:
 
-1. Use the [cf map-route](#map-internal-route) command with an [internal domain](#internal-domains).
-For example:
+1. Use the [cf map-route](#map-internal-route) command with an [internal domain](#internal-domains). For example:
   <pre class="terminal">
     $ cf map-route app apps.internal --hostname app
   </pre>
@@ -273,11 +286,12 @@ to the `storefront` app. After this:
 
 <%= vars.app_runtime_abbr %> attempts to match routes with a path first, and then attempts to match host and domain.
 
-<p class='note'><strong>Note:</strong> Routes with the same domain and hostname but different paths can only be created in the same space. Private domains do
-  not have this limitation.</p>
-
-<p class='note'><strong>Note:</strong> <%= vars.app_runtime_abbr %> does not route requests for context paths to the root context of an app. Apps must serve
-  requests on the context path.</p>
+<div class='note'><strong>Notes:</strong>
+  <ul>
+    <li>Routes with the same domain and hostname but different paths can only be created in the same space. Private domains do not have this limitation.</li>
+    <li><%= vars.app_runtime_abbr %> does not route requests for context paths to the root context of an app. Apps must serve requests on the context path.</li>
+  </ul>
+</div>
 
 #### <a id='create-route-with-port'></a> Create a TCP Route with a Port
 
@@ -376,15 +390,13 @@ To check whether a route with the hostname `store` and the domain `<%= vars.app_
 For an app to receive requests to a route, developers must map the route to the app with the [cf
 map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) command. If the route does not already exist, this command creates it.
 
-<p class='note'><strong>Note:</strong> Any app that is not routed to port <code>80</code> or port <code>443</code> must be explicitly mapped using the
-  <code>cf map-route</code> command. Otherwise, the route is automatically mapped to port <code>443</code>.</p>
+<p class='note'><strong>Note:</strong> Any app that is not routed to port <code>80</code> or port <code>443</code> must be explicitly mapped using the <code>cf map-route</code> command. Otherwise, the route is automatically mapped to port <code>443</code>.</p>
 
 You can create and reserve routes for later use by following the procedure in [Manually Map a Route](#map-route-manually) below. You can also map routes to
 their app immediately as part of a push by following the procedure in [Map a Route with App Push](#map-route-on-push) below.
 
-<p class='note'><strong>Note:</strong> Changes to route mappings are executed asynchronously. On startup, an app becomes accessible at its route within a few
-  seconds. Similarly, upon mapping a new route to a running app, the app becomes accessible at this route within a few seconds of the CLI exiting
-  successfully.</p>
+Changes to route mappings are executed asynchronously. On startup, an app becomes accessible at its route within a few seconds. Similarly, upon mapping a new
+route to a running app, the app becomes accessible at this route within a few seconds of the CLI exiting successfully.
 
 #### <a id='map-route-manually'></a> Manually Map a Route
 
@@ -541,8 +553,7 @@ $ cf unmap-route tcp-app <%= vars.tcp_app_domain %> --port 60000
 
 ### <a id='share-route'></a> Share a Route with Another Space
 
-<p class='note'><strong>Note:</strong> To follow the procedures in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see
-  the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
+<p class='note'><strong>Note:</strong> To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
 
 You can share a route with another space using the `cf share-route` command. If you want to move an app to another space, you can share routes with that
 space to prevent downtime during the transition. Rather than deleting the route in the original space and re-creating the route in the new space, you can
@@ -550,7 +561,7 @@ share the route with the new space and map it to the app running in that space.
 
 To share a route with another space:
 
-1. In a terminal window, allow route-sharing run:
+1. In a terminal window, allow route sharing by running:
 
     ```
     cf enable-feature-flag route_sharing
@@ -578,18 +589,25 @@ To share a route with another space:
 
 ### <a id='move-route'></a> Transfer Ownership of a Route to Another Space
 
-<p class='note'><strong>Note:</strong> To follow the procedures in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see
-  the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
+<p class='note'><strong>Note:</strong> To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
 
 After sharing a route with another space, you can transfer ownership of the route to that space using the `cf move-route` command. You can use this command if
 you are unable to maintain or delete a shared route within the space with which it was shared. For information about sharing routes across spaces, see [Share
 a Route with Another Space](#share-route) above.
 
-You must run `cf move-route` from the space that originally shared the route.
-
 To move a route:
 
-1. In a terminal window, run:
+1. In a terminal window, target the space from which the route was originally shared by running:
+
+    ```
+    cf target -s SPACE -o ORG
+    ```
+    Where:
+    * `SPACE` is the space from which the route was originally shared.
+    * `ORG` is the org containing space from which the route was originally shared. If the space from which the route was originally shared is within the same
+    org as the space with which the route was shared, do not include the `-o` flag.
+
+1. Run:
 
     ```
     cf move-route DOMAIN --hostname HOSTNAME --path PATH -s SPACE -o ORG
@@ -699,10 +717,10 @@ org:
 <pre class="terminal">
 $ cf domains
 Getting domains in org example-org as user@example.com... OK
-name                     status   type
+name                          status   type
 <%= vars.app_domain %>        shared
 <%= vars.tcp_app_domain %>    shared   tcp
-<%= vars.private_app_domain %>       owned
+<%= vars.private_app_domain %>         owned
 </pre>
 
 This example displays three available domains: a shared HTTP domain `<%= vars.app_domain %>`, a shared TCP domain `<%= vars.tcp_app_domain %>`, and a private
@@ -772,7 +790,7 @@ Admins can configure multiple internal domains. First add a custom internal doma
 create an internal domain using the `--internal` option:
 
 <pre class="terminal">
-$ cf create-shared-domain <%=vars.app_domain%> --internal
+$ cf create-shared-domain <%= vars.app_domain %> --internal
 </pre>
 
 The `--router-group` option is not used with internal domains.
@@ -981,7 +999,7 @@ Configure the root domain to point at a subdomain such as `www`, and configure t
   <tr>
     <td>CNAME</td>
     <td>www</td>
-    <td>example-app.<%=vars.app_domain%></td>
+    <td>example-app.<%= vars.app_domain %></td>
     <td></td>
   </tr>
 </table>

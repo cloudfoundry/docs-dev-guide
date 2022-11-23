@@ -66,7 +66,6 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
 <pre class="terminal">
 $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL
 </pre>
-
 In case of the usage of the mTLS feature delivered in [CAPI release 1.141.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.141.0), you can use `-p` flag to define the credentials, filling in values as follows.
 <pre class="terminal">
 $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p {"cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}

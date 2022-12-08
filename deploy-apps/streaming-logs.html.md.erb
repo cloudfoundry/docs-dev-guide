@@ -237,6 +237,6 @@ experience for your user. The following are general tips for ordering logs:
 
 * Java app developers may want to convert stack traces into a single log entity. To simplify log ordering for Java apps, use the multi-line Java message
 workaround to convert your multi-line stack traces into a single log entity. For more information, see [Multi-line Java message
-workaround](https://github.com/cloudfoundry/loggregator-release/blob/main/docs/java-multi-line-work-around.md) on GitHub.<br><br>By modifying the Java log
+workaround]((https://github.com/cloudfoundry/loggregator-release/blob/main/docs/java-multi-line-work-around.md) on GitHub.<br><br>By modifying the Java log
 output, you can force your app to reformat stack trace messages, replacing newline characters with a token. Set your log parsing code to replace that token
 with newline characters again to display the logs properly in Kibana.

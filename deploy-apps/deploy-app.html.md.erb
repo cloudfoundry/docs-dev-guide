@@ -73,7 +73,7 @@ An app's route is the URL at which it runs. <%= vars.app_runtime_abbr %> assembl
 
 By default, <%= vars.app_runtime_abbr %> sets the hostname and domain as follows:
 
-* **Hostname:** The name of the app, as specified in the `cf push` command. If the app name contains underscores, <%= vars.app_runtime_abbr %> converts them
+* **Hostname:** The app's name, as specified in the `cf push` command. If the app name contains underscores, <%= vars.app_runtime_abbr %> converts them
 to hyphens when creating the app's route.
 
 * **Domain:** The default apps domain for your <%= vars.app_runtime_abbr %> deployment.
@@ -139,7 +139,7 @@ urls: example-app.<%= vars.app_domain %>
 
 ## <a id='custom-push'></a> Push with Custom Settings
 
-Pushing an app with with custom settings typically proceeds as follows:
+Pushing an app with custom settings typically proceeds as follows:
 
 1. [(Optional) Customize Basic App Settings](#basic-settings)
 
@@ -184,7 +184,7 @@ To customize an app's route:
 
 1. (Optional) Customize the hostname by including the `-n` flag followed by a custom hostname in your `cf push` command.
 
-1. (Optional) ustomize the domain by including the `-d` flag followed by a custom domain in your `cf push` command. The custom domain must be registered,
+1. (Optional) Customize the domain by including the `-d` flag followed by a custom domain in your `cf push` command. The custom domain must be registered,
 and mapped to the org that contains the app's target space.
 
 1. Ensure that the route is unique. The app's route must be globally unique, whether you customize its host or domain, or let it use the default route

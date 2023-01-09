@@ -317,9 +317,9 @@ The default number of instances is 1.
 
 To ensure that platform maintenance does not interrupt your app, <%= vars.recommended_by %> recommends running at least two instances.
 
-### <a id='log-rate-limit'></a> log-rate-limit
+### <a id='log-rate-limit-per-second'></a> log-rate-limit-per-second
 
-The `log-rate-limit` attribute specifies the log rate limit for all instances of an app. This attribute requires a unit of measurement: `B`, `K`, `KB`, `M`,
+The `log-rate-limit-per-second` attribute specifies the log rate limit for all instances of an app. This attribute requires a unit of measurement: `B`, `K`, `KB`, `M`,
 `MB`, `G`, or `GB`, in either uppercase or lowercase.
 
 For example:
@@ -327,12 +327,12 @@ For example:
 ```
 ---
   ...
-  log-rate-limit: 24KB
+  log-rate-limit-per-second: 24KB
 ```
 
 To configure each app instance to send an unlimited number of logs to Loggregator, specify `-1`.
 
-Your platform operator configures the default log rate limit. If you know that your app instances do not require the default log rate limit, you might want to
+The default log rate limit is 16 K. If you know that your app instances do not require the default log rate limit, you might want to
 specify a smaller limit in your manifest to conserve <%= vars.quota_resource %>.
 
 The `-l` command-line flag overrides this attribute.

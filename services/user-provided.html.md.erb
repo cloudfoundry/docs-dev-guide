@@ -53,7 +53,7 @@ User-provided service instances enable developers to stream app logs to a syslog
 Create the user-provided service instance, specifying the URL of the service with the `-l` option.
 
 <pre class="terminal">
-cf cups SERVICE_INSTANCE -l syslog://example.log-aggregator.com
+cf cups SERVICE_INSTANCE -l syslog-tls://example.log-aggregator.com:6514
 </pre>
 
 To stream app logs to the service, bind the user-provided service instance to your app.

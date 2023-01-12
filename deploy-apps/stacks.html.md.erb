@@ -28,6 +28,8 @@ A stack is a prebuilt root file system (rootfs) that supports a specific operati
 
 <%= vars.product_short %> <%= vars.current_major_version ? "v#{vars.current_major_version}" : "" %> includes support for `cflinuxfs3`. The Linux `cflinuxfs3` stack is derived from Ubuntu Bionic 18.04. For more information about supported libraries, see the [GitHub stacks page](https://github.com/cloudfoundry/cflinuxfs3/blob/main/receipt.cflinuxfs3.x86_64).
 
+The latest versions of <%= vars.product_short %> include support for `cflinuxfs4` which is derived from Ubuntu 22.04 LTS (Jammy Jellyfish). For more information, see [GitHub cflinuxfs4 stack receipt](https://github.com/cloudfoundry/cflinuxfs4/blob/main/receipt.cflinuxfs4.x86_64).
+
 <%= vars.custom_stack %>
 
 
@@ -46,9 +48,9 @@ To restage an app on a new stack, do the following:
     Getting stacks in org MY-ORG / space development as developer@example<span>.</span>com...
     OK
 
-    name            description
-    cflinuxfs2      Cloud Foundry Linux-based filesystem - Ubuntu Trusty 14.04 LTS
-    cflinuxfs3      Cloud Foundry Linux-based filesystem - Ubuntu Bionic 18.04 LTS
+    name         description
+    cflinuxfs3   Cloud Foundry Linux-based filesystem (Ubuntu 18.04)
+    cflinuxfs4   Cloud Foundry Linux-based filesystem (Ubuntu 22.04)
     </pre>
 
 1. To change your stack and restage your app, run the following command:
@@ -61,10 +63,10 @@ To restage an app on a new stack, do the following:
     - MY-APP is the name of the app.
     - STACK-NAME is the name of the new stack.
 
-    For example, to restage your app on the stack `cflinuxfs3`, run `cf push MY-APP -s cflinuxfs3`:
+    For example, to restage your app on the stack `cflinuxfs4`, run `cf push MY-APP -s cflinuxfs4`:
         <pre class='terminal'>
-        $ cf push MY-APP -s cflinuxfs3
-        Using stack cflinuxfs3...
+        $ cf push MY-APP -s cflinuxfs4
+        Using stack cflinuxfs4...
         OK
         Creating app MY-APP in org MY-ORG / space development as developer@example<span>.</span>com...
         OK
@@ -81,4 +83,4 @@ To restage an app on a new stack, do the following:
 
 ## <a id='stacks-api'></a> Stacks API
 
-For API information, see the _Stacks_ section of the [Cloud Foundry API Documentation](http://apidocs.cloudfoundry.org).
+For API information, see the _Stacks_ section of the [Cloud Foundry API Documentation](https://v3-apidocs.cloudfoundry.org/).

@@ -3,9 +3,9 @@ title: App Revisions
 owner: CAPI
 ---
 
-This topic describes app revisions and provides procedures for working with them. 
+This topic describes app revisions and provides procedures for working with them.
 
-For additional information, see [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation. 
+For additional information, see [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation.
 
 <p class="note"><strong>Note:</strong> CAPI v3 is the recommended API version for revisions. While revisions work with CAPI v2, there are several inconsistencies. For example, revision descriptions for apps with multiple processes may be inaccurate because CAPI v2 does not support apps with multiple processes. Additionally, pushing an app for the first time with revisions in CAPI v2 creates two revisions.</p>
 
@@ -17,7 +17,7 @@ A revision represents code and configuration used by an app at a specific time. 
 
 Some use cases for revisions include:
 
-* **Viewing revisions for an app:** This can help you understand how your app has changed over time. 
+* **Viewing revisions for an app:** This can help you understand how your app has changed over time.
 
 * **Rolling back to a previous revision:** This allows you to deploy a version of the app that you had running previously without needing to track that previous state yourself or have multiple apps running. When you create a deployment and reference a revision, the revision deploys as the current version of your app.
 
@@ -47,10 +47,10 @@ Each revision includes a description of what changed in your app at the time the
 
 ### <a id="droplets"></a> Droplet Storage Considerations
 
-By default, <%= vars.platform_name %> retains the five most recent staged droplets in its droplets bucket. This means that you can roll back to revisions as long as they are using one of those five droplets. Not all revisions include a change in droplet. 
+By default, <%= vars.platform_name %> retains the five most recent staged droplets in its droplets bucket. This means that you can roll back to revisions as long as they are using one of those five droplets. Not all revisions include a change in droplet.
 
-<% if vars.platform_code.include? "CF" %>
-Operators can configure <%= vars.platform_name %> to retain more droplets if necessary using the <%= vars.droplet_config %> 
+<% if vars.platform_code == "CF" %>
+Operators can configure <%= vars.platform_name %> to retain more droplets if necessary using the <%= vars.droplet_config %>
 <% end %>
 
 
@@ -58,7 +58,7 @@ Operators can configure <%= vars.platform_name %> to retain more droplets if nec
 
 This section describes how to use CAPI endpoints for viewing revisions.
 
-### <a id="list"></a> List Revisions for an App 
+### <a id="list"></a> List Revisions for an App
 
 To list revisions for an app:
 
@@ -101,14 +101,14 @@ To retrieve a revision:
 1. Run:
 
 	```
-	cf curl /v3/revisions/GUID 
+	cf curl /v3/revisions/GUID
 	```
-	Where `GUID` is the GUID of the revision. 
+	Where `GUID` is the GUID of the revision.
 
 
 ## <a id="push-app"></a> Roll Back to a Previous Revision
 
-To roll back to a previous revision: 
+To roll back to a previous revision:
 
 1. Retrieve the GUID of the app by running:
 
@@ -117,7 +117,7 @@ To roll back to a previous revision:
 	```
 	Where `APP-NAME` is the name of your app.
 
-1. Retrieve the GUID of the revision. For more information, see [Retrieve a Revision](#get). 
+1. Retrieve the GUID of the revision. For more information, see [Retrieve a Revision](#get).
 
 1. Create a deployment using CAPI by running:
 
@@ -138,16 +138,16 @@ To roll back to a previous revision:
 	}'
 	```
 	Where:
-	* `REVISION-GUID` is the GUID of the revision. 
-	* `APP-GUID` is the GUID of the app. 
+	* `REVISION-GUID` is the GUID of the revision.
+	* `APP-GUID` is the GUID of the app.
 
 
 ## <a id="metadata"></a> Add Metadata to a Revision
 
-<% if vars.platform_code.include? "CF" %>
-To add metadata to a revision, see [Add Metadata to an Object](../adminguide/metadata.html). 
+<% if vars.platform_code == "CF" %>
+To add metadata to a revision, see [Add Metadata to an Object](../adminguide/metadata.html).
 <% else %>
-To add metadata to a revision, see [Add Metadata to an Object](https://docs.cloudfoundry.org/adminguide/metadata.html). 
+To add metadata to a revision, see [Add Metadata to an Object](https://docs.cloudfoundry.org/adminguide/metadata.html).
 <% end %>
 
 
@@ -169,4 +169,4 @@ To disable revisions for an app:
 	```
 	cf curl /v3/apps/GUID/features/revisions -X PATCH -d '{ "enabled": false }'
 	```
-	Where `GUID` is the GUID you retrieved in the previous step. 
+	Where `GUID` is the GUID you retrieved in the previous step.

@@ -5,9 +5,7 @@ owner:
   - Release Integration
 ---
 
-<% $this_topic = 'troubleshoot-app-health' %>
-
-See this topic for help diagnosing and resolving common issues when you deploy and run apps on <%= vars.platform_name %>.
+This topic describes how to diagnose and resolve common issues when you deploy and run apps on <%= vars.app_runtime_first %>.
 
 
 ## <a id='scenarios'></a> Common Issues
@@ -67,11 +65,11 @@ If you do not see a buildpack for your app, you may still be able to push your a
 
 Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
 
-If you push multiple apps using a manifest and one fails to deploy, <%= vars.platform_name %> does not attempt to push apps specified after the app that failed. 
+If you push multiple apps using a manifest and one fails to deploy, <%= vars.platform_name %> does not attempt to push apps specified after the app that failed.
 
 Common reasons deploying an app fails include:
 
-* The app does not successfully bind to a service, such as a PostgreSQL or MongoDB. The service may not exist, may be down, or may reject the binding.  
+* The app does not successfully bind to a service, such as a PostgreSQL or MongoDB. The service may not exist, may be down, or may reject the binding.
 
 * The app does not have a unique URL. See [App Requires Unique URL](#unique_url).
 

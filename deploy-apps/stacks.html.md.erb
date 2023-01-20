@@ -12,7 +12,7 @@ This topic explains how to restage apps on a new stack. It also provides a descr
 
 To restage a Windows app on a new Windows stack, see [Changing Windows Stacks](./windows-stacks.html).
 
-<% if vars.platform_code.include? "CF" %>
+<% if vars.platform_code == 'CF' %>
 You can also use the Stack Auditor plugin for the Cloud Foundry Command Line Interface (cf CLI) when changing stacks. See [Using the Stack Auditor Plugin](../../adminguide/stack-auditor.html).
 <% else %>
 <% end %>

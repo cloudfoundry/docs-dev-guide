@@ -10,9 +10,9 @@ owner: CF for VMs Networking
   <li><a href="#enable">Enable Container-to-Container Networking</a></li>
   <li><a href="#logging">Manage Logging for Container-to-Container Networking</a></li>
   <% end %>
-  <% if vars.platform_code.include? "CF" %>
+  <% if vars.platform_code == "CF" %>
   <li><a href="#overlay">Configure the Overlay Network</a></li>
-  <% end %>  
+  <% end %>
   <li><a href="#create-policies">Create and Manage Networking Policies</a>
     <ul>
       <li><a href="#prereq">Prerequisites</a></li>
@@ -24,7 +24,7 @@ owner: CF for VMs Networking
       <li><a href="#policy-quotas">Manage Network Policy Quotas</a></li>
     </ul>
     <li><a href="#discovery">App Service Discovery</a>
-      <% if vars.platform_code.include? "CF" %>
+      <% if vars.platform_code == "CF" %>
       <ul>
         <li><a href="#enable-discovery">Enable App Service Discovery</a></li>
       </ul>
@@ -47,12 +47,12 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% if vars.platform_code == 'CF' %>
 <%= partial 'c2c_oss_overlay' %>
 <% else %>
-<% if vars.platform_code.include? "CF" %>
+<% if vars.platform_code == "CF" %>
 <%= partial '/pcf/core/2-7/c2c_overlay' %>
 <% end %>
 <% end %>
 
-<% if vars.platform_code == 'CF' %>
+<% if vars.platform_code == "CF" %>
 <%= partial 'c2c_oss_logging' %>
 <% else %>
 <% end %>
@@ -72,7 +72,7 @@ $ cf version
 </pre>
 For more information about updating the cf CLI, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
 
-<% if vars.platform_code.include? "CF" %>
+<% if vars.platform_code == "CF" %>
 
 ### <a name="grant"></a> Grant Permissions
 
@@ -115,8 +115,8 @@ Replace the placeholders in the above command as follows:
 
 * `SOURCE_APP` is the name of the app that sends traffic.
 * `DESTINATION_APP` is the name of the app that will receive traffic.
-* `DESTINATION_SPACE_NAME` is the space of the destination app. The default is the targeted space. 
-* `DESTINATION_ORG_NAME` is the org of the destination app. The default is the targeted org. 
+* `DESTINATION_SPACE_NAME` is the space of the destination app. The default is the targeted space.
+* `DESTINATION_ORG_NAME` is the org of the destination app. The default is the targeted org.
 * `PROTOCOL` is one of the following: `tcp` or `udp`.
 * `RANGE` are the ports at which to connect to the destination app. The allowed range is from `1` to `65535`. You can specify a single port, such as `8080`, or a range of ports, such as `8080-8090`.
 
@@ -143,14 +143,14 @@ You can list all the policies in your space, or just the policies for which a si
     $ cf network-policies
     </pre>
 
-+ To list the policies for an app, run `cf network-policies --source MY-APP`. Replace `MY-APP` with the name of your app. 
++ To list the policies for an app, run `cf network-policies --source MY-APP`. Replace `MY-APP` with the name of your app.
 
     <pre class="terminal">
     $ cf network-policies --source example-app
     </pre>
 
     The following example command lists policies for the app `frontend`:
-    
+
     <pre class="terminal">
     $ cf network-policies --source frontend
     Listing network policies in org my-org / space dev as admin...
@@ -170,8 +170,8 @@ Replace the placeholders in the above command to match an existing policy, as fo
 
 * `SOURCE_APP` is the name of the app that sends traffic.
 * `DESTINATION_APP` is the name of the app that receives traffic.
-* `DESTINATION_SPACE_NAME` is the space of the destination app. The default is the targeted space. 
-* `DESTINATION_ORG_NAME` is the org of the destination app. The default is the targeted org. 
+* `DESTINATION_SPACE_NAME` is the space of the destination app. The default is the targeted space.
+* `DESTINATION_ORG_NAME` is the org of the destination app. The default is the targeted org.
 * `PROTOCOL` is either `tcp` or `udp`.
 * `PORTS` are the ports connecting the apps. The allowed range is from `1` to `65535`. You can specify a single port, such as `8080`, or a range of ports, such as `8080-8090`.
 
@@ -196,7 +196,7 @@ To disable network policy enforcement between apps, do the following:
    </pre>
    Where:
    - `MY-ENV` is the alias you set for your BOSH Director.
-   - `MY-DEPLOYMENT` is your deployment name. You can see your deployment name by running `bosh -e MY-ENV deployments`. 
+   - `MY-DEPLOYMENT` is your deployment name. You can see your deployment name by running `bosh -e MY-ENV deployments`.
 
 1. To download and save the current BOSH manifest, run the following command:
    <pre>
@@ -220,7 +220,7 @@ To disable network policy enforcement between apps, do the following:
 
 ## <a name="discovery"></a> App Service Discovery
 
-With app service discovery, apps pushed to <%= vars.app_runtime_abbr %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front end apps to easily connect with back end apps. 
+With app service discovery, apps pushed to <%= vars.app_runtime_abbr %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front end apps to easily connect with back end apps.
 
 <%= vars.internal_domain_config %>
 

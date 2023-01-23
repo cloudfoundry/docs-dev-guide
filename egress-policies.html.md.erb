@@ -11,8 +11,6 @@ The feature this topic covers is removed.
 
 <% else %>
 
-<%= partial(vars.product_name_lc + "/topic-does-not-exist", :locals => { :topic  => "Administering Dynamic Egress Policies", :closest_available_version => "2.10" })  %>
+<%= partial vars.product_name_lc + "/topic-does-not-exist", :locals => {:topic => "Administering Dynamic Egress Policies", :closest_available_version => "2.10" } %>
 
 <% end %>
-
-

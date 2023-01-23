@@ -21,7 +21,7 @@ To push apps with Docker, you need:
   * The total size of the Docker image file system layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2048&nbsp;MB per app.
     <p class="note"><strong>Note:</strong> If the total size of the Docker image file system layers exceeds the disk quota, the app instances do not start.</p>
 
-* The location of the Docker image on Docker Hub or another Docker registry. <% vars.docker_auth1 %>
+* The location of the Docker image on Docker Hub or another Docker registry. <%= vars.docker_auth1 %>
 
 * A registry that supports the Docker Registry HTTP API V2 and presents a valid certificate for HTTPS traffic. For more information, see the [Docker Registry HTTP API V2](https://docs.docker.com/registry/spec/api/) spec in the Docker documentation.
 

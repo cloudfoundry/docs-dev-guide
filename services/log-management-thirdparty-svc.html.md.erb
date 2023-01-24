@@ -60,11 +60,11 @@ From your Papertrail account:
 
 1. Select **I use Cloud Foundry**, enter a name, and click **Save**.
 
-    <%= image_tag("../images/third-party-logs/papertrail-04.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/papertrail-04.png)
 
 1. After the system is recorded, the URL, with the port, is displayed. Record the URL and port for later use..
 
-    <%= image_tag("../images/third-party-logs/papertrail-05.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/papertrail-05.png)
 
 1. Create the log drain service in Cloud Foundry.
 
@@ -88,7 +88,7 @@ From your Papertrail account:
 
 1. When Papertrail starts receiving log entries, the view automatically changes to show the logs viewing page.
 
-    <%= image_tag("../images/third-party-logs/papertrail-11.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/papertrail-11.png)
 
 ## <a id='splunk'></a>Splunk ##
 
@@ -100,19 +100,19 @@ From your Splunk Storm account:
 
 1. Click **Add project**. On the dialog box that appears, enter the **Project name** and select the **Project time zone**. Click **Continue**.
 
-    <%= image_tag("../images/third-party-logs/splunkstorm-03.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/splunkstorm-03.png)
 
 2. In **Network data**, create a new input. Under **Network data**, click **Select**. Data is sent directly from your servers, and accepted data types include syslog, syslog-ng, snare, and netcat.
 
-    <%= image_tag("../images/third-party-logs/splunkstorm-04.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/splunkstorm-04.png)
 
 3. Under **Add network data**, click **Authorize your IP address** and select **Manually**. Next, enter the external IP addresses your Cloud Foundry administrator assigns to outbound traffic.
 
-    <%= image_tag("../images/third-party-logs/splunkstorm-05.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/splunkstorm-05.png)
 
 4. Record the host and port provided for TCP input for later use.
 
-    <%= image_tag("../images/third-party-logs/splunkstorm-06.png", :alt => "The Authorized network inputs pane shows the ports the data will be sent to for this project only." ) %>
+    ![alt-text="The Authorized network inputs pane shows the ports the data will be sent to for this project only."](../images/third-party-logs/splunkstorm-06.png)
 
 5. Using the cf CLI, create the log drain service in Cloud Foundry using the TCP host and port you recorded. Then you will bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs will begin to flow.
 
@@ -124,48 +124,48 @@ From your Splunk Storm account:
 
 6. When events begin to appear, click **Data Summary**. The **Data Summary** button appears in the **What to Search** section.
 
-    <%= image_tag("../images/third-party-logs/splunkstorm-09.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/splunkstorm-09.png)
 
 7. In the **Data Summary** table, click the **loggregator** link to view all incoming log entries from Cloud Foundry.
 
-    <%= image_tag("../images/third-party-logs/splunkstorm-10.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/splunkstorm-10.png)
 
 ## <a id='sumologic'></a>SumoLogic ##
 
-<p class="note"><strong>Note</strong>: SumoLogic uses HTTPS for communication.  HTTPS is supported in Cloud Foundry v158 and later.</p>
+<p class="note"><strong>Note</strong>: SumoLogic uses HTTPS for communication. HTTPS is supported in Cloud Foundry v158 and later.</p>
 
 In your SumoLogic account:
 
 1. Beside **Manage Collectors and Sources**, click the **Add Collector** link.
 
-    <%= image_tag("../images/third-party-logs/sumologic-02.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/sumologic-02.png)
 
-1. Under **Add Collector**, select **Hosted Collector** and fill in the details.
+2. Under **Add Collector**, select **Hosted Collector** and fill in the details.
   1. In **Name**, enter 'Cloud Foundry'.
   2. In **Description**, enter the purpose of the new collector.
   3. In **Category**, you can enter the source category, if desired. The collector will set the source category to this value unless it is overwritten by the source metadata.
 
-    <%= image_tag("../images/third-party-logs/sumologic-03a.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/sumologic-03a.png)
 
-    <%= image_tag("../images/third-party-logs/sumologic-03b.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/sumologic-03b.png)
 
-2. In the **Manage Collectors and Sources** table, in the row for the new collector, click the **Add Source** link.
+3. In the **Manage Collectors and Sources** table, in the row for the new collector, click the **Add Source** link.
 
-    <%= image_tag("../images/third-party-logs/sumologic-04.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/sumologic-04.png)
 
-3. Under **Select a type of Source**, select **HTTP** and fill in the details. An HTTPS URL will be provided.
+4. Under **Select a type of Source**, select **HTTP** and fill in the details. An HTTPS URL will be provided.
   1. In **Name**, leave the entry, 'CloudFoundry'.
   2. In **Description**, enter a description of the source.
   3. In **Source Host**, enter the host name for the system from which the log files are being collected.
   4. In **Source Category**, enter the log category metadata. You can use this later in queries.
 
-    <%= image_tag("../images/third-party-logs/sumologic-05.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/sumologic-05.png)
 
-4. When the source has been created, a URL will be displayed. You can also view the URL by clicking the **Show URL** link beside the newly created source in the **Manage Collectors and Sources** table. Record the URL for the next step.
+5. When the source has been created, a URL will be displayed. You can also view the URL by clicking the **Show URL** link beside the newly created source in the **Manage Collectors and Sources** table. Record the URL for the next step.
 
-    <%= image_tag("../images/third-party-logs/sumologic-06a.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/sumologic-06a.png)
 
-5. Using the cf CLI, create the log drain service in Cloud Foundry using the source URL you just recorded. Then you will bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs will begin to flow.
+6. Using the cf CLI, create the log drain service in Cloud Foundry using the source URL you just recorded. Then you will bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs will begin to flow.
 
     <pre class='terminal'>
     $ cf cups my-logs -l HTTPS-SOURCE-URL
@@ -173,13 +173,13 @@ In your SumoLogic account:
     $ cf restage APPLICATION-NAME
     </pre>
 
-6. In the SumoLogic dashboard, click **Manage**, then click **Status** to see a view of the log messages received.
+7. In the SumoLogic dashboard, click **Manage**, then click **Status** to see a view of the log messages received.
 
-    <%= image_tag("../images/third-party-logs/sumologic-09.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/sumologic-09.png)
 
-1. Click **Search**. Place the cursor in the search box, then press **Enter** to submit an empty search query.
+8. Click **Search**. Place the cursor in the search box, then press **Enter** to submit an empty search query.
 
-    <%= image_tag("../images/third-party-logs/sumologic-10.png", :alt => "" ) %>
+    ![alt-text=""](../images/third-party-logs/sumologic-10.png)
 
 ## <a id='logsene'></a>Logsene ##
 

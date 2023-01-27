@@ -215,7 +215,7 @@ To disable network policy enforcement between apps, do the following:
 
 <% else %>
 
-<%= partial '/pcf/core/2-12/disable_network_policy_enforcement' %>
+<%= partial '/pcf/core/#{vars.current_major_version}/disable_network_policy_enforcement' %>
 
 <% end %>
 

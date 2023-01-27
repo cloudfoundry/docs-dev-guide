@@ -49,7 +49,7 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% else %>
 
 <% if vars.platform_code == "CF" %>
-<%= partial '/pcf/core/2-7/c2c_overlay' %>
+<%= partial "/pcf/core/#{vars.current_major_version}/c2c_overlay" %>
 <% end %>
 <% end %>
 

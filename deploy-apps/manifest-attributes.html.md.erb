@@ -271,6 +271,7 @@ For example:
 ### <a id='health-check-invocation-timeout'></a> health-check-invocation-timeout
 
 The `health-check-invocation-timeout` attribute configures the timeout in seconds for individual health check requests for HTTP and port health checks.
+The  attribute defaults to 1.
 
 For example:
 
@@ -282,7 +283,7 @@ For example:
 
 To override this attribute, run `cf set-health-check APP-NAME http --invocation-timeout 10`, where `APP-NAME` is the name of your app.
 
-Within the manifest, the health check timeout is controlled by the `timeout` attribute.
+Within the manifest, the health check timeout is controlled by the `health-check-invocation-timeout` attribute.
 
 ### <a id='health-check-type'></a> health-check-type
 

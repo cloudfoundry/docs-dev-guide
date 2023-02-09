@@ -57,7 +57,8 @@ If <%= vars.platform_name %> cannot identify an appropriate buildpack for your a
 
 You can view what buildpacks are available with the `cf buildpacks` command.
 
-If you see a buildpack that you believe should support your app, see the [buildpack documentation](../../buildpacks/) for details about how that buildpack detects apps it supports.
+If you see a buildpack that you believe should support your app, see the [buildpack documentation](../../buildpacks/index.html) for details about how that buildpack
+detects apps it supports.
 
 If you do not see a buildpack for your app, you may still be able to push your app with a [custom buildpack](../../buildpacks/custom.html) using `cf push -b` with a path to your buildpack.
 
@@ -106,9 +107,11 @@ If this happens:
 * **Make sure your app code uses the `PORT` environment variable.** Your app may be failing because it is listening on the wrong port. Instead of hard coding the port on which your app listens, use the `PORT` environment variable.
 
 For example, this Ruby snippet assigns the port value to the `listen_here` variable:
-     `listen_here = ENV['PORT']`
 
-For more examples specific to your app framework, see the appropriate [buildpacks documentation](../../buildpacks/) for your app's language.
+    ```
+    listen_here = ENV['PORT']
+    ```
+    For more examples specific to your app framework, see the appropriate [buildpack documentation](../../buildpacks/index.html) for your app's language.
 
 * **Make sure your app adheres to the principles of the [Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an App](./prepare-to-deploy.html).** These texts explain how to prevent situations where your app builds locally but fails to build in the cloud.
 

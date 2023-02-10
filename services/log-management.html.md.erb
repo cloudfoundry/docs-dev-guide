@@ -68,6 +68,11 @@ $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL
 </pre>
 In case of the usage of the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use `-p` flag to define the credentials, filling in values as follows.
 <pre class="terminal">
+$ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
+</pre>
+
+Additionally, a certificate authority can be provided in the credentials in case a self-signed certificate is to be used.
+<pre class="terminal">
 $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----", "ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----"}'
 </pre>
 

@@ -49,7 +49,7 @@ Each revision includes a description of what changed in your app at the time the
 
 By default, <%= vars.platform_name %> retains the five most recent staged droplets in its droplets bucket. This means that you can roll back to revisions as long as they are using one of those five droplets. Not all revisions include a change in droplet.
 
-<% if vars.platform_code == "CF" %>
+<% if vars.platform_code == "CF" || vars.platform_code == "PCF" %>
 Operators can configure <%= vars.platform_name %> to retain more droplets if necessary using the <%= vars.droplet_config %>
 <% end %>
 
@@ -144,7 +144,7 @@ To roll back to a previous revision:
 
 ## <a id="metadata"></a> Add Metadata to a Revision
 
-<% if vars.platform_code == "CF" %>
+<% if vars.platform_code == "CF" || vars.platform_code == "PCF" %>
 To add metadata to a revision, see [Add Metadata to an Object](../adminguide/metadata.html).
 <% else %>
 To add metadata to a revision, see [Add Metadata to an Object](https://docs.cloudfoundry.org/adminguide/metadata.html).

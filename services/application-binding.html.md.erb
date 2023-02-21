@@ -126,13 +126,13 @@ To update your service credentials:
 
   1. [Unbind the service instance](#unbind) using the credentials you are updating with the following command:
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
     </pre>
 
   1. [Bind the service instance](#bind) with the following command. This adds your credentials to the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
     </pre>
 
@@ -144,25 +144,25 @@ To update your service credentials without experiencing app downtime:
 
   1. Start a blue-green update of the app. For more information, see [Using Blue-Green Deployment to Reduce Downtime and Risk](../deploy-apps/blue-green.html). Push the "Green" version of the app with the `--no-start` parameter to prevent the app from starting right away:
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf push YOUR-APP --no-start
     </pre>
 
   1. Bind the service instances to the newly-deployed "Green" app with the following command:
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
     </pre>
 
   1. Start the "Green" app with `cf start`:
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf start YOUR-APP
     </pre>
 
   1. Unbind the service instances from the `Blue` app:
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
     </pre>
 

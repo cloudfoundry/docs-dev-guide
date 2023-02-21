@@ -24,29 +24,29 @@ From your Logit.io dashboard:
 
 1. Create the log drain service in Cloud Foundry.
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf cups logit-ssl-drain -l syslog-tls://ENDPOINT:PORT
     </pre>
     or
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf cups logit-drain -l syslog://ENDPOINT:PORT
     </pre>
 
 1. Bind the service to an app.
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf bind-service YOUR-CF-APP-NAME logit-ssl-drain
     </pre>
     or
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf bind-service YOUR-CF-APP-NAME logit-drain
     </pre>
 
 1. Restage or push the app using one of the following commands:
 
-    <pre class='terminal'>$ cf restage YOUR-CF-APP-NAME</pre>
+    <pre class="terminal">$ cf restage YOUR-CF-APP-NAME</pre>
 
-    <pre class='terminal'>$ cf push YOUR-CF-APP-NAME</pre>
+    <pre class="terminal">$ cf push YOUR-CF-APP-NAME</pre>
 
     After a short delay, logs begin to appear in Kibana.
 
@@ -68,19 +68,19 @@ From your Papertrail account:
 
 1. Create the log drain service in Cloud Foundry.
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf cups my-logs -l syslog-tls://logs.papertrailapp.com:PORT
     </pre>
 
 1. Bind the service to an app.
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf bind-service APPLICATION-NAME my-logs
     </pre>
 
 1. Restage the app.
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf restage APPLICATION-NAME
     </pre>
 
@@ -116,7 +116,7 @@ From your Splunk Storm account:
 
 5. Using the cf CLI, create the log drain service in Cloud Foundry using the TCP host and port you recorded. Then you will bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs will begin to flow.
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf cups my-logs -l syslog://HOST:PORT
     $ cf bind-service APPLICATION-NAME my-logs
     $ cf restage APPLICATION-NAME
@@ -167,7 +167,7 @@ In your SumoLogic account:
 
 6. Using the cf CLI, create the log drain service in Cloud Foundry using the source URL you just recorded. Then you will bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs will begin to flow.
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf cups my-logs -l HTTPS-SOURCE-URL
     $ cf bind-service APPLICATION-NAME my-logs
     $ cf restage APPLICATION-NAME
@@ -191,7 +191,7 @@ In your Sematext account:
 
 2. Using the cf CLI, create the log drain service using the source URL displayed. Then you will bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs will begin to flow. The logs will appear in the [Logsene UI](https://apps.sematext.com/users-web/services.do#logsene).
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf cups logsene-log-drain -l https://logsene-cf-receiver.sematext.com/YOUR_LOGSENE_TOKEN
     $ cf bind-service YOUR-CF-APP-NAME logsene-log-drain
     $ cf restage APPLICATION-NAME

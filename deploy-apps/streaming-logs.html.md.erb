@@ -60,7 +60,7 @@ actions that the Cloud Controller takes in response.
 
 For example:
 
-<pre class='terminal'>
+<pre class="terminal">
 2016-06-14T14:10:05.36-0700 [API/0]      OUT Updated app with guid cdabc600-0b73-48e1-b7d2-26af2c63f933 ({"name"=>"spring-music", "instances"=>1, "memory"=>512, "environment_json"=>"PRIVATE DATA HIDDEN"})
 </pre>
 
@@ -71,7 +71,7 @@ user. After the droplet has been uploaded, `STG` messages end and `CELL` message
 
 For example:
 
-<pre class='terminal'>
+<pre class="terminal">
 2016-06-14T14:10:27.91-0700 [STG/0]      OUT Staging...
 </pre>
 
@@ -82,7 +82,7 @@ from the HTTP request.
 
 For example:
 
-<pre class='terminal'>
+<pre class="terminal">
 2016-06-14T10:51:32.51-0700 [RTR/1]      OUT www.example.com - [14/06/2016:17:51:32.459 +0000] "GET /user/ HTTP/1.1" 200 0 103455 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.123 Safari/537.30" 192.0.2.132:46359 x_forwarded_for:"198.51.100.120" x_forwarded_proto:"http" vcap_request_id:9365d216-623a-45cb-6ef6-eba495c19fa8 response_time:0.059468637 app_id:79cc58aa-3737-43ae-ac71-39a2843b5178
 </pre>
 
@@ -92,7 +92,7 @@ If Zipkin trace logging is allowed in <%= vars.app_runtime_abbr %>, Gorouter acc
 
 The following is an example access log message containing Zipkin headers:
 
-<pre class='terminal'>
+<pre class="terminal">
 2016-11-23T16:04:01.49-0800 [RTR/0]      OUT www.example.com - [24/11/2016:00:04:01.227 +0000] "GET / HTTP/1.1" 200 0 109 "-" "curl/7.43.0" 10.0.2.150:4070 10.0.48.66:60815 x_forwarded_for:"198.51.100.120" x_forwarded_proto:"http" vcap_request_id:87f9d899-c7a4-46cd-7b76-4ec35ce9921b response_time:0.263000966 app_id:8e5d6451-b369-4423-bce8-3a7a9e479dbb app_index:0 x_b3_traceid:"2d5610bf5e0f7241" x_b3_spanid:"2d5610bf5e0f7241" x_b3_parentspanid:"-"
 </pre>
 
@@ -109,7 +109,7 @@ Every app emits `APP` logs to Loggregator.
 
 For example:
 
-<pre class='terminal'>
+<pre class="terminal">
 2016-06-14T14:10:15.18-0700 [APP/0]      OUT Exit status 0
 </pre>
 
@@ -118,7 +118,7 @@ exceeded.
 
 For example:
 
-<pre class='terminal'>
+<pre class="terminal">
 2022-09-15T01:59:33.99+0000 [APP/PROC/WEB/0] OUT app instance exceeded log rate limit (16384 bytes/sec)
 </pre>
 
@@ -128,7 +128,7 @@ The Diego Cell emits `SSH` logs when a user accesses an app container through SS
 
 For example:
 
-<pre class='terminal'>
+<pre class="terminal">
 2016-06-14T14:16:11.49-0700 [SSH/0]      OUT Successful remote access by 192.0.2.33:7856
 </pre>
 
@@ -141,7 +141,7 @@ messages when an app crashes.
 
 For example:
 
-<pre class='terminal'>
+<pre class="terminal">
 2016-06-14T13:44:38.14-0700 [CELL/0]     OUT Successfully created container
 </pre>
 
@@ -149,7 +149,7 @@ The Diego Cell also emits a `CELL` log message when an app instance exceeds the 
 
 For example:
 
-<pre class='terminal'>
+<pre class="terminal">
 2020-01-13T16:12:25.86-0800 [APP/PROC/WEB/0] OUT app instance exceeded log rate limit (100 log-lines/sec) set by platform operator
 </pre>
 
@@ -185,7 +185,7 @@ To stream Loggregator output to the terminal:
     cf logs APP-NAME
     ```
     Where `APP-NAME` is the name of your app. The command returns output similar to the following example:
-    <pre class='terminal'>
+    <pre class="terminal">
     Connected, tailing logs for app spring-music in org example / space development as admin@example.com...
 
     2016-06-14T15:16:12.70-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:16:12.582 +0000] "GET / HTTP/1.1" 200 0 103455 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:27743 x_forwarded_for:"203.0.113.222" x_forwarded_proto:"http" vcap_request_id:bd3e6ed1-5dd0-43ab-70ed-5d232b577b09 response_time:0.12050583 app_id:79bb58ab-3737-43be-ac70-39a2843b5177
@@ -212,7 +212,7 @@ To display all of the lines in the Loggregator buffer:
 To view some subset of log output, run `cf logs APP-NAME` in conjunction with filtering commands of your choice, where `APP-NAME` is the name of your app. In
 the example below, running `cf logs spring-music --recent | grep -v RTR` excludes all Gorouter logs:
 
-<pre class='terminal'>
+<pre class="terminal">
 2016-06-14T14:10:05.36-0700 [API/0]      OUT Updated app with guid cdabc604-0b73-47e1-a7d5-24af2c63f723 ({"name"=>"spring-music", "instances"=>1, "memory"=>512, "environment_json"=>"PRIVATE DATA HIDDEN"})
 2016-06-14T14:10:14.52-0700 [APP/0]      OUT - Gracefully stopping, waiting for requests to finish
 2016-06-14T14:10:14.52-0700 [CELL/0]     OUT Exit status 0

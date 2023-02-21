@@ -7,7 +7,7 @@ This topic describes how to drain logs from Cloud Foundry to a third-party log m
 
 Cloud Foundry aggregates logs for all instances of your apps as well as for requests made to your apps through internal components of Cloud Foundry. For example, when the Cloud Foundry Router forwards a request to an app, the Router records that event in the log stream for that app. Run the following command to access the log stream for an app in the terminal:
 
-<pre class='terminal'>$ cf logs YOUR-APP-NAME</pre>
+<pre class="terminal">$ cf logs YOUR-APP-NAME</pre>
 
 If you want to persist more than the limited amount of logging information that Cloud Foundry can buffer, drain these logs to a log management service.
 
@@ -20,7 +20,7 @@ For more information about the systems responsible for log aggregation and strea
 
 Your Cloud Foundry marketplace may offer one or more log management services. To use one of these services, create an instance of the service and bind it to your app with the following commands:
 
-<pre class='terminal'>
+<pre class="terminal">
 $ cf create-service SERVICE PLAN SERVICE-INSTANCE
 $ cf bind-service YOUR-APP YOUR-LOG-STORE
 </pre>

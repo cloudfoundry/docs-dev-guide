@@ -118,7 +118,7 @@ To run a task on an app with cf CLI v6:
     cf run-task example-app "bin/rails db:migrate" --name example-task
     ```
     When the task runs successfully, you see terminal output similar to the following example:
-  	<pre class='terminal'>
+  	<pre class="terminal">
   	Creating task for app example-app in org example-org / space development as admin@example.org...
   	OK
   	Task 1 has been submitted successfully for execution.
@@ -134,7 +134,7 @@ To run a task on an app with cf CLI v6:
     <br>
   	<br>
     If a task succeeds, you see logs similar to the following example:
-  	<pre class='terminal'>
+  	<pre class="terminal">
   	2017-01-03T15:58:06.57-0800 [APP/TASK/my-task/0]OUT Creating container
   	2017-01-03T15:58:08.45-0800 [APP/TASK/my-task/0]OUT Successfully created container
   	2017-01-03T15:58:13.32-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.322258 #7] DEBUG -- :    (15.9ms)  CREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)
@@ -149,7 +149,7 @@ To run a task on an app with cf CLI v6:
   	2017-01-03T15:58:15.65-0800 [APP/TASK/my-task/0]OUT Successfully destroyed container
   	</pre>
   	If a task fails, you see logs similar to the following example:
-  	<pre class='terminal'>
+  	<pre class="terminal">
   	2016-12-14T11:09:26.09-0800 [APP/TASK/my-task/0]OUT Creating container
   	2016-12-14T11:09:28.43-0800 [APP/TASK/my-task/0]OUT Successfully created container
   	2016-12-14T11:09:28.85-0800 [APP/TASK/my-task/0]ERR bash: bin/rails: command not found
@@ -189,7 +189,7 @@ documentation](https://v3-apidocs.cloudfoundry.org/version/3.78.0/index.html#the
     cf run-task example-app --name example-task
     ```
     When the task runs successfully, you see terminal output similar to the following example:
-    <pre class='terminal'>
+    <pre class="terminal">
     Creating task for app example-app in org example-org / space development as admin@example.org...
     OK
     Task 1 has been submitted successfully for execution.
@@ -213,7 +213,7 @@ To list the tasks for a given app:
     cf tasks APP-NAME
     ```
     Where `APP-NAME` is the name of your app. The above command returns output similar to the following example:
-    <pre class='terminal'>
+    <pre class="terminal">
     Getting tasks for app example-app in org example-org / space development as admin@example.org...
     OK
 
@@ -248,7 +248,7 @@ To cancel a running task:
     <br>
     <br>
     The above command returns output similar to the following example:
-    <pre class='terminal'>
+    <pre class="terminal">
     Terminating task 2 of app example-app in org example-org / space development as admin@example.org...
     OK
     </pre>

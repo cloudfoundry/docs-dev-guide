@@ -121,26 +121,28 @@ To roll back to a previous revision:
 
 1. Create a deployment using CAPI by running:
 
-	```
-	cf curl v3/deployments \
-	-X POST \
-	-d '{
-	  "revision": {
-	    "guid": "REVISION-GUID"
-	  },
-	  "relationships": {
-	    "app": {
-	      "data": {
-	        "guid": "APP-GUID"
-	      }
-	    }
-	  }
-	}'
-	```
-	Where:
-	* `REVISION-GUID` is the GUID of the revision.
-	* `APP-GUID` is the GUID of the app.
+    ```
+    cf curl v3/deployments \
+    -X POST \
+    -d '{
+      "revision": {
+        "guid": "REVISION-GUID"
+      },
+      "relationships": {
+        "app": {
+          "data": {
+            "guid": "APP-GUID"
+          }
+        }
+      }
+    }'
+    ```
 
+    Where:
+    <ul>
+      <li><code>REVISION-GUID</code> is the GUID of the revision.</li>
+      <li><code>APP-GUID</code> is the GUID of the app.</li>
+    </ul>
 
 ## <a id="metadata"></a> Add Metadata to a Revision
 

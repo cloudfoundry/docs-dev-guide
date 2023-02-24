@@ -570,20 +570,22 @@ To share a route with another space:
     ```
     cf share-route DOMAIN --hostname HOSTNAME --path PATH -s SPACE -o ORG
     ```
+
     Where:
-    * `DOMAIN` is the domain included in the route for your app.
-    * `HOSTNAME` is the hostname included in the route for your app.
-    * `PATH` is the path included in the route for your app.
-    * `SPACE` is the space with which you want to share the route for your app.
-    * `ORG` is the org containing space with which you want to share the route for your app. If the space with which you want to share the route is within the
-    same org as the space that currently contains the route, do not include the `-o` flag.
-    <br>
-    <br>
+    <ul>
+      <li><code>DOMAIN</code> is the domain included in the route for your app.</li>
+      <li><code>HOSTNAME</code> is the hostname included in the route for your app.</li>
+      <li><code>PATH</code> is the path included in the route for your app.</li>
+      <li><code>SPACE</code> is the space with which you want to share the route for your app.</li>
+      <li><code>ORG</code> is the org containing space with which you want to share the route for your app. If the space with which you want to share the route is within the
+      same org as the space that currently contains the route, do not include the <code>-o</code> flag.</li>
+    </ul>
+
     The following example command shares the route `example-app.example.com/example-path` with the `other-space` space in the `other-org` org:
 
-    ```
+    <pre class="terminal">
     cf share-route example.com --hostname example-app --path example-path -s other-space -o other-org
-    ```
+    </pre>
 
 ### <a id='move-route'></a> Transfer Ownership of a Route to Another Space
 
@@ -600,30 +602,35 @@ To move a route:
     ```
     cf target -s SPACE -o ORG
     ```
+
     Where:
-    * `SPACE` is the space from which the route was originally shared.
-    * `ORG` is the org containing space from which the route was originally shared. If the space from which the route was originally shared is within the same
-    org as the space with which the route was shared, do not include the `-o` flag.
+    <ul>
+      <li><code>SPACE</code> is the space from which the route was originally shared.</li>
+      <li><code>ORG</code> is the org containing space from which the route was originally shared. If the space from which the route was originally shared is within the same
+      org as the space with which the route was shared, do not include the <code>-o</code> flag.</li>
+    </ul>
 
 1. Run:
 
     ```
     cf move-route DOMAIN --hostname HOSTNAME --path PATH -s SPACE -o ORG
     ```
+
     Where:
-    * `DOMAIN` is the domain included in the route for your app.
-    * `HOSTNAME` is the hostname included in the route for your app.
-    * `PATH` is the path included in the route for your app.
-    * `SPACE` is the space to which you want to move the route for your app.
-    * `ORG` is the org containing space to which you want to move the route for your app. If the space to which you want to move the route is within the same
-    org as the space that currently contains the route, do not include the `-o` flag.
-    <br>
-    <br>
+    <ul>
+      <li><code>DOMAIN</code> is the domain included in the route for your app.</li>
+      <li><code>HOSTNAME</code> is the hostname included in the route for your app.</li>
+      <li><code>PATH</code> is the path included in the route for your app.</li>
+      <li><code>SPACE</code> is the space to which you want to move the route for your app.</li>
+      <li><code>ORG</code> is the org containing space to which you want to move the route for your app. If the space to which you want to move the route is within the same
+      org as the space that currently contains the route, do not include the <code>-o</code> flag.</li>
+    </ul>
+
     The following example command moves the route `example-app.example.com/example-path` with the `other-space` space in the `other-org` org:
 
-    ```
+    <pre class="terminal">
     cf move-route example.com --hostname example-app --path example-path -s other-space -o other-org
-    ```
+    </pre>
 
 ### <a id='delete-route'></a> Delete a Route
 

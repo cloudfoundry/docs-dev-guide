@@ -63,58 +63,73 @@ To configure your app to receive HTTP or TCP requests on custom ports:
 
 1. In a terminal window, run:
 
-		cf app APP-NAME --guid
+    ```console
+    cf app APP-NAME --guid
+    ```
 
-	Where `APP-NAME` is the name of your app.
+    Where `APP-NAME` is the name of your app.
 
 1. From the terminal output, record the following:
  	* Under `guid`, the global unique identifier (GUID) of your app.
 	* Under `type`, the process type your app uses.
 
 1. Retrieve the GUIDs of the routes for your app by running one of the following commands, depending on whether your app uses HTTP or TCP routes:
-	* For HTTP routes, run:
+    * For HTTP routes, run:
 
-			cf curl /v3/apps/APP-GUID/routes?hosts=ROUTE-HOSTNAME
+        ```console
+        cf curl /v3/apps/APP-GUID/routes?hosts=ROUTE-HOSTNAME
+        ```
 
-		Where:
-		* `APP-GUID` is the GUID of your app that you recorded in the previous step.
-		* `ROUTE-HOSTNAME` is the subdomain of the domain associated with the route. For example, in the route `example-app.<%= vars.app_domain %>`, the
-		hostname is `example-app`.
-	* For TCP routes, run:
+        Where:
+        <ul>
+          <li><code>APP-GUID</code> is the GUID of your app that you recorded in the previous step.</li>
+          <li><code>ROUTE-HOSTNAME</code> is the subdomain of the domain associated with the route. For example, in the route <code>example-app.<%= vars.app_domain %></code>, the hostname is <code>example-app</code>.</li>
+        </ul>
 
-		  	cf curl /v3/apps/APP-GUID/routes?port=PORT
+    * For TCP routes, run:
 
-		Where:
-		* `APP-GUID` is the GUID of your app that you recorded in the previous step.
-		* `PORT` is the port to which the TCP route sends requests.
+        ```console
+        cf curl /v3/apps/APP-GUID/routes?port=PORT
+        ```
+
+        Where:
+        <ul>
+          <li><code>APP-GUID</code> is the GUID of your app that you recorded in the previous step.</li>
+          <li><code>PORT</code> is the port to which the TCP route sends requests.</li>
+        </ul>
 
 1. From the terminal output, record the GUIDs of the routes for your app.
 
 1. For each route, update the ports to which it sends requests by running:
 
-		cf curl -X PATCH /v3/routes/ROUTE-GUID/destinations -d '{
-		"destinations": [
-		    {
-		      "app": {
-		        "guid": "APP-GUID",
-		        "process": {
-		          "type": "PROCESS-TYPE"
-		        }
-		      },
-		      "port": PORT,
-		      "protocol": "PROTOCOL"
-		    }
-		  ]
-		}'
+    ```console
+    cf curl -X PATCH /v3/routes/ROUTE-GUID/destinations -d '{
+    "destinations": [
+        {
+          "app": {
+            "guid": "APP-GUID",
+            "process": {
+              "type": "PROCESS-TYPE"
+            }
+          },
+          "port": PORT,
+          "protocol": "PROTOCOL"
+        }
+      ]
+    }'
+    ```
 
-	Where:
-	* `APP-GUID` is the GUID of your app that you recorded in a previous step.
-	* `ROUTE-GUID` is the GUID of a route that you recorded in the previous step.
-	* `PORT` is a custom port on which your app is configured to receive requests.
-	* `PROTOCOL` is the protocol that the route uses. For HTTP routes, this value is either `http1` or `http2`. For TCP routes, this value is `tcp`.
-	* `PROCESS-TYPE` is the value of `type` that you recorded in a previous step. This value is usually `web`.
-	<p class='note'><strong>Note:</strong> This API call removes all destinations for a route and replaces them with the destinations you provide in the API
-		request.</p>
+    Where:
+    <ul>
+      <li><code>APP-GUID</code> is the GUID of your app that you recorded in a previous step.</li>
+      <li><code>ROUTE-GUID</code> is the GUID of a route that you recorded in the previous step.</li>
+      <li><code>PORT</code> is a custom port on which your app is configured to receive requests.</li>
+      <li><code>PROTOCOL</code> is the protocol that the route uses. For HTTP routes, this value is either <code>http1</code> or <code>http2</code>. For TCP routes, this value is <code>tcp</code>.</li>
+      <li><code>PROCESS-TYPE</code> is the value of <code>type</code> that you recorded in a previous step. This value is usually <code>web</code>.</li>
+    </ul>
+
+    <p class='note'><strong>Note:</strong> This API call removes all destinations for a route and replaces them with the destinations you provide in the API
+    	request.</p>
 
 
 ## <a id='additional-resources'></a> Additional Resources

@@ -67,10 +67,12 @@ This section describes how to create and modify Container-to-Container Networkin
 
 ### <a name="prereq"></a> Prerequisites
 
-* Ensure that you are using cf CLI v6.42 or later:
+Ensure that you are using cf CLI v6.42 or later:
+
 <pre class="terminal">
 $ cf version
 </pre>
+
 For more information about updating the cf CLI, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
 
 <% if vars.platform_code == "CF" || vars.platform_code == "PCF" %>
@@ -109,7 +111,8 @@ To grant all Space Developers permissions to configure network policies, <%=  va
 
 To add a policy that allows direct network traffic from one app to another, run the following command:
 
-```cf add-network-policy SOURCE_APP --destination-app DESTINATION_APP -s DESTINATION_SPACE_NAME -o DESTINATION_ORG_NAME --protocol (tcp | udp) --port RANGE
+```
+cf add-network-policy SOURCE_APP --destination-app DESTINATION_APP -s DESTINATION_SPACE_NAME -o DESTINATION_ORG_NAME --protocol (tcp | udp) --port RANGE
 ```
 
 Replace the placeholders in the above command as follows:
@@ -164,7 +167,8 @@ You can list all the policies in your space, or just the policies for which a si
 
 To remove a policy that allows direct network traffic from an app, run the following command:
 
-```cf remove-network-policy SOURCE_APP --destination-app DESTINATION_APP -s DESTINATION_SPACE_NAME -o DESTINATION_ORG_NAME --protocol PROTOCOL --port RANGE
+```
+cf remove-network-policy SOURCE_APP --destination-app DESTINATION_APP -s DESTINATION_SPACE_NAME -o DESTINATION_ORG_NAME --protocol PROTOCOL --port RANGE
 ```
 
 Replace the placeholders in the above command to match an existing policy, as follows:

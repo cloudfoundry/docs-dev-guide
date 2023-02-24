@@ -34,16 +34,19 @@ To horizontally scale an app:
     ```
     cf scale APP-NAME -i NUMBER-OF-INSTANCES
     ```
+
     Where:
-    * `APP-NAME` is the name of the app you want to scale.
-    * `NUMBER-OF-INSTANCES` is the number of instances you want the app to have.
-    <br>
-    <br>
+    <ul>
+      <li><code>APP-NAME</code> is the name of the app you want to scale.</li>
+      <li><code>NUMBER-OF-INSTANCES</code> is the number of instances you want the app to have.</li>
+    </ul>
+
     For example:
 
-    ```
+    <pre class="terminal">
     cf scale example-app -i 5
-    ```
+    </pre>
+
     <p class='note'><strong>Note:</strong> If you are using cf CLI v7, you can include the <code>--process</code> flag to scale specific processes of an
       app.</p>
 
@@ -62,17 +65,18 @@ To scale the disk space limit applied to all instances of an app:
     ```
     cf scale APP-NAME -k DISK-LIMIT
     ```
+
     Where:
-    * `APP-NAME` is the name of the app you want to scale.
-    * `DISK-LIMIT` is the maximum amount of disk space in megabytes or gigabytes that you want each app instance to use. This value must be an integer
-    followed by either `M` or `G`.
-    <br>
-    <br>
+    <ul>
+      <li><code>APP-NAME</code> is the name of the app you want to scale.</li>
+      <li><code>DISK-LIMIT</code> is the maximum amount of disk space in megabytes or gigabytes that you want each app instance to use. This value must be an integer followed by either <code>M</code> or <code>G</code>.</li>
+    </ul>
+
     For example:
 
-    ```
+    <pre class="terminal">
     cf scale example-app -k 512M
-    ```
+    </pre>
 
 ### <a id='change-memory-limit'></a> Scale the Memory Limit of an App
 
@@ -83,17 +87,19 @@ To scale the memory limit applied to all instances of an app:
     ```
     cf scale APP-NAME -m MEMORY-LIMIT
     ```
+
     Where:
-    * `APP-NAME` is the name of the app you want to scale.
-    * `MEMORY-LIMIT` is the maximum amount of memory in megabytes or gigabytes that you want each app instance to use. This value must be an integer
-    followed by either `M` or `G`.
-    <br>
-    <br>
+    <ul>
+      <li><code>APP-NAME</code> is the name of the app you want to scale.</li>
+      <li><code>MEMORY-LIMIT</code> is the maximum amount of memory in megabytes or gigabytes that you want each app instance to use. This value must be an integer
+      followed by either <code>M</code> or <code>G</code>.</li>
+    </ul>
+
     For example:
 
-    ```
+    <pre class="terminal">
     cf scale example-app -m 1G
-    ```
+    </pre>
 
 ### <a id='change-log-rate-limit'></a> Scale the Log Rate Limit of an App
 
@@ -104,15 +110,17 @@ To scale the log rate limit applied to all instances of an app:
     ```
     cf scale APP-NAME -l LOG-RATE-LIMIT
     ```
+
     Where:
-    * `APP-NAME` is the name of the app you want to scale.
-    * `LOG-RATE-LIMIT` is the maximum number of logs in bytes, kilobytes, megabytes, or gigabytes that you want each app instance to send to Loggregator. This
-    value must be an integer followed by either `B`, `K`, `M`, or `G`. To configure each app instance to send an unlimited number of logs to Loggregator,
-    specify `-1`.
-    <br>
-    <br>
+    <ul>
+      <li><code>APP-NAME</code> is the name of the app you want to scale.</li>
+      <li><code>LOG-RATE-LIMIT</code> is the maximum number of logs in bytes, kilobytes, megabytes, or gigabytes that you want each app instance to send to Loggregator. This
+      value must be an integer followed by either <code>B</code>, <code>K</code>, <code>M</code>, or <code>G</code>. To configure each app instance to send an unlimited number of logs to Loggregator,
+      specify <code>-1</code>.</li>
+    </ul>
+
     For example:
 
-    ```
+    <pre class="terminal">
     cf scale example-app -l 12K
-    ```
+    </pre>

@@ -11,7 +11,13 @@ To run the commands in this topic, you must first install the Cloud Foundry Comm
 
 ## <a id='marketplace'></a> List Marketplace Services ##
 
-After targeting and logging into Cloud Foundry, run the `cf marketplace` cf CLI command to view the services available to your targeted organization. Available services may differ between organizations and between Cloud Foundry marketplaces.
+After targeting and logging into Cloud Foundry, to view the services available to your targeted organization, run the cf CLI command:
+
+```console
+cf marketplace
+```
+
+Available services may differ between organizations and between Cloud Foundry marketplaces.
 
 <pre class="terminal">
 $ cf marketplace
@@ -25,13 +31,17 @@ p-riakcs           developer           An S3-compatible object store     object-
 
 ## <a id='create'></a>Creating Service Instances ##
 
-You can create a service instance with the following command: `cf create-service SERVICE PLAN SERVICE_INSTANCE`
+You can create a service instance with the following command:
+
+```console
+cf create-service SERVICE PLAN SERVICE_INSTANCE
+```
 
 Use the information in the list below to replace `SERVICE`, `PLAN`, and `SERVICE_INSTANCE` with appropriate values.
 
-   * `SERVICE`: The name of the service you want to create an instance of.
-   * `PLAN`: The name of a plan that meets your needs. Service providers use **plans** to offer varying levels of resources or features for the same service.
-   * `SERVICE_INSTANCE`: The name you provide for your service instance. You use this name to refer to your service instance with other commands. Service instance names can include alpha-numeric characters, hyphens, and underscores, and you can rename the service instance at any time.
+* `SERVICE`: The name of the service you want to create an instance of.
+* `PLAN`: The name of a plan that meets your needs. Service providers use **plans** to offer varying levels of resources or features for the same service.
+* `SERVICE_INSTANCE`: The name you provide for your service instance. You use this name to refer to your service instance with other commands. Service instance names can include alpha-numeric characters, hyphens, and underscores, and you can rename the service instance at any time.
 
 <pre class="terminal">
 $ cf create-service rabbitmq small-plan my-rabbitmq
@@ -84,7 +94,13 @@ OK
 
 ## <a id='list'></a>List Service Instances ##
 
-Run the `cf services` command to list the service instances in your targeted space. The output from running this command includes any bound apps and the state of the last requested operation for the service instance.
+To list the service instances in your targeted space, run:
+
+```console
+cf services
+```
+
+The output from running this command includes any bound apps and the state of the last requested operation for the service instance.
 
 <pre class="terminal">
 $ cf services
@@ -150,7 +166,7 @@ As an alternative to binding a service instance to an app after pushing an app, 
 
 The following excerpt from an app manifest binds a service instance called `test-mysql-01` to the app on push.
 
-```
+```yaml
 services:
  - test-mysql-01
 ```
@@ -292,26 +308,32 @@ Some service brokers support upgrading service instances to the latest version o
 
 To upgrade your service instances, do the following:
 
-1. Confirm that an upgrade is available by running `cf services` and reviewing the `upgrade available` column:
+1. Confirm that an upgrade is available by running `cf services` and reviewing the `upgrade available` column. For example:
 
-	```
-	$ cf services
-	Getting services in org acceptance / space dev as admin...
+    <pre class="terminal">
+    $ cf services
+    Getting services in org acceptance / space dev as admin...
 
-	name      service   plan     bound apps   last operation     broker         upgrade available
-	mydb      p-mysql   small                 create succeeded   mysql-broker   yes
-	otherdb   p-mysql   medium                create succeeded   mysql-broker   no
-	```
+    name      service   plan     bound apps   last operation     broker         upgrade available
+    mydb      p-mysql   small                 create succeeded   mysql-broker   yes
+    otherdb   p-mysql   medium                create succeeded   mysql-broker   no
+    </pre>
 
 1. Upgrade the service instance using the `--upgrade` flag:
 
-	```
-	$ cf update-service mydb --upgrade
-	You are about to update mydb.
-	Warning: This operation may be long running and will block further operations on the service until complete.
-	Really update service mydb? [yN]: y
-	OK
-	```
+    ```console
+    cf update-service SERVICE-INSTANCE --upgrade
+    ```
+
+    For example:
+
+    <pre class="terminal">
+    $ cf update-service mydb --upgrade
+    You are about to update mydb.
+    Warning: This operation may be long running and will block further operations on the service until complete.
+    Really update service mydb? [yN]: y
+    OK
+    </pre>
 
 
 ## <a id='delete'></a>Delete a Service Instance ##

@@ -8,10 +8,10 @@ This topic explains how to use service instance sharing.
 
 ## <a id="about"></a> About Service Instance Sharing
 
-Sharing a service instance between spaces allows apps in different 
+Sharing a service instance between spaces allows apps in different
 spaces to share databases, messaging queues, and other types of services.
-This eliminates the need for development teams to use service keys and 
-user-provided services to bind their apps to the same service instance that was 
+This eliminates the need for development teams to use service keys and
+user-provided services to bind their apps to the same service instance that was
 provisioned using the `cf create-service` command.
 Sharing service instances improves security, auditing, and provides a more intuitive user experience.
 
@@ -20,7 +20,7 @@ Sharing service instances improves security, auditing, and provides a more intui
 * Developers and administrators can share service instances between spaces
 in which they have the Space Developer role.
 
-* Developers who have a service instance shared with them can only bind and 
+* Developers who have a service instance shared with them can only bind and
 unbind apps to that service instance. They cannot update, rename, or delete it.
 
 * Developers who have a service instance shared with them can view
@@ -51,17 +51,17 @@ $ cf enable-feature-flag service_instance_sharing
 
 You can share a service instance from one space to another if you have the Space Developer role in both spaces.
 
-To share a service instance to another space, run the following Cloud 
+To share a service instance to another space, run the following Cloud
 Foundry Command Line Interface (cf CLI) command:
 
 <pre class="terminal">
-$ cf share-service SERVICE-INSTANCE -s OTHER-SPACE [-o OTHER-ORG] 
+$ cf share-service SERVICE-INSTANCE -s OTHER-SPACE [-o OTHER-ORG]
 </pre>
 
-* You cannot share a service instance into a space where a service 
+* You cannot share a service instance into a space where a service
 instance with the same name already exists.
 
-* To share a service instance into a space, the space must have access to the 
+* To share a service instance into a space, the space must have access to the
 service and service plan of the service instance that you are sharing. Run the `cf enable-service-access` command to set this access.
 
 * If you no longer have access to the service or service plan used to create your service instance,
@@ -86,7 +86,7 @@ tags:
 plan:             100mb
 description:      mysql databases on demand been created by a platform.
 documentation:
-dashboard:        
+dashboard:
 service broker:   mysql-broker
 
 shared with spaces:
@@ -108,8 +108,8 @@ my-music-app                     create succeeded   Operation succeeded
 There is no upgrade available for this service.
 </pre>
 
-* For each of the spaces, the service instance is shared into the output. The output shows the number of bindings to apps of the service instance in that space. 
-* When the service instance is not shared, `This service is not currently shared` appears instead of `shared with spaces`. 
+* For each of the spaces, the service instance is shared into the output. The output shows the number of bindings to apps of the service instance in that space.
+* When the service instance is not shared, `This service is not currently shared` appears instead of `shared with spaces`.
 
 If you run the command while targeting the space where the service instance has been shared, you see the originating space and organization.
 
@@ -117,7 +117,7 @@ For example:
 
 
 <pre class="terminal">
-$ cf service mydb 
+$ cf service mydb
 
 name:                     mydb
 shared from org/space:    acceptance / dev
@@ -126,7 +126,7 @@ tags:
 plan:                     100mb
 description:              mysql databases on demand been created by a platform.
 documentation:
-dashboard:        
+dashboard:
 service broker:           mysql-broker
 
 Showing status of last operation from service my-service-3...
@@ -148,7 +148,7 @@ In this case, no information about other spaces is exposed.
 
 ## <a id="unsharing"></a> Unsharing a Service Instance
 
-<p class="note warning"><strong>WARNING:</strong> Unsharing a service instance 
+<p class="note warning"><strong>Caution:</strong> Unsharing a service instance
 automatically deletes all bindings to apps in the spaces it was shared into.
 This may cause apps to fail. Before unsharing a service instance,
 run the <code>cf service SERVICE-INSTANCE</code> command to see how many bindings exist in the spaces the service instance is shared into.</p>
@@ -156,23 +156,23 @@ run the <code>cf service SERVICE-INSTANCE</code> command to see how many binding
 You can unshare a service instance if you have the Space Developer role in the
 space where this service instance was shared from.
 
-Developers cannot delete or rename a service instance until it is unshared from all 
+Developers cannot delete or rename a service instance until it is unshared from all
 spaces.
 
 To unshare a service instance, run the following cf CLI command:
 
 <pre class="terminal">
 $ cf unshare-service SERVICE-INSTANCE -s OTHER-SPACE [-o OTHER-ORG] [-f]
-</pre> 
+</pre>
 
 The optional `-f` flag forces unsharing without confirmation.
 
 
 ## <a id="security"></a> Security Considerations
 
-* [Service keys](./service-keys.html) cannot be created from a space that a 
-service instance has been shared into.  
-This ensures that developers in the space where a service instance has been 
+* [Service keys](./service-keys.html) cannot be created from a space that a
+service instance has been shared into.
+This ensures that developers in the space where a service instance has been
 shared from have visibility into where and how many times the service instance is used.
 
 * Sharing service instances does not automatically update app security groups (ASGs).
@@ -198,8 +198,8 @@ This only prevents new shares from being created. To remove existing shares, see
 
 ## <a id="deleting"></a> Deleting All Shares
 
-The script below finds all service instances that are shared, and for each 
-space that the service instance is shared into, all service bindings to that service instance are deleted, and all shares are deleted. 
+The script below finds all service instances that are shared, and for each
+space that the service instance is shared into, all service bindings to that service instance are deleted, and all shares are deleted.
 
 If a service binding is not successfully deleted, the script continues trying to unshare subsequent service instances.
 
@@ -217,7 +217,7 @@ set -e
 cf oauth-token >/dev/null
 
 for instance_guid in $(cf curl /v3/service_instances | jq -r '.resources[].guid'); do
-  for space_guid in $(cf curl /v2/service_instances/$instance_guid/shared_to | jq -r 
+  for space_guid in $(cf curl /v2/service_instances/$instance_guid/shared_to | jq -r
 '.resources[].space_guid'); do
     echo "Unsharing service instance $instance_guid from space $space_guid"
 

@@ -1,34 +1,3 @@
-<div id="js-quick-links" >
-  <div class="quick-links">
-    <ul>
-      <li><a href="#pre">Prerequisite</a></li>
-      <li><a href="#mount-external-filesystem">Mount an External Filesystem</a></li>
-      <ul>
-        <li><a href="#create">Create and Bind a Service Instance</a></li>
-        <li><a href="#app">Access the Volume Service from your App</a></li>
-        <li><a href="#mount-path">Mount a Shared Volume in the /app Directory</a></li>
-      </ul>
-      <li><a href="#nfs">Create and Use NFS Volume Services</a></li>
-        <ul>
-          <li><a href="#create-nfs">Create an NFS Volume Service</a></li>
-          <li><a href="#nfs-sample">Deploy and Bind Sample App</a></li>
-          <li><a href="#nfs-additional">Additional Information</a></li>
-            <ul>
-              <li><a href="#ldap">Configure LDAP Credentials with Service Instance Creation</a></li>
-              <li><a href="#bind-parameters">Specify Bind Parameters During Service Instance Creation</a></li>
-              <li><a href="#flock">File Locking with flock() and lockf()/fcntl()</a></li>
-              <li><a href="#hard-links">Hard Links in the NFS Service</a></li>
-            </ul>
-        </ul>
-      <li><a href="#smb">Create and Use SMB Volume Services</a></li>
-        <ul>
-          <li><a href="#create-smb">Create an SMB Volume Service</a></li>
-          <li><a href="#smb-sample">Deploy and Bind Sample App</a></li>
-        </ul>
-    </ul>
-  </div>
-</div>
-
 This topic describes how app developers can read and write to a mounted file system from their apps.
 In <%= vars.app_runtime_first %>, a volume service provides a volume so your app can read
 or write to a reliable, persistent file system.
@@ -91,29 +60,31 @@ To create and bind an instance for the volume service:
         ```
 
         Where:
-        * `YOUR-APP` is the name of the app for which you want to use the volume service.
-        * `SERVICE-NAME` is the name of the volume service instance you created in the previous step.
-        * (Optional) `UID` and `GID` are the UID and GID to use when mounting the share to the app.
-          The `GID` and `UID` must be positive integer values.
-          Provide the UID and GID as a JSON string in-line or in a file.
-          If you omit `uid` and `gid`, the driver skips `mapfs` mounting and performs
-          just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
-          <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support UID and GID values of <code>0</code>.</p>
-          <p class="note"><strong>Note:</strong> The user specified by <code>uid</code> must have access
-             to the files on the share.
-             When <code>uid</code> and <code>gid</code> are omitted,
-             the app file operations use the UID of the running app process.
-             For buildpack apps, this UID is always <code>2000</code>.
-             For Docker apps, the effective UID is the same as the UID of the process
-             inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code>
-             outside the Docker container.
-          </p>
-        * (Optional) `OPTIONAL-MOUNT-PATH` is a JSON string that indicates the volume should be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
-          <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
-        * (Optional) `"readonly":true` is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
+        <ul>
+          <li><code>YOUR-APP</code> is the name of the app for which you want to use the volume service.</li>
+          <li><code>SERVICE-NAME</code> is the name of the volume service instance you created in the previous step.</li>
+          <li>
+            (Optional) <code>UID</code> and <code>GID</code> are the UID and GID to use when mounting the share to the app.
+            The <code>GID</code> and <code>UID</code> must be positive integer values.
+            Provide the UID and GID as a JSON string in-line or in a file.
+            If you omit <code>uid</code> and <code>gid</code>, the driver skips <code>mapfs</code> mounting and performs
+            just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
+            <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support UID and GID values of <code>0</code>.</p>
+            <p class="note"><strong>Note:</strong> The user specified by <code>uid</code> must have access to the files on the share. When <code>uid</code> and <code>gid</code> are omitted, the app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.</p>
+          </li>
+          <li>
+            (Optional) <code>OPTIONAL-MOUNT-PATH</code> is a JSON string that indicates the volume should be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as <code>/home</code>, <code>/usr</code>, or <code>/var</code>.
+            <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
+          </li>
+          <li>
+            (Optional) <code>"readonly":true</code> is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
+          </li>
+        </ul>
 
         The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`, passing an in-line JSON string:
-        <pre class="terminal">cf bind-service my-app nfs_service_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1","readonly":true}'</pre>
+        <pre class="terminal">
+        cf bind-service my-app nfs_service_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1","readonly":true}'
+        </pre>
     * **LDAP-only**: Bind an LDAP service to an app. Run:
 
         ```
@@ -121,12 +92,21 @@ To create and bind an instance for the volume service:
         ```
 
         Where:
-        * `YOUR-APP` is the name of the app for which you want to use the volume service.
-        * `SERVICE-NAME` is the name of the volume service instance you created in the previous step.
-        * `USERNAME` and `PASSWORD` are the username and password for the LDAP server. If you omit `username` and `password`, the driver skips `mapfs` mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
-        * (Optional) `OPTIONAL-MOUNT-PATH` is a JSON string that indicates the volume should be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as `/home`, `/usr`, or `/var`.
-          <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
-        * (Optional) `"readonly":true` is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
+        <ul>
+          <li><code>YOUR-APP</code> is the name of the app for which you want to use the volume service.</li>
+          <li><code>SERVICE-NAME</code> is the name of the volume service instance you created in the previous step.</li>
+          <li>
+            <code>USERNAME</code> and <code>PASSWORD</code> are the username and password for the LDAP server. If you omit <code>username</code> and <code>password</code>, the driver skips <code>mapfs</code> mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
+          </li>
+          <li>
+            (Optional) <code>OPTIONAL-MOUNT-PATH</code> is a JSON string that indicates the volume should be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as <code>/home</code>, <code>/usr</code>, or <code>/var</code>.
+            <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.
+            </p>
+          </li>
+          <li>
+            (Optional) <code>"readonly":true</code> is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver enables attribute caching. This results in fewer attribute RPCs and better performance.
+          </li>
+        </ul>
 
 1. Restage your app. Run:
 
@@ -247,10 +227,15 @@ To create an NFS volume service using the `Existing` plan of the `nfs` service:
     ```
 
     Where:
-    * `SERVICE-INSTANCE-NAME` is a name you provide for this NFS volume service instance.
-    * `SERVER/SHARE` is the NFS address of your server and share.
-      <p class="note"><strong>Note:</strong> Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
-    * (Optional) `NFS-PROTOCOL` is the NFS protocol you want to use. For example, if you want to use NFSv4, set the version to `4.1`. Valid values are `3.0`, `4.0`, `4.1` or `4.2`. If you do not specify a `version`, the protocol version used is negotiated between client and server at mount time. This usually results in the latest available version being used.
+    <ul>
+      <li><code>SERVICE-INSTANCE-NAME</code> is a name you provide for this NFS volume service instance.</li>
+      <li><code>SERVER/SHARE</code> is the NFS address of your server and share.
+        <p class="note"><strong>Note:</strong> Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
+      </li>
+      <li>
+        (Optional) <code>NFS-PROTOCOL</code> is the NFS protocol you want to use. For example, if you want to use NFSv4, set the version to <code>4.1</code>. Valid values are <code>3.0</code>, <code>4.0</code>, <code>4.1</code> or <code>4.2</code>. If you do not specify a <code>version</code>, the protocol version used is negotiated between client and server at mount time. This usually results in the latest available version being used.
+      </li>
+    </ul>
 
 1. Confirm that the NFS volume service appears in your list of services. Run:
 
@@ -273,38 +258,73 @@ This section describes how to deploy a sample app and bind it to the NFS volume 
 
 To deploy and bind a sample app:
 
-1. Clone the GitHub repository for the sample app into your workspace. Run:
+1. Clone the GitHub repository for the sample app into your workspace by running these commands:
 
-  1. `cd ~/workspace`
-  1. `git clone https://github.com/cloudfoundry/persi-acceptance-tests.git`
+    ```console
+    cd ~/workspace
+    ```
+    ```console
+    git clone https://github.com/cloudfoundry/persi-acceptance-tests.git
+    ```
 
-1. Push the `pora` test app. Run:
+1. Change into the `persi-acceptance-tests/assets/pora/` directory:
 
-  1. `cd ~/workspace/persi-acceptance-tests/assets/pora`
-  1. `cf push pora --no-start`
+    ```console
+    cd ~/workspace/persi-acceptance-tests/assets/pora
+    ```
+
+1. Push the `pora` test app by running:
+
+    ```console
+    cf push pora --no-start
+    ```
 
 1. Bind the service to your app. Run:
 
     ```
     cf bind-service pora SERVICE-INSTANCE-NAME -c '{"uid":"UID","gid":"GID"}'
     ```
-    Where:
-    * `SERVICE-INSTANCE-NAME`: The name of the volume service instance you created previously.
-    * `UID` and `GID`: The `UID` and `GID` to use when mounting the share to the app. The NFS driver uses these values in the following ways:
-      * When sending traffic to the NFS server, the NFS driver translates the app user ID and group ID to the `UID` and `GID` values.
-      * When returning attributes from the NFS server, the NFS driver translates the `UID` and `GID` back
-        to the running user UID and default GID.
-        This allows you to interact with your NFS server as a specific user
-        while allowing <%= vars.app_runtime_abbr %> to run your app as an arbitrary user.
-        `UID` and `GID` must be positive integer values.
-        <p class="note"><strong>Note:</strong> In NFS v2.0.0 and later, <code>uid</code> and <code>gid</code> values of <code>0</code> are no longer permissible due to security reasons.</p>
-    * (Optional) `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example:
 
-          ```
-          cf bind-service pora myVolume -c '{"mount":"/var/path"}'
-          ```
-    * (Optional) `readonly`: When you run the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.
-    * (Optional) `cache`: When you run the `cf bind-service` command, Volume Services mounts the remote file system with attribute caching disabled by default. You can enable attribute caching using default values by adding `"cache":true` to the bind configuration JSON string.
+    Where:
+    <ul>
+      <li><code>SERVICE-INSTANCE-NAME</code>: The name of the volume service instance you created previously.</li>
+      <li>
+        <code>UID</code> and <code>GID</code>: The <code>UID</code> and <code>GID</code> to use when mounting the share to the app. The NFS driver uses these values in the following ways:
+        <ul>
+          <li>
+            When sending traffic to the NFS server, the NFS driver translates the app user ID
+            and group ID to the <code>UID</code> and <code>GID</code> values.
+          </li>
+          <li>
+            When returning attributes from the NFS server, the NFS driver translates the
+            <code>UID</code> and <code>GID</code> back to the running user UID and default GID.
+            This allows you to interact with your NFS server as a specific user
+            while allowing <%= vars.app_runtime_abbr %> to run your app as an arbitrary user.
+            <code>UID</code> and <code>GID</code> must be positive integer values.
+            <p class="note"><strong>Note:</strong> In NFS v2.0.0 and later, <code>uid</code> and <code>gid</code> values of <code>0</code> are no longer permissible due to security reasons.</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        (Optional) <code>mount</code>: Use this option to specify the path at which volumes mount to the app container.
+        The default is an arbitrarily-named folder in <code>/var/vcap/data</code>.
+        You may need to modify this value if your app has specific requirements. For example:
+        <pre class="terminal">
+        cf bind-service pora myVolume -c '{"mount":"/var/path"}'
+        </pre>
+      </li>
+      <li>
+        (Optional) <code>readonly</code>: When you run the <code>cf bind-service</code> command, Volume Services mounts a read-write file system by default.
+        You can specify a read-only mount by adding <code>"readonly":true</code> to the bind configuration JSON string.
+      </li>
+      <li>
+        (Optional) <code>cache</code>: When you run the <code>cf bind-service</code> command,
+        Volume Services mounts the remote file system with attribute caching disabled by default.
+        You can enable attribute caching using default values by adding <code>"cache":true</code>
+        to the bind configuration JSON string.
+      </li>
+    </ul>
+
 
 1. Start the app. Run:
 
@@ -343,12 +363,15 @@ To configure LDAP credentials while creating your NFS Volume Service instance:
     ```
     cf create-service nfs PLAN SERVICE-INSTANCE-NAME -c '{"share":"SERVER/SHARE", "username":"USERNAME", "password":"PASSWORD"}'
     ```
+
     Where:
-    * `PLAN` is the name of the service plan.
-    * `SERVICE-INSTANCE-NAME` is a name you provide for this NFS Volume Service instance.
-    * `SERVER/SHARE` is the NFS address of your server and share.
-    * `USERNAME` is a username you provide for this NFS Volume Service instance.
-    * `PASSWORD` is a password you provide for this NFS Volume Service instance.
+    <ul>
+      <li><code>PLAN</code> is the name of the service plan.</li>
+      <li><code>SERVICE-INSTANCE-NAME</code> is a name you provide for this NFS Volume Service instance.</li>
+      <li><code>SERVER/SHARE</code> is the NFS address of your server and share.</li>
+      <li><code>USERNAME</code> is a username you provide for this NFS Volume Service instance.</li>
+      <li><code>PASSWORD</code> is a password you provide for this NFS Volume Service instance.</li>
+    </ul>
 
 #### <a id='bind-parameters'></a> Specify Bind Parameters During Service Instance Creation
 
@@ -386,16 +409,21 @@ The service offers a single plan called `Existing`.
 
 To create an SMB volume service:
 
-1. Create the service. Run:
+1. Create the service by running:
 
     ```
     cf create-service smb Existing SERVICE-INSTANCE-NAME -c '{"share":"//SERVER/SHARE", "version":"SMB-VERSION"}'
     ```
 
     Where:
-    * `SERVICE-INSTANCE-NAME` is a name you provide for this SMB volume service instance.
-    * `//SERVER/SHARE` is the SMB address of your server and share.
-    * (Optional) `SMB-VERSION` is the SMB protocol version you want to use. For example, to use SMB 2.1, set the version to `2.1`. Valid values are `1.0`, `2.0`, `2.1`, or `3.0`. If you do not specify a `version`, the client and server negotiate a protocol version at mount time. The client and server usually select the latest available version.
+    <ul>
+      <li><code>SERVICE-INSTANCE-NAME</code> is a name you provide for this SMB volume service instance.</li>
+      <li><code>//SERVER/SHARE</code> is the SMB address of your server and share.</li>
+      <li>
+        (Optional) <code>SMB-VERSION</code> is the SMB protocol version you want to use. For example, to use SMB 2.1, set the version to <code>2.1</code>. Valid values are <code>1.0</code>, <code>2.0</code>, <code>2.1</code>, or <code>3.0</code>. If you do not specify a <code>version</code>, the client and server negotiate a protocol version at mount time. The client and server usually select the latest available version.
+      </li>
+    </ul>
+
 1. Confirm that the SMB volume service appears in your list of services. Run:
 
     ```
@@ -410,31 +438,53 @@ To deploy and bind a sample app:
 
 1. Clone the GitHub repository for the sample app into your workspace. Run:
 
-  1. `cd ~/workspace`
-  1. `git clone https://github.com/cloudfoundry/persi-acceptance-tests.git`
+    ```console
+    cd ~/workspace
+    ```
+    ```console
+    git clone https://github.com/cloudfoundry/persi-acceptance-tests.git
+    ```
+
+1. Change into the `persi-acceptance-tests/assets/pora/` directory:
+
+    ```console
+    cd ~/workspace/persi-acceptance-tests/assets/pora
+    ```
 
 1. Push the `pora` test app. Run:
 
-  1. `cd ~/workspace/persi-acceptance-tests/assets/pora`
-  1. `cf push pora --no-start`
+    ```console
+    cf push pora --no-start
+    ```
 
 1. Bind the service to your app. Run:
 
     ```
     cf bind-service pora SERVICE-INSTANCE-NAME -c '{"username":"USERNAME","password":"PASSWORD"}'
     ```
+    
     Where:
-    * `SERVICE-INSTANCE-NAME`: The name of the volume service instance you created previously.
-    * `USERNAME` and `PASSWORD`: The username and password to use when mounting the share to the app.
-       This allows you to interact with your SMB server as a specific user
-       while allowing <%= vars.app_runtime_abbr %> to run your app as an arbitrary user.
-    * (Optional) `mount`: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in `/var/vcap/data`. You may need to modify this value if your app has specific requirements. For example, run:
+    <ul>
+      <li>
+        <p><code>SERVICE-INSTANCE-NAME</code>: The name of the volume service instance you created previously.</p>
+      </li>
+      <li>
+        <p><code>USERNAME</code> and <code>PASSWORD</code>: The username and password to use when mounting the share to the app. This allows you to interact with your SMB server as a specific user while allowing <%= vars.app_runtime_abbr %> to run your app as an arbitrary user.</p>
+      </li>
+      <li>
+        <p>(Optional) <code>mount</code>: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in <code>/var/vcap/data</code>. You may need to modify this value if your app has specific requirements. For example, run:</p>
+        <pre class="terminal">
+        cf bind-service pora myVolume -c '{"username":"some-user","password":"some-password","mount":"/var/path"}'
+        </pre>
+      </li>
+      <li>
+        <p>(Optional) <code>readonly</code>: When you run the <code>cf bind-service</code> command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding <code>"readonly":true</code> to the bind configuration JSON string.</p>
+      </li>
+      <li>
+        <p>(Optional) <code>domain</code>: If you use a Windows domain, you can specify a <code>domain</code> parameter.</p>
+      </li>
+    </ul>
 
-          ```
-          cf bind-service pora myVolume -c '{"username":"some-user","password":"some-password","mount":"/var/path"}'
-          ```
-    * (Optional) `readonly`: When you run the `cf bind-service` command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding `"readonly":true` to the bind configuration JSON string.
-    * (Optional) `domain`: If you use a Windows domain, you can specify a `domain` parameter.
 
 1. Start the app. Run:
 

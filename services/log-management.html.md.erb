@@ -60,7 +60,7 @@ To set up a communication channel between the log management service and your Cl
 
 You can create a syslog drain service and bind apps to it using Cloud Foundry Command Line Interface (cf CLI) commands.
 
-1. To create the service instance, run `cf create-user-provided-service` (or `cf cups`) with the `-l`.
+1. To create the service instance, run `cf create-user-provided-service` (or `cf cups`) with the `-l` flag.
 
     ```console
     cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL

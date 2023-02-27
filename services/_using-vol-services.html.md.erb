@@ -309,9 +309,7 @@ To deploy and bind a sample app:
         (Optional) <code>mount</code>: Use this option to specify the path at which volumes mount to the app container.
         The default is an arbitrarily-named folder in <code>/var/vcap/data</code>.
         You may need to modify this value if your app has specific requirements. For example:
-        <pre class="terminal">
-        cf bind-service pora myVolume -c '{"mount":"/var/path"}'
-        </pre>
+        <pre class="terminal">cf bind-service pora myVolume -c '{"mount":"/var/path"}'</pre>
       </li>
       <li>
         (Optional) <code>readonly</code>: When you run the <code>cf bind-service</code> command, Volume Services mounts a read-write file system by default.
@@ -462,7 +460,7 @@ To deploy and bind a sample app:
     ```
     cf bind-service pora SERVICE-INSTANCE-NAME -c '{"username":"USERNAME","password":"PASSWORD"}'
     ```
-    
+
     Where:
     <ul>
       <li>
@@ -473,9 +471,7 @@ To deploy and bind a sample app:
       </li>
       <li>
         <p>(Optional) <code>mount</code>: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in <code>/var/vcap/data</code>. You may need to modify this value if your app has specific requirements. For example, run:</p>
-        <pre class="terminal">
-        cf bind-service pora myVolume -c '{"username":"some-user","password":"some-password","mount":"/var/path"}'
-        </pre>
+        <pre class="terminal">cf bind-service pora myVolume -c '{"username":"some-user","password":"some-password","mount":"/var/path"}'</pre>
       </li>
       <li>
         <p>(Optional) <code>readonly</code>: When you run the <code>cf bind-service</code> command, Volume Services mounts a read-write file system by default. You can specify a read-only mount by adding <code>"readonly":true</code> to the bind configuration JSON string.</p>

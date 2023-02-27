@@ -24,9 +24,12 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
     ```
     cf login -a https://api.YOUR-DOMAIN -u YOUR-USERNAME --skip-ssl-validation
     ```
+
     Where:
-    * `YOUR-DOMAIN` is your domain.
-    * `YOUR-USERNAME` is your <%= vars.app_runtime_abbr %> username.
+    <ul>
+      <li><code>YOUR-DOMAIN</code> is your domain.</li>
+      <li><code>YOUR-USERNAME</code> is your <%= vars.app_runtime_abbr %> username.</li>
+    </ul>
 
 1. To create a new <%= vars.app_runtime_abbr %> user and grant it access to the Loggregator Firehose using the UAA CLI (UAAC):
     1. Target your UAA server by running:
@@ -46,9 +49,12 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
         uaac user add USERNAME -p PASSWORD  --email EMAIL
         ```
         Where:
-        * `USERNAME` is a new username.
-        * `PASSWORD` is a password.
-        * `EMAIL` is an email address. 
+        <ul>
+          <li><code>USERNAME</code> is a new username.</li>
+          <li><code>PASSWORD</code> is a password.</li>
+          <li><code>EMAIL</code> is an email address.</li>
+        </ul>
+
     1. Grant the new user admin permissions by running:
 
         ```
@@ -77,70 +83,75 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
         <th>Description</th>
       </tr>
       <tr>
-        <td><pre>
-        applications:
-        - name: oms_nozzle
-        ...
-        env:
-          OMS_WORKSPACE: YOUR-WORKSPACE-ID
-          OMS_KEY: YOUR-OMS-KEY</pre>
+        <td>
+          <pre class="terminal">
+          applications:
+          - name: oms_nozzle
+          ...
+          env:
+            OMS_WORKSPACE: YOUR-WORKSPACE-ID
+            OMS_KEY: YOUR-OMS-KEY
+          </pre>
         </td>
         <td>Enter the ID and key value for your OMS workspace.</td>
       </tr>
       <tr>
-        <td><pre>OMS_POST_TIMEOUT: 10s</pre></td>
+        <td><code>OMS_POST_TIMEOUT: 10s</code></td>
         <td>(Optional) Set the HTTP post timeout for sending events to OMS LogmAnalytics. The default value is 10 seconds.</td>
       </tr>
       <tr>
-        <td><pre>OMS_BATCH_TIME: 10s</pre></td>
+        <td><code>OMS_BATCH_TIME: 10s</code></td>
         <td>(Optional) Set the interval for posting a batch to OMS. The default value is 10 seconds.
         <br><br>
         For more information, see <a href="#events">Configure Additional Logging</a>.</td>
       </tr>
       <tr>
-        <td><pre>OMS_MAX_MSG_NUM_PER_BATCH: 1000</pre></td>
+        <td><code>OMS_MAX_MSG_NUM_PER_BATCH: 1000</code></td>
         <td>(Optional) Set the maximum number of messages to include in an OMS batch. The default amount is 1000.
         <br><br>
         For more information, see <a href="#events">Configure Additional Logging</a>.</td>
       </tr>
       <tr>
-        <td><pre>
-        FIREHOSE_USER: YOUR-FIREHOSE-USER
-        FIREHOSE_USER_PASSWORD: YOUR-FIREHOSE-PASSWORD</pre></td>
+        <td>
+          <pre class="terminal">
+          FIREHOSE_USER: YOUR-FIREHOSE-USER
+          FIREHOSE_USER_PASSWORD: YOUR-FIREHOSE-PASSWORD
+          </pre>
+        </td>
         <td>Enter the username and password for the Firehose user you created in Step 2c.</td>
       </tr>
       <tr>
-        <td><pre>API_ADDR: https://api.YOUR-DOMAIN</pre></td>
+        <td><code>API_ADDR: https://api.YOUR-DOMAIN</code></td>
         <td>Enter the URL of your API endpoint.</td>
       </tr>
       <tr>
-        <td><pre>DOPPLER_ADDR: wss://doppler.YOUR-DOMAIN:443</pre></td>
+        <td><code>DOPPLER_ADDR: wss://doppler.YOUR-DOMAIN:443</code></td>
         <td>Enter the URL of your Loggregator Traffic Controller endpoint.</td>
       </tr>
       <tr>
-        <td><pre>EVENT_FILTER: YOUR-LIST</pre></td>
+        <td><code>EVENT_FILTER: YOUR-LIST</code></td>
         <td>(Optional) Enter the event types you want to filter out in a comma-separated list. The valid event types are <code>METRIC</code>, <code>LOG</code>, and <code>HTTP</code>.</td>
       </tr>
       <tr>
-        <td><pre>IDLE_TIMEOUT: 60s</pre></td>
+        <td><code>IDLE_TIMEOUT: 60s</code></td>
         <td>(Optional) Set the duration for the Firehose keep-alive connection. The default time is 60 seconds.</td>
       </tr>
       <tr>
-        <td><pre>SKIP_SSL_VALIDATION: TRUE-OR-FALSE</pre></td>
+        <td><code>SKIP_SSL_VALIDATION: TRUE-OR-FALSE</code></td>
         <td>Set this value to <code>TRUE</code> to allow insecure connections to the UAA and the Traffic Controller. To block insecure connections to the UAA and Traffic Controller, set this value to <code>FALSE</code>.</td>
       </tr>
       <tr>
-        <td><pre>LOG_LEVEL: INFO</pre></td>
+        <td><code>LOG_LEVEL: INFO</code></td>
         <td>(Optional) Change this value to increase or decrease the amount of logs. Valid log levels in increasing order include <code>INFO</code>, <code>ERROR</code>, and <code>DEBUG</code>. The default value is <code>INFO</code>.</td>
       </tr>
       <tr>
-        <td><pre>LOG_EVENT_COUNT: TRUE-OR-FALSE</pre></td>
+        <td><code>LOG_EVENT_COUNT: TRUE-OR-FALSE</code></td>
         <td>Set this value to <code>TRUE</code> to log the total count of events that the nozzle has sent, received, and lost. OMS logs this value as <code>CounterEvents</code>.
         <br><br>
         For more information, see <a href="#events">Configure Additional Logging</a>.</td>
       </tr>
       <tr>
-        <td><pre>LOG_EVENT_COUNT_INTERVAL: 60s</pre></td>
+        <td><code>LOG_EVENT_COUNT_INTERVAL: 60s</code></td>
         <td>(Optional) Set the time interval for logging the event count to OMS. The default interval is 60 seconds.
         <br><br>
         For more information, see <a href="#events">Configure Additional Logging</a>.</td>

@@ -61,24 +61,32 @@ To set up a communication channel between the log management service and your Cl
 You can create a syslog drain service and bind apps to it using Cloud Foundry Command Line Interface (cf CLI) commands.
 
 1. To create the service instance, run `cf create-user-provided-service` (or `cf cups`) with the `-l`.
-  - DRAIN-NAME: A name to use for your syslog drain service instance.
-  - SYSLOG-DRAIN-URL: The syslog URL from [Step 1: Configure the Log Management Service](#step1).
-<pre class="terminal">
-$ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL
-</pre>
-In case of the usage of the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use `-p` flag to define the credentials, filling in values as follows.
-<pre class="terminal">
-$ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p {"cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----", "ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----"}
-</pre>
 
-For more information, see [User-Provided Service Instances](./user-provided.html).
+    ```console
+    cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL
+    ```
+
+    Where:
+    <ul>
+      <li><code>DRAIN-NAME</code> is a name to use for your syslog drain service instance.</li>
+      <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
+    </ul>
+
+    In case of the usage of the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use `-p` flag to define the credentials, filling in values as follows.
+
+    ```console
+    cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p {"cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----", "ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----"}
+    ```
+
+    For more information, see [User-Provided Service Instances](./user-provided.html).
 
 1. To bind an app to the service instance, do one of the following:
-  * Run `cf push` with a manifest. The services block in the manifest must specify the service instance that you want to bind.
-  * Run `cf bind-service`:
-<pre class="terminal">
-$ cf bind-service YOUR-APP-NAME DRAIN-NAME
-</pre>
+    * Run `cf push` with a manifest. The services block in the manifest must specify the service instance that you want to bind.
+    * Run `cf bind-service`:
+
+        ```console
+        cf bind-service YOUR-APP-NAME DRAIN-NAME
+        ```
 
 After a short delay, logs begin to flow automatically.
 

@@ -287,7 +287,6 @@ and port number of the `app_ssh_endpoint` field, and the `app_ssh_host_key_finge
         <pre class="terminal">
         $ ssh -p 2222 cf:abcdefab-1234-5678-abcd-1234abcd1234/0<span>@</span>ssh.example.com
         </pre>
-
     - Or you can use `scp` to transfer files by running one of the following commands:
 
         ```console
@@ -296,7 +295,6 @@ and port number of the `app_ssh_endpoint` field, and the `app_ssh_host_key_finge
         ```console
         scp -P `SSH-PORT` -o User=cf:APP-GUID/APP-INSTANCE-INDEX LOCAL-FILE-TO-COPY ssh.MY-DOMAIN.com:REMOTE-FILE-DESTINATION
         ```
-
     - Or you can use `ssh` piped with `cat` command to transfer file by running:
 
         ```console

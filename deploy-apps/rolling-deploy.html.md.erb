@@ -34,6 +34,10 @@ This section describes the commands for working with rolling app deployments.
 
 To deploy an app without incurring downtime:
 
+<p class="note warning"><strong>Caution:</strong> Ensure that you understand the limitations of
+this feature before running the command. For more information, see
+<a href="#limitations">Limitations</a> below.</p>
+
 * **For cf CLI v7, run:**
 
     ```
@@ -171,10 +175,6 @@ To deploy an app without incurring downtime:
         }'
         ```
         Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in previous steps.
-
-<p class="note warning"><strong>Caution:</strong> Ensure that you understand the limitations of
-this feature before running the command. For more information, see
-<a href="#limitations">Limitations</a> below.</p>
 
 For more information about this command, see [How It Works](#how-it-works) below.
 

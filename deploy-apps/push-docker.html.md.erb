@@ -216,9 +216,12 @@ To create a JSON key file and associate it with your project:
     ```
     gcloud iam service-accounts create YOUR-ACCOUNT --display-name "YOUR-DISPLAY-NAME"
     ```
+
     Where:
-    * `YOUR-ACCOUNT` is the name of your service account.
-    * `YOUR-DISPLAY-NAME` is the display name of your service account.
+    <ul>
+      <li><code>YOUR-ACCOUNT</code> is the name of your service account.</li>
+      <li><code>YOUR-DISPLAY-NAME</code> is the display name of your service account.</li>
+    </ul>
 
 1. Set your project ID by running:
 
@@ -232,19 +235,25 @@ To create a JSON key file and associate it with your project:
     ```
     gcloud iam service-accounts keys create key.json --iam-account=YOUR-ACCOUNT@YOUR-PROJECT-ID.iam.gserviceaccount.com
     ```
+
     Where:
-    * `YOUR-ACCOUNT` is the name of your service account.
-    * `YOUR-PROJECT-ID` is your project ID.
+    <ul>
+      <li><code>YOUR-ACCOUNT</code> is the name of your service account.</li>
+      <li><code>YOUR-PROJECT-ID</code> is your project ID.</li>
+    </ul>
 
 1. Add the IAM policy binding for your project and service account by running:
 
     ```
     gcloud projects add-iam-policy-binding YOUR-PROJECT --member serviceAccount:YOUR-ACCOUNT@YOUR-PROJECT-ID.iam.gserviceaccount.com --role roles/storage.objectViewer
     ```
+
     Where:
-    * `YOUR-PROJECT` is the name of your project.
-    * `YOUR-ACCOUNT` is the name of your service account.
-    * `YOUR-PROJECT-ID` is your project ID.
+    <ul>
+      <li><code>YOUR-PROJECT</code> is the name of your project.</li>
+      <li><code>YOUR-ACCOUNT</code> is the name of your service account.</li>
+      <li><code>YOUR-PROJECT-ID</code> is your project ID.</li>
+    </ul>
 
 #### <a id='deploy'></a> Step 2: Deploy the GCP Image
 

@@ -196,7 +196,7 @@ cf push my-app -c "bundle exec rake VERBOSE=true"
   more information, see <a href="start-restart-restage.html#revert">Forcing cf push to use the Buildpack Start Command</a> in <em>Starting, Restarting, and
   Restaging Apps</em>.</p>
 
-If you override the start command for a Buildpack app, Linux uses `bash -c COMMAND`</code> `to invoke your app. If you override the start command for a Docker
+If you override the start command for a Buildpack app, Linux uses `bash -c COMMAND` to invoke your app. If you override the start command for a Docker
 app, Linux uses `sh -c COMMAND` to invoke your app. Because of this, if you override a start command, you should prefix `exec` to the final command in your
 custom composite start command.
 
@@ -280,7 +280,13 @@ For example:
   health-check-invocation-timeout: 30
 ```
 
-To override this attribute, run `cf set-health-check APP-NAME http --invocation-timeout 10`, where `APP-NAME` is the name of your app.
+To override this attribute, run:
+
+```console
+cf set-health-check APP-NAME http --invocation-timeout 10
+```
+
+Where `APP-NAME` is the name of your app.
 
 Within the manifest, the health check timeout is controlled by the `timeout` attribute.
 
@@ -392,8 +398,13 @@ The `--no-route` command-line flag overrides this attribute.
 
 In the Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app
 does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check, and <%= vars.app_runtime_abbr %>
-marks it as crashed. To prevent this, disable the port-based health check by running `cf set-health-check APP-NAME process`, where `APP-NAME` is the name of
-your app.
+marks it as crashed. To prevent this, disable the port-based health check by running:
+
+```console
+cf set-health-check APP-NAME process
+```
+
+Where `APP-NAME` is the name of your app.
 
 To remove a route from an existing app:
 
@@ -514,7 +525,7 @@ If you use the `routes` attribute in conjunction with the `host`, `hosts`, `doma
 
 This attribute has unique interactions with different command-line options.
 
-<table border="1" class="nice" style="width:25%">
+<table border="1" class="nice">
   <tr>
     <th>Flag</th>
     <th>Result</th>
@@ -601,7 +612,7 @@ value up to the Cloud Controller's `cc.maximum_health_check_timeout` property.
 
 The `-t` command-line flag overrides this attribute.
 
-<p class='warning note'><strong>Warning:</strong> If you configure <code>timeout</code> with a value greater than
+<p class='important note'><strong>Important:</strong> If you configure <code>timeout</code> with a value greater than
   <code>cc.maximum_health_check_timeout</code>, the Cloud Controller reports a validation error with the maximum limit.</p>
 
 
@@ -633,35 +644,38 @@ For example:
 
 While the app is running, you can modify environment variables in the following ways:
 
-* To view all variables:
-  1. Run:
+* To view all variables, run:
 
-      ```
-      cf env APP-NAME
-      ```
-      Where `APP-NAME` is the name of your app.
+    ```
+    cf env APP-NAME
+    ```
+    Where `APP-NAME` is the name of your app.
 
-* To set an individual variable:
-  1. Run:
+* To set an individual variable, run:
 
-      ```
-      cf set-env APP-NAME VARIABLE-NAME VARIABLE-VALUE
-      ```
-      Where:
-      * `APP-NAME` is the name of your app.
-      * `VARIABLE-NAME` is the environment variable you want to set.
-      * `VARIABLE-VALUE` is the value of the environment value.
+    ```
+    cf set-env APP-NAME VARIABLE-NAME VARIABLE-VALUE
+    ```
 
-* To unset an individual variable:
-  1. Run:
+    Where:
+    <ul>
+      <li><code>APP-NAME</code> is the name of your app.</li>
+      <li><code>VARIABLE-NAME</code> is the environment variable you want to set.</li>
+      <li><code>VARIABLE-VALUE</code> is the value of the environment value.</li>
+    </ul>
 
-      ```
-      cf unset-env APP-NAME VARIABLE-NAME VARIABLE-VALUE
-      ```
-      Where:
-      * `APP-NAME` is the name of your app.
-      * `VARIABLE-NAME` is the environment variable you want to set.
-      * `VARIABLE-VALUE` is the value of the environment value.
+* To unset an individual variable, run:
+
+    ```
+    cf unset-env APP-NAME VARIABLE-NAME VARIABLE-VALUE
+    ```
+
+    Where:
+    <ul>
+      <li><code>APP-NAME</code> is the name of your app.</li>
+      <li><code>VARIABLE-NAME</code> is the environment variable you want to set.</li>
+      <li><code>VARIABLE-VALUE</code> is the value of the environment value.</li>
+    </ul>
 
 Environment variables interact with manifests in the following ways:
 
@@ -699,7 +713,7 @@ Service](../services/application-binding.html#bind) in _Delivering Service Crede
 
 This section describes app manifest features that are deprecated in favor of other features.
 
-<p class='note warning'><strong>Warning:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated
+<p class='note warning'><strong>Caution:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated
   features along with the feature that replaces it.</p>
 
 ### <a id='top-level-attributes'></a> Top-Level Attributes

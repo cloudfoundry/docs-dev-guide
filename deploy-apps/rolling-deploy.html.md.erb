@@ -74,7 +74,6 @@ this feature before running the command. For more information, see
         ```
         cf login
         ```
-
     1. Create an empty app by running the following `curl` command  with `POST /v3/apps`. Record the
     app GUID from the output.
 
@@ -99,7 +98,6 @@ this feature before running the command. For more information, see
           <li><code>APP-NAME</code> is the name that you want to give your app.</li>
           <li><code>SPACE-GUID</code> is the space identifier that you want to associate with your app.</li>
         </ul>
-
     1. Create a package with the following `curl` command with `POST /v3/packages`. Record the package
     GUID from the output.
 
@@ -120,7 +118,6 @@ this feature before running the command. For more information, see
         ```
         Where `APP-GUID` is the app GUID that you recorded in the previous step. This app GUID is a
         unique identifier for your app.
-
     1. Upload the package bits by running the following `curl` command with
     `POST /v3/packages/PACKAGE-GUID/upload`.
 
@@ -135,7 +132,6 @@ this feature before running the command. For more information, see
           <li><code>PACKAGE-GUID</code> is the package GUID that you recorded in the previous step.</li>
           <li><code>PACKAGED-APP</code> is your app packaged in a file such as <code>.zip</code>.</li>
         </ul>
-
     1. Create the build by running the following `curl` command with `POST /v3/builds`. Record the
     droplet GUID from the output.
 
@@ -150,7 +146,6 @@ this feature before running the command. For more information, see
           }'
         ```
         Where `PACKAGE-GUID` is the package GUID that you recorded in a previous step.
-
     1. Deploy your app by running the following `curl` command with `POST /v3/deployments`. To verify
     the status of the deployment or take action on the deployment, record the deployment GUID from the
     output.

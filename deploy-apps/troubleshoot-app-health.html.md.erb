@@ -120,7 +120,7 @@ If this happens:
 * **Find the reason app is failing and modify your code.** Run `cf events APP-NAME` and `cf logs APP-NAME --recent` and look for messages similar to the
 following example:
   <pre class="terminal">
-  2018-07-20T15:53:26.00-0700   app.crash                  app-name   index: 2, reason: CRASHED, cell_id: d874ad05-d0ca-4c63-9f5a-0b1ddd90dd5d, instance: f406c53e-b1ca-4a0f-6140-dddd, exit_description: APP/PROC/WEB: Exited with status 1
+  2018-07-20T15:53:26.00-0700   app.crash      app-name   index: 2, reason: CRASHED, cell_id: d874ad05-d0ca-4c63-9f5a-0b1ddd90dd5d, instance: f406c53e-b1ca-4a0f-6140-dddd, exit_description: APP/PROC/WEB: Exited with status 1
   </pre>
   These messages may identify a memory or port issue. If they do, take that as a starting point when you re-examine and fix your app code.
 
@@ -174,10 +174,17 @@ If you suspect a routing conflict, run `cf routes` to check the routes in your <
 
 If two apps share a route outside of a blue-green deployment strategy, choose one app to re-assign to a different route and follow the procedure below:
 
-1. Run `cf unmap-route APP-NAME OLD-ROUTE` to remove the existing route from that app.
+1. Remove the existing route from that app by running:
 
-1. Run `cf map-route APP-NAME NEW-ROUTE` to map the app to a new, unique route.
+    ```console
+    cf unmap-route APP-NAME OLD-ROUTE
+    ```
 
+1. Map the app to a new, unique route by running:
+
+    ```console
+    cf map-route APP-NAME NEW-ROUTE
+    ```
 
 ## <a id='info'></a> Gather Diagnostic Information
 

@@ -130,81 +130,82 @@ Before you can push an app with a sidecar with an app manifest, you must have:
 To push an app with a sidecar:
 
 1. Create an app or use an existing app. To create an app:
-	* If you are using cf CLI v7, run:
+    * If you are using cf CLI v7, run:
 
-		```
-		cf create-app APP-NAME
-		```
-		Where `APP-NAME` is the name you give your app.
-	* If you are using cf CLI v6, run:
+        ```
+        cf create-app APP-NAME
+        ```
+        Where `APP-NAME` is the name you give your app.
+    * If you are using cf CLI v6, run:
 
-		```
-		cf v3-create-app APP-NAME
-		```
-		Where `APP-NAME` is the name you give your app.
-		<p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
+        ```
+        cf v3-create-app APP-NAME
+        ```
+        Where `APP-NAME` is the name you give your app.
+        <p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
 1. Create a manifest file in the root directory of your app, such as `manifest.yml`. Otherwise, use an existing manifest file for your app. For more information, see [Deploying with App Manifests](./deploy-apps/manifest.html).
 
 1. Add the values below to your app manifest file under the `applications` key:
 
-	```
-	  sidecars:
-      - name: SIDECAR-NAME
-        process_types: [ 'PROCESS-TYPES' ]
-        command: START-COMMAND
-	```
-	Where:
-	* `SIDECAR-NAME` is a name you give your sidecar.
-	* `PROCESS-TYPES` is a list of app processes for the sidecar to attach to, such as `web` or `worker`. You can attach multiple sidecars to each process type your app uses.
-	* `START-COMMAND` is the command used to start the sidecar. For example, `./binary` or `java -jar java-file.jar`.
-	<br>
-	<br>
-	This example manifest file includes multiple sidecars:
+    ```
+      sidecars:
+        - name: SIDECAR-NAME
+          process_types: [ 'PROCESS-TYPES' ]
+          command: START-COMMAND
+    ```
 
-	```
-	---
-	applications:
-	- name: my-app
-	  sidecars:
-       - name: authenticator
-         process_types: [ 'web', 'worker' ]
-         command: bundle exec run-authenticator
-       - name: performance monitor
-         process_types: [ 'web' ]
-         command: bundle exec run-performance-monitor
-	```
+    Where:
+    <ul>
+      <li><code>SIDECAR-NAME</code> is a name you give your sidecar.</li>
+      <li><code>PROCESS-TYPES</code> is a list of app processes for the sidecar to attach to, such as <code>web</code> or <code>worker</code>. You can attach multiple sidecars to each process type your app uses.</li>
+      <li><code>START-COMMAND</code> is the command used to start the sidecar. For example, <code>./binary</code> or <code>java -jar java-file.jar</code>.</li>
+    </ul>
+
+    This example manifest file includes multiple sidecars:
+
+    ```
+    ---
+    applications:
+    - name: my-app
+      sidecars:
+         - name: authenticator
+           process_types: [ 'web', 'worker' ]
+           command: bundle exec run-authenticator
+         - name: performance monitor
+           process_types: [ 'web' ]
+           command: bundle exec run-performance-monitor
+    ```
 
 1. To apply the manifest file to your app:
-	* If you are using cf CLI v7, run:
+    * If you are using cf CLI v7, run:
 
-		```
-		cf apply-manifest -f PATH-TO-MANIFEST
-		```
-		Where `PATH-TO-MANIFEST` is the path to your manifest file.
-	* If you are using cf CLI v6, run:
+        ```
+        cf apply-manifest -f PATH-TO-MANIFEST
+        ```
+        Where `PATH-TO-MANIFEST` is the path to your manifest file.
+    * If you are using cf CLI v6, run:
 
-		```
-		cf v3-apply-manifest -f PATH-TO-MANIFEST
-		```
-		Where `PATH-TO-MANIFEST` is the path to your manifest file.
-		<p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
+        ```
+        cf v3-apply-manifest -f PATH-TO-MANIFEST
+        ```
+        Where `PATH-TO-MANIFEST` is the path to your manifest file.
+        <p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
 1. To push your app:
-	* If you are using cf CLI v7, run:
+    * If you are using cf CLI v7, run:
 
-		```
-		cf push APP-NAME
-		```
-		Where `APP-NAME` is the name of your app.
-	* If you are using cf CLI v6, run:
+        ```
+        cf push APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
+    * If you are using cf CLI v6, run:
 
-		```
-		cf v3-push APP-NAME
-		```
-		Where `APP-NAME` is the name of your app.
-		<p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
-
+        ```
+        cf v3-push APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
+        <p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
 ## <a id="tutorial"></a> Sidecar Tutorial
 
@@ -218,14 +219,14 @@ The [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-
 
 * **A simple Ruby app**: This app is named `sidecar-dependent-app`. It includes a `/config` endpoint that calls to the sidecar and prints the response, as shown in this code snippet:
 
-	```
-	get '/config' do
-	puts "Sending a request to the config-server sidecar at localhost:#{ENV['CONFIG_SERVER_PORT']}/config/"
-	response = Typhoeus.get("localhost:#{ENV['CONFIG_SERVER_PORT']}/config/")
-	puts "Received #{response.body} from the config-server sidecar"
-	response.body
-	end
-	```
+    ```
+    get '/config' do
+    puts "Sending a request to the config-server sidecar at localhost:#{ENV['CONFIG_SERVER_PORT']}/config/"
+    response = Typhoeus.get("localhost:#{ENV['CONFIG_SERVER_PORT']}/config/")
+    puts "Received #{response.body} from the config-server sidecar"
+    response.body
+    end
+    ```
 
 * **A Golang sidecar**: The `config-server-sidecar` produces a `config-server` binary. It provides apps with their required configuration over its `/config` endpoint. It also accepts connections only over localhost on the `CONFIG_SERVER_PORT` port. This means the sidecar must be co-located in the same container as the app, so that it shares the same network namespace as the main app.
 
@@ -303,42 +304,42 @@ To view the app and sidecar process running in the container:
 
 1. SSH into the app container by running:
 
-	```
-	cf ssh sidecar-dependent-app
-	```
+    ```
+    cf ssh sidecar-dependent-app
+    ```
 
 1. To see both the `rackup` process for the main app and `config-server` process for the sidecar, run:
 
-	```
-	ps aux
-	```
-	The output you see should resemble the output below:
+    ```
+    ps aux
+    ```
+    The output you see should resemble the output below:
 
-	<pre class="terminal">
-	vcap@f00949bd-6601-4731-6f7e-e859:~$ ps aux
-USER         PID %CPU %MEM    VSZ      RSS   TTY   STAT   START TIME  COMMAND
-root           1 0.0  0.0     1120     0     ?     S      22:17 0:00  /tmp/garden-init
-vcap           7 0.0  0.0     106716   4508  ?     S      22:17 0:00  ./config-server
-vcap          13 0.0  0.1     519688   35412 ?     S      22:17 0:00  /home/vcap/deps/0/vendor_bundle/ruby/2.4.0/bin/rackup config.ru -p 8080
-vcap          24 0.0  0.0     116344   10792 ?     S      22:17 0:00  /tmp/lifecycle/diego-sshd --allowedKeyExchanges= --address=0.0.0.0:2222 --allowUnauthenticatedClients=false --inhe
-root          82 0.0  0.0     108012   4548  ?     S      22:17 0:00  /etc/cf-assets/healthcheck/healthcheck -port=8080 -timeout=1000ms -liveness-interval=30s
-vcap         215 0.3  0.0     70376    3756  pts/0 S      23:12 0:00  /bin/bash
-vcap         227 0.0  0.0     86268    3116  pts/0 R      23:12 0:00  ps aux
-	</pre>
+    <pre class="terminal">
+    vcap@f00949bd-6601-4731-6f7e-e859:~$ ps aux
+    USER         PID %CPU %MEM    VSZ      RSS   TTY   STAT   START TIME  COMMAND
+    root           1 0.0  0.0     1120     0     ?     S      22:17 0:00  /tmp/garden-init
+    vcap           7 0.0  0.0     106716   4508  ?     S      22:17 0:00  ./config-server
+    vcap          13 0.0  0.1     519688   35412 ?     S      22:17 0:00  /home/vcap/deps/0/vendor_bundle/ruby/2.4.0/bin/rackup config.ru -p 8080
+    vcap          24 0.0  0.0     116344   10792 ?     S      22:17 0:00  /tmp/lifecycle/diego-sshd --allowedKeyExchanges= --address=0.0.0.0:2222 --allowUnauthenticatedClients=false --inhe
+    root          82 0.0  0.0     108012   4548  ?     S      22:17 0:00  /etc/cf-assets/healthcheck/healthcheck -port=8080 -timeout=1000ms -liveness-interval=30s
+    vcap         215 0.3  0.0     70376    3756  pts/0 S      23:12 0:00  /bin/bash
+    vcap         227 0.0  0.0     86268    3116  pts/0 R      23:12 0:00  ps aux
+    </pre>
 
 1. To see that the sidecar is listening on the port specified by `CONFIG_SERVER_PORT` and that the main `ruby` process is connected to it, run:
 
-	```
-	lsof -i | grep $CONFIG_SERVER_PORT
-	```
-	The output you see should resemble the output below:
+    ```
+    lsof -i | grep $CONFIG_SERVER_PORT
+    ```
+    The output you see should resemble the output below:
 
-	<pre class="terminal">
-	vcap@f00949bd-6601-4731-6f7e-e859:~$ lsof -i | grep $CONFIG_SERVER_PORT
-	config-se   7 vcap 3u  IPv4 17265901     0t0 TCP *:8082 (LISTEN)
-	config-se   7 vcap 5u  IPv4 17265992     0t0 TCP localhost:8082->localhost:42266 (ESTABLISHED)
-<rp></rp>uby       13 vcap 11u  IPv4 17274965    0t0 TCP localhost:42266->localhost:8082 (ESTABLISHED)
-	</pre>
+    <pre class="terminal">
+    vcap@f00949bd-6601-4731-6f7e-e859:~$ lsof -i | grep $CONFIG_SERVER_PORT
+    config-se   7 vcap 3u  IPv4 17265901     0t0 TCP *:8082 (LISTEN)
+    config-se   7 vcap 5u  IPv4 17265992     0t0 TCP localhost:8082->localhost:42266 (ESTABLISHED)
+    ruby       13 vcap 11u  IPv4 17274965    0t0 TCP localhost:42266->localhost:8082 (ESTABLISHED)
+    </pre>
 
 ### <a id="view-logs"></a> View the Web URL and App Logs
 

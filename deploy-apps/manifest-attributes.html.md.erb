@@ -177,10 +177,9 @@ $ cf push my-app -c "bundle exec rake VERBOSE=true"
 
 <p class="note"><strong>Note</strong>: The <code>-c</code> option with a value of 'null' forces <code>cf push</code> to use the buildpack start command. See <a href="./start-restart-restage.html#revert">Forcing cf push to use the Buildpack Start Command</a> for more information.</p>
 
-If you override the start command for a Buildpack app, Linux uses
-<code>bash -c YOUR-COMMAND</code> to invoke your app.
-If you override the start command for a Docker app, Linux uses <code>sh -c YOUR-COMMAND</code> to invoke your app.
-Because of this, if you override a start command, you should prefix <code>exec</code> to the final command in your custom composite start command.
+If you override the start command for a Buildpack app, Linux uses `bash -c COMMAND` to invoke your app. If you override the start command for a Docker
+app, Linux uses `sh -c COMMAND` to invoke your app. Because of this, if you override a start command, you should prefix `exec` to the final command in your
+custom composite start command.
 
 An app needs to catch [termination signals](./prepare-to-deploy.html#moving-apps) and clean itself up appropriately. Because of the way that shells manage process trees, the use of custom composite shell commands, particularly those that create child processes using `&`, `&&`, `||`, etc., can prevent your app from receiving signals that are sent to the top level bash process.
 
@@ -247,7 +246,13 @@ Use the `health-check-invocation-timeout` attribute to set the timeout in second
   health-check-invocation-timeout: 30
 </pre>
 
-The cf CLI command that overrides this attribute is `cf set-health-check my-web-app http --invocation-timeout 10`.
+To override this attribute, run:
+
+```console
+cf set-health-check APP-NAME http --invocation-timeout 10
+```
+
+Where `APP-NAME` is the name of your app.
 
 Within the manifest, the health check timeout is controlled by the `timeout` attribute.
 
@@ -325,7 +330,15 @@ You can use the `no-route` attribute with a value of `true` to prevent a route f
 </pre>
 The command line option that overrides this attribute is `--no-route`.
 
-In the Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check and Cloud Foundry marks it as crashed. To prevent this, disable the port-based health check with `cf set-health-check APP_NAME process`.
+In the Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app
+does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check, and <%= vars.app_runtime_abbr %>
+marks it as crashed. To prevent this, disable the port-based health check by running:
+
+```console
+cf set-health-check APP-NAME process
+```
+
+Where `APP-NAME` is the name of your app.
 
 To remove a route from an existing app, perform the following steps:
 
@@ -424,37 +437,35 @@ Optionally, specify the `protocol` attribute to configure which network protocol
 The `routes` attribute cannot be used in conjunction with the following attributes: `host`, `hosts`, `domain`, `domains`, and `no-hostname`. An error will result.
 
 #### <a id='push-flag-options'></a> Push Flag Options
-This attribute has unique interactions with different command line options.
-<table border="1" class="nice" >
-<tr>
-<th>Push Flag Option</th>
-<th>Resulting Behaviour</th>
-</tr>
-<tr>
-<td><code>--no-route</code></td>
-<td>All declared routes are ignored.</td>
-</tr>
-<tr>
-<td><code>-d</code></td>
-<td>Overrides DOMAIN part of all declared HTTP and TCP routes.</td>
-</tr>
-<tr>
-<td><code>--hostname, -n</code></td>
-<td>Sets or overrides HOSTNAME in all HTTP routes. <br />
-It has no impact on TCP routes.</td>
-</tr>
-<tr>
-<td><code>--route-path</code></td>
-<td>Sets or overrides the PATH in all HTTP routes.<br />
-It has no impact on TCP routes.</td>
-</tr>
-<tr>
-<td><code>--random-route</code></td>
-<td>Sets or overrides the HOSTNAME in all HTTP routes.<br />
-Sets or overrides the PORT in all TCP routes.<br />
-The PORT and HOSTNAME will be randomly generated.</td>
-</tr>
-<tr>
+
+This attribute has unique interactions with different command-line options.
+
+<table border="1" class="nice">
+  <tr>
+    <th>Flag</th>
+    <th>Result</th>
+  </tr>
+  <tr>
+    <td><code>--no-route</code></td>
+    <td>All declared routes are ignored.</td>
+  </tr>
+  <tr>
+    <td><code>-d</code></td>
+    <td>Overrides the <code>DOMAIN</code> in all declared HTTP and TCP routes.</td>
+  </tr>
+  <tr>
+    <td><code>--hostname, -n</code></td>
+    <td>Sets or overrides the <code>HOSTNAME</code> in all HTTP routes. Does not impact TCP routes.</td>
+  </tr>
+  <tr>
+    <td><code>--route-path</code></td>
+    <td>Sets or overrides the <code>PATH</code> in all HTTP routes. Does not impact TCP routes.</td>
+  </tr>
+  <tr>
+    <td><code>--random-route</code></td>
+    <td>Sets or overrides the <code>HOSTNAME</code> in all HTTP routes. Sets or overrides the <code>PORT</code> in all TCP routes. The <code>PORT</code> and
+      <code>HOSTNAME</code> are randomly generated.</td>
+  </tr>
 </table>
 
 ### <a id='sidecars'></a> sidecars
@@ -509,10 +520,8 @@ You can increase the timeout length for very large apps that require more time t
 
 The command line option that overrides the timeout attribute is `-t`.
 
-<p class="warning note"><strong>Warning:</strong> Cloud Controller reports a validation error
-   with the maximum limit if you configure <code>timeout</code> with a value greater than
-   <code>cc.maximum_health_check_timeout</code>.
-</p>
+<p class='important note'><strong>Important:</strong> If you configure <code>timeout</code> with a value greater than
+  <code>cc.maximum_health_check_timeout</code>, the Cloud Controller reports a validation error with the maximum limit.</p>
 
 
 ## <a id='env-block'></a> Environment Variables
@@ -535,11 +544,38 @@ For example:
 
 <p class="note"><strong>Note</strong>: Do not use user-provided environment variables for security sensitive information such as credentials as they might unintentionally show up in cf cli output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided environment variable <a href="./environment-variable.html#VCAP-SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter and in Cloud Controller log files.</p>
 
-While the app is running, you can modify environment variables.
+* To view all variables, run:
 
-* View all variables: `cf env my-app`
-* Set an individual variable: `cf set-env my-app my-variable_name my-variable_value`
-* Unset an individual variable: `cf unset-env my-app my-variable_name my-variable_value`
+    ```
+    cf env APP-NAME
+    ```
+    Where `APP-NAME` is the name of your app.
+
+* To set an individual variable, run:
+
+    ```
+    cf set-env APP-NAME VARIABLE-NAME VARIABLE-VALUE
+    ```
+
+    Where:
+    <ul>
+      <li><code>APP-NAME</code> is the name of your app.</li>
+      <li><code>VARIABLE-NAME</code> is the environment variable you want to set.</li>
+      <li><code>VARIABLE-VALUE</code> is the value of the environment value.</li>
+    </ul>
+
+* To unset an individual variable, run:
+
+    ```
+    cf unset-env APP-NAME VARIABLE-NAME VARIABLE-VALUE
+    ```
+
+    Where:
+    <ul>
+      <li><code>APP-NAME</code> is the name of your app.</li>
+      <li><code>VARIABLE-NAME</code> is the environment variable you want to set.</li>
+      <li><code>VARIABLE-VALUE</code> is the value of the environment value.</li>
+    </ul>
 
 Environment variables interact with manifests in the following ways:
 
@@ -576,7 +612,8 @@ Binding to a service instance is a special case of setting an environment variab
 
 These app manifest features have been deprecated in favor of other options, as described below.
 
-<p class="note warning"><strong>WARNING:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated features along with the feature that replaces it.</p>
+<p class='note warning'><strong>Caution:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated
+  features along with the feature that replaces it.</p>
 
 ### <a id='yaml-anchors'></a> YAML Anchors Replace Top-Level Attributes
 

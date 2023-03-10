@@ -9,9 +9,9 @@ Cloud Foundry aggregates logs for all instances of your apps as well as for requ
 
 <pre class="terminal">$ cf logs YOUR-APP-NAME</pre>
 
-If you want to persist more than the limited amount of logging information that Cloud Foundry can buffer, drain these logs to a log management service.
+If you want more than the limited amount of logging information that Cloud Foundry can buffer to persist, drain these logs to a log management service.
 
-<b>Feature:</b>  Since [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0) you can use mTLS inside your syslog drain. Please, follow the described process inside <a href="#step2">Step 2: Create and Bind a User-Provided Service Instance</a> to handle it. Please inject the corresponding credentials as <em>PEM</em> encoded <em>X.509</em> certificate.
+**Feature:** Since [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use mTLS inside your syslog drain. Follow the procedure in <a href="#step2">Step 2: Create and Bind a User-Provided Service Instance</a>. Include the corresponding credentials as a _PEM-encoded X.509_ certificate.
 
 For more information about the systems responsible for log aggregation and streaming in Cloud Foundry, see [App Logging in Cloud Foundry](../deploy-apps/streaming-logs.html).
 
@@ -61,14 +61,17 @@ To set up a communication channel between the log management service and your Cl
 You can create a syslog drain service and bind apps to it using Cloud Foundry Command Line Interface (cf CLI) commands.
 
 1. To create the service instance, run `cf create-user-provided-service` (or `cf cups`) with the `-l` flag.
+
+<pre class="terminal">
+$ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL
+</pre>
+
     Where:
     <ul>
       <li><code>DRAIN-NAME</code> is a name to use for your syslog drain service instance.</li>
       <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
     </ul>
-<pre class="terminal">
-$ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL
-</pre>
+
 In case of the usage of the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use `-p` flag to define the client certificate and key as credentials, filling in values as follows.
 <pre class="terminal">
 $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
@@ -83,6 +86,7 @@ Finally, a combination of the approaches described above uses a certificate auth
 <pre class="terminal">
 $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----", "cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
 </pre>
+
     For more information, see [User-Provided Service Instances](./user-provided.html).
 
 2. To bind an app to the service instance, do one of the following:

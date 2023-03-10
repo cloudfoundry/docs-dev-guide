@@ -61,10 +61,10 @@ The task execution history is retained for one month.
 At the system level, a user with admin-level privileges can use the Cloud Controller v3 API to view all tasks that are running within an org or space. For more information, see [List tasks](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#list-tasks) in the Cloud Foundry API documentation.
 
 Admins can set the default memory and disk usage quotas for tasks on a global level.
-Tasks use the same memory and disk usage defaults as apps unless customized using [run-task](https://cli.cloudfoundry.org/en-US/v7/run-task.html) in the cf CLI. 
+Tasks use the same memory and disk usage defaults as apps unless customized using [run-task](https://cli.cloudfoundry.org/en-US/v7/run-task.html) in the cf CLI.
 
 <% if vars.platform_code == 'PCF' %>
-<%= partial '/pcf/core/2-7/tasks_rec_alloc_pcf' %>
+<%= partial "/pcf/core/#{vars.current_major_version}/tasks_rec_alloc_pcf" %>
 <% else %>
 <%= partial 'tasks_rec_alloc_oss' %>
 <% end %>
@@ -83,56 +83,56 @@ To run a task on an app with cf CLI v6:
 
 1. Push your app by running:
 
-	```
-	cf push APP-NAME
-	```
+    ```
+    cf push APP-NAME
+    ```
 
 1. Run your task on the deployed app by running:
 
-	```
-	cf run-task APP-NAME "TASK" --name TASK-NAME
-	```
-	The following example runs a database migration as a task on the `my-app` app:
-	<pre class="terminal">
-	$ cf run-task my-app "bin/rails db:migrate" --name my-task
-	Creating task for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
-	OK
-	Task 1 has been submitted successfully for execution.
-	</pre>
-	<p class="note"><strong>Note:</strong> To re-run a task, you must run it as a new task using the above command.</p>
+    ```
+    cf run-task APP-NAME "TASK" --name TASK-NAME
+    ```
+    The following example runs a database migration as a task on the `my-app` app:
+    <pre class="terminal">
+    $ cf run-task my-app "bin/rails db:migrate" --name my-task
+    Creating task for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
+    OK
+    Task 1 has been submitted successfully for execution.
+    </pre>
+    <p class="note"><strong>Note:</strong> To re-run a task, you must run it as a new task using the above command.</p>
 
 1. To display the recent logs of the app and all its tasks, run:
 
-	```
-	cf logs APP-NAME --recent
-	```
-	The following example displays the logs of a successful task:
-	<pre class="terminal">
-	$ cf logs my-app --recent
-	2017-01-03T15:58:06.57-0800 [APP/TASK/my-task/0]OUT Creating container
-	2017-01-03T15:58:08.45-0800 [APP/TASK/my-task/0]OUT Successfully created container
-	2017-01-03T15:58:13.32-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.322258 #7] DEBUG -- :    (15.9ms)  CREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)
-	2017-01-03T15:58:13.33-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.337723 #7] DEBUG -- :    (11.9ms)  CREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)
-	2017-01-03T15:58:13.34-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.340234 #7] DEBUG -- :    (1.6ms)  SELECT pg_try_advisory_lock(3720865444824511725);
-	2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.351853 #7] DEBUG -- :   ActiveRecord::SchemaMigration Load (0.7ms)  SELECT "schema_migrations".* FROM "schema_migrations"
-	2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT I, [2017-01-03T23:58:13.357294 #7]  INFO -- : Migrating to CreateArticles (20161118225627)
-	2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.359565 #7] DEBUG -- :    (0.5ms)  BEGIN
-	2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT == 20161118225627 CreateArticles: migrating ===================================
-	2017-01-03T15:58:13.50-0800 [APP/TASK/my-task/0]OUT Exit status 0
-	2017-01-03T15:58:13.56-0800 [APP/TASK/my-task/0]OUT Destroying container
-	2017-01-03T15:58:15.65-0800 [APP/TASK/my-task/0]OUT Successfully destroyed container
-	</pre>
-	The following example displays the logs of a failed task:
-	<pre class="terminal">
-	$ cf logs my-app --recent
-	2016-12-14T11:09:26.09-0800 [APP/TASK/my-task/0]OUT Creating container
-	2016-12-14T11:09:28.43-0800 [APP/TASK/my-task/0]OUT Successfully created container
-	2016-12-14T11:09:28.85-0800 [APP/TASK/my-task/0]ERR bash: bin/rails: command not found
-	2016-12-14T11:09:28.85-0800 [APP/TASK/my-task/0]OUT Exit status 127
-	2016-12-14T11:09:28.89-0800 [APP/TASK/my-task/0]OUT Destroying container
-	2016-12-14T11:09:30.50-0800 [APP/TASK/my-task/0]OUT Successfully destroyed container
-	</pre>
-	If your task name is unique, you can `grep` the output of the `cf logs` command for the task name to view task-specific logs.
+    ```
+    cf logs APP-NAME --recent
+    ```
+    The following example displays the logs of a successful task:
+    <pre class="terminal">
+    $ cf logs my-app --recent
+    2017-01-03T15:58:06.57-0800 [APP/TASK/my-task/0]OUT Creating container
+    2017-01-03T15:58:08.45-0800 [APP/TASK/my-task/0]OUT Successfully created container
+    2017-01-03T15:58:13.32-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.322258 #7] DEBUG -- :    (15.9ms)  CREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)
+    2017-01-03T15:58:13.33-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.337723 #7] DEBUG -- :    (11.9ms)  CREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)
+    2017-01-03T15:58:13.34-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.340234 #7] DEBUG -- :    (1.6ms)  SELECT pg_try_advisory_lock(3720865444824511725);
+    2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.351853 #7] DEBUG -- :   ActiveRecord::SchemaMigration Load (0.7ms)  SELECT "schema_migrations".* FROM "schema_migrations"
+    2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT I, [2017-01-03T23:58:13.357294 #7]  INFO -- : Migrating to CreateArticles (20161118225627)
+    2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.359565 #7] DEBUG -- :    (0.5ms)  BEGIN
+    2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT == 20161118225627 CreateArticles: migrating ===================================
+    2017-01-03T15:58:13.50-0800 [APP/TASK/my-task/0]OUT Exit status 0
+    2017-01-03T15:58:13.56-0800 [APP/TASK/my-task/0]OUT Destroying container
+    2017-01-03T15:58:15.65-0800 [APP/TASK/my-task/0]OUT Successfully destroyed container
+    </pre>
+    The following example displays the logs of a failed task:
+    <pre class="terminal">
+    $ cf logs my-app --recent
+    2016-12-14T11:09:26.09-0800 [APP/TASK/my-task/0]OUT Creating container
+    2016-12-14T11:09:28.43-0800 [APP/TASK/my-task/0]OUT Successfully created container
+    2016-12-14T11:09:28.85-0800 [APP/TASK/my-task/0]ERR bash: bin/rails: command not found
+    2016-12-14T11:09:28.85-0800 [APP/TASK/my-task/0]OUT Exit status 127
+    2016-12-14T11:09:28.89-0800 [APP/TASK/my-task/0]OUT Destroying container
+    2016-12-14T11:09:30.50-0800 [APP/TASK/my-task/0]OUT Successfully destroyed container
+    </pre>
+    If your task name is unique, you can `grep` the output of the `cf logs` command for the task name to view task-specific logs.
 
 ### <a id='run-tasks-v7'></a> Run a Task on an App with cf CLI v7
 
@@ -142,29 +142,29 @@ To run a task on an app with cf CLI v7:
 
 1. Push your app by running:
 
-	```
-	cf push APP-NAME --task
-	```
+    ```
+    cf push APP-NAME --task
+    ```
 
 1. Run your task on the deployed app by running:
 
-	```
-	cf run-task APP-NAME --name TASK-NAME
-	```
-	<p class="note"><strong>Note:</strong> <code>cf run-task</code> allows the optional flags <code>--process</code> and <code>--command</code>. If provided, <code>--command</code> overrides the manifest property.</p>
-	The following example runs a database migration as a task on the `my-app` app:
-	<pre class="terminal">
-	$ cf run-task my-app --name my-task
-	Creating task for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
-	OK
-	Task 1 has been submitted successfully for execution.
-	</pre>
+    ```
+    cf run-task APP-NAME --name TASK-NAME
+    ```
+    <p class="note"><strong>Note:</strong> <code>cf run-task</code> allows the optional flags <code>--process</code> and <code>--command</code>. If provided, <code>--command</code> overrides the manifest property.</p>
+    The following example runs a database migration as a task on the `my-app` app:
+    <pre class="terminal">
+    $ cf run-task my-app --name my-task
+    Creating task for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
+    OK
+    Task 1 has been submitted successfully for execution.
+    </pre>
 
 1. To display the recent logs of the app and all its tasks, run:
 
-	```
-	cf logs APP-NAME --recent
-	```
+    ```
+    cf logs APP-NAME --recent
+    ```
 
 
 ## <a id='list-tasks'></a> List Tasks Running on an App

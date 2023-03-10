@@ -3,8 +3,6 @@ title: Starting, Restarting, and Restaging Apps
 owner: CLI
 ---
 
-
-
 This topic describes how to start, restart, and restage apps in Cloud Foundry.
 
 ##<a id='start'></a>Start Your App
@@ -23,7 +21,9 @@ Cloud Foundry determines the start command for your app from one of the three fo
 
 * The `command` attribute in the app manifest. See the following example:
 
-    `command: node YOUR-APP.js`
+    ```yaml
+    command: node YOUR-APP.js
+    ```
 
 * The buildpack, which provides a start command appropriate for a particular type of app.
 
@@ -49,7 +49,9 @@ You can specify a null start command in one of two ways.
 
 * Using the `command` attribute in the app manifest:
 
-    `command: null`
+    ```console
+    command: null
+    ```
 
 This can be helpful after you have deployed while providing a start command at the command line or the manifest.
 At this point, a command that you provided, rather than the buildpack start command, has become the default start command.

@@ -64,7 +64,7 @@ Admins can set the default memory and disk usage quotas for tasks on a global le
 Tasks use the same memory and disk usage defaults as apps unless customized using [run-task](https://cli.cloudfoundry.org/en-US/v7/run-task.html) in the cf CLI.
 
 <% if vars.platform_code == 'PCF' %>
-<%= partial "/pcf/core/#{vars.current_major_version}/tasks_rec_alloc_pcf" %>
+<%= partial "/pcf/core/tasks_rec_alloc_pcf" %>
 <% else %>
 <%= partial 'tasks_rec_alloc_oss' %>
 <% end %>

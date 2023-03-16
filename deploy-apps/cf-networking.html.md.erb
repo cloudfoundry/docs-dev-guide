@@ -49,7 +49,7 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% else %>
 
 <% if vars.platform_code == "PCF" %>
-<%= partial "/pcf/core/#{vars.current_major_version}/c2c_overlay" %>
+<%= partial "/pcf/core/c2c_overlay" %>
 <% end %>
 <% end %>
 
@@ -218,7 +218,7 @@ To disable network policy enforcement between apps, do the following:
 
 <% else %>
 
-<%= partial "/pcf/core/#{vars.current_major_version}/disable_network_policy_enforcement" %>
+<%= partial "/pcf/core/disable_network_policy_enforcement" %>
 
 <% end %>
 

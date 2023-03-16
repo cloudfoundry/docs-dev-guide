@@ -71,7 +71,7 @@ Tasks use the same memory, disk usage, and log rate limit defaults as apps, unle
 about the `cf run-task` command, see the [Cloud Foundry CLI Reference Guide](https://cli.cloudfoundry.org/en-US/v8/run-task.html).
 
 <% if vars.platform_code == 'PCF' %>
-<%= partial "/pcf/core/#{vars.current_major_version}/tasks_rec_alloc_pcf" %>
+<%= partial "/pcf/core/tasks_rec_alloc_pcf" %>
 <% else %>
 <%= partial 'tasks_rec_alloc_oss' %>
 <% end %>
@@ -256,7 +256,7 @@ To cancel a running task:
       <li><code>APP-NAME</code> is the name of your app.</li>
       <li><code>TASK-NAME</code> is the name you want to give the task.</li>
     </ul>
- 
+
     The above command returns output similar to the following example:
     <pre class="terminal">
     Terminating task 2 of app example-app in org example-org / space development as admin@example.org...

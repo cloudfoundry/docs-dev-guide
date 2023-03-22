@@ -21,11 +21,11 @@ Developers can change the time limit for starting apps through an app manifest o
 
 ## <a id="crash-events"></a> Crash Events
 
-If an app instance crashes, <%= vars.app_runtime_abbr %>  restarts it by rescheduling the instance on another container three times. After three failed restarts, <%= vars.app_runtime_abbr %> waits 30 seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance.
+If an app instance fails, <%= vars.app_runtime_abbr %>  restarts it by rescheduling the instance on another container three times. After three failed restarts, <%= vars.app_runtime_abbr %> waits 30 seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance.
 
 ## <a id="evacuation"></a> Evacuation
 
-Certain actions require restarting VMs with containers hosting app instances. For example, you update stemcells or install a new version of <%= vars.app_runtime_abbr %>. You must restart all the VMs in a deployment.
+Certain actions require restarting VMs with containers hosting app instances. For example, you can update stemcells or install a new version of <%= vars.app_runtime_abbr %>. You must restart all the VMs in a deployment.
 
 <%= vars.app_runtime_abbr %> relocates the instances on VMs that are shutting down through a process called evacuation. <%= vars.app_runtime_abbr %> recreates the app instances on another VM, waits until they are healthy, and then shuts down the old instances. During an evacuation, you might see the app instances in a duplicated state for a brief period.
 
@@ -40,7 +40,7 @@ During this app duplication process, singleton app instances might become tempor
 
 * When a system event occurs, such as the replacement procedure during Diego Cell evacuation or when an app instance stops because of a failed health check probe.
 
-To shut down the app, <%= vars.app_runtime_abbr %> sends the app process in the container a SIGTERM. By default, the process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, <%= vars.app_runtime_abbr %> sends a SIGKILL.
+To stop the app, <%= vars.app_runtime_abbr %> sends the app process in the container a SIGTERM. By default, the process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, <%= vars.app_runtime_abbr %> sends a SIGKILL.
 
 By default, apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before <%= vars.app_runtime_abbr %> terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests.
 <% if vars.platform_code == 'PCF' %>

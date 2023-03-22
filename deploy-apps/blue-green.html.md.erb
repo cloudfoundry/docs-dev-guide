@@ -48,7 +48,7 @@ As shown in this graphic:
 * Blue is now running on Cloud Foundry.
 * The CF Router sends all traffic for `demo-time.example.com` traffic to Blue.
 
-![alt-text="cf CLI pushing an app"](./images/blue-green/blue.png)
+![alt-text="Dcf CLI pushing an app."](./images/../../images/blue-green/blue.png)
 
 ### <a id='update-and-push'></a>Step 2: Update App and Push ###
 
@@ -84,7 +84,8 @@ After the `cf map-route` command :
 
 * The CF Router continues sending traffic for `demo-time-temp.example.com` to Green.
 * Within a few seconds, the CF Router begins load balancing traffic for `demo-time.example.com` between Blue and Green.
-![alt-text="CF Router continues to send traffic"](./images/blue-green/map.png)
+
+![alt-text="CF Router continues to send traffic."](./images/../../images/blue-green/map.png)
 
 ### <a id='unmap-blue'></a>Step 4: Unmap Route to Blue ###
 
@@ -100,15 +101,13 @@ After `cf unmap-route` command:
 
 * The CF Router stops sending traffic to Blue.
 Now all traffic for `demo-time.example.com` is sent to Green:
-
-![alt-text="CF Router stops traffic"](./images/blue-green/unmap.png)
+![alt-text="CF Router stops traffic."](./images/../../images/blue-green/unmap.png)
 
 ### <a id='remove-temp-route'></a>Step 5: Remove Temporary Route to Green ###
 
 You can now use `cf unmap-route` to remove the route `demo-time-temp.example.com` from Green. The route can be deleted using `cf delete-route` or reserved for later use. You can also decommission Blue, or keep it in case you need to roll back your changes.
 
-![alt-text="Use `cf unmap-route` to remove the route"](./images/blue-green/green.png)
-
+![alt-text="Use `cf unmap-route` to remove the route."](./images/../../images/blue-green/green.png)
 
 ## <a id='implementations'></a>Implementation
 

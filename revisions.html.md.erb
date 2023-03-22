@@ -3,13 +3,13 @@ title: App Revisions
 owner: CAPI
 ---
 
-This topic describes app revisions and provides procedures for working with them.
+This topic describes app revisions and provides procedures to work with them.
 
-For additional information, see [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation.
+For additional information about app revisions, see [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation.
 
-<p class="note"><strong>Note:</strong> CAPI v3 is the recommended API version for revisions. While revisions work with CAPI v2, there are several inconsistencies. For example, revision descriptions for apps with multiple processes may be inaccurate because CAPI v2 does not support apps with multiple processes. Additionally, pushing an app for the first time with revisions in CAPI v2 creates two revisions.</p>
+<p class="note"><strong>Note:</strong> CAPI v3 is the recommended API version for revisions. While revisions work with CAPI v2, there are several inconsistencies. For example, revision descriptions for apps with multiple processes can be inaccurate because CAPI v2 does not support apps with multiple processes. Additionally, pushing an app for the first time with revisions in CAPI v2 creates two revisions.</p>
 
-<p class="note"><strong>Note:</strong> The App Revisions API is experimental, and future releases may have breaking changes.</p>
+<p class="note"><strong>Note:</strong> The App Revisions API is experimental, and future releases might have breaking changes.</p>
 
 ## <a id="overview"></a> Overview
 
@@ -23,7 +23,7 @@ Some use cases for revisions include:
 
 ### <a id="events"></a> Events that Trigger Revisions
 
-Revisions are generated automatically through these events:
+Revisions are generated through these events:
 
 * A new droplet is created for an app.
 * An app's environment variables are changed.
@@ -117,7 +117,7 @@ To roll back to a previous revision:
 	```
 	Where `APP-NAME` is the name of your app.
 
-1. Retrieve the GUID of the revision. For more information, see [Retrieve a Revision](#get).
+1. Retrieve the GUID of the revision. See [Retrieve a Revision](#get).
 
 1. Create a deployment using CAPI by running:
 
@@ -147,17 +147,17 @@ To roll back to a previous revision:
 ## <a id="metadata"></a> Add Metadata to a Revision
 
 <% if vars.platform_code == "CF" || vars.platform_code == "PCF" %>
+
 To add metadata to a revision, see [Add Metadata to an Object](../adminguide/metadata.html).
 <% else %>
 To add metadata to a revision, see [Add Metadata to an Object](https://docs.cloudfoundry.org/adminguide/metadata.html).
 <% end %>
 
+## <a id="disable"></a> Deactivate Revisions for an App
 
-## <a id="disable"></a> Disable Revisions for an App
+CAPI activates app revisions by default. To deactivate revisions for an app, you must manually turn them off.
 
-CAPI enables app revisions by default. To disable revisions for an app, you must manually turn them off.
-
-To disable revisions for an app:
+To deactivate revisions for an app:
 
 1. Retrieve the GUID of the app by running:
 

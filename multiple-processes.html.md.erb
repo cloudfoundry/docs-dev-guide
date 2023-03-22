@@ -9,8 +9,10 @@ This topic describes how to push and manage apps with multiple processes.
 ## <a id='about-processes'></a> About Processes
 
 The Cloud Foundry API (CAPI) V3 supports using a single command to push apps that run multiple processes, such as a web app that has a UI process and a worker
-process. To push an app that creates multiple processes from the same codebase, you first define its processes in a Procfile. For more information, see [Push
-an App with Multiple Processes](#push-with-multiple-processes) below.
+process. To push an app that creates multiple processes from the same codebase, you first define its processes in a Procfile.
+
+For more information about pushing an app, see [Push
+an App with Multiple Processes](#push-with-multiple-processes).
 
 For more information about processes, see the [CAPI V3 documentation](http://v3-apidocs.cloudfoundry.org/index.html#processes).
 
@@ -19,14 +21,16 @@ For more information about processes, see the [CAPI V3 documentation](http://v3-
 
 This section describes how to push an app with multiple processes using either a manifest or a Procfile.
 
-### <a id='manifest'></a> Push an App with Multiple Processes Using a Manifest
+### <a id='manifest'></a> Push an App with Multiple Processes using a Manifest
 
 To push an app with multiple processes using a manifest:
 
-1. Create a file in YAML format that defines a manifest. Include each process with its start command. The following example manifest file defines the app
+1. Create a file in YAML format that defines a manifest. Include each process with its start command.
+
+   The following example manifest file defines the app
 `example-app` with two processes:
 
-    ```
+    ```yaml
     version: 1
     - name: example-app
       processes:
@@ -41,7 +45,7 @@ To push an app with multiple processes using a manifest:
 
 1. Push the app with your manifest by running:
 
-    ```
+    ```console
     cf push -f MANIFEST.yml
     ```
     Where `MANIFEST` is the filename of your manifest file.
@@ -49,7 +53,7 @@ To push an app with multiple processes using a manifest:
 For more information about defining processes with manifests, see [processes](deploy-apps/manifest-attributes.html#processes) in _App Manifest Attribute
 Reference_.
 
-### <a id='procfile'></a>Push an App with Multiple Processes Using a Procfile
+### <a id='procfile'></a>Push an App with Multiple Processes using a Procfile
 
 To push an app with multiple processes using a Procfile:
 
@@ -100,10 +104,13 @@ To view the processes running as part of an app:
 
 1. Run:
 
-    ```
+    ```console
     cf app APP-NAME
     ```
-    Where `APP-NAME` is the name of your app. The following example shows return output for an app that has a `web` and a `worker` process:
+
+    Where `APP-NAME` is the name of your app.
+
+    The following example shows return output for an app that has a `web` and a `worker` process:
     <pre class="terminal">
     Showing health and status for app example-app in org test / space test as admin...
 

@@ -21,11 +21,11 @@ Cloud Foundry enables users to leverage services that are not available in the m
 
 ## <a id='credentials'></a> Service Instance Credentials
 
-Cloud Foundry enables users to provision credentials needed to interface with a service instance. You can use app binding to automatically deliver these credentials to your Cloud Foundry app. For external and local clients, you can use service keys to generate credentials to communicate directly with a service instance.
+Cloud Foundry enables users to provision credentials needed to interface with a service instance. You can use app binding to deliver these credentials to your Cloud Foundry app. For external and local clients, you can use service keys to generate credentials to communicate directly with a service instance.
 
 ### <a id='application-binding'></a> App Binding
 
-Service instance credentials can be delivered automatically to apps running on Cloud Foundry in an environment variable. For more information, see [Delivering Service Credentials to an App](./application-binding.html).
+Service instance credentials can be delivered to apps running on Cloud Foundry in an environment variable. For more information, see [Delivering Service Credentials to an App](./application-binding.html).
 
 For information about binding to a specific app development framework, see [Buildpacks](../../buildpacks/index.html).
 
@@ -40,7 +40,7 @@ For more information about creating a user-provided service instance with servic
 
 ## <a id='external-ip'></a> Outbound IP Addresses
 
-To allow an app to communicate with a service external to <%= vars.product_short %>, you may need to configure the service to accept connections from your app based on its outbound IP address.
+To allow an app to communicate with a service external to <%= vars.product_short %>, you might need to configure the service to accept connections from your app based on its outbound IP address.
 
 In your external service configuration, you must do one of the following:
 
@@ -68,7 +68,7 @@ For more information about running cf CLI tasks, see [Running Tasks](../using-ta
 
 <p class="note"><strong>Note:</strong> To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. For information about downloading, installing, and uninstalling the cf CLI, see the <a href="../../cf-cli/install-go-cli.html">Installing the cf CLI</a>.</p>
 
-To perform a database schema migration with the cf CLI:
+To do a database schema migration with cf CLI:
 
 1. Push the app:
 	<pre class="terminal">$ cf push APP-NAME</pre>
@@ -77,7 +77,7 @@ To perform a database schema migration with the cf CLI:
 
 	<p class="note"><strong>Note:</strong> To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
 
-1. Perform a database schema migration as a task on the app:
+1. Do a database schema migration as a task on the app:
 	<pre class="terminal">
 	$ cf run-task APP-NAME --command "bin/rails db:migrate" --name TASK-NAME
 	Creating task for app APP-NAME in org jdoe-org / space development as jdoe@pivotal.io...

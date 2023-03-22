@@ -7,7 +7,7 @@ This topic introduces SSH configuration for apps in your deployment.
 
 If you need to troubleshoot an instance of an app, you can gain SSH access to the app using the SSH proxy and daemon.
 
-For example, one of your app instances may be unresponsive, or the log output from the app may be inconsistent or incomplete. You can SSH into the individual VM that runs the problem instance to troubleshoot.
+For example, one of your app instances might be unresponsive, or the log output from the app is inconsistent or incomplete. You can SSH into the individual VM that runs the problem instance to troubleshoot.
 
 <%= vars.mutual_tls_ssh %>
 
@@ -37,21 +37,22 @@ for spaces, and for apps as described in this table:
   </tr>
 </table>
 
-An app is SSH-accessible only if operators, space managers, and space developers all grant SSH access at their respective levels. For example, the image below shows a deployment where:
+An app is SSH-accessible only if operators, space managers, and space developers all grant SSH access at their respective levels. For example, the following image shows a deployment where:
 
 * An operator allowed SSH access at the deployment level.
 * A space manager allowed SSH access for apps running in spaces "A" and "B" but not "C".
-* A space developer enabled SSH access for apps that include "Foo", "Bar", and "Baz".
+* A space developer activated SSH access for apps that include "Foo", "Bar", and "Baz".
 
 As a result, apps "Foo", "Bar", and "Baz" accept SSH requests.
 
-<%= image_tag("../images/ssh-app-access.png", :alt => "Diagram that shows examples of successful (in green) and unsuccessful (in red) SSH Application Access Control in deployments. See long description below.") %>
+![alt-text="Diagram that shows examples of successful (in green) and unsuccessful (in red) SSH Application Access Control in deployments. See long description."](./images/ssh-app-access.png)
 
-Space A has SSH Access Enabled, indicated by a green checkmark, for apps "Foo" and "Bar". Space A does not have SSH Access Enabled for the third app, indicated by a red X.
 
-Space B has has SSH Access Enabled, indicated by a green checkmark, for app "Baz". Space B does not have SSH Access Enabled for the other two apps, indicated by a red X.
+Space A has SSH Access Activated, indicated by a green checkmark, for apps "Foo" and "Bar". Space A does not have SSH Access Enabled for the third app, indicated by a red X.
 
-Space C does not have SSH Access Enabled for all three apps, indicated by a red X.
+Space B has has SSH Access Activated, indicated by a green checkmark, for app "Baz". Space B does not have SSH Access Enabled for the other two apps, indicated by a red X.
+
+Space C does not have SSH Access Activated for all three apps, indicated by a red X.
 
 ## <a id='app-ssh-config'></a> SSH Access for Apps and Spaces
 

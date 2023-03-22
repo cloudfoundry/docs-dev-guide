@@ -15,11 +15,11 @@ This page describes the environment variables that the <%= vars.app_runtime_firs
 
 ## <a id='overview'></a> Overview
 
-Environment variables are the means by which <%= vars.app_runtime_abbr %> communicates with a deployed app about its environment.
+Environment variables are the means <%= vars.app_runtime_abbr %> communicates with a deployed app about its environment.
 
 For information about setting your own app-specific environment variables, see the [Environment Variable](./manifest.html#env-block) section of the _Deploying with App Manifests_ topic.
 
-<p class="note"><strong>Note: </strong>Do not use user-provided environment variables for security sensitive information such as credentials as they might unintentionally show up in cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided environment variable <a href="#VCAP_SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter and in Cloud Controller log files.</p>
+<p class="note"><strong>Note: </strong>Do not employ user-provided environment variables for security sensitive information such as credentials as they might unintentionally show up in cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided environment variable <a href="#VCAP_SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter and in Cloud Controller log files.</p>
 
 ## <a id='view-env'></a> View Environment Variables
 
@@ -79,7 +79,7 @@ This section describes the environment variables that <%= vars.app_runtime_abbr 
 
 You can access environment variables programmatically, including variables defined by the buildpack. For more information, see the buildpack documentation for [Java](../../buildpacks/java/java-tips.html#env-var), [Node.js](../../buildpacks/node/node-tips.html#env-var), and [Ruby](../../buildpacks/ruby/ruby-tips.html#env-var).
 
-The table below lists the system variables available to your app container.
+The following table lists the system variables available to your app container.
 
 | Environment Variable | Running | Staging | Task |
 | -------------------- | ------- | ------- | ---- |
@@ -149,7 +149,7 @@ For more information, see [PORT](#PORT).
 
 ### <a id='CF-INSTANCE-PORTS'></a> CF_INSTANCE_PORTS
 
-The list of mappings between internal, or *container-side*, and external, or *host-side*, ports allocated to the container running the app instance. Not all of the internal ports are necessarily available for the app to bind to, as some of them may be used by system-provided services that also run inside the container. These internal and external values may differ.
+The list of mappings between internal, or *container-side*, and external, or *host-side*, ports allocated to the container running the app instance. Not all of the internal ports are necessarily available for the app to bind to, as some of them might be used by system-provided services that also run inside the container. These internal and external values might differ.
 
 For example: `CF_INSTANCE_PORTS=[{external:61045,internal:8080},{external:61046,internal:2222}]`
 
@@ -157,7 +157,7 @@ For example: `CF_INSTANCE_PORTS=[{external:61045,internal:8080},{external:61046,
 
 For apps bound to certain services that use a database, <%= vars.app_runtime_abbr %> creates a `DATABASE_URL` environment variable based on the `VCAP_SERVICES` environment variable.
 
-<%= vars.app_runtime_abbr %> uses the structure of the `VCAP_SERVICES` environment variable to populate the `DATABASE_URL` environment variable. <%= vars.app_runtime_abbr %> recognizes any service containing a JSON object like the example below as a candidate for the `DATABASE_URL` environment variable and uses the first candidate it finds.
+<%= vars.app_runtime_abbr %> uses the structure of the `VCAP_SERVICES` environment variable to populate the `DATABASE_URL` environment variable. <%= vars.app_runtime_abbr %> recognizes any service containing a JSON object like the following example as a candidate for the `DATABASE_URL` environment variable and uses the first candidate it finds.
 
     {
       "some-service": [
@@ -212,7 +212,7 @@ For example: `MEMORY_LIMIT=512M`
 
 ### <a id='PORT'></a> PORT
 
-The port on which the app should listen for requests. <%= vars.app_runtime_abbr %> allocates a port dynamically for each instance of the app, so code that obtains or uses the app port should refer to it using the `PORT` environment variable.
+The port on which the app listens for requests. <%= vars.app_runtime_abbr %> allocates a port dynamically for each instance of the app, so code that obtains or uses the app port refers to it using the `PORT` environment variable.
 
 For example: `PORT=8080`
 
@@ -240,7 +240,7 @@ Deprecated name for the `PORT` variable.
 
 ### <a id='VCAP-APPLICATION'></a> VCAP_APPLICATION
 
-This environment variable contains the associated attributes for a deployed app. Results are returned in JSON format. The table below lists the attributes that are returned.
+This environment variable contains the associated attributes for a deployed app. Results are returned in JSON format. The following table lists the attributes that are returned.
 
 | Attribute | Description |
 | --------- | ----------- |
@@ -272,7 +272,7 @@ For bindable services, <%= vars.app_runtime_abbr %> adds connection details to t
 
 <%= vars.app_runtime_abbr %> returns the results as a JSON document that contains an object for each service for which one or more instances are bound to the app. The service object contains a child object for each instance of the service that is bound to the app.
 
-The table below defines the attributes that describe a bound service. The key for each service in the JSON document is the same as the value of the "label" attribute.
+The following a table defines the attributes that describe a bound service. The key for each service in the JSON document is the same as the value of the "label" attribute.
 
 | Attribute | Description |
 | --------- | ----------- |
@@ -291,7 +291,7 @@ The table below defines the attributes that describe a bound service. The key fo
 
 To see the value of the `VCAP_SERVICES` environment variable for an app pushed to <%= vars.app_runtime_abbr %>, see [View Environment Variable Values](#view-env).
 
-The example below shows the value of the `VCAP_SERVICES` environment variable for bound instances of several services available in the Marketplace.
+The following example shows the value of the `VCAP_SERVICES` environment variable for bound instances of several services available in the Marketplace.
 
 ~~~
 VCAP_SERVICES=
@@ -344,7 +344,7 @@ VCAP_SERVICES=
 
 ## <a id='evgroups'></a> Environment Variable Groups
 
-Environment variable groups are system-wide variables that enable operators to apply a group of environment variables to all running apps and all staging apps separately.
+Environment variable groups are system-wide variables that allow operators to apply a group of environment variables to all running apps and all staging apps separately.
 
 An environment variable group consists of a single hash of name-value pairs that are later inserted into an app container at runtime or at staging. These values can contain information such as HTTP proxy information. The values for variables set in an environment variable group are case-sensitive.
 
@@ -358,7 +358,7 @@ When creating environment variable groups:
 
 * Any user-defined variable takes precedence over environment variables provided by these groups.
 
-The table below lists the commands for environment variable groups.
+The following table lists the commands for environment variable groups.
 
 | CLI Command | Description |
 | ----------- | ----------- |

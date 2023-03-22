@@ -22,7 +22,7 @@ single container on Diego. Both processes within the container undergo health ch
 You can push sidecar processes with your app by using one of two methods:
 
 * Using an app manifest. For instructions, see
-[Push an App with a Sidecar Using an App Manifest](#create) below.
+[Push an App with a Sidecar Using an App Manifest](#create).
 * With a custom buildpack. For instructions, see
 [Sidecar Buildpacks](../buildpacks/sidecar-buildpacks.html).
 
@@ -113,7 +113,7 @@ For more information about packaging assets with your Java app, see [Tips for Ja
 
 ## <a id="create"></a> Push an App with a Sidecar Using an App Manifest
 
-These sections explain how to push an app with a sidecar using an app manifest. For an example that you can try yourself, see [Sidecar Tutorial](#tutorial) below.
+These sections explain how to push an app with a sidecar using an app manifest. For an example that you can try yourself, see [Sidecar Tutorial](#tutorial).
 
 <p class="note"><strong>Note:</strong> When pushing a Java app, ensure that you follow the requirements listed in <a href="#java">Requirements for Java Apps</a> above.</p>
 
@@ -123,7 +123,7 @@ Before you can push an app with a sidecar with an app manifest, you must have:
 
 * An app that is currently running or ready to be pushed.
 
-* A file that <%= vars.app_runtime_abbr%> can execute inside the app container as a sidecar process. For example, an executable binary, a Java .jar file, or Ruby scripts.
+* A file that <%= vars.app_runtime_abbr%> can run inside the app container as a sidecar process. For example, an executable binary, a Java .jar file, or Ruby scripts.
 
 ### <a id="create"></a> Procedure
 
@@ -146,7 +146,7 @@ To push an app with a sidecar:
 
 1. Create a manifest file in the root directory of your app, such as `manifest.yml`. Otherwise, use an existing manifest file for your app. For more information, see [Deploying with App Manifests](./deploy-apps/manifest.html).
 
-1. Add the values below to your app manifest file under the `applications` key:
+1. Add the following values to your app manifest file under the `applications` key:
 
     ```
       sidecars:
@@ -209,7 +209,7 @@ To push an app with a sidecar:
 
 ## <a id="tutorial"></a> Sidecar Tutorial
 
-You can explore sidecars using the app in the [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository on GitHub. The sections below describe the app, how to build and push the app, and some ways to observe the app and its processes after pushing.
+You can explore sidecars using the app in the [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository on GitHub. The following sections describe the app, how to build and push the app, and some ways to observe the app and its processes after pushing.
 
 <p class="note"><strong>Note:</strong> This tutorial assumes that you are pushing the Ruby sample app. You can also follow this tutorial for a Java app using the <code>sidecar-dependent-java-app</code> and <code>push_java_app_with_binary_sidecar.sh</code> in the samples repository. When pushing a Java app, ensure that you follow the requirements listed in <a href="#java">Requirements for Java Apps</a> above.</p>
 
@@ -230,7 +230,7 @@ The [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-
 
 * **A Golang sidecar**: The `config-server-sidecar` produces a `config-server` binary. It provides apps with their required configuration over its `/config` endpoint. It also accepts connections only over localhost on the `CONFIG_SERVER_PORT` port. This means the sidecar must be co-located in the same container as the app, so that it shares the same network namespace as the main app.
 
-The diagram below illustrates the app architecture:
+The following diagram illustrates the app architecture:
 
 ![Sidecar Diagram](./images/sidecar-diagram.png)
 
@@ -244,7 +244,7 @@ To push the app and sidecar:
 	git clone https://github.com/cloudfoundry-samples/capi-sidecar-samples.git
 	```
 
-1. Navigate to the `config-server-sidecar` directory.
+1. Go to the `config-server-sidecar` directory.
 
 1. Build the binary for the sidecar by running:
 
@@ -266,7 +266,7 @@ To push the app and sidecar:
 		```
 		<p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
-1. Navigate to the `sidecar-dependent-app` directory.
+1. Go to the `sidecar-dependent-app` directory.
 
 1. Open and review the `manifest.yml` file. Under `sidecars`, the sidecar is specified with a name, process type, and start command. Under `env`, there is an environment variable that defines the port on which the app and sidecar communicate.
 
@@ -296,7 +296,7 @@ To push the app and sidecar:
 		```
 		<p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
-After you push the app, you can further explore it in [View the Processes Running in the Container](#view-processes) and [View the Web URL and App Logs](#view-logs) below.
+After you push the app, you can further explore it in [View the Processes Running in the Container](#view-processes) and [View the Web URL and App Logs](#view-logs).
 
 ### <a id="view-processes"></a> View the Processes Running in the Container
 
@@ -313,7 +313,7 @@ To view the app and sidecar process running in the container:
     ```
     ps aux
     ```
-    The output you see should resemble the output below:
+    The output you might see resembles the following output:
 
     <pre class="terminal">
     vcap@f00949bd-6601-4731-6f7e-e859:~$ ps aux
@@ -332,7 +332,7 @@ To view the app and sidecar process running in the container:
     ```
     lsof -i | grep $CONFIG_SERVER_PORT
     ```
-    The output you see should resemble the output below:
+    The output you see might resemble the following output:
 
     <pre class="terminal">
     vcap@f00949bd-6601-4731-6f7e-e859:~$ lsof -i | grep $CONFIG_SERVER_PORT
@@ -345,11 +345,11 @@ To view the app and sidecar process running in the container:
 
 To view the Web URL and logs for the app:
 
-1. In a browser, navigate to the `config` endpoint of the `sidecar-dependent-app`. For example: `https://sidecar-dependent-app.example.com/config`.
+1. In a browser, go to to the `config` endpoint of the `sidecar-dependent-app`. For example: `https://sidecar-dependent-app.example.com/config`.
 
 1. See that the browser displays `Scope` and `Password` information. This is the configuration that the app fetches from the `config-server` sidecar.
 
-1. In a terminal window, begin streaming logs for the app by running:
+1. Begin streaming logs for the app by running:
 
 	```
 	cf logs sidecar-dependent-app
@@ -357,19 +357,19 @@ To view the Web URL and logs for the app:
 
 1. In your browser, refresh the `/config` endpoint page and observe that the log stream in your terminal displays logs for both the sidecar and the main app process.
 
-1. In a separate terminal window from your log stream, SSH into the app container by running:
+1. In a separate terminal from your log stream, SSH into the app container by running:
 
 	```
 	cf ssh sidecar-dependent-app
 	```
 
-1. Terminate the sidecar process by running:
+1. Stop the sidecar process by running:
 
 	```
 	kill -9 $(pgrep config-server)
 	```
 
-1. View the output in the terminal window where you are streaming the app logs. The app logs indicate that the sidecar process crashed and that Diego restarted the app container. For example:
+1. View the output in the terminal where you are streaming the app logs. The app logs indicate that the sidecar process crashed and that Diego restarted the app container. For example:
 	<pre class="terminal">
 	2019-04-17T16:48:55.41-0700 [API/0] OUT App instance exited with guid
 	21df1eb8-f25d-43b2-990b-c1a417310553 payload:

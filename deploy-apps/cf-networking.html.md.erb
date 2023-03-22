@@ -20,13 +20,13 @@ owner: CF for VMs Networking
       <li><a href="#add-policy">Add a Network Policy</a></li>
       <li><a href="#list-policies">List Network Policies</a></li>
       <li><a href="#rm-policy">Remove a Network Policy</a></li>
-      <li><a href="#disable-policy">Disable Network Policy Enforcement</a></li>
+      <li><a href="#disable-policy">Deactivate Network Policy Enforcement</a></li>
       <li><a href="#policy-quotas">Manage Network Policy Quotas</a></li>
     </ul>
     <li><a href="#discovery">App Service Discovery</a>
       <% if vars.platform_code == "CF" || vars.platform_code == "PCF" %>
       <ul>
-        <li><a href="#enable-discovery">Enable App Service Discovery</a></li>
+        <li><a href="#enable-discovery">Activate App Service Discovery</a></li>
       </ul>
       <% end %>
     </li>
@@ -118,7 +118,7 @@ cf add-network-policy SOURCE_APP --destination-app DESTINATION_APP -s DESTINATIO
 Replace the placeholders in the above command as follows:
 
 * `SOURCE_APP` is the name of the app that sends traffic.
-* `DESTINATION_APP` is the name of the app that will receive traffic.
+* `DESTINATION_APP` is the name of the app that receives traffic.
 * `DESTINATION_SPACE_NAME` is the space of the destination app. The default is the targeted space.
 * `DESTINATION_ORG_NAME` is the org of the destination app. The default is the targeted org.
 * `PROTOCOL` is one of the following: `tcp` or `udp`.
@@ -187,11 +187,11 @@ Removing network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>
 
-### <a name="disable-policy"></a> Disable Network Policy Enforcement
+### <a name="disable-policy"></a> Deactivate Network Policy Enforcement
 
-You can disable Silk network policy enforcement between apps. Disabling network policy enforcement allows all apps to send network traffic to all other apps in the foundation despite no policy specifically allowing it.
+You can deactivate Silk network policy enforcement between apps. Deactivating network policy enforcement allows all apps to send network traffic to all other apps in the foundation despite no policy specifically allowing it.
 
-To disable network policy enforcement between apps, do the following:
+To deactivate network policy enforcement between apps, do the following:
 
 <% if vars.platform_code == "CF" %>
 
@@ -231,10 +231,10 @@ With app service discovery, apps pushed to <%= vars.app_runtime_abbr %> can esta
 
 To establish container-to-container communications between a front end and back end app, a developer:
 
-1. Launches a back end app that publishes a local endpoint.
+1. Run a back end app that publishes a local endpoint.
 1. Maps a named route to the endpoint.
 1. Creates a network policy that allows direct traffic from the front end to the back end app.
-1. Launches the front end app.
+1. Run the front end app.
 
 See [Cats and Dogs with Service Discovery](https://github.com/cloudfoundry/cf-networking-examples/blob/master/docs/c2c-with-service-discovery.md) in GitHub for an example, written in Go, that demonstrates communication between front end and back end apps.
 
@@ -242,9 +242,9 @@ To use TLS developer adds a network policy for port 61443. After that the front 
 
 <% if vars.platform_code == "CF" %>
 
-### <a name="enable-discovery"></a> Enable App Service Discovery
+### <a name="enable-discovery"></a> Activate App Service Discovery
 
-To enable app service discovery, <%= vars.enable_c2c_discovery %>.
+To activate app service discovery, <%= vars.enable_c2c_discovery %>.
 
 <% else %>
 

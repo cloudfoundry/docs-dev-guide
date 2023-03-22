@@ -3,7 +3,7 @@ title: Considerations for Designing and Running an App in the Cloud
 owner: CAPI
 ---
 
-This topic describes some considerations you should keep in mind when designing and
+This topic describes some considerations you must keep in mind when designing and
 running an app through <%= vars.platform_name %>.
 
 
@@ -22,7 +22,7 @@ see [App Container Lifecycle](app-lifecycle.html).
 
 ### <a id="filesystem"></a> Avoid Writing to the Local File System
 
-Apps running on <%= vars.platform_name %> should not write files to the local file system
+Apps running on <%= vars.platform_name %> must not write files to the local file system
 for the following reasons:
 
 * **Local file system storage is short-lived.** When an app instance crashes or stops, the resources assigned to that instance are reclaimed by the platform, including any local disk changes made since the app started. When the instance is restarted, the app starts with a new disk image. Although your app can write local files while it is running, the files disappear after the app restarts.
@@ -30,10 +30,10 @@ for the following reasons:
 * **Instances of the same app do not share a local file system.** Each app instance runs
   in its own isolated container.
   Therefore, a file written by one instance is not visible to other instances of the same app.
-  If the files are temporary, this should not be a problem.
+  If the files are temporary, this is not be a problem.
   However, if your app needs the data in the files to persist across app restarts,
   or the data needs to be shared across all running instances of the app,
-  the local file system should not be used. <%= vars.company_name %> recommends
+  the local file system must not be used. <%= vars.company_name %> recommends
   using a shared data service like a database or blobstore for this purpose.
 
 For example, instead of using the local file system, you can use a <%= vars.platform_name %> service
@@ -57,7 +57,7 @@ Many tracking tools such as Google Analytics and Mixpanel use the highest availa
 For an app using a shared domain such as `example.com`, a cookie set to use the highest domain has a `Domain` attribute of `.example.com` in its HTTP response header.
 For example, an app at `my-app.<%= vars.app_domain %>` might be able to access the cookies for an app at `your-app.<%= vars.app_domain %>`.
 
-You should decide whether or not you want your apps or tools that use cookies to set and store the cookies at the highest available domain.
+You must decide whether or not you want your apps or tools that use cookies to set and store the cookies at the highest available domain.
 
 ### <a id="ports"></a> Port Considerations
 
@@ -73,18 +73,18 @@ to the app to form a WebSocket connection.
 
 ### <a id="moving-apps"></a> <%= vars.platform_name %> Updates and Your App
 
-For app management purposes, <%= vars.platform_name %> may need to stop and restart your app instances.
+For app management purposes, <%= vars.platform_name %> might need to stop and restart your app instances.
 If this occurs, <%= vars.platform_name %> performs the following steps:
 
 1. <%= vars.platform_name %> sends a single `termination signal` to the root process
-   that your start command invokes.
+   that your start command then runs.
 
 1. <%= vars.platform_name %> waits 10 seconds to allow your app to cleanly shut down any child processes
    and handle any open connections.
 
 1. After 10 seconds, <%= vars.platform_name %> forcibly shuts down your app.
 
-Your app should accept and handle the termination signal to ensure that it shuts down gracefully. To achieve this, the app is expected to follow the steps below when shutting down:
+Your app must accept and handle the termination signal to ensure that it shuts down gracefully. To achieve this, the app is expected to use following the steps when shutting down:
 
 1. App receives termination signal
 1. App closes listener so that it stops accepting new connections
@@ -126,11 +126,11 @@ The file types you might want to exclude vary, based on the app frameworks you u
 
 ## <a id="increase-availability"></a> Run Multiple Instances to Increase Availability
 
-Singleton apps may become temporarily unavailable for reasons that include:
+Singleton apps might become temporarily unavailable for reasons that include:
 
 * During an upgrade, <%= vars.platform_name %> gracefully shuts down the apps running on each Diego Cell
 and restarts them on another Diego Cell.
-Single app instances may become temporarily unavailable if the replacement instance does not become healthy
+Single app instances might become temporarily unavailable if the replacement instance does not become healthy
 within the Diego Cell's evacuation timeout, which defaults to 10 minutes.
 
 * Unexpected faults in <%= vars.platform_name %> system components or underlying infrastructure,

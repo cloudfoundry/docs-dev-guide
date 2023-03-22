@@ -12,7 +12,6 @@ owner: CF for VMs Networking
 
 This topic describes how to configure <%= vars.app_runtime_first %> to route requests to apps that receive requests on custom ports.
 
-
 ## <a id='overview'></a> Overview
 
 By default, apps only receive requests on port `8080` for both HTTP and TCP routing. Configuring custom app ports allows developers to bring workloads onto
@@ -24,12 +23,11 @@ By default, apps only receive requests on port `8080` for both HTTP and TCP rout
 
 * Running Docker images on <%= vars.app_runtime_abbr %>
 
-To use the `apps` and `route_mappings` Cloud Controller API endpoints to update the ports on which the app can receive requests, see [Procedure](#procedure) below.
-
+To use the `apps` and `route_mappings` Cloud Controller API endpoints to update the ports so the the app can receive requests, see [Procedure](#procedure).
 
 ## <a id='flow'></a> Flow of a Request to an App
 
-The following table describes the Network Address Translation that occurs in the data path of a client request.
+The following table describes the Network Address Translation that occurs in the data path of a client request:
 
 | Port Type | Description | Network Hop |
 | --------- | ----------- | ----------- |
@@ -37,31 +35,28 @@ The following table describes the Network Address Translation that occurs in the
 | Back end port | The port on the VM where an app container is hosted, which is unique to the container | Gorouter to Diego Cell |
 | App port | The port on the container, which must match a port on which the app is configured to receive requests | Diego Cell to app container |
 
-The procedure in this document discusses configuring app ports.
-
 The following diagram shows an example data path and Network Address Translation for TCP routing:
 
-![Traffic-flow-diagram](./images/route_ports.png)
+![alt-text="Traffic flow-diagram for data path and Network Address Translation for TCP routing"](./images/route_ports.png)
 
 For HTTP routing, the route port is always `80` or `443`.
 
-
 ## <a id='prerequisite'></a> Prerequisites
 
-Before following the procedure to configure routing to your app on custom ports, ensure that you have the following:
+Before you follow the procedure to configure routing to your app on custom ports, make sure that you have the following:
 
 * An app pushed to <%= vars.app_runtime_abbr %> that can receive requests on one or more custom ports.
 
 * Routes for which you want traffic forwarded to your app on custom ports, which are mapped to the app.
-	<p class='note'><strong>Note:</strong> If your app receives requests on two ports, and you want clients to be able to send requests to both of them, create
-		two routes. These routes can be from HTTP or TCP domains. In <a href="#procedure">Procedure</a> below, you use API endpoints to map these routes to your app on the ports it uses to receive requests. For more information, see <a href="deploy-apps/routes-domains.html">Routes and Domains</a>.</p>
 
-
-## <a id='procedure'></a> Procedure
+ <p class='note'><strong>Note:</strong> If your app receives requests on two ports, and you want clients to be able to send requests to both of them, create
+  two routes. These routes can be from HTTP or TCP domains.
+In the following procedure, use API endpoints to map the routes to your app on the ports it uses to receive requests.
+For more information about routes, see <a href="deploy-apps/routes-domains.html">Routes and Domains</a>.</p>
 
 To configure your app to receive HTTP or TCP requests on custom ports:
 
-1. In a terminal window, run:
+1. Run:
 
     ```console
     cf app APP-NAME --guid
@@ -69,11 +64,11 @@ To configure your app to receive HTTP or TCP requests on custom ports:
 
     Where `APP-NAME` is the name of your app.
 
-1. From the terminal output, record the following:
- 	* Under `guid`, the global unique identifier (GUID) of your app.
-	* Under `type`, the process type your app uses.
+2. From the output, record the following:
+  * Under `guid`, the global unique identifier (GUID) of your app.
+ * Under `type`, the process type your app uses.
 
-1. Retrieve the GUIDs of the routes for your app by running one of the following commands, depending on whether your app uses HTTP or TCP routes:
+3. Retrieve the GUIDs of the routes for your app by running one of the following commands, depending on whether your app uses HTTP or TCP routes:
     * For HTTP routes, run:
 
         ```console
@@ -97,9 +92,9 @@ To configure your app to receive HTTP or TCP requests on custom ports:
           <li><code>PORT</code> is the port to which the TCP route sends requests.</li>
         </ul>
 
-1. From the terminal output, record the GUIDs of the routes for your app.
+2. From the output, record the GUIDs of the routes for your app.
 
-1. For each route, update the ports to which it sends requests by running:
+3. For each route, update the ports to which it sends requests by running:
 
     ```console
     cf curl -X PATCH /v3/routes/ROUTE-GUID/destinations -d '{
@@ -128,8 +123,7 @@ To configure your app to receive HTTP or TCP requests on custom ports:
     </ul>
 
     <p class='note'><strong>Note:</strong> This API call removes all destinations for a route and replaces them with the destinations you provide in the API
-    	request.</p>
-
+     request.</p>
 
 ## <a id='additional-resources'></a> Additional Resources
 

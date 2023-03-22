@@ -14,7 +14,7 @@ The following sections describe common issues you might encounter when attemptin
 
 ### <a id='time'></a> cf push Times Out
 
-If your deployment times out during the upload or staging phase, you may receive one of the following error messages:
+If your deployment times out during the upload or staging phase, you might receive one of the following error messages:
 
 * `504 Gateway Timeout`
 
@@ -28,7 +28,7 @@ If this happens:
 <%= vars.recommended_by %> recommends an Internet connection speed of at least 768&nbsp;KB/s, or 6&nbsp;Mb/s, for uploads.
 
 * **Make sure you are pushing only needed files.** By default, `cf push` pushes all the contents of the current working directory. Make sure you are pushing
-only the directory for your app. If your app is too large, or if it has many small files, <%= vars.app_runtime_abbr %> may time out during the upload. To
+only the directory for your app. If your app is too large, or if it has many small files, <%= vars.app_runtime_abbr %> might time out during the upload. To
 reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to
 specify excluded files. For more information, see [Ignore Unnecessary Files When Pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and
 Running an App in the Cloud_.
@@ -41,7 +41,7 @@ push succeeds. This is less likely to work if your app has many small files.
 
 ### <a id='upload'></a> App Too Large
 
-If your app is too large, you may receive an error message on `cf push`. For example:
+If your app is very large, you might receive an error message on `cf push`. For example:
 
 * `413 Request Entity Too Large`
 
@@ -68,10 +68,10 @@ If <%= vars.app_runtime_abbr %> cannot identify an appropriate buildpack for you
 
 You can view what buildpacks are available with the `cf buildpacks` command.
 
-If you see a buildpack that you believe should support your app, see the [buildpack documentation](../../buildpacks/index.html) for details about how that buildpack
+If you see a buildpack that you believe supports your app, see the [buildpack documentation](../../buildpacks/index.html) for details about how that buildpack
 detects apps it supports.
 
-If you do not see a buildpack for your app, you may still be able to push your app with a [custom buildpack](../../buildpacks/custom.html) using `cf push -b`
+If you do not see a buildpack for your app, you might still be able to push your app with a [custom buildpack](../../buildpacks/custom.html) using `cf push -b`
 with a path to your buildpack.
 
 ### <a id='deploy-fail'></a> App Deploy Fails
@@ -84,9 +84,9 @@ failed.
 
 Common reasons deploying an app fails include:
 
-* The app does not successfully bind to a service, such as a PostgreSQL or MongoDB. The service may not exist, may be down, or may reject the binding.
+* The app does not successfully bind to a service, such as a PostgreSQL or MongoDB. The service might not exist, be down, or reject the binding.
 
-* The app does not have a unique URL. For more information, see [App Requires Unique URL](#unique-url) below.
+* The app does not have a unique URL. For more information, see [App Requires Unique URL](#unique-url).
 
 ### <a id='unique-url'></a> App Requires Unique URL
 
@@ -101,7 +101,7 @@ that the app name includes.
 
 ### <a id='start'></a> App Fails to Start
 
-After `cf push` stages the app and uploads the droplet, the app may fail to start, commonly with a pattern of starting and crashing similar to the following
+After `cf push` stages the app and uploads the droplet, the app might fail to start, commonly with a pattern of starting and crashing similar to the following
 example:
 
 <pre class="terminal">
@@ -122,9 +122,9 @@ following example:
   <pre class="terminal">
   2018-07-20T15:53:26.00-0700   app.crash      app-name   index: 2, reason: CRASHED, cell_id: d874ad05-d0ca-4c63-9f5a-0b1ddd90dd5d, instance: f406c53e-b1ca-4a0f-6140-dddd, exit_description: APP/PROC/WEB: Exited with status 1
   </pre>
-  These messages may identify a memory or port issue. If they do, take that as a starting point when you re-examine and fix your app code.
+  These messages can identify a memory or port issue. If they do, take that as a starting point when you re-examine and fix your app code.
 
-* **Make sure your app code uses the `PORT` environment variable.** Your app may be failing because it is listening on the wrong port. Instead of hard-coding
+* **Make sure your app code uses the `PORT` environment variable.** Your app might be failing because it is listening on the wrong port. Instead of hard-coding
 the port on which your app listens, use the `PORT` environment variable. For example, this Ruby snippet assigns the port value to the `listen_here` variable:
 
     ```
@@ -163,8 +163,8 @@ following example:
 
 An app that `cf push` has uploaded and started can crash later if it uses too much memory.
 
-**Make sure your app is not consuming more memory than it should.** When you ran `cf push` and `cf scale`, that configured a limit on the amount of memory
-your app should use. Check your app's actual memory usage. If it exceeds the limit, modify the app to use less memory.
+**Make sure your app is not consuming more memory than allows.** When you ran `cf push` and `cf scale`, that configured a limit on the amount of memory
+your app uses. Check your app's actual memory usage. If it exceeds the limit, modify the app to use less memory.
 
 ### <a id='routing-conflict'></a> Routing Conflict
 
@@ -172,7 +172,7 @@ your app should use. Check your app's actual memory usage. If it exceeds the lim
 
 If you suspect a routing conflict, run `cf routes` to check the routes in your <%= vars.app_runtime_abbr %> deployment.
 
-If two apps share a route outside of a blue-green deployment strategy, choose one app to re-assign to a different route and follow the procedure below:
+If two apps share a route outside of a blue-green deployment strategy, choose one app to reassign to a different route and use the following procedure:
 
 1. Remove the existing route from that app by running:
 
@@ -280,7 +280,7 @@ other apps.
 
 You can investigate app deployment and health using the cf CLI.
 
-Some cf CLI commands may return connection credentials. Remove credentials and other sensitive information from command output before you post the output a
+Some cf CLI commands return connection credentials. Remove credentials and other sensitive information from command output before you post the output a
 public forum.
 
 * `cf apps`: Returns a list of the apps deployed to the current space with deployment options, including the name, current state, number of instances, and
@@ -307,7 +307,7 @@ stream.
 * `cf files APP-NAME`: Lists the files in an app directory. Given a path to a file, outputs the contents of that file. Given a path to a subdirectory, lists
 the files within. Use this to view individual logs. For more information, see [View Logs](#logs) above.
 
-<p class='note'><strong>Note:</strong> Your app should direct its logs to STDOUT and STDERR. The <code>cf logs</code> command also returns messages from any
+<p class='note'><strong>Note:</strong> Your app must direct its logs to STDOUT and STDERR. The <code>cf logs</code> command also returns messages from any
   Log4j facility that you configure to send logs to STDOUT. For more information, see the <a href="http://logging.apache.org/log4j/">Log4j</a> website.</p>
 
 

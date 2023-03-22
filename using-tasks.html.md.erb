@@ -12,7 +12,7 @@ independently in its own container.
 In contrast to a long-running process (LRP), tasks run for a finite amount of time, then stop. Tasks run in their own containers and are designed to use
 minimal resources. After a task runs, <%= vars.app_runtime_abbr %> destroys the container running the task.
 
-As a single-use object, a task can be checked for its state and for a success or failure message.
+As a single use object, a task can be checked for its state and for a success or failure message.
 
 <%= vars.tasks_ai %>
 
@@ -37,7 +37,7 @@ Tasks are always executed asynchronously, meaning that they run independently fr
 The lifecycle of a task is as follows:
 
 1. A user initiates a task in <%= vars.app_runtime_abbr %> using one of the following mechanisms:
-   * The `cf run-task APP-NAME "TASK"` command. For more information, see [Running Tasks](#run-tasks) below.
+   * The `cf run-task APP-NAME "TASK"` command. For more information, see [Running Tasks](#run-tasks).
    * A Cloud Controller v3 API call. For more information, see the [Cloud Foundry API
    documentation](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#tasks).
    * The Cloud Foundry Java Client. For more information, see [Cloud Foundry Java Client Library](../buildpacks/java/java-client.html) and the [Cloud Foundry
@@ -169,7 +169,7 @@ To run a task on an app with cf CLI v7:
 1. Configure your v3 API manifest with a task as a process type. For more information, see the [Cloud Foundry API
 documentation](https://v3-apidocs.cloudfoundry.org/version/3.78.0/index.html#the-app-manifest-specification).
 
-1. In a terminal window, push your app by running:
+1. In a terminal, push your app by running:
 
     ```
     cf push APP-NAME --task
@@ -216,7 +216,7 @@ documentation](https://v3-apidocs.cloudfoundry.org/version/3.78.0/index.html#the
 
 To list the tasks for a given app:
 
-1. In a terminal window, run:
+1. In a terminal, run:
 
     ```
     cf tasks APP-NAME
@@ -242,11 +242,11 @@ The following table describes the states a task can be in:
 
 ## <a id='cancel-task'></a> Cancel a Task
 
-After you run a task, you may be able to cancel it before it finishes.
+After you run a task, you might be able to cancel it before it finishes.
 
 To cancel a running task:
 
-1. In a terminal window, run:
+1. In a terminal, run:
 
     ```
     cf terminate-task APP-NAME TASK-ID
@@ -257,7 +257,7 @@ To cancel a running task:
       <li><code>TASK-NAME</code> is the name you want to give the task.</li>
     </ul>
 
-    The above command returns output similar to the following example:
+    The previous command returns output similar to the following example:
     <pre class="terminal">
     Terminating task 2 of app example-app in org example-org / space development as admin@example.org...
     OK

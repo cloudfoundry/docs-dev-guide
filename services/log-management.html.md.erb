@@ -18,7 +18,7 @@ For more information about the systems responsible for log aggregation and strea
 
 ## <a id='marketplace-services'></a> Using Services from the Cloud Foundry Marketplace
 
-Your Cloud Foundry marketplace may offer one or more log management services. To use one of these services, create an instance of the service and bind it to your app with the following commands:
+Your Cloud Foundry marketplace offers one or more log management services. To use one of these services, create an instance of the service and bind it to your app with the following commands:
 
 <pre class="terminal">
 $ cf create-service SERVICE PLAN SERVICE-INSTANCE
@@ -34,7 +34,7 @@ For more information about service instance lifecycle management, see [Managing 
 
 If a compatible log management service is not available in your Cloud Foundry marketplace, you can use user-provided service instances to stream app logs to a service of your choice. For more information, see the [Stream App Logs to a Service](./user-provided.html#syslog) section of the _User-Provided Service Instances_ topic.
 
-You may need to prepare your log management service to receive app logs from Cloud Foundry. For specific instructions for several popular services, see [Service-Specific Instructions for Streaming App Logs](./log-management-thirdparty-svc.html). If you cannot find instructions for your service, follow the generic instructions below.
+You might need to prepare your log management service to receive app logs from Cloud Foundry. For specific instructions for several popular services, see [Service-Specific Instructions for Streaming App Logs](./log-management-thirdparty-svc.html). If you cannot find instructions for your service, follow the generic instructions.
 
 ### <a id='step1'></a>Step 1: Configure the Log Management Service
 
@@ -97,7 +97,7 @@ $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN
         cf bind-service YOUR-APP-NAME DRAIN-NAME
         ```
 
-After a short delay, logs begin to flow automatically.
+After a short delay, logs begin to flow.
 
 For more information, see [Managing Service Instances with the CLI](./managing-services.html).
 
@@ -109,6 +109,6 @@ To verify that logs are draining correctly to a third-party log management servi
 
 1. Compare the logs displayed in the CLI against those displayed by the log management service.
 
-For example, if your app serves web pages, you can send HTTP requests to the app. In Cloud Foundry, these generate Router log messages, which you can view in the CLI. Your third-party log management service should display corresponding messages.
+For example, if your app serves web pages, you can send HTTP requests to the app. In Cloud Foundry, these generate Router log messages, which you can view in the CLI. Your third-party log management service must display corresponding messages.
 
 <p class="note"><strong>Note:</strong> For security reasons, Cloud Foundry apps do not respond to <code>ping</code>. You cannot use <code>ping</code> to generate log entries.</p>

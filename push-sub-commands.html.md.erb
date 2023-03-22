@@ -1,16 +1,16 @@
 ---
-title: Running cf push Sub-Step Commands
+title: Running cf push Sub Step Commands
 owner: CAPI
 ---
 
-This topic describes how to run Cloud Foundry Command Line Interface (cf CLI) commands that provide granular control over the `cf push` process. These commands break down the `cf push` process into sub-steps that can run independently.
+This topic describes how to run Cloud Foundry Command Line Interface (cf CLI) commands that provide detailed control over the `cf push` process. The commands break down the `cf push` process into sub steps that run independently.
 
 
 ## <a id="about"></a> Overview
 
-The cf CLI includes commands to provide granular control over app pushes. With these commands, you can choose to perform only some steps of the `cf push` process or perform specific actions between the steps normally executed as part of running `cf push`.
+The cf CLI includes commands provide detailed control over app pushes. When you use the commands, you can choose to perform only some steps of the `cf push` process or perform specific actions between the steps that are normally run as part of running `cf push`.
 
-Here are some example use cases for the sub-step commands:
+Here are some example use cases for the sub step commands:
 
 * Updating a third party system before staging an app
 * Retrying failed stagings without incurring downtime
@@ -18,9 +18,11 @@ Here are some example use cases for the sub-step commands:
 * Scanning a droplet before deploy
 * Integrating with a change request system
 
-To support these custom push workflows, Cloud Foundry divides apps into smaller building blocks. The following table describes these building blocks as _resources_ and lists the command associated with each one.
+To support these custom push workflows, Cloud Foundry divides apps into smaller building blocks.
 
-For information on using these commands, see [Example Workflows](#example-workflows) below.
+The following table describes these building blocks as _resources_ and lists the command associated with each one.
+
+For information on using these commands, see [Example Workflows](#example-workflows).
 
 <p class='note'><strong>Note:</strong> The cf CLI v6 commands described in this topic are experimental and unsupported. Consider upgrading to cf CLI v7 to use supported versions of these commands. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
@@ -90,9 +92,9 @@ For information on using these commands, see [Example Workflows](#example-workfl
 
 ## <a id="example-workflows"></a> Example Workflows
 
-The following sections describe example workflows for working with the `cf push` sub-step commands.
+The following sections describe example workflows for working with the `cf push` sub step commands.
 
-### <a id="update-system"></a> Push an App Using Sub-Step Commands
+### <a id="update-system"></a> Push an App using Sub-Step Commands
 
 This example workflow describes how to push an app using sub-step commands instead of `cf push`.
 
@@ -205,7 +207,7 @@ This example workflow describes how to push an app using sub-step commands inste
 
 ### <a id="update-system-example"></a> Roll Back to a Previous Droplet
 
-This example workflow describes how to roll back to a previous droplet used by your app. You may want to use this, for example, if you update your app and it has a bug that causes it to crash.
+This example workflow describes how to roll back to a previous droplet used by your app. You might want to use this, for example, if you update your app and it has a bug that causes it to crash.
 
 1. List the droplets for your app:
     * If you are using cf CLI v7, run:
@@ -221,7 +223,9 @@ This example workflow describes how to roll back to a previous droplet used by y
         ```
         Where `APP-NAME` is the name of your app.
 
-1. From the output, locate and copy the second-to-last GUID. In the following example, this is `66524145-5502-40e6-b782-47fe68e13c49`.
+1. In the output, locate and copy the second-to-last GUID.
+
+   In the following example, this is `66524145-5502-40e6-b782-47fe68e13c49`.
     <pre class="terminal">
     Listing droplets of app APP-NAME in org test / space test as admin...
 
@@ -230,7 +234,7 @@ This example workflow describes how to roll back to a previous droplet used by y
     	0677ad93-9f77-4aaa-9a6b-44da022dcd58 staged Mon 25 Sep 16:44:55 PDT 2018
     </pre>
 
-1. Stop your app:
+2. Stop your app:
     * If you are using cf CLI v7, run:
 
         ```
@@ -244,7 +248,7 @@ This example workflow describes how to roll back to a previous droplet used by y
         ```
         Where `APP-NAME` is the name of your app.
 
-1. Set the app to use the previous droplet:
+3. Set the app to use the previous droplet:
     * If you are using cf CLI v7, run:
 
         ```
@@ -268,7 +272,7 @@ This example workflow describes how to roll back to a previous droplet used by y
           <li><code>PREVIOUS-DROPLET-GUID</code> is the droplet GUID you recorded in a previous step.</li>
         </ul>
 
-1. Start your app:
+4. Start your app:
     * If you are using cf CLI v7, run:
 
         ```

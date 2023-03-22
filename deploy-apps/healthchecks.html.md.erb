@@ -19,7 +19,7 @@ manifest.
 
 To configure a health check using the cf CLI, see
 [Configure Health Checks when Creating or Updating](#setting_health_checks_create_app) and
-[Configure Health Checks for an Existing App](#setting_health_checks_existing_app) below. For more
+[Configure Health Checks for an Existing App](#setting_health_checks_existing_app). For more
 information about using an app manifest to configure a health check, see
 [health-check-http-endpoint](manifest.html#health-check-http-endpoint) and
 [health-check-type](manifest.html#health-check-type) in _Deploying with App Manifests_.
@@ -41,10 +41,10 @@ Where:
 * `APP-NAME` is the name of your app.
 
 * `HEALTH-CHECK-TYPE` is the type of health check that you want to configure. Valid health check
-types are `port`, `process`, and `http`. For more information, see [Health Check Types](#types) below.
+types are `port`, `process`, and `http`. For more information, see [Health Check Types](#types).
 
 * `HEALTH-CHECK-TIMEOUT` is the amount of time allowed to elapse between starting an app and the
-first healthy response. For more information, see [Health Check Timeouts](#health_check_timeout) below.
+first healthy response. For more information, see [Health Check Timeouts](#health_check_timeout).
 
 For more information about the `cf push` command, see
 [push](http://cli.cloudfoundry.org/en-US/cf/push.html) in the Cloud Foundry CLI Reference Guide.
@@ -65,11 +65,11 @@ Where:
 
 * `APP-NAME` is the name of your app.
 
-* `HEALTH-CHECK-TYPE` is the type of health check that you want to configure. Valid health check types are `port`, `process`, and `http`. For more information, see [Health Check Types](#types) below.
+* `HEALTH-CHECK-TYPE` is the type of health check that you want to configure. Valid health check types are `port`, `process`, and `http`. For more information, see [Health Check Types](#types) .
 
 * `CUSTOM-HTTP-ENDPOINT` is the custom HTTP endpoint that you want to add to the health check. An
 `http` health check defaults to using `/` as its endpoint unless you specify a custom endpoint. For
-more information, see [Health Check HTTP Endpoints](#health_check_uri) below.
+more information, see [Health Check HTTP Endpoints](#health_check_uri).
 
 For more information about the `cf set-health-check` command, see
 [set-health-check](http://cli.cloudfoundry.org/en-US/cf/set-health-check.html) in

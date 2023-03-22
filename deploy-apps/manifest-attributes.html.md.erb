@@ -12,12 +12,12 @@ documentation](http://v3-apidocs.cloudfoundry.org/index.html#space-manifest).
 
 ## <a id='minimal-manifest'></a> Manifest Format
 
-Manifests are written in YAML. The manifest below demonstrates some YAML conventions, as follows:
+Manifests are written in YAML. The following manifest demonstrates some YAML conventions:
 
 * The manifest begins with three dashes.
 
 * The `version` property specifies a manifest schema version. This property is optional. For more information, see [Add Schema Version to a
-Manifest](#manifest-schema-version) below.
+Manifest](#manifest-schema-version).
 
 * The `applications` block begins with a heading followed by a colon.
 
@@ -88,9 +88,9 @@ To add variables to an app manifest:
 ### <a id='minimize-duplication'></a> Minimize Duplication with YAML Anchors
 
 <p class='note'><strong>Note:</strong> Top-level attributes are deprecated in favor of YAML anchors. For more information, see
-  <a href="#top-level-attributes">Top-Level Attributes</a> below.</p>
+  <a href="#top-level-attributes">Top-Level Attributes</a>.</p>
 
-In manifests where multiple apps share settings or services, you may see duplicated content. While the manifests still work, duplication increases the risk of
+In manifests where multiple apps share settings or services, you might see duplicated content. While the manifests still work, duplication increases the risk of
 typographical errors, which cause deployments to fail.
 
 You can declare shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an alias.
@@ -121,7 +121,7 @@ Command-line options override the manifest.
 
 <p class='note'><strong>Note:</strong> In cf CLI v6, the route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>,
   <code>hosts</code>, and <code>no-hostname</code> are deprecated in favor of the <code>routes</code> attribute. In cf CLI v7, these attributes are
-  removed. For more information, see <a href="#route-attribute">domain, domains, host, hosts, and no-hostname</a> below.</p>
+  removed. For more information, see <a href="#route-attribute">domain, domains, host, hosts, and no-hostname</a>.</p>
 
 ### <a id='buildpacks'></a> buildpacks
 
@@ -151,7 +151,7 @@ You can refer to a buildpack by name in a manifest or a command-line option. The
       <div class='note'><strong>Notes:</strong>
         <ul>
           <li>This feature does not work with the deprecated <code>buildpack</code> attribute. For more information, see
-            <a href="#buildpack-deprecated">buildpack</a> below.</li>
+            <a href="#buildpack-deprecated">buildpack</a>.</li>
           <li>You must specify multiple buildpacks in the correct order: the buildpack uses the app start command given by the final buildpack. For more
             information, see the <a href=https://github.com/cloudfoundry/multi-buildpack#usageapp>multi-buildpack</a> repository on GitHub.</li>
         </ul>
@@ -196,8 +196,8 @@ cf push my-app -c "bundle exec rake VERBOSE=true"
   more information, see <a href="start-restart-restage.html#revert">Forcing cf push to use the Buildpack Start Command</a> in <em>Starting, Restarting, and
   Restaging Apps</em>.</p>
 
-If you override the start command for a Buildpack app, Linux uses `bash -c COMMAND` to invoke your app. If you override the start command for a Docker
-app, Linux uses `sh -c COMMAND` to invoke your app. Because of this, if you override a start command, you should prefix `exec` to the final command in your
+If you override the start command for a Buildpack app, Linux uses `bash -c COMMAND` to run your app. If you override the start command for a Docker
+app, Linux uses `sh -c COMMAND` to run your app. Because of this, if you override a start command, you must prefix `exec` to the final command in your
 custom composite start command.
 
 An app needs to catch termination signals and clean itself up appropriately. Because of the way that shells manage process trees, the use of custom composite
@@ -210,11 +210,11 @@ To resolve this issue, you can use `exec` to replace the bash process with your 
 bash process receives the TERM signal, not the ruby process.
 
 * `bin/rake cf:on_first_instance db:migrate && exec bin/rails server -p $PORT -e $RAILS_ENV`: Because of the `exec` prefix included on the final command, the
-Ruby process invoked by Rails takes over the bash process managing the execution of the composite command. The process tree is only Ruby, so the Ruby web
+Ruby process that is run by Rails takes over the bash process managing the execution of the composite command. The process tree is only Ruby, so the Ruby web
 server receives the TERM signal and can shutdown gracefully for 10 seconds.
 
-In more complex situations, like making a custom buildpack, you may want to use bash `trap`, `wait`, and backgrounded processes to manage your process tree
-and shut down apps gracefully. In most situations, however, a well-placed `exec` should be sufficient.
+In more complex situations, like making a custom buildpack, you might want to use bash `trap`, `wait`, and backgrounded processes to manage your process tree
+and shut down apps gracefully. In most situations, however, a well placed `exec` is sufficient.
 
 ### <a id='disk-quota'></a> disk_quota
 
@@ -383,7 +383,7 @@ For more information about metadata, see [Using Metadata](../../adminguide/metad
 <p class='note'><strong>Note:</strong> If you use the <code>no-route</code> flag attribute in the manifest or the flag option, it overrides all route-related
   attributes.</p>
 
-By default, `cf push` assigns a route to every app. But, some apps process data while running in the background and should not be assigned routes.
+By default, `cf push` assigns a route to every app. But, some apps process data while running in the background and must not be assigned routes.
 
 You can use the `no-route` attribute with a value of `true` to prevent a route from being created for your app.
 
@@ -635,7 +635,7 @@ For example:
 
 <div class='note'><strong>Notes:</strong>
   <ul>
-    <li>You must name variables with alphanumeric characters and underscores. Non-conforming variable names may cause unpredictable behavior.</li>
+    <li>You must name variables with alphanumeric characters and underscores. Non conforming variable names might cause unpredictable behavior.</li>
     <li>Do not use user-provided environment variables for security sensitive information such as credentials, because they might unintentionally show up in
       cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided
       environment variable <a href="./environment-variable.html#VCAP-SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter

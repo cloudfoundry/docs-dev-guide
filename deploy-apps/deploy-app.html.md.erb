@@ -10,13 +10,13 @@ This topic describes how to use the Cloud Foundry Command Line Interface (cf CLI
 
 The cf CLI command `cf push` pushes apps to <%= vars.app_runtime_abbr %>. There are two main ways to run the `cf push` command:
 
-* Run `cf push APP-NAME` to push an app the easiest way, using default settings. For more information, see [Push with Defaults](#default-push) below.
+* Run `cf push APP-NAME` to push an app the easiest way, using default settings. For more information, see [Push with Defaults](#default-push).
 
 * Run the `cf push` command with flags and helper files to customize:
     * How the pushed app runs, including its route, instance count, disk size limits, memory limits, and log rate limits.
     * How the push process works: whether it's configured with a manifest, runs a startup script, or limits files uploaded to the Cloud Controller.
 
-For more information about custom settings, see [Push with Custom Settings](#custom-push) below.
+For more information about custom settings, see [Push with Custom Settings](#custom-push).
 
 For an explanation of what <%= vars.app_runtime_abbr %> does when you run `cf push`, see [How Apps are
 Staged](../../concepts/how-applications-are-staged.html).
@@ -28,7 +28,7 @@ For information about the lifecycle of an app, see [App Container Lifecycle](app
 
 Before you push your app to <%= vars.app_runtime_abbr %>, ensure the following:
 
-* Your app is *cloud-ready*. <%= vars.app_runtime_abbr %> behaviors related to file storage, HTTP sessions, and port usage may require modifications to your
+* Your app is *cloud-ready*. <%= vars.app_runtime_abbr %> behaviors related to file storage, HTTP sessions, and port usage might require modifications to your
 app. To prepare an app to be pushed to <%= vars.app_runtime_abbr %>, see:
   * [Considerations for Designing and Running an App in the Cloud](prepare-to-deploy.html)
   * Any [Buildpacks](../../buildpacks/index.html) guides specific to your app language or framework, such as [Getting Started Deploying Ruby on Rails
@@ -37,14 +37,14 @@ app. To prepare an app to be pushed to <%= vars.app_runtime_abbr %>, see:
 * Your <%= vars.app_runtime_abbr %> deployment supports the type of app you are going to push, or you have the URL of an externally-available buildpack that
 can stage the app.
 
-* All required app resources are uploaded. For example, you may need to include a database driver.
+* All required app resources are uploaded. For example, you might need to include a database driver.
 
 * You have your target and credentials:
   * The API endpoint for your <%= vars.app_runtime_abbr %> deployment. Also known as the target URL, this is <%= vars.api_endpoint %>.
   * Your username and password for your <%= vars.app_runtime_abbr %> deployment.
 
 * You are logged into your app's target org and space.
-  1. Decide the org and space where you want to push your app. You may have access to one or more org and space.
+  1. Decide the org and space where you want to push your app. You might have access to one or more org and space.
   1. Log into this target org and space with `cf login`.
 
 * Your app can access every service that it uses, because an instance of the service runs in, or is shared with, the app's space.
@@ -57,7 +57,7 @@ can stage the app.
 To push an app with default settings:
 
 1. Choose a name for the app. The app name must consist of alphanumeric characters and be unique to your <%= vars.app_runtime_abbr %> deployment.
-    * To use an app name that is not unique, customize the app's route as described in [Customize the Route](#custom-route) below.
+    * To use an app name that is not unique, customize the app's route as described in [Customize the Route](#custom-route).
     * Apps running at their default routes require unique names because default routes are based on app names, and all routes must be globally unique.
 
 1. Run:
@@ -86,7 +86,7 @@ For more information about routes and domains, see [Routes and Domains](routes-d
 
 ### <a id='example'></a> Example Session
 
-The following example terminal output for `cf push example-app` demonstrates how <%= vars.app_runtime_abbr %> assigns default values to an app you push:
+The following example output for `cf push example-app` demonstrates how <%= vars.app_runtime_abbr %> assigns default values to an app you push:
 
 <pre class="terminal">
 Creating app example-app in org example-org / space development as a.user@<%= vars.app_domain %>...
@@ -152,7 +152,7 @@ Pushing an app with custom settings typically proceeds as follows:
 
 1. [(Optional) Configure App Services](#services)
 
-The sections below detail these steps.
+The following sections detail the steps.
 
 ### <a id='basic-settings'></a> (Optional) Customize Basic App Settings
 
@@ -160,7 +160,7 @@ Basic settings to customize when pushing an app include:
 
 * **Name:** You can use any series of alphanumeric characters as the name of your app.
 
-* **Instances:** Generally speaking, the more app instances you run, the less downtime your app will experience. If your app is still in development, running
+* **Instances:** Generally speaking, the more app instances you run, the less downtime your app experiences. If your app is still in development, running
 a single instance can simplify troubleshooting. For any production app, <%= vars.recommended_by %> recommends a minimum of two instances.
 
 * **Memory limit:** The maximum amount of memory that each instance of your app can consume. If an app instance exceeds this limit,
@@ -242,8 +242,8 @@ export LANG=en_US.UTF-8
 Setting this value at the operating system level allows the app to determine which language to use for error messages and instructions, collating sequences,
 and date formats.
 
-Your app root directory may also include a `.profile.d` directory that contains bash scripts that perform initialization tasks for the buildpack. Developers
-should not edit these scripts unless they are using a custom buildpack. For more information about custom buildpacks, see [Custom
+Your app root directory might also include a `.profile.d` directory that contains bash scripts that perform initialization tasks for the buildpack. Developers
+must not edit these scripts unless they are using a custom buildpack. For more information about custom buildpacks, see [Custom
 Buildpacks](../../buildpacks/custom.html).
 
 Initialization tasks as described here are also called _pre-runtime hooks_ and _`.profile` tasks_.
@@ -257,7 +257,7 @@ To specify custom options when pushing an app with `cf push`, you can include th
 * A manifest file.
   * The manifest file must be named `manifest.yml` and reside in the directory where you run `cf push`.
   * The manifest can include the app name, which lets you run `cf push` with no arguments.
-  * The manifest can also include a `services` block that lists service instances for the app to bind to automatically. For more information, see
+  * The manifest can also include a `services` block that lists service instances for the app to bind. For more information, see
   [Services](manifest-attributes.html#services-block) in _App Manifest Attribute Reference_.
 
 For information about how app settings change from push to push, including how command-line options, manifests, and commands like `cf scale` interact, see
@@ -283,7 +283,7 @@ Connections](../../buildpacks/java/configuring-service-connections.html).
 When you push an app that is already running, <%= vars.app_runtime_abbr %> stops all existing instances of that app. Users who try to access the app see a
 `404 Not Found` message while `cf push` runs.
 
-With some app updates, old and new versions of your code should never run at the same time. A worst-case example is if your app update migrates a database
+With some app updates, old and new versions of your code must never run at the same time. A worst-case example is if your app update migrates a database
 schema, causing old app instances to fail and lose user data. To prevent this, you must stop all running instances of your app before you push the new
 version.
 

@@ -21,7 +21,7 @@ The procedures in this topic require one of the following:
 
 * **cf CLI v6:** If you use cf CLI v6:
   * You must install cf CLI v6.40 or later.
-  * The rolling deployment feature must be enabled for your deployment. <%= vars.zdt_enable %>
+  * The rolling deployment feature must be activated for your deployment. <%= vars.zdt_enable %>
 
 * **CAPI V3:** If you use CAPI V3, you must install the cf CLI.
 
@@ -36,7 +36,7 @@ To deploy an app without incurring downtime:
 
 <p class="note warning"><strong>Caution:</strong> Ensure that you understand the limitations of
 this feature before running the command. For more information, see
-<a href="#limitations">Limitations</a> below.</p>
+<a href="#limitations">Limitations</a>.</p>
 
 * **For cf CLI v7, run:**
 
@@ -53,7 +53,7 @@ this feature before running the command. For more information, see
     </p>
 
     If the deployment hangs indefinitely, cancel the process and run it again with the step above.
-    To cancel, see [Cancel a Deployment](#cancel) below.
+    To cancel, see [Cancel a Deployment](#cancel).
 
 * **For cf CLI v6, run:**
 
@@ -170,7 +170,7 @@ this feature before running the command. For more information, see
         ```
         Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in previous steps.
 
-For more information about this command, see [How It Works](#how-it-works) below.
+For more information about this command, see [How It Works](#how-it-works).
 
 ### <a id="cancel"></a> Cancel a Deployment
 
@@ -213,7 +213,7 @@ original state as quickly as possible and does not guarantee zero downtime.</p>
 
 ### <a id="restart"></a> Restart an App
 
-To restart your app without downtime, run the appropriate command below. Restart an app to apply
+To restart your app without downtime, run the appropriate command. Restart an app to apply
 configuration updates that require a restart, such as environment variables or service bindings.
 
 * **For cf CLI v7, run:**

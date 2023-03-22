@@ -67,7 +67,7 @@ For more information, see <a href="https://datatracker.ietf.org/doc/html/rfc7540
 This section describes how to push <%= vars.app_runtime_abbr %> apps with support for HTTP/2.
 
 You do not need to make changes to existing apps to support HTTP/2.
-For information about pushing an HTTP/1.1 app that serves HTTP/2 traffic, see [Push an HTTP/1.1 App that Serves HTTP/2](#http1-app) below.
+For information about pushing an HTTP/1.1 app that serves HTTP/2 traffic, see [Push an HTTP/1.1 App that Serves HTTP/2](#http1-app).
 
 There are multiple ways to push an app with end-to-end HTTP/2.
 You can push the app using either the app manifest or the Cloud Foundry Command Line Interface (cf CLI).
@@ -182,10 +182,10 @@ To push an app that serves gRPC traffic:
 1. Use an app that supports serving gRPC traffic.
 For example, you can use the gRPC test app from [Cloud Foundry Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests/tree/main/assets/grpc) on GitHub.
 
-1. Push the app with HTTP/2 enabled using either the app manifest or the cf CLI.
+1. Push the app with HTTP/2 activated using either the app manifest or the cf CLI.
 See [Push an App with End-to-End HTTP/2 Using the App Manifest](#e2e-manifest) or [Push an App with End-to-End HTTP/2 Using the cf CLI](#e2e-cli) above.
 
-1. Send a gRPC request to the app using `grpcurl` by running the command below. For more information, see [grpcurl](https://github.com/fullstorydev/grpcurl).
+1. Send a gRPC request to the app using `grpcurl` by running the following command. For more information, see [grpcurl](https://github.com/fullstorydev/grpcurl).
 
 	```
 	grpcurl -vv -import-path ./test/ -proto test.proto MY-APP.EXAMPLE.COM:443 test.Test.Run
@@ -202,7 +202,7 @@ See [Push an App with End-to-End HTTP/2 Using the App Manifest](#e2e-manifest) o
 
 ## <a id="sample-apps"></a> Sample Applications
 
-Below are some sample HTTP/2 and gRPC applications from the community. They can
+Here are some sample HTTP/2 and gRPC applications from the community. They can
 be used to experiment with HTTP/2 and provide code examples for different
 languages and frameworks.
 

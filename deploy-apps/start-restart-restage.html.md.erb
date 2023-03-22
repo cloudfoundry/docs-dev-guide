@@ -27,7 +27,7 @@ Cloud Foundry determines the start command for your app from one of the three fo
 
 * The buildpack, which provides a start command appropriate for a particular type of app.
 
-The source that Cloud Foundry uses depends on factors explained below.
+The source that Cloud Foundry uses depends on factors that are explained in the following topic.
 
 ###<a id='first-time'></a>How Cloud Foundry Determines its Default Start Command ##
 
@@ -85,6 +85,6 @@ To restage your app, run the following command:
 
 Restaging your app stops your app and restages it, by compiling a new droplet and starting it.
 
-Restage your app if you have changed the environment in a way that affects your staging process, such as setting an environment variable that the buildpack consumes. The staging process has access to environment variables, so the environment can affect the contents of the droplet. You should also restage your app whenever you edit any configuration settings, such as when you rename it, add metadata, or configure health checks. The new settings often do not take effect until you restage the app.
+Restage your app if you have changed the environment in a way that affects your staging process, such as setting an environment variable that the buildpack consumes. The staging process has access to environment variables, so the environment can affect the contents of the droplet. You must also restage your app whenever you edit any configuration settings, such as when you rename it, add metadata, or configure health checks. The new settings often do not take effect until you restage the app.
 
 Restaging your app compiles a new droplet from your app without updating your app source. If you must update your app source, re-push your app by following the steps in the section [above](#start).

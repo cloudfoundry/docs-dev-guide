@@ -18,7 +18,7 @@ This topic describes how Loggregator, the <%= vars.app_runtime_full %> (<%= vars
 By default, Loggregator streams logs to your terminal. If you want to persist more than the limited amount of logging information that Loggregator can buffer,
 you can drain logs to a third-party log management service. For more information, see [Third-Party Log Management Services](../services/log-management.html).
 
-<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log lines quickly enough, the Loggregator buffer may
+<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log lines quickly enough, the Loggregator buffer might
 need to overwrite some lines before the client has consumed them. A syslog drain or a command-line interface (CLI) tail can usually keep up with the flow of
 app logs.
 
@@ -36,7 +36,7 @@ Every log line contains four fields:
 * Message
 
 Loggregator assigns the timestamp when it receives log data. The log data is opaque to Loggregator, which only puts it in the message field of the log line.
-Apps or system components sending log data to Loggregator may include their own timestamps, which then appear in the message field.
+Apps or system components sending log data to Loggregator might include their own timestamps, which then appear in the message field.
 
 <%= vars.human_readable_timestamp %>
 
@@ -44,13 +44,13 @@ Origin codes distinguish the different log types. Origin codes from system compo
 a digit that indicates the app instance.
 
 Many frameworks write to an app log that is separate from `stdout` and `stderr`. This is not supported by Loggregator. Your app must write to `stdout` or
-`stderr` for its logs to be included in the Loggregator stream. Check the buildpack your app uses to determine whether it automatically ensures that your app
+`stderr` for its logs to be included in the Loggregator stream. Check the buildpack your app uses to determine whether it ensures that your app
 correctly writes logs to `stdout` and `stderr` only. Some buildpacks do this, and some do not.
 
 
 ## <a id='format'></a> Log Types and Their Messages
 
-Different types of logs have different message formats, as shown in the examples below. The digit appended to the code indicates the instance index: `0` is
+Different types of logs have different message formats, as shown in the following examples. The digit appended to the code indicates the instance index: `0` is
 the first instance, `1` is the second, and so on.
 
 ### <a id='api'></a> API
@@ -113,7 +113,7 @@ For example:
 2016-06-14T14:10:15.18-0700 [APP/0]      OUT Exit status 0
 </pre>
 
-Each app may have a configured log rate limit. If the app logs exceed the configured log rate limit, you see a log message indicating that the limit was
+Each app might have a configured log rate limit. If the app logs exceed the configured log rate limit, you see a log message indicating that the limit was
 exceeded.
 
 For example:
@@ -158,9 +158,9 @@ This message only appears if the limit has been set by a platform operator. <%= 
 
 ## <a id='writing'></a> Writing to the Log from Your App
 
-Your app must write logs to `stderr` or `stdout`. Both are typically buffered, and you should flush the buffer before delivering the message to Loggregator.
+Your app must write logs to `stderr` or `stdout`. Both are typically buffered, and you must flush the buffer before delivering the message to Loggregator.
 
-Alternatively, you can write log messages to `stderr` or `stdout` synchronously. This approach is mainly used for debugging because it may affect app
+Alternatively, you can write log messages to `stderr` or `stdout` synchronously. This approach is mainly used for debugging because it affects app
 performance.
 
 
@@ -210,7 +210,7 @@ To display all of the lines in the Loggregator buffer:
 ### <a id='filter'></a> Filter Logs
 
 To view some subset of log output, run `cf logs APP-NAME` in conjunction with filtering commands of your choice, where `APP-NAME` is the name of your app. In
-the example below, running `cf logs spring-music --recent | grep -v RTR` excludes all Gorouter logs:
+the following example, run `cf logs spring-music --recent | grep -v RTR` to exclude all Gorouter logs:
 
 <pre class="terminal">
 2016-06-14T14:10:05.36-0700 [API/0]      OUT Updated app with guid cdabc604-0b73-47e1-a7d5-24af2c63f723 ({"name"=>"spring-music", "instances"=>1, "memory"=>512, "environment_json"=>"PRIVATE DATA HIDDEN"})
@@ -240,7 +240,7 @@ experience for your user. The following are general tips for ordering logs:
 
 * For web clients, use dynamic HTML to insert older logs into the sorting as they appear. This creates complete, ordered logs.
 
-* Java app developers may want to convert stack traces into a single log entity. To simplify log ordering for Java apps, use the multi-line Java message
+* Java app developers might want to convert stack traces into a single log entity. To simplify log ordering for Java apps, use the multi-line Java message
 workaround to convert your multi-line stack traces into a single log entity. For more information, see [Multi-line Java message
 workaround]((https://github.com/cloudfoundry/loggregator-release/blob/main/docs/java-multi-line-work-around.md) on GitHub.<br><br>By modifying the Java log
 output, you can force your app to reformat stack trace messages, replacing newline characters with a token. Set your log parsing code to replace that token

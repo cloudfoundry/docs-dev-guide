@@ -84,9 +84,9 @@ From your Papertrail account:
     $ cf restage APPLICATION-NAME
     </pre>
 
-    After a short delay, logs begin to flow automatically.
+    After a short delay, logs begin to flow.
 
-1. When Papertrail starts receiving log entries, the view automatically changes to show the logs viewing page.
+1. When Papertrail starts receiving log entries, the view changes to show the logs viewing page.
 
     ![alt-text=""](../images/third-party-logs/papertrail-11.png)
 
@@ -112,9 +112,9 @@ From your Splunk Storm account:
 
 4. Record the host and port provided for TCP input for later use.
 
-    ![alt-text="The Authorized network inputs pane shows the ports the data will be sent to for this project only."](../images/third-party-logs/splunkstorm-06.png)
+    ![alt-text="The Authorized network inputs pane shows the ports that data is sent to for this project only."](../images/third-party-logs/splunkstorm-06.png)
 
-5. Using the cf CLI, create the log drain service in Cloud Foundry using the TCP host and port you recorded. Then you will bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs will begin to flow.
+5. Using the cf CLI, create the log drain service in Cloud Foundry using the TCP host and port you recorded. Then you bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow.
 
     <pre class="terminal">
     $ cf cups my-logs -l syslog://HOST:PORT
@@ -143,7 +143,7 @@ In your SumoLogic account:
 2. Under **Add Collector**, select **Hosted Collector** and fill in the details.
   1. In **Name**, enter 'Cloud Foundry'.
   2. In **Description**, enter the purpose of the new collector.
-  3. In **Category**, you can enter the source category, if desired. The collector will set the source category to this value unless it is overwritten by the source metadata.
+  3. In **Category**, you can enter the source category, if desired. The collector sets the source category to this value unless it is overwritten by the source metadata.
 
     ![alt-text=""](../images/third-party-logs/sumologic-03a.png)
 
@@ -161,7 +161,7 @@ In your SumoLogic account:
 
     ![alt-text=""](../images/third-party-logs/sumologic-05.png)
 
-5. When the source has been created, a URL will be displayed. You can also view the URL by clicking the **Show URL** link beside the newly created source in the **Manage Collectors and Sources** table. Record the URL for the next step.
+5. When the source has been created, a URL is displayed. You can also view the URL by clicking the **Show URL** link beside the newly created source in the **Manage Collectors and Sources** table. Record the URL for the next step.
 
     ![alt-text=""](../images/third-party-logs/sumologic-06a.png)
 
@@ -189,7 +189,7 @@ In your Sematext account:
 
 1. Click the [Create App / Logsene App](https://apps.sematext.com/logsene-reports/registerApplication.do) menu item. Enter a name and click **Add Application** to create the Logsene App.
 
-2. Using the cf CLI, create the log drain service using the source URL displayed. Then you will bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs will begin to flow. The logs will appear in the [Logsene UI](https://apps.sematext.com/users-web/services.do#logsene).
+2. Using the cf CLI, create the log drain service using the source URL displayed. Then you bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow. The logs appear in the [Logsene UI](https://apps.sematext.com/users-web/services.do#logsene).
 
     <pre class="terminal">
     $ cf cups logsene-log-drain -l https://logsene-cf-receiver.sematext.com/YOUR_LOGSENE_TOKEN

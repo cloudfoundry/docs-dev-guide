@@ -35,9 +35,9 @@ The latest versions of <%= vars.product_short %> include support for `cflinuxfs4
 
 ## <a id='cli-commands'></a> Restaging Apps on a New Stack
 
-For security, stacks receive regular updates to address Common Vulnerabilities and Exposures ([CVEs](http://www.ubuntu.com/usn/)). Apps pick up on these stack changes through new releases of <%= vars.product_short %>. However, if your app links statically to a library provided in the rootfs, you may have to manually restage it to pick up the changes.
+For security, stacks receive regular updates to address Common Vulnerabilities and Exposures ([CVEs](http://www.ubuntu.com/usn/)). Apps pick up on these stack changes through new releases of <%= vars.product_short %>. However, if your app links statically to a library provided in the rootfs, you might have to manually restage it to pick up the changes.
 
-It can be difficult to know what libraries an app statically links to, and it depends on the languages you are using. One example is an app that uses a Ruby or Python binary, and links out to part of the C standard library. If the C library requires an update, you may need to recompile the app and restage it.
+It can be difficult to know what libraries an app statically links to, and it depends on the languages you are using. One example is an app that uses a Ruby or Python binary, and links out to part of the C standard library. If the C library requires an update, you might need to recompile the app and restage it.
 
 To restage an app on a new stack, do the following:
 

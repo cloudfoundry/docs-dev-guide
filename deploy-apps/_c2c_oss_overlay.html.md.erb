@@ -1,12 +1,13 @@
-##<a id="overlay"></a> Configure the Overlay Network 
+## <a id="overlay"></a> Configure the Overlay Network
 
-Container-to-Container Networking uses an overlay network to manage communication between app instances. 
+Container-to-Container Networking uses an overlay network to manage communication between app instances.
 By default, each Diego cell in the overlay network is allocated a /24 range that supports 254 containers per cell, one container for each of the usable IP addresses, `.1` through `.254`.
+
 For more information about the overlay network, see [Overlay Network](../../concepts/understand-cf-networking.html#overlay-network) in _Container-to-Container Networking_.
 
-###<a id="cells"></a> Configure the Number of Diego Cells
+### <a id="cells"></a> Configure the Number of Diego Cells
 
-If you want to modify the number of Diego cells supported by the overlay network in your Cloud Foundry deployment, edit the `cf_networking.network` property in your `cf-networking-release` manifest, and then re-deploy Cloud Foundry. See the examples below:
+If you want to modify the number of Diego cells supported by the overlay network in your Cloud Foundry deployment, edit the `cf_networking.network` property in your `cf-networking-release` manifest, and then re-deploy Cloud Foundry. See the following examples:
 
 <table>
   <tr>
@@ -33,9 +34,9 @@ If you want to modify the number of Diego cells supported by the overlay network
 
 <p class="note warning"><strong>Warning</strong>: The overlay network IP address range must not conflict with any other IP addresses in the network. If a conflict exists, Diego cells cannot reach any endpoint that has a conflicting IP address.</p>
 
-###<a id="containers"></a> Configure the Number of Containers per Cell
+### <a id="containers"></a> Configure the Number of Containers per Cell
 
-If you want to modify the number of containers per Diego cell in your Cloud Foundry deployment, edit the `cf_networking.subnet_prefix_length` property in your `cf-networking-release` manifest, and then re-deploy Cloud Foundry. See the examples below:
+If you want to modify the number of containers per Diego cell in your Cloud Foundry deployment, edit the `cf_networking.subnet_prefix_length` property in your `cf-networking-release` manifest, and then re-deploy Cloud Foundry. See the following examples:
 
 <table>
   <tr>

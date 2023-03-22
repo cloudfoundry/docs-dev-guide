@@ -43,12 +43,12 @@ Name the app "Blue" with the subdomain "demo-time."
 $ cf push Blue -n demo-time
 </pre>
 
-As shown in the graphic below:
+As shown in this graphic:
 
 * Blue is now running on Cloud Foundry.
 * The CF Router sends all traffic for `demo-time.example.com` traffic to Blue.
 
-![alt-text=""](../images/blue-green/blue.png)
+![alt-text="cf CLI pushing an app"](./images/blue-green/blue.png)
 
 ### <a id='update-and-push'></a>Step 2: Update App and Push ###
 
@@ -84,8 +84,7 @@ After the `cf map-route` command :
 
 * The CF Router continues sending traffic for `demo-time-temp.example.com` to Green.
 * Within a few seconds, the CF Router begins load balancing traffic for `demo-time.example.com` between Blue and Green.
-
-![alt-text=""](../images/blue-green/map.png)
+![alt-text="CF Router continues to send traffic"](./images/blue-green/map.png)
 
 ### <a id='unmap-blue'></a>Step 4: Unmap Route to Blue ###
 
@@ -102,17 +101,18 @@ After `cf unmap-route` command:
 * The CF Router stops sending traffic to Blue.
 Now all traffic for `demo-time.example.com` is sent to Green:
 
-![alt-text=""](../images/blue-green/unmap.png)
+![alt-text="CF Router stops traffic"](./images/blue-green/unmap.png)
 
 ### <a id='remove-temp-route'></a>Step 5: Remove Temporary Route to Green ###
 
 You can now use `cf unmap-route` to remove the route `demo-time-temp.example.com` from Green. The route can be deleted using `cf delete-route` or reserved for later use. You can also decommission Blue, or keep it in case you need to roll back your changes.
 
-![alt-text=""](../images/blue-green/green.png)
+![alt-text="Use `cf unmap-route` to remove the route"](./images/blue-green/green.png)
+
 
 ## <a id='implementations'></a>Implementation
 
-Cloud Foundry community members have written a plugin to automate the blue-green
+Cloud Foundry community members have written a plug-in to automate the blue-green
 deployment process:
 
-* [BlueGreenDeploy](https://github.com/bluemixgaragelondon/cf-blue-green-deploy): cf-blue-green-deploy is a plugin, written in Go, for the Cloud Foundry Command Line Interface (cf CLI) that automates a few steps involved in zero-downtime deploys.
+* [BlueGreenDeploy](https://github.com/bluemixgaragelondon/cf-blue-green-deploy): cf-blue-green-deploy is a plug-in, written in Go, for the Cloud Foundry Command Line Interface (cf CLI) that automates a few steps involved in zero-downtime deploys.

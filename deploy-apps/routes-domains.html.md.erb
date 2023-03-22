@@ -44,18 +44,18 @@ the following matches for the two routes `example-app.<%= vars.app_domain %>` an
   </tr>
 </table>
 
-The Gorouter does not use a route to match requests until the route is mapped to an app. In the above example, `products.<%= vars.app_domain %>` may have been
+The Gorouter does not use a route to match requests until the route is mapped to an app. In the above example, `products.<%= vars.app_domain %>` might have been
 created as a route in <%= vars.app_runtime_abbr %>, but until it is mapped to an app, requests for the route receive a `404` error.
 
 The routing tier knows the location of instances for apps mapped to routes. Once the routing tier determines a route as the best match for a request, it makes
 a load-balancing calculation using a round-robin algorithm, and forwards the request to an instance of the mapped app.
 
 Developers can map many apps to a single route, resulting in load-balanced requests for the route across all instances of all mapped apps. This approach
-enables the blue/green rolling deployment strategy. Developers can also map an individual app to multiple routes, enabling access to the app from many URLs.
+activates the blue/green rolling deployment strategy. Developers can also map an individual app to multiple routes, enabling access to the app from many URLs.
 The number of routes that can be mapped to each app is approximately 1000 (128&nbsp;KB).
 
 Routes belong to a space, and developers can only map apps to a route created in or shared with the same space. For more information about sharing routes
-across spaces, see [Share a Route with Another Space](#share-route) below.
+across spaces, see [Share a Route with Another Space](#share-route) .
 
 Routes are globally unique. Developers in one space cannot create a route with the same URL as developers in another space, regardless of which orgs control
 these spaces.
@@ -65,10 +65,10 @@ these spaces.
 <p class='note'><strong>Note:</strong> By default, <%= vars.app_runtime_abbr %> only supports routing of HTTP requests to apps.</p>
 
 Routes are considered HTTP if they are created from HTTP domains, and TCP if they are created from TCP domains. For more information, see [HTTP vs. TCP Shared
-Domains](#http-vs-tcp-shared-domains) below.
+Domains](#http-vs-tcp-shared-domains).
 
 HTTP routes include a domain, an optional hostname, and an optional context path. `<%= vars.app_domain %>`, `example-app.<%= vars.app_domain %>`, and
-`example-app.<%= vars.app_domain %>/products` are all examples of HTTP routes. Apps should listen to the `localhost` port defined by the `$PORT` environment
+`example-app.<%= vars.app_domain %>/products` are all examples of HTTP routes. Apps listen to the `localhost` port defined by the `$PORT` environment
 variable, which is `8080` on Diego. As an example, requests to `example-app.<%= vars.app_domain %>` would be routed to the app container at `localhost:8080`.
 
 <p class='note'><strong>Note:</strong> You can update the ports on which an app can receive requests through the Cloud Controller API. For more information, see <a href="../custom-ports.html">Configuring Apps to Listen on Custom Ports (Beta)</a>.</p>
@@ -76,7 +76,7 @@ variable, which is `8080` on Diego. As an example, requests to `example-app.<%= 
 Requests to HTTP routes must be sent to ports `80` or `443`. Ports cannot be reserved for HTTP routes.
 
 TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an app pushed to
-<%= vars.app_runtime_abbr %> listens on. `tcp.shared-domain.example.com:60000` is an example of a TCP route. Just as for HTTP routes, apps should listen to
+<%= vars.app_runtime_abbr %> listens on. `tcp.shared-domain.example.com:60000` is an example of a TCP route. Just as for HTTP routes, apps listen to
 the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. For example, requests to `tcp.shared-domain.example.com:60000`
 would be routed to the app container at `localhost:8080`.
 
@@ -118,7 +118,7 @@ When a developer creates a route using the cf CLI, <%= vars.app_runtime_abbr %> 
 create a HTTP route, a developer must choose an HTTP domain. To create a TCP route, a developer must choose a TCP domain.
 
 Domains in <%= vars.app_runtime_abbr %> provide a namespace from which to create routes. To list available domains for a targeted organization, use the [cf
-domains](https://cli.cloudfoundry.org/en-US/cf/domains.html) command. For more information about domains, see [Domains](#domains) below.
+domains](https://cli.cloudfoundry.org/en-US/cf/domains.html) command. For more information about domains, see [Domains](#domains).
 
 The following sections describe how developers can create HTTP and TCP routes for different use cases.
 
@@ -154,7 +154,7 @@ This command instructs <%= vars.app_runtime_abbr %> to only route requests to ap
 #### <a id='create-route-without-hostname'></a> Create an HTTP Route without Hostname
 
 This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see [Private
-Domains](#private-domains) below.
+Domains](#private-domains) .
 
 A developer can create a route from the domain `<%= vars.private_app_domain %>` with no hostname with the
 [cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command:
@@ -253,7 +253,7 @@ A developer can create three routes using the same hostname and domain in the sp
   OK
   </pre>
 * **cf CLI v6**
-  <p class='note'><strong>Note:</strong> If you want to create a route without a path using cf CLI v6, you must run the commands in the order below. Create
+  <p class='note'><strong>Note:</strong> If you want to create a route without a path using cf CLI v6, you must run the commands in the order. Create
     the route without a path first, and then create any routes with a path. If you do not need a route without a path, then this order is not required.</p>
   <pre class="terminal">
   $ cf create-route example-space <%= vars.app_domain %> --hostname store
@@ -271,7 +271,7 @@ A developer can create three routes using the same hostname and domain in the sp
   OK
   </pre>
 
-The developer can then map the new routes to different apps by following the procedure in [Map a Route to Your App](#map-route) below.
+The developer can then map the new routes to different apps by following the procedure in [Map a Route to Your App](#map-route).
 
 If the developer maps the first route with path `products` to the `products` app, the second route with path `orders` to the `orders` app, and the last route
 to the `storefront` app. After this:
@@ -294,7 +294,7 @@ to the `storefront` app. After this:
 #### <a id='create-route-with-port'></a> Create a TCP Route with a Port
 
 A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. If the clients of the app can accommodate addressing an arbitrary
-port, then developers should use the `--random-port` to instruct <%= vars.app_runtime_abbr %> to pick a port for your route. To create a TCP route for
+port, then you must use the `--random-port` to instruct <%= vars.app_runtime_abbr %> to pick a port for your route. To create a TCP route for
 `<%= vars.tcp_app_domain %>` on an arbitrary port, run:
 
 <pre class="terminal">
@@ -388,10 +388,10 @@ To check whether a route with the hostname `store` and the domain `<%= vars.app_
 For an app to receive requests to a route, developers must map the route to the app with the [cf
 map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) command. If the route does not already exist, this command creates it.
 
-<p class='note'><strong>Note:</strong> Any app that is not routed to port <code>80</code> or port <code>443</code> must be explicitly mapped using the <code>cf map-route</code> command. Otherwise, the route is automatically mapped to port <code>443</code>.</p>
+<p class='note'><strong>Note:</strong> Any app that is not routed to port <code>80</code> or port <code>443</code> must be explicitly mapped using the <code>cf map-route</code> command. Otherwise, the route is mapped to port <code>443</code>.</p>
 
-You can create and reserve routes for later use by following the procedure in [Manually Map a Route](#map-route-manually) below. You can also map routes to
-their app immediately as part of a push by following the procedure in [Map a Route with App Push](#map-route-on-push) below.
+You can create and reserve routes for later use by following the procedure in [Manually Map a Route](#map-route-manually). You can also map routes to
+their app immediately as part of a push by following the procedure in [Map a Route with App Push](#map-route-on-push).
 
 Changes to route mappings are executed asynchronously. On startup, an app becomes accessible at its route within a few seconds. Similarly, upon mapping a new
 route to a running app, the app becomes accessible at this route within a few seconds of the CLI exiting successfully.
@@ -450,7 +450,7 @@ $ cf map-route h2app <%= vars.app_domain %> --hostname h2app --destination-proto
 Developers can map a route to their app with the `cf push` command.
 
 If a domain or hostname is not specified, then a route is be created using the app name and the default shared domain. For more information, see [Shared
-Domains](#shared-domains) below. The following command pushes the app `example-app`, creating the route `example-app.<%= vars.app_domain %>` from the default
+Domains](#shared-domains). The following command pushes the app `example-app`, creating the route `example-app.<%= vars.app_domain %>` from the default
 shared domain `<%= vars.app_domain %>`. If the route has not already been created in another space, this command also maps it to the app.
 
 <pre class="terminal">
@@ -712,7 +712,7 @@ The following table describes the possible error responses:
 
 Domains indicate to a developer that requests for any route created from the domain are routed to <%= vars.app_runtime_abbr %>. This requires DNS to be
 configured out-of-band to resolve the domain name to the IP address of a load balancer configured to forward requests to the <%= vars.app_runtime_abbr %>
-routers. For more information about configuring DNS, see [DNS for Domains](#domains-dns) below.
+routers. For more information about configuring DNS, see [DNS for Domains](#domains-dns).
 
 ### <a id='list-domains'></a> List Domains for an Org
 
@@ -729,7 +729,7 @@ name                          status   type
 </pre>
 
 This example displays three available domains: a shared HTTP domain `<%= vars.app_domain %>`, a shared TCP domain `<%= vars.tcp_app_domain %>`, and a private
-domain `<%= vars.private_app_domain %>`. For more information, see [Shared Domains](#shared-domains) and [Private Domains](#private-domains) below.
+domain `<%= vars.private_app_domain %>`. For more information, see [Shared Domains](#shared-domains) and [Private Domains](#private-domains).
 
 ### <a id='http-vs-tcp-shared-domains'></a> HTTP vs. TCP Domains
 
@@ -746,7 +746,7 @@ domains can use a TCP protocol.
 ### <a id='shared-domains'></a> Shared Domains
 
 Admins manage shared domains, which are available to users in all orgs of a <%= vars.app_runtime_abbr %> deployment. An admin can offer multiple shared
-domains to users. For example, an admin may offer developers the choice of creating routes for their apps from `<%= vars.app_domain %>` and
+domains to users. For example, an admin might offer developers the choice of creating routes for their apps from `<%= vars.app_domain %>` and
 `cf.example-company.com`.
 
 If a developer pushes an app without specifying a domain, a route is created for it from the first shared domain created in the system. All other operations
@@ -981,7 +981,7 @@ If your DNS provider supports using an ALIAS or ANAME record, configure your roo
 If your DNS provider does not support ANAME or ALIAS records you can use subdomain redirection, also known as domain forwarding, to redirect requests for your
 root domain to a subdomain configured as a CNAME.
 
-<p class='note'><strong>Note:</strong> If you use domain forwarding, SSL requests to the root domain may fail if the SSL certificate only matches the
+<p class='note'><strong>Note:</strong> If you use domain forwarding, SSL requests to the root domain might fail if the SSL certificate only matches the
   subdomain. For more information about SSL certificates, see the <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Cloud
   Foundry documentation</a>.</p>
 

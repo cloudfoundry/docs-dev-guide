@@ -393,7 +393,7 @@ map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) command. If the
 You can create and reserve routes for later use by following the procedure in [Manually Map a Route](#map-route-manually). You can also map routes to
 their app immediately as part of a push by following the procedure in [Map a Route with App Push](#map-route-on-push).
 
-Changes to route mappings are executed asynchronously. On startup, an app becomes accessible at its route within a few seconds. Similarly, upon mapping a new
+Changes to route mappings are run asynchronously. On startup, an app becomes accessible at its route within a few seconds. Similarly, upon mapping a new
 route to a running app, the app becomes accessible at this route within a few seconds of the CLI exiting successfully.
 
 #### <a id='map-route-manually'></a> Manually Map a Route
@@ -696,7 +696,7 @@ The following table describes the possible error responses:
   </tr>
   <tr>
     <td><code>unknown_route</code></td>
-    <td>The value provided for <code>X-Cf-App-Instance</code> is a correctly formatted GUID, but there is no instance found with that GUID for the route
+    <td>The value provided for <code>X-Cf-App-Instance</code> is a correctly formatted GUID, but no instance is found with that GUID for the route
       requested.</td>
     <td><code>400 Bad Request: Requested instance ('1') with guid ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route
       ('example-route.cf.com')</code></td>

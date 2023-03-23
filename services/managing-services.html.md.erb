@@ -232,7 +232,7 @@ OK
 
 ### <a id='route-unbinding'></a>Unbind a Service Instance from a Route ###
 
-Unbinding a service instance from a route will result in requests and responses no longer being proxied through the service instance. For more information, see [Managing App Requests with Route Services](./route-binding.html).
+Unbinding a service instance from a route results in requests and responses no longer being proxied through the service instance. For more information, see [Managing App Requests with Route Services](./route-binding.html).
 
 <p class='note'><strong>Note</strong>: If your bound service instance is providing security features, like authorization, unbinding the service instance might leave your app vulnerable.</p>
 
@@ -249,7 +249,7 @@ Restaging your app is not required.
 
 ## <a id='rename_service'></a>Rename a Service Instance ##
 
-You can change the name given to a service instance. Keep in mind that upon restarting any bound apps, the name of the instance will change in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your app depends on the instance name for discovering credentials, changing the name could break your app's use of the service instance.
+You can change the name given to a service instance. Keep in mind that upon restarting any bound apps, the name of the instance changes in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your app depends on the instance name for discovering credentials, changing the name could break your app's use of the service instance.
 
 <pre class="terminal">
 $ cf rename-service mydb mydb1
@@ -262,7 +262,7 @@ OK
 ### Changing a Service Plan
 _Changing a plan requires cf CLI v6.7+ and cf-release v192+_
 
-By updating the service plan for an instance, users can change their service instance to other service plans. Though the platform and CLI now support this feature, services must expressly implement support for it so not all services will. Further, a service might support updating between some plans but not others. For instance, a service might support updating a plan where only a logical change is required, but not where data migration is necessary. In either case, users can expect to see a meaningful error when plan update is not supported.
+By updating the service plan for an instance, you can change the service instance to other service plans. Though the platform and CLI now support this feature, services must implement support for it. Further, a service might support updating between some plans but not others. For instance, a service might support updating a plan where only a logical change is required, but not where data migration is necessary. In either case, users can expect to see a meaningful error when plan update is not supported.
 
 <pre class="terminal">
 $ cf update-service mydb -p new-plan
@@ -330,7 +330,7 @@ To upgrade your service instances, do the following:
     <pre class="terminal">
     $ cf update-service mydb --upgrade
     You are about to update mydb.
-    Warning: This operation may be long running and will block further operations on the service until complete.
+    Warning: This operation might run long and block further operations on the service until complete.
     Really update service mydb? [yN]: y
     OK
     </pre>

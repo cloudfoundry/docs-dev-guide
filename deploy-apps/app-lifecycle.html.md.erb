@@ -42,7 +42,7 @@ During this app duplication process, singleton app instances might become tempor
 
 To stop the app, <%= vars.app_runtime_abbr %> sends the app process in the container a SIGTERM. By default, the process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, <%= vars.app_runtime_abbr %> sends a SIGKILL.
 
-By default, apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before <%= vars.app_runtime_abbr %> terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests.
+By default, apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before <%= vars.app_runtime_abbr %> stops the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests.
 <% if vars.platform_code == 'PCF' %>
   To modify the timeout period on the <%= vars.app_runtime_abbr %> tile or IST tile, go to the Advanced Settings tab and edit the "app graceful shutdown period" property.
 <% else %>

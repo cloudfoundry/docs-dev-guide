@@ -206,13 +206,13 @@ For example: `LANG=en_US.UTF-8`
 
 The maximum amount of memory that each instance of the app can consume. You specify this value in an app manifest or with the cf CLI when pushing an app. The value is limited by space and org quotas.
 
-If an instance exceeds the maximum limit, it is restarted. If <%= vars.app_runtime_abbr %> is asked to restart an instance too frequently, the instance is terminated.
+If an instance exceeds the maximum limit, it is restarted. If <%= vars.app_runtime_abbr %> is asked to restart an instance too frequently, the instance is stopped.
 
 For example: `MEMORY_LIMIT=512M`
 
 ### <a id='PORT'></a> PORT
 
-The port on which the app listens for requests. <%= vars.app_runtime_abbr %> allocates a port dynamically for each instance of the app, so code that obtains or uses the app port refers to it using the `PORT` environment variable.
+The port on which the app listens for requests. <%= vars.app_runtime_abbr %> allocates a port for each instance of the app, so code that obtains or uses the app port refers to it using the `PORT` environment variable.
 
 For example: `PORT=8080`
 

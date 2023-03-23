@@ -153,7 +153,7 @@ In your SumoLogic account:
 
     ![alt-text=""](../images/third-party-logs/sumologic-04.png)
 
-4. Under **Select a type of Source**, select **HTTP** and fill in the details. An HTTPS URL will be provided.
+4. Under **Select a type of Source**, select **HTTP** and fill in the details. An HTTPS URL is provided.
   1. In **Name**, leave the entry, 'CloudFoundry'.
   2. In **Description**, enter a description of the source.
   3. In **Source Host**, enter the host name for the system from which the log files are being collected.
@@ -165,7 +165,7 @@ In your SumoLogic account:
 
     ![alt-text=""](../images/third-party-logs/sumologic-06a.png)
 
-6. Using the cf CLI, create the log drain service in Cloud Foundry using the source URL you just recorded. Then you will bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs will begin to flow.
+6. Using the cf CLI, create the log drain service in Cloud Foundry using the source URL you just recorded. Then you bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow.
 
     <pre class="terminal">
     $ cf cups my-logs -l HTTPS-SOURCE-URL

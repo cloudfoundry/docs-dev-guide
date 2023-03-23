@@ -82,7 +82,7 @@ If this occurs, <%= vars.platform_name %> performs the following steps:
 1. <%= vars.platform_name %> waits 10 seconds to allow your app to cleanly shut down any child processes
    and handle any open connections.
 
-1. After 10 seconds, <%= vars.platform_name %> forcibly shuts down your app.
+1. After 10 seconds, <%= vars.platform_name %> shuts down your app.
 
 Your app must accept and handle the termination signal to ensure that it shuts down gracefully. To achieve this, the app is expected to use following the steps when shutting down:
 

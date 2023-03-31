@@ -114,7 +114,7 @@ From your Splunk Storm account:
 
     ![alt-text="The Authorized network inputs pane shows the ports the data will be sent to for this project only."](../images/third-party-logs/splunkstorm-06.png)
 
-2. Using the cf CLI, create the log drain service in Cloud Foundry using the TCP host and port you recorded. Then you bibd teh service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow.
+2. Using the cf CLI, create the log drain service in Cloud Foundry using the TCP host and port you recorded. Then you bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow.
 
     <pre class="terminal">
     $ cf cups my-logs -l syslog://HOST:PORT

@@ -60,7 +60,7 @@ across spaces, see [Share a Route with Another Space](#share-route) .
 Routes are globally unique. Developers in one space cannot create a route with the same URL as developers in another space, regardless of which orgs control
 these spaces.
 
-### <a id='http-vs-tcp-routes'></a> HTTP vs. TCP Routes
+### <a id='http-vs-tcp-routes'></a> HTTP vs. TCP routes
 
 <p class='note'><strong>Note:</strong> By default, <%= vars.app_runtime_abbr %> only supports routing of HTTP requests to apps.</p>
 
@@ -82,7 +82,7 @@ would be routed to the app container at `localhost:8080`.
 
 Once a port is reserved for a route, it cannot be reserved for another route. Hostname and path are not supported for TCP routes.
 
-### <a id='internal-routes'></a> Internal Container-to-Container Routes
+### <a id='internal-routes'></a> Internal container-to-container routes
 
 <%= vars.app_runtime_abbr %> apps can communicate with each other securely and directly over internal routes that never leave the platform.
 
@@ -112,7 +112,7 @@ To create an internal route:
 information, see [Configuring Container-to-Container Networking](cf-networking.html) and the [Cloud Foundry CLI Reference
 Guide](https://cli.cloudfoundry.org/en-US/cf/add-network-policy.html).
 
-### <a id='create-route'></a> Create a Route
+### <a id='create-route'></a> Create a route
 
 When a developer creates a route using the cf CLI, <%= vars.app_runtime_abbr %> determines whether the route is an HTTP or a TCP route based on the domain. To
 create a HTTP route, a developer must choose an HTTP domain. To create a TCP route, a developer must choose a TCP domain.
@@ -122,7 +122,7 @@ domains](https://cli.cloudfoundry.org/en-US/cf/domains.html) command. For more i
 
 The following sections describe how developers can create HTTP and TCP routes for different use cases.
 
-#### <a id='create-route-with-hostname'></a> Create an HTTP Route with Hostname
+#### <a id='create-route-with-hostname'></a> Create an HTTP route with hostname
 
 In <%= vars.app_runtime_abbr %>, a hostname is the label that indicates a subdomain of the domain associated with the route. Given a domain
 `<%= vars.app_domain %>`, a developer can create the route `example-app.<%= vars.app_domain %>` by specifying the hostname `example-app` with the
@@ -151,7 +151,7 @@ This command instructs <%= vars.app_runtime_abbr %> to only route requests to ap
 
 * Any path under either of the above URLs, such as `http://example-app.<%= vars.app_domain %>/bar`
 
-#### <a id='create-route-without-hostname'></a> Create an HTTP Route without Hostname
+#### <a id='create-route-without-hostname'></a> Create an HTTP route without hostname
 
 This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see [Private
 Domains](#private-domains) .
@@ -207,7 +207,7 @@ these URLs:
 
 * Any path under either of the above URLs, such as `http://foo.<%= vars.private_app_domain %>/foo`
 
-#### <a id='create-route-with-wildcard-hostname'></a> Create an HTTP Route with Wildcard Hostname
+#### <a id='create-route-with-wildcard-hostname'></a> Create an HTTP route with wildcard hostname
 
 An app mapped to a wildcard route acts as a fallback app for route requests if the requested route does not exist. To create a wildcard route, use an asterisk
 for the hostname.
@@ -230,7 +230,7 @@ A developer can create a wildcard route from the domain `foo.<%= vars.app_domain
 If a client sends a request to `http://app.foo.<%= vars.app_domain %>` by accident, attempting to reach `example-app.foo.<%= vars.app_domain %>`,
 <%= vars.app_runtime_abbr %> routes the request to the app mapped to the route `*.foo.<%= vars.app_domain %>`.
 
-#### <a id='create-route-with-path'></a> Create an HTTP Route with a Path
+#### <a id='create-route-with-path'></a> Create an HTTP route with a path
 
 Developers can use paths to route requests for the same hostname and domain to different apps.
 
@@ -291,11 +291,20 @@ to the `storefront` app. After this:
   </ul>
 </div>
 
-#### <a id='create-route-with-port'></a> Create a TCP Route with a Port
+#### <a id='create-route-with-port'></a> Create a TCP route with a port
 
-A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. If the clients of the app can accommodate addressing an arbitrary
-port, then you must use the `--random-port` to instruct <%= vars.app_runtime_abbr %> to pick a port for your route. To create a TCP route for
-`<%= vars.tcp_app_domain %>` on an arbitrary port, run:
+A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. This is the default in the v7 version of the cf CLI.
+
+* **cf CLI v6** - To get an abitrary (random) port, you must use the `--random port` flag.
+
+<pre class="terminal">
+$ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
+Creating route <%= vars.tcp_app_domain %> for org example-org / space example-space as user@example.com...
+OK
+Route <%= vars.tcp_app_domain %>:60034 has been created
+</pre>
+
+* **cf CLI v7** - An abitrary (random) port is the default; the `--random port` flag is not supported.
 
 <pre class="terminal">
 $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
@@ -315,7 +324,7 @@ Creating route <%= vars.tcp_app_domain %>:60035 for org example-org / space exam
 OK
 </pre>
 
-### <a id='list-routes'></a> List Routes
+### <a id='list-routes'></a> List routes
 
 Developers can list routes for the current space with the [cf routes](https://cli.cloudfoundry.org/en-US/cf/routes.html) command. A route is uniquely
 identified by the combination of hostname, domain, port, and path.
@@ -337,10 +346,9 @@ Developers can only see routes in spaces where they are members.
 
 <p class='note'><strong>Note:</strong> cf CLI v7 removes the <code>port</code> and <code>path</code> columns from the output.</p>
 
-### <a id='view-route'></a> View a Route
+### <a id='view-route'></a> View a route
 
-Developers can view a route and its destinations within the current space with the <code>cf route</code> command. A route is uniquely identified by the
-combination of a hostname, domain, port, and path.
+Developers can view a route and its destinations within the current space with the <code>cf route</code> command. A route is uniquely identified by the combination of a hostname, domain, port, and path.
 
 <pre class="terminal">
 $ cf route <%= vars.app_domain %> --hostname example-app
@@ -361,7 +369,7 @@ Developers can only view a route within a space where they are a member.
 
 <p class='note'><strong>Note:</strong> The <code>cf route</code> command is available in cf CLI v8 only.</p>
 
-### <a id='check-routes'></a> Check Routes
+### <a id='check-routes'></a> Check routes
 
 Developers cannot create a route that is already taken. To check whether a route is available, developers can use the [cf
 check-route](https://cli.cloudfoundry.org/en-US/cf/check-route.html) command.
@@ -383,7 +391,7 @@ To check whether a route with the hostname `store` and the domain `<%= vars.app_
   Route store.<%= vars.app_domain %>/products does exist
   </pre>
 
-### <a id='map-route'></a> Map a Route to Your App
+### <a id='map-route'></a> Map a route to your app
 
 For an app to receive requests to a route, developers must map the route to the app with the [cf
 map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) command. If the route does not already exist, this command creates it.
@@ -396,7 +404,7 @@ their app immediately as part of a push by following the procedure in [Map a Rou
 Changes to route mappings are run asynchronously. On startup, an app becomes accessible at its route within a few seconds. Similarly, upon mapping a new
 route to a running app, the app becomes accessible at this route within a few seconds of the CLI exiting successfully.
 
-#### <a id='map-route-manually'></a> Manually Map a Route
+#### <a id='map-route-manually'></a> Manually map a route
 
 Given the following routes and apps:
 
@@ -445,45 +453,44 @@ In cf CLI v8, the following command maps the route `h2app.<%= vars.app_domain %>
 $ cf map-route h2app <%= vars.app_domain %> --hostname h2app --destination-protocol http2
 </pre>
 
-#### <a id='map-route-on-push'></a> Map a Route with App Push
+#### <a id='map-route-on-push'></a> Map a route with app push
 
 Developers can map a route to their app with the `cf push` command.
+As of cf CLI v7, the best way to do this is by using the `routes` property in the manifest. The `-d` flag is no longer supported.
 
-If a domain or hostname is not specified, then a route is be created using the app name and the default shared domain. For more information, see [Shared
-Domains](#shared-domains). The following command pushes the app `example-app`, creating the route `example-app.<%= vars.app_domain %>` from the default
+**For cf CLI v6 only:**
+If a domain or hostname is not specified, then a route is created using the app name and the default shared domain. For more information, see [Shared Domains](#shared-domains). The following command pushes the app `example-app`, creating the route `example-app.<%= vars.app_domain %>` from the default
 shared domain `<%= vars.app_domain %>`. If the route has not already been created in another space, this command also maps it to the app.
 
 <pre class="terminal">
 $ cf push example-app
 </pre>
 
-To customize the route during `push`, specify the domain using the `-d` flag and the hostname with the `--hostname` flag. The following command creates the
-`foo.<%= vars.private_app_domain %>` route for `example-app`:
+To customize the route during `push`, specify the domain using the `-d` flag and the hostname with the `--hostname` flag. The following command creates the `foo.<%= vars.private_app_domain %>` route for `example-app`:
 
 <pre class="terminal">
 $ cf push example-app -d <%= vars.private_app_domain %> --hostname foo
 </pre>
 
-To map a TCP route during `push`, specify a TCP domain and request a random port using `--random-route`. To specify a port, push the app without a route, then
-create and map the route manually by following the procedure in [Create a TCP Route with a Port](#create-route-with-port) above.
+To map a TCP route during `push`, specify a TCP domain and request a random port using `--random-route`. To specify a port, push the app without a route, then create and map the route manually by following the procedure in [Create a TCP Route with a Port](#create-route-with-port) above.
 
 <pre class="terminal">
 $ cf push tcp-app -d <%= vars.tcp_app_domain %> --random-route
 </pre>
 
-#### <a id='map-route-with-manifest'></a> Map a Route Using App Manifest
+#### <a id='map-route-with-manifest'></a> Map a route using app manifest
 
 Developers can map a route to their app with a manifest by editing the `route` attribute to specify the host, domain, port and/or path components of the
 route. For more information, see [Deploying with App Manifests](../deploy-apps/manifest.html#routes).
 
-#### <a id='map-route-to-multiple-apps'></a> Map a Route to Multiple Apps
+#### <a id='map-route-to-multiple-apps'></a> Map a route to multiple apps
 
 <%= partial 'routing_conflict' %>
 
 For more information about troubleshooting this problem, see [Routing Conflict](troubleshoot-app-health.html#routing-conflict) in _Troubleshooting App
 Deployment and Health_.
 
-#### <a id='map-multiple-routes'></a> Map Multiple Routes to One App
+#### <a id='map-multiple-routes'></a> Map multiple routes to one app
 
 You can have multiple routes to an app, but those routes cannot have different context paths.
 
@@ -521,7 +528,7 @@ The following routes are _not_ valid for a single app:
   </tr>
 </table>
 
-#### <a id='map-internal-route'></a> Map an Internal Route to an App
+#### <a id='map-internal-route'></a> Map an internal route to an app
 
 You can map an internal route to any app. This internal route allows your app to communicate with other apps without leaving the platform. Once mapped, this
 route becomes available to all other apps on the platform.
@@ -532,7 +539,7 @@ This example creates a `foo.apps.internal` internal route for `example-app`:
 $ cf map-route example-app apps.internal --hostname foo
 </pre>
 
-### <a id='unmap-route'></a> Unmap a Route
+### <a id='unmap-route'></a> Unmap a route
 
 Developers can remove a route from an app using the `cf unmap-route` command. The route remains reserved for later use in the space where it was created until
 the route is deleted.
@@ -549,7 +556,7 @@ To unmap a TCP route from an app, identify the route using the domain and port:
 $ cf unmap-route tcp-app <%= vars.tcp_app_domain %> --port 60000
 </pre>
 
-### <a id='share-route'></a> Share a Route with Another Space
+### <a id='share-route'></a> Share a route with another space
 
 <p class='note'><strong>Note:</strong> To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
 
@@ -587,7 +594,7 @@ To share a route with another space:
     cf share-route example.com --hostname example-app --path example-path -s other-space -o other-org
     </pre>
 
-### <a id='move-route'></a> Transfer Ownership of a Route to Another Space
+### <a id='move-route'></a> Transfer ownership of a route to another space
 
 <p class='note'><strong>Note:</strong> To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
 
@@ -632,7 +639,7 @@ To move a route:
     cf move-route example.com --hostname example-app --path example-path -s other-space -o other-org
     </pre>
 
-### <a id='delete-route'></a> Delete a Route
+### <a id='delete-route'></a> Delete a route
 
 Developers can delete a route from a space using the `cf delete-route` command.
 
@@ -648,7 +655,7 @@ To delete a TCP route, identify the route using the domain and port.
 $ cf delete-route tcp.<%= vars.private_app_domain %> --port 60000
 </pre>
 
-### <a id='surgical-routing'></a> Routing Requests to a Specific App Instance
+### <a id='surgical-routing'></a> Routing requests to a specific app instance
 
 Users can route HTTP requests to a specific app instance using the header `X-Cf-App-Instance`.
 
@@ -714,7 +721,7 @@ Domains indicate to a developer that requests for any route created from the dom
 configured out-of-band to resolve the domain name to the IP address of a load balancer configured to forward requests to the <%= vars.app_runtime_abbr %>
 routers. For more information about configuring DNS, see [DNS for Domains](#domains-dns).
 
-### <a id='list-domains'></a> List Domains for an Org
+### <a id='list-domains'></a> List domains for an org
 
 When creating a route, developers select from domains available to them. Use the `cf domains` command to view a list of available domains for the targeted
 org:
@@ -731,7 +738,7 @@ name                          status   type
 This example displays three available domains: a shared HTTP domain `<%= vars.app_domain %>`, a shared TCP domain `<%= vars.tcp_app_domain %>`, and a private
 domain `<%= vars.private_app_domain %>`. For more information, see [Shared Domains](#shared-domains) and [Private Domains](#private-domains).
 
-### <a id='http-vs-tcp-shared-domains'></a> HTTP vs. TCP Domains
+### <a id='http-vs-tcp-shared-domains'></a> HTTP vs. TCP domains
 
 HTTP domains indicate to a developer that only requests using the HTTP protocol are routed to apps mapped to routes created from the domain. Routing for HTTP
 domains is layer 7 and offers features like custom hostnames, sticky sessions, and TLS termination.
@@ -743,7 +750,7 @@ domains can use a TCP protocol.
 
 <p class='note'><strong>Note:</strong> By default, <%= vars.app_runtime_abbr %> only supports routing of HTTP requests to apps.</p>
 
-### <a id='shared-domains'></a> Shared Domains
+### <a id='shared-domains'></a> Shared domains
 
 Admins manage shared domains, which are available to users in all orgs of a <%= vars.app_runtime_abbr %> deployment. An admin can offer multiple shared
 domains to users. For example, an admin might offer developers the choice of creating routes for their apps from `<%= vars.app_domain %>` and
@@ -756,7 +763,7 @@ When using shared domains, you cannot have routes with the same hostname and dom
 
 Shared domains are HTTP by default, but can be configured to be TCP when associated with the TCP router group.
 
-#### <a id='create-shared-domain'></a> Create a Shared Domain
+#### <a id='create-shared-domain'></a> Create a shared domain
 
 Admins can create an HTTP shared domain with the `cf create-shared-domain` command:
 <pre class="terminal">
@@ -778,7 +785,7 @@ Then create the shared domain using the `--router-group` option to associate the
 $ cf create-shared-domain <%= vars.tcp_app_domain %> --router-group default-tcp
 </pre>
 
-#### <a id='delete-shared-domain'></a> Delete a Shared Domain
+#### <a id='delete-shared-domain'></a> Delete a shared domain
 
 Admins can delete a shared domain from <%= vars.app_runtime_abbr %> with the `cf delete-shared-domain` command:
 
@@ -786,7 +793,7 @@ Admins can delete a shared domain from <%= vars.app_runtime_abbr %> with the `cf
 $ cf delete-shared-domain example.com
 </pre>
 
-#### <a id='internal-domains'></a> Internal Domain
+#### <a id='internal-domains'></a> Internal domain
 
 The internal domain is a special type of shared domain used for app communication internal to the platform. When you enable service discovery, the internal
 domain `apps.internal` becomes available for route mapping.
@@ -800,7 +807,7 @@ $ cf create-shared-domain <%= vars.app_domain %> --internal
 
 The `--router-group` option is not used with internal domains.
 
-### <a id='private-domains'></a> Private Domains
+### <a id='private-domains'></a> Private domains
 
 Org managers can add private domains, or custom domains, and give members of the org permission to create routes for privately registered domain names.
 
@@ -812,7 +819,7 @@ domains.
 
 Private domains can be HTTP or HTTPS only. TCP routing is supported for shared domains only.
 
-#### <a id='create-private-domain'></a> Create a Private Domain
+#### <a id='create-private-domain'></a> Create a private domain
 
 Org managers can create a private domain with the following command:
 
@@ -836,9 +843,10 @@ Org managers can create a private domain for a subdomain with the following comm
   $ cf create-domain example-org foo.<%= vars.private_app_domain %>
   </pre>
 
-#### <a id='sharing-private-domains'></a> Sharing a Private Domain with One or More Orgs
+#### <a id='sharing-private-domains'></a> Sharing a private domain with one or more orgs
 
-Org managers can grant or revoke access to a private domain to other orgs if they have permissions for these orgs with the following commands:
+Org managers can grant or revoke access to a private domain to other orgs if they have permissions for these orgs with the following commands.
+As of cf CLI v7 `cf unshare-private-domain` command provides a warning and requires confirmation before it proceeds.
 
 <pre class="terminal">
 $ cf share-private-domain test-org <%= vars.private_app_domain %>
@@ -846,7 +854,7 @@ $ cf share-private-domain test-org <%= vars.private_app_domain %>
 $ cf unshare-private-domain test-org <%= vars.private_app_domain %>
 </pre>
 
-#### <a id='delete-private-domain'></a> Delete a Private Domain
+#### <a id='delete-private-domain'></a> Delete a private domain
 
 Org managers can delete a domain from <%= vars.app_runtime_abbr %> with the `cf delete-domain` command:
 
@@ -860,7 +868,7 @@ Org managers can delete a domain from <%= vars.app_runtime_abbr %> with the `cf 
   $ cf delete-domain <%= vars.private_app_domain %>
   </pre>
 
-### <a id='parent-child-domains'></a> Requirements for Parent and Child Domains
+### <a id='parent-child-domains'></a> Requirements for parent and child domains
 
 In the domain `example-app.<%= vars.app_domain %>`, `<%= vars.app_domain %>` is the parent domain of subdomain `example-app`. The following list describes
 requirements for creating domains:
@@ -880,18 +888,18 @@ for creating subdomains:
 
 * You cannot create a shared subdomain for a private parent domain.
 
-### <a id='domains-dns'></a> DNS for Domains
+### <a id='domains-dns'></a> DNS for domains
 
 To create customized access to your apps, you can map specific or wildcard custom domains to <%= vars.app_runtime_abbr %> by using your DNS provider.
 
 <%= vars.domains_on_hosted %>
 
-#### <a id='subdomain-dns'></a> Mapping Domains to Your Custom Domain
+#### <a id='subdomain-dns'></a> Mapping Domains to your custom domain
 
 To associate a registered domain name with a domain on <%= vars.app_runtime_abbr %>, configure a CNAME record with your DNS provider, pointing at any shared
 domain offered in <%= vars.app_runtime_abbr %>.
 
-##### <a id='single-mapping'></a> Mapping a Single Domain to Your Custom Domain
+##### <a id='single-mapping'></a> Mapping a single domain to your custom domain
 
 To map a single domain to a custom domain to <%= vars.app_runtime_abbr %>, configure a CNAME record with your DNS provider.
 
@@ -919,7 +927,7 @@ After you create the CNAME mapping, your DNS provider routes your custom domain 
 
 <p class='note'><strong>Note:</strong> See your DNS provider documentation to determine whether the trailing <code>.</code> is required.</p>
 
-##### <a id='wildcard-mapping'></a> Mapping Multiple Subdomains to Your Custom Domain
+##### <a id='wildcard-mapping'></a> Mapping multiple subdomains to your custom domain
 
 Use a wildcard CNAME record to point all of the subdomains in your custom domain to <%= vars.app_domain %>.
 
@@ -953,7 +961,7 @@ If you use a wildcard as the subdomain name, then your DNS provider can route fr
 
 <%= vars.dns_warning %>
 
-#### <a id='root-domain-dns'></a> Configuring DNS for Your Registered Root Domain
+#### <a id='root-domain-dns'></a> Configuring DNS for your registered root domain
 
 To use your root domain for apps on <%= vars.app_runtime_abbr %>, you can either use custom DNS record types like ALIAS and ANAME, if your DNS provider offers
 them, or subdomain redirection.

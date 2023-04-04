@@ -34,7 +34,7 @@ For sample apps that use sidecars, see the
 GitHub. These sample apps use an app manifest.
 
 
-## <a id="use-case"></a> Use Cases
+## <a id="use-case"></a> Use cases
 
 You can use sidecars for processes that depend on each other or must run in the same container.
 
@@ -59,11 +59,11 @@ Sidecars have these limitations:
 * Sidecars only support PID-based health checks. HTTP health checks for sidecars are not currently supported.
 
 
-## <a id="java"></a> Requirements for Java Apps
+## <a id="java"></a> Requirements for Java apps
 
 These sections describe several requirements that are specific to pushing sidecars with Java apps.
 
-### <a id="java-sidecar-memory"></a> Reserving Memory
+### <a id="java-sidecar-memory"></a> Reserving memory
 
 You must allocate memory to the sidecar. If you do not, the Java buildpack allocates all of the
 available memory to the app. As a result, the sidecar does not have enough memory and the app fails
@@ -90,7 +90,7 @@ Where:
 You must also allocate memory to sidecars that you push with a custom buildpack.
 For more information, see [Sidecar Buildpacks](../buildpacks/sidecar-buildpacks.html).
 
-### <a id="java-sidecar-packaging"></a> Packaging Binaries
+### <a id="java-sidecar-packaging"></a> Packaging binaries
 
 If your sidecar is a binary file rather than a set of buildable source files, then you must package the binary file with your Java app.
 
@@ -111,7 +111,7 @@ Where:
 For more information about packaging assets with your Java app, see [Tips for Java Developers](https://docs.cloudfoundry.org/buildpacks/java/java-tips.html).
 
 
-## <a id="create"></a> Push an App with a Sidecar Using an App Manifest
+## <a id="create"></a> Push an app with a sidecar using an app manifest
 
 These sections explain how to push an app with a sidecar using an app manifest. For an example that you can try yourself, see [Sidecar Tutorial](#tutorial).
 
@@ -207,13 +207,13 @@ To push an app with a sidecar:
         Where `APP-NAME` is the name of your app.
         <p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
-## <a id="tutorial"></a> Sidecar Tutorial
+## <a id="tutorial"></a> Sidecar tutorial
 
 You can explore sidecars using the app in the [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository on GitHub. The following sections describe the app, how to build and push the app, and some ways to observe the app and its processes after pushing.
 
 <p class="note"><strong>Note:</strong> This tutorial assumes that you are pushing the Ruby sample app. You can also follow this tutorial for a Java app using the <code>sidecar-dependent-java-app</code> and <code>push_java_app_with_binary_sidecar.sh</code> in the samples repository. When pushing a Java app, ensure that you follow the requirements listed in <a href="#java">Requirements for Java Apps</a> above.</p>
 
-### <a id="about"></a> About the Sample App
+### <a id="about"></a> About the sample app
 
 The [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository contains:
 
@@ -234,7 +234,7 @@ The following diagram illustrates the app architecture:
 
 ![Sidecar Diagram](./images/sidecar-diagram.png)
 
-### <a id="push"></a> Push the App and Sidecar
+### <a id="push"></a> Push the app and sidecar
 
 To push the app and sidecar:
 
@@ -298,7 +298,7 @@ To push the app and sidecar:
 
 After you push the app, you can further explore it in [View the Processes Running in the Container](#view-processes) and [View the Web URL and App Logs](#view-logs).
 
-### <a id="view-processes"></a> View the Processes Running in the Container
+### <a id="view-processes"></a> View the processes running in the container
 
 To view the app and sidecar process running in the container:
 
@@ -341,7 +341,7 @@ To view the app and sidecar process running in the container:
     ruby       13 vcap 11u  IPv4 17274965    0t0 TCP localhost:42266->localhost:8082 (ESTABLISHED)
     </pre>
 
-### <a id="view-logs"></a> View the Web URL and App Logs
+### <a id="view-logs"></a> View the web URL and app logs
 
 To view the Web URL and logs for the app:
 

@@ -21,7 +21,7 @@ For information about setting your own app-specific environment variables, see t
 
 <p class="note"><strong>Note: </strong>Do not employ user-provided environment variables for security sensitive information such as credentials as they might unintentionally show up in cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided environment variable <a href="#VCAP_SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter and in Cloud Controller log files.</p>
 
-## <a id='view-env'></a> View Environment Variables
+## <a id='view-env'></a> View environment variables
 
 Using the Cloud Foundry Command Line Interface (cf CLI), you can run the `cf env` command to view the <%= vars.app_runtime_abbr %> environment variables for your app. The `cf env` command displays the following environment variables:
 
@@ -73,7 +73,7 @@ MY_ENV_VARIABLE: 100
 </pre>
 
 
-## <a id='app-system-env'></a> App-Specific System Variables
+## <a id='app-system-env'></a> App-specific system variables
 
 This section describes the environment variables that <%= vars.app_runtime_abbr %> makes available to your app container. Some of these variables are the same across instances of a single app, and some vary from instance to instance.
 
@@ -342,7 +342,7 @@ VCAP_SERVICES=
 ~~~
 
 
-## <a id='evgroups'></a> Environment Variable Groups
+## <a id='evgroups'></a> Environment variable groups
 
 Environment variable groups are system-wide variables that allow operators to apply a group of environment variables to all running apps and all staging apps separately.
 

@@ -7,7 +7,7 @@ owner: Core Services
 
 This topic describes binding apps to service instances for the purpose of generating credentials and delivering them to apps. For an overview of services, and documentation on other service management operations, see [Using Services](index.html). <%= vars.custom_services %>
 
-## <a id='bind'></a>Bind a Service Instance ##
+## <a id='bind'></a>Bind a service instance
 
 Binding a service instance to your app triggers credentials to be provisioned for the service instance and delivered to the app runtime in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. For details on consuming these credentials with your app, see [Using Bound Service Instances](#use).
 
@@ -24,7 +24,7 @@ $ cf restart my-app
 
 <p class='note'><strong>Note</strong>: You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
 
-### <a id='arbitrary-params-binding'></a> Arbitrary Parameters  ###
+### <a id='arbitrary-params-binding'></a> Arbitrary parameters
 
 Some services support additional configuration parameters with the bind request. These parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
 
@@ -43,7 +43,7 @@ $ cf bind-service rails-sample my-db -c /tmp/config.json
 Binding service my-db to app rails-sample in org console / space development as user@example.com... OK
 </pre>
 
-### <a id='bind-with-manifest'></a> Binding with App Manifest ###
+### <a id='bind-with-manifest'></a> Binding with app manifest
 
 As an alternative to binding a service instance after pushing an app, you can use the app manifest to bind the service instance during `cf push`.
 
@@ -79,7 +79,7 @@ OK
 
 For more information about app manifests, see [Deploying with App Manifests](../deploy-apps/manifest.html#services-block).
 
-### <a id='service-binding-names'></a>Named Service Bindings ###
+### <a id='service-binding-names'></a>Named service bindings
 
 Service offering and service instance names vary across environments. App authors can discover the service instances their apps require, without having to know environment-specific service names. Developers can specify a service binding name to be included in [VCAP_SERVICES](../deploy-apps/environment-variable.html).
 
@@ -103,7 +103,7 @@ The provided name is available in the `name` and `binding_name` properties in th
 }
 ~~~
 
-### <a id='use'></a>Using Bound Service Instances ###
+### <a id='use'></a>Using Bound service instances
 
 Once you have a service instance created and bound to your app, you need to configure the app to dynamically fetch the credentials for your service instance. The [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable contains credentials and additional metadata for all bound service instances. There are two methods developers can leverage to have their apps consume binding credentials.
 
@@ -112,7 +112,7 @@ Once you have a service instance created and bound to your app, you need to conf
 
 For details on consuming credentials specific to your development framework, refer to the Service Binding section in the documentation for [your framework's buildpack](../../buildpacks/index.html).
 
-## <a id='update-credentials'></a>Update Service Credentials
+## <a id='update-credentials'></a>Update service credentials
 
 This section describes how to update service instance credentials.
 When updating the credentials, you can restage the app immediately and experience app downtime.
@@ -120,7 +120,7 @@ If your app uses blue-green deployment, you can update service instance credenti
 
 For more information about user-provided services, see [Update a User-provided Service Instance](user-provided.html#update) in _User-Provided Service Instances_.
 
-### <a id='update-credentials-with-downtime'></a>With Downtime
+### <a id='update-credentials-with-downtime'></a>With downtime
 
 To update your service credentials:
 
@@ -138,7 +138,7 @@ To update your service credentials:
 
   1. Restart or re-push the app bound to the service instance so that the app recognizes your environment variable updates.
 
-### <a id='update-credentials-without-downtime'></a>Without Downtime
+### <a id='update-credentials-without-downtime'></a>Without downtime
 
 To update your service credentials without experiencing app downtime:
 
@@ -166,7 +166,7 @@ To update your service credentials without experiencing app downtime:
     $ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
     </pre>
 
-## <a id='unbind'></a>Unbind a Service Instance ##
+## <a id='unbind'></a>Unbind a service instance
 
 Unbinding a service removes the credentials created for your app from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
 

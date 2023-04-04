@@ -38,7 +38,7 @@ HTTP/2 support in <%= vars.app_runtime_abbr %> has the following limitations:
 - Routes that have route services bound to them might not support end-to-end HTTP/2 depending on what protocols the bound service supports. For more information, see [Route Services](../services/route-services.html).
 
 
-## <a id="http2-with-cf"></a> How Pushing Apps with HTTP/2 Works
+## <a id="http2-with-cf"></a> How pushing apps with HTTP/2 works
 
 This section describes how pushing apps with HTTP/2 works.
 
@@ -62,7 +62,7 @@ For more information, see <a href="https://datatracker.ietf.org/doc/html/rfc7540
 <em>RFC 7540: Hypertext Transfer Protocol Version 2 (HTTP/2)</em>.</p>
 
 
-## <a id="push-apps"></a> Push Apps with HTTP/2 Support
+## <a id="push-apps"></a> Push apps with HTTP/2 support
 
 This section describes how to push <%= vars.app_runtime_abbr %> apps with support for HTTP/2.
 
@@ -79,7 +79,7 @@ To push an app with end-to-end HTTP/2, see the following sections:
 - [Push an App with End-to-End HTTP/2 Using the cf CLI](#e2e-cli)
 - [Push a gRPC App](#grpc-app)
 
-### <a id="http1-app"></a> Push an HTTP/1.1 App that Serves HTTP/2
+### <a id="http1-app"></a> Push an HTTP/1.1 app that serves HTTP/2
 
 To push an HTTP/1.1 app that can serve HTTP/2 traffic:
 
@@ -106,7 +106,7 @@ To push an HTTP/1.1 app that can serve HTTP/2 traffic:
 	```
 	The request to the app is issued over HTTP/1.1.
 
-### <a id="e2e-manifest"></a> Push an App with End-to-End HTTP/2 Using the App Manifest
+### <a id="e2e-manifest"></a> Push an app with End-to-End HTTP/2 using the app manifest
 
 To push an app that serves HTTP/2 traffic using the app manifest:
 
@@ -143,27 +143,31 @@ For example, you can use the HTTP/2 test app from [Cloud Foundry Acceptance Test
 	```
 	The response shows that the request was received over HTTP/2.
 
-### <a id="e2e-cli"></a> Push an App with End-to-End HTTP/2 Using the cf CLI
+### <a id="e2e-cli"></a> Push an app with end-to-end HTTP/2 using the cf CLI
 
-To push an app that serves HTTP/2 traffic using the cf CLI:
+The recommended way to do this is using the `routes` attribute in the manifest YAML file.
+
+<p class="note"><strong>Note:</strong> The following procedure is supported only for cf CLI v6; the `--hostname` flag is deprecated in cf CLI v7.</p>
+
+To push an app that serves HTTP/2 traffic using the cf CLI (v6 only):
 
 1. Use an app that supports serving HTTP/2 traffic with prior knowledge.
 For example, you can use the HTTP/2 test app from [Cloud Foundry Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests/tree/main/assets/http2) on GitHub.
 
-1. Push the app without a default route by running:
+1. Push the app without a default route by running with the `--no-route` flag. Note that this flag is no longer unbinds all existing routes associated with the app.
 
 	```
 	cf push --no-route
 	```
 
-1. Map a route with destination protocol `http2` by running:
+2. You can map a route with destination protocol `http2` by running:
 
 	```
 	cf map-route MY-APP EXAMPLE.COM --hostname host --destination-protocol http2
 	```
 	Where `MY-APP` is the name of your app and `EXAMPLE.COM` is the route you want to map to your app.
 
-1. Send an HTTP/2 request to the app by running:
+3. Send an HTTP/2 request to the app by running:
 
 	```
 	curl HOST.EXAMPLE.COM --http2 -v
@@ -175,7 +179,7 @@ For example, you can use the HTTP/2 test app from [Cloud Foundry Acceptance Test
 	```
 	The response shows that the request was received over HTTP/2.
 
-### <a id="grpc-app"></a> Push a gRPC App
+### <a id="grpc-app"></a> Push a gRPC app
 
 To push an app that serves gRPC traffic:
 
@@ -200,7 +204,7 @@ See [Push an App with End-to-End HTTP/2 Using the App Manifest](#e2e-manifest) o
 	}
 	```
 
-## <a id="sample-apps"></a> Sample Applications
+## <a id="sample-apps"></a> Sample applications
 
 Here are some sample HTTP/2 and gRPC applications from the community. They can
 be used to experiment with HTTP/2 and provide code examples for different

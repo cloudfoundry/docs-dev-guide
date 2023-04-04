@@ -10,7 +10,7 @@ For more information about V3 manifest properties, see the [Cloud Foundry API (C
 documentation](http://v3-apidocs.cloudfoundry.org/index.html#space-manifest).
 
 
-## <a id='minimal-manifest'></a> Manifest Format
+## <a id='minimal-manifest'></a> Manifest format
 
 Manifests are written in YAML. The following manifest demonstrates some YAML conventions:
 
@@ -37,7 +37,7 @@ applications:
 <p class='note'><strong>Note:</strong> If your app name begins with the dash character (<code>-</code>), you cannot interact with the app using the cf CLI.
   This is because the cf CLI interprets the dash as a flag.</p>
 
-### <a id='manifest-schema-version'></a> Add Schema Version to a Manifest
+### <a id='manifest-schema-version'></a> Add schema version to a manifest
 
 <%= partial 'v3-note' %>
 
@@ -45,7 +45,7 @@ You can specify the schema version in the `versions` property of the manifest. T
 
 The only supported version is `1`. If not specified, the `versions` property defaults to `1`.
 
-### <a id='variable-substitution'></a> Add Variables to a Manifest
+### <a id='variable-substitution'></a> Add variables to a manifest
 
 You can use variables to create app manifests with values shared across all applicable environments in combination with references to environment-specific
 differences defined in separate files.
@@ -85,7 +85,7 @@ To add variables to an app manifest:
     ```
     Where `PATH` is the path to the file you created.
 
-### <a id='minimize-duplication'></a> Minimize Duplication with YAML Anchors
+### <a id='minimize-duplication'></a> Minimize duplication with YAML anchors
 
 <p class='note'><strong>Note:</strong> Top-level attributes are deprecated in favor of YAML anchors. For more information, see
   <a href="#top-level-attributes">Top-Level Attributes</a>.</p>
@@ -114,7 +114,7 @@ The example manifest above pushes two apps with the `staticfile` buildpack, `sma
 memory for `bigapp`.
 
 
-## <a id='optional-attributes'></a> App Attributes
+## <a id='optional-attributes'></a> App attributes
 
 This section explains how to describe optional app attributes in manifests. Each of these attributes can also be specified by a command line option.
 Command-line options override the manifest.
@@ -284,7 +284,7 @@ For example:
 To override this attribute, run:
 
 ```console
-cf set-health-check APP-NAME http --invocation-timeout 10
+th-check APP-NAME http --invocation-timeout 10
 ```
 
 Where `APP-NAME` is the name of your app.
@@ -402,7 +402,7 @@ does not listen on a port because it is a worker or a scheduler app, then it doe
 marks it as crashed. To prevent this, disable the port-based health check by running:
 
 ```console
-cf set-health-check APP-NAME process
+cf set-health-check APP-NAME --process
 ```
 
 Where `APP-NAME` is the name of your app.
@@ -467,11 +467,9 @@ For more information about pushing an app with multiple processes, see [Pushing 
 
 ### <a id='random-route'></a> random-route
 
-If you push your app without specifying any route-related CLI options or app manifest flags, the cf CLI attempts to generate a route based on the app name,
-which can cause collisions.
+If you push your app without specifying any route-related CLI options or app manifest flags, the cf CLI attempts to generate a route based on the app name, which can cause collisions.
 
-You can use the `random-route` attribute to generate a unique route and avoid name collisions. When you use `random-route`, the cf CLI generates one of the
-following:
+You can use the `random-route` attribute to generate a unique route and avoid name collisions. When you use `random-route`, the cf CLI generates one of the following:
 
 * An HTTP route with a random host, if no value is specified for `host`
 
@@ -496,15 +494,14 @@ The `--random-route` command-line flag overrides this attribute.
 
 ### <a id='routes'></a> routes
 
-The `routes` attribute provides multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
+The `routes` attribute in the manifest provides multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
 
-This attribute is a combination of `push` options that include `--hostname`, `-d`, and `--route-path`.
+<p class='note'><strong>Note:</strong> This attribute is a combination of `push` options that include `--hostname`, `-d`, and `--route-path` flags in v6. These flags are not supported in cf CLI v7, so the <code>routes</code> flag must be used.</p>
 
 Optionally, specify the `protocol` attribute to configure which network protocol the route uses for app ingress traffic. The available protocols are `http2`,
 `http1`, and `tcp`.
 
-<p class='note'><strong>Note:</strong> The <code>protocol</code> route attribute is only available for <%= vars.app_runtime_abbr %> deployments that use
-  HTTP/2 routing. <%= vars.http2_admin_link %> </p>
+<p class='note'><strong>Note:</strong> The <code>protocol</code> route attribute is only available for <%= vars.app_runtime_abbr %> deployments that use HTTP/2 routing. <%= vars.http2_admin_link %> </p>
 
 For example:
 
@@ -518,13 +515,14 @@ For example:
   - route: tcp-example.com:1234
 ```
 
-#### <a id='manifest-attibutes-2'></a> Manifest Attributes
+#### <a id='manifest-attibutes-2'></a> Manifest attributes
 
-If you use the `routes` attribute in conjunction with the `host`, `hosts`, `domain`, `domains`, or `no-hostname` attributes, an error results.
+If you use the `routes` attribute with the `host`, `hosts`, `domain`, `domains`, or `no-hostname` attributes, an error results.
 
-#### <a id='push-flag-options'></a> Push Flag Options
+#### <a id='push-flag-options'></a> push flag options
 
 This attribute has unique interactions with different command-line options.
+This table has been updated for cf CLI v7; several of the flags have been removed (`--route-path`, `-d`, `--hostname`, `--no-hostname`)
 
 <table border="1" class="nice">
   <tr>
@@ -533,19 +531,7 @@ This attribute has unique interactions with different command-line options.
   </tr>
   <tr>
     <td><code>--no-route</code></td>
-    <td>All declared routes are ignored.</td>
-  </tr>
-  <tr>
-    <td><code>-d</code></td>
-    <td>Overrides the <code>DOMAIN</code> in all declared HTTP and TCP routes.</td>
-  </tr>
-  <tr>
-    <td><code>--hostname, -n</code></td>
-    <td>Sets or overrides the <code>HOSTNAME</code> in all HTTP routes. Does not impact TCP routes.</td>
-  </tr>
-  <tr>
-    <td><code>--route-path</code></td>
-    <td>Sets or overrides the <code>PATH</code> in all HTTP routes. Does not impact TCP routes.</td>
+    <td>All declared routes are ignored. In cf CLI v7, this flag no longer unbinds all existing routes associated with the app.</td>
   </tr>
   <tr>
     <td><code>--random-route</code></td>
@@ -617,7 +603,7 @@ The `-t` command-line flag overrides this attribute.
   <code>cc.maximum_health_check_timeout</code>, the Cloud Controller reports a validation error with the maximum limit.</p>
 
 
-## <a id='env-block'></a> Environment Variables
+## <a id='env-block'></a> Environment variables
 
 The `env` block consists of a heading, then one or more environment variable/value pairs.
 
@@ -710,17 +696,15 @@ You can bind an app to a service instance by setting the `VCAP_SERVICES` environ
 Service](../services/application-binding.html#bind) in _Delivering Service Credentials to an App_.
 
 
-## <a id='deprecated'></a> Deprecated App Manifest Features
+## <a id='deprecated'></a> Deprecated app manifest features
 
 This section describes app manifest features that are deprecated in favor of other features.
 
-<p class='note warning'><strong>Caution:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated
-  features along with the feature that replaces it.</p>
+<p class='note warning'><strong>Caution:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated   features along with the feature that replaces it.</p>
 
 ### <a id='top-level-attributes'></a> Top-Level Attributes
 
-Previously, you could declare top-level attributes, which are also known as global attributes. For example, you can move an attribute above the `applications`
-block, where it need appear only once.
+Previously, you could declare top-level attributes, which are also known as global attributes. For example, you can move an attribute above the `applications` block, where it need appear only once.
 
 The following example demonstrates how this was used to manage duplicated settings:
 
@@ -763,9 +747,9 @@ applications:
 When pushing the app, make explicit the attributes in each app's declaration. To do this, assign the anchors and include the app-level attributes with YAML
 aliases in each app declaration.
 
-### <a id='route-attribute'></a> domain, domains, host, hosts, and no-hostname
+### <a id='route-attribute'></a> domain, domains, host, hosts, and no-hostname attributes
 
-<p class='note'><strong>Note:</strong> These properties are removed in cf CLI v7.</p>
+<p class='note'><strong>Note:</strong> These flags are removed in cf CLI v7.</p>
 
 Previously, you could specify routes by listing them all at once using the `routes` attribute, or by using their hosts and domains.
 
@@ -793,7 +777,7 @@ The following route component attributes are deprecated:
 
 * `no-hostname`
 
-You can only specify routes by using the `routes` attribute:
+You can only specify routes using the `routes` attribute:
 
 ```
 ---

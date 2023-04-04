@@ -29,13 +29,14 @@ version by switching back to Blue.
 <p class="note"><strong>Note</strong>: You can adjust the route mapping pattern to display a static maintenance page during a maintenance window for time-consuming tasks, such as migrating a database. In this scenario, the router switches all incoming requests from Blue to Maintenance to Green.
 </p>
 
-## <a id='blue-green-deployment'></a>Blue-Green Deployment with Cloud Foundry Example ##
+## <a id='blue-green-deployment'></a>Blue-green deployment with Cloud Foundry example
 
 For this example, we’ll start with a simple app: "demo-time."
 This app is a web page that displays the words "Blue time" and the date/time on
 the server.
 
-### <a id='push-an-app'></a>Step 1: Push an App ###
+### <a id='push-an-app'></a>Step 1: Push an app
+
 Use the Cloud Foundry Command Line Interface (cf CLI) to push the app.
 Name the app "Blue" with the subdomain "demo-time."
 
@@ -48,9 +49,9 @@ As shown in this graphic:
 * Blue is now running on Cloud Foundry.
 * The CF Router sends all traffic for `demo-time.example.com` traffic to Blue.
 
-![alt-text="Dcf CLI pushing an app."](./images/../../images/blue-green/blue.png)
+![alt-text="cf CLI pushing an app."](./images/../../images/blue-green/blue.png)
 
-### <a id='update-and-push'></a>Step 2: Update App and Push ###
+### <a id='update-and-push'></a>Step 2: Update app and push
 
 Now make a change to the app.
 First, replace the word "Blue" on the web page with "Green," then rebuild the source file for the app.
@@ -68,7 +69,7 @@ The router now also sends any traffic for `demo-time-temp.example.com` to Green.
 
 ![alt-text=""](../images/blue-green/blue-green.png)
 
-### <a id='map-green'></a>Step 3: Map Original Route to Green ###
+### <a id='map-green'></a>Step 3: Map original route to green
 
 Now that both apps are up and running, switch the router so all incoming
 requests go to the Green app *and* the Blue app.
@@ -87,7 +88,7 @@ After the `cf map-route` command :
 
 ![alt-text="CF Router continues to send traffic."](./images/../../images/blue-green/map.png)
 
-### <a id='unmap-blue'></a>Step 4: Unmap Route to Blue ###
+### <a id='unmap-blue'></a>Step 4: Unmap route to blue
 
 Once you verify Green is running as expected, stop routing requests to Blue
 using the [cf unmap-route](http://cli.cloudfoundry.org/en-US/cf/unmap-route.html) command:
@@ -103,11 +104,11 @@ After `cf unmap-route` command:
 Now all traffic for `demo-time.example.com` is sent to Green:
 ![alt-text="CF Router stops traffic."](./images/../../images/blue-green/unmap.png)
 
-### <a id='remove-temp-route'></a>Step 5: Remove Temporary Route to Green ###
+### <a id='remove-temp-route'></a>Step 5: Remove temporary route to green
 
 You can now use `cf unmap-route` to remove the route `demo-time-temp.example.com` from Green. The route can be deleted using `cf delete-route` or reserved for later use. You can also decommission Blue, or keep it in case you need to roll back your changes.
 
-![alt-text="Use `cf unmap-route` to remove the route."](./images/../../images/blue-green/green.png)
+![alt-text="Use the cf unmap-route command to remove the route."](./images/../../images/blue-green/green.png)
 
 ## <a id='implementations'></a>Implementation
 

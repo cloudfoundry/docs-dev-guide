@@ -16,7 +16,7 @@ If you want more than the limited amount of logging information that Cloud Found
 For more information about the systems responsible for log aggregation and streaming in Cloud Foundry, see [App Logging in Cloud Foundry](../deploy-apps/streaming-logs.html).
 
 
-## <a id='marketplace-services'></a> Using Services from the Cloud Foundry Marketplace
+## <a id='marketplace-services'></a> Using services from the Cloud Foundry Marketplace
 
 Your Cloud Foundry marketplace offers one or more log management services. To use one of these services, create an instance of the service and bind it to your app with the following commands:
 
@@ -30,13 +30,13 @@ For more information about service instance lifecycle management, see [Managing 
 <p class='note'><strong>Note:</strong> Not all marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that enables automated streaming of app syslogs. <%= vars.custom_services %></p>
 
 
-## <a id='user-provided'></a> Using Services Not Available in Your Marketplace
+## <a id='user-provided'></a> Using services not available in your marketplace
 
 If a compatible log management service is not available in your Cloud Foundry marketplace, you can use user-provided service instances to stream app logs to a service of your choice. For more information, see the [Stream App Logs to a Service](./user-provided.html#syslog) section of the _User-Provided Service Instances_ topic.
 
 You might need to prepare your log management service to receive app logs from Cloud Foundry. For specific instructions for several popular services, see [Service-Specific Instructions for Streaming App Logs](./log-management-thirdparty-svc.html). If you cannot find instructions for your service, follow the generic instructions.
 
-### <a id='step1'></a>Step 1: Configure the Log Management Service
+### <a id='step1'></a>Step 1: Configure the log management service
 
 To set up a communication channel between the log management service and your Cloud Foundry deployment:
 
@@ -56,7 +56,7 @@ To set up a communication channel between the log management service and your Cl
 
 <p class='note'><strong>Note:</strong> If the URL is an IP address, then it must not contain any leading zeros, for example, <code>10.0.01.14</code>. If you include the leading zeros, then URL parsing fails.</p>
 
-### <a id='step2'></a> Step 2: Create and Bind a User-Provided Service Instance
+### <a id='step2'></a> Step 2: Create and bind a user-provided service instance
 
 You can create a syslog drain service and bind apps to it using Cloud Foundry Command Line Interface (cf CLI) commands.
 
@@ -101,7 +101,7 @@ After a short delay, logs begin to flow.
 
 For more information, see [Managing Service Instances with the CLI](./managing-services.html).
 
-### <a id='cups-step3'></a> Step 3: Verify Logs Are Draining
+### <a id='cups-step3'></a> Step 3: Verify logs are draining
 
 To verify that logs are draining correctly to a third-party log management service:
 

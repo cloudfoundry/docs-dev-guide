@@ -8,11 +8,11 @@ owner:
 This topic describes how to diagnose and resolve common issues when you deploy and run apps on <%= vars.app_runtime_first %>.
 
 
-## <a id='scenarios'></a> Common Issues
+## <a id='scenarios'></a> Common issues
 
 The following sections describe common issues you might encounter when attempting to deploy and run your app, as well as possible resolutions.
 
-### <a id='time'></a> cf push Times Out
+### <a id='time'></a> cf push times out
 
 If your deployment times out during the upload or staging phase, you might receive one of the following error messages:
 
@@ -39,7 +39,7 @@ can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT
 * **If your app contains a large number of files, try pushing the app repeatedly.** Each push uploads a few more files. Eventually, all files upload, and the
 push succeeds. This is less likely to work if your app has many small files.
 
-### <a id='upload'></a> App Too Large
+### <a id='upload'></a> App too large
 
 If your app is very large, you might receive an error message on `cf push`. For example:
 
@@ -50,7 +50,7 @@ If your app is very large, you might receive an error message on `cf push`. For 
 If this happens:
 
 * **Make sure your org and space have enough resources for all instances of your app.** You cannot use more resources in a space than is allocated for your
-org. To view the resource quota name for your org, use `cf org ORG-NAME`, then `cf quota QUOTA-NAME`. To view resource quota name for your space, use `cf
+org. To view the resource quota name for your org, use `cf org ORG-NAME`, then `cf org-quota QUOTA-NAME`. To view resource quota name for your space, use `cf
 space SPACE-NAME`, then `cf space-quota QUOTA-NAME`. Your total organization resource usage is the sum of the resources used by all apps in all spaces within
 the org. Each app's resource usage is the resources allocated to it multiplied by the number of instances. To view the resource usage of all the apps in a
 space, use `cf apps`, then `cf app APP-NAME` for each app.
@@ -62,7 +62,7 @@ The following limits apply:
     * The droplet that results from compiling those files cannot exceed 1.5&nbsp;GB. Droplets are typically a third larger than the pushed files.
     * The combined size of the app files, compiled droplet, and buildpack cache cannot total more than 4&nbsp;GB of space during staging.
 
-### <a id='detect'></a> Unable to Detect a Supported App Type
+### <a id='detect'></a> Unable to detect a supported app type
 
 If <%= vars.app_runtime_abbr %> cannot identify an appropriate buildpack for your app, you see an `Unable to detect a supported app type` error.
 
@@ -74,7 +74,7 @@ detects apps it supports.
 If you do not see a buildpack for your app, you might still be able to push your app with a [custom buildpack](../../buildpacks/custom.html) using `cf push -b`
 with a path to your buildpack.
 
-### <a id='deploy-fail'></a> App Deploy Fails
+### <a id='deploy-fail'></a> App deploy fails
 
 Even when the deploy fails, the app might exist on <%= vars.app_runtime_abbr %>. Run `cf apps` to review the apps in the currently targeted org and space. You
 might be able to correct the issue using the <%= vars.dev_console_2 %>, or you might need to delete the app and re-deploy.
@@ -88,7 +88,7 @@ Common reasons deploying an app fails include:
 
 * The app does not have a unique URL. For more information, see [App Requires Unique URL](#unique-url).
 
-### <a id='unique-url'></a> App Requires Unique URL
+### <a id='unique-url'></a> App requires unique URL
 
 <%= vars.app_runtime_abbr %> requires that each app that you deploy has a unique URL. Otherwise, the new app URL collides with an existing app URL and
 <%= vars.app_runtime_abbr %> cannot successfully deploy the app. You can resolve this issue by running `cf push` with either of the following flags to create
@@ -99,7 +99,7 @@ a unique URL:
 * `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words
 that the app name includes.
 
-### <a id='start'></a> App Fails to Start
+### <a id='start'></a> App fails to start
 
 After `cf push` stages the app and uploads the droplet, the app might fail to start, commonly with a pattern of starting and crashing similar to the following
 example:
@@ -159,14 +159,14 @@ following example:
   2017-01-30T14:08:25.41-0800 [CELL/0]     OUT Starting health monitoring of container
   </pre>
 
-### <a id='out-of-memory'></a> App Consumes Too Much Memory, Then Crashes
+### <a id='out-of-memory'></a> App consumes too much memory, then crashes
 
 An app that `cf push` has uploaded and started can crash later if it uses too much memory.
 
-**Make sure your app is not consuming more memory than allows.** When you ran `cf push` and `cf scale`, that configured a limit on the amount of memory
+**Make sure your app is not consuming more memory than allowed.** When you ran `cf push` and `cf scale`, that configured a limit on the amount of memory
 your app uses. Check your app's actual memory usage. If it exceeds the limit, modify the app to use less memory.
 
-### <a id='routing-conflict'></a> Routing Conflict
+### <a id='routing-conflict'></a> Routing conflict
 
 <%= partial 'routing_conflict' %>
 
@@ -186,11 +186,11 @@ If two apps share a route outside of a blue-green deployment strategy, choose on
     cf map-route APP-NAME NEW-ROUTE
     ```
 
-## <a id='info'></a> Gather Diagnostic Information
+## <a id='info'></a> Gather diagnostic information
 
 This section describes how to gather diagnostic information and troubleshoot app deployment issues.
 
-### <a id='env'></a> Examine Environment Variables
+### <a id='env'></a> Examine environment variables
 
 `cf push` deploys your app to a container on the server. The environment variables in the container govern your app.
 
@@ -227,16 +227,16 @@ my-env-var: 100
 my-drain: http://drain.example.com
 </pre>
 
-### <a id='logs'></a> View Logs
+### <a id='logs'></a> View logs
 
 To view app logs streamed in real-time, run `cf logs APP-NAME`.
 
 To aggregate your app logs to view log history, bind your app to a syslog drain service. For more information, see [Streaming App Logs to Log Management
 Services](./../services/log-management.html).
 
-<p class='note'><strong>Note:</strong> The Diego architecture does not support the <code>cf files</code> command.</p>
+<p class='note'><strong>Note:</strong> The Diego architecture does not support the <code>cf files</code> command, and <code>cf files</code> has been removed as of cf CLI v7.</p>
 
-### <a id='trace'></a> Trace Cloud Controller REST API Calls
+### <a id='trace'></a> Trace cloud controller REST API calls
 
 If a command fails or produces unexpected results, re-run it with HTTP tracing enabled to view requests and responses between the Cloud Foundry Command Line
 Interface (cf CLI) and the Cloud Controller REST API.
@@ -266,28 +266,22 @@ export CF_TRACE=PATH-TO-TRACE.LOG
   <code>CF_TRACE</code> with the variables in the container environment where your apps run. For more information about these container variables, see
   <a href="#env">Examine Environment Variables</a> above.</p>
 
-### <a id='zipkin_trace'></a> Analyze Zipkin Trace IDs
+### <a id='zipkin_trace'></a> Analyze Zipkin trace IDs
 
-When the Zipkin feature is enabled in <%= vars.app_runtime_abbr %>, the Gorouter adds or forwards Zipkin trace IDs and span IDs to HTTP headers. For more
-information about what the Gorouter provides in the HTTP header, see [HTTP Headers](../../concepts/http-routing.html#http-headers) in _HTTP Routing_.
+When the Zipkin feature is enabled in <%= vars.app_runtime_abbr %>, the Gorouter adds or forwards Zipkin trace IDs and span IDs to HTTP headers. For more information about what the Gorouter provides in the HTTP header, see [HTTP Headers](../../concepts/http-routing.html#http-headers) in _HTTP Routing_.
 
-After adding Zipkin HTTP headers to app logs, developers can run `cf logs APP-NAME` to correlate the trace and span IDs logged by the Gorouter with the trace
-IDs logged by their app. To correlate trace IDs for a request through multiple apps, each app must forward appropriate values for the headers with requests to
-other apps.
+After adding Zipkin HTTP headers to app logs, developers can run `cf logs APP-NAME` to correlate the trace and span IDs logged by the Gorouter with the trace IDs logged by their app. To correlate trace IDs for a request through multiple apps, each app must forward appropriate values for the headers with requests to other apps.
 
 
-## <a id='cf-commands'></a> Use Troubleshooting Commands
+## <a id='cf-commands'></a> Use troubleshooting commands
 
 You can investigate app deployment and health using the cf CLI.
 
-Some cf CLI commands return connection credentials. Remove credentials and other sensitive information from command output before you post the output a
-public forum.
+Some cf CLI commands return connection credentials. Remove credentials and other sensitive information from command output before you post the output a public forum.
 
-* `cf apps`: Returns a list of the apps deployed to the current space with deployment options, including the name, current state, number of instances, and
-URLs of each app.
+* `cf apps`: Returns a list of the apps deployed to the current space with deployment options, including the name, current state, number of instances, and URLs of each app.
 
-* `cf app APP-NAME`: Returns the health and status of each instance of a specific app in the current space, including instance ID number, current state, how
-long it has been running, and how much CPU, memory, disk, and logging it is using.
+* `cf app APP-NAME`: Returns information about the processes in the current space. Apps are listed alphabetically.
     <p class='note'><strong>Note:</strong> CPU values returned by <code>cf app</code> show the total usage of each app instance on all CPU cores on a host VM,
       where each core contributes 100%. For example, the CPU of a single-threaded app instance on a Diego Cell with one core cannot exceed 100%, and four
       instances sharing the Diego Cell cannot exceed an average CPU of 25%. A multi-threaded app instance running alone on a Diego Cell with eight cores can
@@ -304,20 +298,16 @@ Logging in <%= vars.app_runtime_abbr %>_.
 * `cf logs APP-NAME`: Returns a real-time stream of the app STDOUT and STDERR. Press **Ctrl+C** or **Command+C** on your keyboard to exit the real-time
 stream.
 
-* `cf files APP-NAME`: Lists the files in an app directory. Given a path to a file, outputs the contents of that file. Given a path to a subdirectory, lists
-the files within. Use this to view individual logs. For more information, see [View Logs](#logs) above.
-
-<p class='note'><strong>Note:</strong> Your app must direct its logs to STDOUT and STDERR. The <code>cf logs</code> command also returns messages from any
-  Log4j facility that you configure to send logs to STDOUT. For more information, see the <a href="http://logging.apache.org/log4j/">Log4j</a> website.</p>
+<p class='note'><strong>Note:</strong> Your app must direct its logs to STDOUT and STDERR. The <code>cf logs</code> command also returns messages from any Log4j facility that you configure to send logs to STDOUT. For more information, see the <a href="http://logging.apache.org/log4j/">Log4j</a> website.</p>
 
 
-## <a id='ssh'></a> Access Apps with SSH
+## <a id='ssh'></a> Access apps with SSH
 
 If you need to troubleshoot an instance of an app, you can gain SSH access to the app with the SSH proxy and daemon. For more information, see [App SSH
 Overview](app-ssh-overview.html).
 
 
-## <a id='request-to-instance'></a> Send Requests to App Instance
+## <a id='request-to-instance'></a> Send requests to app instance
 
 To obtain debug data without SSH, you can make HTTP requests to a specific instance of an app by using the `X-CF-APP-INSTANCE` HTTP header. For more
 information, see [App Instance Routing](../../concepts/http-routing.html#app-instance-routing) in _HTTP Routing_.

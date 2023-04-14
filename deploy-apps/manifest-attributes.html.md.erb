@@ -23,7 +23,7 @@ Manifests are written in YAML. The following manifest demonstrates some YAML con
 
 * Subsequent lines in the block are indented two spaces to align with `name`.
 
-```
+```console
 ---
 version: 1
 applications:
@@ -106,9 +106,8 @@ applications:
   memory: 256M
 ```
 
-The example manifest above pushes two apps with the `staticfile` buildpack, `smallapp` and `bigapp`, with 256&nbsp;M of memory for `smallapp` and 1&nbsp;G of
+In the example, manifest pushes two apps with the `staticfile` buildpack, `smallapp` and `bigapp`, with 256&nbsp;M of memory for `smallapp` and 1&nbsp;G of
 memory for `bigapp`.
-
 
 ## <a id='optional-attributes'></a> App attributes
 
@@ -200,7 +199,9 @@ An app needs to catch termination signals and clean itself up appropriately. Bec
 shell commands, particularly those that create child processes using `&`, `&&`, `||`, and so on, can prevent your app from receiving signals that are sent to
 the top-level bash process. For more information, see [Considerations for Designing and Running an App in the Cloud](prepare-to-deploy.html#moving-apps).
 
-To resolve this issue, you can use `exec` to replace the bash process with your own process. For example:
+To resolve this issue, you can use `exec` to replace the bash process with your own process.
+
+For example:
 
 * `bin/rake cf:on_first_instance db:migrate && bin/rails server -p $PORT -e $RAILS_ENV`: The process tree is bash -> ruby, so on graceful shutdown only the
 bash process receives the TERM signal, not the ruby process.
@@ -309,7 +310,7 @@ The `instances` attribute configures the number of app instances.
 
 For example:
 
-```
+```console
 ---
   ...
   instances: 2
@@ -346,7 +347,7 @@ either uppercase or lowercase.
 
 For example:
 
-```
+```console
 ---
   ...
   memory: 1024M

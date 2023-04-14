@@ -138,3 +138,5 @@ To view the processes running as part of an app:
     &#35;0   running   2022-09-15T02:35:29Z   0.0%   36.1M of 1G   90.2M of 1G   15B/s of unlimited
     &#35;1   running   2022-09-15T02:35:29Z   0.0%   36.1M of 1G   90.2M of 1G   15B/s of unlimited
     </pre>
+
+    <p class="note important"><strong>Important</strong>: To avoid security exposure, verify that you migrate your apps and custom buildpacks to use the <code>cflinuxfs4</code> stack based on Ubuntu 22.04 LTS (Jammy Jellyfish). The <code>cflinuxfs3</code> stack is based on Ubuntu 18.04 (Bionic Beaver), which reaches end of standard support in April 2023. </p>

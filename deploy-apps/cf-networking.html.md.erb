@@ -112,7 +112,7 @@ To grant all Space Developers permissions to configure network policies, <%=  va
 To add a policy that allows direct network traffic from one app to another, run the following command:
 
 ```
-cf add-network-policy SOURCE_APP --destination-app DESTINATION_APP -s DESTINATION_SPACE_NAME -o DESTINATION_ORG_NAME --protocol (tcp | udp) --port RANGE
+cf add-network-policy SOURCE_APP DESTINATION_APP -s DESTINATION_SPACE_NAME -o DESTINATION_ORG_NAME --protocol (tcp | udp) --port RANGE
 ```
 
 Replace the placeholders in the above command as follows:
@@ -127,7 +127,7 @@ Replace the placeholders in the above command as follows:
 The following example command allows access from the `frontend` app to the `backend` app over TCP at port 8080:
 
 <pre class="terminal">
-$ cf add-network-policy frontend --destination-app backend --protocol tcp --port 8080
+$ cf add-network-policy frontend backend --protocol tcp --port 8080
 Adding network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>
@@ -168,7 +168,7 @@ You can list all the policies in your space, or just the policies for which a si
 To remove a policy that allows direct network traffic from an app, run the following command:
 
 ```
-cf remove-network-policy SOURCE_APP --destination-app DESTINATION_APP -s DESTINATION_SPACE_NAME -o DESTINATION_ORG_NAME --protocol PROTOCOL --port RANGE
+cf remove-network-policy SOURCE_APP DESTINATION_APP -s DESTINATION_SPACE_NAME -o DESTINATION_ORG_NAME --protocol PROTOCOL --port RANGE
 ```
 
 Replace the placeholders in the above command to match an existing policy, as follows:
@@ -182,7 +182,7 @@ Replace the placeholders in the above command to match an existing policy, as fo
 
 The following command deletes the policy that allowed the `frontend` app to communicate with the `backend` app over TCP on port 8080:
 <pre class="terminal">
-$ cf remove-network-policy frontend --destination-app backend --protocol tcp --port 8080
+$ cf remove-network-policy frontend backend --protocol tcp --port 8080
 Removing network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>

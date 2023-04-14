@@ -19,7 +19,7 @@ The app deployment process involves uploading, staging, and starting the app in 
 Developers can change the time limit for starting apps through an app manifest or on the command line. For more information, see [ Deploying with App Manifests](manifest.html) and [Using App Health Checks](./healthchecks.html).
 
 
-## <a id="crash-events"></a> Crash Events
+## <a id="crash-events"></a> Crash events
 
 If an app instance fails, <%= vars.app_runtime_abbr %>  restarts it by rescheduling the instance on another container three times. After three failed restarts, <%= vars.app_runtime_abbr %> waits 30 seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance.
 

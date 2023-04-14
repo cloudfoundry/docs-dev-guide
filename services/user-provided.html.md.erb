@@ -9,7 +9,7 @@ This topic describes how to create and update user-provided service instances.
 
 <%= vars.user_provided_apps_man %>
 
-## <a id='overview'></a>Overview ##
+## <a id='overview'></a>Overview
 
 User-provided service instances enable developers to use services that are not available in the marketplace with their apps running on Cloud Foundry.
 
@@ -17,11 +17,11 @@ User-provided service instances can be used to deliver service credentials to an
 
 Once created, user-provided service instances behave like service instances created through the marketplace; see [Managing Service Instances](managing-services.html) and [App Binding](application-binding.html) for details on listing, renaming, deleting, binding, and unbinding.
 
-## <a id='create'></a>Create a User-Provided Service Instance ##
+## <a id='create'></a>Create a user-provided service instance
 
 The alias for [cf create-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/create-user-provided-service.html) is `cf cups`.
 
-### <a id='credentials'></a>Deliver Service Credentials to an App ###
+### <a id='credentials'></a>Deliver service credentials to an app
 
 Suppose a developer obtains a URL, port, username, and password for communicating with an Oracle database managed outside of Cloud Foundry. The developer could manually create custom environment variables to configure their app with these credentials (of course you would never hard code these credentials in your app!).
 
@@ -46,7 +46,7 @@ OK
 
 Once the user-provided service instance is created, to deliver the credentials to one or more apps see [App Binding](application-binding.html).
 
-### <a id='syslog'></a>Stream App Logs to a Service ###
+### <a id='syslog'></a>Stream app logs to a service
 
 User-provided service instances enable developers to stream app logs to a syslog compatible aggregation or analytics service that isn't available in the marketplace. For more information about the syslog protocol see [RFC 5424](http://tools.ietf.org/html/rfc5424) and [RFC 6587](http://tools.ietf.org/html/rfc6587).
 
@@ -58,7 +58,7 @@ cf cups SERVICE_INSTANCE -l syslog-tls://example.log-aggregator.com:6514
 
 To stream app logs to the service, bind the user-provided service instance to your app.
 
-### <a id='route-service'></a> Proxy App Requests to a Route Service ###
+### <a id='route-service'></a> Proxy app requests to a route service
 User-provided service instances enable developers to proxy app requests to [route services](./index.html#route-services) for preprocessing. To create a user-provided service instance for a route service, specify the url for the route service using the `-r` option.
 
 <pre class="terminal">
@@ -74,7 +74,7 @@ OK
 To proxy requests to the user-provided route service, you must bind the service instance to the route.
 For more information, see [Managing App Requests with Route Services](./route-binding.html).
 
-## <a id='update'></a> Update a User-provided Service Instance ###
+## <a id='update'></a> Update a user-provided service instance
 
 You can use [cf update-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/update-user-provided-service.html) to update the attributes of an instance of a user-provided service. New credentials overwrite old credentials, and parameters that are not provided are deleted.
 

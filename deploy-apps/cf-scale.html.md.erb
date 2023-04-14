@@ -18,14 +18,14 @@ Reference Guide](http://cli.cloudfoundry.org/en-US/cf/scale.html)
 <%= vars.autoscaler_note_dev_guide %>
 
 
-## <a id='horizontal'></a> Scaling Horizontally
+## <a id='horizontal'></a> Scaling horizontally
 
 Horizontally scaling an app creates or destroys instances of the app.
 
 Incoming requests to an app are load-balanced across all instances of the app, and each instance handles tasks in parallel with every other
 instance. Adding more instances allows the app to handle increased traffic and demand.
 
-### <a id='scale-horizontally'></a> Horizontally Scale an App
+### <a id='scale-horizontally'></a> Horizontally scale an app
 
 To horizontally scale an app:
 
@@ -51,12 +51,12 @@ To horizontally scale an app:
       app.</p>
 
 
-## <a id='vertical'></a> Scaling Vertically
+## <a id='vertical'></a> Scaling vertically
 
 Vertically scaling an app changes the disk space limit, memory limit, or log rate limit that your <%= vars.app_runtime_abbr %> deployment applies to all
 instances of the app.
 
-### <a id='change-disk-limit'></a> Scale the Disk Space Limit of an App
+### <a id='change-disk-limit'></a> Scale the disk space limit of an app
 
 To scale the disk space limit applied to all instances of an app:
 
@@ -78,7 +78,7 @@ To scale the disk space limit applied to all instances of an app:
     cf scale example-app -k 512M
     </pre>
 
-### <a id='change-memory-limit'></a> Scale the Memory Limit of an App
+### <a id='change-memory-limit'></a> Scale the memory limit of an app
 
 To scale the memory limit applied to all instances of an app:
 
@@ -101,7 +101,7 @@ To scale the memory limit applied to all instances of an app:
     cf scale example-app -m 1G
     </pre>
 
-### <a id='change-log-rate-limit'></a> Scale the Log Rate Limit of an App
+### <a id='change-log-rate-limit'></a> Scale the log rate limit of an app
 
 To scale the log rate limit applied to all instances of an app:
 

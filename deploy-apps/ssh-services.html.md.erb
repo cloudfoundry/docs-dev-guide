@@ -16,7 +16,7 @@ To establish direct command line access to a service, you deploy a host app and 
 <p class='note'><strong>Note:</strong> The procedure in this topic requires use of a service key, and not all services support service keys. Some services support credentials through <a href="../services/application-binding.html">app binding</a> only.</p>
 
 
-## <a id="create-instance"></a> Create a Service Instance
+## <a id="create-instance"></a> Create a service instance
 
 1. In your terminal window, log in to your deployment with `cf login`.
 
@@ -33,7 +33,7 @@ To establish direct command line access to a service, you deploy a host app and 
     $ cf create-service <%=vars.ssh_service %> <%=vars.ssh_service_plan %> MY-DB
     </pre>
 
-##<a id="push-app"></a>Push Your Host App##
+##<a id="push-app"></a>Push your host app
 
 To push an app that acts as the host for the SSH tunnel, push any app that successfully deploys to <%= vars.app_runtime_full %>.
 <p class="note"><strong>Note:</strong> Your app must be prepared before you push it. See the <a href="deploy-app.html">Pushing an App</a> topic for details on preparing apps for pushing.
@@ -53,7 +53,7 @@ To push an app that acts as the host for the SSH tunnel, push any app that succe
 
 <p class="note"><strong>Note:</strong> To activate SSH access to your app, SSH access must also be activated for both the space that contains the app and <%= vars.app_runtime_full %>. See the [App SSH Overview](./app-ssh-overview.html) topic for more details.</p>
 
-##<a id="bind-app"></a>Create Your Service Key##
+##<a id="bind-app"></a>Create your service key
 To establish SSH access to your service instance, you must create a service key that contains critical information for configuring your SSH tunnel.
 
 1. Create a service key for your service instance using the [cf create-service-key](http://cli.cloudfoundry.org/en-US/cf/create-service-key.html) command.
@@ -77,20 +77,20 @@ To establish SSH access to your service instance, you must create a service key 
     </pre>
 
 
-## <a id="ssh-tunnel"></a> Configure Your SSH Tunnel
+## <a id="ssh-tunnel"></a> Configure your SSH tunnel
 
 Configure an SSH tunnel to your service instance using [cf ssh](http://cli.cloudfoundry.org/en-US/cf/ssh.html). Tailor the following example command with information from your service key.
 <pre class="terminal">$ cf ssh -L 63306:<%= vars.ssh_service_host %>:3306 YOUR-HOST-APP</pre>
 
-* Use any available local port for port forwarding. For example, `63306`.
-* Replace `<%= vars.ssh_service_host %>` with the address provided under `hostname` in the service key retrieved above.
-* Replace `3306` with the port provided under `port` above.
-* Replace `YOUR-HOST-APP` with the name of your host app.
+   * You can use any available local port for port forwarding; for example, `63306`.
+   * `<%= vars.ssh_service_host %>` is the address provided under `hostname` in the service key retrieved above.
+   * `3306` is the port provided under `port` above.
+   * `YOUR-HOST-APP` is the name of your host app.
 
 After you enter the command, open another terminal and perform the following steps in [Access Your Service Instance](#access-service).
 
 
-## <a id="access-service"></a> Access Your Service Instance
+## <a id="access-service"></a> Access your service instance
 
 To establish direct command line access to your service instance, use the relevant command line tool for that service. This example uses the MySQL command line client to access the <%= vars.ssh_service %> service instance.
 

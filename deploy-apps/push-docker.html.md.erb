@@ -25,7 +25,7 @@ To push apps with Docker, you need:
 
 * A registry that supports the Docker Registry HTTP API V2 and presents a valid certificate for HTTPS traffic. For more information, see the [Docker Registry HTTP API V2](https://docs.docker.com/registry/spec/api/) spec in the Docker documentation.
 
-### <a id='cf-ssh'></a> Requirement for cf ssh Support
+### <a id='cf-ssh'></a> Requirement for cf ssh support
 
 If you want to log in to your app container using the `cf ssh` command, you must make a shell such as `sh` or `bash` available in the container.
 
@@ -42,14 +42,14 @@ The SSH server in the container looks for the following executables in absolute 
 * `sh`
 
 
-## <a id='tag'></a> Benefits of Specifying Tags
+## <a id='tag'></a> Benefits of specifying tags
 
 If you want your app container to be consistent after platform updates and code changes, specify a tag when you push your Docker image. Otherwise, the platform applies the `latest` tag without respecting changes to `PORT` or `ENTRYPOINT`.
 
 If you push your Docker image without specifying a tag, you must run `cf restage` for the changes to take effect.
 
 
-## <a id='port_config'></a> Port Configuration
+## <a id='port_config'></a> Port configuration
 
 By default, apps listen for connections on the port specified in the `PORT` environment variable for the app. <%= vars.app_runtime_abbr %> allocates this value dynamically.
 
@@ -64,14 +64,14 @@ If you set the `PORT` environment variable via an `ENV` directive in a Dockerfil
 For more information about the `PORT` environment variable, see the [PORT](environment-variable.html#PORT) section of the _<%= vars.app_runtime_abbr %> Environment Variables_ topic. For more information about the `EXPOSE` directive, see the [EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) section of the _Dockerfile reference_ topic in the Docker documentation.
 
 
-## <a id='start_command'></a> Start Command
+## <a id='start_command'></a> Start command
 
 By default, Docker uses the start command specified in the Docker image. You can override the start command either by using a command-line parameter or by specifying it in a manifest file.
 
 For more information about command-line parameters for `docker start`, see [docker start](https://docs.docker.com/engine/reference/commandline/start/) in the Docker Documentation.
 
 
-## <a id='registry'></a> Push a Docker Image from a Registry
+## <a id='registry'></a> Push a docker image from a registry
 
 <%= vars.app_runtime_abbr %> supports pushing apps from container registries such as Docker Hub, Google Container Registry (GCR), and Amazon Elastic Container Registry (ECR).
 
@@ -103,7 +103,7 @@ For example, the following command pushes the `your-image` image from Docker Hub
 cf push your-app --docker-image cloudfoundry/your-image
 ```
 
-### <a id='private'></a> Private Container Registry without Authentication
+### <a id='private'></a> Private Container Registry without authentication
 
 As an alternative to Docker Hub, you can use any Docker image registry that presents a valid certificate for HTTPS traffic, such as a company-internal Docker registry.
 
@@ -133,7 +133,7 @@ For example, the following command pushes the `v2` version of the `your-image` i
 cf push your-app --docker-image internal-registry.example.com:5000/your-repo/your-image:v2
 ```
 
-### <a id='private-repo'></a> Private Container Registry with Basic Authentication
+### <a id='private-repo'></a> Private Container Registry with basic authentication
 
 Many Docker registries control access to Docker images by authenticating with a username and password.
 
@@ -278,6 +278,6 @@ Where:
 <p class="note"><strong>Note:</strong> For information about specifying <code>YOUR-REGISTRY-URL</code>, see <a href="https://cloud.google.com/container-registry/docs/pushing-and-pulling">Pushing and Pulling Images</a> in the Google Cloud documentation.</p>
 
 
-## <a id='volume'></a> Docker Volume Support
+## <a id='volume'></a> Docker Volume support
 
 You can use volume services with Docker apps. For more information about enabling volume support, see [Using an External File System (Volume Services)](../services/using-vol-services.html).

@@ -15,7 +15,6 @@ If you want more than the limited amount of logging information that Cloud Found
 
 For more information about the systems responsible for log aggregation and streaming in Cloud Foundry, see [App Logging in Cloud Foundry](../deploy-apps/streaming-logs.html).
 
-
 ## <a id='marketplace-services'></a> Using services from the Cloud Foundry Marketplace
 
 Your Cloud Foundry marketplace offers one or more log management services. To use one of these services, create an instance of the service and bind it to your app with the following commands:
@@ -28,7 +27,6 @@ $ cf bind-service YOUR-APP YOUR-LOG-STORE
 For more information about service instance lifecycle management, see [Managing Service Instances](managing-services.html).
 
 <p class='note'><strong>Note:</strong> Not all marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that enables automated streaming of app syslogs. <%= vars.custom_services %></p>
-
 
 ## <a id='user-provided'></a> Using services not available in your marketplace
 
@@ -89,7 +87,7 @@ $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN
 
     For more information, see [User-Provided Service Instances](./user-provided.html).
 
-1. To bind an app to the service instance, do one of the following:
+2. To bind an app to the service instance, do one of the following:
     * Run `cf push` with a manifest. The services block in the manifest must specify the service instance that you want to bind.
     * Run `cf bind-service`:
 
@@ -97,7 +95,7 @@ $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN
         cf bind-service YOUR-APP-NAME DRAIN-NAME
         ```
 
-After a short delay, logs begin to flow.
+After a short delay, logs start to flow.
 
 For more information, see [Managing Service Instances with the CLI](./managing-services.html).
 

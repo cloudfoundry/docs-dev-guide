@@ -95,7 +95,7 @@ For example:
 
 #### <a id="traceid"></a> Zipkin Trace Logging
 
-If Zipkin trace logging is enabled in Cloud Foundry, then Gorouter access log messages contain Zipkin HTTP headers. 
+If Zipkin trace logging is enabled in Cloud Foundry, then Gorouter access log messages contain Zipkin HTTP headers.
 
 The following is an example access log message containing Zipkin headers:
 
@@ -194,3 +194,36 @@ $ cf logs spring-music --recent | grep -v RTR
 2016-06-14T14:10:14.56-0700 [CELL/0]     OUT Creating container
     ...
 </pre>
+
+### <a id='log-ordering'></a> Log Ordering
+
+Ensuring log ordering in drains can be an important consideration for both operators and developers.
+
+* Diego uses a nanosecond-based timestamp that can be ingested properly by Splunk. For more information, see
+  [TIME_FORMAT and subseconds](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html) in the Splunk
+  documentation.
+
+* The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are
+  truncated. For more information, see the
+  [Date datatype](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) in the Elasticsearch
+  documentation and the
+  [Date type has not enough precision for the logging use case](https://github.com/elastic/elasticsearch/issues/10005)
+  GitHub issue.
+
+If you are developing a client that displays a stream of <%= vars.app_runtime_abbr %> logs to users, you can order the
+logs to improve the debugging experience for your user. The following are general tips for ordering logs:
+
+* For CLIs, batch the logs and display the logs you have in that timeframe, sorted by timestamp.
+
+* For web clients, use dynamic HTML to insert older logs into the sorting as they appear. This creates complete,
+  ordered logs.
+
+* Java app developers might want to convert stack traces into a single log entity. To simplify log ordering for Java
+  apps, use the multi-line Java message workaround to convert your multi-line stack traces into a single log entity.
+  For more information, see
+  [Multi-line Java message workaround](https://github.com/cloudfoundry/java-buildpack/issues/544)
+  in the loggregator-release repository on GitHub.
+  <br><br>
+  By modifying the Java log output, you can force your app to reformat stack trace messages, replacing newline
+  characters with a token. Set your log parsing code to replace that token with newline characters again to display the
+  logs properly in Kibana.

@@ -395,7 +395,7 @@ The `--no-route` command-line flag overrides this attribute.
 
 In the Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app
 does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check, and <%= vars.app_runtime_abbr %>
-marks it as crashed. To prevent this, disable the port-based health check by running:
+marks it as crashed. To prevent this, deactivate the port-based health check by running:
 
 ```console
 cf set-health-check APP-NAME --process

@@ -7,7 +7,7 @@ _This page assumes you are using the latest version of the cf CLI._
 
 <p class='note'><strong>Note:</strong> The <code>cf ssh</code> command in cf CLI v7 and the <code>cf v3-ssh</code> command in cf CLI v6 include the <code>all_proxy</code> environment variable, which allows you to specify a proxy server to activate proxying for all requests. For more information, see <a href="http://cli.cloudfoundry.org/en-US/v7/ssh.html">ssh</a> in the Cloud Foundry CLI Reference Guide and <a href="../../cf-cli/http-proxy.html#v3-ssh-socks5">Use SOCKS5 with cf v3-ssh</a> in <em>Using the cf CLI with a Proxy Server</em>.</p>
 
-The Cloud Foundry Command Line Interface (cf CLI) lets you securely log into remote host virtual machines (VMs) running <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) app instances. This topic describes the commands that enable SSH access to apps, and activate, deactivate, and check permissions for such access.
+The Cloud Foundry Command Line Interface (cf CLI) lets you securely log into remote host virtual machines (VMs) running <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) app instances. This topic describes the commands that enable SSH access to apps, and enable, deactivate, and check permissions for such access.
 
 The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controller `/v2/info` endpoint, and uses this identifier to query the UAA server for an SSH authorization code. On the target VM side, the SSH proxy contacts the Cloud Controller through the `app_ssh_endpoint` listed in `/v2/info` to confirm permission for SSH access.
 
@@ -349,7 +349,7 @@ The SSH proxy has the following SSH security configuration by default:
   </tr>
 </table>
 
-The `cf ssh` command is compatible with this security configuration. If you use a different SSH client to access apps over SSH, you should ensure that you configure your client to be compatible with these ciphers, MACs, and key exchanges. For more information about other SSH clients, see [App SSH Access without cf CLI](#other-ssh-access).
+The `cf ssh` command is compatible with this security configuration. If you use a different SSH client to access apps over SSH, you can ensure that you configure your client to be compatible with these ciphers, MACs, and key exchanges. For more information about other SSH clients, see [App SSH Access without cf CLI](#other-ssh-access).
 
 <% if vars.platform_code == 'CF' %>
 Cloud Foundry deployment operators can also change these default values in the SSH proxy configuration. Changing these default values might require a change to the SSH client configuration.

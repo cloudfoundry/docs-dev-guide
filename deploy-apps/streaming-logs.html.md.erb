@@ -22,6 +22,9 @@ you can drain logs to a third-party log management service. For more information
 need to overwrite some lines before the client has consumed them. A syslog drain or a command-line interface (CLI) tail can usually keep up with the flow of
 app logs.
 
+<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log lines
+quickly enough, the Loggregator buffer might need to overwrite some lines before the client has consumed them. A syslog
+drain or a CLI tail can usually keep up with the flow of app logs.
 
 ## <a id='types'></a> Contents of a Log Line
 
@@ -35,8 +38,9 @@ Every log line contains four fields:
 
 * Message
 
-Loggregator assigns the timestamp when it receives log data. The log data is opaque to Loggregator, which only puts it in the message field of the log line.
-Apps or system components sending log data to Loggregator might include their own timestamps, which then appear in the message field.
+Loggregator assigns the timestamp when it receives log data. The log data is opaque to Loggregator, which only puts it
+in the message field of the log line. Apps or system components sending log data to Loggregator might include their own
+timestamps, which then appear in the message field.
 
 <%= vars.human_readable_timestamp %>
 
@@ -50,8 +54,8 @@ correctly writes logs to `stdout` and `stderr` only. Some buildpacks do this, an
 
 ## <a id='format'></a> Log Types and Their Messages
 
-Different types of logs have different message formats, as shown in the following examples. The digit appended to the code indicates the instance index: `0` is
-the first instance, `1` is the second, and so on.
+Different types of logs have different message formats, as shown in the following examples. The digit appended to the code
+indicates the instance index: 0 is the first instance, 1 is the second, and so on.
 
 ### <a id='api'></a> API
 
@@ -148,11 +152,11 @@ For example:
 
 ## <a id='writing'></a> Writing to the Log from Your App
 
-Your app must write logs to `stderr` or `stdout`. Both are typically buffered, and you must flush the buffer before delivering the message to Loggregator.
+Your app must write logs to `stderr` or `stdout`. Both are typically buffered, and you can flush the buffer before
+delivering the message to Loggregator.
 
-You can write log messages to `stderr` or `stdout` synchronously. This approach is mainly used for debugging because it affects app
-performance.
-
+Alternatively, you can write log messages to `stderr` or `stdout` synchronously. This approach is mainly used for
+debugging because it might affect app performance.
 
 ## <a id='container-metrics'></a> Including Container Metrics in Syslog Drains
 
@@ -203,6 +207,29 @@ To view some subset of log output, run `cf logs APP-NAME` in conjunction with fi
 the following example, run `cf logs spring-music --recent | grep -v RTR` to exclude all Gorouter logs:
 
 <pre class="terminal">
+$ cf logs spring-music
+Connected, tailing logs for app spring-music in org example / space development as admin@example.com...
+
+2016-06-14T15:16:12.70-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:16:12.582 +0000] "GET / HTTP/1.1" 200 0 103455 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:27743 x_forwarded_for:"203.0.113.222" x_forwarded_proto:"http" vcap_request_id:bd3e6ed1-5dd0-43ab-70ed-5d232b577b09 response_time:0.12050583 app_id:79bb58ab-3737-43be-ac70-39a2843b5177
+2016-06-14T15:16:20.06-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:16:20.034 +0000] "GET /test/ HTTP/1.1" 200 0 6879 "http://www.example.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:2228 x_forwarded_for:"203.0.113.222" x_forwarded_proto:"http" vcap_request_id:a31f0b1d-3827-4b8f-57e3-6f42d189f025 response_time:0.033311281 app_id:79bb58aa-3747-43be-ac70-39a3843b5178
+2016-06-14T15:16:22.44-0700 [RTR/4]      OUT www.example.com - [14/06/2016:22:17:22.415 +0000] "GET /test5/ HTTP/1.1" 200 0 5461 "http://www.example.com/test5" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 192.0.2.206:2228 x_forwarded_for:"203.0.113.322" x_forwarded_proto:"http" vcap_request_id:5d6855a2-4a79-4432-7927-de8215f5a2c7 response_time:0.029211609 app_id:79bb58aa-3737-43bb-ac70-39a2943b5178
+    ...
+</pre>
+
+Use **Ctrl-C** (^C) to exit the real-time stream.
+
+### <a id="dump-log"></a> Dumping Logs
+
+To display all of the lines in the Loggregator buffer, run `cf logs APP-NAME --recent`, where `APP-NAME` is the name of
+your app.
+
+### <a id="filter"></a> Filtering Logs
+
+To view some subset of log output, run `cf logs APP-NAME` in conjunction with filtering commands of your choice.
+Replace `APP-NAME` with the name of your app. In the following example, `grep -v RTR` excludes all Gorouter logs:
+
+<pre class="terminal">
+$ cf logs spring-music --recent | grep -v RTR
 2016-06-14T14:10:05.36-0700 [API/0]      OUT Updated app with guid cdabc604-0b73-47e1-a7d5-24af2c63f723 ({"name"=>"spring-music", "instances"=>1, "memory"=>512, "environment_json"=>"PRIVATE DATA HIDDEN"})
 2016-06-14T14:10:14.52-0700 [APP/0]      OUT - Gracefully stopping, waiting for requests to finish
 2016-06-14T14:10:14.52-0700 [CELL/0]     OUT Exit status 0
@@ -230,7 +257,7 @@ experience for your user. The following are general tips for ordering logs:
 
 * For web clients, use dynamic HTML to insert older logs into the sorting as they appear. This creates complete, ordered logs.
 
-* Java app developers may want to convert stack traces into a single log entity. To simplify log ordering for Java
+* Java app developers might want to convert stack traces into a single log entity. To simplify log ordering for Java
   apps, use the multi-line Java message workaround to convert your multi-line stack traces into a single log entity.
   For more information, see <a href="https://github.com/cloudfoundry/java-buildpack/issues/544">Multi-line Java message workaround.</a>
  in the loggregator-release repository on GitHub.

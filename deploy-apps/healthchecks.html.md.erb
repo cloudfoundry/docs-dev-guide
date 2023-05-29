@@ -1,19 +1,12 @@
 ---
-title: Using App Health Checks
+title: Using Cloud Foundry health checks
 owner:
   - CAPI
   - CLI
 ---
 
-This topic describes how to configure health checks for your <%= vars.app_runtime_full %>
-(<%= vars.app_runtime_abbr %>) apps.
 
-
-## <a id="about_health_checks"></a> Overview
-
-An app health check is a monitoring process that continually checks the status of a running app.
-
-Developers can configure a health check for an app using the Cloud Foundry Command Line Interface
+You can configure a health check for an app using the Cloud Foundry Command Line Interface
 (cf CLI) or by specifying the `health-check-http-endpoint` and `health-check-type` fields in an app
 manifest.
 
@@ -28,7 +21,7 @@ App health checks function as part of the app lifecycle managed by Diego archite
 information, see [Diego Components and Architecture](../../concepts/diego/diego-architecture.html).
 
 
-## <a id="setting_health_checks"></a> Configure Health Checks when creating or updating an app
+## <a id="setting_health_checks"></a> Configure health checks when creating or updating an app
 
 To configure a health check while creating or updating an app, run:
 
@@ -53,7 +46,7 @@ For more information about the `cf push` command, see
 <code>cf push</code> overrides any configuration in the app manifest.</p>
 
 
-## <a id="setting_health_checks_existing_app"></a> Configure Health Checks for an existing app
+## <a id="setting_health_checks_existing_app"></a> Configure health Checks for an existing app
 
 To configure a health check for an existing app or to add a custom HTTP endpoint, run:
 
@@ -86,9 +79,9 @@ app. For more information, see <a href="https://cli.cloudfoundry.org/en-US/v7/ap
 Reference Guide.</p>
 
 
-## <a id='understand-healthchecks'></a> Understanding Health Checks
+## <a id='understand-healthchecks'></a> Understanding health checks
 
-### <a id='healthcheck-lifecycle'></a> Health Check lifecycle
+### <a id='healthcheck-lifecycle'></a> Health check lifecycle
 
 The following table describes how app health checks work.
 
@@ -103,15 +96,15 @@ The following table describes how app health checks work.
 | 7 | If a previously healthy app instance fails a health check, Diego considers that particular instance to be unhealthy. As a result, Diego stops and deletes the app instance, then reschedules a new app instance. This stoppage and deletion of the app instance is reported back to the Cloud Controller as a crash event. |
 | 8 | When an app instance crashes, Diego immediately attempts to restart the app instance several times. After three failed restarts, <%= vars.app_runtime_abbr %> waits 30 seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance. |
 
-### <a id="types"></a> Health Check types
+### <a id="types"></a> Health check types
 
 The following table describes the types of health checks available for apps and recommended
 circumstances in which to use them:
 
 <table>
   <tr>
-    <th style="width: 20%">Health Check Type</th>
-    <th>Recommended Use Case</th>
+    <th style="width: 20%">Health check type</th>
+    <th>Recommended use case</th>
     <th>Explanation</th>
   </tr>
   <tr>
@@ -144,7 +137,7 @@ circumstances in which to use them:
   </tr>
 </table>
 
-### <a id="health_check_timeout"></a> Health Check timeouts
+### <a id="health_check_timeout"></a> Health check timeouts
 
 The value configured for the health check timeout is the amount of time allowed to elapse between
 starting an app and the first healthy response from the app. If the health check does not receive a
@@ -152,7 +145,7 @@ healthy response within the configured timeout, then the app is declared unhealt
 
 <%= vars.app_healthcheck_timeout %>
 
-### <a id="health_check_uri"></a> Health Check HTTP endpoints
+### <a id="health_check_uri"></a> Health check HTTP endpoints
 
 Only used by `http` type, the `--endpoint` flag of the `cf set-health-check` command specifies the
 path portion of a URI that must be served by the app and return `HTTP 200` when the app is healthy.

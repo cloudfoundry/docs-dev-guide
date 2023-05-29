@@ -1,11 +1,8 @@
 ---
-title: Pushing an App
+title: Pushing an app with Cloud Foundry CLI (cf push)
 owner: CAPI
 ---
 
-This topic describes how to use the Cloud Foundry Command Line Interface (cf CLI) to push an app to <%= vars.app_runtime_first %>.
-
-## <a id='overview'></a> Overview
 
 The cf CLI command `cf push` pushes apps to <%= vars.app_runtime_abbr %>. There are two main ways to run the `cf push` command:
 
@@ -49,7 +46,7 @@ can stage the app.
   * For information about sharing service instances across spaces, see [Sharing Service Instances](../services/sharing-instances.html).
   * Typical services that cloud apps use include databases, message queues, and key-value stores.
 
-## <a id='default-push'></a> Push with Defaults
+## <a id='default-push'></a> Push with defaults
 
 To push an app with default settings:
 
@@ -65,7 +62,7 @@ To push an app with default settings:
 
     Where `APP-NAME` is the name of the app.
 
-### <a id='default-route'></a> Default Route
+### <a id='default-route'></a> Default route
 
 An app's route is the URL at which it runs. <%= vars.app_runtime_abbr %> assembles the route for a pushed app from a hostname and a domain.
 
@@ -82,7 +79,7 @@ For more information about routes and domains, see [Routes and Domains](routes-d
 
 <%= vars.ssl %>
 
-### <a id='example'></a> Example Session
+### <a id='example'></a> Example session
 
 The following example output for `cf push example-app` demonstrates how <%= vars.app_runtime_abbr %> assigns default values to an app you push:
 
@@ -133,7 +130,7 @@ urls: example-app.<%= vars.app_domain %>
 &#35;0   running   2022-09-14 05:07:18 PM   0.0%   18.5M of 1G   52.5M of 1G   3B/s of 1M/s
 </pre>
 
-## <a id='custom-push'></a> Push with Custom Settings
+## <a id='custom-push'></a> Push with custom settings
 
 Pushing an app with custom settings typically proceeds as follows:
 
@@ -151,7 +148,7 @@ Pushing an app with custom settings typically proceeds as follows:
 
 The following sections detail these steps.
 
-### <a id='basic-settings'></a> Customize Basic App Settings (Optional)
+### <a id='basic-settings'></a> Customize basic app settings (optional)
 
 Basic settings to customize when pushing an app include:
 
@@ -174,7 +171,7 @@ a single instance can simplify troubleshooting. For any production app, <%= vars
 * **Start command:** This is the command that <%= vars.app_runtime_abbr %> uses to start each instance of your app. This start command differs by app
 framework.
 
-### <a id='custom-route'></a> Customize the Route (Optional)
+### <a id='custom-route'></a> Customize the route (optional)
 
 To customize an app's route:
 
@@ -187,7 +184,7 @@ and mapped to the org that contains the app's target space.
 described in [Default Route](#default-route) above. To help ensure route uniqueness, include the `--random-route` flag in your `cf push` command. This creates
 a route that includes the app name and random words.
 
-### <a id='exclude'></a> Limit the Upload Files (Optional)
+### <a id='exclude'></a> Limit the upload files (optional)
 
 By default, <%= vars.app_runtime_abbr %> uploads all app files except version control files and folders with names such as `.svn`, `.git`, and `_darcs`.
 
@@ -203,7 +200,7 @@ To exclude files from upload:
 For more information, see [Ignore Unnecessary Files When Pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and Running an App in the
 Cloud_.
 
-### <a id='profile'></a> Configure App Initialization (Optional)
+### <a id='profile'></a> Configure app initialization (optional)
 
 You can configure the  `cf push` command to run custom initialization tasks for an app.
 
@@ -245,7 +242,7 @@ Buildpacks](../../buildpacks/custom.html).
 
 Initialization tasks as described here are also called *pre-runtime hooks* and _`.profile` tasks_.
 
-### <a id='custom-cf-push'></a> Custom Push the App
+### <a id='custom-cf-push'></a> Custom push the app
 
 To specify custom options when pushing an app with `cf push`, you can include them in one or both of the following:
 
@@ -262,7 +259,7 @@ For information about how app settings change from push to push, including how c
 
 For a full list of `cf push` options, see the [Cloud Foundry CLI Reference Guide](https://cli.cloudfoundry.org/en-US/cf/push.html).
 
-### <a id='services'></a> Configure App Services (Optional)
+### <a id='services'></a> Configure app services (optional)
 
 If a newly-pushed app has the same name and route as an older app version, the new app retains the service bindings and service configuration of the
 previously-pushed version.
@@ -274,7 +271,7 @@ For apps that are not already set up for the services that they use:
 1. (Optional) Configure the app with the service URL and credentials, if needed. For more information, see [Configuring Service
 Connections](../../buildpacks/java/configuring-service-connections.html).
 
-## <a id='updates'></a> App Updates and Downtime
+## <a id='updates'></a> App updates and downtime
 
 When you push an app that is already running, <%= vars.app_runtime_abbr %> stops all existing instances of that app. Users who try to access the app see a
 `404 Not Found` message while `cf push` runs.
@@ -286,7 +283,7 @@ version.
 When old and new versions of your app can run simultaneously, you can avoid app downtime by using the blue-green deployment method to swap routes between app
 versions running in parallel. For more information, see [Using Blue-Green Deployment to Reduce Downtime and Risk](blue-green.html).
 
-## <a id='troubleshoot-push'></a> Troubleshoot App Push Problems
+## <a id='troubleshoot-push'></a> Troubleshoot app push problems
 
 If your app does not start on <%= vars.app_runtime_abbr %>, first ensure that the app can run locally.
 

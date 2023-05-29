@@ -1,12 +1,12 @@
 ---
-title: Configuring Container-to-Container Networking
+title: Configuring container-to-container networking
 owner: CF for VMs Networking
 ---
 
 
-This topic describes how to configure the Container-to-Container Networking feature, which allows direct network traffic between apps. For an overview of how Container-to-Container Networking works, see the [Container-to-Container Networking](../../concepts/understand-cf-networking.html) topic.
+The container-to-container networking feature allows direct network traffic between apps. For an overview of how Container-to-Container Networking works, see [Container-to-Container Networking](../../concepts/understand-cf-networking.html).
 
-<p class="note"><b>Note:</b> Container-to-container networking is not available for apps hosted on Windows.</p>
+<p class="note"><b>Note:</b> Container-to-container networking is not available for apps hosted on Microsoft Windows.</p>
 
 <%= vars.app_traffic_logging %>
 
@@ -27,9 +27,9 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% end %>
 
 
-## <a name="create-policies"></a> Create and Manage Networking Policies
+## <a name="create-policies"></a> Create and manage networking policies
 
-This section describes how to create and modify Container-to-Container Networking policies using the Cloud Foundry Command Line Interface (cf CLI).
+This section describes how to create and modify container-to-container networking policies using the Cloud Foundry Command Line Interface (cf CLI).
 
 <%= vars.app_man_network %>
 
@@ -45,7 +45,7 @@ For more information about updating the cf CLI, see the [Installing the cf CLI](
 
 <% if vars.platform_code == "CF" || vars.platform_code == "PCF" %>
 
-### <a name="grant"></a> Grant Permissions
+### <a name="grant"></a> Grant permissions
 
 CF admins use the following UAA scopes to grant specific users or groups permissions to configure network policies:
 
@@ -75,7 +75,7 @@ To grant all Space Developers permissions to configure network policies, <%=  va
 
 <% end %>
 
-### <a name="add-policy"></a> Add a Network Policy
+### <a name="add-policy"></a> Add a network policy
 
 To add a policy that allows direct network traffic from one app to another, run the following command:
 
@@ -105,7 +105,7 @@ This limit does not apply to users with the `network.admin` scope.
 
 <%= vars.network_policy_quota_config %>
 
-### <a name="list-policies"></a> List Policies
+### <a name="list-policies"></a> List policies
 
 You can list all the policies in your space, or just the policies for which a single app is the source:
 
@@ -131,7 +131,7 @@ You can list all the policies in your space, or just the policies for which a si
     frontend    backend       tcp        8080     example-space        example-org
     </pre>
 
-### <a name="rm-policy"></a> Remove a Network Policy
+### <a name="rm-policy"></a> Remove a network policy
 
 To remove a policy that allows direct network traffic from an app, run the following command:
 
@@ -155,7 +155,7 @@ Removing network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>
 
-### <a name="disable-policy"></a> Deactivate Network Policy Enforcement
+### <a name="disable-policy"></a> Deactivate network policy enforcement
 
 You can deactivate Silk network policy enforcement between apps. Deactivating network policy enforcement allows all apps to send network traffic to all other apps in the foundation despite no policy specifically allowing it.
 
@@ -191,7 +191,7 @@ To deactivate network policy enforcement between apps, do the following:
 <% end %>
 
 
-## <a name="discovery"></a> App Service Discovery
+## <a name="discovery"></a> App service discovery
 
 With app service discovery, apps pushed to <%= vars.app_runtime_abbr %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front end apps to easily connect with back end apps.
 
@@ -210,7 +210,7 @@ To use TLS developer adds a network policy for port 61443. After that the front 
 
 <% if vars.platform_code == "CF" %>
 
-### <a name="enable-discovery"></a> Activate App Service Discovery
+### <a name="enable-discovery"></a> Activate app service discovery
 
 To activate app service discovery, <%= vars.enable_c2c_discovery %>.
 

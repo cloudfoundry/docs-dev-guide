@@ -1,28 +1,26 @@
 ---
-title: Using Blue-Green Deployment to Reduce Downtime and Risk
+title: Using blue-green deployment to reduce downtime
 owner: CF for VMs Networking
 ---
 
 
-
-Blue-green deployment is a technique that reduces downtime and risk by running
-two identical production environments called Blue and Green.
+Blue-green deployment is a technique that helps you reduce app downtime and risk by running
+two identical production environments: Blue and Green.
 
 At any time, only one of the environments is live, with the live environment
 serving all production traffic.
-For this example, Blue is currently live and Green is idle.
 
+For the example discussed here, Blue is live and Green is idle.
 As you prepare a new version of your software, deployment and the final stage of
-testing takes place in the environment that is *not* live: in this example,
-Green.
-Once you have deployed and fully tested the software in Green, you switch the
-router so all incoming requests now go to Green instead of Blue.
+testing takes place in the environment that is _not_ live: in this example, Green.
+After you have deployed and fully tested the software in Green, you switch the
+router so that all incoming requests now go to Green instead of Blue.
 Green is now live, and Blue is idle.
 
 This technique can eliminate downtime due to app deployment.
 In addition, blue-green deployment reduces risk: if something unexpected happens
-with your new version on Green, you can immediately roll back to the last
-version by switching back to Blue.
+with your new version on Green, you can immediately roll back to the lastS
+version by switching back to Blue.S
 
 <p class="note"><strong>Note</strong>: If your app uses a relational database, blue-green deployment can lead to discrepancies between your Green and Blue databases during an update. To maximize data integrity, configure a single database for backward and forward compatibility.</p>
 
@@ -44,7 +42,7 @@ Name the app "Blue" with the subdomain "demo-time."
 $ cf push Blue -n demo-time
 </pre>
 
-As shown in this graphic:
+As shown in the graphic below:
 
 * Blue is now running on Cloud Foundry.
 * The CF Router sends all traffic for `demo-time.example.com` traffic to Blue.
@@ -54,8 +52,8 @@ As shown in this graphic:
 ### <a id='update-and-push'></a>Step 2: Update app and push
 
 Now make a change to the app.
-First, replace the word "Blue" on the web page with "Green," then rebuild the source file for the app.
-Run `cf push` again, but use the name "Green" for the app and provide a different subdomain to create a temporary route:
+1. First, replace the word "Blue" on the web page with "Green," then rebuild the source file for the app.
+1. Run `cf push` again, but use the name "Green" for the app and provide a different subdomain to create a temporary route:
 
 <pre class="terminal">
 $ cf push Green -n demo-time-temp
@@ -72,7 +70,7 @@ The router now also sends any traffic for `demo-time-temp.example.com` to Green.
 ### <a id='map-green'></a>Step 3: Map original route to green
 
 Now that both apps are up and running, switch the router so all incoming
-requests go to the Green app *and* the Blue app.
+requests go to the Green app _and_ the Blue app.
 Do this by mapping the original URL route (`demo-time.example.com`) to the Green
 app using the [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html) command.
 
@@ -86,11 +84,11 @@ After the `cf map-route` command :
 * The CF Router continues sending traffic for `demo-time-temp.example.com` to Green.
 * Within a few seconds, the CF Router begins load balancing traffic for `demo-time.example.com` between Blue and Green.
 
-![alt-text="CF Router continues to send traffic."](./images/../../images/blue-green/map.png)
+![alt-text=""](./images/../../images/blue-green/map.png)
 
 ### <a id='unmap-blue'></a>Step 4: Unmap route to blue
 
-Once you verify Green is running as expected, stop routing requests to Blue
+After you verify Green is running as expected, stop routing requests to Blue
 using the [cf unmap-route](http://cli.cloudfoundry.org/en-US/cf/unmap-route.html) command:
 
 <pre class="terminal">
@@ -98,17 +96,19 @@ $ cf unmap-route Blue example.com -n demo-time
 Unbinding demo-time.example.com from blue... OK
 </pre>
 
-After `cf unmap-route` command:
+After the `cf unmap-route` command:
 
 * The CF Router stops sending traffic to Blue.
-Now all traffic for `demo-time.example.com` is sent to Green:
-![alt-text="CF Router stops traffic."](./images/../../images/blue-green/unmap.png)
 
-### <a id='remove-temp-route'></a>Step 5: Remove temporary route to green
+Now all traffic for `demo-time.example.com` is sent to Green.
 
-You can now use `cf unmap-route` to remove the route `demo-time-temp.example.com` from Green. The route can be deleted using `cf delete-route` or reserved for later use. You can also decommission Blue, or keep it in case you need to roll back your changes.
+![alt-text=""](./images/../../images/blue-green/unmap.png)
 
-![alt-text="Use the cf unmap-route command to remove the route."](./images/../../images/blue-green/green.png)
+### <a id='remove-temp-route'></a>Step 5: Remove temporary route to Green
+
+You can now use `cf unmap-route` to remove the route `demo-time-temp.example.com` from Green. The route can be deleted using `cf delete-route` or it can be reserved for later use. You can also decommission Blue, or keep it in case you need to roll back your changes.
+
+![alt-text=""](./images/../../images/blue-green/green.png)
 
 ## <a id='implementations'></a>Implementation
 

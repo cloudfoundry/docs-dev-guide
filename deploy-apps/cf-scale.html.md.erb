@@ -4,120 +4,58 @@ owner: CAPI
 ---
 
 
-Several factors, such as user load and the number and nature of tasks, can change the disk space, memory, and log rate limit that an app uses. This article describes how to scale an app using the Cloud Foundry Command Line Interface (cf CLI).
-For many apps,
-increasing the available disk space or memory can improve overall performance. Similarly, running additional instances of an app can allow the app to handle
-increases in user load and concurrent requests. Making these adjustments is called _scaling_ an app.
 
-You can use the `cf scale` command to scale an app up or down to meet changes in traffic or demand. For more information, see the [Cloud Foundry CLI
-Reference Guide](http://cli.cloudfoundry.org/en-US/cf/scale.html)
+Factors such as user load, or the number and nature of tasks performed by an app, can change the disk space and memory the app uses.
+This article describes how to scale an app using the Cloud Foundry Command Line Interface (cf CLI).
+For many apps, increasing the available disk space or memory can improve
+overall performance.
+Similarly, running additional instances of an app can allow the
+app to handle increases in user load and concurrent requests.
+These adjustments are called **scaling** an app.
 
-<%= vars.autoscaler_note_dev_guide %>
+Use [cf scale](http://cli.cloudfoundry.org/en-US/cf/scale.html) to scale your app up or down to meet changes in traffic
+or demand.
 
+<%=vars.autoscaler_note_dev_guide%>
 
-## <a id='horizontal'></a> Scaling horizontally
+## <a id="horizontal"></a>Scaling Horizontally ##
 
-Horizontally scaling an app creates or destroys instances of the app.
+Horizontally scaling an app creates or destroys instances of your app.
 
-Incoming requests to an app are load-balanced across all instances of the app, and each instance handles tasks in parallel with every other
-instance. Adding more instances allows the app to handle increased traffic and demand.
+Incoming requests to your app are automatically load balanced across all
+instances of your app, and each instance handles tasks in parallel with
+every other instance.
+Adding more instances allows your app to handle increased traffic and
+demand.
 
-### <a id='scale-horizontally'></a> Horizontally scale an app
+Use `cf scale APP -i INSTANCES` to horizontally scale your app.
+Cloud Foundry will increase or decrease the number of instances of your app to match `INSTANCES`.
 
-To horizontally scale an app:
+<pre class="terminal">
+$ cf scale myApp -i 5
+</pre>
 
-1. In a terminal window, run:
+<p class="note"><strong>Note</strong>: In cf CLI v7, you can also use <code>--process</code> with <code>cf scale</code> to scale specific processes of your app.</p>
 
-    ```
-    cf scale APP-NAME -i NUMBER-OF-INSTANCES
-    ```
+## <a id="vertical"></a>Scaling Vertically ##
 
-    Where:
-    <ul>
-      <li><code>APP-NAME</code> is the name of the app you want to scale.</li>
-      <li><code>NUMBER-OF-INSTANCES</code> is the number of instances you want the app to have.</li>
-    </ul>
+Vertically scaling an app changes the disk space limit or memory limit
+that Cloud Foundry applies to all instances of the app.
 
-    For example:
+Use `cf scale APP -k DISK` to change the disk space limit applied to all
+instances of your app.
+`DISK` must be an integer followed by either an **M**, for megabytes, or **G**,
+for gigabytes.
 
-    <pre class="terminal">
-    cf scale example-app -i 5
-    </pre>
+<pre class="terminal">
+$ cf scale myApp -k 512M
+</pre>
 
-    <p class='note'><strong>Note:</strong> If you are using cf CLI v7, you can include the <code>--process</code> flag to scale specific processes of an
-      app.</p>
+Use `cf scale APP -m MEMORY` to change the memory limit applied to all instances
+of your app.
+`MEMORY` must be an integer followed by either an **M**, for megabytes, or
+**G**, for gigabytes.
 
-
-## <a id='vertical'></a> Scaling vertically
-
-Vertically scaling an app changes the disk space limit, memory limit, or log rate limit that your <%= vars.app_runtime_abbr %> deployment applies to all
-instances of the app.
-
-### <a id='change-disk-limit'></a> Scale the disk space limit of an app
-
-To scale the disk space limit applied to all instances of an app:
-
-1. In a terminal window, run:
-
-    ```
-    cf scale APP-NAME -k DISK-LIMIT
-    ```
-
-    Where:
-    <ul>
-      <li><code>APP-NAME</code> is the name of the app you want to scale.</li>
-      <li><code>DISK-LIMIT</code> is the maximum amount of disk space in megabytes or gigabytes that you want each app instance to use. This value must be an integer followed by either <code>M</code> or <code>G</code>.</li>
-    </ul>
-
-    For example:
-
-    <pre class="terminal">
-    cf scale example-app -k 512M
-    </pre>
-
-### <a id='change-memory-limit'></a> Scale the memory limit of an app
-
-To scale the memory limit applied to all instances of an app:
-
-1. In a terminal window, run:
-
-    ```
-    cf scale APP-NAME -m MEMORY-LIMIT
-    ```
-
-    Where:
-    <ul>
-      <li><code>APP-NAME</code> is the name of the app you want to scale.</li>
-      <li><code>MEMORY-LIMIT</code> is the maximum amount of memory in megabytes or gigabytes that you want each app instance to use. This value must be an integer
-      followed by either <code>M</code> or <code>G</code>.</li>
-    </ul>
-
-    For example:
-
-    <pre class="terminal">
-    cf scale example-app -m 1G
-    </pre>
-
-### <a id='change-log-rate-limit'></a> Scale the log rate limit of an app
-
-To scale the log rate limit applied to all instances of an app:
-
-1. In a terminal window, run:
-
-    ```
-    cf scale APP-NAME -l LOG-RATE-LIMIT
-    ```
-
-    Where:
-    <ul>
-      <li><code>APP-NAME</code> is the name of the app you want to scale.</li>
-      <li><code>LOG-RATE-LIMIT</code> is the maximum number of logs in bytes, kilobytes, megabytes, or gigabytes that you want each app instance to send to Loggregator. This
-      value must be an integer followed by either <code>B</code>, <code>K</code>, <code>M</code>, or <code>G</code>. To configure each app instance to send an unlimited number of logs to Loggregator,
-      specify <code>-1</code>.</li>
-    </ul>
-
-    For example:
-
-    <pre class="terminal">
-    cf scale example-app -l 12K
-    </pre>
+<pre class="terminal">
+$ cf scale myApp -m 1G
+</pre>

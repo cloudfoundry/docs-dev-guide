@@ -1,5 +1,5 @@
 ---
-title: Configuring Container-to-Container Networking
+title: Configuring container-to-container networking
 owner: CF for VMs Networking
 ---
 
@@ -7,33 +7,33 @@ owner: CF for VMs Networking
 <div class="quick-links">
 <ul>
   <% if vars.platform_code == 'CF' %>
-  <li><a href="#enable">Enable Container-to-Container Networking</a></li>
-  <li><a href="#logging">Manage Logging for Container-to-Container Networking</a></li>
+  <li><a href="#enable">Enable container-to-container networking</a></li>
+  <li><a href="#logging">Manage logging for container-to-container networking</a></li>
   <% end %>
   <% if vars.platform_code == "CF" || vars.platform_code == "PCF" %>
-  <li><a href="#overlay">Configure the Overlay Network</a></li>
+  <li><a href="#overlay">Configure the overlay network</a></li>
   <% end %>
-  <li><a href="#create-policies">Create and Manage Networking Policies</a>
+  <li><a href="#create-policies">Create and manage networking policies</a>
     <ul>
       <li><a href="#prereq">Prerequisites</a></li>
-      <li><a href="#grant">Grant Permissions</a></li>
-      <li><a href="#add-policy">Add a Network Policy</a></li>
-      <li><a href="#list-policies">List Network Policies</a></li>
-      <li><a href="#rm-policy">Remove a Network Policy</a></li>
-      <li><a href="#disable-policy">Disable Network Policy Enforcement</a></li>
-      <li><a href="#policy-quotas">Manage Network Policy Quotas</a></li>
+      <li><a href="#grant">Grant permissions</a></li>
+      <li><a href="#add-policy">Add a network policy</a></li>
+      <li><a href="#list-policies">List network policies</a></li>
+      <li><a href="#rm-policy">Remove a network policy</a></li>
+      <li><a href="#disable-policy">Disable network policy enforcement</a></li>
+      <li><a href="#policy-quotas">Manage network policy quotas</a></li>
     </ul>
-    <li><a href="#discovery">App Service Discovery</a>
+    <li><a href="#discovery">App service discovery</a>
       <% if vars.platform_code == "CF" || vars.platform_code == "PCF" %>
       <ul>
-        <li><a href="#enable-discovery">Enable App Service Discovery</a></li>
+        <li><a href="#enable-discovery">Enable app service discovery</a></li>
       </ul>
       <% end %>
     </li>
   </ul>
 </div>
 
-This topic describes how to configure the Container-to-Container Networking feature, which allows direct network traffic between apps. For an overview of how Container-to-Container Networking works, see the [Container-to-Container Networking](../../concepts/understand-cf-networking.html) topic.
+The container-to-container networking feature allows direct network traffic between apps. For an overview of how Container-to-Container Networking works, see the [Container-to-Container Networking](../../concepts/understand-cf-networking.html) topic.
 
 <p class="note"><b>Note:</b> Container-to-container networking is not available for apps hosted on Windows.</p>
 
@@ -59,7 +59,7 @@ This topic describes how to configure the Container-to-Container Networking feat
 <% end %>
 
 
-## <a name="create-policies"></a> Create and Manage Networking Policies
+## <a name="create-policies"></a> Create and manage networking policies
 
 This section describes how to create and modify Container-to-Container Networking policies using the Cloud Foundry Command Line Interface (cf CLI).
 
@@ -77,7 +77,7 @@ For more information about updating the cf CLI, see the [Installing the cf CLI](
 
 <% if vars.platform_code == "CF" || vars.platform_code == "PCF" %>
 
-### <a name="grant"></a> Grant Permissions
+### <a name="grant"></a> Grant permissions
 
 CF admins use the following UAA scopes to grant specific users or groups permissions to configure network policies:
 
@@ -107,7 +107,7 @@ To grant all Space Developers permissions to configure network policies, <%=  va
 
 <% end %>
 
-### <a name="add-policy"></a> Add a Network Policy
+### <a name="add-policy"></a> Add a network policy
 
 To add a policy that allows direct network traffic from one app to another, run the following command:
 
@@ -137,7 +137,7 @@ This limit does not apply to users with the `network.admin` scope.
 
 <%= vars.network_policy_quota_config %>
 
-### <a name="list-policies"></a> List Policies
+### <a name="list-policies"></a> List policies
 
 You can list all the policies in your space, or just the policies for which a single app is the source:
 
@@ -163,7 +163,7 @@ You can list all the policies in your space, or just the policies for which a si
     frontend    backend       tcp        8080     example-space        example-org
     </pre>
 
-### <a name="rm-policy"></a> Remove a Network Policy
+### <a name="rm-policy"></a> Remove a network policy
 
 To remove a policy that allows direct network traffic from an app, run the following command:
 
@@ -187,7 +187,7 @@ Removing network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>
 
-### <a name="disable-policy"></a> Disable Network Policy Enforcement
+### <a name="disable-policy"></a> Disable network policy enforcement
 
 You can disable Silk network policy enforcement between apps. Disabling network policy enforcement allows all apps to send network traffic to all other apps in the foundation despite no policy specifically allowing it.
 
@@ -223,7 +223,7 @@ To disable network policy enforcement between apps, do the following:
 <% end %>
 
 
-## <a name="discovery"></a> App Service Discovery
+## <a name="discovery"></a> App service discovery
 
 With app service discovery, apps pushed to <%= vars.app_runtime_abbr %> can establish container-to-container communications through a known route served by internal BOSH DNS. This allows front end apps to easily connect with back end apps.
 
@@ -240,7 +240,7 @@ See [Cats and Dogs with Service Discovery](https://github.com/cloudfoundry/cf-ne
 
 <% if vars.platform_code == 'CF' %>
 
-### <a name="enable-discovery"></a> Enable App Service Discovery
+### <a name="enable-discovery"></a> enable app service discovery
 
 To enable app service discovery, <%= vars.enable_c2c_discovery %>.
 

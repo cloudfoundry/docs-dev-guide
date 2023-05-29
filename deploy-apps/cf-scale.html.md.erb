@@ -1,14 +1,11 @@
 ---
-title: Scaling an App Using cf scale
+title: Scaling an app using Cloud Foundry CLI (cf scale)
 owner: CAPI
 ---
 
-This topic describes how to scale an app using the Cloud Foundry Command Line Interface (cf CLI).
 
-
-## <a id='overview'></a> Overview
-
-Several factors, such as user load or the number and nature of tasks, can change the disk space, memory, and log rate limit that an app uses. For many apps,
+Several factors, such as user load and the number and nature of tasks, can change the disk space, memory, and log rate limit that an app uses. This article describes how to scale an app using the Cloud Foundry Command Line Interface (cf CLI).
+For many apps,
 increasing the available disk space or memory can improve overall performance. Similarly, running additional instances of an app can allow the app to handle
 increases in user load and concurrent requests. Making these adjustments is called _scaling_ an app.
 

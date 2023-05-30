@@ -3,11 +3,11 @@ title: App Manifest Attribute Reference
 owner: CLI
 ---
 
-This topic describes manifest formatting and provides a full list of attributes available for app manifests. You can use it alongside the [Deploying with App Manifests](./manifest.html) topic, which provides basic procedures and guidance for deploying apps with manifests.
+App properties and behavior can be managed using cf CLI commands or the app manifest (a YAML properties file). This topic describes manifest formatting and provides a full list of attributes available for app manifests. You can use it alongside [Deploying with App Manifests](manifest.html), which provides basic procedures and guidance for deploying apps with manifests.
 
 For more information about V3 manifest properties, see the [Cloud Foundry API (CAPI) V3 documentation](http://v3-apidocs.cloudfoundry.org/index.html#space-manifest).
 
-## <a id='minimal-manifest'></a> Manifest Format
+## <a id='minimal-manifest'></a> Manifest format
 
 Manifests are written in YAML. The manifest below illustrates some YAML conventions, as follows:
 
@@ -29,7 +29,7 @@ applications:
 
 <p class="note"><strong>Note</strong>: If your app name begins with the dash character (<code>-</code>), you cannot interact with the app using the cf CLI. This is because the cf CLI interprets the dash as a flag.</p>
 
-### <a id='manifest-schema-version'></a> Add Schema Version to a Manifest
+### <a id='manifest-schema-version'></a> Add schema version to a manifest
 
 <%= partial 'v3-note' %>
 
@@ -39,7 +39,7 @@ This property is optional.
 The only supported version is `1`.
 If not specified, the `versions` property defaults to `1`.
 
-### <a id='variable-substitution'></a> Add Variables to a Manifest
+### <a id='variable-substitution'></a> Add variables to a manifest
 
 You can use variables to create app manifests with values shared across all applicable environments in combination with references to environment-specific differences defined in separate files.
 
@@ -78,7 +78,7 @@ To add variables to an app manifest, do the following:
     ```
     Where `PATH` is the path to the file you created.
 
-### <a id='minimize-duplication'></a> Minimize Duplication with YAML Anchors
+### <a id='minimize-duplication'></a> Minimize duplication with YAML anchors
 
 <p class='note'><strong>Note:</strong> Top-level attributes have been deprecated in favor of YAML anchors. For more information, see <a href=#deprecated>Deprecated App Manifest Features</a>.</p>
 
@@ -105,9 +105,7 @@ applications:
 This manifest pushes two apps, smallapp and bigapp, with the staticfile buildpack but with 256M memory for smallapp and 1G for bigapp.
 
 
-
-
-## <a id='optional-attributes'></a> Application Attributes
+## <a id='optional-attributes'></a> Application attributes
 
 This section explains how to describe optional app attributes in manifests. Each of these attributes can also be specified by a command line option. Command line options override the manifest.
 
@@ -428,10 +426,10 @@ This attribute is a combination of `push` options that include `--hostname`, `-d
   - route: tcp-example.com:1234
 </pre>
 
-#### <a id='manifest-attibutes-2'></a> Manifest Attributes
+#### <a id='manifest-attibutes-2'></a> Manifest attributes
 The `routes` attribute cannot be used in conjunction with the following attributes: `host`, `hosts`, `domain`, `domains`, and `no-hostname`. An error will result.
 
-#### <a id='push-flag-options'></a> Push Flag Options
+#### <a id='push-flag-options'></a> Push flag options
 
 This attribute has unique interactions with different command-line options.
 
@@ -519,7 +517,7 @@ The command line option that overrides the timeout attribute is `-t`.
   <code>cc.maximum_health_check_timeout</code>, the Cloud Controller reports a validation error with the maximum limit.</p>
 
 
-## <a id='env-block'></a> Environment Variables
+## <a id='env-block'></a> Environment variables
 
 The `env` block consists of a heading, then one or more environment variable/value pairs.
 
@@ -603,14 +601,14 @@ Binding to a service instance is a special case of setting an environment variab
 
 
 
-## <a id='deprecated'></a> Deprecated App Manifest Features
+## <a id='deprecated'></a> Deprecated app manifest features
 
 These app manifest features have been deprecated in favor of other options, as described below.
 
 <p class='note warning'><strong>Caution:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated
   features along with the feature that replaces it.</p>
 
-### <a id='yaml-anchors'></a> YAML Anchors Replace Top-Level Attributes
+### <a id='yaml-anchors'></a> YAML anchors replace top-level attributes
 
 Previously, you could declare top-level attributes, which are also known as global attributes. For example, you can move an attribute above the `applications` block, where it need appear only once.
 
@@ -655,7 +653,7 @@ applications:
 
 When pushing the app, make explicit the attributes in each app’s declaration. To do this, assign the anchors and include the app-level attributes with YAML aliases in each app declaration.
 
-### <a id='route-attribute'></a> Attribute routes Replaces domain, domains, host, hosts, and no-hostname
+### <a id='route-attribute'></a> Attribute routes replaces domain, domains, host, hosts, and no-hostname
 
 <p class="note"><strong>Note</strong>: These properties are removed in cf CLI v7.</p>
 
@@ -700,6 +698,6 @@ This feature has been deprecated, and has been replaced by [Variable Substitutio
 With inheritance, child manifests inherited configurations from a parent manifest, and the child manifests could use inherited configurations as provided, extend them, or override them. This feature has been deprecated, and has been replaced by [Variable Substitution](#variable-substitution).
 
 
-### <a id='buildpack-deprecated'></a> Buildpack Field in Manifest Is Deprecated
+### <a id='buildpack-deprecated'></a> Buildpack field in manifest is deprecated
 
 The singular `buildpack` field in manifests is deprecated. It has been replaced by `buildpacks`, which is now an array which takes as a value [multiple buildpacks](#buildpack).

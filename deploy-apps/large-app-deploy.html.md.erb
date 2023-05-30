@@ -1,16 +1,16 @@
 ---
-title: Deploying a Large App
+title: Deploying large apps
 owner: CAPI
 ---
 
-This topic describes constraints and recommended settings for deploying apps above 750&nbsp;MB to <%= vars.app_runtime_first %>.
+When you deploy apps larger than 750&nbsp;MB to <%= vars.app_runtime_first %>, you must observe additional constraints and recommended settings.
 
 
 ## <a id='considerations'></a> Deployment considerations and limitations
 
 The deployment process involves uploading, staging, and starting the app. For more information about the default time limits for uploading, staging, and starting an app, see [Deployment](app-lifecycle.html#deployment) in _App Container Lifecycle_.
 
-To deploy large apps to <%= vars.app_runtime_abbr %>, ensure the following:
+To deploy large apps to <%= vars.app_runtime_abbr %>, ensure that:
 
 * The total size of the files to upload for your app does not exceed <%= vars.max_app_size %>.
 

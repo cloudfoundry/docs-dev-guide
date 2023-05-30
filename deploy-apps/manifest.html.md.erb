@@ -1,17 +1,14 @@
 ---
-title: Deploying with App Manifests
+title: Deploying with app manifests
 owner:
   - CAPI
   - CLI
 ---
 
-This topic provides basic procedures and guidance for deploying apps with a manifest file to <%= vars.app_runtime_first %>.
 
 
-## <a id='overview'></a> Overview
-
-Manifests provide consistency and reproducibility, and can help you automate deploying apps. Both manifests and command line options allow you to override the
-default attribute values of `cf push`. These attributes include the number of app instances, disk space limit, memory limit, and log rate limit.
+App manifests provide consistency and reproducibility, and can help you automate deploying apps. This article provides basic procedures and guidance for deploying apps with a manifest file to <%= vars.app_runtime_first %>.
+Both manifests and command line options allow you to override the default attribute values of `cf push`. These attributes include the number of app instances, disk space limit, memory limit, and log rate limit.
 
 `cf push` follows rules of precedence when setting attribute values:
 
@@ -19,10 +16,10 @@ default attribute values of `cf push`. These attributes include the number of ap
 
 * Command line options override manifests.
 
-For a full list of attributes you can specify in an app manifest, see [App Manifest Attribute Reference](manifest-attributes.html).
+For a full list of attributes you can specify in an app manifest, see [App manifest attribute reference](manifest-attributes.html).
 
 
-## <a id='procedure'></a> Deploy an App with a Manifest
+## <a id='procedure'></a> Deploy an app with a manifest
 
 To deploy an app with a manifest:
 
@@ -47,15 +44,15 @@ To deploy an app with a manifest:
     If you specify any values with command-line flags, they override the values specified in the manifest. For more information, see [Deploy Multiple Apps
     with One Manifest](#multi-apps).
 
-For more information about manifest format and attributes, see [App Manifest Attribute Reference](manifest-attributes.html).
+For more information about manifest format and attributes, see [App manifest attribute reference](manifest-attributes.html).
 
 
-## <a id='multi-apps'></a> Deploy Multiple Apps with One Manifest
+## <a id='multi-apps'></a> Deploy multiple apps with one manifest
 
 This section describes how to deploy multiple apps with a minimal manifest. For more information about manifest format and attributes, see [App Manifest
 Attribute Reference](manifest-attributes.html).
 
-### <a id='general-rules'></a> General Rules
+### <a id='general-rules'></a> General rules
 
 Follow these general rules when deploying multiple apps with one manifest:
 

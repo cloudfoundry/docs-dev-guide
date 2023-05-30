@@ -14,7 +14,7 @@ For more information about the features of HTTP routing handled by the Gorouter 
 see [HTTP routing](../../concepts/http-routing.html).
 For more information about the lifecycle of app containers, see [App container lifecycle](app-lifecycle.html).
 
-### <a id="filesystem"></a> Avoid writing to the local file system
+## <a id="filesystem"></a> Avoid writing to the local file system
 
 Apps running on <%= vars.platform_name %> must not write files to the local file system
 for the following reasons:
@@ -43,7 +43,7 @@ with other apps through a network attached file system or because your app is ba
 that you cannot rewrite, consider using volume services to bind a network attached file system to your app.
 For more information, see [Using an External File System (Volume Services)](../services/using-vol-services.html).
 
-### <a id="shared-cookies"></a> Cookies accessible across apps
+## <a id="shared-cookies"></a> Cookies accessible across apps
 
 In an environment with shared domains, cookies might be accessible across apps.
 
@@ -53,7 +53,7 @@ For example, an app at `my-app.<%= vars.app_domain %>` might be able to access t
 
 You must decide whether or not you want your apps or tools that use cookies to set and store the cookies at the highest available domain.
 
-### <a id="ports"></a> Port considerations
+## <a id="ports"></a> Port considerations
 
 Clients connect to apps running on <%= vars.platform_name %> by making requests to URLs associated with the app.
 <%= vars.platform_name %> allows HTTP requests to apps on ports 80 and 443.
@@ -65,7 +65,7 @@ to the app to form a WebSocket connection.
 
 <%= vars.port_limitations %>
 
-### <a id="moving-apps"></a> <%= vars.platform_name %> updates and your app
+## <a id="moving-apps"></a> <%= vars.platform_name %> updates and your app
 
 For app management purposes, <%= vars.platform_name %> might need to stop and restart your app instances.
 If this occurs, <%= vars.platform_name %> performs the following steps:

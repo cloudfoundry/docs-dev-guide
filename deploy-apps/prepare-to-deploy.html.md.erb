@@ -1,26 +1,20 @@
 ---
-title: Considerations for Designing and Running an App in the Cloud
+title: Designing and running an App in the cloud
 owner: CAPI
 ---
 
-This topic describes some considerations you should keep in mind when designing and
-running an app through <%= vars.platform_name %>.
 
-
-## <a id="app-design"></a> App Design for the Cloud
+These guidelines represent best practices for developing modern apps for cloud platforms. For more detailed reading about good app design for the cloud, see [The Twelve-Factor App](http://www.12factor.net).
 
 Apps written in supported frameworks often run unmodified on <%= vars.platform_name %>
 if the app design follows a few simple guidelines.
 Following these guidelines facilitates app deployment to <%= vars.platform_name %> and other cloud platforms.
 
-The following guidelines represent best practices for developing modern apps for cloud platforms. For more detailed reading about good app design for the cloud, see [The Twelve-Factor App](http://www.12factor.net).
-
 For more information about the features of HTTP routing handled by the Gorouter in <%= vars.platform_name %>,
-see [HTTP Routing](../../concepts/http-routing.html).
-For more information about the lifecycle of app containers,
-see [App Container Lifecycle](app-lifecycle.html).
+see [HTTP routing](../../concepts/http-routing.html).
+For more information about the lifecycle of app containers, see [App container lifecycle](app-lifecycle.html).
 
-### <a id="filesystem"></a> Avoid Writing to the Local File System
+### <a id="filesystem"></a> Avoid writing to the local file system
 
 Apps running on <%= vars.platform_name %> should not write files to the local file system
 for the following reasons:

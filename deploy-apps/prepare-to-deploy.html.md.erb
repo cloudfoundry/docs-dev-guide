@@ -43,7 +43,7 @@ with other apps through a network attached file system or because your app is ba
 that you cannot rewrite, consider using volume services to bind a network attached file system to your app.
 For more information, see [Using an External File System (Volume Services)](../services/using-vol-services.html).
 
-### <a id="shared-cookies"></a> Cookies Accessible Across Apps
+### <a id="shared-cookies"></a> Cookies accessible across apps
 
 In an environment with shared domains, cookies might be accessible across apps.
 
@@ -53,7 +53,7 @@ For example, an app at `my-app.<%= vars.app_domain %>` might be able to access t
 
 You should decide whether or not you want your apps or tools that use cookies to set and store the cookies at the highest available domain.
 
-### <a id="ports"></a> Port Considerations
+### <a id="ports"></a> Port considerations
 
 Clients connect to apps running on <%= vars.platform_name %> by making requests to URLs associated with the app.
 <%= vars.platform_name %> allows HTTP requests to apps on ports 80 and 443.
@@ -65,7 +65,7 @@ to the app to form a WebSocket connection.
 
 <%= vars.port_limitations %>
 
-### <a id="moving-apps"></a> <%= vars.platform_name %> Updates and Your App
+### <a id="moving-apps"></a> <%= vars.platform_name %> updates and your app
 
 For app management purposes, <%= vars.platform_name %> may need to stop and restart your app instances.
 If this occurs, <%= vars.platform_name %> performs the following steps:
@@ -89,7 +89,7 @@ Your app should accept and handle the termination signal to ensure that it shuts
 For an implementation of the expected shutdown behavior in Golang, see the [Sample HTTP App](https://github.com/cloudfoundry/sample-http-app) repository on GitHub.
 
 
-## <a id="exclude"></a> Ignore Unnecessary Files When Pushing
+## <a id="exclude"></a> Ignore unnecessary files when pushing
 
 By default, when you push an app, all files in the app's project directory tree are uploaded
 to your <%= vars.platform_name %> instance, except version control and configuration files
@@ -118,7 +118,7 @@ To use a `.cfignore` file, create a text file named `.cfignore` in the root of y
 The file types you might want to exclude vary, based on the app frameworks you use. For examples of commonly-used `.gitignore` files, see the [gitignore](https://github.com/github/gitignore) repository on GitHub.
 
 
-## <a id="increase-availability"></a> Run Multiple Instances to Increase Availability
+## <a id="increase-availability"></a> Run multiple instances to increase availability
 
 Singleton apps may become temporarily unavailable for reasons that include:
 
@@ -134,7 +134,7 @@ or become unroutable for a minute or two.
 To avoid the risk of an app becoming temporarily unavailable, developers can run more than one instance of the app.
 
 
-## <a id="buildpacks"></a> Using Buildpacks
+## <a id="buildpacks"></a> Using buildpacks
 
 A buildpack consists of bundles of detection and configuration scripts that provide framework
 and runtime support for your apps.

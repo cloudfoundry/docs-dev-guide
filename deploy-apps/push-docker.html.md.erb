@@ -1,9 +1,9 @@
 ---
-title: Deploying an App with Docker
+title: Deploying an app with docker
 owner: Diego
 ---
 
-This topic describes how to use the [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html) to push an app with a new or updated Docker image. <%= vars.app_runtime_first %> then uses the Docker image to create containers for the app.
+You can use the [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html) to push an app with a new or updated Docker image. <%= vars.app_runtime_first %> then uses the Docker image to create containers for the app.
 
 <%= vars.using_docker_link %>
 
@@ -255,7 +255,7 @@ To create a JSON key file and associate it with your project:
       <li><code>YOUR-PROJECT-ID</code> is your project ID.</li>
     </ul>
 
-#### <a id='deploy'></a> Step 2: Deploy the GCP Image
+#### <a id='deploy'></a> Step 2: Deploy the GCP image
 
 To deploy your GCR image using the cf CLI, run:
 
@@ -278,6 +278,6 @@ Where:
 <p class="note"><strong>Note:</strong> For information about specifying <code>YOUR-REGISTRY-URL</code>, see <a href="https://cloud.google.com/container-registry/docs/pushing-and-pulling">Pushing and Pulling Images</a> in the Google Cloud documentation.</p>
 
 
-## <a id='volume'></a> Docker Volume support
+## <a id='volume'></a> Docker volume support
 
 You can use volume services with Docker apps. For more information about enabling volume support, see [Using an External File System (Volume Services)](../services/using-vol-services.html).

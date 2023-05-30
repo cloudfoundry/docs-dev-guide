@@ -1,5 +1,5 @@
 ---
-title: App Manifest Attribute Reference
+title: App manifest attribute reference
 owner: CLI
 ---
 
@@ -9,7 +9,7 @@ For more information about V3 manifest properties, see the [Cloud Foundry API (C
 documentation](http://v3-apidocs.cloudfoundry.org/index.html#space-manifest).
 
 
-## <a id='minimal-manifest'></a> Manifest Format
+## <a id='minimal-manifest'></a> Manifest format
 
 Manifests are written in YAML. The following manifest illustrates some YAML conventions:
 
@@ -36,7 +36,7 @@ applications:
 <p class='note'><strong>Note:</strong> If your app name begins with the dash character (<code>-</code>), you cannot interact with the app using the cf CLI.
   This is because the cf CLI interprets the dash as a flag.</p>
 
-### <a id='manifest-schema-version'></a> Add Schema Version to a Manifest
+### <a id='manifest-schema-version'></a> Add schema version to a manifest
 
 <%= partial 'v3-note' %>
 
@@ -44,7 +44,7 @@ You can specify the schema version in the `versions` property of the manifest. T
 
 The only supported version is `1`. If not specified, the `versions` property defaults to `1`.
 
-### <a id='variable-substitution'></a> Add Variables to a Manifest
+### <a id='variable-substitution'></a> Add variables to a manifest
 
 You can use variables to create app manifests with values shared across all applicable environments in combination with references to environment-specific
 differences defined in separate files.
@@ -84,7 +84,7 @@ To add variables to an app manifest:
     ```
     Where `PATH` is the path to the file you created.
 
-### <a id='minimize-duplication'></a> Minimize Duplication with YAML Anchors
+### <a id='minimize-duplication'></a> Minimize duplication with YAML anchors
 
 <p class='note'><strong>Note:</strong> Top-level attributes are deprecated in favor of YAML anchors. For more information, see
   <a href="#top-level-attributes">Top-Level Attributes</a> below.</p>
@@ -113,7 +113,7 @@ The example manifest above pushes two apps with the `staticfile` buildpack, `sma
 memory for `bigapp`.
 
 
-## <a id='optional-attributes'></a> App Attributes
+## <a id='optional-attributes'></a> App attributes
 
 This section explains how to describe optional app attributes in manifests. Each of these attributes can also be specified by a command line option.
 Command-line options override the manifest.
@@ -516,11 +516,11 @@ For example:
   - route: tcp-example.com:1234
 ```
 
-#### <a id='manifest-attibutes-2'></a> Manifest Attributes
+#### <a id='manifest-attibutes-2'></a> Manifest attributes
 
 If you use the `routes` attribute in conjunction with the `host`, `hosts`, `domain`, `domains`, or `no-hostname` attributes, an error results.
 
-#### <a id='push-flag-options'></a> Push Flag Options
+#### <a id='push-flag-options'></a> Push flag options
 
 This attribute has unique interactions with different command-line options.
 
@@ -615,7 +615,7 @@ The `-t` command-line flag overrides this attribute.
   <code>cc.maximum_health_check_timeout</code>, the Cloud Controller reports a validation error with the maximum limit.</p>
 
 
-## <a id='env-block'></a> Environment Variables
+## <a id='env-block'></a> Environment variables
 
 The `env` block consists of a heading, then one or more environment variable/value pairs.
 
@@ -708,14 +708,14 @@ You can bind an app to a service instance by setting the `VCAP_SERVICES` environ
 Service](../services/application-binding.html#bind) in _Delivering Service Credentials to an App_.
 
 
-## <a id='deprecated'></a> Deprecated App Manifest Features
+## <a id='deprecated'></a> Deprecated app manifest features
 
 This section describes app manifest features that are deprecated in favor of other features.
 
 <p class='note warning'><strong>Caution:</strong> Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated
   features along with the feature that replaces it.</p>
 
-### <a id='top-level-attributes'></a> Top-Level Attributes
+### <a id='top-level-attributes'></a> Top-level attributes
 
 Previously, you could declare top-level attributes, which are also known as global attributes. For example, you can move an attribute above the `applications`
 block, where it need appear only once.

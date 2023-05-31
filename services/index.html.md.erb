@@ -1,12 +1,12 @@
 ---
-title: Services Overview
+title: Provisioning and integrating service instances
 owner: Services API
 ---
 
-This documentation is intended for end users of Cloud Foundry and covers provisioning of service instances and integrating them with apps that have been pushed to Cloud Foundry. <%= vars.custom_services %>
+You can provision service instances and integrate them with apps that you have pushed to Cloud Foundry. <%= vars.custom_services %>
 
 
-## <a id='instances'></a> Services and Service Instances
+## <a id='instances'></a> Services and service instances
 
 Cloud Foundry offers a marketplace of services, from which users can provision reserved resources on-demand. Examples of resources services provide include databases on a shared or dedicated server, or accounts on a SaaS app. These resources are known as service instances and the systems that deliver and operate these resources are known as Services. Think of a service as a factory that delivers service instances.
 
@@ -14,22 +14,22 @@ For more information about provisioning service instances and other lifecycle op
 
 <p class='note'><strong>Note:</strong> For a service to be available in the marketplace, it must be integrated with Cloud Foundry by way of APIs. <%= vars.custom_services %></p>
 
-### <a id='user-provided-services'></a> User-Provided Service Instances
+### <a id='user-provided-services'></a> User-provided service instances
 
 Cloud Foundry enables users to leverage services that are not available in the marketplace using user-provided service instances (UPSI). For more information, see [User-Provided Service Instances](./user-provided.html)
 
 
-## <a id='credentials'></a> Service Instance Credentials
+## <a id='credentials'></a> Service instance credentials
 
 Cloud Foundry enables users to provision credentials needed to interface with a service instance. You can use app binding to deliver these credentials to your Cloud Foundry app. For external and local clients, you can use service keys to generate credentials to communicate directly with a service instance.
 
-### <a id='application-binding'></a> App Binding
+### <a id='application-binding'></a> App binding
 
 Service instance credentials can be delivered to apps running on Cloud Foundry in an environment variable. For more information, see [Delivering Service Credentials to an App](./application-binding.html).
 
 For information about binding to a specific app development framework, see [Buildpacks](../../buildpacks/index.html).
 
-### <a id='service-keys'></a> Service Keys
+### <a id='service-keys'></a> Service keys
 
 Credentials managed manually are known as service keys. Use service keys when you want a set of credentials for use by clients other than the app in the same space. For instance, you can use service keys to connect to a service instance from a local client, or from an app in another space, or even from outside of Cloud Foundry.
 
@@ -48,19 +48,19 @@ In your external service configuration, you must do one of the following:
 * Derive the app IP address from its DNS name using a command-line tool such as `dig`, `host`, or `nslookup`. In your external service configuration, add the IP address or range of the app instance to your allow list.
 
 
-## <a id='log-management'></a> Stream App Logs to Log Management Services
+## <a id='log-management'></a> Stream app logs to log management services
 
 To learn how your app logs can be streamed to third-party log management services, see [Streaming App Logs to Log Management Services](./log-management.html).
 
 User-provided service instances can be used to drain app logs to a service not available in the marketplace. This is also known as setting up a syslog drain. For guidance on configuring some third-party log management services, see [Service-Specific Instructions for Streaming App Logs](./log-management-thirdparty-svc.html).
 
 
-## <a id='route-services'></a> Manage App Requests with Route Services
+## <a id='route-services'></a> Manage app requests with route services
 
 To learn how marketplace services (and user-provided service instances) can be used to perform preprocessing on app requests, see [Managing App Requests with Route Services](./route-binding.html).
 
 
-## <a id='migrating'></a> Migrate a Database Schema
+## <a id='migrating'></a> Migrate a database schema
 
 If your app relies on a relational database, you must apply schema changes periodically. To perform database schema migrations on Cloud Foundry-managed services, run a database migration task with the Cloud Foundry Command Line Interface (cf CLI) tool.
 

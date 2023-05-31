@@ -1,11 +1,11 @@
 ---
-title: Managing Service Instances with the cf CLI
+title: Managing service instances with the cf CLI
 owner: Core Services
 ---
 
 
 
-This topic describes lifecycle operations for service instances, including creating, updating, and deleting. For an overview of services, and documentation about other service management operations, see [Services Overview](./index.html). <%= vars.custom_services %>
+You can manage lifecycle operations for service instances using the Cloud Foundry CLI (cf CLI). This includes creating, updating, and deleting service instances. For documentation about other service management operations, see [Services Overview](./index.html). <%= vars.custom_services %>
 
 To run the commands in this topic, you must first install the Cloud Foundry Command Line Interface (cf CLI). See the [Cloud Foundry Command Line Interface](../../cf-cli/index.html) topics for more information.
 
@@ -260,7 +260,7 @@ OK
 ## <a id='update_service'></a>Update a service instance
 
 ### Changing a service plan
-_Changing a plan requires cf CLI v6.7+ and cf-release v192+_
+_Changing a plan requires cf CLI v6.7+ and cf-release v192+. CLI v7 or v8 is recommended._
 
 By updating the service plan for an instance, you can change the service instance to other service plans. Though the platform and CLI now support this feature, services must implement support for it. Further, a service might support updating between some plans but not others. For instance, a service might support updating a plan where only a logical change is required, but not where data migration is necessary. In either case, users can expect to see a meaningful error when plan update is not supported.
 

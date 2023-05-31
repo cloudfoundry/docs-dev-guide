@@ -1,11 +1,11 @@
 ---
-title: Managing App Requests with Route Services
+title: Managing app requests with route services
 owner: CF for VMs Networking
 ---
 
 
 
-This topic describes how to bind a service instance to a route for the purpose of adding preprocessing to app requests.
+Here are instructions for binding a service instance to a route for the purpose of adding preprocessing to your Cloud Foundry app requests.
 
 <%= vars.route_services_appsman2 %>
 
@@ -18,7 +18,7 @@ To use route services, developers must first create a service instance, choosing
 
 To view an example demonstrating the use of a sample route service, see [Route Services in Pivotal Cloud Foundry](https://youtu.be/VaaZJE2E4jI) on YouTube.
 
-## <a id='bind'></a> Bind a Route to a Service Instance ##
+## <a id='bind'></a> Bind a route to a service instance
 
 You must install the Cloud Foundry Command Line Interface (cf CLI) to bind a route to a service instance. For more information, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
 
@@ -37,7 +37,7 @@ OK
 
 <p class="note"><strong>Note</strong>: When binding a service instance to a route, Cloud Foundry might have proxy requests for the route to the service instance, or configure a network component already in the request path.</p>
 
-### <a id='bind-arbitrary-parameters'></a> Bind with Parameters ###
+### <a id='bind-arbitrary-parameters'></a> Bind with parameters
 
 Some services support additional configuration parameters supplied with the bind request. You can pass service-specific configuration parameters in a valid JSON object, provided either in-line or in a file. For a list of supported configuration parameters, see the documentation for the particular service offering you bind to.
 
@@ -59,7 +59,7 @@ Binding route my-app.<%=vars.app_domain%> to service instance my-route-service i
 OK
 </pre>
 
-## <a id='unbind'></a> Unbind a Route from a Service Instance ##
+## <a id='unbind'></a> Unbind a Route from a service instance
 
 You must install the Cloud Foundry Command Line Interface (cf CLI) to bind a route to a service instance. For more information, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
 

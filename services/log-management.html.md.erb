@@ -1,11 +1,11 @@
 ---
-title: Streaming App Logs to Log Management Services
+title: Streaming app logs to log management services
 owner: PCF Metrics
 ---
 
-This topic describes how to drain logs from Cloud Foundry to a third-party log management service.
+Here are instructions for draining logs from Cloud Foundry to a third-party log management service.
 
-Cloud Foundry aggregates logs for all instances of your apps as well as for requests made to your apps through internal components of Cloud Foundry. For example, when the Cloud Foundry Router forwards a request to an app, the Router records that event in the log stream for that app. Run the following command to access the log stream for an app in the terminal:
+Cloud Foundry aggregates logs for all instances of your apps and for requests made to your apps through internal components of Cloud Foundry. For example, when the Cloud Foundry router forwards a request to an app, the router records that event in the log stream for that app. Run the following command to access the log stream for an app in the terminal:
 
 <pre class="terminal">$ cf logs YOUR-APP-NAME</pre>
 

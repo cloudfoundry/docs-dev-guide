@@ -1,16 +1,15 @@
 ---
-title: Service-Specific Instructions for Streaming App Logs
+title: Streaming app logs to third-party services
 owner: PCF Metrics
 ---
 
 
 
-This topic provides instructions for configuring some third-party log management
-services.
+Here are instructions for configuring some third-party log management services for your Cloud Foundry apps.
 
 After you have configured a service, refer to the [Third-Party Log Management Services](./log-management.html) topic for instructions on binding your app to the service.
 
-## <a id='logit'></a>Logit.io ##
+## <a id='logit'></a>Logit.io
 
 From your Logit.io dashboard:
 
@@ -50,7 +49,7 @@ From your Logit.io dashboard:
 
     After a short delay, logs begin to appear in Kibana.
 
-## <a id='papertrail'></a>Papertrail ##
+## <a id='papertrail'></a>Papertrail
 
 From your Papertrail account:
 
@@ -90,11 +89,11 @@ From your Papertrail account:
 
     ![alt-text=""](../images/third-party-logs/papertrail-11.png)
 
-## <a id='splunk'></a>Splunk ##
+## <a id='splunk'></a>Splunk
 
 See [Streaming App Logs to Splunk](integrate-splunk.html) for details.
 
-## <a id='splunkstorm'></a>Splunk Storm ##
+## <a id='splunkstorm'></a>Splunk Storm
 
 From your Splunk Storm account:
 
@@ -130,7 +129,7 @@ From your Splunk Storm account:
 
     ![alt-text=""](../images/third-party-logs/splunkstorm-10.png)
 
-## <a id='sumologic'></a>SumoLogic ##
+## <a id='sumologic'></a>SumoLogic
 
 <p class="note"><strong>Note</strong>: SumoLogic uses HTTPS for communication. HTTPS is supported in Cloud Foundry v158 and later.</p>
 
@@ -181,7 +180,7 @@ In your SumoLogic account:
 
     ![alt-text=""](../images/third-party-logs/sumologic-10.png)
 
-## <a id='logsene'></a>Logsene ##
+## <a id='logsene'></a>Logsene
 
 <p class="note"><strong>Note</strong>: Logsene uses HTTPS for communication. HTTPS is supported in Cloud Foundry v158 and later.</p>
 
@@ -197,6 +196,6 @@ In your Sematext account:
     $ cf restage APPLICATION-NAME
     </pre>
 
-## <a id='logentries'></a>Logentries is Not Supported ##
+## <a id='logentries'></a>Logentries is not supported
 
 Using Logentries is not recommended because it does not support multiple syslog sources. Cloud Foundry distributes log messages over multiple servers to handle the load.

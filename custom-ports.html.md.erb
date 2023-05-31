@@ -1,5 +1,5 @@
 ---
-title: Configuring CF to Route Traffic to Apps on Custom Ports
+title: Configuring CF to route traffic to apps on custom ports
 owner: CF for VMs Networking
 ---
 
@@ -10,10 +10,6 @@ owner: CF for VMs Networking
 
 <% end %>
 
-This topic describes how to configure <%= vars.app_runtime_first %> to route traffic to your apps listening on custom ports.
-
-
-## <a id="overview"></a> Overview
 
 By default, apps only receive requests on port 8080 for both HTTP and TCP routing, and so must be configured, or hardcoded, to listen on this port. Configuring custom app ports allows developers to bring workloads onto <%= vars.app_runtime_abbr %> that listen on ports other than 8080. Some example use cases are:
 
@@ -27,7 +23,9 @@ The procedure below describes how to use the `apps` and `route_mappings` Cloud C
 
 ### <a id="flow"></a> Flow of a Request to an App
 
-The following table describes the Network Address Translation that occurs in the data path of a client request. The procedure in this document discusses configuring _app ports_ specifically.
+## <a id='flow'></a> Flow of a request to an app
+
+The following table describes the Network Address Translation that occurs in the data path of a client request.
 
 | Port Type | Description | Network Hop |
 | --------- | ----------- | ----------- |
@@ -107,7 +105,7 @@ To configure your app to receive HTTP or TCP traffic on custom ports:
 <p class="note"><strong>Note:</strong> If you are trying to remove an app port, you need to delete the associated route mapping before you can update the app to remove the port.</p>
 
 
-## <a id="additional-resources"></a> Additional Resources
+## <a id='additional-resources'></a> Additional resources
 
 For additional resources related to configuring custom app ports:
 

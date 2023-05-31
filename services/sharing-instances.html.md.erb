@@ -1,12 +1,12 @@
 ---
-title: Sharing Service Instances
+title: Sharing service instances
 owner: Core Services
 ---
 
-This topic tells you how to use service instance sharing.
+Here are instructions for sharing service instances in your Cloud Foundry apps.
 
 
-## <a id="about"></a> About Service Instance Sharing
+## <a id="about"></a> About service instance sharing
 
 Sharing a service instance between spaces allows apps in different
 spaces to share databases, messaging queues, and other types of services.
@@ -38,7 +38,7 @@ instance, and the two apps can begin publishing and receiving
 messages from one another.
 
 
-## <a id="enabling"></a> Enabling Service Instance Sharing in Cloud Foundry
+## <a id="enabling"></a> Activating service instance sharing in Cloud Foundry
 
 To activate service instance sharing, the platform operator must activate the `service_instance_sharing` flag in Cloud Foundry.
 
@@ -47,7 +47,7 @@ $ cf enable-feature-flag service_instance_sharing
 </pre>
 
 
-## <a id="sharing"></a> Sharing a Service Instance
+## <a id="sharing"></a> Sharing a service instance
 
 You can share a service instance from one space to another if you have the Space Developer role in both spaces.
 
@@ -67,7 +67,7 @@ service and service plan of the service instance that you are sharing. Run the `
 * If you no longer have access to the service or service plan used to create your service instance,
 you cannot share that service instance.
 
-## <a id="info-sharing"></a> Get Information About Service Instance Sharing
+## <a id="info-sharing"></a> Get information about service instance sharing
 
 To get information about service instance sharing on the originating space, run the following cf CLI command from that originating space:
 
@@ -146,7 +146,7 @@ No upgrade available for this service.
 In this case, no information about other spaces is exposed.
 
 
-## <a id="unsharing"></a> Unsharing a Service Instance
+## <a id="unsharing"></a> Unsharing a service instance
 
 <p class="note warning"><strong>Caution:</strong> Unsharing a service instance deletes all bindings to apps in the spaces it was shared into.
 This might cause apps to fail. Before unsharing a service instance,
@@ -167,7 +167,7 @@ $ cf unshare-service SERVICE-INSTANCE -s OTHER-SPACE [-o OTHER-ORG] [-f]
 The optional `-f` flag forces unsharing without confirmation.
 
 
-## <a id="security"></a> Security Considerations
+## <a id="security"></a> Security considerations
 
 * [Service keys](./service-keys.html) cannot be created from a space that a
 service instance has been shared into.
@@ -184,7 +184,7 @@ Contact the service vendor directly if you are unable to share instances of thei
 If you are a service author, see [Enabling Service Instance Sharing](../../services/enable-sharing.html).
 
 
-## <a id="disabling"></a> Deactivating Service Instance Sharing in Cloud Foundry
+## <a id="disabling"></a> Deactivating service instance sharing in Cloud Foundry
 
 To deactivate service instance sharing, run the following command:
 
@@ -195,7 +195,7 @@ $ cf disable-feature-flag service_instance_sharing
 This only prevents new shares from being created. To remove existing shares, see [Deleting All Shares](#deleting).
 
 
-## <a id="deleting"></a> Deleting All Shares
+## <a id="deleting"></a> Deleting all shares
 
 The following script finds all service instances that are shared, and for each
 space that the service instance is shared into, all service bindings to that service instance are deleted, and all shares are deleted.

@@ -1,5 +1,5 @@
 ---
-title: Streaming App Logs with Fluentd
+title: Streaming app logs with Fluentd
 owner: Logging and Metrics
 ---
 
@@ -9,7 +9,7 @@ owner: Logging and Metrics
 you to implement unified logging layers. With Fluentd, you can stream app logs to different backends or services like Elasticsearch, HDFS and
 Amazon S3. This topic explains how to integrate Fluentd with Cloud Foundry apps.
 
-## <a id='drain'></a> Step 1: Create a Cloud Foundry Syslog Drain for Fluentd ##
+## <a id='drain'></a> Step 1: Create a Cloud Foundry syslog drain for Fluentd
 
 1. In Cloud Foundry, create a syslog drain user-provided service instance as
 described in [Using Third-Party Log Management Services](./log-management.html).
@@ -27,7 +27,7 @@ For example:
 
 	`syslog://logs.example.com:5140`
 
-## <a id='config'></a>Step 2: Set up Fluentd for Cloud Foundry ##
+## <a id='config'></a>Step 2: Set up Fluentd for Cloud Foundry
 
 This section assumes you have an active Fluentd instance running.
 If you do not have an active Fluentd instance, refer to the

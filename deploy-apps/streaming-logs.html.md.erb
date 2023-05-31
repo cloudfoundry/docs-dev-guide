@@ -1,5 +1,5 @@
 ---
-title: App Logging in Cloud Foundry
+title: App logging in Cloud Foundry
 owner: PCF Metrics
 ---
 
@@ -10,7 +10,7 @@ owner: PCF Metrics
 
 <% end %>
 
-This topic describes how Loggregator, the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) component responsible for logging, provides a stream of log output from your app and from <%= vars.app_runtime_abbr %> system components that interact with your app during updates and execution.
+Loggregator, the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) component responsible for logging, provides a stream of log output from your app and from <%= vars.app_runtime_abbr %> system components that interact with your app during updates and execution.
 
 
 ## <a id='overview'></a> Overview
@@ -26,7 +26,7 @@ app logs.
 quickly enough, the Loggregator buffer might need to overwrite some lines before the client has consumed them. A syslog
 drain or a CLI tail can usually keep up with the flow of app logs.
 
-## <a id='types'></a> Contents of a Log Line
+## <a id='types'></a> Contents of a log line
 
 Every log line contains four fields:
 
@@ -52,7 +52,7 @@ Many frameworks write to an app log that is separate from `stdout` and `stderr`.
 correctly writes logs to `stdout` and `stderr` only. Some buildpacks do this, and some do not.
 
 
-## <a id='format'></a> Log Types and Their Messages
+## <a id='format'></a> Log types and their messages
 
 Different types of logs have different message formats, as shown in the following examples. The digit appended to the code
 indicates the instance index: 0 is the first instance, 1 is the second, and so on.
@@ -90,7 +90,7 @@ For example:
 2016-06-14T10:51:32.51-0700 [RTR/1]      OUT www.example.com - [14/06/2016:17:51:32.459 +0000] "GET /user/ HTTP/1.1" 200 0 103455 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.123 Safari/537.30" 192.0.2.132:46359 x_forwarded_for:"198.51.100.120" x_forwarded_proto:"http" vcap_request_id:9365d216-623a-45cb-6ef6-eba495c19fa8 response_time:0.059468637 app_id:79cc58aa-3737-43ae-ac71-39a2843b5178
 </pre>
 
-#### <a id='traceid'></a> Zipkin Trace Logging
+#### <a id='traceid'></a> Zipkin trace logging
 
 If Zipkin trace logging is allowed in <%= vars.app_runtime_abbr %>, Gorouter access log messages contain Zipkin HTTP headers.
 
@@ -150,7 +150,7 @@ For example:
 </pre>
 
 
-## <a id='writing'></a> Writing to the Log from Your App
+## <a id='writing'></a> Writing to the log from your app
 
 Your app must write logs to `stderr` or `stdout`. Both are typically buffered, and you can flush the buffer before
 delivering the message to Loggregator.
@@ -158,18 +158,18 @@ delivering the message to Loggregator.
 Alternatively, you can write log messages to `stderr` or `stdout` synchronously. This approach is mainly used for
 debugging because it might affect app performance.
 
-## <a id='container-metrics'></a> Including Container Metrics in Syslog Drains
+## <a id='container-metrics'></a> Including container metrics in syslog drains
 
 By default, app logs are included in syslog drains. Syslog Agents forward logs to configured syslog drains and Loggregator. For more information about Syslog
 Agents, see [Loggregator Architecture and Components](../../loggregator/architecture.html#components) in _Loggregator Architecture_.
 
 
-## <a id='view'></a> Viewing Logs
+## <a id='view'></a> Viewing logs
 
 To view logs, run the `cf logs` command. You can tail, dump, or filter log output. For more information about the  `cf logs` command, see the [Cloud Foundry
 CLI Reference Guide](https://cli.cloudfoundry.org/en-US/cf/logs.html).
 
-### <a id='tail-log'></a> Tailing Logs
+### <a id='tail-log'></a> Tailing logs
 
 To stream Loggregator output to the terminal:
 
@@ -190,7 +190,7 @@ To stream Loggregator output to the terminal:
 
 Press **Ctrl+C** or **Command+C** on your keyboard to exit the real-time stream.
 
-### <a id='dump-log'></a> Dump Logs
+### <a id='dump-log'></a> Dump logs
 
 To display all of the lines in the Loggregator buffer:
 
@@ -201,7 +201,7 @@ To display all of the lines in the Loggregator buffer:
     ```
     Where `APP-NAME` is the name of your app.
 
-### <a id='filter'></a> Filter Logs
+### <a id='filter'></a> Filter logs
 
 To view some subset of log output, run `cf logs APP-NAME` in conjunction with filtering commands of your choice, where `APP-NAME` is the name of your app. In
 the following example, run `cf logs spring-music --recent | grep -v RTR` to exclude all Gorouter logs:
@@ -218,12 +218,12 @@ Connected, tailing logs for app spring-music in org example / space development 
 
 Use **Ctrl-C** (^C) to exit the real-time stream.
 
-### <a id="dump-log"></a> Dumping Logs
+### <a id="dump-log"></a> Dumping logs
 
 To display all of the lines in the Loggregator buffer, run `cf logs APP-NAME --recent`, where `APP-NAME` is the name of
 your app.
 
-### <a id="filter"></a> Filtering Logs
+### <a id="filter"></a> Filtering logs
 
 To view some subset of log output, run `cf logs APP-NAME` in conjunction with filtering commands of your choice.
 Replace `APP-NAME` with the name of your app. In the following example, `grep -v RTR` excludes all Gorouter logs:
@@ -239,7 +239,7 @@ $ cf logs spring-music --recent | grep -v RTR
     ...
 </pre>
 
-### <a id='log-ordering'></a> Log Ordering
+### <a id='log-ordering'></a> Log ordering
 
 Ensuring log ordering in drains can be an important consideration for both operators and developers.
 

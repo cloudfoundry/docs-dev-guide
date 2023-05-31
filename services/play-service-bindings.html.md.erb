@@ -1,12 +1,12 @@
 ---
-title: Configuring Play Framework Service Connections
+title: Configuring Play Framework service connections
 owner: Core Services
 ---
 
 
 
-Cloud Foundry provides support for connecting a Play Framework app to services such as MySQL, and Postgres.  In many cases, a Play Framework app running on Cloud Foundry can detect and configure connections to services.
+Cloud Foundry provides support for connecting a Play Framework app to services such as MySQL and Postgres. In many cases, a Play Framework app running on Cloud Foundry can detect and configure connections to services.
 
 
-## <a id='auto'></a>Auto-Configuration ##
-By default, Cloud Foundry detects service connections in a Play Framework app and configure them to use the credentials that are provided in the Cloud Foundry environment. Auto-configuration only happens if it's a single service for any of the supported types - MySQL or Postgres.
+## <a id='auto'></a>Auto-configuration
+By default, Cloud Foundry detects service connections in a Play Framework app and configure them to use the credentials that are provided in the Cloud Foundry environment. Auto-configuration only happens if it's a single service for one of the supported types -- MySQL or Postgres.

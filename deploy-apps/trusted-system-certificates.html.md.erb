@@ -1,8 +1,8 @@
 ---
-title: Trusted System Certificates
+title: Trusted system certificates
 ---
 
-A <%= vars.platform_name %> admin can deploy a set of trusted system certificates. These trusted certificates are available in Linux-based app instances running on the Diego back end. Such instances include buildpack-based apps using the `cflinuxfs[3|4]` stack and Docker image-based apps.
+As a <%= vars.platform_name %> admin, you can deploy a set of trusted system certificates. These trusted certificates are available in Linux-based app instances running on the Diego back end. Such instances include buildpack-based apps using the `cflinuxfs[3|4]` stack and Docker image-based apps.
 
 If the admin configures these certificates, they are available inside the instance containers as files with extension `.crt` in the read-only `/etc/cf-system-certificates` directory.
 

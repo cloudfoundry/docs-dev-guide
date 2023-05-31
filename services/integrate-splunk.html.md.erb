@@ -1,13 +1,14 @@
 ---
-title: Streaming App Logs to Splunk
+title: Streaming app logs to Splunk
 owner: PCF Metrics
 ---
 
 
 
-To integrate Cloud Foundry with Splunk Enterprise, complete the following process.
+Use the process here to integrate Cloud Foundry with Splunk Enterprise for logging.
 
-## <a id='drain'></a> 1. Create a Cloud Foundry Syslog Drain for Splunk ##
+
+## <a id='drain'></a> 1. Create a Cloud Foundry syslog drain for Splunk
 
 In Cloud Foundry, create a syslog drain user-provided service instance as
 described in [Using Third-Party Log Management Services](./log-management.html).
@@ -24,11 +25,11 @@ For example:
 
   `syslog://logs.example.com:1234`
 
-## <a id='prep'></a>2. Prepare Splunk for Cloud Foundry ##
+## <a id='prep'></a>2. Prepare Splunk for Cloud Foundry
 
 For detailed information about the following tasks, see the [Splunk documentation](http://docs.splunk.com/Documentation/Splunk).
 
-### <a id='config'></a>Install the RFC5424 Syslog Technology Add-On ###
+### <a id='config'></a>Install the RFC5424 Syslog Technology add-on
 
 The Cloud Foundry Loggregator component formats logs according to the Syslog
 Protocol defined in [RFC 5424](http://tools.ietf.org/html/rfc5424).
@@ -36,7 +37,7 @@ Splunk does not parse log fields according to this protocol.
 To allow Splunk to correctly parse RFC 5424 log fields, install the Splunk
 [RFC5424 Syslog Technical Add-On](http://apps.splunk.com/app/978/).
 
-### <a id='config'></a>Patch the RFC5424 Syslog Technology Add-On ###
+### <a id='config'></a>Patch the RFC5424 Syslog Technology add-on
 
 1. SSH into the Splunk VM
 1. Replace `/opt/splunk/etc/apps/rfc5424/default/transforms.conf` with a new
@@ -56,7 +57,7 @@ To allow Splunk to correctly parse RFC 5424 log fields, install the Splunk
 
 1. Restart Splunk
 
-### <a id='config'></a> Create a TCP Syslog Data Input ###
+### <a id='config'></a> Create a TCP syslog data input
 
 Create a TCP Syslog Data Input in Splunk, with the following settings:
 
@@ -67,7 +68,7 @@ Create a TCP Syslog Data Input in Splunk, with the following settings:
 
 Your Cloud Foundry syslog drain service is now integrated with Splunk.
 
-## <a id='verify'></a>3. Verify that Integration was Successful  ##
+## <a id='verify'></a>3. Verify that the integration was successful
 
 Use Splunk to run a query of the form:
 

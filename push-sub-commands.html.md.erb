@@ -1,16 +1,12 @@
 ---
-title: Running cf push Sub Step Commands
+title: Running cf push sub-step commands
 owner: CAPI
 ---
 
-This topic describes how to run Cloud Foundry Command Line Interface (cf CLI) commands that provide detailed control over the `cf push` process. The commands break down the `cf push` process into sub steps that run independently.
 
+The Cloud Foundry CLI (cf CLI) includes commands that provide detailed control over app pushes. When you use these commands, you can choose to perform only some steps of the `cf push` process or perform specific actions between the steps that are normally run as part of running `cf push`.
 
-## <a id="about"></a> Overview
-
-The cf CLI includes commands provide detailed control over app pushes. When you use the commands, you can choose to perform only some steps of the `cf push` process or perform specific actions between the steps that are normally run as part of running `cf push`.
-
-Here are some example use cases for the sub step commands:
+Here are some example use cases for the sub-step commands:
 
 * Updating a third party system before staging an app
 * Retrying failed stagings without incurring downtime
@@ -92,7 +88,7 @@ For information on using these commands, see [Example Workflows](#example-workfl
 
 ## <a id="example-workflows"></a> Example workflows
 
-The following sections describe example workflows for working with the `cf push` sub step commands.
+The following sections describe example workflows for working with the `cf push` sub-step commands.
 
 ### <a id="update-system"></a> Push an app using sub-step commands
 

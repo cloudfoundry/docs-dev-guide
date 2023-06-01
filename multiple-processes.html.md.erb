@@ -1,27 +1,16 @@
 ---
-title: Pushing an App with Multiple Processes
+title: Pushing an app with multiple processes
 owner: CAPI
 ---
 
-This topic describes how to push and manage apps with multiple processes.
-
-
-## <a id='about-processes'></a> About Processes
 
 The Cloud Foundry API (CAPI) V3 supports using a single command to push apps that run multiple processes, such as a web app that has a UI process and a worker
-process. To push an app that creates multiple processes from the same codebase, you first define its processes in a Procfile.
-
-For more information about pushing an app, see [Push
-an App with Multiple Processes](#push-with-multiple-processes).
+process. You can push an app with multiple processes using either a manifest or a Procfile.
 
 For more information about processes, see the [CAPI V3 documentation](http://v3-apidocs.cloudfoundry.org/index.html#processes).
 
 
-## <a id='push-with-multiple-processes'></a> Push an App with Multiple Processes
-
-This section describes how to push an app with multiple processes using either a manifest or a Procfile.
-
-### <a id='manifest'></a> Push an App with Multiple Processes using a Manifest
+## <a id='manifest'></a> Push an app with multiple processes using a manifest
 
 To push an app with multiple processes using a manifest:
 
@@ -53,7 +42,7 @@ To push an app with multiple processes using a manifest:
 For more information about defining processes with manifests, see [processes](deploy-apps/manifest-attributes.html#processes) in _App Manifest Attribute
 Reference_.
 
-### <a id='procfile'></a>Push an App with Multiple Processes using a Procfile
+## <a id='procfile'></a>Push an app with multiple processes using a Procfile
 
 To push an app with multiple processes using a Procfile:
 
@@ -81,7 +70,7 @@ To push an app with multiple processes using a Procfile:
 By default, the web process has a route and one instance. Other processes have zero instances by default.
 
 
-## <a id='scale-a-process'></a> Scale a Process
+## <a id='scale-a-process'></a> Scale a process
 
 To scale an app process:
 
@@ -98,7 +87,7 @@ To scale an app process:
       <li><code>INSTANCE-COUNT</code> is the number of instances to which you want to scale the process.</li>
     </ul>
 
-## <a id='view-processes'></a> View Processes
+## <a id='view-processes'></a> View processes
 
 To view the processes running as part of an app:
 

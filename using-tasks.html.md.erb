@@ -1,10 +1,10 @@
 ---
-title: Running Tasks
+title: Running tasks in your apps
 owner: CAPI/CLI
 ---
 
-This topic describes how to run tasks in <%= vars.app_runtime_first %>. A task is an app or script whose code is included as part of a deployed app, but runs
-independently in its own container.
+A task is an app or script, the code of which is included as part of a deployed app, but runs
+independently in its own container. This topic describes how to run tasks in <%= vars.app_runtime_first %>.
 
 
 ## <a id='about-tasks'></a> Tasks in <%= vars.app_runtime_abbr %>
@@ -16,7 +16,7 @@ As a single use object, a task can be checked for its state and for a success or
 
 <%= vars.tasks_ai %>
 
-### <a id='use-cases'></a> Use Cases for Tasks
+### <a id='use-cases'></a> Use cases for tasks
 
 Tasks are used to perform one-off jobs, which include:
 
@@ -30,14 +30,14 @@ Tasks are used to perform one-off jobs, which include:
 * Backing-up data
 * Downloading content
 
-### <a id='task-processes'></a> How Tasks Are Run
+### <a id='task-processes'></a> How tasks are run
 
 Tasks are always run asynchronously, meaning that they run independently from the parent app or other tasks that run on the same app.
 
 The lifecycle of a task is as follows:
 
 1. A user initiates a task in <%= vars.app_runtime_abbr %> using one of the following mechanisms:
-   * The `cf run-task APP-NAME "TASK"` command. For more information, see [Running Tasks](#run-tasks).
+   * The `cf run-task APP-NAME "TASK"` command. For more information, see [Running tasks in your apps](#run-tasks).
    * A Cloud Controller v3 API call. For more information, see the [Cloud Foundry API
    documentation](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#tasks).
    * The Cloud Foundry Java Client. For more information, see [Cloud Foundry Java Client Library](../buildpacks/java/java-client.html) and the [Cloud Foundry
@@ -53,14 +53,14 @@ The container also inherits environment variables, service bindings, and securit
 
 <p class='note'><strong>Note:</strong> You cannot SSH into the container running a task.</p>
 
-### <a id='task-logging-execution-history'></a> Task Logging and Execution History
+### <a id='task-logging-execution-history'></a> Task logging and execution history
 
 Any data or messages the task outputs to STDOUT or STDERR is available on the app's firehose logs. A syslog drain attached to the app receives the task log output.
 
 The task execution history is retained for one month.
 
 
-## <a id='manage-tasks'></a> Manage Tasks
+## <a id='manage-tasks'></a> Manage tasks
 
 At the system level, a user with admin-level privileges can use the Cloud Controller v3 API to view all tasks that are running within an org or space. For
 more information, see the [Cloud Foundry API documentation](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#list-tasks).
@@ -77,7 +77,7 @@ about the `cf run-task` command, see the [Cloud Foundry CLI Reference Guide](htt
 <% end %>
 
 
-## <a id='run-tasks'></a> Run a Task on an App
+## <a id='run-tasks'></a> Run a task on an app
 
 You can use the Cloud Foundry Command Line Interface (cf CLI) to run a task in the context of an app.
 
@@ -90,7 +90,7 @@ You can use the Cloud Foundry Command Line Interface (cf CLI) to run a task in t
   </ul>
 </div>
 
-### <a id='run-tasks-v6'></a> Run a Task on an App with cf CLI v6
+### <a id='run-tasks-v6'></a> Run a task on an app with cf CLI v6
 
 To run a task on an app with cf CLI v6:
 
@@ -162,7 +162,7 @@ To run a task on an app with cf CLI v6:
     </pre>
     If your task name is unique, you can `grep` the output of the `cf logs` command for the task name to view task-specific logs.
 
-### <a id='run-tasks-v7'></a> Run a Task on an App with cf CLI v7
+### <a id='run-tasks-v7'></a> Run a task on an app with cf CLI v7
 
 To run a task on an app with cf CLI v7:
 
@@ -212,7 +212,7 @@ documentation](https://v3-apidocs.cloudfoundry.org/version/3.78.0/index.html#the
     Where `APP-NAME` is the name of your app.
 
 
-## <a id='list-tasks'></a> List Tasks Running on an App
+## <a id='list-tasks'></a> List tasks running on an app
 
 To list the tasks for a given app:
 
@@ -240,7 +240,7 @@ The following table describes the states a task can be in:
 | `SUCCEEDED` | The task completed successfully. |
 
 
-## <a id='cancel-task'></a> Cancel a Task
+## <a id='cancel-task'></a> Cancel a task
 
 After you run a task, you might be able to cancel it before it finishes.
 

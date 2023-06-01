@@ -70,7 +70,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
       <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
     </ul>
 
-    By default, the Syslog Agent would forward only applicaton logs to a Syslog server. If one wants to have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory or disk usage forwarded as well, one can use the `drain-type` parameter to specify if only logs, container metrics or both should be forwarded by the syslog drain. The `drain-type` parameter should be added to the `SYSLOG-DRAIN-URL`.
+    By default, the Syslog Agent would forward only applicaton logs to a Syslog server. If one wants to have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, one can use the `drain-type` parameter to specify if only logs, container metrics or both should be forwarded by the syslog drain. The `drain-type` parameter should be added to the `SYSLOG-DRAIN-URL`.
 
     <pre class="terminal">
     $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL?drain-type=DRAIN_TYPE_VALUE
@@ -78,12 +78,12 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
 
     Where `DRAIN_TYPE_VALUE` should be one of the following:
     <ul>
-        <li><code>logs</code> forward logs only (this is also the default when the parameter is not present).</li>
-        <li><code>metrics</code> forward container metrics only.</li>
-        <li><code>all</code> forward both logs and metrics.</li>
+        <li><code>logs</code> forwards logs only (this is also the default when the parameter is not present).</li>
+        <li><code>metrics</code> forwards container metrics only.</li>
+        <li><code>all</code> forwards both logs and metrics.</li>
     </ul>
 
-    Example, foreward application logs and container metrics:
+    Example, forward application logs and container metrics:
     <pre class="terminal">
     $ cf create-user-provided-service my_app_drain -l syslog://logs.example.com:1234?drain-type=all
     </pre>

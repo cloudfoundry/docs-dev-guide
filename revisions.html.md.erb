@@ -1,19 +1,17 @@
 ---
-title: App Revisions
+title: Cloud Foundry API app revisions
 owner: CAPI
 ---
 
-This topic describes app revisions and provides procedures to work with them.
+A revision represents code and configuration used by an app at a specific time. It is a Cloud Foundry API (CAPI) object that can contain references to a droplet, a custom start command, and environment variables. The most recent revision for a running app represents code and configuration currently running in <%= vars.platform_name %>.
 
 For additional information about app revisions, see [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation.
 
 <p class="note"><strong>Note:</strong> CAPI v3 is the recommended API version for revisions. While revisions work with CAPI v2, there are several inconsistencies. For example, revision descriptions for apps with multiple processes can be inaccurate because CAPI v2 does not support apps with multiple processes. Additionally, pushing an app for the first time with revisions in CAPI v2 creates two revisions.</p>
 
-<p class="note"><strong>Note:</strong> The App Revisions API is experimental, and future releases might have breaking changes.</p>
+<p class="warning"><strong>Caution:</strong> The App Revisions API is experimental, and future releases might have breaking changes.</p>
 
-## <a id="overview"></a> Overview
-
-A revision represents code and configuration used by an app at a specific time. It is a CAPI object that can contain references to a droplet, custom start command, and environment variables. The most recent revision for a running app represents code and configuration currently running in <%= vars.platform_name %>.
+## <a id="overview"></a> Revisions use cases
 
 Some use cases for revisions include:
 
@@ -21,7 +19,7 @@ Some use cases for revisions include:
 
 * **Rolling back to a previous revision:** This allows you to deploy a version of the app that you had running previously without needing to track that previous state yourself or have multiple apps running. When you create a deployment and reference a revision, the revision deploys as the current version of your app.
 
-### <a id="events"></a> Events that Trigger Revisions
+### <a id="events"></a> Events that trigger revisions
 
 Revisions are generated through these events:
 
@@ -32,7 +30,7 @@ Revisions are generated through these events:
 
 By default, CAPI retains a maximum of 100 revisions per app.
 
-### <a id="revision-description"></a> Revision Descriptions
+### <a id="revision-description"></a> Revision descriptions
 
 Each revision includes a description of what changed in your app at the time the revision was created. The description includes one or more of these descriptions:
 
@@ -45,7 +43,7 @@ Each revision includes a description of what changed in your app at the time the
 * `New environment variables deployed`
 * `New droplet deployed`
 
-### <a id="droplets"></a> Droplet Storage Considerations
+### <a id="droplets"></a> Droplet storage considerations
 
 By default, <%= vars.platform_name %> retains the five most recent staged droplets in its droplets bucket. This means that you can roll back to revisions as long as they are using one of those five droplets. Not all revisions include a change in droplet.
 
@@ -54,11 +52,11 @@ Operators can configure <%= vars.platform_name %> to retain more droplets if nec
 <% end %>
 
 
-## <a id="view"></a> View Revisions
+## <a id="view"></a> View revisions
 
 This section describes how to use CAPI endpoints for viewing revisions.
 
-### <a id="list"></a> List Revisions for an App
+### <a id="list"></a> List revisions for an app
 
 To list revisions for an app:
 
@@ -76,7 +74,7 @@ To list revisions for an app:
 	```
 	Where `GUID` is the GUID you retrieved in the previous step.
 
-### <a id="list-deployed"></a> List Deployed Revisions for an App
+### <a id="list-deployed"></a> List deployed revisions for an app
 
 Deployed revisions are revisions linked to started processes in an app. To list deployed revisions:
 
@@ -94,7 +92,7 @@ Deployed revisions are revisions linked to started processes in an app. To list 
 	```
 	Where `GUID` is the GUID you retrieved in the previous step.
 
-### <a id="get"></a> Retrieve a Revision
+### <a id="get"></a> Retrieve a revision
 
 To retrieve a revision:
 
@@ -106,7 +104,7 @@ To retrieve a revision:
 	Where `GUID` is the GUID of the revision.
 
 
-## <a id="push-app"></a> Roll Back to a Previous Revision
+## <a id="push-app"></a> Roll back to a previous revision
 
 To roll back to a previous revision:
 
@@ -144,7 +142,7 @@ To roll back to a previous revision:
       <li><code>APP-GUID</code> is the GUID of the app.</li>
     </ul>
 
-## <a id="metadata"></a> Add Metadata to a Revision
+## <a id="metadata"></a> Add metadata to a revision
 
 <% if vars.platform_code == "CF" || vars.platform_code == "PCF" %>
 
@@ -153,7 +151,7 @@ To add metadata to a revision, see [Add Metadata to an Object](../adminguide/met
 To add metadata to a revision, see [Add Metadata to an Object](https://docs.cloudfoundry.org/adminguide/metadata.html).
 <% end %>
 
-## <a id="disable"></a> Deactivate Revisions for an App
+## <a id="disable"></a> Deactivate revisions for an app
 
 CAPI activates app revisions by default. To deactivate revisions for an app, you must manually turn them off.
 

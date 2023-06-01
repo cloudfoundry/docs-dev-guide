@@ -1,18 +1,16 @@
 ---
-title: Pushing Apps with Sidecar Processes
+title: Pushing apps with sidecar processes
 owner: CAPI
 ---
 
-This topic describes sidecar processes and how to include them when you push your app.
-
-<%= vars.capi_sidecar_req %>
-
-
-## <a id="overview"></a> Overview
 
 You can run additional processes in the same container as your app. These additional processes
 are called sidecar processes, or sidecars. An example of a sidecar is an Application Performance
 Monitoring (APM) tool.
+
+<%= vars.capi_sidecar_req %>
+
+## <a id="overview"></a> About sidecars
 
 When you provide a sidecar for your app,
 <%= vars.app_runtime_first %> packages the required code and

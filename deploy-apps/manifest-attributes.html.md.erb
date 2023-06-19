@@ -1,5 +1,5 @@
 ---
-title: App Manifest Attribute Reference
+title: App Manifest attribute reference
 owner: CLI
 ---
 
@@ -217,9 +217,9 @@ This attribute is a combination of `push` options that include `--docker-image` 
     username: docker-user-name
 </pre>
 
-The command line option `--docker-image` or `-o` overrides `docker.image`.  The command line option `--docker-username` overrides `docker.username`.
+The command line option `--docker-image` or `-o` overrides `docker.image`. The command line option `--docker-username` overrides `docker.username`.
 
-The manifest attribute `docker.username` is optional.  If it is used, then the password must be provided in the environment variable `CF_DOCKER_PASSWORD`.  Additionally, if a Docker username is specified, then a Docker image must also be specified.
+The manifest attribute `docker.username` is optional. If it is used, then the password must be provided in the environment variable `CF_DOCKER_PASSWORD`. Additionally, if a Docker username is specified, then a Docker image must also be specified.
 
 <p class="note"><strong>Note</strong>: Using the <code>docker</code> attribute in conjunction with the <code>buildpacks</code> or <code>path</code> attributes will result in an error.</p>
 
@@ -418,7 +418,11 @@ The command line option that overrides this attribute is `--random-route`.
 
 Use the `routes` attribute to provide multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
 
-This attribute is a combination of `push` options that include `--hostname`, `-d`, and `--route-path`.
+This attribute is a combination of `push` options that include `--hostname`, `-d`, and `--route-path` that were used in cf CLI v6. These flags are not supported in cf CLI v7. You must use the `routes` property in the manifest from cf CLI on.
+
+Optionally, specify the `protocol` attribute to configure which network protocol the route uses for app ingress traffic. The available protocols are `http2`, `http1`, and `tcp`.
+
+<p class="note"><strong>Note</strong>: The <code>protocol</code> route attribute is only available for <%= vars.app_runtime_abbr %> deployments with HTTP/2 routing enabled. <%= vars.http2_admin_link %> </p>
 
 Optionally, specify the `protocol` attribute to configure which network protocol the route uses for app ingress traffic. The available protocols are `http2`, `http1`, and `tcp`.
 
@@ -440,10 +444,17 @@ The `routes` attribute cannot be used in conjunction with the following attribut
 #### <a id='push-flag-options'></a> Push Flag Options
 
 This attribute has unique interactions with different command-line options.
+The table shows the `cf push` flags supported in cf CLI v6.
+In cf CLI v7, these `cf push` flags are no longer supported:
+
+* `--no-route`
+* `-d1`
+* `--hostname`
+* `--route-path`
 
 <table border="1" class="nice">
   <tr>
-    <th>Flag</th>
+    <th>Flag supported in cf CLI v6</th>
     <th>Result</th>
   </tr>
   <tr>

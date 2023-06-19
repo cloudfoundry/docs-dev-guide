@@ -294,7 +294,7 @@ to the `storefront` app. After this:
 
 A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. This is the default in the v7 version of the cf CLI.
 
-* **cf CLI v6** - To get an abitrary (random) port, you must use the `--random port` flag.
+* **cf CLI v6** - To get an arbitrary (random) port, you must use the `--random port` flag.
 
 <pre class="terminal">
 $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
@@ -303,7 +303,7 @@ OK
 Route <%= vars.tcp_app_domain %>:60034 has been created
 </pre>
 
-* **cf CLI v7** - An abitrary (random) port is the default; the `--random port` flag is not supported.
+* **cf CLI v7** - An arbitrary (random) port is the default; the `--random port` flag is not supported.
 
 <pre class="terminal">
 $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port

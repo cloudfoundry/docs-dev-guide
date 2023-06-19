@@ -418,7 +418,7 @@ The command line option that overrides this attribute is `--random-route`.
 
 Use the `routes` attribute to provide multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
 
-This attribute is a combination of `push` options that include `--hostname`, `-d`, and `--route-path` that were used in cf CLI v6. These flags are not supported in cf CLI v7. You must use the `routes` property in the manifest from cf CLI on.
+This attribute is a combination of `push` options that include `--hostname`, `-d`, and `--route-path` that were used in cf CLI v6. These flags are not supported in cf CLI v7. You must use the `routes` property in the manifest from cf CLI v7 on.
 
 Optionally, specify the `protocol` attribute to configure which network protocol the route uses for app ingress traffic. The available protocols are `http2`, `http1`, and `tcp`.
 

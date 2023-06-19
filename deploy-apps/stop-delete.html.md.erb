@@ -47,7 +47,7 @@ Example:
 
 ## <a id="delete-no-service"></a> Delete an qpp with no services
 
-To delete an app with no services, run `cf delete -r APP-NAME`. Replace `APP-NAME` with the name of the app. The `-r` option instructs the cf CLI to removes routes associated with the app.
+To delete an app with no services, run `cf delete -r APP-NAME`. Replace `APP-NAME` with the name of the app. The `-r` option instructs the cf CLI to remove the route associated with the app. Starting with c CLI v7, the `-r` flag deletes the route if there is only one route, but if there are multiple routes mapped to the app, the `-r` flag will not result in deletion of the routes.
 
 Example:
 <pre class="terminal">$ cf delete -r my-example-app</pre>
@@ -56,7 +56,7 @@ If you delete an app without the `r` option, you can manually delete the route.
 
 Follow these steps to delete the route for an app manually.
 
-1. Run `cf routes` to confirm the details of the orphaned route. The `cf routes` command returns a list of all active routes in the current space. This list includes the space, hostname, domain, path, and any bound apps or services.
+1. Run `cf routes` to confirm the details of the orphaned route. The `cf routes` command returns a list of all active routes in the current space. This list includes the space, hostname, domain, and path.
 
 2. Find the orphaned route in the list. The orphaned route is shown as a hostname without an associated app.
 

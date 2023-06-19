@@ -29,6 +29,12 @@ To configure a health check while creating or updating an app, run:
 cf push APP-NAME -u HEALTH-CHECK-TYPE -t HEALTH-CHECK-TIMEOUT
 ```
 
+In cf CLI v7, this is also supported:
+
+```
+cf push APP-NAME -u HEALTH-CHECK-TYPE --app-start-timeout HEALTH-CHECK-TIMEOUT
+```
+
 Where:
 
 * `APP-NAME` is the name of your app.

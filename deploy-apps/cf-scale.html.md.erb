@@ -49,8 +49,13 @@ To horizontally scale an app:
 
 ## <a id='vertical'></a> Scaling vertically
 
-Vertically scaling an app changes the disk space limit, memory limit, or log rate limit that your <%= vars.app_runtime_abbr %> deployment applies to all
-instances of the app.
+Factors such as user load, or the number and nature of tasks performed by an app, can change the disk space and memory the app uses.
+This topic describes how to scale an app using the Cloud Foundry Command Line Interface (cf CLI).
+For many apps, increasing the available disk space or memory can improve
+overall performance.
+Similarly, running additional instances of an app can allow the
+app to handle increases in user load and concurrent requests.
+These adjustments are called **scaling** an app.
 
 ### <a id='change-disk-limit'></a> Scale the Disk Space Limit of an App
 

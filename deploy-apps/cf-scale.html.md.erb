@@ -42,10 +42,26 @@ $ cf scale myApp -i 5
 Vertically scaling an app changes the disk space limit or memory limit
 that Cloud Foundry applies to all instances of the app.
 
-Use `cf scale APP -k DISK` to change the disk space limit applied to all
-instances of your app.
-`DISK` must be an integer followed by either an **M**, for megabytes, or **G**,
-for gigabytes.
+Vertically scaling an app changes the disk space limit, memory limit, or log rate limit that your <%= vars.app_runtime_abbr %> deployment applies to all
+instances of the app.
+
+### <a id='change-disk-limit'></a> Scale the disk space limit of an app
+
+To scale the disk space limit applied to all instances of an app:
+
+## <a id="horizontal"></a>Scaling horizontally ##
+
+    ```
+    cf scale APP-NAME -k DISK-LIMIT
+    ```
+
+    Where:
+    <ul>
+      <li><code>APP-NAME</code> is the name of the app you want to scale.</li>
+      <li><code>DISK-LIMIT</code> is the maximum amount of disk space in megabytes or gigabytes that you want each app instance to use. This value must be an integer followed by either <code>M</code> or <code>G</code>.</li>
+    </ul>
+
+    For example:
 
 <pre class="terminal">
 $ cf scale myApp -k 512M

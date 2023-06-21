@@ -212,7 +212,7 @@ uses.
   buildpacks:
   <ul>
     <li><strong>Java:</strong> Initialization scripts for the Java buildpack require additional configuration.For more information, see
-      <a href="https://community.pivotal.io/s/article/how-to-modify-the-application-container-environment-prior-to-application-execution?language=en_US">How
+      <a href="https://community.pivotal.io/s/topic/how-to-modify-the-application-container-environment-prior-to-application-execution?language=en_US">How
         to Modify the Application Container Environment prior to Application Execution</a> in the VMware Tanzu Knowledge Base.</li>
     <li><strong>PHP:</strong> <%= vars.app_runtime_abbr %> does not support initialization scripts for the PHP buildpack versions prior to v4.3.18. If you use
       one of these buildpack versions, your app hosts the <code>.profile</code> script's contents. This means that any app staged using the affected buildpack

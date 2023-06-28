@@ -68,9 +68,17 @@ To create and bind an instance for the volume service:
             The <code>GID</code> and <code>UID</code> must be positive integer values.
             Provide the UID and GID as a JSON string in-line or in a file.
             If you omit <code>uid</code> and <code>gid</code>, the driver skips <code>mapfs</code> mounting and performs
-            just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
+            just the normal kernel mount of the NFS file system without the performance overhead associated with FUSE mounts.
+
+            The key advantage of specifying <code>UID</code> and <code>GID</code> is that different values can be specified for different apps, so
+            file permissions can be granted at the app level. If this is not needed, the performance overhead of <code>mapfs</code> can be
+            eliminated by managing permissions on the NFS server. NFS export options such as `all_squash`, `anonuid` and `anongid`
+            perform a similar function.
+            
+            For instance, one app 
             <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support UID and GID values of <code>0</code>.</p>
             <p class="note"><strong>Note:</strong> The user specified by <code>uid</code> must have access to the files on the share. When <code>uid</code> and <code>gid</code> are omitted, the app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.</p>
+            <p class="note"><strong>Note:</strong> Specifying UID and GID values has a performance implication as the FUSE filesystem mapfs is used to translate UID and GID values.</p>
           </li>
           <li>
             (Optional) <code>OPTIONAL-MOUNT-PATH</code> is a JSON string that indicates the volume must be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as <code>/home</code>, <code>/usr</code>, or <code>/var</code>.

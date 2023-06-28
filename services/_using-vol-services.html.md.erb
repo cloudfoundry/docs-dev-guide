@@ -75,7 +75,6 @@ To create and bind an instance for the volume service:
             eliminated by managing permissions on the NFS server. NFS export options such as `all_squash`, `anonuid` and `anongid`
             perform a similar function.
             
-            For instance, one app 
             <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support UID and GID values of <code>0</code>.</p>
             <p class="note"><strong>Note:</strong> The user specified by <code>uid</code> must have access to the files on the share. When <code>uid</code> and <code>gid</code> are omitted, the app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.</p>
             <p class="note"><strong>Note:</strong> Specifying UID and GID values has a performance implication as the FUSE filesystem mapfs is used to translate UID and GID values.</p>

@@ -4,7 +4,8 @@ owner: Diego
 ---
 
 If you need to troubleshoot an instance of an app, you can gain SSH access to the app using the SSH proxy and daemon.
-For example, one of your app instances might be unresponsive, or the log output from the app is inconsistent or incomplete. You can SSH into the individual VM to troubleshoot the problem instance.
+For example, one of your app instances might be unresponsive, or the log output from the app is inconsistent or incomplete.
+You can SSH into the individual VM to troubleshoot the problem instance.
 
 <%= vars.mutual_tls_ssh %>
 
@@ -58,7 +59,8 @@ Space C does not have SSH Access Enabled for all three apps, indicated by a red 
 
 ## <a id='app-ssh-config'></a> SSH access for apps and spaces
 
-Space managers and space developers can configure SSH access from the command line. The Cloud Foundry Command Line Interface (cf CLI) also includes commands to return the value of the SSH access setting. To use and configure SSH at both the app level and the space level, see [Accessing Apps with Diego SSH](./ssh-apps.html).
+You can configure SSH access from the command line. The Cloud Foundry Command Line Interface (cf CLI) also includes commands to
+return the value of the SSH access setting. To use and configure SSH at both the app level and the space level, see [Accessing Apps with Diego SSH](./ssh-apps.html).
 
 
 ## <a id="platform-ssh-config"></a> Configuring SSH access for <%= vars.app_runtime_full %>

@@ -56,6 +56,13 @@ To create and bind an instance for the volume service:
     * **NFS-only**: Bind an NFS service instance to an app. Run:
 
         ```
+        cf bind-service YOUR-APP SERVICE-NAME -c '{"mount":"OPTIONAL-MOUNT-PATH","readonly":true}'
+        ```
+        The app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.
+
+
+        Or to use UID/GID mapping:
+        ```
         cf bind-service YOUR-APP SERVICE-NAME -c '{"uid":"UID","gid":"GID","mount":"OPTIONAL-MOUNT-PATH","readonly":true}'
         ```
 
@@ -65,17 +72,15 @@ To create and bind an instance for the volume service:
           <li><code>SERVICE-NAME</code> is the name of the volume service instance you created in the previous step.</li>
           <li>
             (Optional) <code>UID</code> and <code>GID</code> are the UID and GID to use when mounting the share to the app.
-            The <code>GID</code> and <code>UID</code> must be positive integer values.
+            The <code>GID</code> and <code>UID</code> must be positive integer values greater than <code>0</code>.
             Provide the UID and GID as a JSON string in-line or in a file.
             If you omit <code>uid</code> and <code>gid</code>, the driver skips <code>mapfs</code> mounting and performs
             just the normal kernel mount of the NFS file system without the performance overhead associated with FUSE mounts.
 
             The key advantage of specifying <code>UID</code> and <code>GID</code> is that different values can be specified for different apps, so
             file permissions can be granted at the app level. If this is not needed, the performance overhead of <code>mapfs</code> can be
-            eliminated by managing permissions on the NFS server. NFS export options such as `all_squash`, `anonuid` and `anongid`
-            perform a similar function.
+            eliminated by managing permissions on the NFS server.
             
-            <p class="note"><strong>Note:</strong> For security reasons, nfs-volume v2.0.0 and later does not support UID and GID values of <code>0</code>.</p>
             <p class="note"><strong>Note:</strong> The user specified by <code>uid</code> must have access to the files on the share. When <code>uid</code> and <code>gid</code> are omitted, the app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.</p>
             <p class="note"><strong>Note:</strong> Specifying UID and GID values has a performance implication as the FUSE filesystem mapfs is used to translate UID and GID values.</p>
           </li>

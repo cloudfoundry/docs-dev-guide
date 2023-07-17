@@ -34,8 +34,9 @@ This section describes the commands for working with rolling app deployments.
 
 To deploy an app without incurring downtime:
 
-<p class="note warning"><strong>Caution:</strong> Ensure that you understand the limitations of
-this feature before running the command. For more information, see
+<p class="note caution">
+<span class="note__title">Caution</span>
+Review the limitations of this feature before running the command. For more information, see
 <a href="#limitations">Limitations</a>.</p>
 
 * **For cf CLI v7, run:**
@@ -46,10 +47,11 @@ this feature before running the command. For more information, see
     Where `APP-NAME` is the name that you want to give your app.
 
     <p class="note">
-      <strong>Note:</strong> cf CLI v7 exits when one instance of each process is healthy.
-      It also includes a <code>--no-wait</code> flag on push for users who do not want to wait
-      for the operation to complete.
-      <code>cf push</code> used with the <code>--no-wait</code> flag exits as soon as one instance is healthy.
+    <span class="note__title">Note</span>
+    cf CLI v7 exits when one instance of each process is healthy.
+    It also includes a <code>--no-wait</code> flag on push for users who don't want to wait
+    for the operation to complete.
+    <code>cf push</code> used with the <code>--no-wait</code> flag exits as soon as one instance is healthy.
     </p>
 
     If the deployment hangs indefinitely, cancel the process and run it again with the step above.
@@ -208,7 +210,9 @@ This reverts the app to its state from before the deployment started by doing th
 * Removing any deployment artifacts
 * Resetting the `current_droplet` on the app
 
-<p class="note"><strong>Note:</strong> The cancel command is designed to revert the app to its
+<p class="note caution">
+<span class="note__title">Caution</span>
+The cancel command is designed to revert the app to its
 original state as quickly as possible and does not guarantee zero downtime.</p>
 
 ### <a id="restart"></a> Restart an app
@@ -277,8 +281,9 @@ This section describes the process of pushing an app with a rolling deployment s
 1. After the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the
 background, updating deployments as follows:
     1. Adds another instance of the new web process and removes an instance from the old web process.
-        <p class="note"><strong>Note:</strong> This only happens if all instances of the new web
-        process are currently running.</p>
+        <p class="note important">
+        <span class="note__title">Important</span>
+        This only happens if all instances of the new web process are currently running.</p>
     1. Repeats the above step until the new web process reaches the desired number of instances.
     1. Removes the old web process. The new web process now fully replaces the old web process.
     1. Restarts all non-web processes of the app.
@@ -297,15 +302,13 @@ The following table describes the limitations of when using rolling deployments.
     <td>App Manifests</td>
     <td>The <code>cf v3-zdt-push</code> command does not support providing an app manifest with the
     <code>-f</code> flag. If you have a <code>manifest.yml</code> file in your app directory, it is
-    ignored.
-    <p class="note"><strong>Note:</strong> This limitation only applies to cf CLI v6.</p></td>
+    ignored. This limitation only applies to cf CLI v6.</td>
   </tr>
   <tr>
     <td>SSH to app instances</td>
     <td>Pushing updates to your app with a <code>cf v3-zdt-push</code> command causes the new web process
     and app GUID to mismatch. <code>cf ssh</code> does not handle this scenario. You must use the
-    <code>cf v3-ssh</code> command instead.
-    <p class="note"><strong>Note:</strong> This limitation only applies to cf CLI v6.</p></td>
+    <code>cf v3-ssh</code> command instead. This limitation only applies to cf CLI v6.</td>
   </tr>
   <tr>
     <td>Multiple app versions</td>

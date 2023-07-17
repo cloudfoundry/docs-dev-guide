@@ -36,8 +36,7 @@ _This topic assumes you are using Cloud Foundry Command Line Interface (cf CLI) 
 ##<a id="push-app"></a>Push your host app
 
 To push an app that acts as the host for the SSH tunnel, push any app that successfully deploys to <%= vars.app_runtime_full %>.
-<p class="note"><strong>Note:</strong> Your app must be prepared before you push it. See the <a href="deploy-app.html">Pushing an App</a> topic for details on preparing apps for pushing.
-</p>
+Your app must be prepared before you push it. See <a href="deploy-app.html">Pushing an app</a> for details about preparing apps for pushing.
 
 1. Push your app:
 
@@ -45,15 +44,16 @@ To push an app that acts as the host for the SSH tunnel, push any app that succe
     cf push YOUR-HOST-APP
     ```
 
-1. Activate SSH for your app:
+2. Activate SSH for your app:
 
     ```console
     cf enable-ssh YOUR-HOST-APP
     ```
 
-<p class="note"><strong>Note:</strong> To activate SSH access to your app, SSH access must also be activated for both the space that contains the app and <%= vars.app_runtime_full %>. For more information, see <a href="./app-ssh-overview.html">App SSH Overview</a>.</p>
+To activate SSH access to your app, SSH access must also be activated for both the space that contains the app and <%= vars.app_runtime_full %>. For more information, see <a href="./app-ssh-overview.html">App SSH Overview</a>.
 
 ##<a id="bind-app"></a>Create your service key
+
 To establish SSH access to your service instance, you must create a service key that contains critical information for configuring your SSH tunnel.
 
 1. Create a service key for your service instance using the [cf create-service-key](http://cli.cloudfoundry.org/en-US/cf/create-service-key.html) command.

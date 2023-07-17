@@ -106,14 +106,14 @@ Where:
 
 * `SIDECAR-BINARY` is your sidecar binary.
 
-For more information about packaging assets with your Java app, see [Tips for Java Developers](https://docs.cloudfoundry.org/buildpacks/java/java-tips.html).
+For more information about packaging assets with your Java app, see [Tips for Java developers](https://docs.cloudfoundry.org/buildpacks/java/java-tips.html).
 
 
 ## <a id="create"></a> Push an app with a sidecar using an app manifest
 
-These sections explain how to push an app with a sidecar using an app manifest. For an example that you can try yourself, see [Sidecar Tutorial](#tutorial).
+These sections explain how to push an app with a sidecar using an app manifest. For an example that you can try yourself, see [Sidecar tutorial](#tutorial).
 
-<p class="note"><strong>Note:</strong> When pushing a Java app, ensure that you follow the requirements listed in <a href="#java">Requirements for Java Apps</a> above.</p>
+When pushing a Java app, follow the requirements listed in <a href="#java">Requirements for Java Apps</a>.
 
 ### <a id="prerequisite"></a> Prerequisites
 
@@ -209,7 +209,9 @@ To push an app with a sidecar:
 
 You can explore sidecars using the app in the [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository on GitHub. The following sections describe the app, how to build and push the app, and some ways to observe the app and its processes after pushing.
 
-<p class="note"><strong>Note:</strong> This tutorial assumes that you are pushing the Ruby sample app. You can also follow this tutorial for a Java app using the <code>sidecar-dependent-java-app</code> and <code>push_java_app_with_binary_sidecar.sh</code> in the samples repository. When pushing a Java app, ensure that you follow the requirements listed in <a href="#java">Requirements for Java Apps</a> above.</p>
+<p class="note important">
+<span class="note__title">Important</span>
+This tutorial assumes that you are pushing the Ruby sample app. You can also follow this tutorial for a Java app using the <code>sidecar-dependent-java-app</code> and <code>push_java_app_with_binary_sidecar.sh</code> in the samples repository. When pushing a Java app, ensure that you follow the requirements listed in <a href="#java">Requirements for Java apps</a>.</p>
 
 ### <a id="about"></a> About the sample app
 
@@ -234,6 +236,8 @@ The following diagram illustrates the app architecture:
 
 ### <a id="push"></a> Push the app and sidecar
 
+If you do not have Go installed, download the <code>config-server_linux_x86-64</code> binary from <a href="https://github.com/cloudfoundry-samples/capi-sidecar-samples/releases">CAPI Sidecar sample releases</a> in the <code>capi-sidecar-samples</code> repository in GitHub.
+
 To push the app and sidecar:
 
 1. In a terminal window, clone the Git repository to your workspace by running:
@@ -242,14 +246,14 @@ To push the app and sidecar:
 	git clone https://github.com/cloudfoundry-samples/capi-sidecar-samples.git
 	```
 
-1. Go to the `config-server-sidecar` directory.
+2. Go to the `config-server-sidecar` directory.
 
-1. Build the binary for the sidecar by running:
+3. Build the binary for the sidecar by running:
 
 	```
 	GOOS=linux GOARCH=amd64 go build -o config-server .
 	```
-	<p class="note"><strong>Note:</strong> If you do not have Go installed, download the <code>config-server_linux_x86-64</code> binary from <a href="https://github.com/cloudfoundry-samples/capi-sidecar-samples/releases">Releases</a> in the <code>capi-sidecar-samples</code> repository in GitHub.</p>
+
 
 1. To create the app:
 	* If you are using cf CLI v7, run:

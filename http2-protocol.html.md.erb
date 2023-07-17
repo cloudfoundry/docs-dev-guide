@@ -36,14 +36,11 @@ HTTP/2 support in <%= vars.app_runtime_abbr %> has the following limitations:
 
 ## <a id="http2-with-cf"></a> How pushing apps with HTTP/2 works
 
-This section describes how pushing apps with HTTP/2 works.
-
 If your <%= vars.app_runtime_abbr %> deployment is configured to support HTTP/2,
-then all traffic ingressing to <%= vars.app_runtime_abbr %> supports HTTP/2.
+then all traffic coming in to <%= vars.app_runtime_abbr %> supports HTTP/2.
 The traffic is forwarded as HTTP/1.1 before it reaches your app unless configured otherwise.
 
-For more information, see <a href="https://docs.vmware.com/en/VMware-Tanzu-Application-Service/3.0/tas-for-vms/supporting-http2.html">Configuring HTTP/2 Support.</a>
-
+For more information, see <a href="https://docs.vmware.com/en/VMware-Tanzu-Application-Service/<%= vars.current_major_version %>/tas-for-vms/supporting-http2.html">Configuring HTTP/2 Support.</a>
 
 To serve gRPC traffic, your app must use HTTP/2 for all network hops.
 Configure your route to send HTTP/2 traffic to your app.
@@ -52,11 +49,9 @@ When configured, traffic that matches the route is always sent to your app over 
 For example, external HTTP/1.1 requests are forwarded to your app over HTTP/2.
 Your app does not have the opportunity to negotiate what protocol it receives.
 
-<p class="note"><strong>Note:</strong>
 If a client is familiar with the HTTP/2 specification,
 your app receives HTTP/2 with prior knowledge.
-For more information, see <a href="https://datatracker.ietf.org/doc/html/rfc7540#section-3.4">Starting HTTP/2 with Prior Knowledge</a> in
-<em>RFC 7540: Hypertext Transfer Protocol Version 2 (HTTP/2)</em>.</p>
+For more information, see <a href="https://datatracker.ietf.org/doc/html/rfc7540#section-3.4">Starting HTTP/2 with Prior Knowledge</a> in _RFC 7540: Hypertext Transfer Protocol Version 2 (HTTP/2)_.
 
 
 ## <a id="push-apps"></a> Push apps with HTTP/2 support
@@ -94,7 +89,9 @@ To push an HTTP/1.1 app that can serve HTTP/2 traffic:
 	```
 	Where `MY-APP.EXAMPLE.COM` is the route mapped to your app.<br><br>
 	The request and response are both issued over HTTP/2.
-	<p class="note"><strong>Note:</strong> To issue this request, you must use a version of <code>curl</code> that supports HTTP/2.</p>
+	<p class="note important">
+	<span class="note__title">Important</span>
+	To issue this request, you must use a version of <code>curl</code> that supports HTTP/2.</p>
 
 1. Review the app logs by running:
 
@@ -144,7 +141,9 @@ For example, you can use the HTTP/2 test app from [Cloud Foundry Acceptance Test
 
 The recommended way to do this is using the `routes` attribute in the manifest YAML file.
 
-<p class="note"><strong>Note:</strong> The following procedure is supported only for cf CLI v6; the `--hostname` flag is deprecated in cf CLI v7.</p>
+<p class="note important">
+<span class="note__title">Important</span>
+The following procedure is supported only for cf CLI v6; the `--hostname` flag is deprecated in cf CLI v7, and must be specified in the manifest.</p>
 
 To push an app that serves HTTP/2 traffic using the cf CLI (v6 only):
 

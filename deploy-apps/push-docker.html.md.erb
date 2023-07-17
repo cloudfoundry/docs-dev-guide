@@ -19,7 +19,9 @@ To push apps with Docker, you need:
   * The Docker image must contain an `/etc/passwd` file with an entry for the `root` user. In addition, the home directory and the shell for that `root` user  must be present in the image file system.
 
   * The total size of the Docker image file system layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2048&nbsp;MB per app.
-    <p class="note"><strong>Note:</strong> If the total size of the Docker image file system layers exceeds the disk quota, the app instances do not start.</p>
+    <p class="note important">
+    <span class="note__title">Important</span>
+    If the total size of the Docker image file system layers exceeds the disk quota, the app instances do not start.</p>
 
 * The location of the Docker image on Docker Hub or another Docker registry. <%= vars.docker_auth1 %>
 
@@ -160,10 +162,10 @@ Where:
 
 * `USER` is the username to use for authentication with the registry.
 
-<p class="note"><strong>Note:</strong> If container registry credentials change, you must push the app with the new credentials.
+If container registry credentials change, you must push the app with the new credentials.
 Apps require access to the container registry when starting.
 If you do not push the app with the new credentials, <%= vars.app_runtime_abbr %> fails to start the app.
-When you rotate container credentials, <%= vars.recommended_by %> recommends using a set of two credentials, where the <code>old</code> credentials can be deactivated after all apps have been pushed with the <code>new</code> credentials.</p>
+When you rotate container credentials, <%= vars.recommended_by %> recommends using a set of two credentials, where the <code>old</code> credentials can be deactivated after all apps have been pushed with the <code>new</code> credentials.
 
 ### <a id='ecr'></a> Amazon Elastic Container Registry (ECR)
 
@@ -273,11 +275,13 @@ Where:
 
 * `YOUR-IMAGE-NAME` is the name of your image.
 
-<p class="note"><strong>Note:</strong> The <code>key.json</code> file must point to the file you created in the previous step.</p>
+* The <code>key.json</code> file must point to the file you created earlier.
 
-<p class="note"><strong>Note:</strong> For information about specifying <code>YOUR-REGISTRY-URL</code>, see <a href="https://cloud.google.com/container-registry/docs/pushing-and-pulling">Pushing and Pulling Images</a> in the Google Cloud documentation.</p>
+<p class="note">
+<span class="note__title">Note</span>
+For information about specifying <code>YOUR-REGISTRY-URL</code>, see <a href="https://cloud.google.com/container-registry/docs/pushing-and-pulling">Pushing and Pulling Images</a> in the Google Cloud documentation.</p>
 
 
 ## <a id='volume'></a> Docker volume support
 
-You can use volume services with Docker apps. For more information about enabling volume support, see [Using an External File System (Volume Services)](../services/using-vol-services.html).
+You can use volume services with Docker apps. For more information about enabling volume support, see [Using an external file system (Volume services)](../services/using-vol-services.html).

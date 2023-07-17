@@ -44,7 +44,9 @@ The following sections describe how to mount an external filesystem to your app.
 
 To use a volume service deployed by your <%= vars.admin %>, you must first create an instance of the specific volume service that you need.
 
-<p class="note"><strong>Note:</strong> You can also bind volume services using an app manifest. However, app manifests do not support bind configuration. If you want to bind a volume service using an app manifest, you must specify bind configuration when you create the service instance. The releases that support this are <code>nfs-volume</code> v1.3.1 and later and <code>smb-volume</code> v1.0.0 and later. For more information, see <a href="../deploy-apps/manifest.html#services-block">Services</a> in <em>Deploying with App Manifests</em>.</p>
+<p class="note">
+<span class="note__title">Note</span>
+You can also bind volume services using an app manifest. However, app manifests do not support bind configuration. If you want to bind a volume service using an app manifest, you must specify bind configuration when you create the service instance. The releases that support this are <code>nfs-volume</code> v1.3.1 and later and <code>smb-volume</code> v1.0.0 and later. For more information, see <a href="../deploy-apps/manifest.html#services-block">Services</a> in <em>Deploying with App Manifests</em>.</p>
 
 To create and bind an instance for the volume service:
 
@@ -78,15 +80,17 @@ To create and bind an instance for the volume service:
             just the normal kernel mount of the NFS file system without the performance overhead associated with FUSE mounts.
 
             The key advantage of specifying <code>UID</code> and <code>GID</code> is that different values can be specified for different apps, so
-            file permissions can be granted at the app level. If this is not needed, the performance overhead of <code>mapfs</code> can be
-            eliminated by managing permissions on the NFS server.
-            
-            <p class="note"><strong>Note:</strong> The user specified by <code>uid</code> must have access to the files on the share. When <code>uid</code> and <code>gid</code> are omitted, the app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.</p>
-            <p class="note"><strong>Note:</strong> Specifying UID and GID values has a performance implication as the FUSE filesystem mapfs is used to translate UID and GID values.</p>
+            file permissions can be granted at the app level. If this is not needed, the performance overhead of <code>mapfs</code> can be eliminated by managing permissions on the NFS server.
+            The user specified by <code>uid</code> must have access to the files on the share. When <code>uid</code> and <code>gid</code> are omitted, the app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.</p>
+            <p class="note caution">
+            <span class="note__title">Caution</span>
+            Specifying UID and GID values affects performance because the FUSE filesystem mapfs is used to translate UID and GID values.</p>
           </li>
           <li>
             (Optional) <code>OPTIONAL-MOUNT-PATH</code> is a JSON string that indicates the volume must be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as <code>/home</code>, <code>/usr</code>, or <code>/var</code>.
-            <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
+            <p class="note important">
+            <span class="note__title">Important</span>
+            Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.</p>
           </li>
           <li>
             (Optional) <code>"readonly":true</code> is an optional JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver activates attribute caching. This results in fewer attribute RPCs and better performance.
@@ -112,7 +116,9 @@ To create and bind an instance for the volume service:
           </li>
           <li>
             (Optional) <code>OPTIONAL-MOUNT-PATH</code> is a JSON string that indicates the volume must be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as <code>/home</code>, <code>/usr</code>, or <code>/var</code>.
-            <p class="note"><strong>Note:</strong> Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.
+            <p class="note important">
+            <span class="note__title">Important</span>
+            Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a Shared Volume in the /app Directory</a>.
             </p>
           </li>
           <li>
@@ -120,7 +126,7 @@ To create and bind an instance for the volume service:
           </li>
         </ul>
 
-1. Restage your app. Run:
+2. Restage your app. Run:
 
     ```
     cf restage YOUR-APP
@@ -225,7 +231,9 @@ This section describes how to use the NFS volume service.
 
 Both services offer a single plan called `Existing`.
 
-<p class="note"><strong>Note:</strong> NFS is not available on Windows systems.</p>
+<p class="note">
+<span class="note__title">Note</span>
+NFS is not available on Windows systems.</p>
 
 ### <a id='create-nfs'></a> Create an NFS volume service
 
@@ -242,7 +250,9 @@ To create an NFS volume service using the `Existing` plan of the `nfs` service:
     <ul>
       <li><code>SERVICE-INSTANCE-NAME</code> is a name you provide for this NFS volume service instance.</li>
       <li><code>SERVER/SHARE</code> is the NFS address of your server and share.
-        <p class="note"><strong>Note:</strong> Ensure you omit the <code>:</code> that usually follows the server name in the address.</p>
+        <p class="note important">
+        <span class="note__title">Important</span>
+        Omit the <code>:</code> that usually follows the server name in the address.</p>
       </li>
       <li>
         (Optional) <code>NFS-PROTOCOL</code> is the NFS protocol you want to use. For example, if you want to use NFSv4, set the version to <code>4.1</code>. Valid values are <code>3.0</code>, <code>4.0</code>, <code>4.1</code> or <code>4.2</code>. If you do not specify a <code>version</code>, the protocol version used is negotiated between client and server at mount time. This usually results in the latest available version being used.
@@ -313,7 +323,9 @@ To deploy and bind a sample app:
             This allows you to interact with your NFS server as a specific user
             while allowing <%= vars.app_runtime_abbr %> to run your app as an arbitrary user.
             <code>UID</code> and <code>GID</code> must be positive integer values.
-            <p class="note"><strong>Note:</strong> In NFS v2.0.0 and later, <code>uid</code> and <code>gid</code> values of <code>0</code> are no longer permissible due to security reasons.</p>
+            <p class="note important">
+            <span class="note__title">Important</span>
+            In NFS v2.0.0 and later, <code>uid</code> and <code>gid</code> values of <code>0</code> are no longer permissible because of security concerns.</p>
           </li>
         </ul>
       </li>

@@ -14,9 +14,9 @@ The app deployment process involves uploading, staging, and starting the app in 
 * Stage: 15 minutes
 * Start: 60 seconds
 
-<p class="note"><strong>Note:</strong> Your administrator can change these default settings. Check with your administrator for the actual time limits set for app deployment.</p>
+Your administrator can change these default settings. Check with your administrator for the actual time limits set for app deployment.
 
-Developers can change the time limit for starting apps through an app manifest or on the command line. For more information, see [ Deploying with App Manifests](manifest.html) and [Using App Health Checks](./healthchecks.html).
+Developers can change the time limit for starting apps through an app manifest or on the command line. For more information, see [Deploying with app manifests](manifest.html) and [Using app health checks](./healthchecks.html).
 
 
 ## <a id="crash-events"></a> Crash events
@@ -48,8 +48,10 @@ By default, apps must finish their in-flight jobs within ten seconds of receivin
 <% else %>
 To modify the timeout period, change the bosh property `containers.graceful_shutdown_interval_in_seconds` on the rep jobs.
 <% end %>
-NOTE: This might increase the time it takes to drain diego cells causing increased deployment time.
+This might increase the time it takes to drain diego cells causing increased deployment time.
 
 <%= vars.app_graceful_shutdown_config %>
 
-<p class="note"><strong>Note:</strong> An exception to the cases previously mentioned is when monit restarts a crashed Diego Cell rep or Garden server. In this case, <%= vars.app_runtime_abbr %> immediately stops the apps that are still running by using SIGKILL.</p>
+<p class="note">
+<span class="note__title">Note</span>
+An exception to the cases previously mentioned is when monit restarts a crashed Diego Cell rep or Garden server. In this case, <%= vars.app_runtime_abbr %> immediately stops the apps that are still running by using SIGKILL.</p>

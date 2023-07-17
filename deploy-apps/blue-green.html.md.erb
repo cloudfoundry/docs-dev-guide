@@ -19,13 +19,15 @@ Green is now live, and Blue is idle.
 
 This technique can eliminate downtime due to app deployment.
 In addition, blue-green deployment reduces risk: if something unexpected happens
-with your new version on Green, you can immediately roll back to the lastS
-version by switching back to Blue.S
+with your new version on Green, you can immediately roll back to the last
+version by switching back to Blue.
 
-<p class="note"><strong>Note</strong>: If your app uses a relational database, blue-green deployment can lead to discrepancies between your Green and Blue databases during an update. To maximize data integrity, configure a single database for backward and forward compatibility.</p>
+You can adjust the route mapping pattern to display a static maintenance page during a maintenance window for time-consuming tasks, such as migrating a database. In this scenario, the router switches all incoming requests from Blue to Maintenance to Green.
 
-<p class="note"><strong>Note</strong>: You can adjust the route mapping pattern to display a static maintenance page during a maintenance window for time-consuming tasks, such as migrating a database. In this scenario, the router switches all incoming requests from Blue to Maintenance to Green.
-</p>
+<p class="note important">
+<span class="note__title">Important</span>
+If your app uses a relational database, blue-green deployment can lead to discrepancies between your Green and Blue databases during an update. To maximize data integrity, configure a single database for backward and forward compatibility.</p>
+
 
 ## <a id='blue-green-deployment'></a>Blue-green deployment with Cloud Foundry example
 

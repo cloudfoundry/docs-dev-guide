@@ -169,7 +169,7 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
 
 Import the <%= vars.app_runtime_abbr %> OMS view to your OMS Portal to view visualized logs and metrics. You can also create alert rules for specific events.
 
-<p class="note"><strong>Note:</strong> The OMS view of <%= vars.app_runtime_abbr %> is not yet available in the OMS Solutions Gallery. You can add it manually to view your logs in OMS Portal.</p>
+The OMS view of <%= vars.app_runtime_abbr %> is not available in the OMS Solutions Gallery. You can add it manually to view your logs in OMS Portal.
 
 ### <a id='import-view'></a> Import the OMS view
 
@@ -226,11 +226,11 @@ This section includes example queries that operators can set in the OMS Portal.
 
 OMS Log Analytics Firehose Nozzle forwards metrics from the Loggregator Firehose to OMS with minimal processing, but the nozzle can push additional metrics to OMS.
 
-### <a id='events'></a> Logs sent and received, and events lost
+### <a id='events'></a> Logs sent and received, events lost
 
 If you set the `LOG_EVENT_COUNT` environment variable to `TRUE` in the [manifest](#deploy), the nozzle periodically sends the count of sent, received, and lost events to OMS. The value you set for the `LOG_EVENT_COUNT_INTERVAL` determines how frequently the nozzle sends the count.
 
-<p class="note"><strong>Note:</strong> The nozzle does not count <strong>CounterEvents</strong> themselves in the sent, received, or lost event count.</p>
+The nozzle does not count CounterEvents in the sent, received, or lost event count.
 
 The nozzle sends the count as a **CounterEvent** with a **CounterKey** of one of the following:
 
@@ -240,11 +240,9 @@ The nozzle sends the count as a **CounterEvent** with a **CounterKey** of one of
 | nozzle.stats.eventsSent | The number of events the nozzle has successfully sent to OMS during the interval |
 | nozzle.stats.eventsLost | The number of events the nozzle has tried to send to OMS during the interval, but failed to send after 4 attempts |
 
-In most cases, the total count of `eventsSent` plus `eventsLost` is less than the total `eventsReceived` at the same time. The nozzle buffers some messages and posts them in a batch to OMS. Operators can adjust the buffer size by adjusting the `OMS_BATCH_TIME` and `OMS_MAX_MSG_NUM_PER_BATCH` environment variables in the manifest).
+In most cases, the total count of `eventsSent` plus `eventsLost` is less than the total `eventsReceived` at the same time. The nozzle buffers some messages and posts them in a batch to OMS. Operators can adjust the buffer size by adjusting the `OMS_BATCH_TIME` and `OMS_MAX_MSG_NUM_PER_BATCH` environment variables in the manifest.
 
 ### <a id='slow-consumer'></a> Log slow consumer alerts
-
-<p class="note"><strong>Note:</strong> The nozzle does not count <strong>ValueMetrics</strong> in the sent, received, or lost event count.</p>
 
 Loggregator sends the nozzle a `slowConsumerAlert` in the following situations:
 
@@ -257,6 +255,8 @@ In either case, the nozzle sends the `slowConsumerAlert` event to OMS as the fol
 | ValueMetric | MetricKey |
 | ----------- | --------- |
 | nozzle.alert.slowConsumerAlert | 1 |
+
+The nozzle does not count ValueMetrics in the sent, received, or lost event count.
 
 <%= vars.slow_nozzle_alerts_link %>
 

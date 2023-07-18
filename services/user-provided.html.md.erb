@@ -63,8 +63,9 @@ Creating user provided service my-user-provided-route-service in org my-org / sp
 OK
 </pre>
 
-<p class="note">
-<strong>Note</strong>: When creating the user-provided service, the route service url specified must be https.
+<p class="note important">
+<span class="note__title">Important</span>
+When creating the user-provided service, the route service URL you specify must be "https."
 </p>
 
 To proxy requests to the user-provided route service, you must bind the service instance to the route.
@@ -78,4 +79,6 @@ The alias for `update-user-provided-service` is `uups`. Bound apps can access th
 You can use rolling restarts to avoid any app downtime.
 For more information, see [Restart an App](../deploy-apps/rolling-deploy.html#restart) in _Rolling App Deployments_.
 
-<p class="note"><strong>Note</strong>: If you are rotating credentials, the old credentials must be active until the restart is finished.</p>
+<p class="note caution">
+<span class="note__title">Caution</span>
+If you are rotating credentials, the old credentials must be active until the restart is finished.</p>

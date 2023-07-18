@@ -23,9 +23,7 @@ For a full list of attributes you can specify in an app manifest, see [App manif
 
 To deploy an app with a manifest:
 
-1. Create a `manifest.yml` file in the root directory of your app.
-  <p class='note'><strong>Note:</strong> By default, the <code>cf push</code> command uses the <code>manifest.yml</code> file in the app directory. To specify
-    a different location for the manifest, pass its local path to the <code>-f</code> flag when you run <code>cf push</code>.</p>
+1. Create a `manifest.yml` file in the root directory of your app. By default, the <code>cf push</code> command uses the <code>manifest.yml</code> file in the app directory. To specify a different location for the manifest, pass its local path to the <code>-f</code> flag when you run <code>cf push</code>.
 
 1. Add the following content to the file:
 
@@ -36,7 +34,7 @@ To deploy an app with a manifest:
     ```
     Where `APP-NAME` is the name of your app.
 
-1. Run:
+2. Run:
 
     ```
     cf push
@@ -49,8 +47,7 @@ For more information about manifest format and attributes, see [App manifest att
 
 ## <a id='multi-apps'></a> Deploy multiple apps with one manifest
 
-This section describes how to deploy multiple apps with a minimal manifest. For more information about manifest format and attributes, see [App Manifest
-Attribute Reference](manifest-attributes.html).
+This section describes how to deploy multiple apps with a minimal manifest. For more information about manifest format and attributes, see [App manifest attribute reference](manifest-attributes.html).
 
 ### <a id='general-rules'></a> General rules
 
@@ -61,20 +58,17 @@ Follow these general rules when deploying multiple apps with one manifest:
 * You cannot use any command line options with `cf push` except for `-f` and `--no-start`.
   * If your manifest is not named `manifest.yml` or not in the current working directory, use the `-f` command line option.
 
-* To push a single app rather than all of the apps described in the manifest, provide the desired app name by running `cf push APP-NAME`, where `APP-NAME` is
-the name of your app.
+* To push a single app rather than all of the apps described in the manifest, provide the desired app name by running `cf push APP-NAME`, where `APP-NAME` is the name of your app.
+
+* Each app must be in a subdirectory under the same parent directory.
 
 ### <a id='procedure-multi'></a> Procedure
 
 To deploy multiple apps with a manifest:
 
-<p class='note'><strong>Note:</strong> Each app must be in a subdirectory under the same parent directory.</p>
-
 1. Create a `manifest.yml` file in the directory that contains the apps.
 
-1. Add each app and its directory to the file. <%= vars.app_runtime_abbr %> pushes the apps in the order specified in the manifest.
-  <p class='note'><strong>Note:</strong> If you push multiple apps using a manifest and one fails to deploy, <%= vars.app_runtime_abbr %> does not attempt to
-    push apps specified after the app that failed.</p>
+2. Add each app and its directory to the file. <%= vars.app_runtime_abbr %> pushes the apps in the order specified in the manifest. If you push multiple apps using a manifest and one fails to deploy, <%= vars.app_runtime_abbr %> does not attempt to push apps specified after the app that failed.
 
     ```
     ---

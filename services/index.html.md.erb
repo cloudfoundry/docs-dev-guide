@@ -10,9 +10,11 @@ You can provision service instances and integrate them with apps that you have p
 
 Cloud Foundry offers a marketplace of services, from which users can provision reserved resources on-demand. Examples of resources services provide include databases on a shared or dedicated server, or accounts on a SaaS app. These resources are known as service instances and the systems that deliver and operate these resources are known as Services. Think of a service as a factory that delivers service instances.
 
-For more information about provisioning service instances and other lifecycle operations, see [Managing Service Instances](./managing-services.html).
+For more information about provisioning service instances and other lifecycle operations, see [Managing service instances](./managing-services.html).
 
-<p class='note'><strong>Note:</strong> For a service to be available in the marketplace, it must be integrated with Cloud Foundry by way of APIs. <%= vars.custom_services %></p>
+<p class="note">
+<span class="note__title">Note</span>
+For a service to be available in the marketplace, it must be integrated with Cloud Foundry by way of APIs. <%= vars.custom_services %></p>
 
 ### <a id='user-provided-services'></a> User-provided service instances
 
@@ -33,12 +35,14 @@ For information about binding to a specific app development framework, see [Buil
 
 Credentials managed manually are known as service keys. Use service keys when you want a set of credentials for use by clients other than the app in the same space. For instance, you can use service keys to connect to a service instance from a local client, or from an app in another space, or even from outside of Cloud Foundry.
 
-For more information about creating a user-provided service instance with service keys, see the [User-Provided Service Instances](./user-provided.html) topic. For more information about service keys, see the [Managing Service Keys](./service-keys.html) topic.
+For more information about creating a user-provided service instance with service keys, see the [User-provided service instances](./user-provided.html) topic. For more information about service keys, see the [Managing service keys](./service-keys.html) topic.
 
-<p class='note'><strong>Note:</strong> Not all services support service keys. Some services support credentials through app binding only.</p>
+<p class="note important">
+<span class="note__title">Important</span>
+Not all services support service keys. Some services support credentials through app binding only.</p>
 
 
-## <a id='external-ip'></a> Outbound IP Addresses
+## <a id='external-ip'></a> Outbound IP addresses
 
 To allow an app to communicate with a service external to <%= vars.product_short %>, you might need to configure the service to accept connections from your app based on its outbound IP address.
 
@@ -66,7 +70,9 @@ If your app relies on a relational database, you must apply schema changes perio
 
 For more information about running cf CLI tasks, see [Running tasks in your apps](../using-tasks.html).
 
-<p class="note"><strong>Note:</strong> To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. For information about downloading, installing, and uninstalling the cf CLI, see the <a href="../../cf-cli/install-go-cli.html">Installing the cf CLI</a>.</p>
+<p class="note important">
+<span class="note__title">Important</span>
+To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. The current supported version is cf CLI v8. For information about downloading, installing, and uninstalling the cf CLI, see the <a href="../../cf-cli/install-go-cli.html">Installing the cf CLI</a>.</p>
 
 To do a database schema migration with cf CLI:
 

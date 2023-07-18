@@ -208,8 +208,9 @@ These tasks run after <%= vars.app_runtime_abbr %> loads the app droplet but bef
 language runtime environment. For example, your script can map values from `$VCAP_SERVICES` into other environment variables or a config file that the app
 uses.
 
-<div class='note'><strong>Notes:</strong> The following notes include important information about configuring app initialization when you use certain
-  buildpacks:
+<div class="note important">
+<span class="note__title">Important</span>
+The following notes include important information about configuring app initialization when you use certain buildpacks:
   <ul>
     <li><strong>Java:</strong> Initialization scripts for the Java buildpack require additional configuration.For more information, see
       <a href="https://community.pivotal.io/s/article/how-to-modify-the-application-container-environment-prior-to-application-execution?language=en_US">How

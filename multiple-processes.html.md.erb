@@ -44,23 +44,21 @@ Reference_.
 
 ## <a id='procfile'></a>Push an app with multiple processes using a Procfile
 
+Procfile support varies depending on the buildpack you use. For example, the Staticfile buildpack requires a Staticfile instead of a Procfile. For more information, see <a href="../buildpacks/staticfile/index.html">Staticfile Buildpack</a>
+
 To push an app with multiple processes using a Procfile:
 
-<p class='note'><strong>Note:</strong> Procfile support varies depending on the buildpack you use. For example, the Staticfile buildpack requires a Staticfile
-  instead of a Procfile. For more information, see <a href="../buildpacks/staticfile/index.html">Staticfile Buildpack</a>.</p>
+1. Create a file named `Procfile` in the root of your app directory. For more information about Procfiles, see the
+    <a href="https://v3-apidocs.cloudfoundry.org/index.html#procfiles">CAPI V3 documentation</a>.
 
-1. Create a file named `Procfile` in the root of your app directory.
-	<p class='note'><strong>Note:</strong> For more information about Procfiles, see the
-    <a href="https://v3-apidocs.cloudfoundry.org/index.html#procfiles">CAPI V3 documentation</a>.</p>
-
-1. Add each process and its start command to the Procfile. For example:
+2. Add each process and its start command to the Procfile. For example:
 
     ```
     web: bundle exec rackup config.ru -p $PORT
     worker: bundle exec rake worker:start
     ```
 
-1. Push the app by running:
+3. Push the app by running:
 
     ```
     cf push APP-NAME

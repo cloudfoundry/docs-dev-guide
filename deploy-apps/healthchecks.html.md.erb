@@ -117,7 +117,8 @@ circumstances in which to use them:
     the app is declared healthy. <%= vars.company_name %> recommends that you use the
     <code>http</code> health check type whenever possible. A healthy HTTP response ensures that the
     web app is ready to serve HTTP requests. The configured endpoint must respond within one second
-    to be considered healthy.<br><p class='note warning'><strong>Caution:</strong> To prevent false
+    to be considered healthy.<br>
+    <p class="note important"><span class="note__title">Important</span>To prevent false
     negatives, use a dedicated endpoint for health checks where response time and result do not
     depend on business logic.</p>
     </td>

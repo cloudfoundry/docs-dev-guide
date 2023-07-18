@@ -55,7 +55,7 @@ Review the limitations of this feature before running the command. For more info
     </p>
 
     If the deployment hangs indefinitely, cancel the process and run it again with the step above.
-    To cancel, see [Cancel a Deployment](#cancel).
+    To cancel, see [Cancel a deployment](#cancel).
 
 * **For cf CLI v6, run:**
 
@@ -63,11 +63,10 @@ Review the limitations of this feature before running the command. For more info
     cf v3-zdt-push APP-NAME
     ```
     Where `APP-NAME` is the name that you want to give your app.
-    <p class='note'>
-      <strong>Note:</strong> This command is experimental and unsupported.
-      Consider upgrading to cf CLI v7 to use a supported version of this command.
-      To upgrade to cf CLI v7, see
-      <a href="../../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.
+
+    <p class="note important">
+    <span class="note__title">Important</span>
+    This command is experimental and unsupported. Upgrade to cf CLI v7 (<a href="https://docs.cloudfoundry.org/cf-cli/v7.html">Upgrading to cf CLI v7</a>) or or cf CLI v8 (<a href="https://docs.cloudfoundry.org/cf-cli/v8.html">Upgrading to cf CLI v8</a>).
     </p>
 
 * **For CAPI V3:**
@@ -76,7 +75,7 @@ Review the limitations of this feature before running the command. For more info
         ```
         cf login
         ```
-    1. Create an empty app by running the following `curl` command  with `POST /v3/apps`. Record the
+    2. Create an empty app by running the following `curl` command  with `POST /v3/apps`. Record the
     app GUID from the output.
 
         ```
@@ -100,7 +99,7 @@ Review the limitations of this feature before running the command. For more info
           <li><code>APP-NAME</code> is the name that you want to give your app.</li>
           <li><code>SPACE-GUID</code> is the space identifier that you want to associate with your app.</li>
         </ul>
-    1. Create a package with the following `curl` command with `POST /v3/packages`. Record the package
+    3. Create a package with the following `curl` command with `POST /v3/packages`. Record the package
     GUID from the output.
 
         ```
@@ -120,7 +119,7 @@ Review the limitations of this feature before running the command. For more info
         ```
         Where `APP-GUID` is the app GUID that you recorded in the previous step. This app GUID is a
         unique identifier for your app.
-    1. Upload the package bits by running the following `curl` command with
+    4. Upload the package bits by running the following `curl` command with
     `POST /v3/packages/PACKAGE-GUID/upload`.
 
         ```
@@ -134,7 +133,7 @@ Review the limitations of this feature before running the command. For more info
           <li><code>PACKAGE-GUID</code> is the package GUID that you recorded in the previous step.</li>
           <li><code>PACKAGED-APP</code> is your app packaged in a file such as <code>.zip</code>.</li>
         </ul>
-    1. Create the build by running the following `curl` command with `POST /v3/builds`. Record the
+    5. Create the build by running the following `curl` command with `POST /v3/builds`. Record the
     droplet GUID from the output.
 
         ```
@@ -148,7 +147,7 @@ Review the limitations of this feature before running the command. For more info
           }'
         ```
         Where `PACKAGE-GUID` is the package GUID that you recorded in a previous step.
-    1. Deploy your app by running the following `curl` command with `POST /v3/deployments`. To verify
+    6. Deploy your app by running the following `curl` command with `POST /v3/deployments`. To verify
     the status of the deployment or take action on the deployment, record the deployment GUID from the
     output.
 
@@ -172,7 +171,7 @@ Review the limitations of this feature before running the command. For more info
         ```
         Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in previous steps.
 
-For more information about this command, see [How It Works](#how-it-works).
+For more information about this command, see [How it works](#how-it-works).
 
 ### <a id="cancel"></a> Cancel a deployment
 
@@ -191,10 +190,10 @@ To stop the deployment of an app that you pushed:
     cf v3-cancel-zdt-push APP-NAME
     ```
     Where `APP-NAME` is the name of the app.
-    <p class='note'><strong>Note:</strong> This command is experimental and unsupported.
-      Consider upgrading to cf CLI v7 to use a supported version of this command. To
-      upgrade to cf CLI v7, see <a href="../../cf-cli/v7.html#install">Install cf CLI v7</a>
-      in <em>Upgrading to cf CLI v7</em>.</p>
+
+    <p class="note important">
+    <span class="note__title">Important</span>
+    This command is experimental and unsupported. Upgrade to cf CLI v7 (<a href="https://docs.cloudfoundry.org/cf-cli/v7.html">Upgrading to cf CLI v7</a>) or or cf CLI v8 (<a href="https://docs.cloudfoundry.org/cf-cli/v8.html">Upgrading to cf CLI v8</a>).
 
 * **For CAPI V3, run:**
 
@@ -233,10 +232,10 @@ configuration updates that require a restart, such as environment variables or s
     cf v3-zdt-restart APP-NAME
     ```
     Where `APP-NAME` is the name of the app.
-    <p class='note'><strong>Note:</strong> This command is experimental and unsupported.
-      Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade
-      to cf CLI v7, see <a href="../../cf-cli/v7.html#install">Install cf CLI v7</a> in
-      <em>Upgrading to cf CLI v7</em>.</p>
+
+    <p class="note important">
+    <span class="note__title">Important</span>
+    This command is experimental and unsupported. Upgrade to cf CLI v7 (<a href="https://docs.cloudfoundry.org/cf-cli/v7.html">Upgrading to cf CLI v7</a>) or or cf CLI v8 (<a href="https://docs.cloudfoundry.org/cf-cli/v8.html">Upgrading to cf CLI v8</a>).
 
 * **For CAPI V3, run:**
 

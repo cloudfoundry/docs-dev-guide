@@ -148,9 +148,9 @@ In this case, no information about other spaces is exposed.
 
 ## <a id="unsharing"></a> Unsharing a service instance
 
-<p class="note warning"><strong>Caution:</strong> Unsharing a service instance deletes all bindings to apps in the spaces it was shared into.
-This might cause apps to fail. Before unsharing a service instance,
-run the <code>cf service SERVICE-INSTANCE</code> command to see how many bindings exist in the spaces the service instance is shared into.</p>
+<p class="note caution">
+<span class="note__title">Caution</span>
+Unsharing a service instance deletes all bindings to apps in the spaces it was shared into. This might cause apps to fail. Before unsharing a service instance, run the <code>cf service SERVICE-INSTANCE</code> command to see how many bindings exist in the spaces the service instance is shared into.</p>
 
 You can unshare a service instance if you have the Space Developer role in the
 space where this service instance was shared from.
@@ -204,7 +204,9 @@ If a service binding is not successfully deleted, the script continues trying to
 
 To use this script, you must be logged in as an administrator and have jq installed.
 
-<p class="note"><strong>Note</strong>: This script has been tested on macOS Sierra 10.12.4 and Ubuntu 14.04.5. Use the script at your own risk.</p>
+<p class="note caution">
+<span class="note__title">Caution</span>
+This script has been tested on macOS Sierra 10.12.4 and Ubuntu 14.04.5. Use the script at your own risk.</p>
 
 ```
 #!/usr/bin/env bash

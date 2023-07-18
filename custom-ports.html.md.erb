@@ -46,8 +46,7 @@ Before you follow the procedure to configure routing to your app on custom ports
 
 * Routes for which you want traffic forwarded to your app on custom ports, which are mapped to the app.
 
- <p class='note'><strong>Note:</strong> If your app receives requests on two ports, and you want clients to be able to send requests to both of them, create
-  two routes. These routes can be from HTTP or TCP domains.
+If your app receives requests on two ports, and you want clients to be able to send requests to both of them, create two routes. These routes can be from HTTP or TCP domains.
 In the following procedure, use API endpoints to map the routes to your app on the ports it uses to receive requests.
 For more information about routes, see <a href="deploy-apps/routes-domains.html">Routes and Domains</a>.</p>
 
@@ -119,8 +118,9 @@ To configure your app to receive HTTP or TCP requests on custom ports:
       <li><code>PROCESS-TYPE</code> is the value of <code>type</code> that you recorded in a previous step. This value is usually <code>web</code>.</li>
     </ul>
 
-    <p class='note'><strong>Note:</strong> This API call removes all destinations for a route and replaces them with the destinations you provide in the API
-     request.</p>
+    <p class="note caution">
+    <span class="note__title">Caution</span>
+    This API call removes all destinations for a route and replaces them with the destinations you provide in the API request.</p>
 
 ## <a id='additional-resources'></a> Additional resources
 

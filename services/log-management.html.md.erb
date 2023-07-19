@@ -24,15 +24,17 @@ $ cf create-service SERVICE PLAN SERVICE-INSTANCE
 $ cf bind-service YOUR-APP YOUR-LOG-STORE
 </pre>
 
-For more information about service instance lifecycle management, see [Managing Service Instances](managing-services.html).
+For more information about service instance lifecycle management, see [Managing service instances](managing-services.html).
 
-<p class='note'><strong>Note:</strong> Not all marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that enables automated streaming of app syslogs. <%= vars.custom_services %></p>
+<p class="note">
+<span class="note__title">Note</span>
+Not all marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that enables automated streaming of app syslogs. <%= vars.custom_services %></p>
 
 ## <a id='user-provided'></a> Using services not available in your marketplace
 
-If a compatible log management service is not available in your Cloud Foundry marketplace, you can use user-provided service instances to stream app logs to a service of your choice. For more information, see the [Stream App Logs to a Service](./user-provided.html#syslog) section of the _User-Provided Service Instances_ topic.
+If a compatible log management service is not available in your Cloud Foundry marketplace, you can use user-provided service instances to stream app logs to a service of your choice. For more information, see the [Stream app logs to a service](./user-provided.html#syslog) section of the _User-Provided Service Instances_ topic.
 
-You might need to prepare your log management service to receive app logs from Cloud Foundry. For specific instructions for several popular services, see [Service-Specific Instructions for Streaming App Logs](./log-management-thirdparty-svc.html). If you cannot find instructions for your service, follow the generic instructions.
+You might need to prepare your log management service to receive app logs from Cloud Foundry. For specific instructions for several popular services, see [Service-specific instructions for streaming app logs](./log-management-thirdparty-svc.html). If you cannot find instructions for your service, follow the generic instructions.
 
 ### <a id='step1'></a>Step 1: Configure the log management service
 
@@ -52,7 +54,9 @@ To set up a communication channel between the log management service and your Cl
 
 <%=vars.pas_ssl_note%>
 
-<p class='note'><strong>Note:</strong> If the URL is an IP address, then it must not contain any leading zeros, for example, <code>10.0.01.14</code>. If you include the leading zeros, then URL parsing fails.</p>
+<p class="note important">
+<span class="note__title">Important</span>
+If the URL is an IP address, then it must not contain any leading zeros, for example, <code>10.0.01.14</code>. If you include the leading zeros, then URL parsing fails.</p>
 
 ### <a id='step2'></a> Step 2: Create and bind a user-provided service instance
 

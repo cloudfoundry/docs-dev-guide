@@ -1,9 +1,9 @@
-## <a id="logging"></a>Manage Logging for Container- to Container Networking
+## <a id="logging"></a>Manage logging for container-to-container networking
 
-This section describes how to configure logging for Container-to-Container Networking events by making requests to the running virtual machines (VMs).
+This section describes how to configure logging for container-to-container Networking events by making requests to the running virtual machines (VMs).
 You can also activate logging for iptables policy rules by editing the manifest in [Enable on an IaaS](#iaas).
 
-### <a id="debug-logging"></a>Change Log Level for Debugging
+### <a id="debug-logging"></a>Change log level for debugging
 
 By default, the Policy Server logs events at the `INFO` level.
 You can get more information about events by increasing the log level to `DEBUG`.
@@ -37,7 +37,7 @@ To change the log level, use the following steps:
      * **Policy Server**: `/var/vcap/sys/log/policy-server/policy-server.stdout.log`
      * **VXLAN Policy Agent**: `/var/vcap/sys/log/vxlan-policy-agent/vxlan-policy-agent.stdout.log`
 
-### <a id="iptables-logging"></a>Activate Logging for Container-to-Container Networking Policies
+### <a id="iptables-logging"></a>Activate logging for container-to-container networking policies
 
 By default, CF does not log iptables policy rules for Container-to-Container network traffic. You can activate logging for iptables policy rules
 in the manifest in [Enable on an IaaS](#iaas), or use following the steps:
@@ -65,7 +65,7 @@ in the manifest in [Enable on an IaaS](#iaas), or use following the steps:
 
 1. Find the logs in `/var/log/kern.log`.
 
-### <a id="metrics"></a>Use Metrics to Consume Logs
+### <a id="metrics"></a>Use metrics to consume logs
 
 You can stream Container-to-Container Networking component metrics with the [Loggregator Firehose](../../loggregator/architecture.html#firehose).
 

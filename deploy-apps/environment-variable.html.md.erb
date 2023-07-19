@@ -265,7 +265,7 @@ This environment variable contains the associated attributes for a deployed app.
 
 ### <a id='VCAP-SERVICES'></a> VCAP_SERVICES
 
-For bindable services, <%= vars.app_runtime_abbr %> adds connection details to the `VCAP_SERVICES` environment variable when you restart your app, after binding a service instance to your app. For more information about bindable services, see [Services Overview](../services/index.html).
+For bindable services, <%= vars.app_runtime_abbr %> adds connection details to the `VCAP_SERVICES` environment variable when you restart your app, after binding a service instance to your app. For more information about bindable services, see [Services overview](../services/index.html).
 
 <%= vars.app_runtime_abbr %> returns the results as a JSON document that contains an object for each service for which one or more instances are bound to the app. The service object contains a child object for each instance of the service that is bound to the app.
 
@@ -286,7 +286,7 @@ The following a table defines the attributes that describe a bound service. The 
 | `volume_mounts` | An array of service-specific volume mounts. |
 
 
-To see the value of the `VCAP_SERVICES` environment variable for an app pushed to <%= vars.app_runtime_abbr %>, see [View Environment Variable Values](#view-env).
+To see the value of the `VCAP_SERVICES` environment variable for an app pushed to <%= vars.app_runtime_abbr %>, see [View environment variable values](#view-env).
 
 The following example shows the value of the `VCAP_SERVICES` environment variable for bound instances of several services available in the Marketplace.
 

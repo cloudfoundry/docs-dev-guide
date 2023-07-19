@@ -7,18 +7,17 @@ owner: CAPI
 
 Factors such as user load, or the number and nature of tasks performed by an app, can change the disk space and memory the app uses.
 This topic describes how to scale an app using the Cloud Foundry Command Line Interface (cf CLI).
-For many apps, increasing the available disk space or memory can improve
-overall performance.
+For many apps, increasing the available disk space or memory can improve overall performance.
 Similarly, running additional instances of an app can allow the
 app to handle increases in user load and concurrent requests.
-These adjustments are called **scaling** an app.
+These adjustments are called "scaling" an app.
 
 Use [cf scale](http://cli.cloudfoundry.org/en-US/cf/scale.html) to scale your app up or down to meet changes in traffic
 or demand.
 
 <%=vars.autoscaler_note_dev_guide%>
 
-## <a id="horizontal"></a>Scaling Horizontally ##
+## <a id="horizontal"></a>Scaling horizontally
 
 Horizontally scaling an app creates or destroys instances of your app.
 
@@ -39,7 +38,7 @@ $ cf scale myApp -i 5
 <span class="note__title">Note</span>
 In cf CLI v7, you can also use <code>--process</code> with <code>cf scale</code> to scale specific processes of your app.</p>
 
-## <a id="vertical"></a>Scaling Vertically ##
+## <a id="vertical"></a>Scaling vertically
 
 Vertically scaling an app changes the disk space limit or memory limit
 that Cloud Foundry applies to all instances of the app.

@@ -12,12 +12,12 @@ The cf CLI command `cf push` pushes apps to <%= vars.app_runtime_abbr %>. There 
   * How the pushed app runs, including its route, instance count, disk size limits, memory limits, and log rate limits.
   * How the push process works: whether it's configured with a manifest, runs a startup script, or limits files uploaded to the Cloud Controller.
 
-For more information about custom settings, see [Push with Custom Settings](#custom-push).
+For more information about custom settings, see [Push with custom settings](#custom-push).
 
 For an explanation of what <%= vars.app_runtime_abbr %> does when you run `cf push`, see [How Apps are
 Staged](../../concepts/how-applications-are-staged.html).
 
-For information about the lifecycle of an app, see [App Container Lifecycle](app-lifecycle.html).
+For information about the lifecycle of an app, see [App container lifecycle](app-lifecycle.html).
 
 ## <a id='prepare'></a> Prerequisites
 
@@ -25,7 +25,7 @@ Before you push your app to <%= vars.app_runtime_abbr %>, ensure the following:
 
 * Your app is *cloud-ready*. <%= vars.app_runtime_abbr %> behaviors related to file storage, HTTP sessions, and port usage might require modifications to your
 app. To prepare an app to be pushed to <%= vars.app_runtime_abbr %>, see:
-  * [Considerations for Designing and Running an App in the Cloud](prepare-to-deploy.html)
+  * [Considerations for designing and running an app in the cloud](prepare-to-deploy.html)
   * Any [Buildpacks](../../buildpacks/index.html) guides specific to your app language or framework, such as [Getting Started Deploying Ruby on Rails
   Apps](../../buildpacks/ruby/gsg-ror.html)
 
@@ -43,7 +43,7 @@ can stage the app.
   1. Log into this target org and space with `cf login`.
 
 * Your app can access every service that it uses, because an instance of the service runs in, or is shared with, the app's space.
-  * For information about sharing service instances across spaces, see [Sharing Service Instances](../services/sharing-instances.html).
+  * For information about sharing service instances across spaces, see [Sharing service instances](../services/sharing-instances.html).
   * Typical services that cloud apps use include databases, message queues, and key-value stores.
 
 ## <a id='default-push'></a> Push with defaults
@@ -51,7 +51,7 @@ can stage the app.
 To push an app with default settings:
 
 1. Choose a name for the app. The app name must consist of alphanumeric characters and be unique to your <%= vars.app_runtime_abbr %> deployment.
-    * To use an app name that is not unique, customize the app's route as described in [Customize the Route](#custom-route).
+    * To use an app name that is not unique, customize the app's route as described in [Customize the route](#custom-route).
     * Apps running at their default routes require unique names because default routes are based on app names, and all routes must be globally unique.
 
 1. Run:
@@ -75,7 +75,7 @@ By default, <%= vars.app_runtime_abbr %> sets the hostname and domain as follows
 For example, an app named `example-app` running on <%= vars.app_runtime_abbr %> with an apps domain `apps.example.com` would run at the URL
 `https://example-app.apps.example.com` by default.
 
-For more information about routes and domains, see [Routes and Domains](routes-domains.html).
+For more information about routes and domains, see [Routes and domains](routes-domains.html).
 
 <%= vars.ssl %>
 
@@ -257,7 +257,7 @@ To specify custom options when pushing an app with `cf push`, you can include th
 For information about how app settings change from push to push, including how command-line options, manifests, and commands like `cf scale` interact, see
 [Deploying with App Manifests](manifest.html).
 
-For a full list of `cf push` options, see the [Cloud Foundry CLI Reference Guide](https://cli.cloudfoundry.org/en-US/cf/push.html).
+For a full list of `cf push` options, see the [Cloud Foundry CLI reference guide](https://cli.cloudfoundry.org/en-US/cf/push.html).
 
 ### <a id='services'></a> Configure app services (optional)
 
@@ -266,7 +266,7 @@ previously-pushed version.
 
 For apps that are not already set up for the services that they use:
 
-1. Bind the services to the app. For more information about services, see [Services Overview](../services/index.html).
+1. Bind the services to the app. For more information about services, see [Services overview](../services/index.html).
 
 1. (Optional) Configure the app with the service URL and credentials, if needed. For more information, see [Configuring Service
 Connections](../../buildpacks/java/configuring-service-connections.html).
@@ -281,10 +281,10 @@ schema, causing old app instances to fail and lose user data. To prevent this, y
 version.
 
 When old and new versions of your app can run simultaneously, you can avoid app downtime by using the blue-green deployment method to swap routes between app
-versions running in parallel. For more information, see [Using Blue-Green Deployment to Reduce Downtime and Risk](blue-green.html).
+versions running in parallel. For more information, see [Using blue-green deployment to reduce downtime and risk](blue-green.html).
 
 ## <a id='troubleshoot-push'></a> Troubleshoot app push problems
 
 If your app does not start on <%= vars.app_runtime_abbr %>, first ensure that the app can run locally.
 
-To troubleshoot your app in the cloud using the cf CLI, see [Troubleshoot App Deployment and Health](troubleshoot-app-health.html).
+To troubleshoot your app in the cloud using the cf CLI, see [Troubleshoot app deployment and health](troubleshoot-app-health.html).

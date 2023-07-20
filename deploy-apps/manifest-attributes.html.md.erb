@@ -3,7 +3,7 @@ title: App manifest attribute reference
 owner: CLI
 ---
 
-App properties and behavior can be managed using cf CLI commands or the app manifest (a YAML properties file). This topic describes manifest formatting and provides a full list of attributes available for app manifests. You can use it alongside [Deploying with App Manifests](manifest.html), which provides basic procedures and guidance for deploying apps with manifests.
+App properties and behavior can be managed using cf CLI commands or the app manifest (a YAML properties file). This topic describes manifest formatting and provides a full list of attributes available for app manifests. You can use it alongside [Deploying with app manifests](manifest.html), which provides basic procedures and guidance for deploying apps with manifests.
 
 For more information about V3 manifest properties, see the [Cloud Foundry API (CAPI) V3 documentation](http://v3-apidocs.cloudfoundry.org/index.html#space-manifest).
 
@@ -14,7 +14,7 @@ Manifests are written in YAML. The following manifest illustrates some YAML conv
 
 * The manifest begins with three dashes.
 
-* The `version` property specifies a manifest schema version. This property is optional. For more information, see [Add Schema Version to a Manifest](#manifest-schema-version).
+* The `version` property specifies a manifest schema version. This property is optional. For more information, see [Add schema version to a manifest](#manifest-schema-version).
 
 * The `applications` block begins with a heading followed by a colon.
 
@@ -165,7 +165,7 @@ Some languages and frameworks require that you provide a custom command to start
 [Buildpacks](../../buildpacks/index.html).
 
 You can provide the custom start command in your app manifest or on the command line. For more information about how <%= vars.app_runtime_abbr %> determines
-its default start command, see [Starting, Restarting, and Restaging Apps](start-restart-restage.html).
+its default start command, see [Starting, restarting, and restaging apps](start-restart-restage.html).
 
 To specify the custom start command in your app manifest, add it in the `command: START-COMMAND` format. For example:
 
@@ -362,7 +362,7 @@ The `-m` command-line flag overrides this attribute.
 ### <a id='metadata'></a> metadata
 
 The `metadata` attribute tags your apps with additional information. You can specify two types of metadata: `labels` and `annotations`. For more information,
-see [Types of Metadata](../../adminguide/metadata.html#types) in _Using Metadata_.
+see [Types of metadata](../../adminguide/metadata.html#types) in _Using Metadata_.
 
 For example:
 
@@ -374,7 +374,7 @@ metadata:
     sensitive: true
 ```
 
-For more information about metadata, see [Using Metadata](../../adminguide/metadata.html).
+For more information about metadata, see [Using metadata](../../adminguide/metadata.html).
 
 ### <a id='no-route'></a> no-route
 
@@ -412,7 +412,7 @@ To remove a route from an existing app:
 
 1. Push the app again with the `no-route: true` attribute in the manifest or the `--no-route` command line option.
 
-For more information, see [Deploy Multiple Apps with One Manifest](manifest.html#multi-apps) in _Deploying with App Manifests_.
+For more information, see [Deploy multiple apps with one manifest](manifest.html#multi-apps) in _Deploying with App Manifests_.
 
 ### <a id='path'></a> path
 
@@ -429,7 +429,7 @@ For example:
 
 The `-p` command-line flag overrides this attribute.
 
-For more information, see [How cf push Finds the App](../../cf-cli/getting-started.html#find-app) in _Getting Started with the cf CLI_.
+For more information, see [How cf push finds the app](../../cf-cli/getting-started.html#find-app) in _Getting Started with the cf CLI_.
 
 ### <a id='processes'></a> processes
 
@@ -462,7 +462,7 @@ processes:
 For detailed information about the process-level configuration, see the [CAPI
 documentation](https://v3-apidocs.cloudfoundry.org/version/3.76.0/index.html#app-manifest).
 
-For more information about pushing an app with multiple processes, see [Pushing an App with Multiple Processes](../multiple-processes.html).
+For more information about pushing an app with multiple processes, see [Pushing an app with multiple processes](../multiple-processes.html).
 
 ### <a id='random-route'></a> random-route
 
@@ -563,7 +563,7 @@ sidecars:
   memory: 900M
 ```
 
-For more information about sidecars, see [Pushing Apps with Sidecar Processes](../sidecars.html).
+For more information about sidecars, see [Pushing apps with sidecar processes](../sidecars.html).
 
 ### <a id='stack'></a> stack
 
@@ -691,7 +691,7 @@ For example:
 ```
 
 You can bind an app to a service instance by setting the `VCAP_SERVICES` environment variable. For more information, see [Bind a
-Service](../services/application-binding.html#bind) in _Delivering Service Credentials to an App_.
+service](../services/application-binding.html#bind) in _Delivering Service Credentials to an App_.
 
 
 ## <a id='deprecated'></a> Deprecated app manifest features
@@ -790,7 +790,7 @@ applications:
 
 ### <a id='inheritance-deprecated'></a> Inheritance
 
-This feature is deprecated and replaced by variable substitution. For more information, see [Variable Substitution](#variable-substitution) above.
+This feature is deprecated and replaced by variable substitution. For more information, see [Variable substitution](#variable-substitution) above.
 
 With inheritance, child manifests inherited configurations from a parent manifest. The child manifests can use the inherited configurations as provided,
 extend them, or override them.

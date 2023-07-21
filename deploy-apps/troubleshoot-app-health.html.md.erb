@@ -30,8 +30,7 @@ If this happens:
 * **Make sure you are pushing only needed files.** By default, `cf push` pushes all the contents of the current working directory. Make sure you are pushing
 only the directory for your app. If your app is too large, or if it has many small files, <%= vars.app_runtime_abbr %> might time out during the upload. To
 reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to
-specify excluded files. For more information, see [Ignore Unnecessary Files When Pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and
-Running an App in the Cloud_.
+specify excluded files. For more information, see [Ignore unnecessary files when pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and Running an App in the Cloud_.
 
 * **Set the `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT` environment variables.** By default, your app has 15 minutes to stage and 5 minutes to start. You
 can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`. For more information, run `cf push -h`.
@@ -86,7 +85,7 @@ Common reasons deploying an app fails include:
 
 * The app does not successfully bind to a service, such as a PostgreSQL or MongoDB. The service might not exist, be down, or reject the binding.
 
-* The app does not have a unique URL. For more information, see [App Requires Unique URL](#unique-url).
+* The app does not have a unique URL. For more information, see [App requires unique URL](#unique-url).
 
 ### <a id='unique-url'></a> App requires unique URL
 
@@ -132,8 +131,7 @@ the port on which your app listens, use the `PORT` environment variable. For exa
     ```
     For more examples specific to your app framework, see the appropriate [buildpack documentation](../../buildpacks/index.html) for your app's language.
 
-* **Make sure your app adheres to the principles described in [Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an
-App](prepare-to-deploy.html).** These texts explain how to prevent situations where your app builds locally but fails to build in the cloud.
+* **Make sure your app adheres to the principles described in [Twelve-Factor App](http://12factor.net) and [Prepare to deploy an app](prepare-to-deploy.html).** These texts explain how to prevent situations where your app builds locally but fails to build in the cloud.
 
 * **Verify the timeout configuration of your app.** App health checks use a timeout setting when an app starts up for the first time. For more information,
 see [Using App Health Checks](healthchecks.html). If an app fails to start up due to health check timeout, you might see messages in the logs similar to the
@@ -194,7 +192,7 @@ This section describes how to gather diagnostic information and troubleshoot app
 
 `cf push` deploys your app to a container on the server. The environment variables in the container govern your app.
 
-You can set environment variables in a manifest created before you deploy. For more information, see [Deploying with App Manifests](manifest.html).
+You can set environment variables in a manifest created before you deploy. For more information, see [Deploying with app manifests](manifest.html).
 
 You can also set an environment variable by running `cf set-env`, followed by `cf push`. You must run `cf push` for the variable to take effect in the
 container environment.
@@ -231,8 +229,7 @@ my-drain: http://drain.example.com
 
 To view app logs streamed in real-time, run `cf logs APP-NAME`.
 
-To aggregate your app logs to view log history, bind your app to a syslog drain service. For more information, see [Streaming App Logs to Log Management
-Services](./../services/log-management.html).
+To aggregate your app logs to view log history, bind your app to a syslog drain service. For more information, see [Streaming app logs to log management services](./../services/log-management.html).
 
 <p class="note important">
 <span class="note__title">Important</span>
@@ -270,7 +267,7 @@ export CF_TRACE=PATH-TO-TRACE.LOG
 
 ### <a id='zipkin_trace'></a> Analyze Zipkin trace IDs
 
-When the Zipkin feature is enabled in <%= vars.app_runtime_abbr %>, the Gorouter adds or forwards Zipkin trace IDs and span IDs to HTTP headers. For more information about what the Gorouter provides in the HTTP header, see [HTTP Headers](../../concepts/http-routing.html#http-headers) in _HTTP Routing_.
+When the Zipkin feature is enabled in <%= vars.app_runtime_abbr %>, the Gorouter adds or forwards Zipkin trace IDs and span IDs to HTTP headers. For more information about what the Gorouter provides in the HTTP header, see [HTTP headers](../../concepts/http-routing.html#http-headers) in _HTTP Routing_.
 
 After adding Zipkin HTTP headers to app logs, developers can run `cf logs APP-NAME` to correlate the trace and span IDs logged by the Gorouter with the trace IDs logged by their app. To correlate trace IDs for a request through multiple apps, each app must forward appropriate values for the headers with requests to other apps.
 
@@ -307,11 +304,10 @@ Your app must direct its logs to STDOUT and STDERR. The <code>cf logs</code> com
 
 ## <a id='ssh'></a> Access apps with SSH
 
-If you need to troubleshoot an instance of an app, you can gain SSH access to the app with the SSH proxy and daemon. For more information, see [App SSH
-Overview](app-ssh-overview.html).
+If you need to troubleshoot an instance of an app, you can gain SSH access to the app with the SSH proxy and daemon. For more information, see [App SSH overview](app-ssh-overview.html).
 
 
 ## <a id='request-to-instance'></a> Send requests to app instance
 
 To obtain debug data without SSH, you can make HTTP requests to a specific instance of an app by using the `X-CF-APP-INSTANCE` HTTP header. For more
-information, see [App Instance Routing](../../concepts/http-routing.html#app-instance-routing) in _HTTP Routing_.
+information, see [App instance routing](../../concepts/http-routing.html#app-instance-routing) in _HTTP Routing_.

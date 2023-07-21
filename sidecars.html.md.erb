@@ -88,7 +88,7 @@ Where:
 * `START-COMMAND` is the command used to start the sidecar. For example, `./binary` or `java -jar java-file.jar`.
 
 You must also allocate memory to sidecars that you push with a custom buildpack.
-For more information, see [Sidecar Buildpacks](../buildpacks/sidecar-buildpacks.html).
+For more information, see [Sidecar buildpacks](../buildpacks/sidecar-buildpacks.html).
 
 ### <a id="java-sidecar-packaging"></a> Packaging binaries
 
@@ -143,7 +143,7 @@ To push an app with a sidecar:
         ```
         Where `APP-NAME` is the name you give your app.
 
-1. Create a manifest file in the root directory of your app, such as `manifest.yml`. Otherwise, use an existing manifest file for your app. For more information, see [Deploying with App Manifests](./deploy-apps/manifest.html).
+1. Create a manifest file in the root directory of your app, such as `manifest.yml`. Otherwise, use an existing manifest file for your app. For more information, see [Deploying with app manifests](./deploy-apps/manifest.html).
 
 1. Add the following values to your app manifest file under the `applications` key:
 
@@ -339,7 +339,7 @@ To view the app and sidecar process running in the container:
     ruby       13 vcap 11u  IPv4 17274965    0t0 TCP localhost:42266->localhost:8082 (ESTABLISHED)
     </pre>
 
-### <a id="view-logs"></a> View the web URL and app logs
+### <a id="view-logs"></a> View the Web URL and app logs
 
 To view the Web URL and logs for the app:
 

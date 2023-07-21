@@ -16,7 +16,7 @@ Loggregator, the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) com
 ## <a id='overview'></a> Overview
 
 By default, Loggregator streams logs to your terminal. If you want to persist more than the limited amount of logging information that Loggregator can buffer,
-you can drain logs to a third-party log management service. For more information, see [Third-Party Log Management Services](../services/log-management.html).
+you can drain logs to a third-party log management service. For more information, see [Third-party log management services](../services/log-management.html).
 
 <%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log lines quickly enough, the Loggregator buffer might
 need to overwrite some lines before the client has consumed them. A syslog drain or a command-line interface (CLI) tail can usually keep up with the flow of
@@ -100,7 +100,7 @@ The following is an example access log message containing Zipkin headers:
 2016-11-23T16:04:01.49-0800 [RTR/0]      OUT www.example.com - [24/11/2016:00:04:01.227 +0000] "GET / HTTP/1.1" 200 0 109 "-" "curl/7.43.0" 10.0.2.150:4070 10.0.48.66:60815 x_forwarded_for:"198.51.100.120" x_forwarded_proto:"http" vcap_request_id:87f9d899-c7a4-46cd-7b76-4ec35ce9921b response_time:0.263000966 app_id:8e5d6451-b369-4423-bce8-3a7a9e479dbb app_index:0 x_b3_traceid:"2d5610bf5e0f7241" x_b3_spanid:"2d5610bf5e0f7241" x_b3_parentspanid:"-"
 </pre>
 
-For more information about Zipkin tracing, see [Zipkin Tracking in HTTP Headers](../../concepts/http-routing.html#zipkin-headers) in _HTTP Routing_.
+For more information about Zipkin tracing, see [Zipkin tracking in HTTP headers](../../concepts/http-routing.html#zipkin-headers) in _HTTP Routing_.
 
 ### <a id='lgr'></a> LGR
 
@@ -136,7 +136,7 @@ For example:
 2016-06-14T14:16:11.49-0700 [SSH/0]      OUT Successful remote access by 192.0.2.33:7856
 </pre>
 
-For more information about the `cf ssh` command, see the [Cloud Foundry CLI Reference Guide](https://cli.cloudfoundry.org/en-US/cf/ssh.html).
+For more information about the `cf ssh` command, see the [Cloud Foundry CLI reference guide](https://cli.cloudfoundry.org/en-US/cf/ssh.html).
 
 ### <a id='cell'></a> CELL
 
@@ -160,8 +160,7 @@ debugging because it might affect app performance.
 
 ## <a id='view'></a> Viewing Logs
 
-To view logs, run the `cf logs` command. You can tail, dump, or filter log output. For more information about the  `cf logs` command, see the [Cloud Foundry
-CLI Reference Guide](https://cli.cloudfoundry.org/en-US/cf/logs.html).
+To view logs, run the `cf logs` command. You can tail, dump, or filter log output. For more information about the  `cf logs` command, see the [Cloud Foundry CLI reference guide](https://cli.cloudfoundry.org/en-US/cf/logs.html).
 
 ### <a id='tail-log'></a> Tailing logs
 
@@ -241,8 +240,7 @@ Ensuring log ordering in drains can be an important consideration for both opera
 documentation](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html).
 
 * The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are truncated. For more information, see the
-[Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) and [Date type has not enough precision for the
-logging use case](https://github.com/elastic/elasticsearch/issues/10005) on GitHub.
+[Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) and [Date type has not enough precision for the logging use case](https://github.com/elastic/elasticsearch/issues/10005) on GitHub.
 
 If you are developing a client that displays a stream of <%= vars.app_runtime_abbr %> logs to users, you can order the logs to improve the debugging
 experience for your user. The following are general tips for ordering logs:

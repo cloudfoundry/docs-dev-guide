@@ -33,7 +33,7 @@ To determine if volume services are available:
 
 1. Do one of the following:
     * **If no NFS volume service exists**: If no volume service that fits your requirements exists, contact your <%= vars.admin %>. <%= vars.add_volumes_link %>
-    * **If an NFS volume service exists**: Continue to [Mount an External File System](#mount-external-filesystem).
+    * **If an NFS volume service exists**: Continue to [Mount an external file system](#mount-external-filesystem).
 
 
 ## <a id="mount-external-filesystem"></a> Mount an external filesystem
@@ -51,8 +51,8 @@ You can also bind volume services using an app manifest. However, app manifests 
 To create and bind an instance for the volume service:
 
 1. Create a service instance:
-    * **NFS**: See [Create an NFS Volume Service](#create-nfs).
-    * **SMB**: See [Create an SMB Volume Service](#create-smb).
+    * **NFS**: See [Create an NFS volume service](#create-nfs).
+    * **SMB**: See [Create an SMB volume service](#create-smb).
 
 1. Bind your service instance to an app:
     * **NFS-only**: Bind an NFS service instance to an app. Run:
@@ -370,9 +370,9 @@ To deploy and bind a sample app:
 
     The command writes a file to the share and then reads it back out again.
 
-### <a id="nfs-additional"></a> Use NFS Volume Service
+### <a id="nfs-additional"></a> Use NFS volume service
 
-This section describes using the NFS Volume Service.
+This section describes using the NFS volume service.
 
 #### <a id='ldap'></a> Configure LDAP credentials with service instance creation
 
@@ -399,7 +399,7 @@ To configure LDAP credentials while creating your NFS Volume Service instance:
 
 As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, when you create a service instance. Use this option if you bind the service to your app in an app manifest, where bind configuration is not supported.
 
-#### <a id='flock'></a> File Locking with flock() and lockf()/fcntl()
+#### <a id='flock'></a> File locking with flock() and lockf()/fcntl()
 
 Apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock` to use the `nfs` service. The `nfs-legacy` service uses a fuse mounting process that does not enforce locks across Diego Cells.
 

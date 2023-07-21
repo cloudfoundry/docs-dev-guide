@@ -12,7 +12,7 @@ Amazon S3. This topic explains how to integrate Fluentd with Cloud Foundry apps.
 ## <a id='drain'></a> Step 1: Create a Cloud Foundry syslog drain for Fluentd
 
 1. In Cloud Foundry, create a syslog drain user-provided service instance as
-described in [Using Third-Party Log Management Services](./log-management.html).
+described in [Using third-party log management services](./log-management.html).
 
 1. Choose one or more apps whose logs you want to drain to Fluentd
 through the service.
@@ -30,8 +30,8 @@ For example:
 ## <a id='config'></a>Step 2: Set up Fluentd for Cloud Foundry
 
 This section assumes you have an active Fluentd instance running.
-If you do not have an active Fluentd instance, refer to the
-[Fluentd Documentation/Install](https://docs.fluentd.org/installation) steps for more details.
+If you do not have an active Fluentd instance, see the
+[Fluentd documentation](https://docs.fluentd.org/installation) for more details.
 If you use cf to deploy your fluentd instances, you have to use
 [tcp routing](../deploy-apps/routes-domains.html#create-route-with-port).
 
@@ -55,7 +55,7 @@ To set up Fluentd for Cloud Foundry, configure the syslog input of Fluentd as fo
 	  </parse>
 	</source>
 	```
-1. Restart the Fluentd service.
+2. Restart the Fluentd service.
 
 <p class="note important">
 <span class="note__title">Important</span>

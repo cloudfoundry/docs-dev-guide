@@ -5,11 +5,11 @@ owner: Core Services
 
 
 
-You will learn how to bind your apps to service instances for the purpose of generating credentials and delivering them to apps. For an overview of services, and documentation on other service management operations, see [Using Services](index.html). <%= vars.custom_services %>
+You will learn how to bind your apps to service instances for the purpose of generating credentials and delivering them to apps. For an overview of services, and documentation on other service management operations, see [Using services](index.html). <%= vars.custom_services %>
 
 ## <a id='bind'></a>Bind a service instance
 
-Binding a service instance to your app triggers credentials to be provisioned for the service instance and delivered to the app runtime in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. For details on consuming these credentials with your app, see [Using Bound Service Instances](#use).
+Binding a service instance to your app triggers credentials to be provisioned for the service instance and delivered to the app runtime in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. For details on consuming these credentials with your app, see [Using bound service instances](#use).
 
 Not all services support binding, as some services deliver value to users directly without integration with an app. In many cases binding credentials are unique to an app, and another app bound to the same service instance would receive different credentials; however this depends on the service.
 
@@ -77,7 +77,7 @@ Binding service test-mysql-01 to test-msg-app in org My-Org / space development 
 OK
 </pre>
 
-For more information about app manifests, see [Deploying with App Manifests](../deploy-apps/manifest.html#services-block).
+For more information about app manifests, see [Deploying with app manifests](../deploy-apps/manifest.html#services-block).
 
 ### <a id='service-binding-names'></a>Named service bindings
 
@@ -103,7 +103,7 @@ The provided name is available in the `name` and `binding_name` properties in th
 }
 ~~~
 
-### <a id='use'></a>Using Bound service instances
+### <a id='use'></a>Using bound service instances
 
 Once you have a service instance created and bound to your app, you need to configure the app to dynamically fetch the credentials for your service instance. The [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable contains credentials and additional metadata for all bound service instances. There are two methods developers can leverage to have their apps consume binding credentials.
 
@@ -118,7 +118,7 @@ This section describes how to update service instance credentials.
 When updating the credentials, you can restage the app immediately and experience app downtime.
 If your app uses blue-green deployment, you can update service instance credentials with no downtime.
 
-For more information about user-provided services, see [Update a User-provided Service Instance](user-provided.html#update) in _User-Provided Service Instances_.
+For more information about user-provided services, see [Update a user-provided service instance](user-provided.html#update) in _User-Provided Service Instances_.
 
 ### <a id='update-credentials-with-downtime'></a>With downtime
 
@@ -142,7 +142,7 @@ To update your service credentials:
 
 To update your service credentials without experiencing app downtime:
 
-  1. Start a blue-green update of the app. For more information, see [Using Blue-Green Deployment to Reduce Downtime and Risk](../deploy-apps/blue-green.html). Push the "Green" version of the app with the `--no-start` parameter to prevent the app from starting right away:
+  1. Start a blue-green update of the app. For more information, see [Using blue-green deployment to reduce downtime and risk](../deploy-apps/blue-green.html). Push the "Green" version of the app with the `--no-start` parameter to prevent the app from starting right away:
 
     <pre class="terminal">
     $ cf push YOUR-APP --no-start

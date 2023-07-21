@@ -4,13 +4,12 @@ owner: CF for VMs Networking
 ---
 
 
-
-Here are instructions for binding a service instance to a route for the purpose of adding preprocessing to your Cloud Foundry app requests.
+You can bind a service instance to a route for the purpose of adding preprocessing to your Cloud Foundry app requests.
 
 <%= vars.route_services_appsman2 %>
 
 Route services are a class of Marketplace Services that perform filtering or content transformation on app requests and responses.
-For more information about Marketplace Services, see the [Managing Services](../services/managing-services.html) and [User-provided Service Instances](./user-provided.html) topics.
+For more information about Marketplace Services, see the [Managing services](../services/managing-services.html) and [User-provided service instances](./user-provided.html) topics.
 
 Route services exist to help remove the burden on developers who would otherwise have to implement these functions themselves. Popular use cases for route services include rate limiting, authorization, and caching. A route service might reject requests or, after some transformation, pass requests to apps.
 
@@ -63,7 +62,7 @@ Binding route my-app.<%=vars.app_domain%> to service instance my-route-service i
 OK
 </pre>
 
-## <a id='unbind'></a> Unbind a Route from a service instance
+## <a id='unbind'></a> Unbind a route from a service instance
 
 You must install the Cloud Foundry Command Line Interface (cf CLI) to bind a route to a service instance. For more information, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
 

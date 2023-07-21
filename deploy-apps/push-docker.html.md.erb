@@ -105,7 +105,7 @@ For example, the following command pushes the `your-image` image from Docker Hub
 cf push your-app --docker-image cloudfoundry/your-image
 ```
 
-### <a id='private'></a> Private Container Registry without authentication
+### <a id='private'></a> Private container registry without authentication
 
 As an alternative to Docker Hub, you can use any Docker image registry that presents a valid certificate for HTTPS traffic, such as a company-internal Docker registry.
 
@@ -135,7 +135,7 @@ For example, the following command pushes the `v2` version of the `your-image` i
 cf push your-app --docker-image internal-registry.example.com:5000/your-repo/your-image:v2
 ```
 
-### <a id='private-repo'></a> Private Container Registry with basic authentication
+### <a id='private-repo'></a> Private container registry with basic authentication
 
 Many Docker registries control access to Docker images by authenticating with a username and password.
 
@@ -154,7 +154,7 @@ Where:
 
 * `REPO` is the repository where the image is stored.
     * For Docker Hub, this is just the repository name.
-    * For a private registry, this includes the registry address and port, as described in [Push a Docker Image from a Private Registry](#private), in the format `YOUR-PRIVATE-REGISTRY.DOMAIN:PORT/REPO`.
+    * For a private registry, this includes the registry address and port, as described in [Push a docker image from a private registry](#private), in the format `YOUR-PRIVATE-REGISTRY.DOMAIN:PORT/REPO`.
 
 * `IMAGE` is the name of the app image being pushed.
 
@@ -284,4 +284,4 @@ For information about specifying <code>YOUR-REGISTRY-URL</code>, see <a href="ht
 
 ## <a id='volume'></a> Docker volume support
 
-You can use volume services with Docker apps. For more information about enabling volume support, see [Using an external file system (Volume services)](../services/using-vol-services.html).
+You can use volume services with Docker apps. For more information about enabling volume support, see [Using an external file system (volume services)](../services/using-vol-services.html).

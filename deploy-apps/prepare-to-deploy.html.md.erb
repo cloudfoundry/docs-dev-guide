@@ -41,7 +41,7 @@ consider a cache like Redis or a messaging-based architecture with RabbitMQ.
 If you must use a file system for your app because, for example, your app interacts
 with other apps through a network attached file system or because your app is based on legacy code
 that you cannot rewrite, consider using volume services to bind a network attached file system to your app.
-For more information, see [Using an External File System (Volume Services)](../services/using-vol-services.html).
+For more information, see [Using an external file system (volume services)](../services/using-vol-services.html).
 
 ## <a id="shared-cookies"></a> Cookies accessible across apps
 
@@ -57,7 +57,7 @@ You must decide whether or not you want your apps or tools that use cookies to s
 
 Clients connect to apps running on <%= vars.platform_name %> by making requests to URLs associated with the app.
 <%= vars.platform_name %> allows HTTP requests to apps on ports 80 and 443.
-For more information, see [Routes and Domains](routes-domains.html).
+For more information, see [Routes and domains](routes-domains.html).
 
 <%= vars.platform_name %> also supports WebSocket handshake requests over HTTP containing the `Upgrade` header.
 The <%= vars.platform_name %> router handles the upgrade and initiates a TCP connection

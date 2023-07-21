@@ -32,7 +32,7 @@ For an example of an app that benefits from HTTP/2, see the [Cloud Foundry HTTP/
 HTTP/2 support in <%= vars.app_runtime_abbr %> has the following limitations:
 
 - End-to-end HTTP/2 is not available for Windows Diego Cells. Routes with HTTP/2 mappings continue to send HTTP/1.1 traffic to apps that run on Windows Diego Cells.
-- Routes that have route services bound to them might not support end-to-end HTTP/2 depending on what protocols the bound service supports. For more information, see [Route Services](../services/route-services.html).
+- Routes that have route services bound to them might not support end-to-end HTTP/2 depending on what protocols the bound service supports. For more information, see [Route services](../services/route-services.html).
 
 ## <a id="http2-with-cf"></a> How pushing apps with HTTP/2 works
 
@@ -67,9 +67,9 @@ You can also use either method to push an app that serves gRPC traffic.
 
 To push an app with end-to-end HTTP/2, see the following sections:
 
-- [Push an App with End-to-End HTTP/2 Using the App Manifest](#e2e-manifest)
-- [Push an App with End-to-End HTTP/2 Using the cf CLI](#e2e-cli)
-- [Push a gRPC App](#grpc-app)
+- [Push an app with end-to-end HTTP/2 using the app manifest](#e2e-manifest)
+- [Push an app with end-to-end HTTP/2 using the cf CLI](#e2e-cli)
+- [Push a gRPC app](#grpc-app)
 
 ### <a id="http1-app"></a> Push an HTTP/1.1 app that serves HTTP/2
 
@@ -100,7 +100,7 @@ To push an HTTP/1.1 app that can serve HTTP/2 traffic:
 	```
 	The request to the app is issued over HTTP/1.1.
 
-### <a id="e2e-manifest"></a> Push an app with End-to-End HTTP/2 using the app manifest
+### <a id="e2e-manifest"></a> Push an app with end-to-end HTTP/2 using the app manifest
 
 To push an app that serves HTTP/2 traffic using the app manifest:
 
@@ -183,7 +183,7 @@ To push an app that serves gRPC traffic:
 For example, you can use the gRPC test app from [Cloud Foundry Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests/tree/main/assets/grpc) on GitHub.
 
 1. Push the app with HTTP/2 activated using either the app manifest or the cf CLI.
-See [Push an App with End-to-End HTTP/2 Using the App Manifest](#e2e-manifest) or [Push an App with End-to-End HTTP/2 Using the cf CLI](#e2e-cli).
+See [Push an app with end-to-end HTTP/2 using the app manifest](#e2e-manifest) or [Push an app with end-to-end HTTP/2 using the cf CLI](#e2e-cli).
 
 1. Send a gRPC request to the app using `grpcurl` by running the following command. For more information, see [grpcurl](https://github.com/fullstorydev/grpcurl).
 

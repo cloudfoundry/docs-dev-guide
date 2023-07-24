@@ -8,13 +8,13 @@ You can also activate logging for iptables policy rules by editing the manifest 
 By default, the Policy Server logs events at the `INFO` level.
 You can get more information about events by increasing the log level to `DEBUG`.
 
-To change the log level, use the following steps:
+To change the log level, follow these steps:
 
 1. SSH to either the Policy Server or the VXLAN Policy Agent.
     * **Policy Server**: SSH directly to the Policy Server VM.
-    * **VXLAN Policy Agent**: SSH to the Diego cell that runs the VXLAN Policy Agent.
+    * **VXLAN Policy Agent**: SSH to the Diego Cell that runs the VXLAN Policy Agent.
 
-1. To change the log level, run the following command:
+2. To change the log level, run:
 
     <pre class="terminal">
     curl -X POST -d 'LOG-LEVEL' localhost:PORT-NUMBER/log-level
@@ -23,28 +23,27 @@ To change the log level, use the following steps:
     The `LOG-LEVEL` is `DEBUG` or `INFO`. The `PORT-NUMBER` is `22222` unless you specified a different number when you edited the stub file in [Enable on an IaaS](#iaas).
     <br><br>
 
-    The following command increases the log level to `DEBUG`:
+    To increase the log level to `DEBUG`, run:
     <pre class="terminal">
     $ curl -X POST -d 'DEBUG' localhost:22222/log-level
     </pre>
 
-    The following command decreases the log level to `INFO`:
+    To decrease the log level to `INFO`, run:
     <pre class="terminal">
     $ curl -X POST -d 'INFO' localhost:22222/log-level
     </pre>
 
-1. Find the logs in the following locations:
+3. The logs are available in:
      * **Policy Server**: `/var/vcap/sys/log/policy-server/policy-server.stdout.log`
      * **VXLAN Policy Agent**: `/var/vcap/sys/log/vxlan-policy-agent/vxlan-policy-agent.stdout.log`
 
 ### <a id="iptables-logging"></a>Activate logging for container-to-container networking policies
 
-By default, CF does not log iptables policy rules for Container-to-Container network traffic. You can activate logging for iptables policy rules
-in the manifest in [Enable on an IaaS](#iaas), or use following the steps:
+By default, Cloud Foundry does not log iptables policy rules for Container-to-Container network traffic. You can activate logging for iptables policy rules in the manifest in [Enable on an IaaS](#iaas), or use following the steps:
 
-1. SSH to the Diego cell that runs the VXLAN Policy Agent.
+1. SSH to the Diego Cell that runs the VXLAN Policy Agent.
 
-1. To change the log level, run the following command:
+2. To change the log level, run:
 
     <pre class="terminal">
     curl -X PUT -d '{"enabled": BOOLEAN}' localhost:PORT-NUMBER/iptables-c2c-logging
@@ -53,23 +52,23 @@ in the manifest in [Enable on an IaaS](#iaas), or use following the steps:
     The `BOOLEAN` is `true` or `false`. The `PORT-NUMBER` is `22222` unless you specified a different number when you edited the stub file in [Enable on an IaaS](#iaas).
     <br><br>
 
-    The following command activates logging for iptables policy rules:
+    To activate logging for iptables policy rules, run:
     <pre class="terminal">
     $ curl -X PUT -d '{"enabled": true}' localhost:22222/iptables-c2c-logging
     </pre>
 
-    The following command deactivates logging for iptables policy rules:
+    To deactivate logging for iptables policy rules, run:
     <pre class="terminal">
     $ curl -X PUT -d '{"enabled": false}' localhost:22222/iptables-c2c-logging
     </pre>
 
-1. Find the logs in `/var/log/kern.log`.
+3. Find the logs in `/var/log/kern.log`.
 
 ### <a id="metrics"></a>Use metrics to consume logs
 
-You can stream Container-to-Container Networking component metrics with the [Loggregator Firehose](../../loggregator/architecture.html#firehose).
+You can stream container-to-container networking component metrics with the [Loggregator Firehose](../../loggregator/architecture.html#firehose).
 
-Container-to-Container Networking logs have the following prefixes:
+Container-to-container networking logs use the following prefixes:
 
 * `netmon`
 * `vxlan_policy_agent`

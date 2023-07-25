@@ -1,5 +1,5 @@
 ---
-title: Configuring CF to route traffic to apps on custom ports
+title: Configuring Cloud Foundry to route traffic to apps on custom ports
 owner: CF for VMs Networking
 ---
 
@@ -77,7 +77,7 @@ To configure your app to receive HTTP or TCP requests on custom ports:
         Where:
         <ul>
           <li><code>APP-GUID</code> is the GUID of your app that you recorded in the previous step.</li>
-          <li><code>ROUTE-HOSTNAME</code> is the subdomain of the domain associated with the route. For example, in the route <code>example-app.<%= vars.app_domain %></code>, the hostname is <code>example-app</code>.</li>
+          <li><code>ROUTE-HOSTNAME</code> is the subdomain of the domain associated with the route. For example, in the route <code>example-app.<%= vars.app_domain %></code>, the host name is <code>example-app</code>.</li>
         </ul>
     * For TCP routes, run:
 

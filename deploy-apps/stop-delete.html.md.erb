@@ -62,11 +62,11 @@ If you delete an app without the `r` option, you can delete the route manually.
 
 Use the following steps to delete the route for an app manually.
 
-1. Run `cf routes` to confirm the details of the orphaned route. The `cf routes` command returns a list of all active routes in the current space. This list includes the space, hostname, domain, path, and any bound apps or services.
+1. Run `cf routes` to confirm the details of the orphaned route. The `cf routes` command returns a list of all active routes in the current space. This list includes the space, host name, domain, path, and any bound apps or services.
 
-2. Find the orphaned route in the list. The orphaned route displays as a hostname without an associated app.
+2. Find the orphaned route in the list. The orphaned route displays as a host name without an associated app.
 
-3. Run `cf delete-route DOMAIN-NAME --hostname HOSTNAME` to delete the orphaned route. Replace `DOMAIN-NAME` and `HOSTNAME` with the domain and hostname of the app you deleted.
+3. Run `cf delete-route DOMAIN-NAME --hostname HOSTNAME` to delete the orphaned route. Replace `DOMAIN-NAME` and `HOSTNAME` with the domain and host name of the app you deleted.
 
 Example:
 <pre class="terminal">$ cf delete-route my-domain.com --hostname my-example-app</pre>

@@ -65,13 +65,13 @@ By default, <%= vars.app_runtime_abbr %> only supports routing of HTTP requests 
 
 Routes are considered HTTP if they are created from HTTP domains, and TCP if they are created from TCP domains. For more information, see [HTTP vs. TCP shared domains](#http-vs-tcp-shared-domains).
 
-HTTP routes include a domain, an optional hostname, and an optional context path. `<%= vars.app_domain %>`, `example-app.<%= vars.app_domain %>`, and `example-app.<%= vars.app_domain %>/products` are all examples of HTTP routes. Apps listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. As an example, requests to `example-app.<%= vars.app_domain %>` would be routed to the app container at `localhost:8080`.
+HTTP routes include a domain, an optional host name, and an optional context path. `<%= vars.app_domain %>`, `example-app.<%= vars.app_domain %>`, and `example-app.<%= vars.app_domain %>/products` are all examples of HTTP routes. Apps listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. As an example, requests to `example-app.<%= vars.app_domain %>` would be routed to the app container at `localhost:8080`.
 
 Requests to HTTP routes must be sent to ports `80` or `443`. Ports cannot be reserved for HTTP routes. You can update the ports on which an app can receive requests through the Cloud Controller API. For more information, see <a href="../custom-ports.html">Configuring apps to listen on custom ports (Beta)</a>.
 
 TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an app pushed to <%= vars.app_runtime_abbr %> listens on. `tcp.shared-domain.example.com:60000` is an example of a TCP route. Just as for HTTP routes, apps listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. For example, requests to `tcp.shared-domain.example.com:60000` would be routed to the app container at `localhost:8080`.
 
-When a port is reserved for a route, it cannot be reserved for another route. Hostname and path are not supported for TCP routes.
+When a port is reserved for a route, it cannot be reserved for another route. Host name and path are not supported for TCP routes.
 
 ### <a id='internal-routes'></a> Internal container-to-container routes
 
@@ -110,10 +110,10 @@ Domains in <%= vars.app_runtime_abbr %> provide a namespace from which to create
 
 The following sections describe how developers can create HTTP and TCP routes for different use cases.
 
-#### <a id='create-route-with-hostname'></a> Create an HTTP route with hostname
+#### <a id='create-route-with-hostname'></a> Create an HTTP route with host name
 
-In <%= vars.app_runtime_abbr %>, a hostname is the label that indicates a subdomain of the domain associated with the route. Given a domain
-`<%= vars.app_domain %>`, a developer can create the route `example-app.<%= vars.app_domain %>` by specifying the hostname `example-app` with the
+In <%= vars.app_runtime_abbr %>, a host name is the label that indicates a subdomain of the domain associated with the route. Given a domain
+`<%= vars.app_domain %>`, a developer can create the route `example-app.<%= vars.app_domain %>` by specifying the host name `example-app` with the
 [cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command as shown in this example:
 
 * **cf CLI v7**
@@ -142,12 +142,12 @@ This command instructs <%= vars.app_runtime_abbr %> to only route requests to ap
 
 * Any path under either of the above URLs, such as `http://example-app.<%= vars.app_domain %>/bar`
 
-#### <a id='create-route-without-hostname'></a> Create an HTTP route without hostname
+#### <a id='create-route-without-hostname'></a> Create an HTTP route without host name
 
 This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see [Private
 Domains](#private-domains) .
 
-A developer can create a route from the domain `<%= vars.private_app_domain %>` with no hostname with the
+A developer can create a route from the domain `<%= vars.private_app_domain %>` with no host name with the
 [cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command:
 
 * **cf CLI v7**
@@ -173,7 +173,7 @@ If DNS has been configured correctly, this command instructs <%= vars.app_runtim
 
 If there are no other routes for the domain, requests to any subdomain, such as `http://foo.<%= vars.private_app_domain %>`, fail.
 
-A developer can also create routes for subdomains with no hostnames. The following command creates a route from the subdomain
+A developer can also create routes for subdomains with no host names. The following command creates a route from the subdomain
 `foo.<%= vars.private_app_domain %>`:
 
 * **cf CLI v7**
@@ -198,10 +198,9 @@ these URLs:
 
 * Any path under either of the above URLs, such as `http://foo.<%= vars.private_app_domain %>/foo`
 
-#### <a id='create-route-with-wildcard-hostname'></a> Create an HTTP route with wildcard hostname
+#### <a id='create-route-with-wildcard-hostname'></a> Create an HTTP route with wildcard host name
 
-An app mapped to a wildcard route acts as a fallback app for route requests if the requested route does not exist. To create a wildcard route, use an asterisk
-for the hostname.
+An app mapped to a wildcard route acts as a fallback app for route requests if the requested route does not exist. To create a wildcard route, use an asterisk for the host name.
 
 A developer can create a wildcard route from the domain `foo.<%= vars.app_domain %>` by running:
 
@@ -223,9 +222,9 @@ If a client sends a request to `http://app.foo.<%= vars.app_domain %>` by accide
 
 #### <a id='create-route-with-path'></a> Create an HTTP route with a path
 
-Developers can use paths to route requests for the same hostname and domain to different apps.
+Developers can use paths to route requests for the same host name and domain to different apps.
 
-A developer can create three routes using the same hostname and domain in the space `example-space` by running:
+A developer can create three routes using the same host name and domain in the space `example-space` by running:
 
 * **cf CLI v7**
   <pre class="terminal">
@@ -281,7 +280,7 @@ to the `storefront` app. After this:
 <div class="note important">
 <span class="note__title">Important</span>
   <ul>
-    <li>Routes with the same domain and hostname but different paths can only be created in the same space. Private domains do not have this limitation.</li>
+    <li>Routes with the same domain and host name but different paths can only be created in the same space. Private domains do not have this limitation.</li>
     <li><%= vars.app_runtime_abbr %> does not route requests for context paths to the root context of an app. Apps must serve requests on the context path.</li>
   </ul>
 </div>
@@ -321,7 +320,7 @@ OK
 
 ### <a id='list-routes'></a> List routes
 
-Developers can list routes for the current space with the [cf routes](https://cli.cloudfoundry.org/en-US/cf/routes.html) command. A route is uniquely identified by the combination of hostname, domain, port, and path.
+Developers can list routes for the current space with the [cf routes](https://cli.cloudfoundry.org/en-US/cf/routes.html) command. A route is uniquely identified by the combination of host name, domain, port, and path.
 
 <pre class="terminal">
 $ cf routes
@@ -344,7 +343,7 @@ cf CLI v7 removes the <code>port</code> and <code>path</code> columns from the o
 
 ### <a id='view-route'></a> View a route
 
-Developers can view a route and its destinations within the current space with the <code>cf route</code> command. A route is uniquely identified by the combination of a hostname, domain, port, and path.
+Developers can view a route and its destinations within the current space with the <code>cf route</code> command. A route is uniquely identified by the combination of a host name, domain, port, and path.
 
 <pre class="terminal">
 $ cf route <%= vars.app_domain %> --hostname example-app
@@ -372,7 +371,7 @@ The <code>cf route</code> command is available in cf CLI v8 only.</p>
 Developers cannot create a route that is already taken. To check whether a route is available, developers can use the [cf
 check-route](https://cli.cloudfoundry.org/en-US/cf/check-route.html) command.
 
-To check whether a route with the hostname `store` and the domain `<%= vars.app_domain %>` and the path `products` exists, run:
+To check whether a route with the host name `store` and the domain `<%= vars.app_domain %>` and the path `products` exists, run:
 
 * **cf CLI v7**:
   <pre class="terminal">
@@ -426,7 +425,7 @@ Given the following routes and apps:
   </tr>
 </table>
 
-The following commands map the above routes to their respective apps. Developers use hostname, domain, and path to uniquely identify a route to map their apps
+The following commands map the above routes to their respective apps. Developers use host name, domain, and path to uniquely identify a route to map their apps
 to.
 
 <pre class="terminal">
@@ -454,13 +453,13 @@ Developers can map a route to their app with the `cf push` command.
 As of cf CLI v7, the best way to do this is by using the `routes` property in the manifest. The `-d` flag is no longer supported.
 
 **For cf CLI v6 only:**
-If a domain or hostname is not specified, then a route is created using the app name and the default shared domain. For more information, see [Shared domains](#shared-domains). The following command pushes the app `example-app`, creating the route `example-app.<%= vars.app_domain %>` from the default shared domain `<%= vars.app_domain %>`. If the route has not already been created in another space, this command also maps it to the app.
+If a domain or host name is not specified, then a route is created using the app name and the default shared domain. For more information, see [Shared domains](#shared-domains). The following command pushes the app `example-app`, creating the route `example-app.<%= vars.app_domain %>` from the default shared domain `<%= vars.app_domain %>`. If the route has not already been created in another space, this command also maps it to the app.
 
 <pre class="terminal">
 $ cf push example-app
 </pre>
 
-To customize the route during `push`, specify the domain using the `-d` flag and the hostname with the `--hostname` flag. The following command creates the `foo.<%= vars.private_app_domain %>` route for `example-app`:
+To customize the route during `push`, specify the domain using the `-d` flag and the host name with the `--hostname` flag. The following command creates the `foo.<%= vars.private_app_domain %>` route for `example-app`:
 
 <pre class="terminal">
 $ cf push example-app -d <%= vars.private_app_domain %> --hostname foo
@@ -536,7 +535,7 @@ $ cf map-route example-app apps.internal --hostname foo
 Developers can remove a route from an app using the `cf unmap-route` command. The route remains reserved for later use in the space where it was created until
 the route is deleted.
 
-To unmap an HTTP route from an app, identify the route using the hostname, domain, and path:
+To unmap an HTTP route from an app, identify the route using the host name, domain, and path:
 
 <pre class="terminal">
 $ cf unmap-route tcp-app <%= vars.private_app_domain %> --hostname example-app --path mypath
@@ -571,7 +570,7 @@ To share a route with another space:
     Where:
     <ul>
       <li><code>DOMAIN</code> is the domain included in the route for your app.</li>
-      <li><code>HOSTNAME</code> is the hostname included in the route for your app.</li>
+      <li><code>HOSTNAME</code> is the host name included in the route for your app.</li>
       <li><code>PATH</code> is the path included in the route for your app.</li>
       <li><code>SPACE</code> is the space with which you want to share the route for your app.</li>
       <li><code>ORG</code> is the org containing space with which you want to share the route for your app. If the space with which you want to share the route is within the same org as the space that contains the route, do not include the <code>-o</code> flag.</li>
@@ -615,7 +614,7 @@ To move a route:
     Where:
     <ul>
       <li><code>DOMAIN</code> is the domain included in the route for your app.</li>
-      <li><code>HOSTNAME</code> is the hostname included in the route for your app.</li>
+      <li><code>HOSTNAME</code> is the host name included in the route for your app.</li>
       <li><code>PATH</code> is the path included in the route for your app.</li>
       <li><code>SPACE</code> is the space to which you want to move the route for your app.</li>
       <li><code>ORG</code> is the org containing space to which you want to move the route for your app. If the space to which you want to move the route is within the same org as the space that contains the route, do not include the <code>-o</code> flag.</li>
@@ -631,7 +630,7 @@ To move a route:
 
 Developers can delete a route from a space using the `cf delete-route` command.
 
-To delete a HTTP route, identify the route using the hostname, domain, and path:
+To delete a HTTP route, identify the route using the host name, domain, and path:
 
 <pre class="terminal">
 $ cf delete-route <%= vars.private_app_domain %> --hostname example-app --path mypath
@@ -727,9 +726,9 @@ domain `<%= vars.private_app_domain %>`. For more information, see [Shared domai
 ### <a id='http-vs-tcp-shared-domains'></a> HTTP vs. TCP domains
 
 By default, <%= vars.app_runtime_abbr %> only supports routing of HTTP requests to apps.
-HTTP domains indicate to a developer that only requests using the HTTP protocol are routed to apps mapped to routes created from the domain. Routing for HTTP domains is layer 7 and offers features like custom hostnames, sticky sessions, and TLS termination.
+HTTP domains indicate to a developer that only requests using the HTTP protocol are routed to apps mapped to routes created from the domain. Routing for HTTP domains is layer 7 and offers features like custom host names, sticky sessions, and TLS termination.
 
-TCP domains indicate to a developer that requests over any TCP protocol, including HTTP, are routed to apps mapped to routes created from the domain. Routing for TCP domains is layer 4 and protocol-agnostic, so many features available to HTTP routing are not available for TCP routing. TCP domains are defined as being associated with the TCP router group. The TCP router group defines the range of ports available to be reserved with TCP routes. Only shared domains can use a TCP protocol.
+TCP domains indicate to a developer that requests over any TCP protocol, including HTTP, are routed to apps mapped to routes created from the domain. Routing for TCP domains is layer 4 and protocol-agnostic, so many features available to HTTP routing are not available for TCP routing. TCP domains are defined as being associated with the TCP router group. The TCP router group defines the range of ports available to be reserved with TCP routes. Currently, only shared domains can use a TCP protocol.
 
 ### <a id='shared-domains'></a> Shared domains
 
@@ -737,7 +736,7 @@ Admins manage shared domains, which are available to users in all orgs of a <%= 
 
 If a developer pushes an app without specifying a domain, a route is created for it from the first shared domain created in the system. All other operations involving route require the domain be specified. For more information, see [Routes](#routes) above.
 
-When using shared domains, you cannot have routes with the same hostname and domain across different orgs and spaces.
+When using shared domains, you cannot have routes with the same host name and domain across different orgs and spaces.
 
 Shared domains are HTTP by default, but can be configured to be TCP when associated with the TCP router group.
 
@@ -794,8 +793,7 @@ Org managers can add private domains, or custom domains, and give members of the
 Private domains can be shared with other orgs and spaces. These are referred to as shared private domains and are not the same as shared domains. For more
 information, see [Shared domains](#shared-domains) above.
 
-When using private domains, you can have routes with the same hostname and domain name across different orgs and spaces. This cannot be done with shared
-domains.
+When using private domains, you can have routes with the same host name and domain name across different orgs and spaces. This cannot be done with shared domains.
 
 Private domains can be HTTP or HTTPS only. TCP routing is supported for shared domains only.
 

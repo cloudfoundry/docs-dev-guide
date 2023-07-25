@@ -9,34 +9,31 @@ The cf CLI command `cf push` pushes apps to <%= vars.app_runtime_abbr %>. There 
 * Run `cf push APP-NAME` to push an app the easiest way, using default settings. For more information, see [Push with defaults](#default-push).
 
 * Run the `cf push` command with flags and helper files to customize:
-  * How the pushed app runs, including its route, instance count, disk size limits, memory limits, and log rate limits.
-  * How push works: whether it's configured with a manifest, runs a startup script, or limits files uploaded to the Cloud Controller.
+  * How the pushed app runs, including its route, instance count, disk size limits, memory limits, and log rate limits
+  * How push works: whether it's configured with a manifest, runs a startup script, or limits files uploaded to the Cloud Controller
 
 For more information about custom settings, see [Push with custom settings](#custom-push).
 
 For an explanation of what <%= vars.app_runtime_abbr %> does when you run `cf push`, see [How Apps are
 Staged](../../concepts/how-applications-are-staged.html).
 
-For information about the lifecycle of an app, see [App container lifecycle](app-lifecycle.html).
+For information about the life cycle of an app, see [App container life cycle](app-lifecycle.html).
 
 ## <a id='prepare'></a> Prerequisites
 
-Before you push your app to <%= vars.app_runtime_abbr %>, ensure the following:
+Before you push your app to <%= vars.app_runtime_abbr %>, ensure that:
 
-* Your app is *cloud-ready*. <%= vars.app_runtime_abbr %> behaviors related to file storage, HTTP sessions, and port usage might require modifications to your
-app. To prepare an app to be pushed to <%= vars.app_runtime_abbr %>, see:
+* Your app is "cloud-ready." <%= vars.app_runtime_abbr %> behaviors related to file storage, HTTP sessions, and port usage might require modifications to your app. To prepare an app to be pushed to <%= vars.app_runtime_abbr %>, see:
   * [Considerations for designing and running an app in the cloud](prepare-to-deploy.html)
-  * Any [Buildpacks](../../buildpacks/index.html) guides specific to your app language or framework, such as [Getting Started Deploying Ruby on Rails
-  Apps](../../buildpacks/ruby/gsg-ror.html)
+  * Any [Buildpacks](../../buildpacks/index.html) guides specific to your app language or framework, such as [Getting started deploying Ruby on Rails apps](../../buildpacks/ruby/gsg-ror.html)
 
-* Your <%= vars.app_runtime_abbr %> deployment supports the type of app you are going to push, or you have the URL of an externally-available buildpack that
-can stage the app.
+* Your <%= vars.app_runtime_abbr %> deployment supports the type of app you are going to push, or you have the URL of an externally-available buildpack that can stage the app.
 
 * All required app resources are uploaded. For example, you might need to include a database driver.
 
 * You have your target and credentials:
   * The API endpoint for your <%= vars.app_runtime_abbr %> deployment. Also known as the target URL, this is <%= vars.api_endpoint %>.
-  * Your username and password for your <%= vars.app_runtime_abbr %> deployment.
+  * Your user name and password for the <%= vars.app_runtime_abbr %> deployment.
 
 * You are logged into your app's target org and space.
   1. Decide the org and space where you want to push your app. You might have access to one or more org and space.
@@ -64,15 +61,15 @@ To push an app with default settings:
 
 ### <a id='default-route'></a> Default route
 
-An app's route is the URL at which it runs. <%= vars.app_runtime_abbr %> assembles the route for a pushed app from a hostname and a domain.
+An app's route is the URL at which it runs. <%= vars.app_runtime_abbr %> assembles the route for a pushed app from a host name and a domain.
 
-By default, <%= vars.app_runtime_abbr %> sets the hostname and domain as follows:
+By default, <%= vars.app_runtime_abbr %> sets the host name and domain as follows:
 
 * **Hostname:** The name of the app name, as specified in the `cf push` command. If the app name contains underscores, <%= vars.app_runtime_abbr %> converts them to hyphens when creating the app's route.
 
 * **Domain:** The default apps domain for your <%= vars.app_runtime_abbr %> deployment.
 
-For example, an app named `example-app` running on <%= vars.app_runtime_abbr %> with an apps domain `apps.example.com` would run at the URL
+For example, an app named `example-app` running on <%= vars.app_runtime_abbr %> with an apps domain `apps.example.com` runs at the URL
 `https://example-app.apps.example.com` by default.
 
 For more information about routes and domains, see [Routes and domains](routes-domains.html).
@@ -175,21 +172,18 @@ framework.
 
 To customize an app's route:
 
-1. (Optional) Customize the hostname by including the `-n` flag followed by a custom hostname in your `cf push` command.
+1. (Optional) Customize the host name by including the `-n` flag followed by a custom host name in your `cf push` command.
 
 1. (Optional) Customize the domain by including the `-d` flag followed by a custom domain in your `cf push` command. The custom domain must be registered,
 and mapped to the org that contains the app's target space.
 
-1. Ensure that the route is unique. The app's route must be globally unique, whether you customize its host or domain, or let it use the default route
-described in [Default Route](#default-route) above. To help ensure route uniqueness, include the `--random-route` flag in your `cf push` command. This creates
-a route that includes the app name and random words.
+1. Ensure that the route is unique. The app's route must be globally unique, whether you customize its host or domain, or allow it to use the default route described in [Default route](#default-route). To help ensure route uniqueness, include the `--random-route` flag in your `cf push` command. This creates a route that includes the app name and random words.
 
 ### <a id='exclude'></a> Limit the upload files (optional)
 
 By default, <%= vars.app_runtime_abbr %> uploads all app files except version control files and folders with names such as `.svn`, `.git`, and `_darcs`.
 
-<%= vars.recommended_by %> recommends that you explicitly exclude extraneous files residing within your app directory, particularly if your app is large. For
-example, if you build your app locally and push it as a binary, you can save resources by not uploading any of the app's source code.
+<%= vars.recommended_by %> recommends that you explicitly exclude extraneous files residing within your app directory, particularly if your app is large. For example, if you build your app locally and push it as a binary, you can save resources by not uploading any of the app's source code.
 
 To exclude files from upload:
 
@@ -204,9 +198,7 @@ Cloud_.
 
 You can configure the  `cf push` command to run custom initialization tasks for an app.
 
-These tasks run after <%= vars.app_runtime_abbr %> loads the app droplet but before it launches the app itself to let the initialization script access the app
-language runtime environment. For example, your script can map values from `$VCAP_SERVICES` into other environment variables or a config file that the app
-uses.
+These tasks run after <%= vars.app_runtime_abbr %> loads the app droplet but before it starts the app to allow the initialization script to access the app language runtime environment. For example, your script can map values from `$VCAP_SERVICES` into other environment variables or a config file that the app uses.
 
 <div class="note important">
 <span class="note__title">Important</span>
@@ -273,15 +265,11 @@ Connections](../../buildpacks/java/configuring-service-connections.html).
 
 ## <a id='updates'></a> App updates and downtime
 
-When you push an app that is already running, <%= vars.app_runtime_abbr %> stops all existing instances of that app. Users who try to access the app see a
-`404 Not Found` message while `cf push` runs.
+When you push an app that is already running, <%= vars.app_runtime_abbr %> stops all existing instances of that app. Users who try to access the app see a `404 Not Found` message while `cf push` runs.
 
-With some app updates, old and new versions of your code must never run at the same time. A worst-case example is if your app update migrates a database
-schema, causing old app instances to fail and lose user data. To prevent this, you must stop all running instances of your app before you push the new
-version.
+With some app updates, old and new versions of your code must never run at the same time. A worst-case example is if your app update migrates a database schema, causing old app instances to fail and lose user data. To prevent this, you must stop all running instances of your app before you push the new version.
 
-When old and new versions of your app can run simultaneously, you can avoid app downtime by using the blue-green deployment method to swap routes between app
-versions running in parallel. For more information, see [Using blue-green deployment to reduce downtime and risk](blue-green.html).
+When old and new versions of your app can run simultaneously, you can avoid app downtime by using the blue-green deployment method to swap routes between app versions running in parallel. For more information, see [Using blue-green deployment to reduce downtime and risk](blue-green.html).
 
 ## <a id='troubleshoot-push'></a> Troubleshoot app push problems
 

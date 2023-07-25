@@ -5,7 +5,7 @@ owner: Diego
 
 
 
-The Instance Identity system provides each app instance with a unique PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS#1](https://tools.ietf.org/html/rfc3447) RSA private key pair that encodes its identity in the CF deployment.
+The Instance Identity system provides each app instance with a unique PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS#1](https://tools.ietf.org/html/rfc3447) RSA private key pair that encodes its identity in the Cloud Foundry deployment.
 
 The environment variable `CF_INSTANCE_CERT` contains the absolute path to the certificate. The environment variable `CF_INSTANCE_KEY` contains the absolute path to the key file. The provided certificate has the following properties:
 
@@ -14,7 +14,7 @@ The environment variable `CF_INSTANCE_CERT` contains the absolute path to the ce
 - The certificate contains a DNS SAN set to the instance GUID for the given app instance.
 - The `Organizational Unit` property in the certificate's Subject Distinguished Name contains the values `organization:ORG-GUID`, `space:SPACE-GUID`, and `app:APP-GUID`. The `ORG-GUID`, `SPACE-GUID`, and `APP-GUID` are set to the GUIDs for the organization, space, and app as assigned by Cloud Controller.
 
-By default, the certificate is valid for 24 hours after the container is created. The CF platform operator can decrease this duration to as little as 1 hour by setting the `diego.executor.instance_identity_validity_period_in_hours` BOSH property.
+By default, the certificate is valid for 24 hours after the container is created. The Cloud Foundry platform operator can decrease this duration to as little as 1 hour by setting the `diego.executor.instance_identity_validity_period_in_hours` BOSH property.
 
 The Diego Cell rep supplies a new certificate and private key pair to the app instance before the end of the validity period. The new pair of files replaces the existing pair at the same path locations, with each file replaced atomically.
 

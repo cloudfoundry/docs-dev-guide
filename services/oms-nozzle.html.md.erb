@@ -28,7 +28,7 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
     Where:
     <ul>
       <li><code>YOUR-DOMAIN</code> is your domain.</li>
-      <li><code>YOUR-USERNAME</code> is your <%= vars.app_runtime_abbr %> username.</li>
+      <li><code>YOUR-USERNAME</code> is your <%= vars.app_runtime_abbr %> user name.</li>
     </ul>
 
 1. To create a new <%= vars.app_runtime_abbr %> user and grant it access to the Loggregator Firehose using the UAA CLI (UAAC):
@@ -50,7 +50,7 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
         ```
         Where:
         <ul>
-          <li><code>USERNAME</code> is a new username.</li>
+          <li><code>USERNAME</code> is a new user name.</li>
           <li><code>PASSWORD</code> is a password.</li>
           <li><code>EMAIL</code> is an email address.</li>
         </ul>
@@ -60,13 +60,13 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
         ```
         uaac member add cloud_controller.admin USERNAME
         ```
-        Where `USERNAME` is the username you set in the previous step.
+        Where `USERNAME` is the user name you set in an earlier step.
     1. Grant the new user permission to read logs from the Loggregator Firehose endpoint by running:
 
         ```
         uaac member add doppler.firehose USERNAME
         ```
-        Where `USERNAME` is the username you set.
+        Where `USERNAME` is the user name you set.
 
 1. Download the [OMS Log Analytics Firehose Nozzle BOSH release](https://github.com/Azure/oms-log-analytics-firehose-nozzle) from Github. Clone the repository and navigate to the `oms-log-analytics-firehose-nozzle` directory by running:
 
@@ -118,7 +118,7 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
           FIREHOSE_USER_PASSWORD: YOUR-FIREHOSE-PASSWORD
           </pre>
         </td>
-        <td>Enter the username and password for the Firehose user you created in Step 2c.</td>
+        <td>Enter the user name and password for the Firehose user you created in Step 2c.</td>
       </tr>
       <tr>
         <td><code>API_ADDR: https://api.YOUR-DOMAIN</code></td>

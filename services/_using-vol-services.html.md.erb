@@ -77,7 +77,7 @@ To create and bind an instance for the volume service:
             The <code>GID</code> and <code>UID</code> must be positive integer values greater than <code>0</code>.
             Provide the UID and GID as a JSON string in-line or in a file.
             If you omit <code>uid</code> and <code>gid</code>, the driver skips <code>mapfs</code> mounting and performs
-            just the normal kernel mount of the NFS file system without the performance overhead associated with FUSE mounts.
+            only the normal kernel mount of the NFS file system without the performance overhead associated with FUSE mounts.
 
             The key advantage of specifying <code>UID</code> and <code>GID</code> is that different values can be specified for different apps, so
             file permissions can be granted at the app level. If this is not needed, the performance overhead of <code>mapfs</code> can be eliminated by managing permissions on the NFS server.
@@ -112,7 +112,7 @@ To create and bind an instance for the volume service:
           <li><code>YOUR-APP</code> is the name of the app for which you want to use the volume service.</li>
           <li><code>SERVICE-NAME</code> is the name of the volume service instance you created in the previous step.</li>
           <li>
-            <code>USERNAME</code> and <code>PASSWORD</code> are the username and password for the LDAP server. If you omit <code>username</code> and <code>password</code>, the driver skips <code>mapfs</code> mounting and performs just the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
+            <code>USERNAME</code> and <code>PASSWORD</code> are the user name and password for the LDAP server. If you omit <code>username</code> and <code>password</code>, the driver skips <code>mapfs</code> mounting and performs only the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
           </li>
           <li>
             (Optional) <code>OPTIONAL-MOUNT-PATH</code> is a JSON string that indicates the volume must be mounted to a particular path within your app rather than the default path. Choose a path with a root-level folder that already exists in the container, such as <code>/home</code>, <code>/usr</code>, or <code>/var</code>.
@@ -391,7 +391,7 @@ To configure LDAP credentials while creating your NFS Volume Service instance:
       <li><code>PLAN</code> is the name of the service plan.</li>
       <li><code>SERVICE-INSTANCE-NAME</code> is a name you provide for this NFS Volume Service instance.</li>
       <li><code>SERVER/SHARE</code> is the NFS address of your server and share.</li>
-      <li><code>USERNAME</code> is a username you provide for this NFS Volume Service instance.</li>
+      <li><code>USERNAME</code> is a user name you provide for this NFS Volume Service instance.</li>
       <li><code>PASSWORD</code> is a password you provide for this NFS Volume Service instance.</li>
     </ul>
 
@@ -491,7 +491,7 @@ To deploy and bind a sample app:
         <p><code>SERVICE-INSTANCE-NAME</code>: The name of the volume service instance you created previously.</p>
       </li>
       <li>
-        <p><code>USERNAME</code> and <code>PASSWORD</code>: The username and password to use when mounting the share to the app. This allows you to interact with your SMB server as a specific user while allowing <%= vars.app_runtime_abbr %> to run your app as an arbitrary user.</p>
+        <p><code>USERNAME</code> and <code>PASSWORD</code>: The user name and password to use when mounting the share to the app. This allows you to interact with your SMB server as a specific user while allowing <%= vars.app_runtime_abbr %> to run your app as an arbitrary user.</p>
       </li>
       <li>
         <p>(Optional) <code>mount</code>: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in <code>/var/vcap/data</code>. You might need to edit this value if your app has specific requirements. For example, run:</p>

@@ -5,7 +5,7 @@ owner: Core Services
 
 
 
-You can manage lifecycle operations for service instances using the Cloud Foundry CLI (cf CLI). This includes creating, updating, and deleting service instances. For documentation about other service management operations, see [Services overview](./index.html). <%= vars.custom_services %>
+You can manage life cycle operations for service instances using the Cloud Foundry CLI (cf CLI). This includes creating, updating, and deleting service instances. For documentation about other service management operations, see [Services overview](./index.html). <%= vars.custom_services %>
 
 To run the commands in this topic, you must first install the Cloud Foundry Command Line Interface (cf CLI). See the [Cloud Foundry Command Line Interface](../../cf-cli/index.html) topics for more information.
 
@@ -242,7 +242,7 @@ If your bound service instance is providing security features, like authorizatio
 <pre class="terminal">
 $ cf unbind-route-service <%=vars.app_domain%> --hostname my-app my-service-instance
 
-Unbinding leaves apps mapped to route my-app.<%=vars.app_domain%> vulnerable; e.g. if service instance my-service-instance provides authentication. Do you want to proceed?> y
+Unbinding leaves apps mapped to route my-app.<%=vars.app_domain%> vulnerable, e.g. if service instance my-service-instance provides authentication. Do you want to proceed?> y
 
 Unbinding route my-app.<%=vars.app_domain%> from service instance my-service-instance n org my-org / space test as user@example.com...
 OK

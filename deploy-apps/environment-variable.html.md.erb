@@ -72,11 +72,11 @@ MY_ENV_VARIABLE: 100
 
 ## <a id='app-system-env'></a> App-specific system variables
 
-This section describes the environment variables that <%= vars.app_runtime_abbr %> makes available to your app container. Some of these variables are the same across instances of a single app, and some vary from instance to instance.
+This section describes the environment variables that <%= vars.app_runtime_abbr %> makes available to your application container. Some of these variables are the same across instances of a single app, and some vary from instance to instance.
 
 You can access environment variables programmatically, including variables defined by the buildpack. For more information, see the buildpack documentation for [Java](../../buildpacks/java/java-tips.html#env-var), [Node.js](../../buildpacks/node/node-tips.html#env-var), and [Ruby](../../buildpacks/ruby/ruby-tips.html#env-var).
 
-The following table lists the system variables available to your app container.
+The following table lists the system variables available to your application container.
 
 | Environment Variable | Running | Staging | Task |
 | -------------------- | ------- | ------- | ---- |
@@ -138,7 +138,7 @@ For example: `CF_INSTANCE_INTERNAL_IP=5.6.7.8`
 
 ### <a id='CF-INSTANCE-PORT'></a> CF_INSTANCE_PORT
 
-The external, or *host-side*, port corresponding to the internal, or *container-side*, port with value `PORT`. This value is usually different from the `PORT` of the app instance.
+The external (host-side) port corresponding to the internal (container-side) port with value `PORT`. This value is usually different from the `PORT` of the app instance.
 
 For example: `CF_INSTANCE_PORT=61045`
 
@@ -146,7 +146,7 @@ For more information, see [PORT](#PORT).
 
 ### <a id='CF-INSTANCE-PORTS'></a> CF_INSTANCE_PORTS
 
-The list of mappings between internal, or *container-side*, and external, or *host-side*, ports allocated to the container running the app instance. Not all of the internal ports are necessarily available for the app to bind to, as some of them might be used by system-provided services that also run inside the container. These internal and external values might differ.
+The list of mappings between internal (container-side) and external (host-side) ports allocated to the container running the app instance. Not all of the internal ports are necessarily available for the app to bind to, as some of them might be used by system-provided services that also run inside the container. These internal and external values might differ.
 
 For example: `CF_INSTANCE_PORTS=[{external:61045,internal:8080},{external:61046,internal:2222}]`
 
@@ -241,27 +241,27 @@ This environment variable contains the associated attributes for a deployed app.
 
 | Attribute | Description |
 | --------- | ----------- |
-| `application_id` | The GUID identifying the app. |
-| `application_name` | The name assigned to the app when it was pushed. |
-| `application_uris` | The URIs assigned to the app. |
-| `application_version` | The GUID identifying a version of the app. Each time an app is pushed or restarted, this value is updated. |
-| `cf_api` | The location of the Cloud Controller API for the <%= vars.app_runtime_abbr %> deployment where the app runs. |
-| `host` | Deprecated. The IP address of the app instance. |
-| `limits` | The limits to disk space, number of files, and memory permitted to the app. Memory and disk space limits are supplied when the app is deployed, either on the command line or in the app manifest. The number of files allowed is operator-defined. |
-| `name` | Identical to `application_name`. |
-| `organization_id` | The GUID identifying the org where the app is deployed. |
-| `organization_name` | The human-readable name of the org where the app is deployed. |
-| `process_id` | The UID identifying the process. Only present in running app containers. |
-| `process_type` | The type of process. Only present in running app containers. |
-| `space_id` | The GUID identifying the space where the app is deployed. |
-| `space_name` | The human-readable name of the space where the app is deployed. |
-| `start` | The human-readable timestamp for the time the instance was started. Not provided on Diego Cells. |
-| `started_at` | Identical to `start`. Not provided on Diego Cells. |
-| `started_at_timestamp` | The Unix epoch timestamp for the time the instance was started. Not provided on Diego Cells. |
-| `state_timestamp` | Identical to `started_at_timestamp`. Not provided on Diego Cells. |
+| `application_id` | The GUID identifying the app |
+| `application_name` | The name assigned to the app when it was pushed |
+| `application_uris` | The URIs assigned to the app |
+| `application_version` | The GUID identifying a version of the app. Each time an app is pushed or restarted, this value is updated |
+| `cf_api` | The location of the Cloud Controller API for the <%= vars.app_runtime_abbr %> deployment where the app runs |
+| `host` | Deprecated. The IP address of the app instance |
+| `limits` | The limits to disk space, number of files, and memory permitted to the app. Memory and disk space limits are supplied when the app is deployed, either on the command line or in the app manifest. The number of files allowed is operator-defined |
+| `name` | Identical to `application_name` |
+| `organization_id` | The GUID identifying the org where the app is deployed |
+| `organization_name` | The human-readable name of the org where the app is deployed |
+| `process_id` | The UID identifying the process. Only present in running application containers |
+| `process_type` | The type of process. Only present in running application containers |
+| `space_id` | The GUID identifying the space where the app is deployed |
+| `space_name` | The human-readable name of the space where the app is deployed |
+| `start` | The human-readable timestamp for the time the instance was started. Not provided on Diego Cells |
+| `started_at` | Identical to `start`. Not provided on Diego Cells |
+| `started_at_timestamp` | The Unix epoch timestamp for the time the instance was started. Not provided on Diego Cells |
+| `state_timestamp` | Identical to `started_at_timestamp`. Not provided on Diego Cells |
 | `uris` | Identical to `application_uris`. You must ensure that both `application_uris` and `uris` are set to the same value. |
-| `users` | Deprecated. Not provided on Diego Cells. |
-| `version` | Identical to `application_version`. |
+| `users` | Deprecated. Not provided on Diego Cells |
+| `version` | Identical to `application_version` |
 
 ### <a id='VCAP-SERVICES'></a> VCAP_SERVICES
 
@@ -273,17 +273,17 @@ The following a table defines the attributes that describe a bound service. The 
 
 | Attribute | Description |
 | --------- | ----------- |
-| `binding_guid` | The guid of the service binding. |
-| `binding_name` | The name assigned to the service binding by the user. |
-| `instance_guid` | The guid of the service instance. |
-| `instance_name` | The name assigned to the service instance by the user. |
-| `name` | The `binding_name`, if it exists. Otherwise, the `instance_name`. |
-| `label` | The name of the service offering. |
-| `tags` | An array of strings an app can use to identify a service instance. |
-| `plan` | The service plan selected when the service instance was created. |
-| `credentials` | A JSON object containing the service-specific credentials needed to access the service instance. |
-| `syslog_drain_url` | The service-specific syslog drain url. |
-| `volume_mounts` | An array of service-specific volume mounts. |
+| `binding_guid` | The GUID of the service binding |
+| `binding_name` | The name assigned to the service binding by the user |
+| `instance_guid` | The GUID of the service instance |
+| `instance_name` | The name assigned to the service instance by the user |
+| `name` | The `binding_name`, if it exists. Otherwise, the `instance_name` |
+| `label` | The name of the service offering |
+| `tags` | An array of strings an app can use to identify a service instance |
+| `plan` | The service plan selected when the service instance was created |
+| `credentials` | A JSON object containing the service-specific credentials needed to access the service instance |
+| `syslog_drain_url` | The service-specific syslog drain URL |
+| `volume_mounts` | An array of service-specific volume mounts |
 
 
 To see the value of the `VCAP_SERVICES` environment variable for an app pushed to <%= vars.app_runtime_abbr %>, see [View environment variable values](#view-env).
@@ -343,7 +343,7 @@ VCAP_SERVICES=
 
 Environment variable groups are system-wide variables that allow operators to apply a group of environment variables to all running apps and all staging apps separately.
 
-An environment variable group consists of a single hash of name-value pairs that are later inserted into an app container at runtime or at staging. These values can contain information such as HTTP proxy information. The values for variables set in an environment variable group are case-sensitive.
+An environment variable group consists of a single hash of name-value pairs that are later inserted into an application container at runtime or at staging. These values can contain information such as HTTP proxy information. The values for variables set in an environment variable group are case-sensitive.
 
 When creating environment variable groups:
 
@@ -359,10 +359,10 @@ The following table lists the commands for environment variable groups.
 
 | CLI Command | Description |
 | ----------- | ----------- |
-| `running-environment-variable-group` or `revg` | Retrieves the contents of the running environment variable group. |
-| `staging-environment-variable-group` or `sevg` | Retrieves the contents of the staging environment variable group. |
-| `set-staging-environment-variable-group` or `ssevg` | Passes parameters as JSON to create a staging environment variable group. |
-| `set-running-environment-variable-group` or `srevg` | Passes parameters as JSON to create a running environment variable group. |
+| `running-environment-variable-group` or `revg` | Retrieves the contents of the running environment variable group |
+| `staging-environment-variable-group` or `sevg` | Retrieves the contents of the staging environment variable group |
+| `set-staging-environment-variable-group` or `ssevg` | Passes parameters as JSON to create a staging environment variable group |
+| `set-running-environment-variable-group` or `srevg` | Passes parameters as JSON to create a running environment variable group |
 
 The following examples demonstrate how to retrieve the environment variables:
 

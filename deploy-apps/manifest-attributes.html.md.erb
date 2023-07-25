@@ -224,8 +224,7 @@ The `-k` command-line flag overrides this attribute.
 
 ### <a id='docker'></a> docker
 
-If your app is contained in a Docker image, the `docker` attribute specifies it and an optional Docker username. This attribute is a combination of `push`
-options that include `--docker-image` and `--docker-username`.
+If your app is contained in a Docker image, the `docker` attribute specifies it and an optional Docker user name. This attribute is a combination of `push` options that include `--docker-image` and `--docker-username`.
 
 For example:
 
@@ -239,8 +238,7 @@ For example:
 
 The `--docker-image` or `-o` command-line flag overrides `docker.image`.  The `--docker-username` command-line flag overrides `docker.username`.
 
-The manifest attribute `docker.username` is optional. If it is used, the password must be provided in the environment variable `CF_DOCKER_PASSWORD`.
-Additionally, if a Docker username is specified, then a Docker image must also be specified.
+The manifest attribute `docker.username` is optional. If it is used, the password must be provided in the environment variable `CF_DOCKER_PASSWORD`. If a Docker user name is specified, then a Docker image must also be specified.
 
 <p class="note important">
 <span class="note__title">Important</span>
@@ -248,8 +246,7 @@ Using the <code>docker</code> attribute with the <code>buildpacks</code> or <cod
 
 ### <a id='health-check-http-endpoint'></a> health-check-http-endpoint
 
-The `health-check-http-endpoint` attribute customizes the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint`
-attribute, it uses endpoint `/`.
+The `health-check-http-endpoint` attribute customizes the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint` attribute, it uses endpoint `/`.
 
 For example:
 

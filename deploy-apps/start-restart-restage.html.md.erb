@@ -86,6 +86,6 @@ To restage your app, run the following command:
 
 Restaging your app stops your app and restages it, by compiling a new droplet and starting it.
 
-Restage your app if you have changed the environment in a way that affects your staging process, such as setting an environment variable that the buildpack consumes. The staging process has access to environment variables, so the environment can affect the contents of the droplet. You must also restage your app whenever you edit any configuration settings, such as when you rename it, add metadata, or configure health checks. The new settings often do not take effect until you restage the app.
+Restage your app if you have changed the environment in a way that affects your staging process, such as setting an environment variable that the buildpack consumes. Staging has access to environment variables, so the environment can affect the contents of the droplet. You must also restage your app whenever you edit any configuration settings, such as when you rename it, add metadata, or configure health checks. The new settings often do not take effect until you restage the app.
 
 Restaging your app compiles a new droplet from your app without updating your app source. If you must update your app source, re-push your app by following the steps in the section [above](#start).

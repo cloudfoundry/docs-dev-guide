@@ -266,7 +266,7 @@ This section describes the rolling deployments and their limitations.
 
 ### <a id="deployment-process"></a> Rolling deployment process
 
-This section describes the process of pushing an app with a rolling deployment strategy.
+This section describes pushing an app with a rolling deployment strategy.
 
 1. The `cf push APP-NAME --strategy rolling` command does the following:
   1. Stages the updated app package.
@@ -282,7 +282,7 @@ background, updating deployments as follows:
     1. Adds another instance of the new web process and removes an instance from the old web process.
         <p class="note important">
         <span class="note__title">Important</span>
-        This only happens if all instances of the new web process are currently running.</p>
+        This only happens if all instances of the new web process are running.</p>
     1. Repeats the above step until the new web process reaches the desired number of instances.
     1. Removes the old web process. The new web process now fully replaces the old web process.
     1. Restarts all non-web processes of the app.

@@ -54,9 +54,9 @@ Sidecars have these limitations:
 
 * App processes and sidecars are codependent. If either crashes or exits, the other does also.
 
-* Sidecars are currently not independently scalable. Sidecars share resources with the main app process and other sidecars within the container.
+* Sidecars are not independently scalable. Sidecars share resources with the main app process and other sidecars within the container.
 
-* Sidecars only support PID-based health checks. HTTP health checks for sidecars are not currently supported.
+* Sidecars only support PID-based health checks. HTTP health checks for sidecars are not supported.
 
 
 ## <a id="java"></a> Requirements for Java apps
@@ -121,7 +121,7 @@ When pushing a Java app, follow the requirements listed in <a href="#java">Requi
 
 Before you can push an app with a sidecar with an app manifest, you must have:
 
-* An app that is currently running or ready to be pushed.
+* An app that is running or ready to be pushed.
 
 * A file that <%= vars.app_runtime_abbr%> can run inside the app container as a sidecar process. For example, an executable binary, a Java .jar file, or Ruby scripts.
 

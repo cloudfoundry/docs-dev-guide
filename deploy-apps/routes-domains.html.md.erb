@@ -125,7 +125,7 @@ In <%= vars.app_runtime_abbr %>, a hostname is the label that indicates a subdom
 
   <p class="note important">
   <span class="note__title">Important</span>
-  The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are currently targeting.</p>
+  The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</p>
 
 * **cf CLI v6**
   <pre class="terminal">
@@ -574,8 +574,7 @@ To share a route with another space:
       <li><code>HOSTNAME</code> is the hostname included in the route for your app.</li>
       <li><code>PATH</code> is the path included in the route for your app.</li>
       <li><code>SPACE</code> is the space with which you want to share the route for your app.</li>
-      <li><code>ORG</code> is the org containing space with which you want to share the route for your app. If the space with which you want to share the route is within the
-      same org as the space that currently contains the route, do not include the <code>-o</code> flag.</li>
+      <li><code>ORG</code> is the org containing space with which you want to share the route for your app. If the space with which you want to share the route is within the same org as the space that contains the route, do not include the <code>-o</code> flag.</li>
     </ul>
 
     The following example command shares the route `example-app.example.com/example-path` with the `other-space` space in the `other-org` org:
@@ -619,8 +618,7 @@ To move a route:
       <li><code>HOSTNAME</code> is the hostname included in the route for your app.</li>
       <li><code>PATH</code> is the path included in the route for your app.</li>
       <li><code>SPACE</code> is the space to which you want to move the route for your app.</li>
-      <li><code>ORG</code> is the org containing space to which you want to move the route for your app. If the space to which you want to move the route is within the same
-      org as the space that currently contains the route, do not include the <code>-o</code> flag.</li>
+      <li><code>ORG</code> is the org containing space to which you want to move the route for your app. If the space to which you want to move the route is within the same org as the space that contains the route, do not include the <code>-o</code> flag.</li>
     </ul>
 
     The following example command moves the route `example-app.example.com/example-path` with the `other-space` space in the `other-org` org:
@@ -731,7 +729,7 @@ domain `<%= vars.private_app_domain %>`. For more information, see [Shared domai
 By default, <%= vars.app_runtime_abbr %> only supports routing of HTTP requests to apps.
 HTTP domains indicate to a developer that only requests using the HTTP protocol are routed to apps mapped to routes created from the domain. Routing for HTTP domains is layer 7 and offers features like custom hostnames, sticky sessions, and TLS termination.
 
-TCP domains indicate to a developer that requests over any TCP protocol, including HTTP, are routed to apps mapped to routes created from the domain. Routing for TCP domains is layer 4 and protocol-agnostic, so many features available to HTTP routing are not available for TCP routing. TCP domains are defined as being associated with the TCP router group. The TCP router group defines the range of ports available to be reserved with TCP routes. Currently, only shared domains can use a TCP protocol.
+TCP domains indicate to a developer that requests over any TCP protocol, including HTTP, are routed to apps mapped to routes created from the domain. Routing for TCP domains is layer 4 and protocol-agnostic, so many features available to HTTP routing are not available for TCP routing. TCP domains are defined as being associated with the TCP router group. The TCP router group defines the range of ports available to be reserved with TCP routes. Only shared domains can use a TCP protocol.
 
 ### <a id='shared-domains'></a> Shared domains
 

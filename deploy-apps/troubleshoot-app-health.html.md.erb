@@ -75,11 +75,9 @@ with a path to your buildpack.
 
 ### <a id='deploy-fail'></a> App deploy fails
 
-Even when the deploy fails, the app might exist on <%= vars.app_runtime_abbr %>. Run `cf apps` to review the apps in the currently targeted org and space. You
-might be able to correct the issue using the <%= vars.dev_console_2 %>, or you might need to delete the app and re-deploy.
+Even when the deploy fails, the app might exist on <%= vars.app_runtime_abbr %>. Run `cf apps` to review the apps in the targeted org and space. You might be able to correct the issue using the <%= vars.dev_console_2 %>, or you might need to delete the app and re-deploy.
 
-If you push multiple apps using a manifest and one fails to deploy, <%= vars.app_runtime_abbr %> does not attempt to push apps specified after the app that
-failed.
+If you push multiple apps using a manifest and one fails to deploy, <%= vars.app_runtime_abbr %> does not attempt to push apps specified after the app that failed.
 
 Common reasons deploying an app fails include:
 
@@ -89,19 +87,15 @@ Common reasons deploying an app fails include:
 
 ### <a id='unique-url'></a> App requires unique URL
 
-<%= vars.app_runtime_abbr %> requires that each app that you deploy has a unique URL. Otherwise, the new app URL collides with an existing app URL and
-<%= vars.app_runtime_abbr %> cannot successfully deploy the app. You can resolve this issue by running `cf push` with either of the following flags to create
-a unique URL:
+<%= vars.app_runtime_abbr %> requires that each app that you deploy has a unique URL. Otherwise, the new app URL collides with an existing app URL and <%= vars.app_runtime_abbr %> cannot successfully deploy the app. You can resolve this issue by running `cf push` with either of the following flags to create a unique URL:
 
 * `-n` to assign a different HOST name for the app.
 
-* `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words
-that the app name includes.
+* `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
 
 ### <a id='start'></a> App fails to start
 
-After `cf push` stages the app and uploads the droplet, the app might fail to start, commonly with a pattern of starting and crashing similar to the following
-example:
+After `cf push` stages the app and uploads the droplet, the app might fail to start, commonly with a pattern of starting and crashing similar to the following example:
 
 <pre class="terminal">
 -----> Uploading droplet (23M)
@@ -161,8 +155,7 @@ following example:
 
 An app that `cf push` has uploaded and started can crash later if it uses too much memory.
 
-**Make sure your app is not consuming more memory than allowed.** When you ran `cf push` and `cf scale`, that configured a limit on the amount of memory
-your app uses. Check your app's actual memory usage. If it exceeds the limit, modify the app to use less memory.
+**Make sure your app is not consuming more memory than allowed.** When you ran `cf push` and `cf scale`, that configured a limit on the amount of memory your app uses. Check your app's actual memory usage. If it exceeds the limit, edit the app to use less memory.
 
 ### <a id='routing-conflict'></a> Routing conflict
 

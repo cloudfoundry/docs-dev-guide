@@ -9,8 +9,7 @@ independently in its own container. This topic describes how to run tasks in <%=
 
 ## <a id='about-tasks'></a> Tasks in <%= vars.app_runtime_abbr %>
 
-In contrast to a long-running process (LRP), tasks run for a finite amount of time, then stop. Tasks run in their own containers and are designed to use
-minimal resources. After a task runs, <%= vars.app_runtime_abbr %> destroys the container running the task.
+In contrast to a long-running process (LRP), tasks run for a finite amount of time, then stop. Tasks run in their own containers and are designed to use minimal resources. After a task runs, <%= vars.app_runtime_abbr %> destroys the container running the task.
 
 As a single use object, a task can be checked for its state and for a success or failure message.
 
@@ -236,7 +235,7 @@ The following table describes the states a task can be in:
 
 | State | Description |
 | ----- | ----------- |
-| `RUNNING` | The task is currently in progress. |
+| `RUNNING` | The task is in progress. |
 | `FAILED` | The task did not complete. This state occurs when a task does not work correctly or a user cancels the task. |
 | `SUCCEEDED` | The task completed successfully. |
 

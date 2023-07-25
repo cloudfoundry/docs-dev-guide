@@ -192,7 +192,7 @@ To access the volume service from your app:
     </tr>
     <tr>
       <td><code>device_type</code></td>
-      <td>The NFS volume release. This currently only supports <code>shared</code> devices. A <code>shared</code> device represents a distributed file system that can mount on all app instances simultaneously.</td>
+      <td>The NFS volume release. This only supports <code>shared</code> devices. A <code>shared</code> device represents a distributed file system that can mount on all app instances simultaneously.</td>
     </tr>
     <tr>
       <td><code>mode</code></td>
@@ -332,7 +332,7 @@ To deploy and bind a sample app:
       <li>
         (Optional) <code>mount</code>: Use this option to specify the path at which volumes mount to the app container.
         The default is an arbitrarily-named folder in <code>/var/vcap/data</code>.
-        You might need to modify this value if your app has specific requirements. For example:
+        You might need to edit this value if your app has specific requirements. For example:
         <pre class="terminal">cf bind-service pora myVolume -c '{"mount":"/var/path"}'</pre>
       </li>
       <li>
@@ -494,7 +494,7 @@ To deploy and bind a sample app:
         <p><code>USERNAME</code> and <code>PASSWORD</code>: The username and password to use when mounting the share to the app. This allows you to interact with your SMB server as a specific user while allowing <%= vars.app_runtime_abbr %> to run your app as an arbitrary user.</p>
       </li>
       <li>
-        <p>(Optional) <code>mount</code>: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in <code>/var/vcap/data</code>. You might need to modify this value if your app has specific requirements. For example, run:</p>
+        <p>(Optional) <code>mount</code>: Use this option to specify the path at which volumes mount to the app container. The default is an arbitrarily-named folder in <code>/var/vcap/data</code>. You might need to edit this value if your app has specific requirements. For example, run:</p>
         <pre class="terminal">cf bind-service pora myVolume -c '{"username":"some-user","password":"some-password","mount":"/var/path"}'</pre>
       </li>
       <li>

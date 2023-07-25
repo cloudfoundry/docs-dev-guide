@@ -71,7 +71,7 @@ For app management purposes, <%= vars.platform_name %> might need to stop and re
 If this occurs, <%= vars.platform_name %> performs the following steps:
 
 1. <%= vars.platform_name %> sends a single `termination signal` to the root process
-   that your start command then runs.
+   that your start command runs.
 
 1. <%= vars.platform_name %> waits 10 seconds to allow your app to cleanly shut down any child processes
    and handle any open connections.

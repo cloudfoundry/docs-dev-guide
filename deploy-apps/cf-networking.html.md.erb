@@ -31,7 +31,7 @@ Container-to-container networking is not available for apps hosted on Microsoft 
 
 ## <a name="create-policies"></a> Create and manage networking policies
 
-This section describes how to create and modify container-to-container networking policies using the Cloud Foundry Command Line Interface (cf CLI).
+This section describes how to create and edit container-to-container networking policies using the Cloud Foundry Command Line Interface (cf CLI).
 
 <%= vars.app_man_network %>
 
@@ -79,7 +79,7 @@ To grant all Space Developers permissions to configure network policies, <%=  va
 
 ### <a name="add-policy"></a> Add a network policy
 
-To add a policy that allows direct network traffic from one app to another, run the following command:
+To add a policy that allows direct network traffic from one app to another, run:
 
 ```
 cf add-network-policy SOURCE_APP DESTINATION_APP -s DESTINATION_SPACE_NAME -o DESTINATION_ORG_NAME --protocol (tcp | udp) --port RANGE
@@ -91,10 +91,10 @@ Replace the placeholders in the above command as follows:
 * `DESTINATION_APP` is the name of the app that receives traffic.
 * `DESTINATION_SPACE_NAME` is the space of the destination app. The default is the targeted space.
 * `DESTINATION_ORG_NAME` is the org of the destination app. The default is the targeted org.
-* `PROTOCOL` is one of the following: `tcp` or `udp`.
+* `PROTOCOL` is either: `tcp` or `udp`.
 * `RANGE` contains the ports at which to connect to the destination app. The allowed range is from `1` to `65535`. You can specify a single port, such as `8080`, or a range of ports, such as `8080-8090`. Port 61443 is used for TLS communication.
 
-The following example command allows access from the `frontend` app to the `backend` app over TCP at port 8080:
+Use the `add-network-policy` command to allows access from the `frontend` app to the `backend` app over TCP at port 8080. Here is an example:
 
 <pre class="terminal">
 $ cf add-network-policy frontend backend --protocol tcp --port 8080
@@ -123,7 +123,7 @@ You can list all the policies in your space, or just the policies for which a si
     $ cf network-policies --source example-app
     </pre>
 
-    The following example command lists policies for the app `frontend`:
+    The following example of the `network-policy` command lists policies for the app `frontend`:
 
     <pre class="terminal">
     $ cf network-policies --source frontend
@@ -135,7 +135,7 @@ You can list all the policies in your space, or just the policies for which a si
 
 ### <a name="rm-policy"></a> Remove a network policy
 
-To remove a policy that allows direct network traffic from an app, run the following command:
+To remove a policy that allows direct network traffic from an app, run:
 
 ```
 cf remove-network-policy SOURCE_APP DESTINATION_APP -s DESTINATION_SPACE_NAME -o DESTINATION_ORG_NAME --protocol PROTOCOL --port RANGE
@@ -150,7 +150,8 @@ Replace the placeholders in the above command to match an existing policy, as fo
 * `PROTOCOL` is either `tcp` or `udp`.
 * `PORTS` are the ports connecting the apps. The allowed range is from `1` to `65535`. You can specify a single port, such as `8080`, or a range of ports, such as `8080-8090`.
 
-The following command deletes the policy that allowed the `frontend` app to communicate with the `backend` app over TCP on port 8080:
+The `remove-network-policy` command deletes the policy that allows the `frontend` app to communicate with the `backend` app over TCP on port 8080. Here is an example:
+
 <pre class="terminal">
 $ cf remove-network-policy frontend backend --protocol tcp --port 8080
 Removing network policy to app frontend in org my-org / space dev as admin...
@@ -161,11 +162,11 @@ OK
 
 You can deactivate Silk network policy enforcement between apps. Deactivating network policy enforcement allows all apps to send network traffic to all other apps in the foundation despite no policy specifically allowing it.
 
-To deactivate network policy enforcement between apps, do the following:
+To deactivate network policy enforcement between apps:
 
 <% if vars.platform_code == "CF" %>
 
-1. To target your BOSH deployment, run the following command:
+1. To target your BOSH deployment, run:
    <pre>
    bosh target -e MY-ENV -d MY-DEPLOYMENT
    </pre>
@@ -173,15 +174,15 @@ To deactivate network policy enforcement between apps, do the following:
    - `MY-ENV` is the alias you set for your BOSH Director.
    - `MY-DEPLOYMENT` is your deployment name. You can see your deployment name by running `bosh -e MY-ENV deployments`.
 
-1. To download and save the current BOSH manifest, run the following command:
+2. To download and save the BOSH manifest, run:
    <pre>
    bosh -e MY-ENV -d MY-DEPLOYMENT manifest > MY-MANIFEST.yml
    </pre>
    Where `MY-MANIFEST.yml` is the name you choose for the saved manifest.
 
-1. In your BOSH manifest, change the `disable_container_network_policy` value to `false`.
+3. In your BOSH manifest, change the `disable_container_network_policy` value to `false`.
 
-1. To redeploy BOSH using the edited BOSH manifest, run the following command:
+4. To redeploy BOSH using the edited BOSH manifest, run:
    <pre>
    bosh -e MY-ENV -d MY-DEPLOYMENT deploy MY-MANIFEST.yml
    </pre>

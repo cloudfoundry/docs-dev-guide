@@ -104,8 +104,7 @@ For more information about Zipkin tracing, see [Zipkin tracking in HTTP headers]
 
 ### <a id='lgr'></a> LGR
 
-Loggregator emits `LGR` logs to indicate problems with the logging process. Examples include `can't reach syslog drain url` and `dropped log messages due to
-high rate`.
+Loggregator emits `LGR` logs to indicate problems with logging. Examples include `can't reach syslog drain url` and `dropped log messages due to high rate`.
 
 ### <a id='app'></a> APP
 
@@ -117,8 +116,7 @@ For example:
 2016-06-14T14:10:15.18-0700 [APP/0]      OUT Exit status 0
 </pre>
 
-Each app might have a configured log rate limit. If the app logs exceed the configured log rate limit, you see a log message indicating that the limit was
-exceeded.
+Each app might have a configured log rate limit. If the app logs exceed the configured log rate limit, you see a log message indicating that the limit was exceeded.
 
 For example:
 
@@ -253,6 +251,6 @@ experience for your user. The following are general tips for ordering logs:
   apps, use the multi-line Java message workaround to convert your multi-line stack traces into a single log entity.
   For more information, see <a href="https://github.com/cloudfoundry/java-buildpack/issues/544">Multi-line Java message workaround</a>.
   <br><br>
-  By modifying the Java log output, you can force your app to reformat stack trace messages, replacing newline
+  By changing the Java log output, you can force your app to reformat stack trace messages, replacing newline
   characters with a token. Set your log parsing code to replace that token with newline characters again to display the
   logs properly in Kibana.

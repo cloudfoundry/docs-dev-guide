@@ -203,7 +203,7 @@ This section includes example queries that operators can set in the OMS Portal.
     Type=CF_ValueMetric_CL Name_s=slowConsumerAlert
     ```
 
-* The following query alerts the operator when Loggregator sends an `LGR` to indicate problems with the logging process:
+* The following query alerts the operator when Loggregator sends an `LGR` to indicate problems with logging:
 
     ```
     Type=CF_LogMessage_CL SourceType_s=LGR MessageType_s=ERR
@@ -273,6 +273,6 @@ Operators can create an alert rule for the `slowConsumerAlert` message. For more
 
 ### <a id='scale-loggregator'></a> Scale Loggregator
 
-Loggregator sends `LGR` log messages to indicate problems with the logging process. <%= vars.scaling_loggregator_link %>
+Loggregator sends `LGR` log messages to indicate problems with logging. <%= vars.scaling_loggregator_link %>
 
 Operators can create an alert rule for the `LGR` message. For more information, see [Create alert rules](#alert).

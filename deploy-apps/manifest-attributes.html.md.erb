@@ -195,23 +195,17 @@ The <code>-c</code> option with a value of 'null' forces <code>cf push</code> to
 If you override the start command for a Buildpack app, Linux uses `bash -c COMMAND` to run your app. If you override the start command for a Docker
 app, Linux uses `sh -c COMMAND` to run your app. Because of this, if you override a start command, you must prefix `exec` to the final command in your custom composite start command.
 
-An app needs to catch termination signals and clean itself up appropriately. Because of the way that shells manage process trees, the use of custom composite
-shell commands, particularly those that create child processes using `&`, `&&`, `||`, and so on, can prevent your app from receiving signals that are sent to
-the top-level bash process. For more information, see [Considerations for designing and running an app in the cloud](prepare-to-deploy.html#moving-apps).
+An app needs to catch termination signals and clean itself up appropriately. Because of the way that shells manage process trees, the use of custom composite shell commands, particularly those that create child processes using `&`, `&&`, `||`, and so on, can prevent your app from receiving signals that are sent to the top-level bash process. For more information, see [Considerations for designing and running an app in the cloud](prepare-to-deploy.html#moving-apps).
 
 To resolve this issue, you can use `exec` to replace the bash process with your own process.
 
 For example:
 
-* `bin/rake cf:on_first_instance db:migrate && bin/rails server -p $PORT -e $RAILS_ENV`: The process tree is bash -> ruby, so on graceful shutdown only the
-bash process receives the TERM signal, not the ruby process.
+* `bin/rake cf:on_first_instance db:migrate && bin/rails server -p $PORT -e $RAILS_ENV`: The process tree is bash -> ruby, so on graceful shutdown only the bash process receives the TERM signal, not the ruby process.
 
-* `bin/rake cf:on_first_instance db:migrate && exec bin/rails server -p $PORT -e $RAILS_ENV`: Because of the `exec` prefix included on the final command, the
-Ruby process that is run by Rails takes over the bash process managing the execution of the composite command. The process tree is only Ruby, so the Ruby web
-server receives the TERM signal and can shutdown gracefully for 10 seconds.
+* `bin/rake cf:on_first_instance db:migrate && exec bin/rails server -p $PORT -e $RAILS_ENV`: Because of the `exec` prefix included on the final command, the Ruby process that is run by Rails takes over the bash process managing the execution of the composite command. The process tree is only Ruby, so the Ruby web server receives the TERM signal and can shutdown gracefully for 10 seconds.
 
-In more complex situations, like making a custom buildpack, you might want to use bash `trap`, `wait`, and backgrounded processes to manage your process tree
-and shut down apps gracefully. In most situations, however, a well placed `exec` is sufficient.
+In more complex situations, like making a custom buildpack, you might want to use bash `trap`, `wait`, and background processes to manage your process tree and shut down apps gracefully. In most situations, however, a well-placed `exec` is sufficient.
 
 ### <a id='disk-quota'></a> disk_quota
 
@@ -291,8 +285,7 @@ Within the manifest, the health check timeout is controlled by the `health-check
 
 ### <a id='health-check-type'></a> health-check-type
 
-The `health-check-type` attribute sets the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type`
-attribute, it defaults to `port`.
+The `health-check-type` attribute sets the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type` attribute, it defaults to `port`.
 
 For example:
 
@@ -431,7 +424,7 @@ The `-p` command-line flag overrides this attribute.
 
 For more information, see [How cf push finds the app](../../cf-cli/getting-started.html#find-app) in _Getting Started with the cf CLI_.
 
-### <a id='processes'></a> processes
+### <a id='processes'></a> Processes
 
 <%= partial 'v3-note' %>
 
@@ -629,7 +622,7 @@ For example:
   </ul>
 </div>
 
-While the app is running, you can modify environment variables in the following ways:
+While the app is running, you can edit environment variables in the following ways:
 
 * To view all variables, run:
 

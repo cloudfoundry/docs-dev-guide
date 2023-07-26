@@ -200,7 +200,7 @@ This only prevents new shares from being created. To remove existing shares, see
 The following script finds all service instances that are shared, and for each
 space that the service instance is shared into, all service bindings to that service instance are deleted, and all shares are deleted.
 
-If a service binding is not successfully deleted, the script continues trying to unshare subsequent service instances.
+If a service binding is not deleted, the script continues trying to unshare subsequent service instances.
 
 To use this script, you must be logged in as an administrator and have jq installed.
 

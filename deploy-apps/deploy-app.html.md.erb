@@ -6,7 +6,7 @@ owner: CAPI
 
 The cf CLI command `cf push` pushes apps to <%= vars.app_runtime_abbr %>. There are two main ways to run the `cf push` command:
 
-* Run `cf push APP-NAME` to push an app the easiest way, using default settings. For more information, see [Push with defaults](#default-push).
+* Run `cf push APP-NAME` to push an app using default settings. For more information, see [Push with defaults](#default-push).
 
 * Run the `cf push` command with flags and helper files to customize:
   * How the pushed app runs, including its route, instance count, disk size limits, memory limits, and log rate limits
@@ -151,8 +151,7 @@ Basic settings to customize when pushing an app include:
 
 * **Name:** You can use any series of alphanumeric characters as the name of your app.
 
-* **Instances:** Generally speaking, the more app instances you run, the less downtime your app experiences. If your app is still in development, running
-a single instance can simplify troubleshooting. For any production app, <%= vars.recommended_by %> recommends a minimum of two instances.
+* **Instances:** Generally speaking, the more app instances you run, the less downtime your app experiences. If your app is still in development, running a single instance can simplify troubleshooting. For any production app, <%= vars.recommended_by %> recommends a minimum of two instances.
 
 * **Memory limit:** The maximum amount of memory that each instance of your app can consume. If an app instance exceeds this limit,
 <%= vars.app_runtime_abbr %> restarts the instance. If an app instance exceeds its memory limit repeatedly in a short period of time,
@@ -165,8 +164,7 @@ a single instance can simplify troubleshooting. For any production app, <%= vars
 * **Log rate limit:** The maximum number of logs that each instance of your app can send to Loggregator. If an app instance exceeds this limit,
 <%= vars.app_runtime_abbr %> drops the excess logs and reports doing so.
 
-* **Start command:** This is the command that <%= vars.app_runtime_abbr %> uses to start each instance of your app. This start command differs by app
-framework.
+* **Start command:** This is the command that <%= vars.app_runtime_abbr %> uses to start each instance of your app. This start command differs by app framework.
 
 ### <a id='custom-route'></a> Customize the route (optional)
 

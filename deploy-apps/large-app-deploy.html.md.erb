@@ -18,27 +18,21 @@ To deploy large apps to <%= vars.app_runtime_abbr %>, ensure that:
 
 * You allocate enough memory for all instances of your app. Use either the `-m` flag with `cf push` or set an app memory value in your `manifest.yml` file.
 
-* You allocate enough disk space for all instances of your app. Use either the `-k` flag with `cf push` or set a disk space allocation value in your
-`manifest.yml` file.
+* You allocate enough disk space for all instances of your app. Use either the `-k` flag with `cf push` or set a disk space allocation value in your `manifest.yml` file.
 
 * You allocate enough log quota for all instances of your app. Use either the `-l` flag with `cf push` or set a log rate limit in your `manifest.yml` file.
 
-* If you use an app manifest file, `manifest.yml`, specify adequate values for your app for attributes such as app memory, app start timeout, and disk space
-allocation. For more information about using app manifests, see [Deploying with app manifests](manifest.html).
+* If you use an app manifest file, `manifest.yml`, specify adequate values for your app for attributes such as app memory, app start timeout, and disk space allocation. For more information about using app manifests, see [Deploying with app manifests](manifest.html).
 
-* The total size of environment variables for your app does not exceed 130&nbsp;KB. This includes <%= vars.app_runtime_abbr %> system environment variables
-such as `VCAP_SERVICES` and `VCAP_APPLICATION`. For more information, see [<%= vars.app_runtime_abbr %> environment variables](environment-variable.html).
+* The total size of environment variables for your app does not exceed 130&nbsp;KB. This includes <%= vars.app_runtime_abbr %> system environment variables such as `VCAP_SERVICES` and `VCAP_APPLICATION`. For more information, see [<%= vars.app_runtime_abbr %> environment variables](environment-variable.html).
 
-* You push only the files that are necessary for your app. To meet this requirement, push only the directory for your app, and remove unneeded files or use
-the `.cfignore` file to specify excluded files. For more information about specifying excluded files, see [Ignore unnecessary files when
-pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and Running an App in the Cloud_.
+* You push only the files that are necessary for your app. To meet this requirement, push only the directory for your app, and remove unneeded files or use the `.cfignore` file to specify excluded files. For more information about specifying excluded files, see [Ignore unnecessary files when pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and Running an App in the Cloud_.
 
 * You configure Cloud Foundry Command Line Interface (cf CLI) staging, startup, and timeout settings to override settings in the manifest, as necessary:
-  	* `CF_STAGING_TIMEOUT`: The maximum time in minutes that the cf CLI waits for an app to stage after <%= vars.app_runtime_abbr %> successfully uploads and
+  	* `CF_STAGING_TIMEOUT`: The maximum time in minutes that the cf CLI waits for an app to stage after <%= vars.app_runtime_abbr %> uploads and
     packages the app.
-  	* `CF_STARTUP_TIMEOUT`: The maximum time in minutes that the cf CLI waits for an app to start.
-  	* `cf push -t TIMEOUT`: The maximum time in seconds that <%= vars.app_runtime_abbr %> allows to elapse between starting an app and the first healthy
-    response from the app. When you use this flag, the cf CLI ignores any app start timeout value set in the manifest.
+  	* `CF_STARTUP_TIMEOUT`: The maximum time in minutes that the cf CLI waits for an app to start
+  	* `cf push -t TIMEOUT`: The maximum time in seconds that <%= vars.app_runtime_abbr %> allows to elapse between starting an app and the first healthy response from the app. When you use this flag, the cf CLI ignores any app start timeout value set in the manifest.
 
 For more information about using the cf CLI to deploy apps, see [Push](../../cf-cli/getting-started.html#push) in _Getting Started with the cf CLI_.
 
@@ -46,7 +40,7 @@ For more information about using the cf CLI to deploy apps, see [Push](../../cf-
 <span class="note__title">Important</span>
 Changing the timeout setting for the cf CLI does not change the timeout limit for <%= vars.app_runtime_abbr %>
 server-side jobs such as staging or starting apps. You must change server-side timeouts in the manifest. Because of the differences between the
-<%= vars.app_runtime_abbr %> and cf CLI timeout values, your app might successfully start even though the cf CLI reports <code>App failed</code>. To review the status of your app, run <code>cf apps APP-NAME</code>, where <code>APP-NAME</code> is the name of your app.</p>
+<%= vars.app_runtime_abbr %> and cf CLI timeout values, your app might start even though the cf CLI reports <code>App failed</code>. To review the status of your app, run <code>cf apps APP-NAME</code>, where <code>APP-NAME</code> is the name of your app.</p>
 
 
 ## <a id='limits_table'></a> Default settings and limitations summary

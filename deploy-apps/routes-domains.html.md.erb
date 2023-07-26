@@ -46,7 +46,7 @@ the following matches for the two routes `example-app.<%= vars.app_domain %>` an
 The Gorouter does not use a route to match requests until the route is mapped to an app. In the above example, `products.<%= vars.app_domain %>` might have been
 created as a route in <%= vars.app_runtime_abbr %>, but until it is mapped to an app, requests for the route receive a `404` error.
 
-The routing tier knows the location of instances for apps mapped to routes. Once the routing tier determines a route as the best match for a request, it makes
+The routing tier knows the location of instances for apps mapped to routes. After the routing tier determines a route as the best match for a request, it makes
 a load-balancing calculation using a round-robin algorithm, and forwards the request to an instance of the mapped app.
 
 Developers can map many apps to a single route, resulting in load-balanced requests for the route across all instances of all mapped apps. This approach
@@ -396,7 +396,7 @@ Any app that is not routed to port <code>80</code> or port <code>443</code> must
 
 You can create and reserve routes for later use by following the procedure in [Manually map a route](#map-route-manually). You can also map routes to their app immediately as part of a push. See [Map a route with app push](#map-route-on-push).
 
-Changes to route mappings are run asynchronously. On startup, an app becomes accessible at its route within a few seconds. Similarly, upon mapping a new route to a running app, the app becomes accessible at this route within a few seconds of the CLI exiting successfully.
+Changes to route mappings are run asynchronously. On startup, an app becomes accessible at its route within a few seconds. Similarly, upon mapping a new route to a running app, the app becomes accessible at this route within a few seconds of the CLI exiting.
 
 #### <a id='map-route-manually'></a> Manually map a route
 
@@ -521,8 +521,7 @@ The following routes are _not_ valid for a single app:
 
 #### <a id='map-internal-route'></a> Map an internal route to an app
 
-You can map an internal route to any app. This internal route allows your app to communicate with other apps without leaving the platform. Once mapped, this
-route becomes available to all other apps on the platform.
+You can map an internal route to any app. This internal route allows your app to communicate with other apps without leaving the platform. After it is mapped, this route becomes available to all other apps on the platform.
 
 This example creates a `foo.apps.internal` internal route for `example-app`:
 
@@ -532,8 +531,7 @@ $ cf map-route example-app apps.internal --hostname foo
 
 ### <a id='unmap-route'></a> Unmap a route
 
-Developers can remove a route from an app using the `cf unmap-route` command. The route remains reserved for later use in the space where it was created until
-the route is deleted.
+Developers can remove a route from an app using the `cf unmap-route` command. The route remains reserved for later use in the space where it was created until the route is deleted.
 
 To unmap an HTTP route from an app, identify the route using the host name, domain, and path:
 

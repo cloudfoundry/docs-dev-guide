@@ -3,7 +3,7 @@ title: App manifest attribute reference
 owner: CLI
 ---
 
-App properties and behavior can be managed using cf CLI commands or the app manifest (a YAML properties file). This topic describes manifest formatting and provides a full list of attributes available for app manifests. You can use it alongside [Deploying with app manifests](manifest.html), which provides basic procedures and guidance for deploying apps with manifests.
+You can manage app properties and behavior using cf CLI commands or the app manifest (a YAML properties file). This topic describes manifest formatting and provides a list of attributes available for app manifests. You can use it with [Deploying with app manifests](manifest.html), which provides basic procedures and guidance for deploying apps with manifests.
 
 For more information about V3 manifest properties, see the [Cloud Foundry API (CAPI) V3 documentation](http://v3-apidocs.cloudfoundry.org/index.html#space-manifest).
 
@@ -112,8 +112,7 @@ memory for `bigapp`.
 
 ## <a id='optional-attributes'></a> App attributes
 
-This section explains how to describe optional app attributes in manifests. Each of these attributes can also be specified by a command line option.
-Command-line options override the manifest.
+This section explains how to describe optional app attributes in manifests. Each of these attributes can also be specified by a command line option. Command-line options override the manifest.
 
 <p class="note important">
 <span class="note__title">Important</span>
@@ -224,7 +223,7 @@ The `-k` command-line flag overrides this attribute.
 
 ### <a id='docker'></a> docker
 
-If your app is contained in a Docker image, the `docker` attribute specifies it and an optional Docker user name. This attribute is a combination of `push` options that include `--docker-image` and `--docker-username`.
+If your app is contained in a Docker image, the `docker` attribute specifies it and an Docker user name (optional). This attribute is a combination of `push` options that include `--docker-image` and `--docker-username`.
 
 For example:
 
@@ -386,9 +385,7 @@ For example:
 
 The `--no-route` command-line flag overrides this attribute.
 
-In the Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app
-does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check, and <%= vars.app_runtime_abbr %>
-marks it as crashed. To prevent this, deactivate the port-based health check by running:
+In the Diego architecture, `no-route` skips creating and binding a route for the app, but does not specify which type of health check to perform. If your app does not listen on a port because it is a worker or a scheduler app, then it does not satisfy the port-based health check, and <%= vars.app_runtime_abbr %> marks it as failed. To prevent this, deactivate the port-based health check by running:
 
 ```console
 cf set-health-check APP-NAME --process
@@ -474,8 +471,7 @@ For example:
 
 The following example use cases demonstrate when you might use the `random-route` attribute:
 
-* You deploy the same app to multiple spaces for testing purposes. In this situation, you can use `random-route` to randomize routes declared with the route
-attribute in the app manifest.
+* You deploy the same app to multiple spaces for testing purposes. In this situation, you can use `random-route` to randomize routes declared with the route attribute in the app manifest.
 
 * You use an app manifest for a classroom training exercise in which multiple users deploy the same app to the same space.
 
@@ -489,8 +485,7 @@ The `routes` attribute in the manifest provides multiple HTTP and TCP routes. Ea
 <span class="note__title">Important</span>
 This attribute is a combination of `push` options that include `--hostname`, `-d`, and `--route-path` flags in v6. These flags are not supported in cf CLI v7, so the <code>routes</code> flag must be used.</p>
 
-Optionally, specify the `protocol` attribute to configure which network protocol the route uses for app ingress traffic. The available protocols are `http2`,
-`http1`, and `tcp`.
+You can specify the `protocol` attribute to configure which network protocol the route uses for app ingress traffic. This is optional. The available protocols are `http2`, `http1`, and `tcp`.
 
 <p class="note important">
 <span class="note__title">Important</span>The <code>protocol</code> route attribute is available only for <%= vars.app_runtime_abbr %> deployments that use HTTP/2 routing. <%= vars.http2_admin_link %> </p>
@@ -536,8 +531,7 @@ This table has been updated for cf CLI v7; several of the flags have been remove
 
 <%= partial 'v3-note' %>
 
-The `sidecars` attribute specifies additional processes to run in the same container as your app. Each sidecar must have values for `name`, `process_types`,
-and `command`, whereas `memory` is optional.
+The `sidecars` attribute specifies additional processes to run in the same container as your app. Each sidecar must have values for `name`, `process_types`, and `command`, whereas `memory` is optional.
 
 For example:
 
@@ -619,7 +613,7 @@ For example:
   </ul>
 </div>
 
-While the app is running, you can edit environment variables in the following ways:
+While the app is running, you can edit environment variables using one of these methods:
 
 * To view all variables, run:
 
@@ -716,8 +710,7 @@ applications:
 
 Top-level attributes are deprecated in favor of YAML aliases.
 
-The following example demonstrates how to specify a shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an
-alias:
+The following example demonstrates how to specify a shared configuration using a YAML anchor, which the manifest refers to in app declarations by using an alias:
 
 ```
 ---
@@ -780,7 +773,7 @@ applications:
 
 ### <a id='inheritance-deprecated'></a> Inheritance
 
-This feature is deprecated and replaced by variable substitution. For more information, see [Variable substitution](#variable-substitution) above.
+This feature is deprecated and replaced by variable substitution. For more information, see [Variable substitution](#variable-substitution).
 
 With inheritance, child manifests inherited configurations from a parent manifest. The child manifests can use the inherited configurations as provided,
 extend them, or override them.
@@ -788,4 +781,4 @@ extend them, or override them.
 ### <a id='buildpack-deprecated'></a> buildpack
 
 The singular `buildpack` attribute is deprecated. It is replaced by `buildpacks`, which specifies multiple buildpacks. For more information, see
-[buildpacks](#buildpacks) above.
+[buildpacks](#buildpacks).

@@ -15,7 +15,7 @@ To configure a health check using the cf CLI, see
 [Configure health checks for an existing app](#setting_health_checks_existing_app). For more
 information about using an app manifest to configure a health check, see
 [health-check-http-endpoint](manifest.html#health-check-http-endpoint) and
-[health-check-type](manifest.html#health-check-type) in _Deploying with App Manifests_.
+[health-check-type](manifest.html#health-check-type) in _Deploying with app manifests_.
 
 App health checks function as part of the app life cycle managed by Diego architecture. For more
 information, see [Diego components and architecture](../../concepts/diego/diego-architecture.html).
@@ -62,9 +62,7 @@ Where:
 
 * `HEALTH-CHECK-TYPE` is the type of health check that you want to configure. Valid health check types are `port`, `process`, and `http`. For more information, see [Health check types](#types).
 
-* `CUSTOM-HTTP-ENDPOINT` is the custom HTTP endpoint that you want to add to the health check. An
-`http` health check defaults to using `/` as its endpoint unless you specify a custom endpoint. For
-more information, see [Health check HTTP endpoints](#health_check_uri).
+* `CUSTOM-HTTP-ENDPOINT` is the custom HTTP endpoint that you want to add to the health check. By default, an `http` health check uses `/` as its endpoint unless you specify a custom endpoint. For more information, see [Health check HTTP endpoints](#health_check_uri).
 
 You can also change the health check invocation timeout for
 an app. If you are using cf CLI v6, use <code>cf v3-set-health-check</code>. If you have cf CLI v7, use <code>cf set-health-check</code>. This option also requires restarting the app. For more information, see <a href="https://cli.cloudfoundry.org/en-US/v7/apps.html">Apps</a> in the Cloud Foundry CLI Reference Guide.
@@ -89,13 +87,13 @@ The following table describes how app health checks work.
 | Stage | Description |
 | ----- | ----------- |
 | 1 | The app developer deploys an app to <%= vars.app_runtime_abbr %>. |
-| 2 | When deploying the app, the developer specifies a health check type for the app and, optionally, a timeout. If the developer does not specify a health check type, then the monitoring process defaults to a `port` health check. |
+| 2 | When deploying the app, the developer specifies a health check type for the app and, optionally, a timeout. If the developer does not specify a health check type, then monitoring uses a `port` health check by default. |
 | 3 | Cloud Controller stages, starts, and runs the app. |
 | 4 | Based on the type specified for the app, Cloud Controller configures a health check that runs periodically for each app instance. |
 | 5 | When Diego starts an app instance, the app health check runs every two seconds until a response indicates that the app instance is healthy or until the health check timeout elapses. The 2-second health check interval is not configurable. |
-| 6 | When an app instance becomes healthy, its route is advertised, if applicable. Subsequent health checks are run every 30 seconds once the app becomes healthy. The 30-second health check interval is not configurable. |
+| 6 | When an app instance becomes healthy, its route is advertised, if applicable. Subsequent health checks are run every 30 seconds after the app becomes healthy. The 30-second health check interval is not configurable. |
 | 7 | If a previously healthy app instance fails a health check, Diego considers that particular instance to be unhealthy. As a result, Diego stops and deletes the app instance, then reschedules a new app instance. This stoppage and deletion of the app instance is reported back to the Cloud Controller as a crash event. |
-| 8 | When an app instance crashes, Diego immediately attempts to restart the app instance several times. After three failed restarts, <%= vars.app_runtime_abbr %> waits 30 seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance. |
+| 8 | When an app instance fails, Diego immediately attempts to restart the app instance several times. After three failed restarts, <%= vars.app_runtime_abbr %> waits 30 seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance. |
 
 ### <a id="types"></a> Health check types
 
@@ -128,8 +126,8 @@ circumstances in which to use them:
     <td>The app can receive TCP connections, including HTTP web apps.</td>
     <td>A health check makes a TCP connection to the port or ports configured for the app. For apps
     with multiple ports, a health check monitors each port. If you do not specify a health
-    check type for your app, then the monitoring process defaults to a <code>port</code> health
-    check. The TCP connection must be established within one second to be considered healthy.</td>
+    check type for your app, then monitoring uses a <code>port</code> health
+    check by default. The TCP connection must be established within one second to be considered healthy.</td>
   </tr>
   <tr>
     <td><code>process</code></td>

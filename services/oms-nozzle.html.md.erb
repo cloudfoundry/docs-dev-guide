@@ -237,7 +237,7 @@ The nozzle sends the count as a **CounterEvent** with a **CounterKey** of one of
 | CounterEvent | CounterKey |
 | ------------ | ---------- |
 | nozzle.stats.eventsReceived | The number of events the Firehose has received during the interval |
-| nozzle.stats.eventsSent | The number of events the nozzle has successfully sent to OMS during the interval |
+| nozzle.stats.eventsSent | The number of events the nozzle has sent to OMS during the interval |
 | nozzle.stats.eventsLost | The number of events the nozzle has tried to send to OMS during the interval, but failed to send after 4 attempts |
 
 In most cases, the total count of `eventsSent` plus `eventsLost` is less than the total `eventsReceived` at the same time. The nozzle buffers some messages and posts them in a batch to OMS. Operators can adjust the buffer size by adjusting the `OMS_BATCH_TIME` and `OMS_MAX_MSG_NUM_PER_BATCH` environment variables in the manifest.

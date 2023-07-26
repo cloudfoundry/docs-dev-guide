@@ -81,13 +81,13 @@ If you push multiple apps using a manifest and one fails to deploy, <%= vars.app
 
 Common reasons deploying an app fails include:
 
-* The app does not successfully bind to a service, such as a PostgreSQL or MongoDB. The service might not exist, be down, or reject the binding.
+* The app does not bind to a service, such as a PostgreSQL or MongoDB. The service might not exist, be down, or reject the binding.
 
 * The app does not have a unique URL. For more information, see [App requires unique URL](#unique-url).
 
 ### <a id='unique-url'></a> App requires unique URL
 
-<%= vars.app_runtime_abbr %> requires that each app that you deploy has a unique URL. Otherwise, the new app URL collides with an existing app URL and <%= vars.app_runtime_abbr %> cannot successfully deploy the app. You can resolve this issue by running `cf push` with either of the following flags to create a unique URL:
+<%= vars.app_runtime_abbr %> requires that each app that you deploy has a unique URL. Otherwise, the new app URL collides with an existing app URL and <%= vars.app_runtime_abbr %> cannot deploy the app. You can resolve this issue by running `cf push` with either of the following flags to create a unique URL:
 
 * `-n` to assign a different HOST name for the app.
 

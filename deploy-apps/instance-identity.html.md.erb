@@ -5,7 +5,7 @@ owner: Diego
 
 
 
-The Instance Identity system provides each app instance with a unique PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS#1](https://tools.ietf.org/html/rfc3447) RSA private key pair that encodes its identity in the Cloud Foundry deployment.
+The Instance Identity system provides each app instance with a unique PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS#1](https://tools.ietf.org/html/rfc3447) RSA private keypair that encodes its identity in the Cloud Foundry deployment.
 
 The environment variable `CF_INSTANCE_CERT` contains the absolute path to the certificate. The environment variable `CF_INSTANCE_KEY` contains the absolute path to the key file. The provided certificate has the following properties:
 
@@ -16,7 +16,7 @@ The environment variable `CF_INSTANCE_CERT` contains the absolute path to the ce
 
 By default, the certificate is valid for 24 hours after the container is created. The Cloud Foundry platform operator can decrease this duration to as little as 1 hour by setting the `diego.executor.instance_identity_validity_period_in_hours` BOSH property.
 
-The Diego Cell rep supplies a new certificate and private key pair to the app instance before the end of the validity period. The new pair of files replaces the existing pair at the same path locations, with each file replaced atomically.
+The Diego Cell rep supplies a new certificate and private keypair to the app instance before the end of the validity period. The new pair of files replaces the existing pair at the same path locations, with each file replaced atomically.
 
 * If the validity period exceeds 4 hours, the pair regenerates between 1 hour and 20 minutes before the end of the validity period.
 * If the validity period is less than or equal to 4 hours, the pair regenerates between 1/4 and 1/12 of the time to the end of the period.

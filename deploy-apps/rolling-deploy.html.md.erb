@@ -10,7 +10,7 @@ For information about the traditional method for addressing app downtime while p
 see [Using blue-green deployment to reduce downtime and risk](./blue-green.html).
 
 For more information about CAPI, see the
-[Cloud Foundry API (CAPI)](https://v3-apidocs.cloudfoundry.org/) documentation.
+[Cloud Foundry API (CAPI) documentation](https://v3-apidocs.cloudfoundry.org/).
 
 
 ## <a id="prerequisites"></a> Prerequisites
@@ -54,7 +54,7 @@ Review the limitations of this feature before running the command. For more info
     <code>cf push</code> used with the <code>--no-wait</code> flag exits as soon as one instance is healthy.
     </p>
 
-    If the deployment hangs indefinitely, cancel the process and run it again with the step above.
+    If the deployment stops and doesn't restart, cancel it and run it again as described in an earlier step.
     To cancel, see [Cancel a deployment](#cancel).
 
 * **For cf CLI v6, run:**
@@ -117,7 +117,7 @@ Review the limitations of this feature before running the command. For more info
             }
           }'
         ```
-        Where `APP-GUID` is the app GUID that you recorded in the previous step. This app GUID is a
+        Where `APP-GUID` is the app GUID that you recorded in an earlier step. This app GUID is a
         unique identifier for your app.
     4. Upload the package bits by running the following `curl` command with
     `POST /v3/packages/PACKAGE-GUID/upload`.
@@ -130,7 +130,7 @@ Review the limitations of this feature before running the command. For more info
 
         Where:
         <ul>
-          <li><code>PACKAGE-GUID</code> is the package GUID that you recorded in the previous step.</li>
+          <li><code>PACKAGE-GUID</code> is the package GUID that you recorded in an earlier step.</li>
           <li><code>PACKAGED-APP</code> is your app packaged in a file such as <code>.zip</code>.</li>
         </ul>
     5. Create the build by running the following `curl` command with `POST /v3/builds`. Record the
@@ -146,7 +146,7 @@ Review the limitations of this feature before running the command. For more info
             }
           }'
         ```
-        Where `PACKAGE-GUID` is the package GUID that you recorded in a previous step.
+        Where `PACKAGE-GUID` is the package GUID that you recorded in an earlier step.
     6. Deploy your app by running the following `curl` command with `POST /v3/deployments`. To verify
     the status of the deployment or take action on the deployment, record the deployment GUID from the
     output.
@@ -169,7 +169,7 @@ Review the limitations of this feature before running the command. For more info
           }
         }'
         ```
-        Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in previous steps.
+        Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in earlier steps.
 
 For more information about this command, see [How it works](#how-it-works).
 
@@ -201,9 +201,9 @@ To stop the deployment of an app that you pushed:
     cf curl /v3/deployments/DEPLOYMENT-GUID/actions/cancel" -X POST
     ```
     Where `DEPLOYMENT-GUID` is the GUID of the deployment that you recorded after following the
-    CAPI procedure in [Deploy an app](#deploy) above.
+    CAPI procedure in [Deploy an app](#deploy).
 
-This reverts the app to its state from before the deployment started by doing the following:
+This reverts the app to its state from before the deployment started by:
 
 * Scaling up the original web process
 * Removing any deployment artifacts
@@ -257,36 +257,35 @@ configuration updates that require a restart, such as environment variables or s
       }
     }'
     ```
-    Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in previous steps.
+    Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in earlier steps.
 
 
 ## <a id="how-it-works"></a> How it works
 
 This section describes the rolling deployments and their limitations.
 
-### <a id="deployment-process"></a> Rolling deployment process
+### <a id="deployment-process"></a> Rolling deployment
 
 This section describes pushing an app with a rolling deployment strategy.
 
-1. The `cf push APP-NAME --strategy rolling` command does the following:
+1. The `cf push APP-NAME --strategy rolling` command:
   1. Stages the updated app package.
-  1. Creates a droplet with the updated app package.
-  1. Creates a deployment with the new droplet and any new configuration.
+  2. Creates a droplet with the updated app package.
+  3. Creates a deployment with the new droplet and any new configuration.
       * This starts a new process with one instance that shares the route with the old process.
-      * At this point, if you run `cf app` on your app, you see multiple `web` processes.
+      * Now, if you run `cf app` on your app, you see multiple `web` processes.
     <br>
     For more information about the deployment object, see the [Deployments](http://v3-apidocs.cloudfoundry.org/index.html#deployments) section of the CAPI V3 documentation.
 
-1. After the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the
+2. After the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the
 background, updating deployments as follows:
-    1. Adds another instance of the new web process and removes an instance from the old web process.
+    1. Adds another instance of the new web process and removes an instance from the old web process. This step repeats until the new web process reaches the required number of instances.
         <p class="note important">
         <span class="note__title">Important</span>
-        This only happens if all instances of the new web process are running.</p>
-    1. Repeats the above step until the new web process reaches the desired number of instances.
-    1. Removes the old web process. The new web process now fully replaces the old web process.
-    1. Restarts all non-web processes of the app.
-    1. Sets the deployment to `DEPLOYED`.
+        This happens only if all instances of the new web process are running.</p>
+    2. Removes the old web process. The new web process now fully replaces the old web process.
+    3. Restarts all non-web processes of the app.
+    4. Sets the deployment to `DEPLOYED`.
 
 ### <a id="limitations"></a> Limitations
 
@@ -312,7 +311,7 @@ The following table describes the limitations of when using rolling deployments.
   <tr>
     <td>Multiple app versions</td>
     <td>During a deployment, <%= vars.app_runtime_abbr %> serves both the old and new version of your app at the
-    same route. This could lead to user issues if you push backwards-incompatible API changes.</td>
+    same route. This can lead to user issues if you push backwards-incompatible API changes.</td>
   </tr>
   <tr>
     <td>Database migrations</td>
@@ -322,7 +321,7 @@ The following table describes the limitations of when using rolling deployments.
   <tr>
     <td>Non-web processes</td>
     <td>Rolling deployments only run web processes through the rolling update sequence described
-    above. The commands restart worker and other non-web processes in bulk after updating all web
+    earlier. The commands restart worker and other non-web processes in bulk after updating all web
     processes.<br><br>
 		The CAPI V3 API introduces the concept of processes as runnable units of an app. Each app has a
     web process by default. You can specify additional processes with a Procfile, and in some cases
@@ -333,7 +332,7 @@ The following table describes the limitations of when using rolling deployments.
   <tr>
     <td>Quotas</td>
     <td>Pushing updates to your app using a rolling deployment strategy creates an extra instance
-    of your app. If you lack sufficient quota, the deployment fails. Admins might need to increase
+    of your app. If you lack sufficient quota, the deployment fails. Administrators might need to increase
     quotas to accommodate rolling deployments.</td>
   </tr>
   <tr>
@@ -386,7 +385,7 @@ To view the status of a rolling deployment:
     ```
     Where `DEPLOYMENT-GUID` is the GUID of the rolling deployment.
 
-`cf curl GET /v3/deployments/DEPLOYMENT-GUID` returns the following properties about the status of rolling deployments:
+`cf curl GET /v3/deployments/DEPLOYMENT-GUID` returns these status properties for rolling deployments:
 
 * `status.value`: Indicates if the deployment is `ACTIVE` or `FINALIZED`.
 

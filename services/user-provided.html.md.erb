@@ -7,7 +7,7 @@ owner: Core Services
 
 User-provided service instances allow you to use services that are not available in the marketplace with their apps running on Cloud Foundry.
 
-User-provided service instances can be used to deliver service credentials to an app, and/or to trigger streaming of app logs to a syslog compatible consumer. These two functions can be used alone or at the same time.
+User-provided service instances can be used to deliver service credentials to an app, or to trigger streaming of app logs to a syslog compatible consumer. These two functions can be used alone or at the same time.
 
 <%= vars.user_provided_apps_man %>
 
@@ -19,7 +19,7 @@ The alias for [cf create-user-provided-service](http://cli.cloudfoundry.org/en-U
 
 ### <a id='credentials'></a>Deliver service credentials to an app
 
-Suppose a developer obtains a URL, port, user name, and password for communicating with an Oracle database managed outside of Cloud Foundry. The developer could manually create custom environment variables to configure their app with these credentials (of course you would never hard code these credentials in your app!).
+Suppose a developer obtains a URL, port, user name, and password for communicating with an Oracle database managed outside of Cloud Foundry. The developer can manually create custom environment variables to configure their app with these credentials (of course you never hard code these credentials in your app!).
 
 User-provided service instances enable developers to configure their apps with these using the familiar [App binding](application-binding.html) operation and the same app runtime environment variable used by Cloud Foundry to deliver credentials for marketplace services ([VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES)).
 

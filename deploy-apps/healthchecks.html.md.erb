@@ -11,17 +11,18 @@ You can configure a health check for an app using the Cloud Foundry Command Line
 manifest.
 
 To configure a health check using the cf CLI, see
-[Configure health checks when creating or updating](#setting_health_checks_create_app) and
-[Configure health checks for an existing app](#setting_health_checks_existing_app). For more
-information about using an app manifest to configure a health check, see
-[health-check-http-endpoint](manifest.html#health-check-http-endpoint) and
-[health-check-type](manifest.html#health-check-type) in _Deploying with app manifests_.
+* [Configure health checks when creating or updating](#setting-health-checks)
+* [Configure health checks for an existing app](#set-health-checks-exist).
+
+For more information about using an app manifest to configure a health check, see these sections in _Deploying with app manifests_.
+* [health-check-http-endpoint](manifest.html#health-check-http-ep)
+* [health-check-type](manifest.html#health-check-type)
 
 App health checks function as part of the app life cycle managed by Diego architecture. For more
 information, see [Diego components and architecture](../../concepts/diego/diego-architecture.html).
 
 
-## <a id="setting_health_checks"></a> Configure health checks when creating or updating an app
+## <a id="setting-health-checks"></a> Configure health checks when creating or updating an app
 
 To configure a health check while creating or updating an app, run:
 
@@ -48,7 +49,7 @@ The health check configuration that you provide with
 <code>cf push</code> overrides any configuration in the app manifest.</p>
 
 
-## <a id="setting_health_checks_existing_app"></a> Configure health checks for an existing app
+## <a id="set-health-checks-exist"></a> Configure health checks for an existing app
 
 To configure a health check for an existing app or to add a custom HTTP endpoint, run:
 

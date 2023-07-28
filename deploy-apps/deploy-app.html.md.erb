@@ -17,7 +17,7 @@ For more information about custom settings, see [Push with custom settings](#cus
 For an explanation of what <%= vars.app_runtime_abbr %> does when you run `cf push`, see [How Apps are
 Staged](../../concepts/how-applications-are-staged.html).
 
-For information about the life cycle of an app, see [App container life cycle](app-lifecycle.html).
+For information about the life cycle of an app, see [Application container life cycle](app-lifecycle.html).
 
 ## <a id='prepare'></a> Prerequisites
 
@@ -37,7 +37,7 @@ Before you push your app to <%= vars.app_runtime_abbr %>, ensure that:
 
 * You are logged into your app's target org and space.
   1. Decide the org and space where you want to push your app. You might have access to one or more org and space.
-  1. Log into this target org and space with `cf login`.
+  1. Log in to this target org and space with `cf login`.
 
 * Your app can access every service that it uses, because an instance of the service runs in, or is shared with, the app's space.
   * For information about sharing service instances across spaces, see [Sharing service instances](../services/sharing-instances.html).
@@ -223,8 +223,7 @@ The following example `.profile` file uses `bash` to set a value for the environ
 export LANG=en_US.UTF-8
 ~~~
 
-Setting this value at the operating system level allows the app to determine which language to use for error messages and instructions, collating sequences,
-and date formats.
+Setting this value at the operating system level allows the app to find out which language to use for error messages and instructions, collating sequences, and date formats.
 
 Your app root directory might also include a `.profile.d` directory that contains bash scripts that perform initialization tasks for the buildpack. Developers
 must not edit these scripts unless they are using a custom buildpack. For more information about custom buildpacks, see [Custom

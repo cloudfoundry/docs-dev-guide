@@ -40,7 +40,7 @@ To delete an app with the services you have provisioned for it, delete the servi
 
 1. Run `cf services` to view all active services in the current space.
 
-1. Examine the list to determine which services are bound to your app. Record the name of the service instance bound to the app. If the list shows a service instance bound to any apps besides the app you want to delete, do not delete the service instance. If you delete a service instance bound to more than one app, you deletes the service instance from all of those apps.
+1. Examine the list to verify which services are bound to your app. Record the name of the service instance bound to the app. If the list shows a service instance bound to any apps besides the app you want to delete, do not delete the service instance. If you delete a service instance bound to more than one app, you deletes the service instance from all of those apps.
 
 1. Run `cf delete-service SERVICE-INSTANCE` to delete the service instance. Replace `SERVICE-INSTANCE` with the name of the service instance bound to your app.
 

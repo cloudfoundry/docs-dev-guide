@@ -1,5 +1,5 @@
 ---
-title: The app container life cycle on the Diego architecture
+title: The application container life cycle on the Diego architecture
 owner: Diego
 ---
 
@@ -29,7 +29,7 @@ Some actions require restarting VMs with containers hosting app instances. For e
 
 <%= vars.app_runtime_abbr %> relocates the instances on VMs that are shutting down through a process called evacuation. <%= vars.app_runtime_abbr %> recreates the app instances on another VM, waits until they are healthy, and then shuts down the old instances. During an evacuation, you might see the app instances in a duplicated state for a brief time.
 
-During app duplication, singleton app instances might become temporarily unavailable if the replacement instance does not become healthy within the evacuation timeout of the Diego Cell, which defaults to ten minutes, so app developers with a low tolerance for downtime might prefer to run several instances of their app. See [Run multiple instances to increase availability](prepare-to-deploy.html#increase-availability).
+During app duplication, singleton app instances might become temporarily unavailable if the replacement instance does not become healthy within the evacuation timeout of the Diego Cell (the default is ten minutes). App developers with a low tolerance for downtime might prefer to run several instances of their app. See [Run multiple instances to increase availability](prepare-to-deploy.html#increase-availability).
 
 
 ## <a id="shutdown"></a> Shutdown
@@ -54,4 +54,4 @@ This might increase the time it takes to drain Diego Cells, which causes increas
 
 <p class="note">
 <span class="note__title">Note</span>
-An exception to the cases previously mentioned is when monit restarts a crashed Diego Cell replacement or Garden server. In this case, <%= vars.app_runtime_abbr %> immediately stops the apps that are still running using SIGKILL.</p>
+An exception to the cases previously mentioned is when monit restarts a Diego Cell replacement or Garden server that has failed. In this case, <%= vars.app_runtime_abbr %> immediately stops the apps that are still running using SIGKILL.</p>

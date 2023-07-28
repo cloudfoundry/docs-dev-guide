@@ -142,7 +142,7 @@ There are no bound apps for this service.
 
 ## <a id='bind'></a>Bind a service instance
 
-Depending on the service, you can bind service instances to apps and/or routes.
+Depending on the service, you can bind service instances to apps and routes.
 
 Not all services support binding, as some services deliver value to users directly without integration with Cloud Foundry, such as SaaS apps.
 
@@ -233,7 +233,7 @@ OK
 
 ### <a id='route-unbinding'></a>Unbind a service instance from a route
 
-Unbinding a service instance from a route results in requests and responses no longer being proxied through the service instance. For more information, see [Managing app requests with route services](./route-binding.html).
+Unbinding a service instance from a route causes requests and responses to no longer be proxied through the service instance. For more information, see [Managing app requests with route services](./route-binding.html).
 
 <p class="note">
 <span class="note__title">Note</span>
@@ -252,7 +252,7 @@ You do not have to restage your app.
 
 ## <a id='rename_service'></a>Rename a service instance
 
-You can change the name given to a service instance. Keep in mind that upon restarting any bound apps, the name of the instance changes in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your app depends on the instance name for discovering credentials, changing the name could break your app's use of the service instance.
+You can change the name given to a service instance. Keep in mind that upon restarting any bound apps, the name of the instance changes in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your app depends on the instance name for discovering credentials, changing the name might break your app's use of the service instance.
 
 <pre class="terminal">
 $ cf rename-service mydb mydb1

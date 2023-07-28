@@ -33,7 +33,7 @@ This section assumes you have an active Fluentd instance running.
 If you do not have an active Fluentd instance, see the
 [Fluentd documentation](https://docs.fluentd.org/installation) for more details.
 If you use cf to deploy your fluentd instances, you have to use
-[tcp routing](../deploy-apps/routes-domains.html#create-route-with-port).
+[tcp routing](../deploy-apps/routes-domains.html#create-route-w-port).
 
 Fluentd comes with native support for syslog protocol.
 To set up Fluentd for Cloud Foundry, configure the syslog input of Fluentd as follows.
@@ -63,4 +63,4 @@ The Fluentd syslog input plug-in supports <code>tls</code> and <code>tcp</code> 
 
 Fluentd starts listening for Syslog message on port 8080 and tagging the messages with `cf.app`, which can be used later for data routing. For more details about the full setup for the service, refer to the [Config File](https://docs.fluentd.org/configuration/config-file) topic.
 
-If you want to use an Elasticsearch or Amazon S3 backend, see the [Fluentd documentation](http://www.fluentd.org/guides/recipes/elasticsearch-and-s3).
+To use an Elasticsearch or Amazon S3 backend, see the [Fluentd documentation](http://www.fluentd.org/guides/recipes/elasticsearch-and-s3).

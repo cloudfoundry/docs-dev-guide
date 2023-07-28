@@ -15,12 +15,9 @@ Loggregator, the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) com
 
 ## <a id='overview'></a> Overview
 
-By default, Loggregator streams logs to your terminal. If you want to persist more than the limited amount of logging information that Loggregator can buffer,
-you can drain logs to a third-party log management service. For more information, see [Third-party log management services](../services/log-management.html).
+By default, Loggregator streams logs to your terminal. To persist more than the limited amount of logging information that Loggregator can buffer, you can drain logs to a third-party log management service. For more information, see [Third-party log management services](../services/log-management.html).
 
-<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log lines quickly enough, the Loggregator buffer might
-need to overwrite some lines before the client has consumed them. A syslog drain or a command-line interface (CLI) tail can usually keep up with the flow of
-app logs.
+<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log lines quickly enough, the Loggregator buffer might need to overwrite some lines before the client has consumed them. A syslog drain or a command-line interface (CLI) tail can usually keep up with the flow of app logs.
 
 <%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log lines
 quickly enough, the Loggregator buffer might need to overwrite some lines before the client has consumed them. A syslog
@@ -48,8 +45,8 @@ Origin codes distinguish the different log types. Origin codes from system compo
 a digit that indicates the app instance.
 
 Many frameworks write to an app log that is separate from `stdout` and `stderr`. This is not supported by Loggregator. Your app must write to `stdout` or
-`stderr` for its logs to be included in the Loggregator stream. Check the buildpack your app uses to determine whether it ensures that your app
-correctly writes logs to `stdout` and `stderr` only. Some buildpacks do this, and some do not.
+`stderr` for its logs to be included in the Loggregator stream. Check the buildpack your app uses to find out if it ensures that your app
+writes logs to `stdout` and `stderr` only. Some buildpacks do this, and some do not.
 
 
 ## <a id='format'></a> Log types and their messages
@@ -70,8 +67,7 @@ For example:
 
 ### <a id='stg'></a> STG
 
-The Diego Cell or the Droplet Execution Agent emits `STG` logs when staging or restaging an app. These actions implement the desired state requested by the
-user. After the droplet has been uploaded, `STG` messages end and `CELL` messages begin. For `STG`, the instance index is almost always `0`.
+The Diego Cell or the Droplet Execution Agent emits `STG` logs when staging or restaging an app. These actions implement the state requested by the user. After the droplet is uploaded, `STG` messages end and `CELL` messages begin. For `STG`, the instance index is almost always `0`.
 
 For example:
 
@@ -126,7 +122,7 @@ For example:
 
 ### <a id='ssh'></a> SSH
 
-The Diego Cell emits `SSH` logs when a user accesses an app container through SSH by using the Cloud Foundry Command Line Interface (cf CLI) `cf ssh` command.
+The Diego Cell emits `SSH` logs when a user accesses an application container through SSH by using the Cloud Foundry Command Line Interface (cf CLI) `cf ssh` command.
 
 For example:
 
@@ -138,8 +134,7 @@ For more information about the `cf ssh` command, see the [Cloud Foundry CLI refe
 
 ### <a id='cell'></a> CELL
 
-The Diego Cell emits `CELL` logs when it starts or stops the app. These actions implement the desired state requested by the user. The Diego Cell also emits
-messages when an app crashes.
+The Diego Cell emits `CELL` logs when it starts or stops the app. These actions implement the state requested by the user. The Diego Cell also emits messages when an app fails.
 
 For example:
 

@@ -41,7 +41,7 @@ If your app name begins with the dash character (<code>-</code>), you cannot int
 
 You can specify the schema version in the `versions` property of the manifest. This property is optional.
 
-The only supported version is `1`. If not specified, the `versions` property defaults to `1`.
+The only supported version is `1`. If not specified, the default value for the `versions` property is `1`.
 
 ### <a id='variable-substitution'></a> Add variables to a manifest
 
@@ -112,7 +112,7 @@ memory for `bigapp`.
 
 ## <a id='optional-attributes'></a> App attributes
 
-This section explains how to describe optional app attributes in manifests. Each of these attributes can also be specified by a command line option. Command-line options override the manifest.
+This section explains how to describe optional app attributes in manifests. You can also specify each of these attributes using a command line option. Command-line options override the manifest.
 
 <p class="note important">
 <span class="note__title">Important</span>
@@ -160,11 +160,9 @@ For more information, see [Pushing an app with multiple buildpacks](../../buildp
 
 ### <a id='start-commands'></a> command
 
-Some languages and frameworks require that you provide a custom command to start an app. To determine if you need to provide a custom start command, see
-[Buildpacks](../../buildpacks/index.html).
+Some languages and frameworks require that you provide a custom command to start an app. To find out if you need to provide a custom start command, see [Buildpacks](../../buildpacks/index.html).
 
-You can provide the custom start command in your app manifest or on the command line. For more information about how <%= vars.app_runtime_abbr %> determines
-its default start command, see [Starting, restarting, and restaging apps](start-restart-restage.html).
+You can provide the custom start command in your app manifest or on the command line. For more information about how <%= vars.app_runtime_abbr %> determines its default start command, see [Starting, restarting, and restaging apps](start-restart-restage.html).
 
 To specify the custom start command in your app manifest, add it in the `command: START-COMMAND` format. For example:
 
@@ -174,8 +172,7 @@ To specify the custom start command in your app manifest, add it in the `command
   command: bundle exec rake VERBOSE=true
 ```
 
-The start command you specify becomes the default for your app. To return to using the original default start command set by your buildpack, you must
-explicitly set the attribute to `null`. For example:
+The start command you specify becomes the default for your app. To return to using the original default start command set by your buildpack, you must explicitly set the attribute to `null`. For example:
 
 ```
 ---
@@ -189,12 +186,12 @@ On the command line, you can specify the custom start command by including the `
 cf push my-app -c "bundle exec rake VERBOSE=true"
 </pre>
 
-The <code>-c</code> option with a value of 'null' forces <code>cf push</code> to use the buildpack start command. For more information, see <a href="start-restart-restage.html#revert">Forcing cf push to use the Buildpack Start Command</a> in <em>Starting, restarting, and restaging apps</em>.
+The <code>-c</code> option with a value of `null` forces <code>cf push</code> to use the buildpack start command. For more information, see <a href="start-restart-restage.html#revert">Forcing cf push to use the Buildpack Start Command</a> in <em>Starting, restarting, and restaging apps</em>.
 
 If you override the start command for a Buildpack app, Linux uses `bash -c COMMAND` to run your app. If you override the start command for a Docker
 app, Linux uses `sh -c COMMAND` to run your app. Because of this, if you override a start command, you must prefix `exec` to the final command in your custom composite start command.
 
-An app needs to catch termination signals and clean itself up appropriately. Because of the way that shells manage process trees, the use of custom composite shell commands, particularly those that create child processes using `&`, `&&`, `||`, and so on, can prevent your app from receiving signals that are sent to the top-level bash process. For more information, see [Considerations for designing and running an app in the cloud](prepare-to-deploy.html#moving-apps).
+An app must catch termination signals and clean up appropriately. Because of the way that shells manage process trees, the use of custom composite shell commands, particularly those that create child processes using `&`, `&&`, `||`, and so on, can prevent your app from receiving signals that are sent to the top-level bash process. For more information, see [Considerations for designing and running an app in the cloud](prepare-to-deploy.html#moving-apps).
 
 To resolve this issue, you can use `exec` to replace the bash process with your own process.
 
@@ -202,7 +199,7 @@ For example:
 
 * `bin/rake cf:on_first_instance db:migrate && bin/rails server -p $PORT -e $RAILS_ENV`: The process tree is bash -> ruby, so on graceful shutdown only the bash process receives the TERM signal, not the ruby process.
 
-* `bin/rake cf:on_first_instance db:migrate && exec bin/rails server -p $PORT -e $RAILS_ENV`: Because of the `exec` prefix included on the final command, the Ruby process that is run by Rails takes over the bash process managing the execution of the composite command. The process tree is only Ruby, so the Ruby web server receives the TERM signal and can shutdown gracefully for 10 seconds.
+* `bin/rake cf:on_first_instance db:migrate && exec bin/rails server -p $PORT -e $RAILS_ENV`: Because of the `exec` prefix included on the final command, the Ruby process that is run by Rails takes over the bash process managing the execution of the composite command. The process tree is only Ruby, so the Ruby web server receives the TERM signal and can shut down gracefully for 10 seconds.
 
 In more complex situations, like making a custom buildpack, you might want to use bash `trap`, `wait`, and background processes to manage your process tree and shut down apps gracefully. In most situations, however, a well-placed `exec` is sufficient.
 
@@ -243,7 +240,7 @@ The manifest attribute `docker.username` is optional. If it is used, the passwor
 <span class="note__title">Important</span>
 Using the <code>docker</code> attribute with the <code>buildpacks</code> or <code>path</code> attributes causes an error.</p>
 
-### <a id='health-check-http-endpoint'></a> health-check-http-endpoint
+### <a id='health-check-http-ep'></a> health-check-http-endpoint
 
 The `health-check-http-endpoint` attribute customizes the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint` attribute, it uses endpoint `/`.
 
@@ -256,10 +253,9 @@ For example:
   health-check-http-endpoint: /health
 ```
 
-### <a id='health-check-invocation-timeout'></a> health-check-invocation-timeout
+### <a id='health-check-invoc-time'></a> health-check-invocation-timeout
 
-The `health-check-invocation-timeout` attribute configures the timeout in seconds for individual health check requests for HTTP and port health checks.
-The  attribute defaults to 1.
+The `health-check-invocation-timeout` attribute specifies the timeout in seconds for individual health check requests for HTTP and port health checks. The default value is 1.
 
 For example:
 
@@ -281,7 +277,7 @@ Within the manifest, the health check timeout is controlled by the `health-check
 
 ### <a id='health-check-type'></a> health-check-type
 
-The `health-check-type` attribute sets the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type` attribute, it defaults to `port`.
+The `health-check-type` attribute sets the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type` attribute, the default is `port`.
 
 For example:
 
@@ -509,7 +505,7 @@ If you use the `routes` attribute with the `host`, `hosts`, `domain`, `domains`,
 #### <a id='push-flag-options'></a> push flag options
 
 This attribute has unique interactions with different command-line options.
-This table has been updated for cf CLI v7; several of the flags have been removed (`--route-path`, `-d`, `--hostname`, `--no-hostname`)
+This table is updated for cf CLI v7; several of the flags were removed (`--route-path`, `-d`, `--hostname`, `--no-hostname`)
 
 <table border="1" class="nice">
   <tr>
@@ -578,8 +574,7 @@ For example:
   timeout: 80
 ```
 
-You can increase the timeout length for very large apps that require more time to start. The `timeout` attribute defaults to `60`, but you can set it to any
-value up to the Cloud Controller's `cc.maximum_health_check_timeout` property.
+You can increase the timeout length for very large apps that require more time to start. The default for the `timeout` attribute is `60`, but you can set it to any value up to the Cloud Controller's `cc.maximum_health_check_timeout` property.
 
 <%= vars.max_healthcheck_timeout %>
 
@@ -684,7 +679,7 @@ This section describes app manifest features that are deprecated in favor of oth
 
 <p class="note caution">
 <span class="note__title">Caution</span>
-Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated features along with the feature that replaces it.</p>
+Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated features with the feature that replaces it.</p>
 
 ### <a id='top-level-attributes'></a> Top-level attributes
 

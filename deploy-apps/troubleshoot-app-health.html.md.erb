@@ -5,7 +5,7 @@ owner:
   - Release Integration
 ---
 
-In this topic, you will learn how to diagnose and resolve common issues when you deploy and run apps on <%= vars.app_runtime_first %>.
+You can diagnose and resolve common issues when you deploy and run apps on <%= vars.app_runtime_first %>.
 
 
 ## <a id='scenarios'></a> Common issues
@@ -24,7 +24,7 @@ If your deployment times out during the upload or staging phase, you might recei
 
 If this happens:
 
-* **Check your network speed.** Depending on the size of your app, your `cf push` could be timing out because the upload is taking too long.
+* **Check your network speed.** Depending on the size of your app, your `cf push` can time out if the upload takes too long.
 <%= vars.recommended_by %> recommends an Internet connection speed of at least 768&nbsp;KB/s, or 6&nbsp;Mb/s, for uploads.
 
 * **Make sure you are pushing only needed files.** By default, `cf push` pushes all the contents of the current working directory. Make sure you are pushing
@@ -153,7 +153,7 @@ following example:
 
 ### <a id='out-of-memory'></a> App consumes too much memory, then crashes
 
-An app that `cf push` has uploaded and started can crash later if it uses too much memory.
+An app that `cf push` has uploaded and started can fail later if it uses too much memory.
 
 **Make sure your app is not consuming more memory than allowed.** When you ran `cf push` and `cf scale`, that configured a limit on the amount of memory your app uses. Check your app's actual memory usage. If it exceeds the limit, edit the app to use less memory.
 
@@ -226,7 +226,7 @@ To aggregate your app logs to view log history, bind your app to a syslog drain 
 
 <p class="note important">
 <span class="note__title">Important</span>
-The Diego architecture does not support the <code>cf files</code> command, and <code>cf files</code> has been removed as of cf CLI v7.</p>
+The Diego architecture does not support the <code>cf files</code> command, and <code>cf files</code> was removed as of cf CLI v7.</p>
 
 ### <a id='trace'></a> Trace cloud controller REST API calls
 
@@ -281,7 +281,7 @@ Some cf CLI commands return connection credentials. Remove credentials and other
 
 * `cf env APP-NAME`: Returns environment variables set using `cf set-env` and variables existing in the container environment.
 
-* `cf events APP-NAME`: Returns information about app crashes, including error codes. Shows that an app instance exited. For more detail, look in the app
+* `cf events APP-NAME`: Returns information about app failures, including error codes. Shows that an app instance exited. For more detail, look in the app
 logs. For a list of <%= vars.app_runtime_abbr %> errors, see the [cloudfoundry-attic](https://github.com/cloudfoundry/errors) repository on GitHub.
 
 * `cf logs APP-NAME --recent`: Dumps recent logs. For more information, see [Viewing logs in the Command Line Interface](streaming-logs.html#view) in _App

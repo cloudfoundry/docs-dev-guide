@@ -7,7 +7,7 @@ owner: Core Services
 
 You can gain direct command line access to your deployed service instance using SSH. This allows you to, for example, access your database to run raw SQL commands to edit the schema, import and export data, or debug app data issues.
 
-To establish direct command line access to a service, you deploy a host app and use its SSH and port forwarding features to communicate with the service instance through the app container. The technique described here works with TCP services such as MySQL or Redis.
+To establish direct command line access to a service, you deploy a host app and use its SSH and port forwarding features to communicate with the service instance through the application container. The technique described here works with TCP services such as MySQL or Redis.
 
 _This topic requires Cloud Foundry Command Line Interface (cf CLI) v6.15.0 or later, but at least v7 is recommended._
 
@@ -85,8 +85,8 @@ Configure an SSH tunnel to your service instance using [cf ssh](http://cli.cloud
 <pre class="terminal">$ cf ssh -L 63306:<%= vars.ssh_service_host %>:3306 YOUR-HOST-APP</pre>
 
    * You can use any available local port for port forwarding; for example, `63306`.
-   * `<%= vars.ssh_service_host %>` is the address provided under `hostname` in the service key retrieved above.
-   * `3306` is the port provided under `port` above.
+   * `<%= vars.ssh_service_host %>` is the address provided under `hostname` in the service key retrieved earlier.
+   * `3306` is the port provided under `port`.
    * `YOUR-HOST-APP` is the name of your host app.
 
 After you enter the command, open another terminal and follow the steps in [Access your service instance](#access-service).

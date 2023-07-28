@@ -74,7 +74,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
       <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
     </ul>
 
-    By default, the Syslog Agent would forward only applicaton logs to a Syslog server. If one wants to have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, one can use the `drain-type` parameter to specify if only logs, container metrics or both should be forwarded by the syslog drain. The `drain-type` parameter should be added to the `SYSLOG-DRAIN-URL`.
+    By default, the Syslog Agent forwards only application logs to a Syslog server. If you want to have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, one can use the `drain-type` parameter to specify if only logs, container metrics or both should be forwarded by the syslog drain. The `drain-type` parameter should be added to the `SYSLOG-DRAIN-URL`.
 
     <pre class="terminal">
     $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL?drain-type=DRAIN_TYPE_VALUE
@@ -102,7 +102,7 @@ You can also provide a single certificate authority without client certificate a
 $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----"}'
 </pre>
 
-Finally, a combination of the approaches described above uses a certificate authority for a server certificate signed by your private ca and a client certificate and key.
+Finally, a combination of the approaches described earlier uses a certificate authority for a server certificate signed by your private ca and a client certificate and key.
 <pre class="terminal">
 $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----", "cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
 </pre>

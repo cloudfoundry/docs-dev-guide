@@ -12,7 +12,7 @@ You can use the [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/ins
 
 To push apps with Docker, you need:
 
-* A <%= vars.app_runtime_abbr %> deployment that has Docker support enabled. <%= vars.enable_docker_link %>
+* A <%= vars.app_runtime_abbr %> deployment with Docker support enabled. <%= vars.enable_docker_link %>
 
 * A Docker image that meets the following requirements:
 
@@ -29,7 +29,7 @@ To push apps with Docker, you need:
 
 ### <a id='cf-ssh'></a> Requirement for cf ssh support
 
-If you want to log in to your app container using the `cf ssh` command, you must make a shell such as `sh` or `bash` available in the container.
+To log in to your application container using the `cf ssh` command, you must make a shell such as `sh` or `bash` available in the container.
 
 The SSH server in the container looks for the following executables in absolute locations or the `PATH` environment variable:
 
@@ -46,7 +46,7 @@ The SSH server in the container looks for the following executables in absolute 
 
 ## <a id='tag'></a> Benefits of specifying tags
 
-If you want your app container to be consistent after platform updates and code changes, specify a tag when you push your Docker image. Otherwise, the platform applies the `latest` tag without respecting changes to `PORT` or `ENTRYPOINT`.
+To make your application container consistent after platform updates and code changes, specify a tag when you push your Docker image. Otherwise, the platform applies the `latest` tag without respecting changes to `PORT` or `ENTRYPOINT`.
 
 If you push your Docker image without specifying a tag, you must run `cf restage` for the changes to take effect.
 
@@ -158,14 +158,14 @@ Where:
 
 * `IMAGE` is the name of the app image being pushed.
 
-* (Optional, but recommended)`TAG` is the tag or version for the image.
+* (Optional, but recommended) `TAG` is the tag or version for the image.
 
 * `USER` is the user name to use for authentication with the registry.
 
 If container registry credentials change, you must push the app with the new credentials.
 Apps require access to the container registry when starting.
 If you do not push the app with the new credentials, <%= vars.app_runtime_abbr %> fails to start the app.
-When you rotate container credentials, <%= vars.recommended_by %> recommends using a set of two credentials, where the <code>old</code> credentials can be deactivated after all apps have been pushed with the <code>new</code> credentials.
+When you rotate container credentials, <%= vars.recommended_by %> recommends using a set of two credentials, where the <code>old</code> credentials can be deactivated after all apps are pushed with the <code>new</code> credentials.
 
 ### <a id='ecr'></a> Amazon Elastic Container Registry (ECR)
 

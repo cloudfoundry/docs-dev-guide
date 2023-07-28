@@ -52,7 +52,7 @@ Sidecars have these limitations:
 
 * The start and stop order of app processes and their sidecars is undefined.
 
-* App processes and sidecars are codependent. If either crashes or exits, the other does also.
+* App processes and sidecars are codependent. If either fails or exits, the other does also.
 
 * Sidecars are not independently scalable. Sidecars share resources with the main app process and other sidecars within the container.
 
@@ -123,7 +123,7 @@ Before you can push an app with a sidecar with an app manifest, you must have:
 
 * An app that is running or ready to be pushed.
 
-* A file that <%= vars.app_runtime_abbr%> can run inside the app container as a sidecar process. For example, an executable binary, a Java .jar file, or Ruby scripts.
+* A file that <%= vars.app_runtime_abbr%> can run inside the application container as a sidecar process. For example, an executable binary, a Java .jar file, or Ruby scripts.
 
 ### <a id="create"></a> Procedure
 
@@ -300,7 +300,7 @@ After you push the app, you can further explore it in [View the processes runnin
 
 To view the app and sidecar process running in the container:
 
-1. SSH into the app container by running:
+1. SSH into the application container by running:
 
     ```
     cf ssh sidecar-dependent-app
@@ -355,7 +355,7 @@ To view the Web URL and logs for the app:
 
 1. In your browser, refresh the `/config` endpoint page and observe that the log stream in your terminal displays logs for both the sidecar and the main app process.
 
-1. In a separate terminal from your log stream, SSH into the app container by running:
+1. In a separate terminal from your log stream, SSH into the application container by running:
 
 	```
 	cf ssh sidecar-dependent-app
@@ -367,7 +367,7 @@ To view the Web URL and logs for the app:
 	kill -9 $(pgrep config-server)
 	```
 
-1. View the output in the terminal where you are streaming the app logs. The app logs indicate that the sidecar process crashed and that Diego restarted the app container. For example:
+1. View the output in the terminal where you are streaming the app logs. The app logs indicate that the sidecar process failed and that Diego restarted the application container. For example:
 	<pre class="terminal">
 	2019-04-17T16:48:55.41-0700 [API/0] OUT App instance exited with guid
 	21df1eb8-f25d-43b2-990b-c1a417310553 payload:

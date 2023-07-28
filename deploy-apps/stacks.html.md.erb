@@ -8,7 +8,7 @@ owner:
 
 
 
-You can restage apps on a new stack. Here you will find a description of stacks and lists of stacks that are supported on <%= vars.current_major_version ?  "#{vars.app_runtime_full} v#{vars.current_major_version}" : vars.app_runtime_full %>.
+You can restage apps on a new stack. Here is a description of stacks and lists of stacks that are supported on <%= vars.current_major_version ?  "#{vars.app_runtime_full} v#{vars.current_major_version}" : vars.app_runtime_full %>.
 
 To restage a Windows app on a new Windows stack, see [Changing Windows stacks](./windows-stacks.html).
 
@@ -55,7 +55,7 @@ To restage an app on a new stack, do the following:
     cflinuxfs4   Cloud Foundry Linux-based filesystem (Ubuntu 22.04)
     </pre>
 
-1. To change your stack and restage your app, run the following command:
+2. To change your stack and restage your app, run:
 
     ```
     cf push MY-APP -s STACK-NAME

@@ -111,7 +111,7 @@ No upgrade available for this service.
 * For each of the spaces, the service instance is shared into the output. The output shows the number of bindings to apps of the service instance in that space.
 * When the service instance is not shared, `This service is not currently shared` appears instead of `shared with spaces`.
 
-If you run the command while targeting the space where the service instance has been shared, you see the originating space and organization.
+If you run the command while targeting the space where the service instance is shared, you see the originating space and organization.
 
 For example:
 
@@ -164,7 +164,7 @@ To unshare a service instance, run the following cf CLI command:
 $ cf unshare-service SERVICE-INSTANCE -s OTHER-SPACE [-o OTHER-ORG] [-f]
 </pre>
 
-The optional `-f` flag forces unsharing without confirmation.
+The `-f` flag (optional) forces unsharing without confirmation.
 
 
 ## <a id="security"></a> Security considerations
@@ -186,7 +186,7 @@ If you are a service author, see [Enabling service instance sharing](../../servi
 
 ## <a id="disabling"></a> Deactivating service instance sharing in Cloud Foundry
 
-To deactivate service instance sharing, run the following command:
+To deactivate service instance sharing, run:
 
 <pre class="terminal">
 $ cf disable-feature-flag service_instance_sharing
@@ -206,7 +206,7 @@ To use this script, you must be logged in as an administrator and have jq instal
 
 <p class="note caution">
 <span class="note__title">Caution</span>
-This script has been tested on macOS Sierra 10.12.4 and Ubuntu 14.04.5. Use the script at your own risk.</p>
+This script was tested on macOS Sierra 10.12.4 and Ubuntu 14.04.5. Use the script at your own risk.</p>
 
 ```
 #!/usr/bin/env bash

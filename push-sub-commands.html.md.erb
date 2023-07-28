@@ -124,7 +124,7 @@ This example workflow describes how to push an app using sub-step commands inste
         ```
         Where `APP-NAME` is the name of your app.
 
-1. Locate and copy the `package guid` from the output of the previous step. See the following example output:
+1. Locate and copy the `package guid` from the output of an earlier step. See the following example output:
     <pre class="terminal">
     Uploading and creating bits package for app APP-NAME in org test / space test as admin...
      package guid: 0dfca85a-8ed4-4f00-90d0-3ab08852dba8
@@ -141,7 +141,7 @@ This example workflow describes how to push an app using sub-step commands inste
         Where:
         <ul>
           <li><code>APP-NAME</code> is the name of your app.</li>
-          <li><code>PACKAGE-GUID</code> is the package GUID you recorded in the previous step.</li>
+          <li><code>PACKAGE-GUID</code> is the package GUID you recorded in an earlier step.</li>
         </ul>
     * If you are using cf CLI v6, run:
 
@@ -152,10 +152,10 @@ This example workflow describes how to push an app using sub-step commands inste
         Where:
         <ul>
           <li><code>APP-NAME</code> is the name of your app.</li>
-          <li><code>PACKAGE-GUID</code> is the package GUID you recorded in the previous step.</li>
+          <li><code>PACKAGE-GUID</code> is the package GUID you recorded in an earlier step.</li>
         </ul>
 
-1. Locate and copy the `droplet guid` from the output of the previous step. See the following example output:
+1. Locate and copy the `droplet guid` from the output of an earlier step. See the following example output:
     <pre class="terminal">
     Staging package for APP-NAME in org test / space test as admin...
     ...
@@ -175,7 +175,7 @@ This example workflow describes how to push an app using sub-step commands inste
         Where:
         <ul>
           <li><code>APP-NAME</code> is the name of your app.</li>
-          <li><code>DROPLET-GUID</code> is the droplet GUID you recorded in the previous step.</li>
+          <li><code>DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
         </ul>
     * If you are using cf CLI v6, run:
 
@@ -186,7 +186,7 @@ This example workflow describes how to push an app using sub-step commands inste
         Where:
         <ul>
           <li><code>APP-NAME</code> is the name of your app.</li>
-          <li><code>DROPLET-GUID</code> is the droplet GUID you recorded in the previous step.</li>
+          <li><code>DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
         </ul>
 
 1. Start your app:
@@ -205,7 +205,7 @@ This example workflow describes how to push an app using sub-step commands inste
 
 ### <a id="update-system-example"></a> Roll back to a previous droplet
 
-This example workflow describes how to roll back to a previous droplet used by your app. You might want to use this, for example, if you update your app and it has a bug that causes it to crash.
+This example workflow describes how to roll back to a previous droplet used by your app. You might want to use this, for example, if you update your app and it has a bug that causes it to fail.
 
 1. List the droplets for your app:
     * If you are using cf CLI v7, run:
@@ -256,7 +256,7 @@ This example workflow describes how to roll back to a previous droplet used by y
         Where:
         <ul>
           <li><code>APP-NAME</code> is the name of your app.</li>
-          <li><code>PREVIOUS-DROPLET-GUID</code> is the droplet GUID you recorded in a previous step.</li>
+          <li><code>PREVIOUS-DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
         </ul>
     * If you are using cf CLI v6, run:
 
@@ -267,7 +267,7 @@ This example workflow describes how to roll back to a previous droplet used by y
         Where:
         <ul>
           <li><code>APP-NAME</code> is the name of your app.</li>
-          <li><code>PREVIOUS-DROPLET-GUID</code> is the droplet GUID you recorded in a previous step.</li>
+          <li><code>PREVIOUS-DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
         </ul>
 
 4. Start your app:

@@ -228,7 +228,7 @@ OMS Log Analytics Firehose Nozzle forwards metrics from the Loggregator Firehose
 
 ### <a id='events'></a> Logs sent and received, events lost
 
-If you set the `LOG_EVENT_COUNT` environment variable to `TRUE` in the [manifest](#deploy), the nozzle periodically sends the count of sent, received, and lost events to OMS. The value you set for the `LOG_EVENT_COUNT_INTERVAL` determines how frequently the nozzle sends the count.
+If you set the `LOG_EVENT_COUNT` environment variable to `TRUE` in the [manifest](#deploy), the nozzle periodically sends the count of sent, received, and lost events to OMS. The value you set for the `LOG_EVENT_COUNT_INTERVAL` specifies how frequently the nozzle sends the count.
 
 The nozzle does not count CounterEvents in the sent, received, or lost event count.
 

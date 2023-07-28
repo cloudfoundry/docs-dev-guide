@@ -29,8 +29,8 @@ The following table describes the Network Address Translation that occurs in the
 | Port Type | Description | Network Hop |
 | --------- | ----------- | ----------- |
 | Route port | The port to which a client sends a request | Client to load balancer, load balancer to Gorouter |
-| Back end port | The port on the VM where an app container is hosted, which is unique to the container | Gorouter to Diego Cell |
-| App port | The port on the container, which must match a port on which the app is configured to receive requests | Diego Cell to app container |
+| Back end port | The port on the VM where an application container is hosted, which is unique to the container | Gorouter to Diego Cell |
+| App port | The port on the container, which must match a port on which the app is configured to receive requests | Diego Cell to application container |
 
 The following diagram shows an example data path and Network Address Translation for TCP routing:
 
@@ -76,7 +76,7 @@ To configure your app to receive HTTP or TCP requests on custom ports:
 
         Where:
         <ul>
-          <li><code>APP-GUID</code> is the GUID of your app that you recorded in the previous step.</li>
+          <li><code>APP-GUID</code> is the GUID of your app that you recorded in an earlier step.</li>
           <li><code>ROUTE-HOSTNAME</code> is the subdomain of the domain associated with the route. For example, in the route <code>example-app.<%= vars.app_domain %></code>, the host name is <code>example-app</code>.</li>
         </ul>
     * For TCP routes, run:
@@ -87,7 +87,7 @@ To configure your app to receive HTTP or TCP requests on custom ports:
 
         Where:
         <ul>
-          <li><code>APP-GUID</code> is the GUID of your app that you recorded in the previous step.</li>
+          <li><code>APP-GUID</code> is the GUID of your app that you recorded in an earlier step.</li>
           <li><code>PORT</code> is the port to which the TCP route sends requests.</li>
         </ul>
 
@@ -114,11 +114,11 @@ To configure your app to receive HTTP or TCP requests on custom ports:
 
     Where:
     <ul>
-      <li><code>APP-GUID</code> is the GUID of your app that you recorded in a previous step.</li>
-      <li><code>ROUTE-GUID</code> is the GUID of a route that you recorded in the previous step.</li>
+      <li><code>APP-GUID</code> is the GUID of your app that you recorded in an earlier step.</li>
+      <li><code>ROUTE-GUID</code> is the GUID of a route that you recorded in an earlier step.</li>
       <li><code>PORT</code> is a custom port on which your app is configured to receive requests.</li>
       <li><code>PROTOCOL</code> is the protocol that the route uses. For HTTP routes, this value is either <code>http1</code> or <code>http2</code>. For TCP routes, this value is <code>tcp</code>.</li>
-      <li><code>PROCESS-TYPE</code> is the value of <code>type</code> that you recorded in a previous step. This value is usually <code>web</code>.</li>
+      <li><code>PROCESS-TYPE</code> is the value of <code>type</code> that you recorded in an earlier step. This value is usually <code>web</code>.</li>
     </ul>
 
     <p class="note caution">

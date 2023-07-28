@@ -76,7 +76,7 @@ To list revisions for an app:
 	```
 	cf curl /v3/apps/GUID/revisions
 	```
-	Where `GUID` is the GUID you retrieved in the previous step.
+	Where `GUID` is the GUID you retrieved in an earlier step.
 
 ### <a id="list-deployed"></a> List deployed revisions for an app
 
@@ -94,7 +94,7 @@ Deployed revisions are revisions linked to started processes in an app. To list 
 	```
 	cf curl /v3/apps/GUID/revisions/deployed
 	```
-	Where `GUID` is the GUID you retrieved in the previous step.
+	Where `GUID` is the GUID you retrieved in an earlier step.
 
 ### <a id="get"></a> Retrieve a revision
 
@@ -173,4 +173,4 @@ To deactivate revisions for an app:
 	```
 	cf curl /v3/apps/GUID/features/revisions -X PATCH -d '{ "enabled": false }'
 	```
-	Where `GUID` is the GUID you retrieved in the previous step.
+	Where `GUID` is the GUID you retrieved in an earlier step.

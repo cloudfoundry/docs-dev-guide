@@ -762,8 +762,7 @@ $ cf delete-shared-domain example.com
 
 #### <a id='internal-domains'></a> Internal domain
 
-The internal domain is a special type of shared domain used for app communication internal to the platform. When you enable service discovery, the internal
-domain `apps.internal` becomes available for route mapping.
+The internal domain is a special type of shared domain used for app communication internal to the platform. When you activate service discovery, the internal domain `apps.internal` becomes available for route mapping.
 
 Admins can configure multiple internal domains. Add a custom internal domain name to the `internal_domains` property on the `bosh-dns-adapter` job. Then create an internal domain using the `--internal` option:
 

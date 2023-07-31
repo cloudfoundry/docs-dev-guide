@@ -1,7 +1,7 @@
 ## <a id="logging"></a>Manage logging for container-to-container networking
 
 This section describes how to configure logging for container-to-container Networking events by making requests to the running virtual machines (VMs).
-You can also activate logging for iptables policy rules by editing the manifest in [Enable on an IaaS](#iaas).
+You can also activate logging for iptables policy rules by editing the manifest in [Activate on an IaaS](#iaas).
 
 ### <a id="debug-logging"></a>Change log level for debugging
 
@@ -20,7 +20,7 @@ To change the log level, follow these steps:
     curl -X POST -d 'LOG-LEVEL' localhost:PORT-NUMBER/log-level
     </pre>
 
-    The `LOG-LEVEL` is `DEBUG` or `INFO`. The `PORT-NUMBER` is `22222` unless you specified a different number when you edited the stub file in [Enable on an IaaS](#iaas).
+    The `LOG-LEVEL` is `DEBUG` or `INFO`. The `PORT-NUMBER` is `22222` unless you specified a different number when you edited the stub file in [Activate on an IaaS](#iaas).
     <br><br>
 
     To increase the log level to `DEBUG`, run:
@@ -39,7 +39,7 @@ To change the log level, follow these steps:
 
 ### <a id="iptables-logging"></a>Activate logging for container-to-container networking policies
 
-By default, Cloud Foundry does not log iptables policy rules for Container-to-Container network traffic. You can activate logging for iptables policy rules in the manifest in [Enable on an IaaS](#iaas), or use following the steps:
+By default, Cloud Foundry does not log iptables policy rules for Container-to-Container network traffic. You can activate logging for iptables policy rules in the manifest in [Activate on an IaaS](#iaas), or use following the steps:
 
 1. SSH to the Diego Cell that runs the VXLAN Policy Agent.
 
@@ -49,7 +49,7 @@ By default, Cloud Foundry does not log iptables policy rules for Container-to-Co
     curl -X PUT -d '{"enabled": BOOLEAN}' localhost:PORT-NUMBER/iptables-c2c-logging
     </pre>
 
-    The `BOOLEAN` is `true` or `false`. The `PORT-NUMBER` is `22222` unless you specified a different number when you edited the stub file in [Enable on an IaaS](#iaas).
+    The `BOOLEAN` is `true` or `false`. The `PORT-NUMBER` is `22222` unless you specified a different number when you edited the stub file in [Activate on an IaaS](#iaas).
     <br><br>
 
     To activate logging for iptables policy rules, run:

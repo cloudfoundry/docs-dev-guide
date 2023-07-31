@@ -230,8 +230,7 @@ The Diego architecture does not support the <code>cf files</code> command, and <
 
 ### <a id='trace'></a> Trace cloud controller REST API calls
 
-If a command fails or produces unexpected results, re-run it with HTTP tracing enabled to view requests and responses between the Cloud Foundry Command Line
-Interface (cf CLI) and the Cloud Controller REST API.
+If a command fails or produces unexpected results, re-run it with HTTP tracing activated to view requests and responses between the Cloud Foundry Command Line Interface (cf CLI) and the Cloud Controller REST API.
 
 For example:
 
@@ -247,7 +246,7 @@ For example:
     CF_TRACE=PATH-TO-TRACE.LOG cf push APP-NAME
     ```
 
-These examples enable HTTP tracing for a single command only. To enable it for an entire shell session, set the variable first:
+These examples activate HTTP tracing for a single command only. To activate it for an entire shell session, set the variable first:
 
 ```
 export CF_TRACE=true
@@ -260,7 +259,7 @@ export CF_TRACE=PATH-TO-TRACE.LOG
 
 ### <a id='zipkin_trace'></a> Analyze Zipkin trace IDs
 
-When the Zipkin feature is enabled in <%= vars.app_runtime_abbr %>, the Gorouter adds or forwards Zipkin trace IDs and span IDs to HTTP headers. For more information about what the Gorouter provides in the HTTP header, see [HTTP headers](../../concepts/http-routing.html#http-headers) in _HTTP Routing_.
+When the Zipkin feature is activated in <%= vars.app_runtime_abbr %>, the Gorouter adds or forwards Zipkin trace IDs and span IDs to HTTP headers. For more information about what the Gorouter provides in the HTTP header, see [HTTP headers](../../concepts/http-routing.html#http-headers) in _HTTP Routing_.
 
 After adding Zipkin HTTP headers to app logs, developers can run `cf logs APP-NAME` to correlate the trace and span IDs logged by the Gorouter with the trace IDs logged by their app. To correlate trace IDs for a request through multiple apps, each app must forward appropriate values for the headers with requests to other apps.
 

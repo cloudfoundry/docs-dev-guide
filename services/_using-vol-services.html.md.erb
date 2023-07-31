@@ -374,7 +374,7 @@ This section describes using the NFS volume service.
 
 #### <a id='ldap'></a> Configure LDAP credentials with service instance creation
 
-If your <%= vars.platform_name %> deployment has LDAP enabled, you can configure LDAP credentials for your NFS Volume Service instance.
+If your <%= vars.platform_name %> deployment has LDAP activated, you can configure LDAP credentials for your NFS Volume Service instance.
 
 To configure LDAP credentials while creating your NFS Volume Service instance:
 
@@ -399,7 +399,7 @@ As of `nfs-volume-release` v1.3.1, you can specify bind parameters in advance, w
 
 #### <a id='flock'></a> File locking with flock() and lockf()/fcntl()
 
-Apps that use file locking through unix system calls such as `flock()` and `fcntl()` or script commands such as `flock` to use the `nfs` service. The `nfs-legacy` service uses a fuse mounting process that does not enforce locks across Diego Cells.
+Apps that use file locking through UNIX system calls such as `flock()` and `fcntl()` or script commands such as `flock` to use the `nfs` service. The `nfs-legacy` service uses a fuse mounting process that does not enforce locks across Diego Cells.
 
 #### <a id='hard-links'></a> Hard links in the NFS service
 

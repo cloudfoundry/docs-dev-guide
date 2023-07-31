@@ -179,7 +179,7 @@ and mapped to the org that contains the app's target space.
 
 ### <a id='exclude'></a> Limit the upload files (optional)
 
-By default, <%= vars.app_runtime_abbr %> uploads all app files except version control files and folders with names such as `.svn`, `.git`, and `_darcs`.
+By default, <%= vars.app_runtime_abbr %> uploads all app files except version control files and directories with names such as `.svn`, `.git`, and `_darcs`.
 
 <%= vars.recommended_by %> recommends that you explicitly exclude extraneous files residing within your app directory, particularly if your app is large. For example, if you build your app locally and push it as a binary, you can save resources by not uploading any of the app's source code.
 

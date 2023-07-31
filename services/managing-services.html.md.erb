@@ -17,7 +17,7 @@ After targeting and logging into Cloud Foundry, to view the services available t
 cf marketplace
 ```
 
-Available services can differ between organizations and between Cloud Foundry marketplaces.
+Available services can differ between organizations and between Cloud Foundry Marketplaces.
 
 <pre class="terminal">
 $ cf marketplace
@@ -51,7 +51,7 @@ Creating service my-rabbitmq in org console / space development as user@example.
 OK
 </pre>
 
-User-provided service instances provide a way for developers to bind apps with services that are not available in their Cloud Foundry marketplace. For more information, see <a href="./user-provided.html">User-provided service instances</a>.
+User-provided service instances provide a way for developers to bind apps with services that are not available in their Cloud Foundry Marketplace. For more information, see <a href="./user-provided.html">User-provided service instances</a>.
 
 When multiple brokers provide two or more services with the same name, you must specify the broker by including the <code>-b BROKER</code> flag in the <code>cf create-service</code> command.
 
@@ -148,7 +148,7 @@ Not all services support binding, as some services deliver value to users direct
 
 ### <a id='app-binding'></a>Bind a service instance to an app
 
-Depending on the service, binding a service instance to your app might deliver credentials for the service instance to the app. See the [Delivering service credentials to an app](application-binding.html) topic for more information. Binding a service instance to an app can trigger app logs to be streamed to the service instance. For more information, see [Streaming app logs to log management services](log-management.html).
+Depending on the service, binding a service instance to your app might deliver credentials for the service instance to the app. See [Delivering service credentials to an app](application-binding.html) for more information. Binding a service instance to an app can trigger app logs to be streamed to the service instance. For more information, see [Streaming app logs to log management services](log-management.html).
 
 You must restart, or in some cases, re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.
 

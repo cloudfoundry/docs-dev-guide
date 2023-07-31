@@ -31,8 +31,8 @@ For detailed information about the following tasks, see the [Splunk documentatio
 
 ### <a id='config'></a>Install the RFC5424 syslog technology add-on
 
-The Cloud Foundry Loggregator component formats logs according to the Syslog
-Protocol defined in [RFC 5424](http://tools.ietf.org/html/rfc5424).
+The Cloud Foundry Loggregator component formats logs according to the syslog
+protocol defined in [RFC 5424](http://tools.ietf.org/html/rfc5424).
 Splunk does not parse log fields according to this protocol.
 To allow Splunk to correctly parse RFC 5424 log fields, install the Splunk
 [RFC5424 Syslog technical add-on](http://apps.splunk.com/app/978/).
@@ -59,7 +59,7 @@ To allow Splunk to correctly parse RFC 5424 log fields, install the Splunk
 
 ### <a id='config'></a> Create a TCP syslog data input
 
-Create a TCP Syslog Data Input in Splunk, with the following settings:
+Create a TCP syslog data input in Splunk, with the following settings:
 
 * **TCP port** is the port number you assigned to your log drain service
 * **Set sourcetype** is `Manual`
@@ -87,7 +87,7 @@ Verify that results rows contain the three Cloud Foundry-specific fields:
 If the Cloud Foundry-specific fields appear in the log search results,
 integration is successful.
 
-If logs from an app are missing, make sure that the following are true:
+If logs from an app are missing, ensure that:
 
 * The app is bound to the service and was restarted after binding
 * The service port number matches the TCP port number in Splunk

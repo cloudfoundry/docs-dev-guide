@@ -3,22 +3,22 @@ title: Provisioning and integrating service instances
 owner: Services API
 ---
 
-You can provision service instances and integrate them with apps that you have pushed to Cloud Foundry. <%= vars.custom_services %>
+You can provision service instances and integrate them with apps that you pushed to Cloud Foundry. <%= vars.custom_services %>
 
 
 ## <a id='instances'></a> Services and service instances
 
-Cloud Foundry offers a marketplace of services, from which users can provision reserved resources on-demand. Examples of resources services provide include databases on a shared or dedicated server, or accounts on a SaaS app. These resources are known as service instances and the systems that deliver and operate these resources are known as Services. Think of a service as a factory that delivers service instances.
+Cloud Foundry offers a Marketplace of services, from which users can provision reserved resources on-demand. Examples of resources services provide include databases on a shared or dedicated server, or accounts on a SaaS app. These resources are known as service instances and the systems that deliver and operate these resources are known as Services. Think of a service as a factory that delivers service instances.
 
 For more information about provisioning service instances and other life cycle operations, see [Managing service instances](./managing-services.html).
 
 <p class="note">
 <span class="note__title">Note</span>
-For a service to be available in the marketplace, it must be integrated with Cloud Foundry by way of APIs. <%= vars.custom_services %></p>
+For a service to be available in the Marketplace, it must be integrated with Cloud Foundry by way of APIs. <%= vars.custom_services %></p>
 
 ### <a id='user-provided-services'></a> User-provided service instances
 
-Cloud Foundry allows users to leverage services that are not available in the marketplace using user-provided service instances (UPSI). For more information, see [User-provided service instances](./user-provided.html)
+Cloud Foundry allows developers to use services that are not available in the Marketplace using user-provided service instances (UPSI). For more information, see [User-provided service instances](./user-provided.html)
 
 
 ## <a id='credentials'></a> Service instance credentials
@@ -35,7 +35,7 @@ For information about binding to a specific app development framework, see [Buil
 
 Credentials managed manually are known as service keys. Use service keys when you want a set of credentials for use by clients other than the app in the same space. For example, you can use service keys to connect to a service instance from a local client, or from an app in another space, or even from outside of Cloud Foundry.
 
-For more information about creating a user-provided service instance with service keys, see the [User-provided service instances](./user-provided.html) topic. For more information about service keys, see the [Managing service keys](./service-keys.html) topic.
+For more information about creating a user-provided service instance with service keys, see [User-provided service instances](./user-provided.html). For more information about service keys, see [Managing service keys](./service-keys.html).
 
 <p class="note important">
 <span class="note__title">Important</span>
@@ -48,20 +48,20 @@ To allow an app to communicate with a service external to <%= vars.product_short
 
 In your external service configuration, you must do one of the following:
 
-* Add the entire IP range for the Diego Cell where the app is deployed to your allow list.
-* Derive the app IP address from its DNS name using a command-line tool such as `dig`, `host`, or `nslookup`. In your external service configuration, add the IP address or range of the app instance to your allow list.
+* Add the entire IP range for the Diego Cell where the app is deployed to your allowlist.
+* Derive the app IP address from its DNS name using a command-line tool such as `dig`, `host`, or `nslookup`. In your external service configuration, add the IP address or range of the app instance to your allowlist.
 
 
 ## <a id='log-management'></a> Stream app logs to log management services
 
 To learn how your app logs can be streamed to third-party log management services, see [Streaming app logs to log management services](./log-management.html).
 
-User-provided service instances can be used to drain app logs to a service not available in the marketplace. This is also known as setting up a syslog drain. For guidance on configuring some third-party log management services, see [Service-specific instructions for streaming app logs](./log-management-thirdparty-svc.html).
+User-provided service instances can be used to drain app logs to a service not available in the Marketplace. This is also known as setting up a syslog drain. For guidance on configuring some third-party log management services, see [Service-specific instructions for streaming app logs](./log-management-thirdparty-svc.html).
 
 
 ## <a id='route-services'></a> Manage app requests with route services
 
-To learn how marketplace services (and user-provided service instances) can be used to perform preprocessing on app requests, see [Managing app requests with route services](./route-binding.html).
+To learn how Marketplace services (and user-provided service instances) can be used to perform preprocessing on app requests, see [Managing app requests with route services](./route-binding.html).
 
 
 ## <a id='migrating'></a> Migrate a database schema

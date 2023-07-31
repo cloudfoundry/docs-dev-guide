@@ -6,7 +6,7 @@ owner: Logging and Metrics
 
 
 [Fluentd](http://www.fluentd.org) is an open source log collector that allows
-you to implement unified logging layers. With Fluentd, you can stream app logs to different backends or services like Elasticsearch, HDFS and
+you to implement unified logging layers. With Fluentd, you can stream app logs to different back ends or services like Elasticsearch, HDFS and
 Amazon S3. This topic explains how to integrate Fluentd with Cloud Foundry apps.
 
 ## <a id='drain'></a> Step 1: Create a Cloud Foundry syslog drain for Fluentd
@@ -29,7 +29,7 @@ For example:
 
 ## <a id='config'></a>Step 2: Set up Fluentd for Cloud Foundry
 
-This section assumes you have an active Fluentd instance running.
+To continue, you must have an active Fluentd instance running.
 If you do not have an active Fluentd instance, see the
 [Fluentd documentation](https://docs.fluentd.org/installation) for more details.
 If you use cf to deploy your fluentd instances, you have to use
@@ -61,6 +61,6 @@ To set up Fluentd for Cloud Foundry, configure the syslog input of Fluentd as fo
 <span class="note__title">Important</span>
 The Fluentd syslog input plug-in supports <code>tls</code> and <code>tcp</code> options. You must use the same transport that Cloud Foundry is using.</p>
 
-Fluentd starts listening for Syslog message on port 8080 and tagging the messages with `cf.app`, which can be used later for data routing. For more details about the full setup for the service, refer to the [Config File](https://docs.fluentd.org/configuration/config-file) topic.
+Fluentd starts listening for syslog message on port 8080 and tagging the messages with `cf.app`, which can be used later for data routing. For more details about the full setup for the service, see [Config File](https://docs.fluentd.org/configuration/config-file).
 
-To use an Elasticsearch or Amazon S3 backend, see the [Fluentd documentation](http://www.fluentd.org/guides/recipes/elasticsearch-and-s3).
+To use an Elasticsearch or Amazon S3 back end, see the [Fluentd documentation](http://www.fluentd.org/guides/recipes/elasticsearch-and-s3).

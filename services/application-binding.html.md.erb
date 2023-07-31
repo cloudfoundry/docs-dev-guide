@@ -5,13 +5,13 @@ owner: Core Services
 
 
 
-You can bind your apps to service instances for the purpose of generating credentials and delivering them to apps. For an overview of services, and documentation on other service management operations, see [Using services](index.html). <%= vars.custom_services %>
+You can bind your apps to service instances for the purpose of generating credentials and delivering them to apps. For an overview of services, and documentation about other service management operations, see [Using services](index.html). <%= vars.custom_services %>
 
 ## <a id='bind'></a>Bind a service instance
 
-Binding a service instance to your app triggers credentials to be provisioned for the service instance and delivered to the app runtime in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. For details on consuming these credentials with your app, see [Using bound service instances](#use).
+Binding a service instance to your app triggers credentials to be provisioned for the service instance and delivered to the app runtime in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. For details about consuming these credentials with your app, see [Using bound service instances](#use).
 
-Not all services support binding, as some services deliver value to users directly without integration with an app. In many cases binding credentials are unique to an app, and another app bound to the same service instance receives different credentials; however this depends on the service.
+Not all services support binding, as some services deliver value to users directly without integration with an app. In many cases, binding credentials are unique to an app, and another app bound to the same service instance receives different credentials, but this depends on the service.
 
 <pre class="terminal">
 $ cf bind-service my-app mydb
@@ -81,7 +81,7 @@ For more information about app manifests, see [Deploying with app manifests](../
 
 ### <a id='service-binding-names'></a>Named service bindings
 
-Service offering and service instance names vary across environments. App authors can discover the service instances their apps require, without having to know environment-specific service names. Developers can specify a service binding name to be included in [VCAP_SERVICES](../deploy-apps/environment-variable.html).
+Service offering and service instance names vary across environments. App authors can discover the service instances their apps require, without having to know environment-specific service names. Developers can specify a service binding name to include in [VCAP_SERVICES](../deploy-apps/environment-variable.html).
 
 To specify the service binding name, provide the `--binding-name` flag when binding an app to a service instance:
 <pre class="terminal">
@@ -105,12 +105,12 @@ The provided name is available in the `name` and `binding_name` properties in th
 
 ### <a id='use'></a>Using bound service instances
 
-After your service instance is created and bound to your app, you must configure the app to dynamically fetch the credentials for your service instance. The [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable contains credentials and additional metadata for all bound service instances. There are two methods developers can leverage to have their apps consume binding credentials.
+After your service instance is created and bound to your app, you must configure the app to dynamically fetch the credentials for your service instance. The [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable contains credentials and additional metadata for all bound service instances. There are two methods developers can use to have their apps consume binding credentials.
 
 * **Parse the JSON yourself:** See the documentation for [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES). Helper libraries are available for some frameworks.
 * **Auto-configuration:** Some buildpacks create a service connection for you by creating additional environment variables, updating config files, or passing system parameters to the JVM.
 
-For details on consuming credentials specific to your development framework, refer to the Service Binding section in the documentation for [your framework's buildpack](../../buildpacks/index.html).
+For details about consuming credentials specific to your development framework, see the Service Binding section in the documentation for your framework's [buildpack](../../buildpacks/index.html).
 
 ## <a id='update-credentials'></a>Update service credentials
 
@@ -130,13 +130,13 @@ To update your service credentials:
     $ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
     </pre>
 
-  1. [Bind the service instance](#bind) with the following command. This adds your credentials to the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
+  2. [Bind the service instance](#bind). This command adds your credentials to the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
 
     <pre class="terminal">
     $ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
     </pre>
 
-  1. Restart or re-push the app bound to the service instance so that the app recognizes your environment variable updates.
+  3. Restart or re-push the app bound to the service instance so that the app recognizes your environment variable updates.
 
 ### <a id='update-credentials-without-downtime'></a>Without downtime
 

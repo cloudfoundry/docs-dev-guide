@@ -17,15 +17,15 @@ Loggregator, the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) com
 
 By default, Loggregator streams logs to your terminal. To persist more than the limited amount of logging information that Loggregator can buffer, you can drain logs to a third-party log management service. For more information, see [Third-party log management services](../services/log-management.html).
 
-<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log lines quickly enough, the Loggregator buffer might need to overwrite some lines before the client has consumed them. A syslog drain or a command-line interface (CLI) tail can usually keep up with the flow of app logs.
+<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log entries quickly enough, the Loggregator buffer might need to overwrite some lines before the client has consumed them. A syslog drain or a command-line interface (CLI) tail can usually keep up with the flow of app logs.
 
-<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log lines
+<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log entries
 quickly enough, the Loggregator buffer might need to overwrite some lines before the client has consumed them. A syslog
 drain or a CLI tail can usually keep up with the flow of app logs.
 
-## <a id='types'></a> Contents of a log line
+## <a id='types'></a> Contents of a log entry
 
-Every log line contains four fields:
+Every log entry contains four fields:
 
 * Timestamp
 
@@ -36,7 +36,7 @@ Every log line contains four fields:
 * Message
 
 Loggregator assigns the timestamp when it receives log data. The log data is opaque to Loggregator, which only puts it
-in the message field of the log line. Apps or system components sending log data to Loggregator might include their own
+in the message field of the log entry. Apps or system components sending log data to Loggregator might include their own
 timestamps, which then appear in the message field.
 
 <%= vars.human_readable_timestamp %>
@@ -45,7 +45,7 @@ Origin codes distinguish the different log types. Origin codes from system compo
 a digit that indicates the app instance.
 
 Many frameworks write to an app log that is separate from `stdout` and `stderr`. This is not supported by Loggregator. Your app must write to `stdout` or
-`stderr` for its logs to be included in the Loggregator stream. Check the buildpack your app uses to find out if it ensures that your app
+`stderr` for its logs to be in the Loggregator stream. Ensure that the buildpack your app uses
 writes logs to `stdout` and `stderr` only. Some buildpacks do this, and some do not.
 
 
@@ -77,8 +77,7 @@ For example:
 
 ### <a id='rtr'></a> RTR
 
-The Gorouter emits `RTR` logs when it routes HTTP requests to the app. Gorouter messages include the app name followed by a Gorouter timestamp and selections
-from the HTTP request.
+The Gorouter emits `RTR` logs when it routes HTTP requests to the app. Gorouter messages include the app name followed by a Gorouter timestamp and selections from the HTTP request.
 
 For example:
 
@@ -88,9 +87,9 @@ For example:
 
 #### <a id='traceid'></a> Zipkin trace logging
 
-If Zipkin trace logging is allowed in <%= vars.app_runtime_abbr %>, Gorouter access log messages contain Zipkin HTTP headers.
+If Zipkin trace logging is allowed in <%= vars.app_runtime_abbr %>, Gorouter access log entries contain Zipkin HTTP headers.
 
-The following is an example access log message containing Zipkin headers:
+Here is an example access log entry containing Zipkin headers:
 
 <pre class="terminal">
 2016-11-23T16:04:01.49-0800 [RTR/0]      OUT www.example.com - [24/11/2016:00:04:01.227 +0000] "GET / HTTP/1.1" 200 0 109 "-" "curl/7.43.0" 10.0.2.150:4070 10.0.48.66:60815 x_forwarded_for:"198.51.100.120" x_forwarded_proto:"http" vcap_request_id:87f9d899-c7a4-46cd-7b76-4ec35ce9921b response_time:0.263000966 app_id:8e5d6451-b369-4423-bce8-3a7a9e479dbb app_index:0 x_b3_traceid:"2d5610bf5e0f7241" x_b3_spanid:"2d5610bf5e0f7241" x_b3_parentspanid:"-"
@@ -112,7 +111,7 @@ For example:
 2016-06-14T14:10:15.18-0700 [APP/0]      OUT Exit status 0
 </pre>
 
-Each app might have a configured log rate limit. If the app logs exceed the configured log rate limit, you see a log message indicating that the limit was exceeded.
+Each app might have a configured log rate limit. If the app logs exceed the configured log rate limit, you see a log entry indicating that the limit was exceeded.
 
 For example:
 
@@ -148,7 +147,7 @@ For example:
 Your app must write logs to `stderr` or `stdout`. Both are typically buffered, and you can flush the buffer before
 delivering the message to Loggregator.
 
-Alternatively, you can write log messages to `stderr` or `stdout` synchronously. This approach is mainly used for
+Alternatively, you can write log entries to `stderr` or `stdout` synchronously. This approach is mainly used for
 debugging because it might affect app performance.
 
 ## <a id='view'></a> Viewing Logs
@@ -164,7 +163,7 @@ To stream Loggregator output to the terminal:
     ```
     cf logs APP-NAME
     ```
-    Where `APP-NAME` is the name of your app. The command returns output similar to the following example:
+    Where `APP-NAME` is the name of your app. The command returns output similar to this example:
     <pre class="terminal">
     Connected, tailing logs for app spring-music in org example / space development as admin@example.com...
 
@@ -189,8 +188,7 @@ To display all of the lines in the Loggregator buffer:
 
 ### <a id='filter'></a> Filter logs
 
-To view some subset of log output, run `cf logs APP-NAME` in conjunction with filtering commands of your choice, where `APP-NAME` is the name of your app. In
-the following example, run `cf logs spring-music --recent | grep -v RTR` to exclude all Gorouter logs:
+To view some subset of log output, run `cf logs APP-NAME` in conjunction with filtering commands of your choice, where `APP-NAME` is the name of your app. In the following example, run `cf logs spring-music --recent | grep -v RTR` to exclude all Gorouter logs:
 
 <pre class="terminal">
 $ cf logs spring-music
@@ -227,16 +225,14 @@ $ cf logs spring-music --recent | grep -v RTR
 
 ### <a id='log-ordering'></a> Log ordering
 
-Ensuring log ordering in drains can be an important consideration for both operators and developers.
+Both operators and developers must ensure log ordering in drains.
 
 * Diego uses a nanosecond-based timestamp that can be ingested properly by Splunk. For more information, see the [Splunk
 documentation](https://answers.splunk.com/answers/1946/time-format-and-subseconds.html).
 
-* The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are truncated. For more information, see the
-[Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) and [Date type has not enough precision for the logging use case](https://github.com/elastic/elasticsearch/issues/10005) on GitHub.
+* The Elastic Stack can ingest the nanosecond timestamps but only supports millisecond precision, so timestamps are truncated. For more information, see the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html) and [Date type has not enough precision for the logging use case](https://github.com/elastic/elasticsearch/issues/10005) on GitHub.
 
-If you are developing a client that displays a stream of <%= vars.app_runtime_abbr %> logs to users, you can order the logs to improve the debugging
-experience for your user. The following are general tips for ordering logs:
+If you are developing a client that displays a stream of <%= vars.app_runtime_abbr %> logs to users, you can order the logs to improve the debugging experience for your user. Here are some general tips for ordering logs:
 
 * For CLIs, batch the logs and display the logs you have in that timeframe, sorted by timestamp.
 

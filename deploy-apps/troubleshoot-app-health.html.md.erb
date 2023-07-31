@@ -14,7 +14,7 @@ The following sections describe common issues you might encounter when attemptin
 
 ### <a id='time'></a> cf push times out
 
-If your deployment times out during the upload or staging phase, you might receive one of the following error messages:
+If your deployment times out during the upload or staging phase, you might receive one of these error messages:
 
 * `504 Gateway Timeout`
 
@@ -24,19 +24,14 @@ If your deployment times out during the upload or staging phase, you might recei
 
 If this happens:
 
-* **Check your network speed.** Depending on the size of your app, your `cf push` can time out if the upload takes too long.
+* **Check your network speed.** Depending on the size of your app, your `cf push` can timeout if the upload takes too long.
 <%= vars.recommended_by %> recommends an Internet connection speed of at least 768&nbsp;KB/s, or 6&nbsp;Mb/s, for uploads.
 
-* **Make sure you are pushing only needed files.** By default, `cf push` pushes all the contents of the current working directory. Make sure you are pushing
-only the directory for your app. If your app is too large, or if it has many small files, <%= vars.app_runtime_abbr %> might time out during the upload. To
-reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to
-specify excluded files. For more information, see [Ignore unnecessary files when pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and Running an App in the Cloud_.
+* **Make sure you are pushing only needed files.** By default, `cf push` pushes all the contents of the current working directory. Make sure you are pushing only the directory for your app. If your app is too large, or if it has many small files, <%= vars.app_runtime_abbr %> might timeout during the upload. To reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to specify excluded files. For more information, see [Ignore unnecessary files when pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and Running an App in the Cloud_.
 
-* **Set the `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT` environment variables.** By default, your app has 15 minutes to stage and 5 minutes to start. You
-can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`. For more information, run `cf push -h`.
+* **Set the `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT` environment variables.** By default, your app has 15 minutes to stage and 5 minutes to start. You can increase these times by setting `CF_STAGING_TIMEOUT` and `CF_STARTUP_TIMEOUT`. For more information, run `cf push -h`.
 
-* **If your app contains a large number of files, try pushing the app repeatedly.** Each push uploads a few more files. Eventually, all files upload, and the
-push succeeds. This is less likely to work if your app has many small files.
+* **If your app contains a large number of files, try pushing the app repeatedly.** Each push uploads a few more files. Eventually, all files upload, and the push succeeds. This is less likely to work if your app has many small files.
 
 ### <a id='upload'></a> App too large
 
@@ -48,14 +43,9 @@ If your app is very large, you might receive an error message on `cf push`. For 
 
 If this happens:
 
-* **Make sure your org and space have enough resources for all instances of your app.** You cannot use more resources in a space than is allocated for your
-org. To view the resource quota name for your org, use `cf org ORG-NAME`, then `cf org-quota QUOTA-NAME`. To view resource quota name for your space, use `cf
-space SPACE-NAME`, then `cf space-quota QUOTA-NAME`. Your total organization resource usage is the sum of the resources used by all apps in all spaces within
-the org. Each app's resource usage is the resources allocated to it multiplied by the number of instances. To view the resource usage of all the apps in a
-space, use `cf apps`, then `cf app APP-NAME` for each app.
+* **Make sure your org and space have enough resources for all instances of your app.** You cannot use more resources in a space than is allocated for your org. To view the resource quota name for your org, use `cf org ORG-NAME`, then `cf org-quota QUOTA-NAME`. To view resource quota name for your space, use `cf space SPACE-NAME`, then `cf space-quota QUOTA-NAME`. Your total organization resource usage is the sum of the resources used by all apps in all spaces within the org. Each app's resource usage is the resources allocated to it multiplied by the number of instances. To view the resource usage of all the apps in a space, use `cf apps`, then `cf app APP-NAME` for each app.
 
-* **Make sure your app is less than 1&nbsp;GB.** By default, `cf push` deploys all the contents of the current working directory. To reduce the number of
-files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to specify excluded files.
+* **Make sure your app is less than 1&nbsp;GB.** By default, `cf push` deploys all the contents of the current working directory. To reduce the number of files you are pushing, ensure that you push only the directory for your app, and remove unneeded files or use the `.cfignore` file to specify excluded files.
 The following limits apply:
     * The app files to push cannot exceed 1&nbsp;GB.
     * The droplet that results from compiling those files cannot exceed 1.5&nbsp;GB. Droplets are typically a third larger than the pushed files.
@@ -75,7 +65,7 @@ with a path to your buildpack.
 
 ### <a id='deploy-fail'></a> App deploy fails
 
-Even when the deploy fails, the app might exist on <%= vars.app_runtime_abbr %>. Run `cf apps` to review the apps in the targeted org and space. You might be able to correct the issue using the <%= vars.dev_console_2 %>, or you might need to delete the app and re-deploy.
+Even when the deployment fails, the app might exist on <%= vars.app_runtime_abbr %>. Run `cf apps` to review the apps in the targeted org and space. You might be able to correct the issue using the <%= vars.dev_console_2 %>, or you might need to delete the app and re-deploy.
 
 If you push multiple apps using a manifest and one fails to deploy, <%= vars.app_runtime_abbr %> does not attempt to push apps specified after the app that failed.
 
@@ -95,7 +85,7 @@ Common reasons deploying an app fails include:
 
 ### <a id='start'></a> App fails to start
 
-After `cf push` stages the app and uploads the droplet, the app might fail to start, commonly with a pattern of starting and crashing similar to the following example:
+After `cf push` stages the app and uploads the droplet, the app might fail to start, commonly with a pattern of starting and failing similar to the following example:
 
 <pre class="terminal">
 -----> Uploading droplet (23M)
@@ -110,14 +100,13 @@ Start unsuccessful
 
 If this happens:
 
-* **Find the reason app is failing and modify your code.** Run `cf events APP-NAME` and `cf logs APP-NAME --recent` and look for messages similar to the
-following example:
+* **Find the reason app is failing and modify your code.** Run `cf events APP-NAME` and `cf logs APP-NAME --recent` and look for messages similar to the following example:
   <pre class="terminal">
   2018-07-20T15:53:26.00-0700   app.crash      app-name   index: 2, reason: CRASHED, cell_id: d874ad05-d0ca-4c63-9f5a-0b1ddd90dd5d, instance: f406c53e-b1ca-4a0f-6140-dddd, exit_description: APP/PROC/WEB: Exited with status 1
   </pre>
   These messages can identify a memory or port issue. If they do, take that as a starting point when you re-examine and fix your app code.
 
-* **Make sure your app code uses the `PORT` environment variable.** Your app might be failing because it is listening on the wrong port. Instead of hard-coding
+* **Ensure that your app code uses the `PORT` environment variable.** Your app might be failing because it is listening on the wrong port. Instead of hard-coding
 the port on which your app listens, use the `PORT` environment variable. For example, this Ruby snippet assigns the port value to the `listen_here` variable:
 
     ```
@@ -125,11 +114,10 @@ the port on which your app listens, use the `PORT` environment variable. For exa
     ```
     For more examples specific to your app framework, see the appropriate [buildpack documentation](../../buildpacks/index.html) for your app's language.
 
-* **Make sure your app adheres to the principles described in [Twelve-Factor App](http://12factor.net) and [Prepare to deploy an app](prepare-to-deploy.html).** These texts explain how to prevent situations where your app builds locally but fails to build in the cloud.
+* **Ensure that your app adheres to the principles described in [Twelve-Factor App](http://12factor.net) and [Prepare to deploy an app](prepare-to-deploy.html).** These texts explain how to prevent situations where your app builds locally but fails to build in the cloud.
 
-* **Verify the timeout configuration of your app.** App health checks use a timeout setting when an app starts up for the first time. For more information,
-see [Using App Health Checks](healthchecks.html). If an app fails to start up due to health check timeout, you might see messages in the logs similar to the
-following example:
+* **Verify the timeout configuration of your app.** App health checks use a timeout setting when an app starts up for the first time. For more information, see [Using app health checks](healthchecks.html). If an app fails to start up due to health check timeout, you might see messages in the logs similar to the following example:
+
   <pre class="terminal">
   2017-01-30T14:07:20.39-0800 [CELL/0]     OUT Creating container
   2017-01-30T14:07:20.65-0800 [CELL/0]     OUT Successfully created container
@@ -151,17 +139,17 @@ following example:
   2017-01-30T14:08:25.41-0800 [CELL/0]     OUT Starting health monitoring of container
   </pre>
 
-### <a id='out-of-memory'></a> App consumes too much memory, then crashes
+### <a id='out-of-memory'></a> App consumes too much memory, then fails
 
 An app that `cf push` has uploaded and started can fail later if it uses too much memory.
 
-**Make sure your app is not consuming more memory than allowed.** When you ran `cf push` and `cf scale`, that configured a limit on the amount of memory your app uses. Check your app's actual memory usage. If it exceeds the limit, edit the app to use less memory.
+**Make sure your app is not consuming more memory than allowed.** When you ran `cf push` and `cf scale`, that configured a limit on the amount of memory your app uses. Verify your app's actual memory usage. If it exceeds the limit, edit the app to use less memory.
 
 ### <a id='routing-conflict'></a> Routing conflict
 
 <%= partial 'routing_conflict' %>
 
-If you suspect a routing conflict, run `cf routes` to check the routes in your <%= vars.app_runtime_abbr %> deployment.
+If you suspect a routing conflict, run `cf routes` to verify the routes in your <%= vars.app_runtime_abbr %> deployment.
 
 If two apps share a route outside of a blue-green deployment strategy, choose one app to reassign to a different route and use the following procedure:
 
@@ -220,7 +208,7 @@ my-drain: http://drain.example.com
 
 ### <a id='logs'></a> View logs
 
-To view app logs streamed in real-time, run `cf logs APP-NAME`.
+To view app logs streamed in real time, run `cf logs APP-NAME`.
 
 To aggregate your app logs to view log history, bind your app to a syslog drain service. For more information, see [Streaming app logs to log management services](./../services/log-management.html).
 
@@ -228,7 +216,7 @@ To aggregate your app logs to view log history, bind your app to a syslog drain 
 <span class="note__title">Important</span>
 The Diego architecture does not support the <code>cf files</code> command, and <code>cf files</code> was removed as of cf CLI v7.</p>
 
-### <a id='trace'></a> Trace cloud controller REST API calls
+### <a id='trace'></a> Trace Cloud Controller REST API calls
 
 If a command fails or produces unexpected results, re-run it with HTTP tracing activated to view requests and responses between the Cloud Foundry Command Line Interface (cf CLI) and the Cloud Controller REST API.
 
@@ -286,12 +274,11 @@ logs. For a list of <%= vars.app_runtime_abbr %> errors, see the [cloudfoundry-a
 * `cf logs APP-NAME --recent`: Dumps recent logs. For more information, see [Viewing logs in the Command Line Interface](streaming-logs.html#view) in _App
 Logging in <%= vars.app_runtime_abbr %>_.
 
-* `cf logs APP-NAME`: Returns a real-time stream of the app STDOUT and STDERR. Press **Ctrl+C** or **Command+C** on your keyboard to exit the real-time
-stream.
+* `cf logs APP-NAME`: Returns a real-time stream of the app stdout and stderr. Press **Ctrl+C** or **Command+C** on your keyboard to exit the real-time stream.
 
 <p class="note important">
 <span class="note__title">Important</span>
-Your app must direct its logs to STDOUT and STDERR. The <code>cf logs</code> command also returns messages from any Log4j facility that you configure to send logs to STDOUT. For more information, see the <a href="http://logging.apache.org/log4j/">Log4j website</a>.</p>
+Your app must direct its logs to stdout and stderr. The <code>cf logs</code> command also returns messages from any Log4j facility that you configure to send logs to STDOUT. For more information, see the <a href="http://logging.apache.org/log4j/">Log4j website</a>.</p>
 
 
 ## <a id='ssh'></a> Access apps with SSH

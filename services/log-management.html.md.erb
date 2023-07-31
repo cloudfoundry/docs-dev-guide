@@ -5,19 +5,19 @@ owner: PCF Metrics
 
 Here are instructions for draining logs from Cloud Foundry to a third-party log management service.
 
-Cloud Foundry aggregates logs for all instances of your apps and for requests made to your apps through internal components of Cloud Foundry. For example, when the Cloud Foundry router forwards a request to an app, the router records that event in the log stream for that app. Run the following command to access the log stream for an app in the terminal:
+Cloud Foundry aggregates logs for all instances of your apps and for requests made to your apps through internal components of Cloud Foundry. For example, when the Cloud Foundry router forwards a request to an app, the router records that event in the log stream for that app. To access the log stream for an app in the terminal, run:
 
 <pre class="terminal">$ cf logs YOUR-APP-NAME</pre>
 
 If you want more than the limited amount of logging information that Cloud Foundry can buffer to persist, drain these logs to a log management service.
 
-**Feature:** Since [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use mTLS inside your syslog drain. Follow the procedure in <a href="#step2">Step 2: Create and Bind a User-Provided Service Instance</a>. Include the corresponding credentials as a _PEM-encoded X.509_ certificate.
+**Feature:** Since the release of [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use mTLS inside your syslog drain. Follow the procedure in <a href="#step2">Step 2: Create and Bind a User-Provided Service Instance</a>. Include the corresponding credentials as a _PEM-encoded X.509_ certificate.
 
 For more information about the systems responsible for log aggregation and streaming in Cloud Foundry, see [App logging in Cloud Foundry](../deploy-apps/streaming-logs.html).
 
 ## <a id='marketplace-services'></a> Using services from the Cloud Foundry Marketplace
 
-Your Cloud Foundry marketplace offers one or more log management services. To use one of these services, create an instance of the service and bind it to your app with the following commands:
+Your Cloud Foundry Marketplace offers one or more log management services. To use one of these services, create an instance of the service and bind it to your app by running:
 
 <pre class="terminal">
 $ cf create-service SERVICE PLAN SERVICE-INSTANCE
@@ -28,11 +28,11 @@ For more information about service instance life cycle management, see [Managing
 
 <p class="note">
 <span class="note__title">Note</span>
-Not all marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that allows automated streaming of app syslogs. <%= vars.custom_services %></p>
+Not all Marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that allows automated streaming of app syslogs. <%= vars.custom_services %></p>
 
-## <a id='user-provided'></a> Using services not available in your marketplace
+## <a id='user-provided'></a> Using services not available in your Marketplace
 
-If a compatible log management service is not available in your Cloud Foundry marketplace, you can use user-provided service instances to stream app logs to a service of your choice. For more information, see the [Stream app logs to a service](./user-provided.html#syslog) section of the _User-Provided Service Instances_ topic.
+If a compatible log management service is not available in your Cloud Foundry Marketplace, you can use user-provided service instances to stream app logs to a service of your choice. For more information, see the [Stream app logs to a service](./user-provided.html#syslog) in _User-provided service instances_.
 
 You might need to prepare your log management service to receive app logs from Cloud Foundry. For specific instructions for several popular services, see [Service-specific instructions for streaming app logs](./log-management-thirdparty-svc.html). If you cannot find instructions for your service, follow the generic instructions.
 
@@ -44,7 +44,7 @@ To set up a communication channel between the log management service and your Cl
 
 1. Provide these IP addresses to the log management service. The specific steps to configure a third-party log management service depend on the service.
 
-1. Add these IP addresses to your allow list to ensure unrestricted log routing to your log management service.
+1. Add these IP addresses to your allowlist to ensure unrestricted log routing to your log management service.
 
 1. Record the syslog URL provided by the third-party service. Third-party services typically provide a syslog URL to use as an endpoint for incoming log data. You use this syslog URL in [Step 2: Create a user-provided service instance](#step2).
 <br><br>
@@ -74,13 +74,13 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
       <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
     </ul>
 
-    By default, the Syslog Agent forwards only application logs to a Syslog server. If you want to have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, one can use the `drain-type` parameter to specify if only logs, container metrics or both should be forwarded by the syslog drain. The `drain-type` parameter should be added to the `SYSLOG-DRAIN-URL`.
+    By default, the syslog agent forwards only application logs to a syslog server. To have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, use the `drain-type` parameter to specify if only logs, container metrics or both should be forwarded by the syslog drain. The `drain-type` parameter should be added to the `SYSLOG-DRAIN-URL`.
 
     <pre class="terminal">
-    $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL?drain-type=DRAIN_TYPE_VALUE
+    $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL?drain-type=DRAIN-TYPE-VALUE
     </pre>
 
-    Where `DRAIN_TYPE_VALUE` should be one of the following:
+    Where `DRAIN-TYPE-VALUE` is one of the following:
     <ul>
         <li><code>logs</code> forwards logs only (this is also the default when the parameter is not present).</li>
         <li><code>metrics</code> forwards container metrics only.</li>
@@ -92,7 +92,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
     $ cf create-user-provided-service my_app_drain -l syslog://logs.example.com:1234?drain-type=all
     </pre>
 
-In case of the usage of the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use `-p` flag to define the client certificate and key as credentials, filling in values as follows.
+In case of the use of the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use `-p` flag to define the client certificate and key as credentials, filling in values as follows.
 <pre class="terminal">
 $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
 </pre>
@@ -109,7 +109,7 @@ $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN
 
     For more information, see [User-provided service instances](./user-provided.html).
 
-2. To bind an app to the service instance, do one of the following:
+2. To bind an app to the service instance, do one of these:
     * Run `cf push` with a manifest. The services block in the manifest must specify the service instance that you want to bind.
     * Run `cf bind-service`:
 
@@ -125,10 +125,10 @@ For more information, see [Managing service instances with the CLI](./managing-s
 
 To verify that logs are draining correctly to a third-party log management service:
 
-1. Take actions that produce log messages, such as making requests of your app.
+1. Take actions that produce log entries, such as making requests of your app.
 
 1. Compare the logs displayed in the CLI against those displayed by the log management service.
 
-For example, if your app serves webpages, you can send HTTP requests to the app. In Cloud Foundry, these generate Router log messages, which you can view in the CLI. Your third-party log management service must display corresponding messages.
+For example, if your app serves webpages, you can send HTTP requests to the app. In Cloud Foundry, these generate Router log entries, which you can view in the CLI. Your third-party log management service must display corresponding messages.
 
 For security reasons, Cloud Foundry apps do not respond to <code>ping</code>. You cannot use <code>ping</code> to generate log entries.

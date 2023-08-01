@@ -52,9 +52,9 @@ The container also inherits environment variables, service bindings, and securit
 <span class="note__title">Note</span>
 You cannot SSH into the container running a task.</p>
 
-### <a id='task-logging-execution-history'></a> Task logging and execution history
+### <a id='task-logging-execution'></a> Task logging and execution history
 
-Any data or messages the task outputs to stdout or stderr is available on the app's firehose logs. A syslog drain attached to the app receives the task log output.
+Any data or messages the task outputs to stdout or stderr is available in the firehose logs of the app. A syslog drain attached to the app receives the task log output.
 The task execution history is retained for one month.
 
 
@@ -230,7 +230,7 @@ To list the tasks for a given app:
     1    8d0618cf   SUCCEEDED   Wed, 23 Nov 2016 21:37:28 UTC   bin/rails db:migrate
     </pre>
 
-The following table describes the states a task can be in:
+Tasks can be in these states:
 
 | State | Description |
 | ----- | ----------- |

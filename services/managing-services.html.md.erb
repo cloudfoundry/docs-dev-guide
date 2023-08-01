@@ -5,7 +5,7 @@ owner: Core Services
 
 
 
-You can manage life cycle operations for service instances using the Cloud Foundry CLI (cf CLI). This includes creating, updating, and deleting service instances. For documentation about other service management operations, see [Services overview](./index.html). <%= vars.custom_services %>
+You can manage life cycle operations for service instances using the Cloud Foundry CLI (cf CLI). This includes creating, updating, and deleting service instances. For information about other service management operations, see [Services overview](./index.html). <%= vars.custom_services %>
 
 To run the commands in this topic, you must first install the Cloud Foundry Command Line Interface (cf CLI). See the [Cloud Foundry Command Line Interface](../../cf-cli/index.html) topics for more information.
 
@@ -34,14 +34,14 @@ p-riakcs           developer           An S3-compatible object store     object-
 You can create a service instance by running:
 
 ```console
-cf create-service SERVICE PLAN SERVICE_INSTANCE
+cf create-service SERVICE PLAN SERVICE-INSTANCE-NAME
 ```
 
-Use the information in the following list to replace `SERVICE`, `PLAN`, and `SERVICE_INSTANCE` with appropriate values.
+Where:
 
 * `SERVICE`: The name of the service you want to create an instance of.
 * `PLAN`: The name of a plan that meets your needs. Service providers use **plans** to offer varying levels of resources or features for the same service.
-* `SERVICE_INSTANCE`: The name you provide for your service instance. You use this name to refer to your service instance with other commands. Service instance names can include alpha-numeric characters, hyphens, and underscores, and you can rename the service instance at any time.
+* `SERVICE-INSTANCE-NAME`: The name you provide for your service instance. You use this name to refer to your service instance with other commands. Service instance names can include alpha-numeric characters, hyphens, and underscores, and you can rename the service instance at any time.
 
 For example:
 <pre class="terminal">
@@ -148,7 +148,8 @@ Not all services support binding, as some services deliver value to users direct
 
 ### <a id='app-binding'></a>Bind a service instance to an app
 
-Depending on the service, binding a service instance to your app might deliver credentials for the service instance to the app. See [Delivering service credentials to an app](application-binding.html) for more information. Binding a service instance to an app can trigger app logs to be streamed to the service instance. For more information, see [Streaming app logs to log management services](log-management.html).
+Depending on the service, binding a service instance to your app might deliver credentials for the service instance to the app. See [Delivering service credentials to an app](application-binding.html) for more information.
+Binding a service instance to an app can trigger app logs to be streamed to the service instance. See [Streaming app logs to log management services](log-management.html).
 
 You must restart, or in some cases, re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.
 
@@ -165,14 +166,14 @@ $ cf restart my-app
 
 As an alternative to binding a service instance to an app after pushing an app, you can use the app manifest to bind the service instance during push. As of cf CLI v6.12.1, [Arbitrary parameters](#arbitrary-params-binding) are not supported in app manifests. Using the manifest to bind service instances to routes is also not supported.
 
-The following excerpt from an app manifest binds a service instance called `test-mysql-01` to the app on push.
+This excerpt from an app manifest binds a service instance called `test-mysql-01` to the app on push.
 
 ```yaml
 services:
  - test-mysql-01
 ```
 
-The following excerpt from the `cf push` command and response demonstrates that the cf CLI reads the manifest and binds the service instance to an app called `test-msg-app`.
+This excerpt from the `cf push` command and response demonstrates that the cf CLI reads the manifest and binds the service instance to an app called `test-msg-app`.
 
 <pre class="terminal">
 $ cf push
@@ -252,7 +253,7 @@ You do not have to restage your app.
 
 ## <a id='rename_service'></a>Rename a service instance
 
-You can change the name given to a service instance. Keep in mind that upon restarting any bound apps, the name of the instance changes in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your app depends on the instance name for discovering credentials, changing the name might break your app's use of the service instance.
+You can change the name given to a service instance. Upon restarting any bound apps, the name of the instance changes in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your app depends on the instance name for discovering credentials, changing the name might break your app's use of the service instance.
 
 <pre class="terminal">
 $ cf rename-service mydb mydb1
@@ -305,11 +306,14 @@ OK
 
 ## <a id='upgrade'></a> Upgrade a service instance
 
-_Upgrading a Service Instance requires cf CLI v6.46.0+ and CAPI release 1.83.0+_
+<p class="note important">
+<span class="note__title">Important</span>
+Upgrading a Service instance requires at least cf CLI v6.46.0+ and CAPI release 1.83.0+.
+</p>
 
 Some service brokers support upgrading service instances to the latest version of a service plan. For example, a broker might want to provide a way for users of the service to upgrade the underlying operating system that their service instances run on.
 
-To upgrade your service instances, do the following:
+To upgrade your service instances:
 
 1. Confirm that an upgrade is available by running `cf services` and reviewing the `upgrade available` column. For example:
 
@@ -322,10 +326,10 @@ To upgrade your service instances, do the following:
     otherdb   p-mysql   medium                create succeeded   mysql-broker   no
     </pre>
 
-1. Upgrade the service instance using the `--upgrade` flag:
+2. Upgrade the service instance using the `--upgrade` flag:
 
     ```console
-    cf update-service SERVICE-INSTANCE --upgrade
+    cf update-service SERVICE-INSTANCE-NAME --upgrade
     ```
 
     For example:

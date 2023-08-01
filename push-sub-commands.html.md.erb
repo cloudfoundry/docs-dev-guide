@@ -4,11 +4,11 @@ owner: CAPI
 ---
 
 
-The Cloud Foundry CLI (cf CLI) includes commands that provide detailed control over app pushes. When you use these commands, you can choose to perform only some steps of the `cf push` process or perform specific actions between the steps that are normally run as part of running `cf push`.
+The Cloud Foundry Command Line Interface (cf CLI) includes commands that provide detailed control over app pushes. When you use these commands, you can follow only some steps of the `cf push` procedure or you can perform specific actions between the steps that are normally part of running `cf push`.
 
 Here are some example use cases for the sub-step commands:
 
-* Updating a third party system before staging an app
+* Updating a third-party system before staging an app
 * Retrying failed stagings without incurring downtime
 * Calling external services to report audit data during push
 * Scanning a droplet before deploy
@@ -16,7 +16,7 @@ Here are some example use cases for the sub-step commands:
 
 To support these custom push workflows, Cloud Foundry divides apps into smaller building blocks.
 
-The following table describes the building blocks as _resources_ and lists the command associated with each one.
+The following table describes the building blocks as resources and lists the command associated with each one.
 
 For information about using these commands, see [Example workflows](#example-workflows).
 
@@ -54,7 +54,7 @@ The cf CLI v6 commands described in this topic are experimental and unsupported,
 	</tr>
 	<tr>
 		<td>Build</td>
-		<td>The staging process. Creating a build combines a Package with a Buildpack and builds it into an executable resource.<br>
+		<td>Staging the app. Creating a build combines a Package with a Buildpack and builds it into an executable resource.<br>
 		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#builds">Builds</a> in the CAPI documentation.</td>
 		<td>
 			<ul>

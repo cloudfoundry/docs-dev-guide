@@ -17,7 +17,7 @@ For more information, see [gRPC](https://grpc.io/).
 
 ## <a id="performance"></a> Performance
 
-HTTP/2 can provide performance improvements for apps that are built to do the following:
+HTTP/2 can provide performance improvements for apps that are built to:
 
 - Load many resources in parallel. For example, an HTML page that loads many images or JavaScript files.
 - Use large and repetitive headers.
@@ -29,7 +29,7 @@ For an example of an app that benefits from HTTP/2, see the [Cloud Foundry HTTP/
 
 ### <a id="limitations"></a> Limitations
 
-HTTP/2 support in <%= vars.app_runtime_abbr %> has the following limitations:
+HTTP/2 support in <%= vars.app_runtime_abbr %> has these limitations:
 
 - End-to-end HTTP/2 is not available for Windows Diego Cells. Routes with HTTP/2 mappings continue to send HTTP/1.1 traffic to apps that run on Windows Diego Cells.
 - Routes that have route services bound to them might not support end-to-end HTTP/2 depending on what protocols the bound service supports. For more information, see [Route services](../services/route-services.html).
@@ -40,7 +40,7 @@ If your <%= vars.app_runtime_abbr %> deployment is configured to support HTTP/2,
 then all traffic coming in to <%= vars.app_runtime_abbr %> supports HTTP/2.
 The traffic is forwarded as HTTP/1.1 before it reaches your app unless configured otherwise.
 
-For more information, see <a href="https://docs.vmware.com/en/VMware-Tanzu-Application-Service/<%= vars.current_major_version %>/tas-for-vms/supporting-http2.html">Configuring HTTP/2 Support.</a>
+For more information, see [Configuring HTTP/2 support](https://docs.vmware.com/en/VMware-Tanzu-Application-Service/<%= vars.current_major_version %>/tas-for-vms/supporting-http2.html).
 
 To serve gRPC traffic, your app must use HTTP/2 for all network hops.
 Configure your route to send HTTP/2 traffic to your app.
@@ -51,7 +51,7 @@ Your app does not have the opportunity to negotiate what protocol it receives.
 
 If a client is familiar with the HTTP/2 specification,
 your app receives HTTP/2 with prior knowledge.
-For more information, see <a href="https://datatracker.ietf.org/doc/html/rfc7540#section-3.4">Starting HTTP/2 with Prior Knowledge</a> in _RFC 7540: Hypertext Transfer Protocol Version 2 (HTTP/2)_.
+For more information, see [Starting HTTP/2 with Prior Knowledge](https://datatracker.ietf.org/doc/html/rfc7540#section-3.4) in _RFC 7540: Hypertext Transfer Protocol Version 2 (HTTP/2)_.
 
 
 ## <a id="push-apps"></a> Push apps with HTTP/2 support
@@ -65,7 +65,7 @@ There are multiple ways to push an app with end-to-end HTTP/2.
 You can push the app using either the app manifest or the Cloud Foundry Command Line Interface (cf CLI).
 You can also use either method to push an app that serves gRPC traffic.
 
-To push an app with end-to-end HTTP/2, see the following sections:
+To push an app with end-to-end HTTP/2, see:
 
 - [Push an app with end-to-end HTTP/2 using the app manifest](#e2e-manifest)
 - [Push an app with end-to-end HTTP/2 using the cf CLI](#e2e-cli)
@@ -143,7 +143,7 @@ The recommended way to do this is using the `routes` attribute in the manifest Y
 
 <p class="note important">
 <span class="note__title">Important</span>
-The following procedure is supported only for cf CLI v6; the `--hostname` flag is deprecated in cf CLI v7, and must be specified in the manifest.</p>
+The following procedure is supported only for cf CLI v6. The `--hostname` flag is deprecated in cf CLI v7, and must be specified in the manifest.</p>
 
 To push an app that serves HTTP/2 traffic using the cf CLI (v6 only):
 
@@ -191,7 +191,7 @@ See [Push an app with end-to-end HTTP/2 using the app manifest](#e2e-manifest) o
 	grpcurl -vv -import-path ./test/ -proto test.proto MY-APP.EXAMPLE.COM:443 test.Test.Run
 	```
 	Where `MY-APP.EXAMPLE.COM` is the route to your app.<br><br>
-	A successful response looks like the following:
+	A successful response looks like this:
 
 	```
 	Response contents:
@@ -202,8 +202,8 @@ See [Push an app with end-to-end HTTP/2 using the app manifest](#e2e-manifest) o
 
 ## <a id="sample-apps"></a> Sample applications
 
-Here are some sample HTTP/2 and gRPC applications from the community. They can
-be used to experiment with HTTP/2 and provide code examples for different
+Here are some sample HTTP/2 and gRPC applications from the community. You can
+use them to experiment with HTTP/2 and provide code examples for different
 languages and frameworks.
 
 - [ASP.NET Core HTTP/2 App](https://github.com/Gerg/dotnet_http2)

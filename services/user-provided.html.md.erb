@@ -7,11 +7,11 @@ owner: Core Services
 
 User-provided service instances allow you to use services that are not available in the Marketplace with their apps running on Cloud Foundry.
 
-User-provided service instances can be used to deliver service credentials to an app, or to trigger streaming of app logs to a syslog compatible consumer. These two functions can be used alone or at the same time.
+You can use user-provided service instances to deliver service credentials to an app, or to trigger streaming of app logs to a syslog-compatible consumer. These two functions can be used individually or both at the same time.
 
 <%= vars.user_provided_apps_man %>
 
-After creation, user-provided service instances behave like service instances created through the Marketplace; see [Managing service instances](managing-services.html) and [App binding](application-binding.html) for details about listing, renaming, deleting, binding, and unbinding.
+After creation, user-provided service instances behave like service instances created through the Marketplace. See [Managing service instances](managing-services.html) and [App binding](application-binding.html) for details about listing, renaming, deleting, binding, and unbinding service instances.
 
 ## <a id='create'></a>Create a user-provided service instance
 
@@ -56,7 +56,7 @@ To stream app logs to the service, bind the user-provided service instance to yo
 
 ### <a id='route-service'></a>Proxy app requests to a route service
 
-User-provided service instances allow developers to proxy app requests to [route services](./index.html#route-services) for preprocessing. To create a user-provided service instance for a route service, specify the url for the route service using the `-r` option.
+User-provided service instances allow developers to proxy app requests to [route services](./index.html#route-services) for preprocessing. To create a user-provided service instance for a route service, specify the URL for the route service using the `-r` option.
 
 <pre class="terminal">
 $ cf create-user-provided-service my-user-provided-route-service -r https://my-route-service.example.com

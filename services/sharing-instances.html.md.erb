@@ -8,14 +8,11 @@ Here are instructions for sharing service instances in your Cloud Foundry apps.
 
 ## <a id="about"></a> About service instance sharing
 
-Sharing a service instance between spaces allows apps in different
-spaces to share databases, messaging queues, and other types of services.
+Sharing a service instance among multiple spaces and across orgs allows apps to share databases, messaging queues, and other types of services.
 This eliminates the need for development teams to use service keys and
 user-provided services to bind their apps to the same service instance that was
 provisioned using the `cf create-service` command.
-Sharing service instances improves security, auditing, and provides a more intuitive user experience.
-
-* Service instances can be shared into multiple spaces and across orgs.
+Sharing service instances improves security and auditing, and provides a more intuitive user experience.
 
 * Developers and administrators can share service instances between spaces
 in which they have the Space Developer role.
@@ -27,8 +24,8 @@ unbind apps to that service instance. They cannot update, rename, or delete it.
 the values of any configuration parameters that were used to provision or update the service instance.
 
 For example, if two development teams have apps in their own spaces,
-and both of those apps want to send messages to each other using a
-messaging queue, you can do the following:
+and both apps want to send messages to each other using a
+messaging queue:
 
 1. The development team in space A can create a new instance of
 a messaging queue service, bind it to their app, and share that service instance into space B.
@@ -150,7 +147,7 @@ In this case, no information about other spaces is exposed.
 
 <p class="note caution">
 <span class="note__title">Caution</span>
-Unsharing a service instance deletes all bindings to apps in the spaces it was shared into. This might cause apps to fail. Before unsharing a service instance, run the <code>cf service SERVICE-INSTANCE</code> command to see how many bindings exist in the spaces the service instance is shared into.</p>
+Unsharing a service instance deletes all bindings to apps in the spaces it was shared into. This might cause apps to fail. Before unsharing a service instance, run the <code>cf service SERVICE-INSTANCE</code> command to find out how many bindings exist in the spaces the service instance is shared into.</p>
 
 You can unshare a service instance if you have the Space Developer role in the
 space where this service instance was shared from.
@@ -170,8 +167,7 @@ The `-f` flag (optional) forces unsharing without confirmation.
 ## <a id="security"></a> Security considerations
 
 * [Service keys](./service-keys.html) cannot be created from a space that a
-service instance has been shared into.
-This ensures that developers in the space where a service instance has been
+service instance is shared into. This ensures that developers in the space where a service instance is
 shared from have visibility into where and how many times the service instance is used.
 
 * Sharing service instances does not update app security groups (ASGs).

@@ -108,7 +108,7 @@ Where:
 
 * `SIDECAR-BINARY` is your sidecar binary.
 
-For more information about packaging assets with your Java app, see [Tips for Java developers](https://docs.cloudfoundry.org/buildpacks/java/java-tips.html).
+For more information about packaging assets with your Java app, see [Cloud Foundry documentation](https://docs.cloudfoundry.org/buildpacks/java/java-tips.html).
 
 
 ## <a id="create"></a> Push an app with a sidecar using an app manifest
@@ -210,7 +210,7 @@ You can explore sidecars using the app in the [capi-sidecar-samples](https://git
 
 <p class="note important">
 <span class="note__title">Important</span>
-This tutorial assumes that you are pushing the Ruby sample app. You can also follow this tutorial for a Java app using the <code>sidecar-dependent-java-app</code> and <code>push_java_app_with_binary_sidecar.sh</code> in the samples repository. When pushing a Java app, ensure that you follow the requirements listed in <a href="#java">Requirements for Java apps</a>.</p>
+In this tutorial, you are pushing the Ruby sample app. You can also follow this tutorial for a Java app using the <code>sidecar-dependent-java-app</code> and <code>push_java_app_with_binary_sidecar.sh</code> in the samples repository. When pushing a Java app, follow the requirements listed in <a href="#java">Requirements for Java apps</a>.</p>
 
 ### <a id="about"></a> About the sample app
 
@@ -294,7 +294,7 @@ To push the app and sidecar:
 		cf v3-push sidecar-dependent-app
 		```
 
-After you push the app, you can further explore it in [View the processes running in the container](#view-processes) and [View the Web URL and app logs](#view-logs).
+After you push the app, you can further explore it in [View the processes running in the container](#view-processes) and [View the web URL and app logs](#view-logs).
 
 ### <a id="view-processes"></a> View the processes running in the container
 
@@ -311,7 +311,7 @@ To view the app and sidecar process running in the container:
     ```
     ps aux
     ```
-    The output you might see resembles the following output:
+    The output you might see resembles this example output:
 
     <pre class="terminal">
     vcap@f00949bd-6601-4731-6f7e-e859:~$ ps aux
@@ -330,7 +330,7 @@ To view the app and sidecar process running in the container:
     ```
     lsof -i | grep $CONFIG_SERVER_PORT
     ```
-    The output you see might resemble the following output:
+    The output you see might resemble this example output:
 
     <pre class="terminal">
     vcap@f00949bd-6601-4731-6f7e-e859:~$ lsof -i | grep $CONFIG_SERVER_PORT
@@ -339,9 +339,9 @@ To view the app and sidecar process running in the container:
     ruby       13 vcap 11u  IPv4 17274965    0t0 TCP localhost:42266->localhost:8082 (ESTABLISHED)
     </pre>
 
-### <a id="view-logs"></a> View the Web URL and app logs
+### <a id="view-logs"></a> View the web URL and app logs
 
-To view the Web URL and logs for the app:
+To view the web URL and logs for the app:
 
 1. In a browser, go to the `config` endpoint of the `sidecar-dependent-app`. For example: `https://sidecar-dependent-app.example.com/config`.
 

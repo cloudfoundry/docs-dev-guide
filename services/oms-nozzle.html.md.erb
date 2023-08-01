@@ -3,7 +3,7 @@ title: Streaming app logs to Azure OMS Log Analytics
 owner: Logging and Metrics
 ---
 
-Here are instructions for integrating your <%= vars.app_runtime_first %> apps with [OMS Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/).
+Here are instructions for integrating your <%= vars.app_runtime_first %> apps with OMS Log Analytics in the [Microsoft documentation](https://docs.microsoft.com/en-us/azure/log-analytics/).
 
 Operations Management Suite (OMS) Log Analytics is a monitoring service for Microsoft Azure. The OMS Log Analytics Firehose Nozzle is a <%= vars.app_runtime_abbr %> component that forwards metrics from the Loggregator Firehose to OMS Log Analytics.
 
@@ -12,7 +12,7 @@ This topic assumes you are using the latest version of the Cloud Foundry Command
 
 ## <a id='config'></a> Step 1: Create an OMS workspace in Azure
 
-To create an OMS workspace, see [Get started with Log Analytics](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-get-started) in the Microsoft Azure documentation.
+To create an OMS workspace, see the [Microsoft documentation](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-get-started) in the Microsoft Azure documentation.
 
 
 ## <a id='deploy'></a> Step 2: Deploy the nozzle to <%= vars.app_runtime_abbr %>
@@ -68,14 +68,14 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
         ```
         Where `USERNAME` is the user name you set.
 
-1. Download the [OMS Log Analytics Firehose Nozzle BOSH release](https://github.com/Azure/oms-log-analytics-firehose-nozzle) from Github. Clone the repository and navigate to the `oms-log-analytics-firehose-nozzle` directory by running:
+1. Download the [OMS Log Analytics Firehose Nozzle BOSH release](https://github.com/Azure/oms-log-analytics-firehose-nozzle) from GitHub. Clone the repository and navigate to the `oms-log-analytics-firehose-nozzle` directory by running:
 
     ```
     git clone https://github.com/Azure/oms-log-analytics-firehose-nozzle.git
     cd oms-log-analytics-firehose-nozzle
     ```
 
-1. Set the following environment variables in the [OMS Log Analytics Firehose Nozzle manifest](https://github.com/Azure/oms-log-analytics-firehose-nozzle/blob/master/manifest.yml):
+2. Set the environment variables in the [OMS Log Analytics Firehose Nozzle manifest](https://github.com/Azure/oms-log-analytics-firehose-nozzle/blob/master/manifest.yml):
 
     <table>
       <tr>
@@ -158,7 +158,7 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
       </tr>
     </table>
 
-1. Push the app by running:
+3. Push the app by running:
 
     ```
     cf push
@@ -187,35 +187,35 @@ To import the OMS view:
 
 1. Click the **Tile** to view visualized metrics.
 
-For more information, see [Create custom views by using View Designer in Azure Monitor](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-view-designer) in the Azure documentation.
+For more information, see the [Microsoft documentation](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-view-designer) in the Azure documentation.
 
 ### <a id='alert'></a> Create alert rules
 
-For more information about OMS Log Analytics alerts, see [Overview of alerts in Microsoft Azure](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-alerts) in the Azure documentation.
+For more information about OMS Log Analytics alerts, see the [Microsoft documentation](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-alerts) in the Azure documentation.
 
 ### <a id='queries'></a> Set alert queries
 
 This section includes example queries that operators can set in the OMS Portal.
 
-* The following query alerts the operator when the nozzle sends a `slowConsumerAlert` to OMS:
+* This query alerts the operator when the nozzle sends a `slowConsumerAlert` to OMS:
 
     ```
     Type=CF_ValueMetric_CL Name_s=slowConsumerAlert
     ```
 
-* The following query alerts the operator when Loggregator sends an `LGR` to indicate problems with logging:
+* This query alerts the operator when Loggregator sends an `LGR` to indicate problems with logging:
 
     ```
     Type=CF_LogMessage_CL SourceType_s=LGR MessageType_s=ERR
     ```
 
-* The following query alerts the operator when the number of lost events reaches a certain threshold, specified in the OMS Portal:
+* This query alerts the operator when the number of lost events reaches a certain threshold, specified in the OMS Portal:
 
     ```
     Type=CF_CounterEvent_CL Job_s=nozzle Name_s=eventsLost
     ```
 
-* The following query alerts the operator when the nozzle receives the `TruncatingBuffer.DroppedMessages` **CounterEvent**:
+* This query alerts the operator when the nozzle receives the `TruncatingBuffer.DroppedMessages` **CounterEvent**:
 
     ```
     Type=CF_CounterEvent_CL Name_s="TruncatingBuffer.DroppedMessages"
@@ -232,7 +232,7 @@ If you set the `LOG_EVENT_COUNT` environment variable to `TRUE` in the [manifest
 
 The nozzle does not count CounterEvents in the sent, received, or lost event count.
 
-The nozzle sends the count as a **CounterEvent** with a **CounterKey** of one of the following:
+The nozzle sends the count as a **CounterEvent** with one of these values for **CounterKey**:
 
 | CounterEvent | CounterKey |
 | ------------ | ---------- |
@@ -244,7 +244,7 @@ In most cases, the total count of `eventsSent` plus `eventsLost` is less than th
 
 ### <a id='slow-consumer'></a> Log slow consumer alerts
 
-Loggregator sends the nozzle a `slowConsumerAlert` in the following situations:
+Loggregator sends the nozzle a `slowConsumerAlert` when:
 
 * WebSocket sends the error code `ClosePolicyViolation (1008)`.
 
@@ -267,7 +267,7 @@ The nozzle does not count ValueMetrics in the sent, received, or lost event coun
 
 If the nozzle is unable to keep up with processing logs from the Firehose, Loggregator alerts the nozzle. When the nozzle receives the alert, it sends a `slowConsumerAlert` to OMS. If this happens, scaling up the nozzle minimizes data loss.
 
-If an operator chooses to scale up their deployment, the Firehose evenly distributes events across all instances of the nozzle. <%= vars.scaling_nozzles_link %>
+If an operator scales up their deployment, the Firehose evenly distributes events across all instances of the nozzle. <%= vars.scaling_nozzles_link %>
 
 Operators can create an alert rule for the `slowConsumerAlert` message. For more information, see [Create alert rules](#alert).
 

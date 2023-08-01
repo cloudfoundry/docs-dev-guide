@@ -12,9 +12,9 @@ owner: CF for VMs Networking
 
 
 By default, apps only receive requests on port `8080` for both HTTP and TCP routing. Configuring custom app ports allows developers to bring workloads onto
-<%= vars.app_runtime_abbr %> that receive requests on ports other than `8080`. The following list describes some example use cases:
+<%= vars.app_runtime_abbr %> that receive requests on ports other than `8080`. Here are some example use cases:
 
-* Serving web client requests on one port and offering stats and debugging on another
+* Serving web client requests on one port, and stats and debugging on another
 
 * Using TCP protocols that require multiple ports
 
@@ -24,7 +24,7 @@ To use the `apps` and `route_mappings` Cloud Controller API endpoints to update 
 
 ## <a id='flow'></a> Flow of a request to an app
 
-The following table describes the Network Address Translation that occurs in the data path of a client request:
+The table describes the Network Address Translation that occurs in the data path of a client request:
 
 | Port Type | Description | Network Hop |
 | --------- | ----------- | ----------- |
@@ -40,7 +40,7 @@ For HTTP routing, the route port is always `80` or `443`.
 
 ## <a id='prerequisite'></a> Prerequisites
 
-Before you follow the procedure to configure routing to your app on custom ports, make sure that you have the following:
+Before you follow the procedure to configure routing to your app on custom ports, you must have:
 
 * An app pushed to <%= vars.app_runtime_abbr %> that can receive requests on one or more custom ports.
 
@@ -63,11 +63,11 @@ To configure your app to receive HTTP or TCP requests on custom ports:
 
     Where `APP-NAME` is the name of your app.
 
-2. From the output, record the following:
+2. From the output, record:
   * Under `guid`, the global unique identifier (GUID) of your app.
- * Under `type`, the process type your app uses.
+  * Under `type`, the process type your app uses.
 
-3. Retrieve the GUIDs of the routes for your app by running one of the following commands, depending on whether your app uses HTTP or TCP routes:
+3. Retrieve the GUIDs of the routes for your app by running one of these commands, depending on whether your app uses HTTP or TCP routes:
     * For HTTP routes, run:
 
         ```console
@@ -91,9 +91,9 @@ To configure your app to receive HTTP or TCP requests on custom ports:
           <li><code>PORT</code> is the port to which the TCP route sends requests.</li>
         </ul>
 
-2. From the output, record the GUIDs of the routes for your app.
+4. From the output, record the GUIDs of the routes for your app.
 
-3. For each route, update the ports to which it sends requests by running:
+5. For each route, update the ports to which it sends requests by running:
 
     ```console
     cf curl -X PATCH /v3/routes/ROUTE-GUID/destinations -d '{
@@ -127,6 +127,4 @@ To configure your app to receive HTTP or TCP requests on custom ports:
 
 ## <a id='additional-resources'></a> Additional resources
 
-The following additional resources provide more information about configuring custom app ports:
-
-* For more information about making requests to the Cloud Controller API's `apps` endpoints, see the [CAPI V3 documentation](https://v3-apidocs.cloudfoundry.org/index.html#apps).
+* For more information about making requests to the Cloud Controller API (CAPI) `apps` endpoints, see the [CAPI V3 documentation](https://v3-apidocs.cloudfoundry.org/index.html#apps).

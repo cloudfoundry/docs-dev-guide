@@ -92,9 +92,18 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
     $ cf create-user-provided-service my_app_drain -l syslog://logs.example.com:1234?drain-type=all
     </pre>
 
-In case of the use of the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use `-p` flag to define the client certificate and key as credentials, filling in values as follows.
+In case of the use of the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use `-p` flag to define the client certificate and key as credentials, filling in values as follows.</br>
+
 <pre class="terminal">
 $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
+</pre>
+
+</p>
+Be aware, if you certs includes the V3 extension `X509v3 Extended Key Usage` that you are using the right key policies. For TLS you need server and for mTLS also client authentication e.g. TLS Web Server Authentication for TLS and together with TLS Web Client Authentication for mTLS.
+<pre class="terminal">
+X509v3 extensions:
+   X509v3 Extended Key Usage:
+      TLS Web Server Authentication, TLS Web Client Authentication
 </pre>
 
 You can also provide a single certificate authority without client certificate and key if you are using a server certificate signed by your private CA.

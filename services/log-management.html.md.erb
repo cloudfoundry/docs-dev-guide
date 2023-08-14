@@ -99,7 +99,8 @@ $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"cert":"-----BEG
 </pre>
 
 </p>
-Be aware, if you certs includes the V3 extension `X509v3 Extended Key Usage` that you are using the right key policies. For TLS you need server and for mTLS also client authentication e.g. TLS Web Server Authentication for TLS and together with TLS Web Client Authentication for mTLS.
+If your certs include the V3 extension `X509v3 Extended Key Usage`, ensure that you are using the right key policies. For TLS you need server. and for mTLS also client authentication. For example, TLS Web Server Authentication for TLS with TLS Web Client Authentication for mTLS.
+
 <pre class="terminal">
 X509v3 extensions:
    X509v3 Extended Key Usage:

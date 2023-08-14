@@ -5,39 +5,61 @@ owner:
   - CLI
 ---
 
+<%= vars.app_runtime_abbr %> provides support for liveness and readiness health checks.
 
-You can configure a health check for an app using the Cloud Foundry Command Line Interface
-(cf CLI) or by specifying the `health-check-http-endpoint` and `health-check-type` fields in an app
-manifest.
 
-To configure a health check using the cf CLI, see
+Liveness health checks are performed to validate that app instances are running.
+When liveness health checks fail, the app instance is marked as crashed and is
+restarted. Readiness health checks are performed to validate that app instances are
+ready to serve requests. When readiness health checks fail, the app instance is
+marked as not ready and removed from the route pool for the app.
+
+You can configure a liveness health check for an app using the Cloud Foundry
+Command Line Interface (cf CLI) or by specifying a combination of the
+`health-check-http-endpoint`, `health-check-type`,
+`health-check-invocation-timeout`, and `health-check-interval` fields in an
+[App manifest](manifest.html).
+
+Readiness health checks are *only* configurable through the [App
+Manifest](manifest-attributes.html#optional-attributes).
+
+To configure a health check using the cf CLI, see:
+
 * [Configure health checks when creating or updating](#setting-health-checks)
 * [Configure health checks for an existing app](#set-health-checks-exist).
 
 For more information about using an app manifest to configure a health check, see these sections in _Deploying with app manifests_.
-* [health-check-http-endpoint](manifest.html#health-check-http-ep)
-* [health-check-type](manifest.html#health-check-type)
+
+* [health-check-type](manifest-attributes.html#health-check-type)
+* [health-check-interval](manifest-attributes.html#health-check-interval)
+* [health-check-http-endpoint](manifest-attributes.html#health-check-http-ep)
+* [health-check-invocation-timeout](manifest-attributes.html#health-check-invoc-time)
+
+* [readiness-health-check-type](manifest-attributes.html#readiness-health-check-type)
+* [readiness-health-check-interval](manifest-attributes.html#readiness-health-check-interval)
+* [readiness-health-check-http-endpoint](manifest-attributes.html#readiness-health-check-http-ep)
+* [readiness-health-check-invocation-timeout](manifest-attributes.html#readiness-health-check-invoc-time)
 
 App health checks function as part of the app life cycle managed by Diego architecture. For more
 information, see [Diego components and architecture](../../concepts/diego/diego-architecture.html).
 
 
-## <a id="setting-health-checks"></a> Configure health checks when creating or updating an app
+## <a id="setting-health-checks"></a> Configure liveness health checks when creating or updating an app
 
 To configure a health check while creating or updating an app, run:
 
 ```
-cf push APP-NAME -u HEALTH-CHECK-TYPE -t HEALTH-CHECK-TIMEOUT
+cf push APP-NAME --health-check-type LIVENESS-HEALTH-CHECK-TYPE --app-start-timeout LIVENESS-HEALTH-CHECK-TIMEOUT
 ```
 
 Where:
 
 * `APP-NAME` is the name of your app.
 
-* `HEALTH-CHECK-TYPE` is the type of health check that you want to configure. Valid health check
+* `LIVENESS-HEALTH-CHECK-TYPE` is the type of liveness health check that you want to configure. Valid health check
 types are `port`, `process`, and `http`. For more information, see [Health check types](#types).
 
-* `HEALTH-CHECK-TIMEOUT` is the amount of time allowed to elapse between starting an app and the
+* `LIVENESS-HEALTH-CHECK-TIMEOUT` is the amount of time allowed to elapse between starting an app and the
 first healthy response. For more information, see [Health check timeouts](#health_check_timeout).
 
 For more information about the `cf push` command, see
@@ -49,19 +71,19 @@ The health check configuration that you provide with
 <code>cf push</code> overrides any configuration in the app manifest.</p>
 
 
-## <a id="set-health-checks-exist"></a> Configure health checks for an existing app
+## <a id="set-health-checks-exist"></a> Configure liveness health checks for an existing app
 
-To configure a health check for an existing app or to add a custom HTTP endpoint, run:
+To configure a liveness health check for an existing app or to add a custom HTTP endpoint, run:
 
 ```
-cf set-health-check APP-NAME HEALTH-CHECK-TYPE --endpoint CUSTOM-HTTP-ENDPOINT
+cf set-health-check APP-NAME LIVENESS-HEALTH-CHECK-TYPE --endpoint CUSTOM-HTTP-ENDPOINT
 ```
 
 Where:
 
 * `APP-NAME` is the name of your app.
 
-* `HEALTH-CHECK-TYPE` is the type of health check that you want to configure. Valid health check types are `port`, `process`, and `http`. For more information, see [Health check types](#types).
+* `LIVENESS-HEALTH-CHECK-TYPE` is the type of the liveness health check that you want to configure. Valid health check types are `port`, `process`, and `http`. For more information, see [Health check types](#types).
 
 * `CUSTOM-HTTP-ENDPOINT` is the custom HTTP endpoint that you want to add to the health check. By default, an `http` health check uses `/` as its endpoint unless you specify a custom endpoint. For more information, see [Health check HTTP endpoints](#health_check_uri).
 
@@ -87,14 +109,15 @@ The following table describes how app health checks work.
 
 | Stage | Description |
 | ----- | ----------- |
-| 1 | The app developer deploys an app to <%= vars.app_runtime_abbr %>. |
-| 2 | When deploying the app, the developer specifies a health check type for the app and, optionally, a timeout. If the developer does not specify a health check type, then monitoring uses a `port` health check by default. |
-| 3 | Cloud Controller stages, starts, and runs the app. |
-| 4 | Based on the type specified for the app, Cloud Controller configures a health check that runs periodically for each app instance. |
-| 5 | When Diego starts an app instance, the app health check runs every two seconds until a response indicates that the app instance is healthy or until the health check timeout elapses. The 2-second health check interval is not configurable. |
-| 6 | When an app instance becomes healthy, its route is advertised, if applicable. Subsequent health checks are run every 30 seconds after the app becomes healthy. The 30-second health check interval is not configurable. |
-| 7 | If a previously healthy app instance fails a health check, Diego considers that particular instance to be unhealthy. As a result, Diego stops and deletes the app instance, then reschedules a new app instance. This stoppage and deletion of the app instance is reported back to the Cloud Controller as a crash event. |
-| 8 | When an app instance fails, Diego immediately attempts to restart the app instance several times. After three failed restarts, <%= vars.app_runtime_abbr %> waits 30 seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance. |
+| 1 | When deploying the app to <%= vars.app_runtime_abbr %>, the developer specifies a liveness and/or readiness health check and optionally startup timeout with the app manifest. |
+| 2 | Cloud Controller creates an LRP for Diego with the specified health check definitions. If no liveness health check is provided, Cloud Controller configures a `port` liveness health check type. If no readiness health check is provided, Cloud Controller configures a `process` readiness health check type. |
+| 3 | When Diego starts an app instance, a separate startup app health check runs every 2 seconds until a response indicates that the app instance is healthy or until the startup timeout elapses. The startup health check uses the same configuration (type, http endpoint, and invocation timeout) as the liveness health check, except for the non-configurable 2-second polling interval. |
+| 4 | After the startup health check succeeds, the app instance is marked as Running and Diego begins performing the liveness and readiness health checks. Liveness and readiness health checks are run according to their configured health check interval, with a default of 30 seconds. |
+| 5 | After the readiness health check succeeds, the app instance route is advertised. |
+| 6 | The app instance is alive, marked as Running, and is routable. Everything should be great! |
+| 7 | If the readiness health check fails, then the route to the app instance is removed. |
+| 8 | If the liveness health check fails, Diego considers that particular instance to be unhealthy. As a result, Diego stops and deletes the app instance, then reschedules a new app instance. This process of stopping and deleting the app instance is reported back to the Cloud Controller as a crash event. |
+| 9 | When an app instance fails, Diego immediately attempts to restart the app instance several times. After three failed restarts, <%= vars.app_runtime_abbr %> waits 30 seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance. |
 
 ### <a id="types"></a> Health check types
 
@@ -140,9 +163,10 @@ circumstances in which to use them:
 
 ### <a id="health_check_timeout"></a> Health check timeouts
 
-The value configured for the health check timeout is the amount of time allowed to elapse between
-starting an app and the first healthy response from the app. If the health check does not receive a
-healthy response within the configured timeout, then the app is declared unhealthy.
+The startup timeout value configured for the app process is the amount of time
+allowed to elapse between starting an app and the first healthy response from
+the app. If the health check does not receive a healthy response within the
+configured timeout, then the app is declared unhealthy.
 
 <%= vars.app_healthcheck_timeout %>
 

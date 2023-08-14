@@ -205,8 +205,7 @@ In more complex situations, like making a custom buildpack, you might want to us
 
 ### <a id='disk-quota'></a> disk_quota
 
-The `disk_quota` attribute allocates the disk space for your app instance. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in either
-uppercase or lowercase.
+The `disk_quota` attribute allocates the disk space for your app instance. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in either uppercase or lowercase.
 
 For example:
 
@@ -271,7 +270,7 @@ For example:
 
 ### <a id='health-check-invoc-time'></a> health-check-invocation-timeout
 
-The `health-check-invocation-timeout` attribute specifies the timeout in seconds for individual health check requests for HTTP and port health checks. The default value is 1.
+The `health-check-invocation-timeout` attribute specifies the timeout in seconds for individual health check requests for http and port health checks. The default value is 1.
 
 For example:
 
@@ -305,7 +304,7 @@ For example:
 
 ### <a id='readiness-health-check-type'></a> readiness-health-check-type
 
-The `readiness-health-check-type` attribute sets the readiness health check type to either `port`, `process` or `http`. If you do not provide a `readiness-health-check-type` attribute, the default is `process`.
+The `readiness-health-check-type` attribute sets the readiness health check type to `port`, `process` or `http`. If you do not provide a `readiness-health-check-type` attribute, the default is `process`.
 
 For example:
 
@@ -371,8 +370,7 @@ To ensure that platform maintenance does not interrupt your app, <%= vars.recomm
 
 ### <a id='log-rate-limit-per-second'></a> log-rate-limit-per-second
 
-The `log-rate-limit-per-second` attribute specifies the log rate limit for all instances of an app. This attribute requires a unit of measurement: `B`, `K`, `KB`, `M`,
-`MB`, `G`, or `GB`, in either uppercase or lowercase.
+The `log-rate-limit-per-second` attribute specifies the log rate limit for all instances of an app. This attribute requires a unit of measurement: `B`, `K`, `KB`, `M`, `MB`, `G`, or `GB`, in either uppercase or lowercase.
 
 For example:
 
@@ -391,8 +389,7 @@ The `-l` command-line flag overrides this attribute.
 
 ### <a id='memory'></a> memory
 
-The `memory` attribute specifies the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in
-either uppercase or lowercase.
+The `memory` attribute specifies the memory limit for all instances of an app. This attribute requires a unit of measurement: `M`, `MB`, `G`, or `GB`, in either uppercase or lowercase.
 
 For example:
 
@@ -461,8 +458,7 @@ For more information, see [Deploy multiple apps with one manifest](manifest.html
 
 ### <a id='path'></a> path
 
-The `path` attribute tells <%= vars.app_runtime_abbr %> the directory location in which it can find your app. The directory specified as the `path`, either as
-an attribute or as a parameter on the command line, becomes the location where the buildpack `Detect` script runs.
+The `path` attribute tells <%= vars.app_runtime_abbr %> the directory location in which it can find your app. The directory specified as the `path`, either as an attribute or as a parameter on the command line, becomes the location where the buildpack `Detect` script runs.
 
 For example:
 

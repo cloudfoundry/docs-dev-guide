@@ -7,7 +7,6 @@ owner:
 
 <%= vars.app_runtime_abbr %> provides support for liveness and readiness health checks.
 
-
 Liveness health checks are performed to validate that app instances are running.
 When liveness health checks fail, the app instance is marked as crashed and is
 restarted. Readiness health checks are performed to validate that app instances are
@@ -18,10 +17,9 @@ You can configure a liveness health check for an app using the Cloud Foundry
 Command Line Interface (cf CLI) or by specifying a combination of the
 `health-check-http-endpoint`, `health-check-type`,
 `health-check-invocation-timeout`, and `health-check-interval` fields in an
-[App manifest](manifest.html).
+[app manifest](manifest.html).
 
-Readiness health checks are *only* configurable through the [App
-Manifest](manifest-attributes.html#optional-attributes).
+Readiness health checks are only configurable through the [app manifest](manifest-attributes.html#optional-attributes).
 
 To configure a health check using the cf CLI, see:
 
@@ -109,15 +107,15 @@ The following table describes how app health checks work.
 
 | Stage | Description |
 | ----- | ----------- |
-| 1 | When deploying the app to <%= vars.app_runtime_abbr %>, the developer specifies a liveness and/or readiness health check and optionally startup timeout with the app manifest. |
+| 1 | When deploying the app to <%= vars.app_runtime_abbr %>, the developer specifies a liveness and/or a readiness health check, and optionally, a startup timeout with the app manifest. |
 | 2 | Cloud Controller creates an LRP for Diego with the specified health check definitions. If no liveness health check is provided, Cloud Controller configures a `port` liveness health check type. If no readiness health check is provided, Cloud Controller configures a `process` readiness health check type. |
 | 3 | When Diego starts an app instance, a separate startup app health check runs every 2 seconds until a response indicates that the app instance is healthy or until the startup timeout elapses. The startup health check uses the same configuration (type, http endpoint, and invocation timeout) as the liveness health check, except for the non-configurable 2-second polling interval. |
 | 4 | After the startup health check succeeds, the app instance is marked as Running and Diego begins performing the liveness and readiness health checks. Liveness and readiness health checks are run according to their configured health check interval, with a default of 30 seconds. |
 | 5 | After the readiness health check succeeds, the app instance route is advertised. |
-| 6 | The app instance is alive, marked as Running, and is routable. Everything should be great! |
+| 6 | The app instance is alive, marked as Running, and is routable. The app instance is fully operational. |
 | 7 | If the readiness health check fails, then the route to the app instance is removed. |
-| 8 | If the liveness health check fails, Diego considers that particular instance to be unhealthy. As a result, Diego stops and deletes the app instance, then reschedules a new app instance. This process of stopping and deleting the app instance is reported back to the Cloud Controller as a crash event. |
-| 9 | When an app instance fails, Diego immediately attempts to restart the app instance several times. After three failed restarts, <%= vars.app_runtime_abbr %> waits 30 seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance. |
+| 8 | If the liveness health check fails, Diego considers that particular instance to be unhealthy. Diego stops and deletes the app instance, then reschedules a new app instance. This process of stopping and deleting the app instance is reported back to the Cloud Controller as a crash event. |
+| 9 | When an app instance fails, Diego immediately attempts to restart the app instance. After three failed restarts, <%= vars.app_runtime_abbr %> waits 30 seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance. |
 
 ### <a id="types"></a> Health check types
 

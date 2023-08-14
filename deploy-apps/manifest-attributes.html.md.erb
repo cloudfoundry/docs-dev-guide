@@ -714,8 +714,24 @@ Apps can bind to services such as databases, messaging, and key-value stores.
 Apps are deployed into app spaces. An app can only bind to services instances that exist in the target app space before the app is deployed.
 
 The `services` block consists of a heading and one or more service instance names.
+The following 'services' attributes are allowed:
 
-Whoever creates the service chooses the service instance names. These names can convey logical information, describe the nature of the service, or neither.
+```
+---
+  ...
+  services:
+    - service-1
+    - name: service-2
+    - name: service-3
+      parameters:
+        key-1: value-1
+        key-2: [value-2, value-3]
+        key-3: ... any other kind of value ...
+    - name: service-4
+      binding_name: binding-1
+```
+
+The person who creates the service chooses the service instance names. These names can convey logical information, describe the nature of the service, or neither.
 
 For example:
 

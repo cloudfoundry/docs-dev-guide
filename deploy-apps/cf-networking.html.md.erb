@@ -51,7 +51,6 @@ The container-to-container networking feature allows direct network traffic betw
 <% if vars.platform_code == "PCF" %>
 <%= partial "/pcf/core/c2c_overlay" %>
 <% end %>
-<% end %>
 
 <% if vars.platform_code == 'CF' %>
 <%= partial 'c2c_oss_logging' %>

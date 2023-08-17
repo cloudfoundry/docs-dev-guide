@@ -239,22 +239,6 @@ The manifest attribute `docker.username` is optional. If it is used, the passwor
 <span class="note__title">Important</span>
 Using the <code>docker</code> attribute with the <code>buildpacks</code> or <code>path</code> attributes causes an error.</p>
 
-### <a id='health-check-type'></a> health-check-type
-
-The `health-check-type` attribute sets the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type` attribute, the default is `port`.
-
-For example:
-
-```
----
-  ...
-  health-check-type: port
-```
-
-The `-u` command-line flag overrides this attribute.
-
-In cf CLI v6, the value of `none` is deprecated in favor of `process`. In cf CLI v7, `none` is removed.
-
 ### <a id='health-check-http-ep'></a> health-check-http-endpoint
 
 The `health-check-http-endpoint` attribute customizes the endpoint for the `http` health check type. If you do not provide a `health-check-http-endpoint` attribute, it uses endpoint `/`.
@@ -288,69 +272,23 @@ cf set-health-check APP-NAME http --invocation-timeout 10
 
 Where `APP-NAME` is the name of your app.
 
-Within the manifest, the health check invocation timeout is controlled by the `health-check-invocation-timeout` attribute.
+Within the manifest, the health check timeout is controlled by the `health-check-invocation-timeout` attribute.
 
-### <a id='health-check-interval'></a> health-check-interval
+### <a id='health-check-type'></a> health-check-type
 
-The `health-check-interval` attribute specifies the amount of time in seconds between starting individual health check requests for HTTP and port health checks.
-
-For example:
-
-```
----
-  ...
-  health-check-interval: 15
-```
-
-### <a id='readiness-health-check-type'></a> readiness-health-check-type
-
-The `readiness-health-check-type` attribute sets the readiness health check type to `port`, `process` or `http`. If you do not provide a `readiness-health-check-type` attribute, the default is `process`.
+The `health-check-type` attribute sets the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type` attribute, the default is `port`.
 
 For example:
 
 ```
 ---
   ...
-  readiness-health-check-type: port
+  health-check-type: port
 ```
 
-### <a id='readiness-health-check-http-ep'></a> readiness-health-check-http-endpoint
+The `-u` command-line flag overrides this attribute.
 
-The `readiness-health-check-http-endpoint` attribute customizes the endpoint for the `http` readiness health check types. If you do not provide a `readiness-health-check-http-endpoint` attribute, it uses endpoint `/`.
-
-For example:
-
-```
----
-  ...
-  readiness-health-check-type: http
-  readiness-health-check-http-endpoint: /health
-```
-
-### <a id='readiness-health-check-invoc-time'></a> readiness-health-check-invocation-timeout
-
-The `readiness-health-check-invocation-timeout` attribute specifies the timeout in seconds for individual readiness health check requests for HTTP and port health checks. The default value is 1.
-
-For example:
-
-```
----
-  ...
-  readiness-health-check-invocation-timeout: 30
-```
-
-
-### <a id='readiness-health-check-interval'></a> readiness-health-check-interval
-
-The `readiness-health-check-interval` attribute specifies the amount of time in seconds between starting individual readiness health check requests for HTTP and port health checks.
-
-For example:
-
-```
----
-  ...
-  readiness-health-check-interval: 15
-```
+In cf CLI v6, the value of `none` is deprecated in favor of `process`. In cf CLI v7, `none` is removed.
 
 ### <a id='instances'></a> instances
 

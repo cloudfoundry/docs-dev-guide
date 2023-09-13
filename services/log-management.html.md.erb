@@ -58,6 +58,10 @@ To set up a communication channel between the log management service and your Cl
 <span class="note__title">Important</span>
 If the URL is an IP address, then it must not contain any leading zeros, for example, <code>10.0.01.14</code>. If you include the leading zeros, then URL parsing fails.</p>
 
+<p class="note important">
+<span class="note__title">Important</span>
+Because http drains are slow and resource intensive, we recommend using syslog drains instead.</p>
+
 ### <a id='step2'></a> Step 2: Create and bind a user-provided service instance
 
 You can create a syslog drain service and bind apps to it using Cloud Foundry Command Line Interface (cf CLI) commands.

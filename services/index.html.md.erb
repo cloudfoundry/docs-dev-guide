@@ -12,7 +12,9 @@ Cloud Foundry offers a marketplace of services, from which users can provision r
 
 For more information about provisioning service instances and other lifecycle operations, see [Managing Service Instances](./managing-services.html).
 
-<p class='note'><strong>Note:</strong> For a service to be available in the marketplace, it must be integrated with Cloud Foundry by way of APIs. <%= vars.custom_services %></p>
+<p class="note important">
+<span class="note__title">Important</span>
+For a service to be available in the marketplace, it must be integrated with Cloud Foundry by way of APIs. <%= vars.custom_services %></p>
 
 ### <a id='user-provided-services'></a> User-provided service instances
 
@@ -35,7 +37,9 @@ Credentials managed manually are known as service keys. Use service keys when yo
 
 For more information about creating a user-provided service instance with service keys, see the [User-Provided Service Instances](./user-provided.html) topic. For more information about service keys, see the [Managing Service Keys](./service-keys.html) topic.
 
-<p class='note'><strong>Note:</strong> Not all services support service keys. Some services support credentials through app binding only.</p>
+<p class="note important">
+<span class="note__title">Important</span>
+Not all services support service keys. Some services support credentials through app binding only.</p>
 
 
 ## <a id='external-ip'></a> Outbound IP Addresses
@@ -66,18 +70,22 @@ If your app relies on a relational database, you must apply schema changes perio
 
 For more information about running cf CLI tasks, see [Running tasks in your apps](../using-tasks.html).
 
-<p class="note"><strong>Note:</strong> To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. For information about downloading, installing, and uninstalling the cf CLI, see the <a href="../../cf-cli/install-go-cli.html">Installing the cf CLI</a>.</p>
+<p class="note important">
+<span class="note__title">Important</span>
+To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. For information about downloading, installing, and uninstalling the cf CLI, see the <a href="../../cf-cli/install-go-cli.html">Installing the cf CLI</a>.</p>
 
 To perform a database schema migration with the cf CLI:
 
 1. Push the app:
+
 	<pre class="terminal">$ cf push APP-NAME</pre>
 
 	Where `APP-NAME` is the name of the app.
 
-	<p class="note"><strong>Note:</strong> To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
+	To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.
 
-1. Perform a database schema migration as a task on the app:
+2. Perform a database schema migration as a task on the app:
+
 	<pre class="terminal">
 	$ cf run-task APP-NAME --command "bin/rails db:migrate" --name TASK-NAME
 	Creating task for app APP-NAME in org jdoe-org / space development as jdoe@pivotal.io...

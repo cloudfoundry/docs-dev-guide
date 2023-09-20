@@ -25,7 +25,9 @@ $ cf bind-service YOUR-APP YOUR-LOG-STORE
 
 For more information about service instance lifecycle management, see [Managing Service Instances](managing-services.html).
 
-<p class='note'><strong>Note:</strong> Not all marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that enables automated streaming of app syslogs. <%= vars.custom_services %></p>
+<p class="note">
+<span class="note__title">Note</span>
+Not all marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that enables automated streaming of app syslogs. <%= vars.custom_services %></p>
 
 
 ## <a id='user-provided'></a> Using Services Not Available in Your Marketplace
@@ -52,7 +54,9 @@ To set up a communication channel between the log management service and your Cl
 
 <%=vars.pas_ssl_note%>
 
-<p class='note'><strong>Note:</strong> If the URL is an IP address, then it must not contain any leading zeros, for example, <code>10.0.01.14</code>. If you include the leading zeros, then URL parsing fails.</p>
+<p class="note important">
+<span class="note__title">Important</span>
+If the URL is an IP address, then it must not contain any leading zeros, for example, <code>10.0.01.14</code>. If you include the leading zeros, then URL parsing fails.</p>
 
 ### <a id='step2'></a> Step 2: Create and Bind a User-Provided Service Instance
 
@@ -100,4 +104,6 @@ To verify that logs are draining correctly to a third-party log management servi
 
 For example, if your app serves web pages, you can send HTTP requests to the app. In Cloud Foundry, these generate Router log messages, which you can view in the CLI. Your third-party log management service should display corresponding messages.
 
-<p class="note"><strong>Note:</strong> For security reasons, Cloud Foundry apps do not respond to <code>ping</code>. You cannot use <code>ping</code> to generate log entries.</p>
+<p class="note">
+<span class="note__title">Note</span>
+For security reasons, Cloud Foundry apps do not respond to <code>ping</code>. You cannot use <code>ping</code> to generate log entries.</p>

@@ -14,9 +14,9 @@ The app deployment process involves uploading, staging, and starting the app in 
 * Stage: 15 minutes
 * Start: 60 seconds
 
-<p class="note"><strong>Note:</strong> Your administrator can change these defaults. Check with your administrator for the actual time limits set for app deployment.</p>
+Your administrator can change these defaults. Check with your administrator for the actual time limits set for app deployment.
 
-Developers can change the time limit for starting apps through an app manifest or on the command line. For more information, see [ Deploying with App Manifests](manifest.html) and [Using App Health Checks](./healthchecks.html).
+Developers can change the time limit for starting apps through an app manifest or on the command line. For more information, see [Deploying with App Manifests](manifest.html) and [Using App Health Checks](./healthchecks.html).
 
 
 ## <a id="crash-events"></a> Crash Events
@@ -47,4 +47,6 @@ By default, apps must finish their in-flight jobs within ten seconds of receivin
 
 <%= vars.app_graceful_shutdown_config %>
 
-<p class="note"><strong>Note:</strong> One exception to the cases mentioned above is when monit restarts a crashed Diego Cell rep or Garden server. In this case, <%= vars.app_runtime_abbr %> immediately stops the apps that are still running using SIGKILL.</p>
+<p class="note">
+<span class="note__title">Note</span>
+One exception to the cases mentioned above is when monit restarts a crashed Diego Cell rep or Garden server. In this case, <%= vars.app_runtime_abbr %> immediately stops the apps that are still running using SIGKILL.</p>

@@ -208,25 +208,20 @@ You can configure `cf push` to run custom initialization tasks for an app.
 
 These tasks run after <%= vars.app_runtime_abbr %> loads the app droplet but before it launches the app itself to let the initialization script access the app language runtime environment. For example, your script can map values from `$VCAP_SERVICES` into other environment variables or a config file that the app uses.
 
-<div class="note"><strong>Note</strong>: See below for important information about configuring app initialization when you use certain buildpacks:
-  <p>
-  <ul>
-    <li>
-      <strong>Java:</strong> Initialization scripts for the Java buildpack require additional configuration.
-      For more information, see <a href="https://community.pivotal.io/s/article/how-to-modify-the-application-container-environment-prior-to-application-execution?language=en_US">How to Modify the Application Container Environment prior to Application Execution</a> in the Knowledge Base.
-    </li>
-    <li>
-      <strong>PHP:</strong> <%= vars.app_runtime_abbr %> does not support initialization scripts for the PHP buildpack versions prior to v4.3.18. If you use one of these buildpack versions, your app hosts the <code>.profile</code> script's contents. This means that any app staged using the affected buildpack versions can leak credentials placed in the <code>.profile</code> script.
-    </li>
-  </ul>
-  </p>
-</div>
+Additional notes for including important information about configuring app initialization when you use certain
+buildpacks:
+
+* **Java**: Initialization scripts for the Java buildpack require additional configuration.For more information, see
+<a href="https://community.pivotal.io/s/article/how-to-modify-the-application-container-environment-prior-to-application-execution?language=en_US">How to Modify the Application Container Environment prior to Application Execution</a> in the VMware Tanzu Knowledge Base.
+
+* **PHP**: <%= vars.app_runtime_abbr %> does not support initialization scripts for the PHP buildpack versions prior to v4.3.18.
+If you use one of these buildpack versions, your app hosts the `.profile` script's contents. This means that any app staged using the affected buildpack versions can leak credentials placed in the `.profile` script.
 
 To run initialization tasks:
 
 1. Create a `.profile` script that contains the initialization tasks.
 
-1. Save the `.profile` script to the directory where you run the `cf push` command.
+2. Save the `.profile` script to the directory where you run the `cf push` command.
 
 As an example, the following `.profile` file uses `bash` to set a value for the environment variable `LANG`. Setting this value at the operating system level lets the app determine which language to use for error messages and instructions, collating sequences, and date formats:
 

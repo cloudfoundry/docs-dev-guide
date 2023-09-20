@@ -81,7 +81,9 @@ To do a database schema migration with cf CLI:
 
 	Where `APP-NAME` is the name of the app.
 
-	<p class="note"><strong>Note:</strong> To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
+	<p class="note">
+	<span class="note__title">Note</span>
+	To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
 
 1. Do a database schema migration as a task on the app:
 	<pre class="terminal">

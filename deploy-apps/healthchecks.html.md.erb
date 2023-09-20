@@ -98,7 +98,7 @@ For more information about the `cf set-health-check` command, see
 [set-health-check](http://cli.cloudfoundry.org/en-US/cf/set-health-check.html) in
 the Cloud Foundry CLI Reference Guide.
 
-class="note important">
+<p class="note important">
 <span class="note__title">Important</span>
 After you set the health check configuration of a deployed
 app with the <code>cf set-health-check</code> command, you must restart the app for the change to
@@ -144,7 +144,9 @@ circumstances in which to use them:
     <code>http</code> health check type whenever possible. A healthy HTTP response ensures that the
     web app is ready to serve HTTP requests. The configured endpoint must respond within one second
     to be considered healthy.<br>
-    <p class="note important"><span class="note__title">Important</span>To prevent false
+    <p class="note important">
+    <span class="note__title">Important</span>
+    To prevent false
     negatives, use a dedicated endpoint for health checks where response time and result do not
     depend on business logic.</p>
     </td>

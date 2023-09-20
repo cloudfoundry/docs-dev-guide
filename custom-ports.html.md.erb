@@ -37,7 +37,7 @@ The procedure in this document discusses configuring app ports.
 
 The following diagram shows an example data path and Network Address Translation for TCP routing:
 
-![Traffic-flow-diagram](./images/route_ports.png)
+![alt-text="Traffic-flow-diagram"](./images/route_ports.png)
 
 For HTTP routing, the route port is always `80` or `443`.
 
@@ -49,8 +49,11 @@ Before following the procedure to configure routing to your app on custom ports,
 * An app pushed to <%= vars.app_runtime_abbr %> that can receive requests on one or more custom ports.
 
 * Routes for which you want traffic forwarded to your app on custom ports, which are mapped to the app.
-	<p class='note'><strong>Note:</strong> If your app receives requests on two ports, and you want clients to be able to send requests to both of them, create
-		two routes. These routes can be from HTTP or TCP domains. In <a href="#procedure">Procedure</a> below, you use API endpoints to map these routes to your app on the ports it uses to receive requests. For more information, see <a href="deploy-apps/routes-domains.html">Routes and Domains</a>.</p>
+
+<p class="note">
+<span class="note__title">Note</span>
+If your app receives requests on two ports, and you want clients to be able to send requests to both of them, create
+two routes. These routes can be from HTTP or TCP domains. In <a href="#procedure">Procedure</a> below, you use API endpoints to map these routes to your app on the ports it uses to receive requests. For more information, see <a href="deploy-apps/routes-domains.html">Routes and Domains</a>.</p>
 
 
 ## <a id='procedure'></a> Procedure
@@ -123,8 +126,10 @@ To configure your app to receive HTTP or TCP requests on custom ports:
       <li><code>PROCESS-TYPE</code> is the value of <code>type</code> that you recorded in a previous step. This value is usually <code>web</code>.</li>
     </ul>
 
-    <p class='note'><strong>Note:</strong> This API call removes all destinations for a route and replaces them with the destinations you provide in the API
-    	request.</p>
+<p class="note important">
+<span class="note__title">Important</span>
+This API call removes all destinations for a route and replaces them with the destinations you provide in the API
+request.</p>
 
 
 ## <a id='additional-resources'></a> Additional resources

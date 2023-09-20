@@ -42,12 +42,17 @@ For more information about defining processes with manifests, see [processes](de
 
 To push an app with multiple processes using a Procfile:
 
-<p class="note"><strong>Note:</strong> Procfile support varies depending on the buildpack you use. For example, the Staticfile buildpack requires a Staticfile instead of a Procfile. For more information, see <a href="../buildpacks/staticfile/index.html">Staticfile Buildpack</a>.</p>
+<p class="note">
+<span class="note__title">Note</span>Procfile support varies depending on the buildpack you use. For example, the Staticfile buildpack requires a Staticfile instead of a Procfile. For more information, see <a href="../buildpacks/staticfile/index.html">Staticfile Buildpack</a>.</p>
 
 1. Create a file named `Procfile` in the root of your app directory.
-	<p class="note"><strong>Note:</strong> For more information about Procfiles, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#procfiles">Procfiles</a> in the CAPI V3 documentation.</p>
 
-1. Add each process and its start command to the Procfile. See the following example:
+    <p class="note">
+    <span class="note__title">Note</span>
+    For more information about Procfiles, see the
+    <a href="https://v3-apidocs.cloudfoundry.org/index.html#procfiles">CAPI V3 documentation</a>.</p>
+
+2. Add each process and its start command to the Procfile. For example:
 
     ```
     web: bundle exec rackup config.ru -p $PORT

@@ -22,9 +22,11 @@ TIP: Use 'cf push' to ensure your env variable changes take effect
 $ cf restart my-app
 </pre>
 
-<p class='note'><strong>Note</strong>: You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
+<p class="note important">
+<span class="note__title">Important</span>
+You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
 
-### <a id='arbitrary-params-binding'></a> Arbitrary Parameters  ###
+### <a id='arbitrary-params-binding'></a> Arbitrary Parameters
 
 Some services support additional configuration parameters with the bind request. These parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
 
@@ -56,7 +58,9 @@ services:
 
 The following excerpt from an app manifest binds a service instance called `db-test` with arbitrary parameters to the app on push.
 
-<p class="note"><strong>Note:</strong> Arbitrary parameters are supported in app manifests in cf CLI v7.0 and later.</p>
+<p class="note">
+<span class="note__title">Note</span>
+Arbitrary parameters are supported in app manifests in cf CLI v7.0 and later.</p>
 
 ```
 services:
@@ -176,4 +180,6 @@ Unbinding app my-app from service mydb in org my-org / space test as me@example.
 OK
 </pre>
 
-<p class='note'><strong>Note</strong>: You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
+<p class="note important">
+<span class="note__title">Important</span>
+You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>

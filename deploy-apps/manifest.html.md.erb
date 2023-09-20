@@ -20,12 +20,18 @@ For a full list of attributes you can specify in an app manifest, see [App manif
 
 ## <a id='procedure'></a> Deploy an app with a manifest
 
+By default, the `cf push` command uses the `manifest.yml` file in the app directory. To specify
+a different location for the manifest, pass its local path to the `-f` flag when you run `cf push`.
+
 To deploy an app with a manifest:
 
 1. Create a `manifest.yml` file in the root directory of your app.
-  <p class="note"><strong>Note:</strong> By default, the <code>cf push</code> command uses the <code>manifest.yml</code> file in the app directory. To specify a different location for the manifest, pass its local path to the <code>-f</code> flag when you run <code>cf push</code>.</p>
+  <p class="note important">
+  <span class="note__title">Important</span>
+  By default, the <code>cf push</code> command uses the <code>manifest.yml</code> file in the app directory. To specify
+  a different location for the manifest, pass its local path to the <code>-f</code> flag when you run <code>cf push</code>.</p>
 
-1. Add the following content to the file:
+2. Add the following content to the file:
 
     ```
     ---
@@ -34,7 +40,7 @@ To deploy an app with a manifest:
     ```
     Where `YOUR-APP` is the name of your app.
 
-1. Run:
+3. Run:
 
   ```
   cf push
@@ -61,16 +67,22 @@ Follow these general rules when deploying multiple apps with one manifest:
 
 ### <a id='procedure-multi'></a> Procedure
 
+<p class="note important">
+<span class="note__title">Important</span>
+Each app must be in a subdirectory under the same parent directory.</p>
+
 To deploy multiple apps with a manifest:
 
-<p class="note"><strong>Note:</strong> Each app must be in a subdirectory under the same parent directory.</p>
+<p class="note important">
+<span class="note__title">Important</span>
+Each app must be in a subdirectory under the same parent directory.</p>
 
 1. Create a `manifest.yml` file in the directory that contains the apps.
 
-1. Add each app and its directory to the file. <%= vars.app_runtime_full %> pushes the apps
-   in the order specified in the manifest.
-  <p class="note"><strong>Note:</strong> If you push multiple apps using a manifest and one fails to deploy,
-     <%= vars.app_runtime %> does not attempt to push apps specified after the app that failed.</p>
+1. Add each app and its directory to the file. <%= vars.app_runtime_abbr %> pushes the apps in the order specified in the manifest.
+
+    If you push multiple apps using a manifest and one fails to deploy, <%= vars.app_runtime_abbr %> does not attempt to
+    push apps specified after the app that failed.
 
     ```
     ---

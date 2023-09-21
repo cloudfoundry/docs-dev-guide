@@ -30,7 +30,7 @@ Developers can map many apps to a single route, resulting in load-balanced reque
 
 Routes belong to a space, and developers can only map apps to a route in the same space.
 
-<p class="note"><strong>Note:</strong> Routes are globally unique. Developers in one space cannot create a route with the same URL as developers in another space, regardless of which orgs control these spaces.</p>
+Routes are globally unique. Developers in one space cannot create a route with the same URL as developers in another space, regardless of which orgs control these spaces.
 
 ### <a id='http-vs-tcp-routes'></a> HTTP vs. TCP routes
 
@@ -327,7 +327,7 @@ Any app that is not routed to port `80` or port `443` must be explicitly mapped 
 
 Developers can create and reserve routes for later use by following the steps in [Manually Map a Route](#map-route-manually). Or they can map routes to their app immediately as part of a push by following the steps in [Map a Route with App Push](#map-route-on-push).
 
-<p class="note"><strong>Note:</strong> Changes to route mappings are executed asynchronously. On startup, an app will be accessible at its route within a few seconds. Similarly, upon mapping a new route to a running app, the app will be accessible at this route within a few seconds of the CLI exiting successfully.</p>
+Changes to route mappings are executed asynchronously. On startup, an app will be accessible at its route within a few seconds. Similarly, upon mapping a new route to a running app, the app will be accessible at this route within a few seconds of the CLI exiting successfully.
 
 #### <a id='map-route-manually'></a> Manually map a route
 
@@ -498,7 +498,9 @@ $ cf delete-route tcp.<%= vars.private_app_domain %> --port 60000
 
 Users can route HTTP requests to a specific app instance using the header `X-Cf-App-Instance`.
 
-<p class="note">Use of the <code>X-Cf-App-Instance</code> header is only available for users on the Diego architecture.
+<p class="note important">
+<span class="note__title">Important</span>
+Use of the <code>X-Cf-App-Instance</code> header is only available for users on the Diego architecture.
 </p>
 
 The format of the header is `X-Cf-App-Instance: APP_GUID:APP_INDEX`.

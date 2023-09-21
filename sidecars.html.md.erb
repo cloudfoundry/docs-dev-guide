@@ -237,9 +237,7 @@ The [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-
 
 * **A Golang sidecar**: The `config-server-sidecar` produces a `config-server` binary. It provides apps with their required configuration over its `/config` endpoint. It also accepts connections only over localhost on the `CONFIG_SERVER_PORT` port. This means the sidecar must be co-located in the same container as the app, so that it shares the same network namespace as the main app.
 
-The diagram below illustrates the app architecture:
-
-![Sidecar Diagram](./images/sidecar-diagram.png)
+![alt-text=""](./images/sidecar-diagram.png)
 
 ### <a id="push"></a> Push the App and Sidecar
 

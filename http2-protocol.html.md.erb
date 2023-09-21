@@ -40,7 +40,9 @@ If your <%= vars.app_runtime_abbr %> deployment is configured to support HTTP/2,
 then all traffic coming in to <%= vars.app_runtime_abbr %> supports HTTP/2.
 The traffic is forwarded as HTTP/1.1 before it reaches your app unless configured otherwise.
 
+<% if vars.platform_code != 'CF' %>
 For more information, see [Configuring HTTP/2 support](https://docs.vmware.com/en/VMware-Tanzu-Application-Service/<%= vars.current_major_version %>/tas-for-vms/supporting-http2.html).
+<% end %>
 
 To serve gRPC traffic, your app must use HTTP/2 for all network hops.
 Configure your route to send HTTP/2 traffic to your app.

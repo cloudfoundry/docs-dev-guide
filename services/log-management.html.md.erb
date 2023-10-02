@@ -11,7 +11,7 @@ Cloud Foundry aggregates logs for all instances of your apps and for requests ma
 
 If you want more than the limited amount of logging information that Cloud Foundry can buffer to persist, drain these logs to a log management service.
 
-**Feature:** Since the release of [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use mTLS inside your syslog drain. Follow the procedure in <a href="#step2">Step 2: Create and Bind a User-Provided Service Instance</a>. Include the corresponding credentials as a _PEM-encoded X.509_ certificate.
+Since the release of [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use mTLS inside your syslog drain. Follow the procedure in <a href="#step2">Step 2: Create and Bind a User-Provided Service Instance</a>. Include the corresponding credentials as a _PEM-encoded X.509_ certificate.
 
 For more information about the systems responsible for log aggregation and streaming in Cloud Foundry, see [App logging in Cloud Foundry](../deploy-apps/streaming-logs.html).
 
@@ -26,9 +26,7 @@ $ cf bind-service YOUR-APP YOUR-LOG-STORE
 
 For more information about service instance life cycle management, see [Managing service instances](managing-services.html).
 
-<p class="note">
-<span class="note__title">Note</span>
-Not all Marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that allows automated streaming of app syslogs. <%= vars.custom_services %></p>
+<p class="note"><strong>Note</strong><span>:</span> Not all Marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that allows automated streaming of app syslogs. <%= vars.custom_services %></p>
 
 ## <a id='user-provided'></a> Using services not available in your Marketplace
 
@@ -46,7 +44,7 @@ To set up a communication channel between the log management service and your Cl
 
 1. Add these IP addresses to your allowlist to ensure unrestricted log routing to your log management service.
 
-1. Record the syslog URL provided by the third-party service. Third-party services typically provide a syslog URL to use as an endpoint for incoming log data. You use this syslog URL in [Step 2: Create a user-provided service instance](#step2).
+1. Record the syslog URL provided by the third-party service. Third-party services typically provide a syslog URL to use as an endpoint for incoming log data. You use this syslog URL in [Step 2: Create and bind a user-provided service instance](#step2).If the URL is an IP address, then it must not contain any leading zeros, for example, <code>10.0.01.14</code>. If you include the leading zeros, then URL parsing fails.
 <br><br>
     Cloud Foundry uses the syslog URL to route messages to the service. The syslog URL has a scheme of `syslog`, `syslog-tls`, or `https`, and can include a port number. For example:
 
@@ -54,13 +52,8 @@ To set up a communication channel between the log management service and your Cl
 
 <%=vars.pas_ssl_note%>
 
-<p class="note important">
-<span class="note__title">Important</span>
-If the URL is an IP address, then it must not contain any leading zeros, for example, <code>10.0.01.14</code>. If you include the leading zeros, then URL parsing fails.</p>
-
-<p class="note important">
-<span class="note__title">Important</span>
-Because http drains are slow and resource intensive, we recommend using syslog drains instead.</p>
+>**Important**
+>Because http drains are slow and resource intensive, we recommend using syslog drains instead.
 
 ### <a id='step2'></a> Step 2: Create and bind a user-provided service instance
 
@@ -78,7 +71,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
       <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
     </ul>
 
-    By default, the syslog agent forwards only application logs to a syslog server. To have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, use the `drain-type` parameter to specify if only logs, container metrics or both should be forwarded by the syslog drain. The `drain-type` parameter should be added to the `SYSLOG-DRAIN-URL`.
+    By default, the syslog agent forwards only application logs to a syslog server. To have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, use the `drain-type` parameter to specify if only logs (default), only container metrics, or both should be forwarded by the syslog drain. Add the `drain-type` parameter to the `SYSLOG-DRAIN-URL`.
 
     <pre class="terminal">
     $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL?drain-type=DRAIN-TYPE-VALUE
@@ -86,7 +79,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
 
     Where `DRAIN-TYPE-VALUE` is one of the following:
     <ul>
-        <li><code>logs</code> forwards logs only (this is also the default when the parameter is not present).</li>
+        <li><code>logs</code> forwards logs only (this is the default when the parameter is not present).</li>
         <li><code>metrics</code> forwards container metrics only.</li>
         <li><code>all</code> forwards both logs and metrics.</li>
     </ul>
@@ -96,34 +89,35 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
     $ cf create-user-provided-service my_app_drain -l syslog://logs.example.com:1234?drain-type=all
     </pre>
 
-In case of the use of the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use `-p` flag to define the client certificate and key as credentials, filling in values as follows.</br>
+    If you are using the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use the `-p` flag to define the client certificate and key as credentials, filling in values as follows.</br>
 
-<pre class="terminal">
-$ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
-</pre>
+    <pre class="terminal">
+    $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
+    </pre>
 
-</p>
-If your certs include the V3 extension `X509v3 Extended Key Usage`, ensure that you are using the right key policies. For TLS you need server. and for mTLS also client authentication. For example, TLS Web Server Authentication for TLS with TLS Web Client Authentication for mTLS.
+    If your certs include the V3 extension `X509v3 Extended Key Usage`, ensure that you are using the right key policies. For TLS, you need server authentication, and for mTLS, you also need client authentication. For example, TLS Web Server Authentication for TLS with TLS Web Client Authentication for mTLS is defined as follows:
 
-<pre class="terminal">
-X509v3 extensions:
-   X509v3 Extended Key Usage:
-      TLS Web Server Authentication, TLS Web Client Authentication
-</pre>
+    <pre class="terminal">
+    X509v3 extensions:
+    X509v3 Extended Key Usage:
+        TLS Web Server Authentication, TLS Web Client Authentication
+    </pre>
 
-You can also provide a single certificate authority without client certificate and key if you are using a server certificate signed by your private CA.
-<pre class="terminal">
-$ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----"}'
-</pre>
+    You can also provide a single certificate authority without a client certificate and key if you are using a server certificate signed by your private CA.
 
-Finally, a combination of the approaches described earlier uses a certificate authority for a server certificate signed by your private ca and a client certificate and key.
-<pre class="terminal">
-$ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----", "cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
-</pre>
+    <pre class="terminal">
+    $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----"}'
+    </pre>
+
+    Finally, a combination of the approaches described earlier uses a certificate authority for a server certificate signed by your private ca and a client certificate and key.
+    
+    <pre class="terminal">
+    $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----", "cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
+    </pre>
 
     For more information, see [User-provided service instances](./user-provided.html).
 
-2. To bind an app to the service instance, do one of these:
+1. To bind an app to the service instance, do one of these:
     * Run `cf push` with a manifest. The services block in the manifest must specify the service instance that you want to bind.
     * Run `cf bind-service`:
 
@@ -135,7 +129,7 @@ After a short delay, logs start to flow.
 
 For more information, see [Managing service instances with the CLI](./managing-services.html).
 
-### <a id='cups-step3'></a> Step 3: Verify logs are draining
+### <a id='cups-step3'></a> Step 3: Verify that logs are draining
 
 To verify that logs are draining correctly to a third-party log management service:
 

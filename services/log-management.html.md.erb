@@ -113,14 +113,14 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
     A combination of the approaches described earlier uses a certificate authority for a server certificate signed by your private ca and a client certificate and key.
     
     <pre class="terminal">
-    $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----", "cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
+    $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----", "cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}
     </pre>
 
-    <p> You can also define the drain scope (`drain_scope`). There are two options, `app` and `aggregate`.</p>
-
-    * `app` - This scope can be assigned to an app or a group of apps to which the app developer or owner has access. This is the default, if `drain_scope` is not specified.
-
-    * `aggregate` - This is a special type of drain that collects all logs, container metrics, and platform component metrics from all BOSH VM and forwards them to the defined drain URL. It is deployed using the cf deployment manifest and is designed to be used with a central logging or metrics platform, where all logs or metrics are aggregated in a single system. For more information about metrics, see [Using metrics with drain logs](./metrics.html).
+    You can also define the drain scope (`drain_scope`). There are two options, `app` and `aggregate`.
+    <ul>
+        <li><code>app</code> - This scope can be assigned to an app or a group of apps to which the app developer or owner has access. This is the default, if <code>drain_scope</code> is not specified.</li>
+        <li><code>aggregate</code> - This is a special type of drain that collects all logs, container metrics, and platform component metrics from all BOSH VM and forwards them to the defined drain URL. It is deployed using the cf deployment manifest and is designed to be used with a central logging or metrics platform, where all logs or metrics are aggregated in a single system. For more information about metrics, see <a href="./metrics.html">Using metrics with drain logs</a>.</li>
+    </ul>
 
     <pre class="terminal">
     $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-DRAIN-URL drain_scope DRAIN-SCOPE
@@ -128,9 +128,9 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
 
     Where:
     <ul>
-      <li><code>DRAIN-NAME</code> is a name to use for your syslog drain service instance.</li>
-      <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
-      <li><code>DRAIN-SCOPE</code> is <code>app</code> or <code>aggregate</code>.</li>
+        <li><code>DRAIN-NAME</code> is a name to use for your syslog drain service instance.</li>
+        <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
+        <li><code>DRAIN-SCOPE</code> is <code>app</code> or <code>aggregate</code>.</li>
     </ul>
 
     For more information, see [User-provided service instances](./user-provided.html).

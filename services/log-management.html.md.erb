@@ -118,23 +118,24 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
 
     You can also define the drain scope (`drain_scope`). There are two options, `app` and `aggregate`.
 
-    * `app` - This scope can be assigned to an app or a group of apps to which the app developer or owner has access. This is the default, if `drain_scope` is not specified.
-    * `aggregate` - This is a special type of drain that collects all logs, container metrics, and platform component metrics from all BOSH VM and forwards them to the defined drain URL. It is deployed using the cf deployment manifest and is designed to be used with a central logging or metrics platform, where all logs or metrics are aggregated in a single system. For more information about metrics, see [Using metrics with drain logs](./metrics.html).
+       * `app` - This scope can be assigned to an app or a group of apps to which the app developer or owner has access. This is the default, if `drain_scope` is not specified.
 
-    <pre class="terminal">
-    $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-DRAIN-URL drain_scope DRAIN-SCOPE
-    </pre>
+       * `aggregate` - This is a special type of drain that collects all logs, container metrics, and platform component metrics from all BOSH VM and forwards them to the defined drain URL. It is deployed using the cf deployment manifest and is designed to be used with a central logging or metrics platform, where all logs or metrics are aggregated in a single system. For more information about metrics, see [Using metrics with drain logs](./metrics.html).
 
-    Where:
-    <ul>
-      <li><code>DRAIN-NAME</code> is a name to use for your syslog drain service instance.</li>
-      <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
-      <li><code>DRAIN-SCOPE</code> is <code>app</code> or <code>aggregate</code>.</li>
-    </ul>
+       <pre class="terminal">
+       $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-DRAIN-URL drain_scope DRAIN-SCOPE
+       </pre>
+
+       Where:
+       <ul>
+         <li><code>DRAIN-NAME</code> is a name to use for your syslog drain service instance.</li>
+         <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
+         <li><code>DRAIN-SCOPE</code> is <code>app</code> or <code>aggregate</code>.</li>
+       </ul>
 
     For more information, see [User-provided service instances](./user-provided.html).
 
-1. To bind an app to the service instance, do one of these:
+2. To bind an app to the service instance, do one of these:
     * Run `cf push` with a manifest. The services block in the manifest must specify the service instance that you want to bind.
     * Run `cf bind-service`:
 

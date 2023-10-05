@@ -326,15 +326,13 @@ example-space   store         <%= vars.app_domain %>                	          s
 example-space		              <%= vars.app_domain %>	60000 			       tcp    tcp-app
 </pre>
 
-Developers can only see routes in spaces where they are members.
-
-<p class="note important">
-<span class="note__title">Important</span>
-cf CLI v7 removes the <code>port</code> and <code>path</code> columns from the output.</p>
+Developers can only see routes in spaces where they are a member.
+Note that cf CLI v7 removes the <code>port</code> and <code>path</code> columns from the output.
 
 ### <a id='view-route'></a> View a route
 
 Developers can view a route and its destinations within the current space with the <code>cf route</code> command. A route is uniquely identified by the combination of a host name, domain, port, and path.
+Note that the `cf route` command is available in cf CLI v8 only.
 
 <pre class="terminal">
 $ cf route <%= vars.app_domain %> --hostname example-app
@@ -353,10 +351,6 @@ Destinations:
 
 Developers can only view a route within a space where they are a member.
 
-<p class="note important">
-<span class="note__title">Important</span>
-The <code>cf route</code> command is available in cf CLI v8 only.</p>
-
 ### <a id='check-routes'></a> Check routes
 
 Developers cannot create a route that is already taken. To find out if a route is available, developers can use the [cf
@@ -365,19 +359,22 @@ check-route](https://cli.cloudfoundry.org/en-US/cf/check-route.html) command.
 To find out if a route with the host name `store` and the domain `<%= vars.app_domain %>` and the path `products` exists, run:
 
 * **cf CLI v7**:
-  <pre class="terminal">
-  $ cf check-route <%= vars.app_domain %> --hostname store --path /products
-  Checking for route...
-  OK
-  Route store.<%= vars.app_domain %>/products does exist
-  </pre>
+
+    <pre class="terminal">
+    $ cf check-route <%= vars.app_domain %> --hostname store --path /products
+    Checking for route...
+    OK
+    Route store.<%= vars.app_domain %>/products does exist
+    </pre>
+
 * **cf CLI v6**:
-  <pre class="terminal">
-  $ cf check-route store <%= vars.app_domain %> --path /products
-  Checking for route...
-  OK
-  Route store.<%= vars.app_domain %>/products does exist
-  </pre>
+  
+    <pre class="terminal">
+    $ cf check-route store <%= vars.app_domain %> --path /products
+    Checking for route...
+    OK
+    Route store.<%= vars.app_domain %>/products does exist
+    </pre>
 
 ### <a id='map-route'></a> Map a route to your app
 

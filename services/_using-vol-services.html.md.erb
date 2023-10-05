@@ -49,10 +49,12 @@ You can also bind volume services using an app manifest. However, app manifests 
 To create and bind an instance for the volume service:
 
 1. Create a service instance:
+
     * **NFS**: See [Create an NFS volume service](#create-nfs).
     * **SMB**: See [Create an SMB volume service](#create-smb).
 
-1. Bind your service instance to an app:
+2. Bind your service instance to an app:
+
     * **NFS-only**: Bind an NFS service instance to an app. Run:
 
         ```
@@ -60,12 +62,11 @@ To create and bind an instance for the volume service:
         ```
         The app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.
 
-
         Or to use UID/GID mapping:
         ```
         cf bind-service YOUR-APP SERVICE-NAME -c '{"uid":"UID","gid":"GID","mount":"OPTIONAL-MOUNT-PATH","readonly":true}'
         ```
-
+        <br>
         Where:
         <ul>
           <li><code>YOUR-APP</code> is the name of the app for which you want to use the volume service.</li>
@@ -124,7 +125,7 @@ To create and bind an instance for the volume service:
           </li>
         </ul>
 
-2. Restage your app. Run:
+3. Restage your app. Run:
 
     ```
     cf restage YOUR-APP

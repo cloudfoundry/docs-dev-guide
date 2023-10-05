@@ -226,30 +226,29 @@ Unbinding a service instance from an app removes the credentials created for you
 
 You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.
 
-<pre class="terminal">
-$ cf unbind-service my-app mydb
-Unbinding app my-app from service mydb in org my-org / space test as user@example.com...
-OK
-</pre>
+    <pre class="terminal">
+    $ cf unbind-service my-app mydb
+    Unbinding app my-app from service mydb in org my-org / space test as user@example.com...
+    OK
+    </pre>
 
 ### <a id='route-unbinding'></a>Unbind a service instance from a route
 
 Unbinding a service instance from a route causes requests and responses to no longer be proxied through the service instance. For more information, see [Managing app requests with route services](./route-binding.html).
 
-<p class="note">
-<span class="note__title">Note</span>
-If your bound service instance is providing security features, like authorization, unbinding the service instance might leave your app vulnerable.</p>
-
-<pre class="terminal">
-$ cf unbind-route-service <%=vars.app_domain%> --hostname my-app my-service-instance
-
-Unbinding leaves apps mapped to route my-app.<%=vars.app_domain%> vulnerable, e.g. if service instance my-service-instance provides authentication. Do you want to proceed?> y
-
-Unbinding route my-app.<%=vars.app_domain%> from service instance my-service-instance n org my-org / space test as user@example.com...
-OK
-</pre>
+It's important to note that if your bound service instance is providing security features, like authorization, unbinding the service instance might leave your app vulnerable.
 
 You do not have to restage your app.
+
+    <pre class="terminal">
+    $ cf unbind-route-service <%=vars.app_domain%> --hostname my-app my-service-instance
+
+    Unbinding leaves apps mapped to route my-app.<%=vars.app_domain%> vulnerable, e.g. if service instance my-service-instance provides authentication. Do you want to proceed?> y
+
+    Unbinding route my-app.<%=vars.app_domain%> from service instance my-service-instance n org my-org / space test as user@example.com...
+    OK
+    </pre>
+
 
 ## <a id='rename_service'></a>Rename a service instance
 

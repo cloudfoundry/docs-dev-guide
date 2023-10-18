@@ -639,8 +639,10 @@ You can increase the timeout length for very large apps that require more time t
 
 The `-t` command-line flag overrides this attribute.
 
-<p class='important note'><strong>Important:</strong> If you configure <code>timeout</code> with a value greater than
-  <code>cc.maximum_health_check_timeout</code>, the Cloud Controller reports a validation error with the maximum limit.</p>
+<p class="note important">
+<span class="note__title"><strong>Important</strong></span>
+If you configure <code>timeout</code> with a value greater than
+<code>cc.maximum_health_check_timeout</code>, the Cloud Controller reports a validation error with the maximum limit.</p>
 
 
 ## <a id='env-block'></a> Environment variables
@@ -753,7 +755,7 @@ service](../services/application-binding.html#bind) in _Delivering Service Crede
 This section describes app manifest features that are deprecated in favor of other features.
 
 <p class="note caution">
-<span class="note__title"><strong>Caution</strong></span>
+<span class="note__title"><strong><strong>Caution</strong></strong></span>
 Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated features with the feature that replaces it.</p>
 
 ### <a id='top-level-attributes'></a> Top-level attributes

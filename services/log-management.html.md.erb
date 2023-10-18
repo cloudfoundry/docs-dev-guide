@@ -70,7 +70,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
       <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
     </ul>
 
-    By default, the syslog agent forwards only application logs to a syslog server. To have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, use the `drain-data` parameter to specify if only logs (default), only container metrics, only traces ([timers](https://github.com/cloudfoundry/loggregator-api/blob/master/README.md#timer) from the Loggregator v2 API specification) or all of them are  forwarded by the syslog drain. Add the `drain-data` parameter to the `SYSLOG-DRAIN-URL`.
+    By default, the syslog agent forwards only application logs to a syslog server. To have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, use the `drain-data` parameter to specify if only logs (default), only container metrics, only traces ([timers](https://github.com/cloudfoundry/loggregator-api/blob/master/README.md#timer) from the Loggregator v2 API specification), or all of them are  forwarded by the syslog drain. Add the `drain-data` parameter to the `SYSLOG-DRAIN-URL`.
 
     <pre class="terminal">
     $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL?drain-data=DRAIN-DATA-VALUE
@@ -81,7 +81,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
         <li><code>logs</code> forwards logs only (this is the default when the parameter is not present).</li>
         <li><code>metrics</code> forwards container metrics only.</li>
         <li><code>traces</code> forwards traces only.</li>
-        <li><code>all</code> forwards logs, container metrics and traces.</li>
+        <li><code>all</code> forwards logs, container metrics, and traces (timers).</li>
     </ul>
 
     Example: Forward container metrics:
@@ -89,16 +89,16 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
     $ cf create-user-provided-service my_app_drain -l syslog://logs.example.com:1234?drain-data=metrics
     </pre>
 
-    The deprecated parameters `drain-type` and `include-metrics-deprecated` are still available, but are solely for backward compatibility. The existing drains must not be recreated and the possible automation on the consumers side must not be adjusted.
+    The deprecated parameters `drain-type` and `include-metrics-deprecated` are still available, but are solely for backward compatibility. The existing drains must not be recreated, and the possible automation on the consumer's side must not be adjusted.
 
     The valid values for the `drain-type` parameter are:
     <ul>
-        <li><code>logs</code> forwards logs only (this is the default when the parameter is not present).</li>
-        <li><code>metrics</code> forwards container metrics only.</li>
-        <li><code>all</code> forwards both logs and metrics.</li>
+        <li><code>logs</code> forwards logs only (this is the default when the parameter is not present)</li>
+        <li><code>metrics</code> forwards container metrics only</li>
+        <li><code>all</code> forwards both logs and metrics</li>
     </ul>
 
-    It's important to notice that the `drain-data` parameter has precedence over `drain-type`parameter. If the `include-metrics-deprecated` parameter is present in the Syslog URL, the drain forwards logs, application container metrics, and traces.
+    It's important to note that the `drain-data` parameter has precedence over `drain-type`parameter. If the `include-metrics-deprecated` parameter is present in the Syslog URL, the drain forwards logs, application container metrics, and traces.
 
     If you are using the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use the `-p` flag to define the client certificate and key as credentials, filling in values as follows.</br>
 

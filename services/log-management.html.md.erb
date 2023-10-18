@@ -26,8 +26,8 @@ $ cf bind-service YOUR-APP YOUR-LOG-STORE
 
 For more information about service instance life cycle management, see [Managing service instances](managing-services.html).
 
->**Note:**
->Not all Marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that allows automated streaming of app syslogs. <%= vars.custom_services %>
+</p>
+Not all Marketplace services support syslog drains. Some services implement an integration with Cloud Foundry that allows automated streaming of app syslogs. <%= vars.custom_services %>
 
 ## <a id='user-provided'></a> Using services not available in your Marketplace
 
@@ -51,10 +51,8 @@ To set up a communication channel between the log management service and your Cl
 
     `syslog://logs.example.com:1234`
 
-<%=vars.pas_ssl_note%>
-
->**Important**
->Because http drains are slow and resource intensive, we recommend using syslog drains instead.
+Because http drains are slow and resource intensive, we recommend using syslog drains instead.
+</p>
 
 ### <a id='step2'></a> Step 2: Create and bind a user-provided service instance
 
@@ -72,7 +70,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
       <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
     </ul>
 
-    By default, the syslog agent forwards only application logs to a syslog server. To have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, use the `drain-data` parameter to specify if only logs (default), only container metrics, only traces ([timers](https://github.com/cloudfoundry/loggregator-api/blob/master/README.md#timer) from the Loggregator v2 API specification) or all of them should be forwarded by the syslog drain. Add the `drain-data` parameter to the `SYSLOG-DRAIN-URL`.
+    By default, the syslog agent forwards only application logs to a syslog server. To have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, use the `drain-data` parameter to specify if only logs (default), only container metrics, only traces ([timers](https://github.com/cloudfoundry/loggregator-api/blob/master/README.md#timer) from the Loggregator v2 API specification) or all of them are  forwarded by the syslog drain. Add the `drain-data` parameter to the `SYSLOG-DRAIN-URL`.
 
     <pre class="terminal">
     $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL?drain-data=DRAIN-DATA-VALUE
@@ -91,7 +89,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
     $ cf create-user-provided-service my_app_drain -l syslog://logs.example.com:1234?drain-data=metrics
     </pre>
 
-    The old, deprecated parameters `drain-type` and `include-metrics-deprecated` are still available, but are left solely for backward compatibility, so that the existing drains must not be recreated and the possible automations on the consumers side must not be adjusted.
+    The deprecated parameters `drain-type` and `include-metrics-deprecated` are still available, but are solely for backward compatibility. The existing drains must not be recreated and the possible automation on the consumers side must not be adjusted.
 
     The valid values for the `drain-type` parameter are:
     <ul>
@@ -100,8 +98,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
         <li><code>all</code> forwards both logs and metrics.</li>
     </ul>
 
-    It is important to notice that the `drain-data` parameter has precedence over `drain-type`. If the `include-metrics-deprecated` is present in the Syslog URL the drain will forward everything (logs, application container metrics and traces).
-
+    It's important to notice that the `drain-data` parameter has precedence over `drain-type`parameter. If the `include-metrics-deprecated` parameter is present in the Syslog URL, the drain forwards logs, application container metrics, and traces.
 
     If you are using the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use the `-p` flag to define the client certificate and key as credentials, filling in values as follows.</br>
 
@@ -124,7 +121,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
     </pre>
 
     A combination of the approaches described earlier uses a certificate authority for a server certificate signed by your private ca and a client certificate and key.
-    
+
     <pre class="terminal">
     $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----", "cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}
     </pre>

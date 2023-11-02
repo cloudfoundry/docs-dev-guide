@@ -162,9 +162,9 @@ Where:
 
 * `USER` is the user name to use for authentication with the registry.
 
-If container registry credentials change, you must push the app with the new credentials.
+If container registry credentials change, you have two options for an update: either you push the app with the new credentials or you update the latest package with the new credentials via [PATCH /v3/packages](https://v3-apidocs.cloudfoundry.org/version/3.150.0/index.html#update-a-package) and then restage your app.
 Apps require access to the container registry when starting.
-If you do not push the app with the new credentials, <%= vars.app_runtime_abbr %> fails to start the app.
+If you do not update the app with the new credentials, <%= vars.app_runtime_abbr %> fails to start the app.
 When you rotate container credentials, <%= vars.recommended_by %> recommends using a set of two credentials, where the <code>old</code> credentials can be deactivated after all apps are pushed with the <code>new</code> credentials.
 
 ### <a id='ecr'></a> Amazon Elastic Container Registry (ECR)

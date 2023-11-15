@@ -20,7 +20,7 @@ owner: CF for VMs Networking
       <li><a href="#add-policy">Add a network policy</a></li>
       <li><a href="#list-policies">List network policies</a></li>
       <li><a href="#rm-policy">Remove a network policy</a></li>
-      <li><a href="#disable-policy">Disable network policy enforcement</a></li>
+      <li><a href="#disable-policy">Deactivate network policy enforcement</a></li>
     </ul>
     <li><a href="#discovery">App service discovery</a>
       <% if vars.platform_code == "CF" || vars.platform_code == "PCF" %>
@@ -184,11 +184,11 @@ Removing network policy to app frontend in org my-org / space dev as admin...
 OK
 </pre>
 
-### <a name="disable-policy"></a> Disable network policy enforcement
+### <a name="disable-policy"></a> Deactivate network policy enforcement
 
-You can disable Silk network policy enforcement between apps. Disabling network policy enforcement allows all apps to send network traffic to all other apps in the foundation despite no policy specifically allowing it.
+You can deactivate Silk network policy enforcement between apps. Deactivating network policy enforcement allows all apps to send network traffic to all other apps in the foundation despite no policy specifically allowing it.
 
-To disable network policy enforcement between apps, do the following:
+To deactivate network policy enforcement between apps, do the following:
 
 <% if vars.platform_code == 'CF' %>
 
@@ -237,7 +237,7 @@ See [Cats and Dogs with Service Discovery](https://github.com/cloudfoundry/cf-ne
 
 <% if vars.platform_code == 'CF' %>
 
-### <a name="enable-discovery"></a> enable app service discovery
+### <a name="enable-discovery"></a> Enable app service discovery
 
 To enable app service discovery, <%= vars.enable_c2c_discovery %>.
 

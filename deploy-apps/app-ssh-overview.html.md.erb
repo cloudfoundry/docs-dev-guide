@@ -19,12 +19,13 @@ The SSH system components include the SSH proxy and daemon, and the system also 
 Operators, space managers, and space developers can configure SSH access for <%= vars.app_runtime_abbr %>,
 for spaces, and for apps as described in the table:
 
-<table id='TK-NAME' border="1" class="nice" >
-  <tr>
-    <th><strong>User Role</strong></th>
+<table id='TK-NAME' class="table" >
+  <thead><tr>
+    <th><strong>User role</strong></th>
     <th><strong>Scope of SSH permissions control</strong></th>
     <th><strong>How they define SSH permissions</strong></th>
-  </tr><tr>
+  </tr></thead>
+  <tr>
     <td>Operator</td>
     <td>Entire deployment</td>
     <td>Configure the deployment to allow or prohibit SSH access (one-time). <%=vars.config_ssh_link%></td>

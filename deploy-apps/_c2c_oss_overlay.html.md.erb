@@ -9,12 +9,12 @@ For more information about the overlay network, see [Overlay network](../../conc
 
 To change the number of Diego Cells supported by the overlay network in your Cloud Foundry deployment, edit the `cf_networking.network` property in your `cf-networking-release` manifest, and then re-deploy Cloud Foundry. See the following examples:
 
-<table>
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Overlay subnet mask</th>
     <th>Number of cells</th>
     <th>Containers per cell </th>
-  </tr>
+  </tr></thead>
   <tr>
     <td>/20</td>
     <td>15</td>
@@ -40,7 +40,7 @@ The overlay network IP address range must not conflict with any other IP address
 
 To change the number of containers per Diego Cell in your Cloud Foundry deployment, edit the `cf_networking.subnet_prefix_length` property in your `cf-networking-release` manifest, and then re-deploy Cloud Foundry. See the following examples:
 
-<table>
+<table class="table">
   <tr>
     <th>Overlay subnet mask</th>
     <th>Number of cells</th>

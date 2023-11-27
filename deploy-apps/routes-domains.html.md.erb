@@ -15,11 +15,11 @@ the cf CLI [cf map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) 
 
 The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the Gorouter makes the following matches for the two routes `example-app.<%= vars.app_domain %>` and `example-app.<%= vars.app_domain %>/products`:
 
-<table>
-  <tr>
+<tabl class="table">
+  <thead><tr>
     <th>Request</th>
     <th>Matched Route</th>
-  </tr>
+  </tr></thead>
   <tr>
     <td><code>http://example-app.<%= vars.app_domain %></code></td>
     <td><code>example-app.<%= vars.app_domain %></code></td>
@@ -368,7 +368,7 @@ To find out if a route with the host name `store` and the domain `<%= vars.app_d
     </pre>
 
 * **cf CLI v6**:
-  
+
     <pre class="terminal">
     $ cf check-route store <%= vars.app_domain %> --path /products
     Checking for route...
@@ -390,11 +390,11 @@ Changes to route mappings are run asynchronously. On startup, an app becomes acc
 
 For these routes and apps:
 
-<table border="1" class="nice" >
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Route</th>
     <th>Apps</th>
-  </tr>
+  </tr></thead>
   <tr>
     <td>store.<%= vars.app_domain %>/products</td>
     <td>products</td>
@@ -474,11 +474,11 @@ You can have multiple routes to an app, but those routes cannot have different c
 
 These routes are valid for a single app:
 
-<table>
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Route 1</th>
     <th>Route 2</th>
-  </tr>
+  </tr></thead>
   <tr>
     <td><code>example-app.example.com</code></td>
     <td><code>example-app.apps.cf.example.com</code></td>
@@ -491,11 +491,11 @@ These routes are valid for a single app:
 
 These routes are _not_ valid for a single app:
 
-<table>
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Route 1</th>
     <th>Route 2</th>
-  </tr>
+  </tr></thead>
   <tr>
     <td><code>example-app.example.com/foo</code></td>
     <td><code>example-app.apps.cf.example.com/bar</code></td>
@@ -664,12 +664,12 @@ If the `X-Cf-App-Instance` header is set to an invalid value, Gorouter returns a
 
 These are the possible error responses:
 
-<table>
-  <tr>
-    <th width="30%">X-Cf-Routererror Value</th>
-    <th width="30%">Reason for Error</th>
-    <th width="40%">Response Body</th>
-  </tr>
+<table class="table">
+  <thead><tr>
+    <th width="30%">X-Cf-Routererror value</th>
+    <th width="30%">Reason for error</xth>
+    <th width="40%">Response body</th>
+  </tr></thead>
   <tr>
     <td><code>invalid_cf_app_instance_header</code></td>
     <td>The value provided for <code>X-Cf-App-Instance</code> was an incorrectly formatted GUID.</td>
@@ -868,12 +868,12 @@ To map a single domain to a custom domain to <%= vars.app_runtime_abbr %>, confi
 
 Here are some example CNAME record mappings.
 
-<table border="1" class="nice" >
-  <tr>
-    <th>Record Set in Custom Domain</th>
+<table class="table">
+  <thead><tr>
+    <th>Record set in custom domain</th>
     <th>Type</th>
     <th>Target in <%= vars.app_runtime_abbr %></th>
-  </tr>
+  </tr></thead>
   <tr>
     <td>example-app.yourcustomdomain.com.</td>
     <td>CNAME</td>
@@ -897,12 +897,12 @@ Each separately configured subdomain has priority over the wildcard configuratio
 
 Here are some example wildcard CNAME record mappings.
 
-<table border="1" class="nice" >
-  <tr>
-    <th>Record Set in Custom Domain</th>
+<table class="table">
+  <thead><tr>
+    <th>Record set in custom domain</th>
     <th>Type</th>
     <th>Target in <%= vars.app_runtime_abbr %></th>
-  </tr>
+  </tr></thead>
   <tr>
     <td>*.yourcustomdomain.com.</td>
     <td>CNAME</td>
@@ -934,13 +934,13 @@ Root domains are also called zone apex domains.</p>
 If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider to point at a shared domain in
 <%= vars.app_runtime_abbr %>.
 
-<table border="1" class="nice" >
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Record</th>
     <th>Name</th>
     <th>Target</th>
     <th>Note</th>
-  </tr>
+  </tr></thead>
   <tr>
     <td>ALIAS or ANAME</td>
     <td>empty or @</td>
@@ -958,13 +958,13 @@ If you use domain forwarding, SSL requests to the root domain might fail if the 
 Configure the root domain to point at a subdomain such as `www`, and configure the subdomain as a CNAME record pointing at a shared domain in
 <%= vars.app_runtime_abbr %>.
 
-<table border="1" class="nice" >
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Record</th>
     <th>Name</th>
     <th>Target</th>
     <th>Note</th>
-  </tr>
+  </tr></thead>
   <tr>
     <td>URL or Forward</td>
     <td><%= vars.private_app_domain %></td>

@@ -77,23 +77,23 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
 
 2. Set the environment variables in the [OMS Log Analytics Firehose Nozzle manifest](https://github.com/Azure/oms-log-analytics-firehose-nozzle/blob/master/manifest.yml):
 
-    <table>
-      <tr>
-        <th>Environment Variable</th>
+    <table class="table'">
+      <thead><tr>
+        <th>Environment variable</th>
         <th>Description</th>
-      </tr>
+      </tr></thead>
       <tr>
-        <td>
-          <pre class="terminal">
-          applications:
-          - name: oms_nozzle
-          ...
-          env:
-            OMS_WORKSPACE: YOUR-WORKSPACE-ID
-            OMS_KEY: YOUR-OMS-KEY
-          </pre>
-        </td>
-        <td>Enter the ID and key value for your OMS workspace.</td>
+    <td>
+      <pre class="terminal">
+      applications:
+      - name: oms_nozzle
+      ...
+      env:
+        OMS_WORKSPACE: YOUR-WORKSPACE-ID
+        OMS_KEY: YOUR-OMS-KEY
+      </pre>
+    </td>
+    <td>Enter the ID and key value for your OMS workspace.</td>
       </tr>
       <tr>
         <td><code>OMS_POST_TIMEOUT: 10s</code></td>
@@ -112,13 +112,13 @@ To deploy the OMS Log Analytics Firehose nozzle to <%= vars.app_runtime_abbr %>:
         For more information, see <a href="#events">Configure Additional Logging</a>.</td>
       </tr>
       <tr>
-        <td>
-          <pre class="terminal">
-          FIREHOSE_USER: YOUR-FIREHOSE-USER
-          FIREHOSE_USER_PASSWORD: YOUR-FIREHOSE-PASSWORD
-          </pre>
-        </td>
-        <td>Enter the user name and password for the Firehose user you created in Step 2c.</td>
+    <td>
+      <pre class="terminal">
+      FIREHOSE_USER: YOUR-FIREHOSE-USER
+      FIREHOSE_USER_PASSWORD: YOUR-FIREHOSE-PASSWORD
+      </pre>
+    </td>
+    <td>Enter the user name and password for the Firehose user you created in Step 2c.</td>
       </tr>
       <tr>
         <td><code>API_ADDR: https://api.YOUR-DOMAIN</code></td>

@@ -291,13 +291,13 @@ background, updating deployments as follows:
 
 The following table describes the limitations of when using rolling deployments.
 
-<table>
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Limitation</th>
     <th>Description</th>
-  </tr>
+  </tr></thead>
   <tr>
-    <td>App Manifests</td>
+    <td>App manifests</td>
     <td>The <code>cf v3-zdt-push</code> command does not support providing an app manifest with the
     <code>-f</code> flag. If you have a <code>manifest.yml</code> file in your app directory, it is
     ignored. This limitation only applies to cf CLI v6.</td>
@@ -399,10 +399,10 @@ To view the status of a rolling deployment:
 The following table describes the possible values for the `status.value` and `status.reason`
 properties:
 
-<table class="nice">
-  <th width="20%"><code>status.value</code></th>
+<table class="table">
+  <thead><th width="20%"><code>status.value</code></th>
   <th width="20%"><code>status.reason</code></th>
-  <th width="60%">Description</th>
+  <th width="60%">Description</th></thead>
   <tr>
     <td><code>ACTIVE</code></td>
     <td><code>DEPLOYING</code></td>

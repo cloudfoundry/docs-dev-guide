@@ -566,11 +566,11 @@ If you use the `routes` attribute with the `host`, `hosts`, `domain`, `domains`,
 This attribute has unique interactions with different command-line options.
 This table is updated for cf CLI v7; several of the flags were removed (`--route-path`, `-d`, `--hostname`, `--no-hostname`)
 
-<table border="1" class="nice">
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Flag</th>
     <th>Result</th>
-  </tr>
+  </tr></thead>
   <tr>
     <td><code>--no-route</code></td>
     <td>All declared routes are ignored. In cf CLI v7, this flag no longer unbinds all existing routes associated with the app.</td>

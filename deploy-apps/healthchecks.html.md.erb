@@ -163,7 +163,7 @@ circumstances in which to use them:
     <td><code>process</code></td>
     <td>The app does not support TCP connections. An example of such an app is a worker.</td>
     <td>For a <code>process</code> health check, Diego ensures that any process declared for the
-    app stays running. If the process exits, Diego stops and deletes the app instance.</td>
+    app stays running. If the process and all its children exit, Diego stops and deletes the app instance.</td>
   </tr>
 </table>
 

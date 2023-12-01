@@ -1,71 +1,84 @@
 ---
-title: Configuring Routes and Domains
+title: Configuring routes and domains
 owner: CF for VMs Networking
 ---
 
-<% $this_topic = 'routes-domains' %>
-
-This topic describes how routes and domains work in <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>), and how developers and administrators configure routes and domains for their apps using the Cloud Foundry Command Line Interface (cf CLI).
-
-For more information about routing capabilities in <%= vars.app_runtime_abbr %>, see [HTTP Routing](../../concepts/http-routing.html).
+Developers and administrators can configure routes and domains for their apps using the Cloud Foundry Command Line Interface (cf CLI).
+This topic describes how routes and domains work in <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
+For more information about routing capabilities in <%= vars.app_runtime_abbr %>, see [HTTP routing](../../concepts/http-routing.html).
 
 
 ## <a id='routes'></a> Routes
 
-The <%= vars.app_runtime_abbr %> Gorouter routes requests to apps by associating an app with an address, known as a route. This is known as a **mapping**. Use the cf CLI [cf map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) command to associate an app and route.
+The <%= vars.app_runtime_abbr %> Gorouter routes requests to apps by associating an app with an address, known as a route. This is known as a _mapping_. Use
+the cf CLI [cf map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) command to associate an app and route.
 
-The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the Gorouter would make the following matches for the two routes `myapp.<%= vars.app_domain %>` and `myapp.<%= vars.app_domain %>/products`:
+The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the Gorouter makes the following matches for the two routes `example-app.<%= vars.app_domain %>` and `example-app.<%= vars.app_domain %>/products`:
 
-| Request | Matched Route |
-| ------- | ------------- |
-| http://myapp.<%= vars.app_domain %> | myapp.<%= vars.app_domain %> |
-| http://myapp.<%=vars.app_domain%>/contact | myapp.<%=vars.app_domain%> |
-| http://myapp.<%= vars.app_domain %>/products | myapp.<%= vars.app_domain %>/products |
-| http://myapp.<%= vars.app_domain %>/products/123 | myapp.<%= vars.app_domain %>/products |
-| http://products.<%= vars.app_domain %> | No match; 404 |
+<tabl class="table">
+  <thead><tr>
+    <th>Request</th>
+    <th>Matched Route</th>
+  </tr></thead>
+  <tr>
+    <td><code>http://example-app.<%= vars.app_domain %></code></td>
+    <td><code>example-app.<%= vars.app_domain %></code></td>
+  </tr>
+  <tr>
+    <td><code>http://example-app.<%= vars.app_domain %>/contact</code></td>
+    <td><code>example-app.<%= vars.app_domain %></code></td>
+  </tr>
+  <tr>
+    <td><code>http://example-app.<%= vars.app_domain %>/products</code></td>
+    <td><code>example-app.<%= vars.app_domain %>/products</code></td>
+  </tr>
+  <tr>
+    <td><code>http://example-app.<%= vars.app_domain %>/products/123</code></td>
+    <td><code>example-app.<%= vars.app_domain %>/products</code></td>
+  </tr>
+  <tr>
+    <td><code>http://products.<%= vars.app_domain %></code></td>
+    <td>No match; <code>404</code></td>
+  </tr>
+</table>
 
-The Gorouter does not use a route to match requests until the route is mapped to an app. In the above example, `products.<%= vars.app_domain %>` may have been created as a route in <%= vars.app_runtime_abbr %>, but until it is mapped to an app, requests for the route receive a `404` error.
+The Gorouter does not use a route to match requests until the route is mapped to an app. In the example, `products.<%= vars.app_domain %>` might have been created as a route in <%= vars.app_runtime_abbr %>, but until it is mapped to an app, requests for the route receive a `404` error.
 
-The routing tier knows the location of instances for apps mapped to routes. Once the routing tier determines a route as the best match for a request, it makes a load-balancing calculation using a round-robin algorithm, and forwards the request to an instance of the mapped app.
+The routing tier knows the location of instances for apps mapped to routes. After the routing tier calculates a route as the best match for a request, it makes a load-balancing calculation using a round-robin algorithm, and forwards the request to an instance of the mapped app.
 
-Developers can map many apps to a single route, resulting in load-balanced requests for the route across all instances of all mapped apps. This approach enables the blue/green rolling deployment strategy. Developers can also map an individual app to multiple routes, enabling access to the app from many URLs. The number of routes that can be mapped to each app is approximately 1000 (128&nbsp;KB).
+Developers can map many apps to a single route, resulting in load-balanced requests for the route across all instances of all mapped apps. This approach activates the blue/green rolling deployment strategy. Developers can also map an individual app to multiple routes, enabling access to the app from many URLs.
+The number of routes that can be mapped to each app is approximately 1000 (128&nbsp;KB).
 
-Routes belong to a space, and developers can only map apps to a route in the same space.
+Routes belong to a space, and developers can only map apps to a route created in or shared with the same space. For more information about sharing routes across spaces, see [Share a route with another space](#share-route) .
 
-<p class="note"><strong>Note:</strong> Routes are globally unique. Developers in one space cannot create a route with the same URL as developers in another space, regardless of which orgs control these spaces.</p>
+Routes are globally unique. Developers in one space cannot create a route with the same URL as developers in another space, regardless of which orgs control these spaces.
 
-### <a id='http-vs-tcp-routes'></a> HTTP vs. TCP Routes
+### <a id='http-vs-tcp-routes'></a> HTTP versus TCP routes
 
-<p class="note"><strong>Note:</strong> By default, <%= vars.app_runtime_abbr %> only supports routing of HTTP requests to apps.</p>
+By default, <%= vars.app_runtime_abbr %> only supports routing of HTTP requests to apps.
 
-Routes are considered HTTP if they are created from HTTP domains, and TCP if they are created from TCP domains. For more information, see [HTTP vs. TCP Shared Domains](#http-vs-tcp-shared-domains).
+Routes are considered HTTP if they are created from HTTP domains, and TCP if they are created from TCP domains. For more information, see [HTTP versus TCP shared domains](#http-vs-tcp-shared-domains).
 
-HTTP routes include a domain, an optional hostname, and an optional context path. `<%= vars.app_domain %>`, `myapp.<%= vars.app_domain %>`, and `myapp.<%= vars.app_domain %>/products` are all examples of HTTP routes. Apps should listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. As an example, requests to `myapp.<%= vars.app_domain %>` would be routed to the app container at `localhost:8080`.
+HTTP routes include a domain, a host name (optional), and a context path (optional). `<%= vars.app_domain %>`, `example-app.<%= vars.app_domain %>`, and `example-app.<%= vars.app_domain %>/products` are all examples of HTTP routes. Apps listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. For example, requests to `example-app.<%= vars.app_domain %>` are routed to the application container at `localhost:8080`.
 
-<p class="note"><strong>Note:</strong> Developers can use the Cloud Controller API to update the ports an app can receive requests on. For more information, see <a href="../custom-ports.html">Configuring Apps to Listen on Custom Ports (Beta)</a>.</p>
+Requests to HTTP routes must be sent to ports `80` or `443`. Ports cannot be reserved for HTTP routes. You can update the ports on which an app can receive requests through the Cloud Controller API. For more information, see <a href="../custom-ports.html">Configuring apps to listen on custom ports (Beta)</a>.
 
-* Requests to HTTP routes must be sent to ports 80 or 443.
-* Ports cannot be reserved for HTTP routes.
+TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an app pushed to <%= vars.app_runtime_abbr %> listens on. `tcp.shared-domain.example.com:60000` is an example of a TCP route. Just as for HTTP routes, apps listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. For example, requests to `tcp.shared-domain.example.com:60000` are routed to the application container at `localhost:8080`.
 
-TCP routes include a domain and a route port. A route port is the port clients make requests to. This is not the same port as what an app pushed to Cloud Foundry listens on. `tcp.shared-domain.example.com:60000` is an example of a TCP route. Just as for HTTP routes, apps should listen to the `localhost` port defined by the `$PORT` environment variable, which is `8080` on Diego. As an example, requests to `tcp.shared-domain.example.com:60000` would be routed to the app container at `localhost:8080`.
+When a port is reserved for a route, it cannot be reserved for another route. Host name and path are not supported for TCP routes.
 
-* Once a port is reserved for a route, it cannot be reserved for another route.
-* Hostname and path are not supported for TCP routes.
-
-### <a id='internal-routes'></a> Internal Container-to-Container Routes
+### <a id='internal-routes'></a> Internal container-to-container routes
 
 <%= vars.app_runtime_abbr %> apps can communicate with each other securely and directly over internal routes that never leave the platform.
-
-<p class='note'><strong>Note:</strong> Apps running on Windows cells cannot use internal, container-to-container routes.</p>
+Apps running on Windows cells cannot use internal, container-to-container routes.
 
 To create an internal route:
 
-1. Use the [cf map-route](#map-internal-route) command with an [internal domain](#internal-domains).
-For example:
+1. Use the [cf map-route](#map-internal-route) command with an [internal domain](#internal-domains). For example:
   <pre class="terminal">
     $ cf map-route app apps.internal --hostname app
   </pre>
-    - After an internal route is mapped to an app, the route resolves to IP addresses of the app instances. The IP addresses are visible in the app container:
+    * After an internal route is mapped to an app, the route resolves to IP addresses of the app instances. The IP addresses are visible in the application container:
       <pre class="terminal">
         $ cf ssh app
         vcap@1234:~$ host app.apps.internal
@@ -73,15 +86,16 @@ For example:
         app.apps.internal has address 10.255.49.7
         app.apps.internal has address 10.255.49.77
        </pre>
-    - To resolve individual instances, prepend the index to the internal route.
+    * To resolve individual instances, prepend the index to the internal route.
       <pre class="terminal">
       vcap@1234:~$ host 1.app.apps.internal
       1.app.apps.internal has address 10.255.49.7
       </pre>
 
-1. Create a network policy that allows your apps to communicate with each other. By default, apps cannot communicate over the container network. For more information, see [Configuring Container-to-Container Networking](./cf-networking.html) and [add-network-policy](https://cli.cloudfoundry.org/en-US/cf/add-network-policy.html) in the _Cloud Foundry CLI Reference Guide_.
+1. Create a network policy that allows your apps to communicate with each other. By default, apps cannot communicate over the container network. For more
+information, see [Configuring container-to-container networking](cf-networking.html) and the [Cloud Foundry CLI reference guide](https://cli.cloudfoundry.org/en-US/cf/add-network-policy.html).
 
-### <a id='create-route'></a> Create a Route
+### <a id='create-route'></a> Create a route
 
 When a developer creates a route using the cf CLI, <%= vars.app_runtime_abbr %> determines whether the route is an HTTP or a TCP route based on the domain. To create a HTTP route, a developer must choose an HTTP domain. To create a TCP route, a developer must choose a TCP domain.
 
@@ -89,205 +103,243 @@ Domains in <%= vars.app_runtime_abbr %> provide a namespace from which to create
 
 The following sections describe how developers can create HTTP and TCP routes for different use cases.
 
-#### <a id='create-route-with-hostname'></a> Create an HTTP Route with Hostname
+#### <a id='create-route-w-hostname'></a> Create an HTTP route with host name
 
-In <%= vars.app_runtime_abbr %>, a hostname is the label that indicates a subdomain of the domain associated with the route. Given a domain `<%= vars.app_domain %>`, a developer can create the route `myapp.<%= vars.app_domain %>` by specifying the hostname `myapp` with the [cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command as shown in this example:
+In <%= vars.app_runtime_abbr %>, a host name is the label that indicates a subdomain of the domain associated with the route. Given a domain
+`<%= vars.app_domain %>`, a developer can create the route `example-app.<%= vars.app_domain %>` by specifying the host name `example-app` with the
+[cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command as shown in this example:
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf create-route <%= vars.app_domain %> --hostname myapp
-  Creating route myapp.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
+  $ cf create-route <%= vars.app_domain %> --hostname example-app
+  Creating route example-app.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
   OK
   </pre>
-  <p class="note"><strong>Note:</strong> The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are currently targeting.</p>
+
+  <p class="note important">
+  <span class="note__title"><strong>Important</strong></span>
+  The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</p>
+
 * **cf CLI v6**
   <pre class="terminal">
-  $ cf create-route my-space <%= vars.app_domain %> --hostname myapp
-  Creating route myapp.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
+  $ cf create-route example-space <%= vars.app_domain %> --hostname example-app
+  Creating route example-app.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
   OK
   </pre>
 
-This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for the following URLs:
+This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for these URLs:
 
-* `http://myapp.<%= vars.app_domain %>`
-* `https://myapp.<%= vars.app_domain %>`
-* Any path under either of the above URLs, such as `http://myapp.<%= vars.app_domain %>/bar`
+* `http://example-app.<%= vars.app_domain %>`
 
-#### <a id='create-route-without-hostname'></a> Create an HTTP Route without Hostname
+* `https://example-app.<%= vars.app_domain %>`
 
-This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see [Private Domains](#private-domains).
+* Any path under either of the these URLs, such as `http://example-app.<%= vars.app_domain %>/bar`
 
-A developer can create a route from the domain `<%= vars.private_app_domain %>` with no hostname with the [cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command:
+#### <a id='create-route-wo-hostname'></a> Create an HTTP route without host name
+
+This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see [Private
+Domains](#private-domains) .
+
+A developer can create a route from the domain `<%= vars.private_app_domain %>` with no host name with the
+[cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command:
 
 * **cf CLI v7**
   <pre class="terminal">
   $ cf create-route <%= vars.private_app_domain %>
-  Creating route <%= vars.private_app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
+  Creating route <%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
   OK
   </pre>
 * **cf CLI v6**
   <pre class="terminal">
-  $ cf create-route my-space <%= vars.private_app_domain %>
-  Creating route <%= vars.private_app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
+  $ cf create-route example-space <%= vars.private_app_domain %>
+  Creating route <%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
   OK
   </pre>
 
-If DNS has been configured correctly, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
+If DNS is configured correctly, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
 
 * `http://<%= vars.private_app_domain %>`
+
 * `https://<%= vars.private_app_domain %>`
-* Any path under either of the above URLs, such as `http://<%= vars.private_app_domain %>/foo`
 
-If there are no other routes for the domain, requests to any subdomain, such as `http://foo.<%= vars.private_app_domain %>`, will fail.
+* Any path under either of these URLs, such as `http://<%= vars.private_app_domain %>/foo`
 
-A developer can also create routes for subdomains with no hostnames. The following command creates a route from the subdomain `foo.<%= vars.private_app_domain %>`:
+If there are no other routes for the domain, requests to any subdomain, such as `http://foo.<%= vars.private_app_domain %>`, fail.
+
+A developer can also create routes for subdomains with no host names. The following command creates a route from the subdomain
+`foo.<%= vars.private_app_domain %>`:
 
 * **cf CLI v7**
   <pre class="terminal">
   $ cf create-route foo.<%= vars.private_app_domain %>
-  Creating route foo.<%= vars.private_app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
+  Creating route foo.<%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
   OK
   </pre>
 * **cf CLI v6**
   <pre class="terminal">
-  $ cf create-route my-space foo.<%= vars.private_app_domain %>
-  Creating route foo.<%= vars.private_app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
+  $ cf create-route example-space foo.<%= vars.private_app_domain %>
+  Creating route foo.<%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
   OK
   </pre>
 
-Assuming DNS has been configured for this subdomain, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
+If DNS is configured for this subdomain, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
 
 * `http://foo.<%= vars.private_app_domain %>`
+
 * `https://foo.<%= vars.private_app_domain %>`
-* Any path under either of the above URLs, such as `http://foo.<%= vars.private_app_domain %>/foo`
 
-#### <a id='create-route-with-wildcard-hostname'></a> Create an HTTP Route with Wildcard Hostname
+* Any path under either of these URLs, such as `http://foo.<%= vars.private_app_domain %>/foo`
 
-An app mapped to a wildcard route acts as a fallback app for route requests if the requested route does not exist. To create a wildcard route, use an asterisk for the hostname.
+#### <a id='create-route-w-wildcard-hostname'></a> Create an HTTP route with wildcard host name
+
+An app mapped to a wildcard route acts as a fallback app for route requests if the requested route does not exist. To create a wildcard route, use an asterisk for the host name.
 
 A developer can create a wildcard route from the domain `foo.<%= vars.app_domain %>` by running:
 
 * **cf CLI v7**
   <pre class="terminal">
   $ cf create-route foo.<%= vars.app_domain %> --hostname '*'
-  Creating route *.foo.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
+  Creating route *.foo.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
   OK
   </pre>
 * **cf CLI v6**
   <pre class="terminal">
-  $ cf create-route my-space foo.<%= vars.app_domain %> --hostname '*'
-  Creating route *.foo.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
+  $ cf create-route example-space foo.<%= vars.app_domain %> --hostname '*'
+  Creating route *.foo.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
   OK
   </pre>
 
-If a client sends a request to `http://app.foo.<%= vars.app_domain %>` by accident, attempting to reach `myapp.foo.<%= vars.app_domain %>`, <%= vars.app_runtime_abbr %> routes the request to the app mapped to the route `*.foo.<%= vars.app_domain %>`.
+If a client sends a request to `http://app.foo.<%= vars.app_domain %>` by accident, attempting to reach `example-app.foo.<%= vars.app_domain %>`,
+<%= vars.app_runtime_abbr %> routes the request to the app mapped to the route `*.foo.<%= vars.app_domain %>`.
 
-#### <a id='create-route-with-path'></a> Create an HTTP Route with a Path
+#### <a id='create-route-w-path'></a> Create an HTTP route with a path
 
-Developers can use paths to route requests for the same hostname and domain to different apps.
+Developers can use paths to route requests for the same host name and domain to different apps.
 
-A developer can create three routes using the same hostname and domain in the space `my-space` by running:
+A developer can create three routes using the same host name and domain in the space `example-space` by running:
 
 * **cf CLI v7**
   <pre class="terminal">
   $ cf create-route <%= vars.app_domain %> --hostname store --path products
-  Creating route store.<%= vars.app_domain %>/products for org my-org / space my-space as username<span>@</span>example.com...
+  Creating route store.<%= vars.app_domain %>/products for org example-org / space example-space as username<span>@</span>example.com...
   OK
   </pre>
   <pre class="terminal">
   $ cf create-route <%= vars.app_domain %> --hostname store --path orders
-  Creating route store.<%= vars.app_domain %>/orders for org my-org / space my-space as username<span>@</span>example.com...
+  Creating route store.<%= vars.app_domain %>/orders for org example-org / space example-space as username<span>@</span>example.com...
   OK
   </pre>
   <pre class="terminal">
   $ cf create-route <%= vars.app_domain %> --hostname store
-  Creating route store.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
-  OK
-  </pre>
-* **cf CLI v6**
-  <p class="note"><strong>Note:</strong> If you want to create a route without a path using cf CLI v6, you must run the commands in the order below. Create the route without a path first, and then create any routes with a path. If you do not need a route without a path, then this order is not required.</p>
-  <pre class="terminal">
-  $ cf create-route my-space <%= vars.app_domain %> --hostname store
-  Creating route store.<%= vars.app_domain %> for org my-org / space my-space as username<span>@</span>example.com...
-  OK
-  </pre>
-  <pre class="terminal">
-  $ cf create-route my-space <%= vars.app_domain %> --hostname store --path products
-  Creating route store.<%= vars.app_domain %>/products for org my-org / space my-space as username<span>@</span>example.com...
-  OK
-  </pre>
-  <pre class="terminal">
-  $ cf create-route my-space <%= vars.app_domain %> --hostname store --path orders
-  Creating route store.<%= vars.app_domain %>/orders for org my-org / space my-space as username<span>@</span>example.com...
+  Creating route store.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
   OK
   </pre>
 
-The developer can then map the new routes to different apps by following the steps in [Map a Route to Your App](#map-route).
+* **cf CLI v6**
+  <p class="note important">
+  <span class="note__title"><strong>Important</strong></span>
+  To create a route without a path using cf CLI v6, you must run the commands in this order: Create the route without a path, and then create any routes with a path. If you do not need a route without a path, then this sequence is not required.</p>
+
+  <pre class="terminal">
+  $ cf create-route example-space <%= vars.app_domain %> --hostname store
+  Creating route store.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
+  OK
+  </pre>
+  <pre class="terminal">
+  $ cf create-route example-space <%= vars.app_domain %> --hostname store --path products
+  Creating route store.<%= vars.app_domain %>/products for org example-org / space example-space as username<span>@</span>example.com...
+  OK
+  </pre>
+  <pre class="terminal">
+  $ cf create-route example-space <%= vars.app_domain %> --hostname store --path orders
+  Creating route store.<%= vars.app_domain %>/orders for org example-org / space example-space as username<span>@</span>example.com...
+  OK
+  </pre>
+
+The developer can then map the new routes to different apps by following the procedure in [Map a route to your app](#map-route).
 
 If the developer maps the first route with path `products` to the `products` app, the second route with path `orders` to the `orders` app, and the last route to the `storefront` app. After this:
 
 * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/products` to the `products` app.
+
 * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/orders` to the `orders` app.
+
 * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>` to the `storefront` app.
 
-<%= vars.app_runtime_abbr %> attempts to match routes with a path first, and then attempts to match host and domain.
+<%= vars.app_runtime_abbr %> attempts to match routes with a path, and then attempts to match host and domain.
 
-<p class="note"><strong>Note:</strong> Routes with the same domain and hostname but different paths can only be created in the same space. Private domains do not have this limitation.</p>
+<div class="note important">
+<span class="note__title"><strong>Important</strong></span>
+  <ul>
+    <li>Routes with the same domain and host name but different paths can only be created in the same space. Private domains do not have this limitation.</li>
+    <li><%= vars.app_runtime_abbr %> does not route requests for context paths to the root context of an app. Apps must serve requests on the context path.</li>
+  </ul>
+</div>
 
-<p class="note"><strong>Note:</strong> <%= vars.app_runtime_abbr %> does not route requests for context paths to the root context of an app. Apps must serve requests on the context path.</p>
+#### <a id='create-route-with-port'></a> Create a TCP route with a port
 
-#### <a id='create-route-with-port'></a> Create a TCP Route with a Port
+A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. This is the default in the v7 version of the cf CLI.
 
-A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. If the clients of the app can accommodate addressing an arbitrary port, then developers should use the `--random-port` to instruct <%= vars.app_runtime_abbr %> to pick a port for your route. To create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port, run:
+* **cf CLI v6** - To get an arbitrary (random) port, you must use the `--random port` flag.
 
 <pre class="terminal">
-$ cf create-route my-space <%= vars.tcp_app_domain %> --random-port
-Creating route <%= vars.tcp_app_domain %> for org my-org / space my-space as user@example.com...
+$ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
+Creating route <%= vars.tcp_app_domain %> for org example-org / space example-space as user@example.com...
+OK
+Route <%= vars.tcp_app_domain %>:60034 has been created
+</pre>
+
+* **cf CLI v7** - An arbitrary (random) port is the default. The `--random port` flag is not supported.
+
+<pre class="terminal">
+$ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
+Creating route <%= vars.tcp_app_domain %> for org example-org / space example-space as user@example.com...
 OK
 Route <%= vars.tcp_app_domain %>:60034 has been created
 </pre>
 
 In this example, <%= vars.app_runtime_abbr %> routes requests to `<%= vars.tcp_app_domain %>:60034` to apps mapped to this route.
 
-To request a specific port, a developer can use the `--port` flag, so long as the port is not reserved for another space. To create a TCP route for `<%= vars.tcp_app_domain %>` on port 60035, run:
+To request a specific port, a developer can use the `--port` flag, so long as the port is not reserved for another space. To create a TCP route for
+`<%= vars.tcp_app_domain %>` on port 60035, run:
 
 <pre class="terminal">
-$ cf create-route my-space <%= vars.tcp_app_domain %> --port 60035
-Creating route <%= vars.tcp_app_domain %>:60035 for org my-org / space my-space as user@example.com...
+$ cf create-route example-space <%= vars.tcp_app_domain %> --port 60035
+Creating route <%= vars.tcp_app_domain %>:60035 for org example-org / space example-space as user@example.com...
 OK
 </pre>
 
-### <a id='list-routes'></a> List Routes
+### <a id='list-routes'></a> List routes
 
-Developers can list routes for the current space with the [cf routes](https://cli.cloudfoundry.org/en-US/cf/routes.html) command. A route is uniquely identified by the combination of hostname, domain, port, and path.
+Developers can list routes for the current space with the [cf routes](https://cli.cloudfoundry.org/en-US/cf/routes.html) command. A route is uniquely identified by the combination of host name, domain, port, and path.
 
 <pre class="terminal">
 $ cf routes
 Getting routes as user@<%= vars.private_app_domain %> ...
 
-space      host     domain              		port   path       type	apps
-my-space   myapp    <%= vars.app_domain %>						    myapp
-my-space   myapp    <%= vars.private_app_domain %>						    myapp
-my-space   store    <%= vars.app_domain %>		   /products   	    products
-my-space   store    <%= vars.app_domain %>		   /orders     	    orders
-my-space   store    <%= vars.app_domain %>                	        storefront
-my-space		    <%= vars.app_domain %>	60000 			  tcp   tcp-app
+space           host          domain              		port   path        type   apps
+example-space   example-app   <%= vars.app_domain %>						                example-app
+example-space   example-app   <%= vars.private_app_domain %>						        example-app
+example-space   store         <%= vars.app_domain %>		     /products   	      products
+example-space   store         <%= vars.app_domain %>		     /orders     	      orders
+example-space   store         <%= vars.app_domain %>                	          storefront
+example-space		              <%= vars.app_domain %>	60000 			       tcp    tcp-app
 </pre>
 
-Developers can only see routes in spaces where they are members.
+Developers can only see routes in spaces where they are a member.
+Note that cf CLI v7 removes the <code>port</code> and <code>path</code> columns from the output.
 
-<p class="note"><strong>Note:</strong> cf CLI v7 removes the <code>port</code> and <code>path</code> columns from the output.</p>
+### <a id='view-route'></a> View a route
 
-### <a id='view-route'></a> View a Route
-
-Developers can view a route and its destinations within the current space with the <code>cf route</code> command. A route is uniquely identified by the combination of a hostname, domain, port, and path.
+Developers can view a route and its destinations within the current space with the <code>cf route</code> command. A route is uniquely identified by the combination of a host name, domain, port, and path.
+Note that the `cf route` command is available in cf CLI v8 only.
 
 <pre class="terminal">
-$ cf route <%= vars.app_domain %> --hostname myapp
-Showing route myapp.<%= vars.app_domain %> in org o / space my-space as admin...
+$ cf route <%= vars.app_domain %> --hostname example-app
+Showing route example-app.<%= vars.app_domain %> in org o / space example-space as admin...
 
 domain:     <%= vars.app_domain %>
-host:       myapp
+host:       example-app
 port:
 path:
 protocol:   http
@@ -299,49 +351,50 @@ Destinations:
 
 Developers can only view a route within a space where they are a member.
 
-<p class="note"><strong>Note:</strong> The <code>cf route</code> command is available in cf CLI v8 only.</p>
+### <a id='check-routes'></a> Check routes
 
-### <a id='check-routes'></a> Check Routes
+Developers cannot create a route that is already taken. To find out if a route is available, developers can use the [cf
+check-route](https://cli.cloudfoundry.org/en-US/cf/check-route.html) command.
 
-Developers cannot create a route that is already taken. To check whether a route is available, developers can use the [cf check-route](https://cli.cloudfoundry.org/en-US/cf/check-route.html) command.
-
-To check whether a route with the hostname `store` and the domain `<%= vars.app_domain %>` and the path `products` exists, run:
+To find out if a route with the host name `store` and the domain `<%= vars.app_domain %>` and the path `products` exists, run:
 
 * **cf CLI v7**:
-  <pre class="terminal">
-  $ cf check-route <%= vars.app_domain %> --hostname store --path /products
-  Checking for route...
-  OK
-  Route store.<%= vars.app_domain %>/products does exist
-  </pre>
-* **cf CLI v6**:
-  <pre class="terminal">
-  $ cf check-route store <%= vars.app_domain %> --path /products
-  Checking for route...
-  OK
-  Route store.<%= vars.app_domain %>/products does exist
-  </pre>
 
-### <a id='map-route'></a> Map a Route to Your App
+    <pre class="terminal">
+    $ cf check-route <%= vars.app_domain %> --hostname store --path /products
+    Checking for route...
+    OK
+    Route store.<%= vars.app_domain %>/products does exist
+    </pre>
+
+* **cf CLI v6**:
+
+    <pre class="terminal">
+    $ cf check-route store <%= vars.app_domain %> --path /products
+    Checking for route...
+    OK
+    Route store.<%= vars.app_domain %>/products does exist
+    </pre>
+
+### <a id='map-route'></a> Map a route to your app
 
 For an app to receive requests to a route, developers must map the route to the app with the [cf map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) command. If the route does not already exist, this command creates it.
 
-<p class="note"><strong>Note:</strong> Any app that is not routed to port <code>80</code> or port <code>443</code> must be explicitly mapped using the <code>cf map-route</code> command . Otherwise, the route is automatically mapped to port <code>443</code>.
-</p>
+Any app that is not routed to port <code>80</code> or port <code>443</code> must be explicitly mapped using the <code>cf map-route</code> command. Otherwise, the route is mapped to port <code>443</code>.
 
-Developers can create and reserve routes for later use by following the steps in [Manually Map a Route](#map-route-manually). Or they can map routes to their app immediately as part of a push by following the steps in [Map a Route with App Push](#map-route-on-push).
+You can create and reserve routes for later use by following the procedure in [Manually map a route](#map-route-manually). You can also map routes to their app immediately as part of a push. See [Map a route with app push](#map-route-on-push).
 
-<p class="note"><strong>Note:</strong> Changes to route mappings are executed asynchronously. On startup, an app will be accessible at its route within a few seconds. Similarly, upon mapping a new route to a running app, the app will be accessible at this route within a few seconds of the CLI exiting successfully.</p>
+Changes to route mappings are run asynchronously. On startup, an app becomes accessible at its route within a few seconds. Similarly, upon mapping a new route to a running app, the app becomes accessible at this route within a few seconds of the CLI exiting.
 
-#### <a id='map-route-manually'></a> Manually Map a Route
+#### <a id='map-route-manually'></a> Manually map a route
 
-Given the following routes and apps:
+For these routes and apps:
 
-<table border="1" class="nice" >
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Route</th>
     <th>Apps</th>
-  </tr>
+  </tr></thead>
   <tr>
     <td>store.<%= vars.app_domain %>/products</td>
     <td>products</td>
@@ -360,7 +413,7 @@ Given the following routes and apps:
   </tr>
 </table>
 
-The following commands map the above routes to their respective apps. Developers use hostname, domain, and path to uniquely identify a route to map their apps to.
+The following commands map the routes in the table to their respective apps. Developers use host name, domain, and path to uniquely identify a route to which to map their apps.
 
 <pre class="terminal">
 $ cf map-route products <%= vars.app_domain %> --hostname store --path products
@@ -381,94 +434,96 @@ In cf CLI v8, the following command maps the route `h2app.<%= vars.app_domain %>
 $ cf map-route h2app <%= vars.app_domain %> --hostname h2app --destination-protocol http2
 </pre>
 
-#### <a id='map-route-on-push'></a> Map a Route with App Push
+#### <a id='map-route-on-push'></a> Map a route with app push
 
 Developers can map a route to their app with the `cf push` command.
+As of cf CLI v7, the best way to do this is by using the `routes` property in the manifest. The `-d` flag is no longer supported.
 
-If a domain or hostname is not specified, then a route will be created using the app name and the default shared domain (see [Shared Domains](#shared-domains)). The following command pushes the app `myapp`, creating the route `myapp.<%= vars.app_domain %>` from the default shared domain `<%= vars.app_domain %>`. If the route has not already been created in another space this command also maps it to the app.
-
-<pre class="terminal">
-$ cf push myapp
-</pre>
-
-To customize the route during `push`, specify the domain using the `-d` flag and the hostname with the `--hostname` flag. The following command creates the `foo.<%= vars.private_app_domain %>` route for `myapp`:
+**For cf CLI v6 only:**
+If a domain or host name is not specified, then a route is created using the app name and the default shared domain. For more information, see [Shared domains](#shared-domains). The following command pushes the app `example-app`, creating the route `example-app.<%= vars.app_domain %>` from the default shared domain `<%= vars.app_domain %>`. If the route has not already been created in another space, this command also maps it to the app.
 
 <pre class="terminal">
-$ cf push myapp -d <%= vars.private_app_domain %> --hostname foo
+$ cf push example-app
 </pre>
 
-To map a TCP route during `push`, specify a TCP domain and request a random port using `--random-route`. To specify a port, push the app without a route, then create and map the route manually by following the steps in [Create a TCP Route with a Port](#create-route-with-port).
+To customize the route during `push`, specify the domain using the `-d` flag and the host name with the `--hostname` flag. The following command creates the `foo.<%= vars.private_app_domain %>` route for `example-app`:
+
+<pre class="terminal">
+$ cf push example-app -d <%= vars.private_app_domain %> --hostname foo
+</pre>
+
+To map a TCP route during `push`, specify a TCP domain and request a random port using `--random-route`. To specify a port, push the app without a route, then create and map the route manually by following the procedure in [Create a TCP route with a port](#create-route-w-port).
 
 <pre class="terminal">
 $ cf push tcp-app -d <%= vars.tcp_app_domain %> --random-route
 </pre>
 
-#### <a id='map-route-with-manifest'></a> Map a Route Using App Manifest
+#### <a id='map-route-w-manifest'></a> Map a route using app manifest
 
-Developers can map a route to their app with a manifest by editing the `route` attribute to specify the host, domain, port and/or path components of the route. For more information, see [Deploying with App Manifests](../deploy-apps/manifest.html#routes).
+Developers can map a route to their app with a manifest by editing the `route` attribute to specify the host, domain, port, and path components of the route. For more information, see [Deploying with app manifests](../deploy-apps/manifest.html#routes).
 
-#### <a id='map-route-to-multiple-apps'></a> Map a Route to Multiple Apps
+#### <a id='map-route-to-mult-apps'></a> Map a route to multiple apps
 
 <%= partial 'routing_conflict' %>
 
-For more information about troubleshooting this problem, see the [Routing Conflict](./troubleshoot-app-health.html#routing-conflict) section of the _Troubleshooting App Deployment and Health_ topic.
+For more information about troubleshooting this problem, see [Routing conflict](troubleshoot-app-health.html#routing-conflict) in _Troubleshooting app deployment and health_.
 
-#### <a id='map-multiple-routes'></a> Map Multiple Routes to One App
+#### <a id='map-multiple-routes'></a> Map multiple routes to one app
 
 You can have multiple routes to an app, but those routes cannot have different context paths.
 
-The following routes are valid for a single app:
+These routes are valid for a single app:
 
-<table>
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Route 1</th>
     <th>Route 2</th>
+  </tr></thead>
+  <tr>
+    <td><code>example-app.example.com</code></td>
+    <td><code>example-app.apps.cf.example.com</code></td>
   </tr>
   <tr>
-    <td><code>myapp.example.com</code></td>
-    <td><code>myapp.apps.cf.example.com</code></td>
-  </tr>
-  <tr>
-    <td><code>myapp.example.com/foo</code></td>
-    <td><code>myapp.apps.cf.example.com/foo</code></td>
+    <td><code>example-app.example.com/foo</code></td>
+    <td><code>example-app.apps.cf.example.com/foo</code></td>
   </tr>
 </table>
 
-The following routes are **not** valid for a single app:
+These routes are _not_ valid for a single app:
 
-<table>
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Route 1</th>
     <th>Route 2</th>
+  </tr></thead>
+  <tr>
+    <td><code>example-app.example.com/foo</code></td>
+    <td><code>example-app.apps.cf.example.com/bar</code></td>
   </tr>
   <tr>
-    <td><code>myapp.example.com/foo</code></td>
-    <td><code>myapp.apps.cf.example.com/bar</code></td>
-  </tr>
-  <tr>
-    <td><code>myapp.apps.cf.example.com/foo</code></td>
-    <td><code>myapp.example.com/bar</code></td>
+    <td><code>example-app.apps.cf.example.com/foo</code></td>
+    <td><code>example-app.example.com/bar</code></td>
   </tr>
 </table>
 
-#### <a id='map-internal-route'></a> Map an Internal Route to an App
+#### <a id='map-internal-route'></a> Map an internal route to an app
 
-You can map an internal route to any app. This internal route allows your app to communicate with other apps without leaving the platform. Once mapped, this route becomes available to all other apps on the platform.
+You can map an internal route to any app. This internal route allows your app to communicate with other apps without leaving the platform. After it is mapped, this route becomes available to all other apps on the platform.
 
-This example creates a `foo.apps.internal` internal route for `myapp`:
+This example creates a `foo.apps.internal` internal route for `example-app`:
 
 <pre class="terminal">
-$ cf map-route myapp apps.internal --hostname foo
+$ cf map-route example-app apps.internal --hostname foo
 </pre>
 
-### <a id='unmap-route'></a> Unmap a Route
+### <a id='unmap-route'></a> Unmap a route
 
 Developers can remove a route from an app using the `cf unmap-route` command. The route remains reserved for later use in the space where it was created until the route is deleted.
 
-To unmap an HTTP route from an app, identify the route using the hostname, domain, and path:
+To unmap an HTTP route from an app, identify the route using the host name, domain, and path:
 
 <pre class="terminal">
-$ cf unmap-route tcp-app <%= vars.private_app_domain %> --hostname myapp --path mypath
+$ cf unmap-route tcp-app <%= vars.private_app_domain %> --hostname example-app --path mypath
 </pre>
 
 To unmap a TCP route from an app, identify the route using the domain and port:
@@ -477,14 +532,93 @@ To unmap a TCP route from an app, identify the route using the domain and port:
 $ cf unmap-route tcp-app <%= vars.tcp_app_domain %> --port 60000
 </pre>
 
-### <a id='delete-route'></a> Delete a Route
+### <a id='share-route'></a> Share a route with another space
+
+To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.
+
+You can share a route with another space using the `cf share-route` command. To move an app to another space, you can share routes with that space to prevent downtime during the transition. Rather than deleting the route in the original space and re-creating the route in the new space, you can share the route with the new space and map it to the app running in that space.
+
+To share a route with another space:
+
+1. In a terminal window, allow route sharing by running:
+
+    ```
+    cf enable-feature-flag route_sharing
+    ```
+
+1. Run:
+
+    ```
+    cf share-route DOMAIN --hostname HOSTNAME --path PATH -s SPACE -o ORG
+    ```
+
+    Where:
+    <ul>
+      <li><code>DOMAIN</code> is the domain in the route for your app.</li>
+      <li><code>HOSTNAME</code> is the host name in the route for your app.</li>
+      <li><code>PATH</code> is the path in the route for your app.</li>
+      <li><code>SPACE</code> is the space with which you want to share the route for your app.</li>
+      <li><code>ORG</code> is the org containing space with which you want to share the route for your app. If the space with which you want to share the route is within the same org as the space that contains the route, do not include the <code>-o</code> flag.</li>
+    </ul>
+
+    The following example command shares the route `example-app.example.com/example-path` with the `other-space` space in the `other-org` org:
+
+    <pre class="terminal">
+    cf share-route example.com --hostname example-app --path example-path -s other-space -o other-org
+    </pre>
+
+### <a id='move-route'></a> Transfer ownership of a route to another space
+
+<p class="note important">
+<span class="note__title"><strong>Important</strong></span>
+To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
+
+After sharing a route with another space, you can transfer ownership of the route to that space using the `cf move-route` command. You can use this command if you are unable to maintain or delete a shared route within the space with which it was shared. For information about sharing routes across spaces, see [Share a route with another space](#share-route).
+
+To move a route:
+
+1. In a terminal window, target the space from which the route was originally shared by running:
+
+    ```
+    cf target -s SPACE -o ORG
+    ```
+
+    Where:
+    <ul>
+      <li><code>SPACE</code> is the space from which the route was originally shared.</li>
+      <li><code>ORG</code> is the org containing space from which the route was originally shared. If the space from which the route was originally shared is within the same
+      org as the space with which the route was shared, do not include the <code>-o</code> flag.</li>
+    </ul>
+
+2. Run:
+
+    ```
+    cf move-route DOMAIN --hostname HOSTNAME --path PATH -s SPACE -o ORG
+    ```
+
+    Where:
+    <ul>
+      <li><code>DOMAIN</code> is the domain in the route for your app.</li>
+      <li><code>HOSTNAME</code> is the host name in the route for your app.</li>
+      <li><code>PATH</code> is the path in the route for your app.</li>
+      <li><code>SPACE</code> is the space to which you want to move the route for your app.</li>
+      <li><code>ORG</code> is the org containing space to which you want to move the route for your app. If the space to which you want to move the route is within the same org as the space that contains the route, do not include the <code>-o</code> flag.</li>
+    </ul>
+
+    The following example command moves the route `example-app.example.com/example-path` with the `other-space` space in the `other-org` org:
+
+    <pre class="terminal">
+    cf move-route example.com --hostname example-app --path example-path -s other-space -o other-org
+    </pre>
+
+### <a id='delete-route'></a> Delete a route
 
 Developers can delete a route from a space using the `cf delete-route` command.
 
-To delete a HTTP route, identify the route using the hostname, domain, and path:
+To delete a HTTP route, identify the route using the host name, domain, and path:
 
 <pre class="terminal">
-$ cf delete-route <%= vars.private_app_domain %> --hostname myapp --path mypath
+$ cf delete-route <%= vars.private_app_domain %> --hostname example-app --path mypath
 </pre>
 
 To delete a TCP route, identify the route using the domain and port.
@@ -493,11 +627,13 @@ To delete a TCP route, identify the route using the domain and port.
 $ cf delete-route tcp.<%= vars.private_app_domain %> --port 60000
 </pre>
 
-### <a id='surgical-routing'></a> Routing Requests to a Specific App Instance
+### <a id='surgical-routing'></a> Routing requests to a specific app instance
 
 Users can route HTTP requests to a specific app instance using the header `X-Cf-App-Instance`.
 
-<p class="note">Use of the <code>X-Cf-App-Instance</code> header is only available for users on the Diego architecture.
+<p class="note important">
+<span class="note__title"><strong>Important</strong></span>
+Use of the <code>X-Cf-App-Instance</code> header is available only for users on the Diego architecture.
 </p>
 
 The format of the header is `X-Cf-App-Instance: APP_GUID:APP_INDEX`.
@@ -506,33 +642,34 @@ The format of the header is `X-Cf-App-Instance: APP_GUID:APP_INDEX`.
 Use the `cf APP-NAME --guid` command to discover the `APP_GUID` for your app.
 
 <pre class="terminal">
-$ cf app myapp --guid
+$ cf app example-app --guid
 </pre>
 
-`APP_INDEX`, for example `0`,`1`, `2`, or `3`, is an identifier for a particular app instance. Use the CLI command `cf app APP-NAME` to get statistics on each instance of a particular app.
+`APP_INDEX`, for example, `0`,`1`, `2`, or `3`, is an identifier for a particular app instance. Use the CLI command `cf app APP-NAME` to get statistics on each
+instance of a particular app.
 
 <pre class="terminal">
-$ cf app myapp
+$ cf app example-app
 </pre>
 
-The following example shows a request made to instance `9` of an app with GUID `5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e` and mapped to route myapp.<%= vars.private_app_domain %>.
+The following example shows a request made to instance `9` of an app with GUID `5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e` and mapped to route
+`example-app.<%= vars.private_app_domain %>`.
 
 <pre class="terminal">
-$ curl myapp.<%= vars.private_app_domain %> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9"
+$ curl example-app.<%= vars.private_app_domain %> -H "X-Cf-App-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9"
 </pre>
 
-If the `X-Cf-App-Instance` header is set to an invalid value, Gorouter returns a `400` status code and the
-response from Gorouter contains a `X-Cf-Routererror` header with more information about the error.
-Before the routing release v0.197.0, Gorouter returned a `404` error.
+If the `X-Cf-App-Instance` header is set to an invalid value, Gorouter returns a `400` status code and the response from Gorouter contains a
+`X-Cf-Routererror` header with more information about the error. Before the routing release v0.197.0, Gorouter returned a `404` error.
 
-The following table describes the possible error responses:
+These are the possible error responses:
 
-<table>
-  <tr>
-    <th width="30%">X-Cf-Routererror Value</th>
-    <th width="30%">Reason for Error</th>
-    <th width="40%">Response Body</th>
-  </tr>
+<table class="table">
+  <thead><tr>
+    <th width="30%">X-Cf-Routererror value</th>
+    <th width="30%">Reason for error</xth>
+    <th width="40%">Response body</th>
+  </tr></thead>
   <tr>
     <td><code>invalid_cf_app_instance_header</code></td>
     <td>The value provided for <code>X-Cf-App-Instance</code> was an incorrectly formatted GUID.</td>
@@ -540,54 +677,55 @@ The following table describes the possible error responses:
   </tr>
   <tr>
     <td><code>unknown_route</code></td>
-    <td>The value provided for <code>X-Cf-App-Instance</code> is a correctly formatted GUID, but there is no instance found with that GUID for the route requested.</td>
-    <td><code>400 Bad Request: Requested instance ('1') with guid ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route ('myroute.cf.com')</code></td>
+    <td>The value provided for <code>X-Cf-App-Instance</code> is a correctly formatted GUID, but no instance is found with that GUID for the route
+      requested.</td>
+    <td><code>400 Bad Request: Requested instance ('1') with guid ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route
+      ('example-route.cf.com')</code></td>
   </tr>
 </table>
 
+
 ## <a id='domains'></a> Domains
 
-<p class="note"><strong>Note:</strong> The term domain in this topic differs from its common use and is specific to <%= vars.app_runtime_abbr %>. Likewise, shared domain and private domain refer to resources with specific meaning in <%= vars.app_runtime_abbr %>. The use of domain name, root domain, and subdomain refers to DNS records.</p>
+The term <em>domain</em> here differs from its common use and is specific to <%= vars.app_runtime_abbr %>.
+Likewise, shared domain and private domain refer to resources with specific meaning in <%= vars.app_runtime_abbr %>. The use of <em>domain name</em>, <em>root domain</em>, and <em>subdomain</em> refers to DNS records.</p>
 
-Domains indicate to a developer that requests for any route created from the domain are routed to <%= vars.app_runtime_abbr %>. This requires DNS to be configured out-of-band to resolve the domain name to the IP address of a load balancer configured to forward requests to the <%= vars.app_runtime_abbr %> routers. For more information about configuring DNS, see [DNS for Domains](#domains-dns).
+Domains indicate to a developer that requests for any route created from the domain are routed to <%= vars.app_runtime_abbr %>. This requires DNS to be configured out-of-band to resolve the domain name to the IP address of a load balancer configured to forward requests to the <%= vars.app_runtime_abbr %>routers. For more information about configuring DNS, see [DNS for domains](#domains-dns).
 
-### <a id='list-domains'></a> List Domains for an Org
+### <a id='list-domains'></a> List domains for an org
 
 When creating a route, developers select from domains available to them. Use the `cf domains` command to view a list of available domains for the targeted org:
 
 <pre class="terminal">
 $ cf domains
-Getting domains in org my-org as user@example.com... OK
-name                     status   type
+Getting domains in org example-org as user@example.com... OK
+name                          status   type
 <%= vars.app_domain %>        shared
 <%= vars.tcp_app_domain %>    shared   tcp
-<%= vars.private_app_domain %>       owned
+<%= vars.private_app_domain %>         owned
 </pre>
 
-This example displays three available domains: a shared HTTP domain `<%= vars.app_domain %>`, a shared TCP domain `<%= vars.tcp_app_domain %>`, and a private domain `<%= vars.private_app_domain %>`. For more information, see [Shared Domains](#shared-domains) and [Private Domains](#private-domains).
+This example displays three available domains: a shared HTTP domain `<%= vars.app_domain %>`, a shared TCP domain `<%= vars.tcp_app_domain %>`, and a private
+domain `<%= vars.private_app_domain %>`. For more information, see [Shared domains](#shared-domains) and [Private domains](#private-domains).
 
-### <a id='http-vs-tcp-shared-domains'></a> HTTP vs. TCP Domains
+### <a id='http-vs-tcp-domains'></a> HTTP versus TCP domains
 
-HTTP domains indicate to a developer that only requests using the HTTP protocol are routed to apps mapped to routes created from the domain. Routing for HTTP domains is layer 7 and offers features like custom hostnames, sticky sessions, and TLS termination.
+By default, <%= vars.app_runtime_abbr %> only supports routing of HTTP requests to apps.
+HTTP domains indicate to a developer that only requests using the HTTP protocol are routed to apps mapped to routes created from the domain. Routing for HTTP domains is layer 7 and offers features like custom host names, sticky sessions, and TLS termination.
 
-TCP domains indicate to a developer that requests over any TCP protocol, including HTTP, are routed to apps mapped to routes created from the domain. Routing for TCP domains is layer 4 and protocol agnostic, so many features available to HTTP routing are not available for TCP routing. TCP domains are defined as being associated with the TCP Router Group. The TCP Router Group defines the range of ports available to be reserved with TCP Routes. Currently, only Shared Domains can be TCP.
+TCP domains indicate to a developer that requests over any TCP protocol, including HTTP, are routed to apps mapped to routes created from the domain. Routing for TCP domains is layer 4 and protocol-agnostic, so many features available to HTTP routing are not available for TCP routing. TCP domains are defined as being associated with the TCP router group. The TCP router group defines the range of ports available to be reserved with TCP routes. Only shared domains can use a TCP protocol.
 
-<p class="note"><strong>Note:</strong> By default, <%= vars.app_runtime_abbr %> only supports routing of HTTP requests to apps.</p>
+### <a id='shared-domains'></a> Shared domains
 
-### <a id='shared-domains'></a> Shared Domains
+Admins manage shared domains, which are available to users in all orgs of a <%= vars.app_runtime_abbr %> deployment. An admin can offer multiple shared domains to users. For example, an admin might offer developers the choice of creating routes for their apps from `<%= vars.app_domain %>` and `cf.example-company.com`.
 
-Admins manage shared domains, which are available to users in all orgs of a <%= vars.app_runtime_abbr %> deployment. An admin can offer multiple shared domains to users. For example, an admin may offer developers the choice of creating routes for their apps from `<%= vars.app_domain %>` and `cf.some-company.com`.
+If a developer pushes an app without specifying a domain, a route is created for it from the first shared domain created in the system. All other operations involving route require the domain be specified. For more information, see [Routes](#routes).
 
-If a developer pushes an app without specifying a domain,
-a route is created for it from the first shared domain created in the system.
-All other operations involving route require the domain be specified (see [Routes](#routes)).
-
-When using shared domains, you cannot have routes with the same hostname and domain
-across different orgs and spaces.
+When using shared domains, you cannot have routes with the same host name and domain across different orgs and spaces.
 
 Shared domains are HTTP by default, but can be configured to be TCP when associated with the TCP router group.
 
-#### <a id='create-shared-domain'></a> Create a Shared Domain
+#### <a id='create-shared-domain'></a> Create a shared domain
 
 Admins can create an HTTP shared domain with the `cf create-shared-domain` command:
 <pre class="terminal">
@@ -596,7 +734,9 @@ $ cf create-shared-domain <%= vars.app_domain %>
 
 To create a TCP shared domain, first discover the name of the TCP router group.
 
-<p class="note"><strong>Note</strong>: cf CLI v7 does not support TCP routing or creating shared domains with router groups.</p>
+<p class="note important">
+<span class="note__title"><strong>Important</strong></span>
+cf CLI v7 does not support TCP routing or creating shared domains with router groups.</p>
 
 <pre class="terminal">
 $ cf router-groups
@@ -609,7 +749,7 @@ Then create the shared domain using the `--router-group` option to associate the
 $ cf create-shared-domain <%= vars.tcp_app_domain %> --router-group default-tcp
 </pre>
 
-#### <a id='delete-shared-domain'></a> Delete a Shared Domain
+#### <a id='delete-shared-domain'></a> Delete a shared domain
 
 Admins can delete a shared domain from <%= vars.app_runtime_abbr %> with the `cf delete-shared-domain` command:
 
@@ -617,60 +757,56 @@ Admins can delete a shared domain from <%= vars.app_runtime_abbr %> with the `cf
 $ cf delete-shared-domain example.com
 </pre>
 
-#### <a id='internal-domains'></a> Internal Domain
+#### <a id='internal-domains'></a> Internal domain
 
-The internal domain is a special type of shared domain used for app communication internal to the platform. When you enable service discovery, the internal domain `apps.internal` becomes available for route mapping.
+The internal domain is a special type of shared domain used for app communication internal to the platform. When you activate service discovery, the internal domain `apps.internal` becomes available for route mapping.
 
-Admins can configure multiple internal domains. First add a custom internal domain name to the `internal_domains` property on the `bosh-dns-adapter` job. Then create an internal domain using the `--internal` option:
+Admins can configure multiple internal domains. Add a custom internal domain name to the `internal_domains` property on the `bosh-dns-adapter` job. Then create an internal domain using the `--internal` option:
 
 <pre class="terminal">
-$ cf create-shared-domain <%=vars.app_domain%> --internal
+$ cf create-shared-domain <%= vars.app_domain %> --internal
 </pre>
 
 The `--router-group` option is not used with internal domains.
 
-### <a id='private-domains'></a> Private Domains
+### <a id='private-domains'></a> Private domains
 
-Org managers can add private domains, or custom domains,
-and give members of the org permission to create routes for privately registered domain names.
+Org managers can add private domains, or custom domains, and give members of the org permission to create routes for privately registered domain names.
 
-Private domains can be shared with other orgs and spaces.
-These are referred to as shared private domains and are not the same as shared domains.
-See [Shared Domains](#shared-domains) above.
+Private domains can be shared with other orgs and spaces. These are called as shared private domains and are not the same as shared domains. For more information, see [Shared domains](#shared-domains).
 
-When using private domains, you can have routes with the same hostname
-and domain name across different orgs and spaces.
-This cannot be done with shared domains.
+When using private domains, you can have routes with the same host name and domain name across different orgs and spaces. This cannot be done with shared domains.
 
-Private domains can be HTTP or HTTPS only. TCP Routing is supported for shared domains only.
+Private domains can be HTTP or HTTPS only. TCP routing is supported for shared domains only.
 
-#### <a id='create-private-domain'></a> Create a Private Domain
+#### <a id='create-private-domain'></a> Create a private domain
 
-Org managers can create a private domain with the following command:
+Org managers can create a private domain by running:
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf create-private-domain my-org <%= vars.private_app_domain %>
+  $ cf create-private-domain example-org <%= vars.private_app_domain %>
   </pre>
 * **cf CLI v6**
   <pre class="terminal">
-  $ cf create-domain my-org <%= vars.private_app_domain %>
+  $ cf create-domain example-org <%= vars.private_app_domain %>
   </pre>
 
-Org managers can create a private domain for a subdomain with the following command:
+Org managers can create a private domain for a subdomain by running:
 
 * **cf CLI v7**
   <pre class="terminal">
-  $ cf create-private-domain my-org foo.<%= vars.private_app_domain %>
+  $ cf create-private-domain example-org foo.<%= vars.private_app_domain %>
   </pre>
 * **cf CLI v6**
   <pre class="terminal">
-  $ cf create-domain my-org foo.<%= vars.private_app_domain %>
+  $ cf create-domain example-org foo.<%= vars.private_app_domain %>
   </pre>
 
-#### <a id='sharing-private-domains'></a> Sharing a Private Domain with One or More Orgs
+#### <a id='sharing-private-domains'></a> Sharing a private domain with one or more orgs
 
-Org managers can grant or revoke access to a private domain to other orgs if they have permissions for these orgs with the following commands:
+Org managers can grant or revoke access to a private domain to other orgs if they have permissions for these orgs.
+As of cf CLI v7, `cf unshare-private-domain` command provides a warning and requires confirmation before it proceeds.
 
 <pre class="terminal">
 $ cf share-private-domain test-org <%= vars.private_app_domain %>
@@ -678,7 +814,7 @@ $ cf share-private-domain test-org <%= vars.private_app_domain %>
 $ cf unshare-private-domain test-org <%= vars.private_app_domain %>
 </pre>
 
-#### <a id='delete-private-domain'></a> Delete a Private Domain
+#### <a id='delete-private-domain'></a> Delete a private domain
 
 Org managers can delete a domain from <%= vars.app_runtime_abbr %> with the `cf delete-domain` command:
 
@@ -686,78 +822,87 @@ Org managers can delete a domain from <%= vars.app_runtime_abbr %> with the `cf 
   <pre class="terminal">
   $ cf delete-private-domain <%= vars.private_app_domain %>
   </pre>
-  <p class="note"><strong>Note</strong>: cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</p>
+
+  <p class="note important">
+  <span class="note__title"><strong>Important</strong></span>
+  cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</p>
+
 * **cf CLI v6**:
+
   <pre class="terminal">
   $ cf delete-domain <%= vars.private_app_domain %>
   </pre>
 
-### <a id='parent-child-domains'></a> Requirements for Parent and Child Domains
+### <a id='parent-child-domains'></a> Requirements for parent and child domains
 
-In the domain `myapp.<%= vars.app_domain %>`, `<%= vars.app_domain %>` is the parent domain of subdomain `myapp`. Note the following requirements for domains:
+In the domain `example-app.<%= vars.app_domain %>`, `<%= vars.app_domain %>` is the parent domain of subdomain `example-app`. The following list describes requirements for creating domains:
 
-- You can only create a private domain that is parent to a private subdomain.
-- You can create a shared domain that is parent to either a shared or a private subdomain.
+* You can only create a private domain that is parent to a private subdomain.
 
-The domain `foo.myapp.<%= vars.app_domain %>` is the child subdomain of `myapp.<%= vars.app_domain %>`. Note the following requirements for subdomains:
+* You can create a shared domain that is parent to either a shared or a private subdomain.
 
-- You can create a private subdomain for a private parent domain only if the domains belong to the same org.
-- You can create a private subdomain for a shared parent domain.
-- You can only create a shared subdomain for a shared parent domain.
-- You cannot create a shared subdomain for a private parent domain.
+The domain `foo.example-app.<%= vars.app_domain %>` is the child subdomain of `example-app.<%= vars.app_domain %>`. The following list describes requirements for creating subdomains:
 
-### <a id='domains-dns'></a> DNS for Domains
+* You can create a private subdomain for a private parent domain only if the domains belong to the same org.
+
+* You can create a private subdomain for a shared parent domain.
+
+* You can only create a shared subdomain for a shared parent domain.
+
+* You cannot create a shared subdomain for a private parent domain.
+
+### <a id='domains-dns'></a> DNS for domains
 
 To create customized access to your apps, you can map specific or wildcard custom domains to <%= vars.app_runtime_abbr %> by using your DNS provider.
 
 <%= vars.domains_on_hosted %>
 
-#### <a id='subdomain-dns'></a> Mapping Domains to Your Custom Domain
+#### <a id='subdomain-dns'></a> Mapping Domains to your custom domain
 
-To associate a registered domain name with a domain on <%= vars.app_runtime_abbr %>, configure a CNAME record with your DNS provider, pointing at any shared domain offered in <%= vars.app_runtime_abbr %>.
+To associate a registered domain name with a domain on <%= vars.app_runtime_abbr %>, configure a CNAME record with your DNS provider, pointing at any shared
+domain offered in <%= vars.app_runtime_abbr %>.
 
-##### <a id='single-mapping'></a> Mapping a Single Domain to Your Custom Domain
+##### <a id='single-mapping'></a> Mapping a single domain to your custom domain
 
 To map a single domain to a custom domain to <%= vars.app_runtime_abbr %>, configure a CNAME record with your DNS provider.
 
-The following table provides some example CNAME record mappings.
+Here are some example CNAME record mappings.
 
-<table border="1" class="nice" >
-  <tr>
-    <th>Record Set in Custom Domain</th>
+<table class="table">
+  <thead><tr>
+    <th>Record set in custom domain</th>
     <th>Type</th>
     <th>Target in <%= vars.app_runtime_abbr %></th>
-  </tr>
+  </tr></thead>
   <tr>
-    <td>myapp.yourcustomdomain.com.</td>
+    <td>example-app.yourcustomdomain.com.</td>
     <td>CNAME</td>
-    <td>myapp.<%= vars.app_domain %></td>
+    <td>example-app.<%= vars.app_domain %></td>
   </tr>
   <tr>
     <td>www.yourcustomdomain.com.</td>
     <td>CNAME</td>
-    <td>myapp.<%= vars.app_domain %></td>
+    <td>example-app.<%= vars.app_domain %></td>
   </tr>
 </table>
 
-After you create the CNAME mapping, your DNS provider routes your custom domain to `myapp.<%= vars.app_domain %>`.
+After you create the CNAME mapping, your DNS provider routes your custom domain to `example-app.<%= vars.app_domain %>`.
+See your DNS provider documentation to find out if the trailing <code>.</code> is required.
 
-<p class="note"><strong>Note:</strong> See your DNS provider documentation to determine whether the trailing <code>.</code> is required.</p>
-
-##### <a id='wildcard-mapping'></a> Mapping Multiple Subdomains to Your Custom Domain
+##### <a id='wildcard-mapping'></a> Mapping multiple subdomains to your custom domain
 
 Use a wildcard CNAME record to point all of the subdomains in your custom domain to <%= vars.app_domain %>.
 
 Each separately configured subdomain has priority over the wildcard configuration.
 
-The following table provides some example wildcard CNAME record mappings.
+Here are some example wildcard CNAME record mappings.
 
-<table border="1" class="nice" >
-  <tr>
-    <th>Record Set in Custom Domain</th>
+<table class="table">
+  <thead><tr>
+    <th>Record set in custom domain</th>
     <th>Type</th>
     <th>Target in <%= vars.app_runtime_abbr %></th>
-  </tr>
+  </tr></thead>
   <tr>
     <td>*.yourcustomdomain.com.</td>
     <td>CNAME</td>
@@ -766,64 +911,70 @@ The following table provides some example wildcard CNAME record mappings.
   <tr>
     <td>*.yourcustomdomain.com.</td>
     <td>CNAME</td>
-    <td>*.myapp.<%= vars.app_domain %></td>
+    <td>*.example-app.<%= vars.app_domain %></td>
   </tr>
 </table>
 
 If you use a wildcard as the subdomain name, then your DNS provider can route from `*.YOURCUSTOMDOMAIN` to any of the following:
 
 - `*.<%= vars.app_domain %>`
-- `foo.myapp.<%= vars.app_domain %>`
-- `bar.foo.myapp.<%= vars.app_domain %>`
+- `foo.example-app.<%= vars.app_domain %>`
+- `bar.foo.example-app.<%= vars.app_domain %>`
 
 <%= vars.dns_warning %>
 
-#### <a id='root-domain-dns'></a> Configuring DNS for Your Registered Root Domain
+#### <a id='root-domain-dns'></a> Configuring DNS for your registered root domain
 
-To use your root domain (for example, `example.com`) for apps on <%= vars.app_runtime_abbr %> you can either use custom DNS record types like ALIAS and ANAME, if your DNS provider offers them, or subdomain redirection.
+To use your root domain for apps on <%= vars.app_runtime_abbr %>, you can use custom DNS record types like ALIAS and ANAME, if your DNS provider offers them, or you can use subdomain redirection.
 
-<p class="note"><strong>Note:</strong> Root domains are also called zone apex domains.</p>
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+Root domains are also called zone apex domains.</p>
 
-If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider to point at a shared domain in <%= vars.app_runtime_abbr %>.
+If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider to point at a shared domain in
+<%= vars.app_runtime_abbr %>.
 
-<table border="1" class="nice" >
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Record</th>
     <th>Name</th>
     <th>Target</th>
     <th>Note</th>
-  </tr>
+  </tr></thead>
   <tr>
     <td>ALIAS or ANAME</td>
     <td>empty or @</td>
     <td><%= vars.private_app_domain %>.</td>
-    <td>Refer to your DNS provider documentation to determine whether to use an empty or @ value for the Name entry.</td>
+    <td>To decide whether to use an empty or @ value for the Name entry, see the documentation for your DNS provider.</td>
   </tr>
 </table>
 
-If your DNS provider does not support ANAME or ALIAS records you can use subdomain redirection, also known as domain forwarding, to redirect requests for your root domain to a subdomain configured as a CNAME.
+If your DNS provider does not support ANAME or ALIAS records, you can use subdomain redirection, also known as domain forwarding, to redirect requests for your root domain to a subdomain configured as a CNAME.
 
-<p class="note"><strong>Note:</strong> If you use domain forwarding, SSL requests to the root domain may fail if the SSL certificate only matches the subdomain. For more information about SSL certificates, see <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Configuring Trusted System Certificates for Apps</a>.</p>
+<p class="note important">
+<span class="note__title"><strong>Important</strong></span>
+If you use domain forwarding, SSL requests to the root domain might fail if the SSL certificate matches only the subdomain. For more information about SSL certificates, see the <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Cloud Foundry documentation</a>.</p>
 
-Configure the root domain to point at a subdomain such as `www`, and configure the subdomain as a CNAME record pointing at a shared domain in <%= vars.app_runtime_abbr %>.
+Configure the root domain to point at a subdomain such as `www`, and configure the subdomain as a CNAME record pointing at a shared domain in
+<%= vars.app_runtime_abbr %>.
 
-<table border="1" class="nice" >
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Record</th>
     <th>Name</th>
     <th>Target</th>
     <th>Note</th>
-  </tr>
+  </tr></thead>
   <tr>
     <td>URL or Forward</td>
     <td><%= vars.private_app_domain %></td>
     <td>www.<%= vars.private_app_domain %></td>
-    <td>This method results in a <code>301 permanent redirect</code> to the subdomain you configure.</td>
+    <td>This method causes a <code>301 permanent redirect</code> to the subdomain you configure.</td>
   </tr>
   <tr>
     <td>CNAME</td>
     <td>www</td>
-    <td>myapp.<%=vars.app_domain%></td>
+    <td>example-app.<%= vars.app_domain %></td>
     <td></td>
   </tr>
 </table>

@@ -1,39 +1,30 @@
 ---
-title: Considerations for Designing and Running an App in the Cloud
+title: Designing and running your app in the cloud
 owner: CAPI
 ---
 
-This topic describes some considerations you should keep in mind when designing and
-running an app through <%= vars.platform_name %>.
 
+These are best practices for developing modern apps for cloud platforms. For more detailed reading about good app design for the cloud, see [The Twelve-Factor App](http://www.12factor.net).
 
-## <a id="app-design"></a> App Design for the Cloud
-
-Apps written in supported frameworks often run unmodified on <%= vars.platform_name %>
-if the app design follows a few simple guidelines.
-Following these guidelines facilitates app deployment to <%= vars.platform_name %> and other cloud platforms.
-
-The following guidelines represent best practices for developing modern apps for cloud platforms. For more detailed reading about good app design for the cloud, see [The Twelve-Factor App](http://www.12factor.net).
+Following these guidelines facilitates app deployment to <%= vars.platform_name %> and other cloud platforms, and apps written in supported frameworks often run unmodified.
 
 For more information about the features of HTTP routing handled by the Gorouter in <%= vars.platform_name %>,
-see [HTTP Routing](../../concepts/http-routing.html).
-For more information about the lifecycle of app containers,
-see [App Container Lifecycle](app-lifecycle.html).
+see [HTTP routing](../../concepts/http-routing.html).
+For more information about the life cycle of application containers, see [Application container life cycle](app-lifecycle.html).
 
-### <a id="filesystem"></a> Avoid Writing to the Local File System
+## <a id="filesystem"></a> Avoid writing to the local file system
 
-Apps running on <%= vars.platform_name %> should not write files to the local file system
-for the following reasons:
+Apps running on <%= vars.platform_name %> must not write files to the local file system because:
 
-* **Local file system storage is short-lived.** When an app instance crashes or stops, the resources assigned to that instance are reclaimed by the platform, including any local disk changes made since the app started. When the instance is restarted, the app starts with a new disk image. Although your app can write local files while it is running, the files disappear after the app restarts.
+* **Local file system storage is short-lived.** When an app instance fails or stops, the resources assigned to that instance are reclaimed by the platform, including any local disk changes made since the app started. When the instance is restarted, the app starts with a new disk image. Although your app can write local files while it is running, the files disappear after the app restarts.
 
 * **Instances of the same app do not share a local file system.** Each app instance runs
   in its own isolated container.
   Therefore, a file written by one instance is not visible to other instances of the same app.
-  If the files are temporary, this should not be a problem.
+  If the files are temporary, this is not be a problem.
   However, if your app needs the data in the files to persist across app restarts,
-  or the data needs to be shared across all running instances of the app,
-  the local file system should not be used. <%= vars.company_name %> recommends
+  or the data must be shared across all running instances of the app,
+  the local file system must not be used. <%= vars.company_name %> recommends
   using a shared data service like a database or blobstore for this purpose.
 
 For example, instead of using the local file system, you can use a <%= vars.platform_name %> service
@@ -41,15 +32,15 @@ such as the MongoDB document database or a relational database like MySQL or Pos
 Another option is to use cloud storage providers such as [Amazon S3](http://aws.amazon.com/s3/),
 [Google Cloud Storage](https://cloud.google.com/products/cloud-storage),
 [Dropbox](https://www.dropbox.com/developers), or [Box](http://developers.box.com/).
-If your app needs to communicate across different instances of itself,
+If your app must communicate across different instances of itself,
 consider a cache like Redis or a messaging-based architecture with RabbitMQ.
 
 If you must use a file system for your app because, for example, your app interacts
 with other apps through a network attached file system or because your app is based on legacy code
 that you cannot rewrite, consider using volume services to bind a network attached file system to your app.
-For more information, see [Using an External File System (Volume Services)](../services/using-vol-services.html).
+For more information, see [Using an external file system (volume services)](../services/using-vol-services.html).
 
-### <a id="shared-cookies"></a> Cookies Accessible Across Apps
+## <a id="shared-cookies"></a> Cookies accessible across apps
 
 In an environment with shared domains, cookies might be accessible across apps.
 
@@ -57,13 +48,13 @@ Many tracking tools such as Google Analytics and Mixpanel use the highest availa
 For an app using a shared domain such as `example.com`, a cookie set to use the highest domain has a `Domain` attribute of `.example.com` in its HTTP response header.
 For example, an app at `my-app.<%= vars.app_domain %>` might be able to access the cookies for an app at `your-app.<%= vars.app_domain %>`.
 
-You should decide whether or not you want your apps or tools that use cookies to set and store the cookies at the highest available domain.
+You must decide whether you want your apps or tools that use cookies to set and store the cookies at the highest available domain.
 
-### <a id="ports"></a> Port Considerations
+## <a id="ports"></a> Port considerations
 
 Clients connect to apps running on <%= vars.platform_name %> by making requests to URLs associated with the app.
 <%= vars.platform_name %> allows HTTP requests to apps on ports 80 and 443.
-For more information, see [Routes and Domains](routes-domains.html).
+For more information, see [Routes and domains](routes-domains.html).
 
 <%= vars.platform_name %> also supports WebSocket handshake requests over HTTP containing the `Upgrade` header.
 The <%= vars.platform_name %> router handles the upgrade and initiates a TCP connection
@@ -71,20 +62,20 @@ to the app to form a WebSocket connection.
 
 <%= vars.port_limitations %>
 
-### <a id="moving-apps"></a> <%= vars.platform_name %> Updates and Your App
+## <a id="moving-apps"></a> <%= vars.platform_name %> updates and your app
 
-For app management purposes, <%= vars.platform_name %> may need to stop and restart your app instances.
+For app management purposes, <%= vars.platform_name %> might need to stop and restart your app instances.
 If this occurs, <%= vars.platform_name %> performs the following steps:
 
 1. <%= vars.platform_name %> sends a single `termination signal` to the root process
-   that your start command invokes.
+   that your start command runs.
 
 1. <%= vars.platform_name %> waits 10 seconds to allow your app to cleanly shut down any child processes
    and handle any open connections.
 
-1. After 10 seconds, <%= vars.platform_name %> forcibly shuts down your app.
+1. After 10 seconds, <%= vars.platform_name %> shuts down your app.
 
-Your app should accept and handle the termination signal to ensure that it shuts down gracefully. To achieve this, the app is expected to follow the steps below when shutting down:
+Your app must accept and handle the termination signal to ensure that it shuts down gracefully. To achieve this, the app is expected to do these steps when shutting down:
 
 1. App receives termination signal
 1. App closes listener so that it stops accepting new connections
@@ -95,11 +86,11 @@ Your app should accept and handle the termination signal to ensure that it shuts
 For an implementation of the expected shutdown behavior in Golang, see the [Sample HTTP App](https://github.com/cloudfoundry/sample-http-app) repository on GitHub.
 
 
-## <a id="exclude"></a> Ignore Unnecessary Files When Pushing
+## <a id="exclude"></a> Ignore unnecessary files when pushing
 
 By default, when you push an app, all files in the app's project directory tree are uploaded
 to your <%= vars.platform_name %> instance, except version control and configuration files
-or folders with the following names:
+or directories with these names:
 
 * `.cfignore`
 * `_darcs`
@@ -124,14 +115,12 @@ To use a `.cfignore` file, create a text file named `.cfignore` in the root of y
 The file types you might want to exclude vary, based on the app frameworks you use. For examples of commonly-used `.gitignore` files, see the [gitignore](https://github.com/github/gitignore) repository on GitHub.
 
 
-## <a id="increase-availability"></a> Run Multiple Instances to Increase Availability
+## <a id="increase-availability"></a> Run multiple instances to increase availability
 
-Singleton apps may become temporarily unavailable for reasons that include:
+Singleton apps might become temporarily unavailable for reasons that include:
 
 * During an upgrade, <%= vars.platform_name %> gracefully shuts down the apps running on each Diego Cell
-and restarts them on another Diego Cell.
-Single app instances may become temporarily unavailable if the replacement instance does not become healthy
-within the Diego Cell's evacuation timeout, which defaults to 10 minutes.
+and restarts them on another Diego Cell. Single app instances might become temporarily unavailable if the replacement instance does not become healthy within the Diego Cell's evacuation timeout. The default timeout is 10 minutes.
 
 * Unexpected faults in <%= vars.platform_name %> system components or underlying infrastructure,
 such as container-host VMs or IaaS availability zones, might cause lone app instances to disappear
@@ -140,11 +129,11 @@ or become unroutable for a minute or two.
 To avoid the risk of an app becoming temporarily unavailable, developers can run more than one instance of the app.
 
 
-## <a id="buildpacks"></a> Using Buildpacks
+## <a id="buildpacks"></a> Using buildpacks
 
 A buildpack consists of bundles of detection and configuration scripts that provide framework
 and runtime support for your apps.
-When you deploy an app that needs a buildpack, <%= vars.platform_name %> installs the buildpack
+When you deploy an app that requires a buildpack, <%= vars.platform_name %> installs the buildpack
 on the Diego Cell where the app runs.
 
-For more information, see [Buildpacks](../../buildpacks/).
+For more information, see [Buildpacks](../../buildpacks/index.html).

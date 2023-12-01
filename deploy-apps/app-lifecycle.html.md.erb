@@ -1,56 +1,57 @@
 ---
-title: App Container Lifecycle
+title: The application container life cycle on the Diego architecture
 owner: Diego
 ---
 
-This topic describes the lifecycle of an app container for <%= vars.app_runtime_first %> deployments running on the Diego architecture.
+The life cycle stages of an application container for your <%= vars.app_runtime_first %> deployments running on the Diego architecture include deployment, failure events, evacuation, and shutdown.
 
 
 ## <a id="deployment"></a> Deployment
 
-The app deployment process involves uploading, staging, and starting the app in a container. Your app must successfully complete each of these phases within certain time limits. The default time limits for the phases are as follows:
+App deployment involves uploading, staging, and starting the app in a container. Your app must complete each of these phases within a certain time limit. The default time limits for the phases are:
 
 * Upload: 15 minutes
 * Stage: 15 minutes
 * Start: 60 seconds
 
-<p class="note"><strong>Note:</strong> Your administrator can change these defaults. Check with your administrator for the actual time limits set for app deployment.</p>
+Your administrator can change these default settings. Check with your administrator for the actual time limits set for app deployment.
 
-Developers can change the time limit for starting apps through an app manifest or on the command line. For more information, see [ Deploying with App Manifests](manifest.html) and [Using App Health Checks](./healthchecks.html).
+Developers can change the time limit for starting apps through an app manifest or on the command line. For more information, see [Deploying with app manifests](manifest.html) and [Using app health checks](./healthchecks.html).
 
 
-## <a id="crash-events"></a> Crash Events
+## <a id="crash-events"></a> Crash events
 
-If an app instance crashes, <%= vars.app_runtime_abbr %> automatically restarts it by rescheduling the instance on another container three times. After three failed restarts, <%= vars.app_runtime_abbr %> waits thirty seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance.
-
+If an app instance fails, <%= vars.app_runtime_abbr %>  restarts it by rescheduling the instance on another container three times. After three failed restarts, <%= vars.app_runtime_abbr %> waits 30 seconds before attempting another restart. The wait time doubles each restart until the ninth restart, and remains at that duration until the 200th restart. After the 200th restart, <%= vars.app_runtime_abbr %> stops trying to restart the app instance.
 
 ## <a id="evacuation"></a> Evacuation
 
-Certain operator actions require restarting VMs with containers hosting app instances. For example, an operator who updates stemcells or installs a new version of <%= vars.app_runtime_abbr %> must restart all the VMs in a deployment.
+Some actions require restarting VMs with containers hosting app instances. For example, you can update stemcells or install a new version of <%= vars.app_runtime_abbr %>. You must restart all the VMs in a deployment.
 
-<%= vars.app_runtime_abbr %> automatically relocates the instances on VMs that are shutting down through a process called evacuation. <%= vars.app_runtime_abbr %> recreates the app instances on another VM, waits until they are healthy, and then shuts down the old instances. During an evacuation, developers may see their app instances in a duplicated state for a brief period.
+<%= vars.app_runtime_abbr %> relocates the instances on VMs that are shutting down through a process called evacuation. <%= vars.app_runtime_abbr %> recreates the app instances on another VM, waits until they are healthy, and then shuts down the old instances. During an evacuation, you might see the app instances in a duplicated state for a brief time.
 
-During this app duplication process, singleton app instances may become temporarily unavailable if the replacement instance does not become healthy within the Diego Cell's evacuation timeout, which defaults to 10 minutes. Because of this, app developers with a low tolerance for brief downtime may prefer to run several instances of their app. See [Run Multiple Instances to Increase Availability](prepare-to-deploy.html#increase-availability).
+During app duplication, singleton app instances might become temporarily unavailable if the replacement instance does not become healthy within the evacuation timeout of the Diego Cell (the default is ten minutes). App developers with a low tolerance for downtime might prefer to run several instances of their app. See [Run multiple instances to increase availability](prepare-to-deploy.html#increase-availability).
 
 
 ## <a id="shutdown"></a> Shutdown
 
-<%= vars.app_runtime_abbr %> requests a shutdown of your app instance in the following scenarios:
+<%= vars.app_runtime_abbr %> requests a shutdown of your app instance when:
 
-* When a user runs `cf scale`, `cf stop`, `cf push`, `cf delete`, or `cf restart-app-instance`
+* A user runs `cf scale`, `cf stop`, `cf push`, `cf delete`, or `cf restart-app-instance`.
 
-* As a result of a system event, such as the replacement procedure during Diego Cell evacuation or when an app instance stops because of a failed health check probe
+* A system event occurs, such as the replacement procedure during Diego Cell evacuation or when an app instance stops because of a failed health check probe.
 
-To shut down the app, <%= vars.app_runtime_abbr %> sends the app process in the container a SIGTERM. By default, the process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, <%= vars.app_runtime_abbr %> sends a SIGKILL.
+To stop the app, <%= vars.app_runtime_abbr %> sends the app process in the container a SIGTERM. By default, the process has ten seconds to shut down gracefully. If the process has not exited after ten seconds, <%= vars.app_runtime_abbr %> sends a SIGKILL.
 
-By default, apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before <%= vars.app_runtime_abbr %> terminates the app with a SIGKILL. For instance, a web app must finish processing existing requests and stop accepting new requests.
+By default, apps must finish their in-flight jobs within ten seconds of receiving the SIGTERM before <%= vars.app_runtime_abbr %> stops the app with a SIGKILL. For example, a web app must finish processing existing requests and stop accepting new requests.
 <% if vars.platform_code == 'PCF' %>
-  To modify the timeout period on the <%= vars.app_runtime_abbr %> tile or IST tile, go to the Advanced Settings tab and edit the "app graceful shutdown period" property.
+  To change the timeout period on the <%= vars.app_runtime_abbr %> tile or IST tile, go to the <strong>Advanced Settings</strong> tab and edit the "app graceful shutdown period" property.
 <% else %>
-To modify the timeout period, change the bosh property `containers.graceful_shutdown_interval_in_seconds` on the rep jobs.
+To change the timeout period, change the BOSH property <code>containers.graceful_shutdown_interval_in_seconds</code> on the replacement jobs.
 <% end %>
-NOTE: This may increase the time it takes to drain diego cells causing increased deployment time.
+This might increase the time it takes to drain Diego Cells, which causes increased deployment time.
 
 <%= vars.app_graceful_shutdown_config %>
 
-<p class="note"><strong>Note:</strong> One exception to the cases mentioned above is when monit restarts a crashed Diego Cell rep or Garden server. In this case, <%= vars.app_runtime_abbr %> immediately stops the apps that are still running using SIGKILL.</p>
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+An exception to the cases previously mentioned is when monit restarts a Diego Cell replacement or Garden server that has failed. In this case, <%= vars.app_runtime_abbr %> immediately stops the apps that are still running using SIGKILL.</p>

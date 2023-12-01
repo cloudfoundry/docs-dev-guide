@@ -1,20 +1,21 @@
 ---
-title: Running Tasks
+title: Running tasks in your apps
 owner: CAPI/CLI
 ---
 
-This topic describes how to run tasks in Cloud Foundry. A task is an app or script whose code is included as part of a deployed app, but runs independently in its own container.
+A task is an app or script, the code of which is included as part of a deployed app, but runs
+independently in its own container. This topic describes how to run tasks in <%= vars.app_runtime_first %>.
 
 
-## <a id='about-tasks'></a> About Tasks
+## <a id='about-tasks'></a> Tasks in <%= vars.app_runtime_abbr %>
 
-In contrast to a long-running process (LRP), tasks run for a finite amount of time, then stop. Tasks run in their own containers and are designed to use minimal resources. After a task runs, Cloud Foundry destroys the container running the task.
+In contrast to a long-running process (LRP), tasks run for a finite amount of time, then stop. Tasks run in their own containers and are designed to use minimal resources. After a task runs, <%= vars.app_runtime_abbr %> destroys the container running the task.
 
-As a single-use object, a task can be checked for its state and for a success or failure message.
+As a single use object, a task can be checked for its state and for a success or failure message.
 
 <%= vars.tasks_ai %>
 
-### <a id="use-cases"></a> Use Cases for Tasks
+### <a id='use-cases'></a> Use cases for tasks
 
 Tasks are used to perform one-off jobs, which include:
 
@@ -28,174 +29,235 @@ Tasks are used to perform one-off jobs, which include:
 * Backing-up data
 * Downloading content
 
-### <a id="task-processes"></a> How Tasks Are Run
+### <a id='task-processes'></a> How tasks are run
 
-Tasks are always executed asynchronously, meaning that they run independently from the parent app or other tasks that run on the same app.
+Tasks are always run asynchronously, meaning that they run independently from the parent app or other tasks that run on the same app.
 
-The lifecycle of a task is as follows:
+The life cycle of a task is as follows:
 
-1. A user initiates a task in Cloud Foundry using one of the following mechanisms:
-   * The `cf run-task APPNAME "TASK"` command. For more information, see [Running Tasks](#run-tasks).
-   * A Cloud Controller v3 API call. For more information, see [Tasks](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#tasks) in the Cloud Foundry API documentation.
+1. A user initiates a task in <%= vars.app_runtime_abbr %> using one of the following mechanisms:
+   * The `cf run-task APP-NAME "TASK"` command. For more information, see [Running tasks in your apps](#run-tasks).
+   * A Cloud Controller v3 API call. For more information, see the [Cloud Foundry API documentation](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#tasks).
    * The Cloud Foundry Java Client. For more information, see [Cloud Foundry Java Client Library](../buildpacks/java/java-client.html) and the [Cloud Foundry Java Client](https://github.com/cloudfoundry/cf-java-client) repository on GitHub.
 
-1. Cloud Foundry creates a container specifically for the task.
+1. <%= vars.app_runtime_abbr %> creates a container specifically for the task.
 
-1. Cloud Foundry runs the task on the container using the value passed to the `cf run-task` command.
+1. <%= vars.app_runtime_abbr %> runs the task on the container using the value passed to the `cf run-task` command.
 
-1. Cloud Foundry destroys the container.
+1. <%= vars.app_runtime_abbr %> destroys the container.
 
 The container also inherits environment variables, service bindings, and security groups bound to the app.
 
-<p class="note"><strong>Note:</strong> You cannot SSH into the container running a task.</p>
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+You cannot SSH into the container running a task.</p>
 
-### <a id='task-logging-execution-history'></a> Task Logging and Execution History
+### <a id='task-logging-execution'></a> Task logging and execution history
 
-Any data or messages the task outputs to STDOUT or STDERR is available on the app's firehose logs. A syslog drain attached to the app receives the task log output.
-
+Any data or messages the task outputs to stdout or stderr is available in the firehose logs of the app. A syslog drain attached to the app receives the task log output.
 The task execution history is retained for one month.
 
 
-## <a id='manage-tasks'></a> Manage Tasks
+## <a id='manage-tasks'></a> Manage tasks
 
-At the system level, a user with admin-level privileges can use the Cloud Controller v3 API to view all tasks that are running within an org or space. For more information, see [List tasks](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#list-tasks) in the Cloud Foundry API documentation.
+At the system level, a user with admin-level privileges can use the Cloud Controller v3 API to view all tasks that are running within an org or space. For
+more information, see the [Cloud Foundry API documentation](http://v3-apidocs.cloudfoundry.org/version/3.0.0/index.html#list-tasks).
 
-Admins can set the default memory and disk usage quotas for tasks on a global level.
-Tasks use the same memory and disk usage defaults as apps unless customized using [run-task](https://cli.cloudfoundry.org/en-US/v7/run-task.html) in the cf CLI. 
+Admins can set the default memory, disk usage and log rate quotas for tasks on a global level.
+
+Tasks use the same memory, disk usage, and log rate limit defaults as apps, unless you customize them using the `cf run-task` command. For more information
+about the `cf run-task` command, see the [Cloud Foundry CLI reference guide](https://cli.cloudfoundry.org/en-US/v8/run-task.html).
 
 <% if vars.platform_code == 'PCF' %>
-<%= partial '/pcf/core/2-7/tasks_rec_alloc_pcf' %>
+<%= partial "/pcf/core/tasks_rec_alloc_pcf" %>
 <% else %>
 <%= partial 'tasks_rec_alloc_oss' %>
 <% end %>
 
-## <a id='run-tasks'></a> Run a Task on an App
+
+## <a id='run-tasks'></a> Run a task on an app
 
 You can use the Cloud Foundry Command Line Interface (cf CLI) to run a task in the context of an app.
 
-<p class="note"><strong>Note:</strong> To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later, or install cf CLI v7. For information about downloading, installing, and uninstalling the cf CLI., see <a href="../cf-cli/install-go-cli.html">Installing the Cloud Foundry Command Line Interface</a>.</p>
+<div class="note important">
+<span class="note__title"><strong>Important</strong></span>
+  <ul>
+    <li>To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later, or install cf CLI v7 or v8. To download, install, and uninstall the cf CLI, see <a href="../cf-cli/install-go-cli.html">Installing the Cloud Foundry Command Line Interface</a>.</li>
+    <li>To run a task using cf CLI v6 without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</li>
+  </ul>
+</div>
 
-<p class="note"><strong>Note:</strong> To run a task on v6 cf CLI without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
-
-### <a id='run-tasks-v6'></a> Run a Task on an App with cf CLI v6
+### <a id='run-tasks-v6'></a> Run a task on an app with cf CLI v6
 
 To run a task on an app with cf CLI v6:
 
-1. Push your app by running:
+1. In a terminal window, push your app by running:
 
-	```
-	cf push APP-NAME
-	```
+    ```
+    cf push APP-NAME
+    ```
+    Where `APP-NAME` is the name of your app,
 
 1. Run your task on the deployed app by running:
 
-	```
-	cf run-task APP-NAME "TASK" --name TASK-NAME
-	```
-	The following example runs a database migration as a task on the `my-app` app:
-	<pre class="terminal">
-	$ cf run-task my-app "bin/rails db:migrate" --name my-task
-	Creating task for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
-	OK
-	Task 1 has been submitted successfully for execution.
-	</pre>
-	<p class="note"><strong>Note:</strong> To re-run a task, you must run it as a new task using the above command.</p>
+    ```
+    cf run-task APP-NAME "TASK" --name TASK-NAME
+    ```
+
+    Where:
+    <ul>
+      <li><code>APP-NAME</code> is the name of your app.</li>
+      <li><code>TASK</code> is the task you want to run.</li>
+      <li><code>TASK-NAME</code> is the name you want to give the task.</li>
+    </ul>
+
+    The following example command runs a database migration as a task on the `example-app` app:
+
+    <pre class="terminal">
+    cf run-task example-app "bin/rails db:migrate" --name example-task
+    </pre>
+
+    When the task runs successfully, you see an output similar to the following example:
+    <pre class="terminal">
+    Creating task for app example-app in org example-org / space development as admin@example.org...
+    OK
+    Task 1 has been submitted successfully for execution.
+    </pre>
+
+    <p class="note">
+    <span class="note__title"><strong>Note</strong></span>
+    To run a task again, you must run it as a new task using the previous command.</p>
 
 1. To display the recent logs of the app and all its tasks, run:
 
-	```
-	cf logs APP-NAME --recent
-	```
-	The following example displays the logs of a successful task:
-	<pre class="terminal">
-	$ cf logs my-app --recent
-	2017-01-03T15:58:06.57-0800 [APP/TASK/my-task/0]OUT Creating container
-	2017-01-03T15:58:08.45-0800 [APP/TASK/my-task/0]OUT Successfully created container
-	2017-01-03T15:58:13.32-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.322258 #7] DEBUG -- :    (15.9ms)  CREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)
-	2017-01-03T15:58:13.33-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.337723 #7] DEBUG -- :    (11.9ms)  CREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)
-	2017-01-03T15:58:13.34-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.340234 #7] DEBUG -- :    (1.6ms)  SELECT pg_try_advisory_lock(3720865444824511725);
-	2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.351853 #7] DEBUG -- :   ActiveRecord::SchemaMigration Load (0.7ms)  SELECT "schema_migrations".* FROM "schema_migrations"
-	2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT I, [2017-01-03T23:58:13.357294 #7]  INFO -- : Migrating to CreateArticles (20161118225627)
-	2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.359565 #7] DEBUG -- :    (0.5ms)  BEGIN
-	2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT == 20161118225627 CreateArticles: migrating ===================================
-	2017-01-03T15:58:13.50-0800 [APP/TASK/my-task/0]OUT Exit status 0
-	2017-01-03T15:58:13.56-0800 [APP/TASK/my-task/0]OUT Destroying container
-	2017-01-03T15:58:15.65-0800 [APP/TASK/my-task/0]OUT Successfully destroyed container
-	</pre>
-	The following example displays the logs of a failed task:
-	<pre class="terminal">
-	$ cf logs my-app --recent
-	2016-12-14T11:09:26.09-0800 [APP/TASK/my-task/0]OUT Creating container
-	2016-12-14T11:09:28.43-0800 [APP/TASK/my-task/0]OUT Successfully created container
-	2016-12-14T11:09:28.85-0800 [APP/TASK/my-task/0]ERR bash: bin/rails: command not found
-	2016-12-14T11:09:28.85-0800 [APP/TASK/my-task/0]OUT Exit status 127
-	2016-12-14T11:09:28.89-0800 [APP/TASK/my-task/0]OUT Destroying container
-	2016-12-14T11:09:30.50-0800 [APP/TASK/my-task/0]OUT Successfully destroyed container
-	</pre>
-	If your task name is unique, you can `grep` the output of the `cf logs` command for the task name to view task-specific logs.
+    ```
+    cf logs APP-NAME --recent
+    ```
+    Where `APP-NAME` is the name of your app.
+    <br><br>
+    If a task succeeds, you see logs similar to the following example:
+    <pre class="terminal">
+    2017-01-03T15:58:06.57-0800 [APP/TASK/my-task/0]OUT Creating container
+    2017-01-03T15:58:08.45-0800 [APP/TASK/my-task/0]OUT Successfully created container
+    2017-01-03T15:58:13.32-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.322258 #7] DEBUG -- :    (15.9ms)  CREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)
+    2017-01-03T15:58:13.33-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.337723 #7] DEBUG -- :    (11.9ms)  CREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)
+    2017-01-03T15:58:13.34-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.340234 #7] DEBUG -- :    (1.6ms)  SELECT pg_try_advisory_lock(3720865444824511725);
+    2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.351853 #7] DEBUG -- :   ActiveRecord::SchemaMigration Load (0.7ms)  SELECT "schema_migrations".* FROM "schema_migrations"
+    2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT I, [2017-01-03T23:58:13.357294 #7]  INFO -- : Migrating to Createtopics (20161118225627)
+    2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT D, [2017-01-03T23:58:13.359565 #7] DEBUG -- :    (0.5ms)  BEGIN
+    2017-01-03T15:58:13.35-0800 [APP/TASK/my-task/0]OUT == 20161118225627 Createtopics: migrating ===================================
+    2017-01-03T15:58:13.50-0800 [APP/TASK/my-task/0]OUT Exit status 0
+    2017-01-03T15:58:13.56-0800 [APP/TASK/my-task/0]OUT Destroying container
+    2017-01-03T15:58:15.65-0800 [APP/TASK/my-task/0]OUT Successfully destroyed container
+    </pre>
+    If a task fails, you see logs similar to the following example:
+    <pre class="terminal">
+    2016-12-14T11:09:26.09-0800 [APP/TASK/my-task/0]OUT Creating container
+    2016-12-14T11:09:28.43-0800 [APP/TASK/my-task/0]OUT Successfully created container
+    2016-12-14T11:09:28.85-0800 [APP/TASK/my-task/0]ERR bash: bin/rails: command not found
+    2016-12-14T11:09:28.85-0800 [APP/TASK/my-task/0]OUT Exit status 127
+    2016-12-14T11:09:28.89-0800 [APP/TASK/my-task/0]OUT Destroying container
+    2016-12-14T11:09:30.50-0800 [APP/TASK/my-task/0]OUT Successfully destroyed container
+    </pre>
+    If your task name is unique, you can `grep` the output of the `cf logs` command for the task name to view task-specific logs.
 
-### <a id='run-tasks-v7'></a> Run a Task on an App with cf CLI v7
+### <a id='run-tasks-v7'></a> Run a task on an app with cf CLI v7
 
 To run a task on an app with cf CLI v7:
 
-1. Configure your v3 API manifest with a task as a process type. For more information, see [The app manifest specification](https://v3-apidocs.cloudfoundry.org/version/3.78.0/index.html#the-app-manifest-specification) in the Cloud Foundry API documentation.
+1. Configure your v3 API manifest with a task as a process type. For more information, see the [Cloud Foundry API documentation](https://v3-apidocs.cloudfoundry.org/version/3.78.0/index.html#the-app-manifest-specification).
 
-1. Push your app by running:
+1. In a terminal, push your app by running:
 
-	```
-	cf push APP-NAME --task
-	```
+    ```
+    cf push APP-NAME --task
+    ```
+    Where `APP-NAME` is the name of your app.
 
 1. Run your task on the deployed app by running:
 
-	```
-	cf run-task APP-NAME --name TASK-NAME
-	```
-	<p class="note"><strong>Note:</strong> <code>cf run-task</code> allows the optional flags <code>--process</code> and <code>--command</code>. If provided, <code>--command</code> overrides the manifest property.</p>
-	The following example runs a database migration as a task on the `my-app` app:
-	<pre class="terminal">
-	$ cf run-task my-app --name my-task
-	Creating task for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
-	OK
-	Task 1 has been submitted successfully for execution.
-	</pre>
+    ```
+    cf run-task APP-NAME --name TASK-NAME
+    ```
+
+    Where:
+    <ul>
+      <li><code>APP-NAME</code> is the name of your app.</li>
+      <li><code>TASK-NAME</code> is the name you want to give the task.</li>
+    </ul>
+
+    <p class="note important">
+    <span class="note__title"><strong>Important</strong></span>
+    <code>cf run-task</code> allows you to include the <code>--process</code> and <code>--command</code> flags. Including  the <code>--command</code> flag overrides the manifest property.</p>
+
+    The following example command runs a task on the `example-app` app:
+
+    <pre class="terminal">
+    cf run-task example-app --name example-task
+    </pre>
+
+    When the task runs successfully, you see terminal output similar to the following example:
+    <pre class="terminal">
+    Creating task for app example-app in org example-org / space development as admin@example.org...
+    OK
+    Task 1 has been submitted successfully for execution.
+    </pre>
 
 1. To display the recent logs of the app and all its tasks, run:
 
-	```
-	cf logs APP-NAME --recent
-	```
+    ```
+    cf logs APP-NAME --recent
+    ```
+    Where `APP-NAME` is the name of your app.
 
 
-## <a id='list-tasks'></a> List Tasks Running on an App
+## <a id='list-tasks'></a> List tasks running on an app
 
-To list the tasks for a given app, run `cf tasks APP-NAME`. For example:
+To list the tasks for a given app:
 
-<pre class="terminal">
-$ cf tasks my-app
-Getting tasks for app my-app in org jdoe-org / space development as jdoe@pivotal.io...
-OK
+1. In a terminal window, run:
 
-id   name       state       start time                      command
-2    339044ef   FAILED      Wed, 23 Nov 2016 21:52:52 UTC   echo foo; sleep 100; echo bar
-1    8d0618cf   SUCCEEDED   Wed, 23 Nov 2016 21:37:28 UTC   bin/rails db:migrate
-</pre>
+    ```
+    cf tasks APP-NAME
+    ```
+    Where `APP-NAME` is the name of your app. The command returns output similar to the following example:
+    <pre class="terminal">
+    Getting tasks for app example-app in org example-org / space development as admin@example.org...
+    OK
 
-Each task has one of the following states:
+    id   name       state       start time                      command
+    2    339044ef   FAILED      Wed, 23 Nov 2016 21:52:52 UTC   echo foo; sleep 100; echo bar
+    1    8d0618cf   SUCCEEDED   Wed, 23 Nov 2016 21:37:28 UTC   bin/rails db:migrate
+    </pre>
+
+Tasks can be in these states:
 
 | State | Description |
 | ----- | ----------- |
-| RUNNING | The task is currently in progress. |
-| FAILED | The task did not complete. This state occurs when a task does not work correctly or a user cancels the task. |
-| SUCCEEDED | The task completed successfully. |
+| `RUNNING` | The task is in progress. |
+| `FAILED` | The task did not complete. This state occurs when a task does not work correctly or a user cancels the task. |
+| `SUCCEEDED` | The task completed successfully. |
 
 
-## <a id='cancel-task'></a> Cancel a Task
+## <a id='cancel-task'></a> Cancel a task
 
-After running a task, you may be able to cancel it before it finishes. To cancel a running task, run `cf terminate-task APP-NAME TASK-ID`. For example:
+After you run a task, you might be able to cancel it before it finishes.
 
-<pre class="terminal">
-$ cf terminate-task my-app 2
-Terminating task 2 of app my-app in org jdoe-org / space development as jdoe@pivotal.io...
-OK
-</pre>
+To cancel a running task:
+
+1. In a terminal window, run:
+
+    ```
+    cf terminate-task APP-NAME TASK-ID
+    ```
+    Where:
+    <ul>
+      <li><code>APP-NAME</code> is the name of your app.</li>
+      <li><code>TASK-NAME</code> is the name you want to give the task.</li>
+    </ul>
+
+    The previous command returns output similar to the following example:
+    <pre class="terminal">
+    Terminating task 2 of app example-app in org example-org / space development as admin@example.org...
+    OK
+    </pre>

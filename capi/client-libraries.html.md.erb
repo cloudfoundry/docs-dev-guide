@@ -1,37 +1,42 @@
 ---
-title: Cloud Controller API Client Libraries
+title: Available Cloud Controller API client libraries
 owner: CAPI
 ---
 
-This topic describes the client libraries available for developers who want to consume the Cloud Foundry API (CAPI) for <%= vars.app_runtime_first %>.
+Here is a list of the client libraries you can use with the Cloud Foundry API (CAPI)
+<% if vars.platform_code == "CF" %>
+.
+<% else %>
+ for <%= vars.app_runtime_first %>.
+<% end %>
 
-## <a id='overview'></a>Overview
+## <a id='overview'></a>CAPI overview
 
 CAPI is the entry point for most operations within the <%= vars.app_runtime_abbr %>
 platform. You can use it to manage orgs, spaces, and apps, which includes user roles and permissions. You can also use CAPI to manage the services provided by your <%= vars.app_runtime_abbr %> deployment, including provisioning, creating, and binding them to apps.
 
 <%= vars.capi_link %>
 
-## <a id='client-libraries'></a>Client Libraries
+## <a id='client-libraries'></a>Client libraries
 
-While you can develop apps that consume CAPI by calling it directly as in the API documentation, you might want to use an existing client library. See the available client libraries below.
+While you can develop apps that use CAPI by calling it directly as in the API documentation, you might want to use an existing client library. See the following available client libraries.
 
 ### <a id='supported'></a>Supported
 
-<%= vars.app_runtime_abbr %> currently supports the following clients for CAPI:
+<%= vars.app_runtime_abbr %> supports the following clients for CAPI:
 
 * [Java](https://github.com/cloudfoundry/cf-java-client)
 * [Scripting](http://cli.cloudfoundry.org/en-US/cf/curl.html) with the Cloud Foundry Command Line Interface (cf CLI)
 
 ### <a id='experimental'></a>Experimental
 
-The following client is experimental and a work in progress:
+The following client is experimental and is a work in progress:
 
 * [Golang](https://godoc.org/github.com/cloudfoundry/cli/api/cloudcontroller)
 
 ### <a id='unofficial'></a>Unofficial
 
-<%= vars.app_runtime_abbr %> does not support the following clients, but they may be supported by third-parties:
+<%= vars.app_runtime_abbr %> does not support the following clients, but might be supported by third parties:
 
 * Golang:
    * [cloudfoundry-community/go-cfclient](https://github.com/cloudfoundry-community/go-cfclient)

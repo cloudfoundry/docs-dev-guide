@@ -1,16 +1,16 @@
 ---
-title: Rolling App Deployments
+title: Configuring rolling app deployments
 owner: CAPI
 ---
 
-This topic describes how developers use Cloud Foundry Command Line Interface (cf CLI) commands
-or the Cloud Foundry API (CAPI) to push their apps to <%= vars.app_runtime_first %> using a rolling deployment.
+You can use Cloud Foundry Command Line Interface (cf CLI) commands
+or the Cloud Foundry API (CAPI) to push your apps to <%= vars.app_runtime_first %> using a rolling deployment.
 
 For information about the traditional method for addressing app downtime while pushing app updates,
-see [Using Blue-Green Deployment to Reduce Downtime and Risk](./blue-green.html).
+see [Using blue-green deployment to reduce downtime and risk](./blue-green.html).
 
 For more information about CAPI, see the
-[Cloud Foundry API (CAPI)](https://v3-apidocs.cloudfoundry.org/) documentation.
+[Cloud Foundry API (CAPI) documentation](https://v3-apidocs.cloudfoundry.org/).
 
 
 ## <a id="prerequisites"></a> Prerequisites
@@ -21,7 +21,7 @@ The procedures in this topic require one of the following:
 
 * **cf CLI v6:** If you use cf CLI v6:
   * You must install cf CLI v6.40 or later.
-  * The rolling deployment feature must be enabled for your deployment. <%= vars.zdt_enable %>
+  * The rolling deployment feature must be activated for your deployment. <%= vars.zdt_enable %>
 
 * **CAPI V3:** If you use CAPI V3, you must install the cf CLI.
 
@@ -30,183 +30,180 @@ The procedures in this topic require one of the following:
 
 This section describes the commands for working with rolling app deployments.
 
-### <a id="deploy"></a> Deploy an App
+### <a id="deploy"></a> Deploy an app
 
 To deploy an app without incurring downtime:
 
-* **cf CLI v7:**
+<p class="note caution">
+<span class="note__title"><strong>Caution</strong></span>
+Review the limitations of this feature before running the command. For more information, see
+<a href="#limitations">Limitations</a>.</p>
 
-1. Run:
+* **For cf CLI v7, run:**
 
     ```
     cf push APP-NAME --strategy rolling
     ```
     Where `APP-NAME` is the name that you want to give your app.
-    <p class="note"><strong>Note:</strong> cf CLI v7 exits when one instance of each process is
-healthy. It also includes a <code>--no-wait</code> flag on push for users who do not want to wait
-for the operation to complete. <code>cf push</code> used with the <code>--no-wait</code> flag exits
-as soon as one instance is healthy.</p>
 
-1. If the deployment hangs indefinitely, cancel the process and run it again with the step above.
-To cancel, see [Cancel a Deployment](#cancel) below.
+    <p class="note">
+    <span class="note__title"><strong>Note</strong></span>
+    cf CLI v7 exits when one instance of each process is healthy.
+    It also includes a <code>--no-wait</code> flag on push for users who don't want to wait
+    for the operation to complete.
+    <code>cf push</code> used with the <code>--no-wait</code> flag exits as soon as one instance is healthy.
+    </p>
 
-* **cf CLI v6:**
+    If the deployment stops and doesn't restart, cancel it and run it again as described in an earlier step.
+    To cancel, see [Cancel a deployment](#cancel).
 
-1. Run:
+* **For cf CLI v6, run:**
 
     ```
     cf v3-zdt-push APP-NAME
     ```
     Where `APP-NAME` is the name that you want to give your app.
-    <p class='note'><strong>Note:</strong> This command is experimental and unsupported. Consider
-      upgrading to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see
-      <a href="../../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
-* **CAPI V3:**
+    <p class="note important">
+    <span class="note__title"><strong>Important</strong></span>
+    This command is experimental and unsupported. Upgrade to cf CLI v7 (<a href="https://docs.cloudfoundry.org/cf-cli/v7.html">Upgrading to cf CLI v7</a>) or or cf CLI v8 (<a href="https://docs.cloudfoundry.org/cf-cli/v8.html">Upgrading to cf CLI v8</a>).
+    </p>
 
-1. Log in to the cf CLI.
+* **For CAPI V3:**
+    1. Log in to the cf CLI.
 
-    ```
-    cf login
-    ```
+        ```
+        cf login
+        ```
+    2. Create an empty app by running the following `curl` command  with `POST /v3/apps`. Record the
+    app GUID from the output.
 
-1. Create an empty app by running the following `curl` command  with `POST /v3/apps`. Record the
-app GUID from the output.
+        ```
+        cf curl /v3/apps \
+          -X POST \
+          -H "Content-type: application/json" \
+          -d '{
+            "name": "APP-NAME",
+            "relationships": {
+              "space": {
+                "data": {
+                  "guid": "SPACE-GUID"
+                }
+              }
+            }
+          }'
+        ```
 
-    ```
-    cf curl /v3/apps \
-      -X POST \
-      -H "Content-type: application/json" \
-      -d '{
-        "name": "APP-NAME",
-        "relationships": {
-          "space": {
-            "data": {
-              "guid": "SPACE-GUID"
+        Where:
+        <ul>
+          <li><code>APP-NAME</code> is the name that you want to give your app.</li>
+          <li><code>SPACE-GUID</code> is the space identifier that you want to associate with your app.</li>
+        </ul>
+    3. Create a package with the following `curl` command with `POST /v3/packages`. Record the package
+    GUID from the output.
+
+        ```
+        cf curl /v3/packages \
+          -X POST \
+          -H "Content-type: application/json" \
+          -d '{
+            "type": "bits",
+            "relationships": {
+              "app": {
+                "data": {
+                  "guid": "APP-GUID"
+                }
+              }
+            }
+          }'
+        ```
+        Where `APP-GUID` is the app GUID that you recorded in an earlier step. This app GUID is a
+        unique identifier for your app.
+    4. Upload the package bits by running the following `curl` command with
+    `POST /v3/packages/PACKAGE-GUID/upload`.
+
+        ```
+        cf curl /v3/packages/PACKAGE-GUID/upload \
+        -X POST \
+        -F bits=@"PACKAGED-APP" \
+        ```
+
+        Where:
+        <ul>
+          <li><code>PACKAGE-GUID</code> is the package GUID that you recorded in an earlier step.</li>
+          <li><code>PACKAGED-APP</code> is your app packaged in a file such as <code>.zip</code>.</li>
+        </ul>
+    5. Create the build by running the following `curl` command with `POST /v3/builds`. Record the
+    droplet GUID from the output.
+
+        ```
+        cf curl /v3/builds \
+          -X POST \
+          -H "Content-type: application/json" \
+          -d '{
+            "package": {
+               "guid": PACKAGE-GUID"
+            }
+          }'
+        ```
+        Where `PACKAGE-GUID` is the package GUID that you recorded in an earlier step.
+    6. Deploy your app by running the following `curl` command with `POST /v3/deployments`. To verify
+    the status of the deployment or take action on the deployment, record the deployment GUID from the
+    output.
+
+        ```
+        cf curl /v3/deployments \
+        -X POST \
+        -H "Content-type: application/json" \
+        -d '{
+          "droplet": {
+            "guid": "DROPLET-GUID"
+          },
+          "strategy": "rolling",
+          "relationships": {
+            "app": {
+              "data": {
+                "guid": "APP-GUID"
+              }
             }
           }
-        }
-      }'
-    ```
-    Where:
-    * `APP-NAME` is the name that you want to give your app.
-    * `SPACE-GUID` is the space identifier that you want to associate with your app.
+        }'
+        ```
+        Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in earlier steps.
 
-1. Create a package with the following `curl` command with `POST /v3/packages`. Record the package
-GUID from the output.
+For more information about this command, see [How it works](#how-it-works).
 
-    ```
-    cf curl /v3/packages \
-      -X POST \
-      -H "Content-type: application/json" \
-      -d '{
-        "type": "bits",
-        "relationships": {
-          "app": {
-            "data": {
-              "guid": "APP-GUID"
-            }
-          }
-        }
-      }'
-    ```
-    Where `APP-GUID` is the app GUID that you recorded in the previous step. This app GUID is a
-    unique identifier for your app.
-
-1. Upload the package bits by running the following `curl` command with
-`POST /v3/packages/PACKAGE-GUID/upload`.
-
-    ```
-    cf curl /v3/packages/PACKAGE-GUID/upload \
-    -X POST \
-    -F bits=@"PACKAGED-APP" \
-    ```
-    Where:
-    * `PACKAGE-GUID` is the package GUID that you recorded in the previous step.
-    * `PACKAGED-APP` is your app packaged in a file such as `.zip`.
-
-1. Create the build by running the following `curl` command with `POST /v3/builds`. Record the
-droplet GUID from the output.
-
-    ```
-    cf curl /v3/builds \
-      -X POST \
-      -H "Content-type: application/json" \
-      -d '{
-        "package": {
-           "guid": PACKAGE-GUID"
-        }
-      }'
-    ```
-    Where `PACKAGE-GUID` is the package GUID that you recorded in a previous step.
-
-1. Deploy your app by running the following `curl` command with `POST /v3/deployments`. To verify
-the status of the deployment or take action on the deployment, record the deployment GUID from the
-output.
-
-    ```
-    cf curl /v3/deployments \
-    -X POST \
-    -H "Content-type: application/json" \
-    -d '{
-      "droplet": {
-        "guid": "DROPLET-GUID"
-      },
-      "strategy": "rolling",
-      "relationships": {
-        "app": {
-          "data": {
-            "guid": "APP-GUID"
-          }
-        }
-      }
-    }'
-    ```
-    Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in previous steps.
-
-<p class="note warning"><strong>Warning:</strong> Ensure that you understand the limitations of
-this feature before running the command. For more information, see
-<a href="#limitations">Limitations</a> below.</p>
-
-For more information about this command, see [How It Works](#how-it-works) below.
-
-### <a id="cancel"></a> Cancel a Deployment
+### <a id="cancel"></a> Cancel a deployment
 
 To stop the deployment of an app that you pushed:
 
-* **cf CLI v7:**
-
-1. Run:
+* **For cf CLI v7, run:**
 
     ```
     cf cancel-deployment APP-NAME
     ```
     Where `APP-NAME` is the name of the app.
 
-* **cf CLI v6:**
-
-1. Run:
+* **For cf CLI v6, run:**
 
     ```
     cf v3-cancel-zdt-push APP-NAME
     ```
     Where `APP-NAME` is the name of the app.
-    <p class='note'><strong>Note:</strong> This command is experimental and unsupported.
-      Consider upgrading to cf CLI v7 to use a supported version of this command. To
-      upgrade to cf CLI v7, see <a href="../../cf-cli/v7.html#install">Install cf CLI v7</a>
-      in <em>Upgrading to cf CLI v7</em>.</p>
 
-* **CAPI V3:**
+    <p class="note important">
+    <span class="note__title"><strong>Important</strong></span>
+    This command is experimental and unsupported. Upgrade to cf CLI v7 (<a href="https://docs.cloudfoundry.org/cf-cli/v7.html">Upgrading to cf CLI v7</a>) or or cf CLI v8 (<a href="https://docs.cloudfoundry.org/cf-cli/v8.html">Upgrading to cf CLI v8</a>).
 
-1. Run:
+* **For CAPI V3, run:**
 
     ```
     cf curl /v3/deployments/DEPLOYMENT-GUID/actions/cancel" -X POST
     ```
     Where `DEPLOYMENT-GUID` is the GUID of the deployment that you recorded after following the
-    CAPI procedure in [Deploy an App](#deploy) above.
+    CAPI procedure in [Deploy an app](#deploy).
 
-This reverts the app to its state from before the deployment started by doing the following:
+This reverts the app to its state from before the deployment started by:
 
 * Scaling up the original web process
 * Removing any deployment artifacts
@@ -218,36 +215,30 @@ The cancel command is designed to revert the app to its
 original state as quickly as possible and does not guarantee zero downtime. Additionally, changes
 to environment variables and service bindings will not be reverted. </p>
 
-### <a id="restart"></a> Restart an App
+### <a id="restart"></a> Restart an app
 
-To restart your app without downtime, run the appropriate command below. Restart an app to apply
+To restart your app without downtime, run the appropriate command. Restart an app to apply
 configuration updates that require a restart, such as environment variables or service bindings.
 
-* **cf CLI v7:**
-
-1. Run:
+* **For cf CLI v7, run:**
 
     ```
     cf restart APP-NAME --strategy rolling
     ```
     Where `APP-NAME` is the name of the app.
 
-* **cf CLI v6:**
-
-1. Run:
+* **For cf CLI v6, run:**
 
     ```
     cf v3-zdt-restart APP-NAME
     ```
     Where `APP-NAME` is the name of the app.
-    <p class='note'><strong>Note:</strong> This command is experimental and unsupported.
-      Consider upgrading to cf CLI v7 to use a supported version of this command. To upgrade
-      to cf CLI v7, see <a href="../../cf-cli/v7.html#install">Install cf CLI v7</a> in
-      <em>Upgrading to cf CLI v7</em>.</p>
 
-* **CAPI V3:**
+    <p class="note important">
+    <span class="note__title"><strong>Important</strong></span>
+    This command is experimental and unsupported. Upgrade to cf CLI v7 (<a href="https://docs.cloudfoundry.org/cf-cli/v7.html">Upgrading to cf CLI v7</a>) or or cf CLI v8 (<a href="https://docs.cloudfoundry.org/cf-cli/v8.html">Upgrading to cf CLI v8</a>).
 
-1. Run:
+* **For CAPI V3, run:**
 
     ```
     cf curl /v3/deployments \
@@ -267,63 +258,61 @@ configuration updates that require a restart, such as environment variables or s
       }
     }'
     ```
-    Where `DROPLET-GUID` and `APP-NAME` are the GUIDs that you recorded in previous steps.
+    Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in earlier steps.
 
 
-## <a id="how-it-works"></a> How It Works
+## <a id="how-it-works"></a> How it works
 
 This section describes the rolling deployments and their limitations.
 
-### <a id="deployment-process"></a> Rolling Deployment Process
+### <a id="deployment-process"></a> Rolling deployment
 
-This section describes the process of pushing an app with a rolling deployment strategy.
+This section describes pushing an app with a rolling deployment strategy.
 
-1. The `cf push APP-NAME --strategy rolling` command does the following:
+1. The `cf push APP-NAME --strategy rolling` command:
   1. Stages the updated app package.
-  1. Creates a droplet with the updated app package.
-  1. Creates a deployment with the new droplet and any new configuration.
+  2. Creates a droplet with the updated app package.
+  3. Creates a deployment with the new droplet and any new configuration.
       * This starts a new process with one instance that shares the route with the old process.
-      * At this point, if you run `cf app` on your app, you see multiple `web` processes.
+      * Now, if you run `cf app` on your app, you see multiple `web` processes.
     <br>
     For more information about the deployment object, see the [Deployments](http://v3-apidocs.cloudfoundry.org/index.html#deployments) section of the CAPI V3 documentation.
 
-1. After the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the
+2. After the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the
 background, updating deployments as follows:
-  1. Adds another instance of the new web process and removes an instance from the old web process.
-    <p class="note"><strong>Note:</strong> This only happens if all instances of the new web
-    process are currently running.</p>
-  1. Repeats the above step until the new web process reaches the desired number of instances.
-  1. Removes the old web process. The new web process now fully replaces the old web process.
-  1. Restarts all non-web processes of the app.
-  1. Sets the deployment to `DEPLOYED`.
+    1. Adds another instance of the new web process and removes an instance from the old web process. This step repeats until the new web process reaches the required number of instances.
+        <p class="note important">
+        <span class="note__title"><strong>Important</strong></span>
+        This happens only if all instances of the new web process are running.</p>
+    2. Removes the old web process. The new web process now fully replaces the old web process.
+    3. Restarts all non-web processes of the app.
+    4. Sets the deployment to `DEPLOYED`.
 
 ### <a id="limitations"></a> Limitations
 
 The following table describes the limitations of when using rolling deployments.
 
-<table>
-  <tr>
+<table class="table">
+  <thead><tr>
     <th>Limitation</th>
     <th>Description</th>
-  </tr>
+  </tr></thead>
   <tr>
-    <td>App Manifests</td>
+    <td>App manifests</td>
     <td>The <code>cf v3-zdt-push</code> command does not support providing an app manifest with the
     <code>-f</code> flag. If you have a <code>manifest.yml</code> file in your app directory, it is
-    ignored.
-    <p class="note"><strong>Note:</strong> This limitation only applies to cf CLI v6.</p></td>
+    ignored. This limitation only applies to cf CLI v6.</td>
   </tr>
   <tr>
     <td>SSH to app instances</td>
     <td>Pushing updates to your app with a <code>cf v3-zdt-push</code> command causes the new web process
     and app GUID to mismatch. <code>cf ssh</code> does not handle this scenario. You must use the
-    <code>cf v3-ssh</code> command instead.
-    <p class="note"><strong>Note:</strong> This limitation only applies to cf CLI v6.</p></td>
+    <code>cf v3-ssh</code> command instead. This limitation only applies to cf CLI v6.</td>
   </tr>
   <tr>
     <td>Multiple app versions</td>
     <td>During a deployment, <%= vars.app_runtime_abbr %> serves both the old and new version of your app at the
-    same route. This could lead to user issues if you push backwards-incompatible API changes.</td>
+    same route. This can lead to user issues if you push backwards-incompatible API changes.</td>
   </tr>
   <tr>
     <td>Database migrations</td>
@@ -333,7 +322,7 @@ The following table describes the limitations of when using rolling deployments.
   <tr>
     <td>Non-web processes</td>
     <td>Rolling deployments only run web processes through the rolling update sequence described
-    above. The commands restart worker and other non-web processes in bulk after updating all web
+    earlier. The commands restart worker and other non-web processes in bulk after updating all web
     processes.<br><br>
 		The CAPI V3 API introduces the concept of processes as runnable units of an app. Each app has a
     web process by default. You can specify additional processes with a Procfile, and in some cases
@@ -344,7 +333,7 @@ The following table describes the limitations of when using rolling deployments.
   <tr>
     <td>Quotas</td>
     <td>Pushing updates to your app using a rolling deployment strategy creates an extra instance
-    of your app. If you lack sufficient quota, the deployment fails. Admins might need to increase
+    of your app. If you lack sufficient quota, the deployment fails. Administrators might need to increase
     quotas to accommodate rolling deployments.</td>
   </tr>
   <tr>
@@ -363,7 +352,7 @@ The following table describes the limitations of when using rolling deployments.
 </table>
 
 
-## <a id="status"></a> View the Status of Rolling Deployments
+## <a id="status"></a> View the status of rolling deployments
 
 You can use CAPI to view the status of rolling deployments.
 
@@ -397,24 +386,24 @@ To view the status of a rolling deployment:
     ```
     Where `DEPLOYMENT-GUID` is the GUID of the rolling deployment.
 
-`cf curl GET /v3/deployments/DEPLOYMENT-GUID` returns the following properties about the status of rolling deployments:
+`cf curl GET /v3/deployments/DEPLOYMENT-GUID` returns these status properties for rolling deployments:
 
 * `status.value`: Indicates if the deployment is `ACTIVE` or `FINALIZED`.
 
 * `status.reason`: Provides detail about the deployment status.
 
 * `status.details`: Provides the timestamp for the most recent successful health check.
-  The value of the `status.details` property can be `nil` if there is no successful health check
+  The value of the `status.details` property can be `nil` with no successful health check
   for the deployment. For example, there might be no successful health check if the deployment was
   cancelled.
 
 The following table describes the possible values for the `status.value` and `status.reason`
 properties:
 
-<table class="nice">
-  <th width="20%"><code>status.value</code></th>
+<table class="table">
+  <thead><th width="20%"><code>status.value</code></th>
   <th width="20%"><code>status.reason</code></th>
-  <th width="60%">Description</th>
+  <th width="60%">Description</th></thead>
   <tr>
     <td><code>ACTIVE</code></td>
     <td><code>DEPLOYING</code></td>

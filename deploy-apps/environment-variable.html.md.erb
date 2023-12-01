@@ -1,21 +1,24 @@
 ---
-title: Cloud Foundry Environment Variables
+title: Cloud Foundry environment variables
 owner: CAPI
 ---
 
-<% current_page.data.title = vars.app_runtime_abbr + " Environment Variables" %>
+<%# Reset page title based on platform type %>
+<% if vars.platform_code != 'CF' %>
 
-This page describes the environment variables that the <%= vars.app_runtime_first %> runtime and buildpacks set for a deployed app.
+<% set_title(vars.app_runtime_abbr, "Environment Variables") %>
 
+<% end %>
 
-## <a id='overview'></a> Overview
+Environment variables are the means <%= vars.app_runtime_abbr %> uses to communicate with a deployed app about its environment.
 
-Environment variables are the means by which <%= vars.app_runtime_abbr %> communicates with a deployed app about its environment.
+For information about setting your own app-specific environment variables, see the [Environment variable](./manifest.html#env-block) in _Deploying with app manifests_.
 
-For information about setting your own app-specific environment variables, see the [Environment Variable](./manifest.html#env-block) section of the _Deploying with App Manifests_ topic.
+<p class="note important">
+<span class="note__title"><strong>Important</strong></span>
+Do not use user-provided environment variables for security-sensitive information such as credentials. They might unintentionally show up in cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided environment variable <a href="#VCAP_SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter and in Cloud Controller log files.</p>
 
-
-## <a id='view-env'></a> View Environment Variables
+## <a id='view-env'></a> View environment variables
 
 Using the Cloud Foundry Command Line Interface (cf CLI), you can run the `cf env` command to view the <%= vars.app_runtime_abbr %> environment variables for your app. The `cf env` command displays the following environment variables:
 
@@ -67,13 +70,13 @@ MY_ENV_VARIABLE: 100
 </pre>
 
 
-## <a id='app-system-env'></a> App-Specific System Variables
+## <a id='app-system-env'></a> App-specific system variables
 
-This section describes the environment variables that <%= vars.app_runtime_abbr %> makes available to your app container. Some of these variables are the same across instances of a single app, and some vary from instance to instance.
+This section describes the environment variables that <%= vars.app_runtime_abbr %> makes available to your application container. Some of these variables are the same across instances of a single app, and some vary from instance to instance.
 
 You can access environment variables programmatically, including variables defined by the buildpack. For more information, see the buildpack documentation for [Java](../../buildpacks/java/java-tips.html#env-var), [Node.js](../../buildpacks/node/node-tips.html#env-var), and [Ruby](../../buildpacks/ruby/ruby-tips.html#env-var).
 
-The table below lists the system variables available to your app container.
+The following table lists the system variables available to your application container.
 
 | Environment Variable | Running | Staging | Task |
 | -------------------- | ------- | ------- | ---- |
@@ -135,7 +138,7 @@ For example: `CF_INSTANCE_INTERNAL_IP=5.6.7.8`
 
 ### <a id='CF-INSTANCE-PORT'></a> CF_INSTANCE_PORT
 
-The external, or *host-side*, port corresponding to the internal, or *container-side*, port with value `PORT`. This value is usually different from the `PORT` of the app instance.
+The external (host-side) port corresponding to the internal (container-side) port with value `PORT`. This value is usually different from the `PORT` of the app instance.
 
 For example: `CF_INSTANCE_PORT=61045`
 
@@ -143,7 +146,7 @@ For more information, see [PORT](#PORT).
 
 ### <a id='CF-INSTANCE-PORTS'></a> CF_INSTANCE_PORTS
 
-The list of mappings between internal, or *container-side*, and external, or *host-side*, ports allocated to the container running the app instance. Not all of the internal ports are necessarily available for the app to bind to, as some of them may be used by system-provided services that also run inside the container. These internal and external values may differ.
+The list of mappings between internal (container-side) and external (host-side) ports allocated to the container running the app instance. Not all of the internal ports are necessarily available for the app to bind to, as some of them might be used by system-provided services that also run inside the container. These internal and external values might differ.
 
 For example: `CF_INSTANCE_PORTS=[{external:61045,internal:8080},{external:61046,internal:2222}]`
 
@@ -151,7 +154,7 @@ For example: `CF_INSTANCE_PORTS=[{external:61045,internal:8080},{external:61046,
 
 For apps bound to certain services that use a database, <%= vars.app_runtime_abbr %> creates a `DATABASE_URL` environment variable based on the `VCAP_SERVICES` environment variable.
 
-<%= vars.app_runtime_abbr %> uses the structure of the `VCAP_SERVICES` environment variable to populate the `DATABASE_URL` environment variable. <%= vars.app_runtime_abbr %> recognizes any service containing a JSON object like the example below as a candidate for the `DATABASE_URL` environment variable and uses the first candidate it finds.
+<%= vars.app_runtime_abbr %> uses the structure of the `VCAP_SERVICES` environment variable to populate the `DATABASE_URL` environment variable. <%= vars.app_runtime_abbr %> recognizes any service containing a JSON object like the following example as a candidate for the `DATABASE_URL` environment variable and uses the first candidate it finds.
 
     {
       "some-service": [
@@ -186,7 +189,7 @@ For more information, see [VCAP_SERVICES](#VCAP-SERVICES).
 
 ### <a id='HOME'></a> HOME
 
-The root folder for the deployed app.
+The root directory for the deployed app.
 
 For example: `HOME=/home/vcap/app`
 
@@ -200,13 +203,13 @@ For example: `LANG=en_US.UTF-8`
 
 The maximum amount of memory that each instance of the app can consume. You specify this value in an app manifest or with the cf CLI when pushing an app. The value is limited by space and org quotas.
 
-If an instance exceeds the maximum limit, it is restarted. If <%= vars.app_runtime_abbr %> is asked to restart an instance too frequently, the instance is terminated.
+If an instance exceeds the maximum limit, it is restarted. If <%= vars.app_runtime_abbr %> is asked to restart an instance too frequently, the instance is stopped.
 
 For example: `MEMORY_LIMIT=512M`
 
 ### <a id='PORT'></a> PORT
 
-The port on which the app should listen for requests. <%= vars.app_runtime_abbr %> allocates a port dynamically for each instance of the app, so code that obtains or uses the app port should refer to it using the `PORT` environment variable.
+The port on which the app listens for requests. <%= vars.app_runtime_abbr %> allocates a port for each instance of the app, so code that obtains or uses the app port refers to it using the `PORT` environment variable.
 
 For example: `PORT=8080`
 
@@ -234,58 +237,58 @@ Deprecated name for the `PORT` variable.
 
 ### <a id='VCAP-APPLICATION'></a> VCAP_APPLICATION
 
-This environment variable contains the associated attributes for a deployed app. Results are returned in JSON format. The table below lists the attributes that are returned.
+This environment variable contains the associated attributes for a deployed app. Results are returned in JSON format. The following table lists the attributes that are returned.
 
 | Attribute | Description |
 | --------- | ----------- |
-| `application_id` | The GUID identifying the app. |
-| `application_name` | The name assigned to the app when it was pushed. |
-| `application_uris` | The URIs assigned to the app. |
-| `application_version` | The GUID identifying a version of the app. Each time an app is pushed or restarted, this value is updated. |
-| `cf_api` | The location of the Cloud Controller API for the <%= vars.app_runtime_abbr %> deployment where the app runs. |
-| `host` | Deprecated. The IP address of the app instance. |
-| `limits` | The limits to disk space, number of files, and memory permitted to the app. Memory and disk space limits are supplied when the app is deployed, either on the command line or in the app manifest. The number of files allowed is operator-defined. |
-| `name` | Identical to `application_name`. |
-| `organization_id` | The GUID identifying the org where the app is deployed. |
-| `organization_name` | The human-readable name of the org where the app is deployed. |
-| `process_id` | The UID identifying the process. Only present in running app containers. |
-| `process_type` | The type of process. Only present in running app containers. |
-| `space_id` | The GUID identifying the space where the app is deployed. |
-| `space_name` | The human-readable name of the space where the app is deployed. |
-| `start` | The human-readable timestamp for the time the instance was started. Not provided on Diego Cells. |
-| `started_at` | Identical to `start`. Not provided on Diego Cells. |
-| `started_at_timestamp` | The Unix epoch timestamp for the time the instance was started. Not provided on Diego Cells. |
-| `state_timestamp` | Identical to `started_at_timestamp`. Not provided on Diego Cells. |
+| `application_id` | The GUID identifying the app |
+| `application_name` | The name assigned to the app when it was pushed |
+| `application_uris` | The URIs assigned to the app |
+| `application_version` | The GUID identifying a version of the app. Each time an app is pushed or restarted, this value is updated |
+| `cf_api` | The location of the Cloud Controller API for the <%= vars.app_runtime_abbr %> deployment where the app runs |
+| `host` | Deprecated. The IP address of the app instance |
+| `limits` | The limits to disk space, number of files, and memory permitted to the app. Memory and disk space limits are supplied when the app is deployed, either on the command line or in the app manifest. The number of files allowed is operator-defined |
+| `name` | Identical to `application_name` |
+| `organization_id` | The GUID identifying the org where the app is deployed |
+| `organization_name` | The human-readable name of the org where the app is deployed |
+| `process_id` | The UID identifying the process. Only present in running application containers |
+| `process_type` | The type of process. Only present in running application containers |
+| `space_id` | The GUID identifying the space where the app is deployed |
+| `space_name` | The human-readable name of the space where the app is deployed |
+| `start` | The human-readable timestamp for the time the instance was started. Not provided on Diego Cells |
+| `started_at` | Identical to `start`. Not provided on Diego Cells |
+| `started_at_timestamp` | The UNIX epoch timestamp for the time the instance was started. Not provided on Diego Cells |
+| `state_timestamp` | Identical to `started_at_timestamp`. Not provided on Diego Cells |
 | `uris` | Identical to `application_uris`. You must ensure that both `application_uris` and `uris` are set to the same value. |
-| `users` | Deprecated. Not provided on Diego Cells. |
-| `version` | Identical to `application_version`. |
+| `users` | Deprecated. Not provided on Diego Cells |
+| `version` | Identical to `application_version` |
 
 ### <a id='VCAP-SERVICES'></a> VCAP_SERVICES
 
-For bindable services, <%= vars.app_runtime_abbr %> adds connection details to the `VCAP_SERVICES` environment variable when you restart your app, after binding a service instance to your app. For more information about bindable services, see [Services Overview](../services/).
+For bindable services, <%= vars.app_runtime_abbr %> adds connection details to the `VCAP_SERVICES` environment variable when you restart your app, after binding a service instance to your app. For more information about bindable services, see [Services overview](../services/index.html).
 
 <%= vars.app_runtime_abbr %> returns the results as a JSON document that contains an object for each service for which one or more instances are bound to the app. The service object contains a child object for each instance of the service that is bound to the app.
 
-The table below defines the attributes that describe a bound service. The key for each service in the JSON document is the same as the value of the "label" attribute.
+The following a table defines the attributes that describe a bound service. The key for each service in the JSON document is the same as the value of the "label" attribute.
 
 | Attribute | Description |
 | --------- | ----------- |
-| `binding_guid` | The guid of the service binding. |
-| `binding_name` | The name assigned to the service binding by the user. |
-| `instance_guid` | The guid of the service instance. |
-| `instance_name` | The name assigned to the service instance by the user. |
-| `name` | The `binding_name`, if it exists. Otherwise, the `instance_name`. |
-| `label` | The name of the service offering. |
-| `tags` | An array of strings an app can use to identify a service instance. |
-| `plan` | The service plan selected when the service instance was created. |
-| `credentials` | A JSON object containing the service-specific credentials needed to access the service instance. |
-| `syslog_drain_url` | The service-specific syslog drain url. |
-| `volume_mounts` | An array of service-specific volume mounts. |
+| `binding_guid` | The GUID of the service binding |
+| `binding_name` | The name assigned to the service binding by the user |
+| `instance_guid` | The GUID of the service instance |
+| `instance_name` | The name assigned to the service instance by the user |
+| `name` | The `binding_name`, if it exists. Otherwise, the `instance_name` |
+| `label` | The name of the service offering |
+| `tags` | An array of strings an app can use to identify a service instance |
+| `plan` | The service plan selected when the service instance was created |
+| `credentials` | A JSON object containing the service-specific credentials needed to access the service instance |
+| `syslog_drain_url` | The service-specific syslog drain URL |
+| `volume_mounts` | An array of service-specific volume mounts |
 
 
-To see the value of the `VCAP_SERVICES` environment variable for an app pushed to <%= vars.app_runtime_abbr %>, see [View Environment Variable Values](#view-env).
+To see the value of the `VCAP_SERVICES` environment variable for an app pushed to <%= vars.app_runtime_abbr %>, see [View environment variable values](#view-env).
 
-The example below shows the value of the `VCAP_SERVICES` environment variable for bound instances of several services available in the Marketplace.
+The following example shows the value of the `VCAP_SERVICES` environment variable for bound instances of several services available in the Marketplace.
 
 ~~~
 VCAP_SERVICES=
@@ -336,11 +339,11 @@ VCAP_SERVICES=
 ~~~
 
 
-## <a id='evgroups'></a> Environment Variable Groups
+## <a id='evgroups'></a> Environment variable groups
 
-Environment variable groups are system-wide variables that enable operators to apply a group of environment variables to all running apps and all staging apps separately.
+Environment variable groups are system-wide variables that allow operators to apply a group of environment variables to all running apps and all staging apps separately.
 
-An environment variable group consists of a single hash of name-value pairs that are later inserted into an app container at runtime or at staging. These values can contain information such as HTTP proxy information. The values for variables set in an environment variable group are case-sensitive.
+An environment variable group consists of a single hash of name-value pairs that are later inserted into an application container at runtime or at staging. These values can contain information such as HTTP proxy information. The values for variables set in an environment variable group are case-sensitive.
 
 When creating environment variable groups:
 
@@ -352,14 +355,14 @@ When creating environment variable groups:
 
 * Any user-defined variable takes precedence over environment variables provided by these groups.
 
-The table below lists the commands for environment variable groups.
+The following table lists the commands for environment variable groups.
 
 | CLI Command | Description |
 | ----------- | ----------- |
-| `running-environment-variable-group` or `revg` | Retrieves the contents of the running environment variable group. |
-| `staging-environment-variable-group` or `sevg` | Retrieves the contents of the staging environment variable group. |
-| `set-staging-environment-variable-group` or `ssevg` | Passes parameters as JSON to create a staging environment variable group. |
-| `set-running-environment-variable-group` or `srevg` | Passes parameters as JSON to create a running environment variable group. |
+| `running-environment-variable-group` or `revg` | Retrieves the contents of the running environment variable group |
+| `staging-environment-variable-group` or `sevg` | Retrieves the contents of the staging environment variable group |
+| `set-staging-environment-variable-group` or `ssevg` | Passes parameters as JSON to create a staging environment variable group |
+| `set-running-environment-variable-group` or `srevg` | Passes parameters as JSON to create a running environment variable group |
 
 The following examples demonstrate how to retrieve the environment variables:
 

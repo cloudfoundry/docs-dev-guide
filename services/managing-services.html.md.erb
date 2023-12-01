@@ -1,17 +1,23 @@
 ---
-title: Managing Service Instances with the cf CLI
+title: Managing service instances with the cf CLI
 owner: Core Services
 ---
 
 
 
-This topic describes lifecycle operations for service instances, including creating, updating, and deleting. For an overview of services, and documentation about other service management operations, see [Services Overview](./index.html). <%= vars.custom_services %>
+You can manage life cycle operations for service instances using the Cloud Foundry CLI (cf CLI). This includes creating, updating, and deleting service instances. For information about other service management operations, see [Services overview](./index.html). <%= vars.custom_services %>
 
 To run the commands in this topic, you must first install the Cloud Foundry Command Line Interface (cf CLI). See the [Cloud Foundry Command Line Interface](../../cf-cli/index.html) topics for more information.
 
-## <a id='marketplace'></a> List Marketplace Services ##
+## <a id='marketplace'></a> List Marketplace services
 
-After targeting and logging into Cloud Foundry, run the `cf marketplace` cf CLI command to view the services available to your targeted organization. Available services may differ between organizations and between Cloud Foundry marketplaces.
+After targeting and logging into Cloud Foundry, to view the services available to your targeted organization, run the cf CLI command:
+
+```console
+cf marketplace
+```
+
+Available services can differ between organizations and between Cloud Foundry Marketplaces.
 
 <pre class="terminal">
 $ cf marketplace
@@ -23,16 +29,21 @@ p-mysql            100mb, 1gb          A DBaaS                           mysql-b
 p-riakcs           developer           An S3-compatible object store     object-store-broker
 </pre>
 
-## <a id='create'></a>Creating Service Instances ##
+## <a id='create'></a>Creating service instances
 
-You can create a service instance with the following command: `cf create-service SERVICE PLAN SERVICE_INSTANCE`
+You can create a service instance by running:
 
-Use the information in the list below to replace `SERVICE`, `PLAN`, and `SERVICE_INSTANCE` with appropriate values.
+```console
+cf create-service SERVICE PLAN SERVICE-INSTANCE-NAME
+```
 
-   * `SERVICE`: The name of the service you want to create an instance of.
-   * `PLAN`: The name of a plan that meets your needs. Service providers use **plans** to offer varying levels of resources or features for the same service.
-   * `SERVICE_INSTANCE`: The name you provide for your service instance. You use this name to refer to your service instance with other commands. Service instance names can include alpha-numeric characters, hyphens, and underscores, and you can rename the service instance at any time.
+Where:
 
+* `SERVICE`: The name of the service you want to create an instance of.
+* `PLAN`: The name of a plan that meets your needs. Service providers use **plans** to offer varying levels of resources or features for the same service.
+* `SERVICE-INSTANCE-NAME`: The name you provide for your service instance. You use this name to refer to your service instance with other commands. Service instance names can include alpha-numeric characters, hyphens, and underscores, and you can rename the service instance at any time.
+
+For example:
 <pre class="terminal">
 $ cf create-service rabbitmq small-plan my-rabbitmq
 
@@ -40,13 +51,13 @@ Creating service my-rabbitmq in org console / space development as user@example.
 OK
 </pre>
 
-<strong>User Provided Service Instances</strong> provide a way for developers to bind apps with services that are not available in their Cloud Foundry marketplace. For more information, see the <a href="./user-provided.html">User Provided Service Instances</a> topic.
+User-provided service instances provide a way for developers to bind apps with services that are not available in their Cloud Foundry Marketplace. For more information, see <a href="./user-provided.html">User-provided service instances</a>.
 
-<p class="note"><strong>Note</strong>: When multiple brokers provide two or more services with the same name, you must specify the broker by including the <code>-b BROKER</code> flag in the <code>cf create-service</code> command.</p>
+When multiple brokers provide two or more services with the same name, you must specify the broker by including the <code>-b BROKER</code> flag in the <code>cf create-service</code> command.
 
-### <a id='arbitrary-params-create'></a> Arbitrary Parameters  ###
+### <a id='arbitrary-params-create'></a> Arbitrary parameters
 
-_Arbitrary parameters require cf CLI v6.12.1+_
+Arbitrary parameters require cf CLI v6.12.1+ or higher.
 
 Some services support providing additional configuration parameters with the provision request. Pass these parameters in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see the documentation for the particular service offering.
 
@@ -68,10 +79,10 @@ Creating service my-db in org console / space development as user@example.com...
 OK
 </pre>
 
-### <a id='instance-tags-create'></a> Instance Tags  ###
+### <a id='instance-tags-create'></a> Instance tags
 _Instance tags require cf CLI v6.12.1+_
 
-Some services provide a list of tags that Cloud Foundry delivers in the [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html#VCAP-SERVICES). These tags provide developers with a more generic way for apps to parse `VCAP_SERVICES` for credentials. Developers may provide their own tags when creating a service instance by including the `-t` flag followed by a comma-separated list of tags.
+Some services provide a list of tags that Cloud Foundry delivers in the [VCAP_SERVICES environment variable](../deploy-apps/environment-variable.html#VCAP-SERVICES). These tags provide developers with a more generic way for apps to parse `VCAP_SERVICES` for credentials. Developers might provide their own tags when creating a service instance by including the `-t` flag followed by a comma-separated list of tags.
 
 Example providing a comma-separated list of tags:
 
@@ -82,9 +93,15 @@ Creating service my-db in org console / space development as user@example.com...
 OK
 </pre>
 
-## <a id='list'></a>List Service Instances ##
+## <a id='list'></a>List service instances
 
-Run the `cf services` command to list the service instances in your targeted space. The output from running this command includes any bound apps and the state of the last requested operation for the service instance.
+To list the service instances in your targeted space, run:
+
+```console
+cf services
+```
+
+The output from running this command includes any bound apps and the state of the last requested operation for the service instance.
 
 <pre class="terminal">
 $ cf services
@@ -96,11 +113,11 @@ mybucket   p-riakcs      developer   myapp        create succeeded    object-sto
 mydb       p-mysql       100mb                    create succeeded    mysql-broker          yes
 </pre>
 
-### <a id='get-details'></a>Get Details for a Particular Service Instance ###
+### <a id='get-details'></a>Get details for a particular service instance
 
 Details include dashboard urls, if applicable, and operation start and last updated timestamps.
 
-<pre class='terminal'>
+<pre class="terminal">
 $ cf service mydb
 
 service instance:       mydb
@@ -111,7 +128,7 @@ documentation url:
 dashboard:              https://p-mysql.example.com/manage/instances/abcd-ef12-3456
 service broker:         mysql-broker
 
-This service is not currently shared.
+This service is not shared.
 
 Showing status of last operation from service mydb...
 
@@ -123,15 +140,18 @@ updated:   2019-02-13T12:02:19Z
 There are no bound apps for this service.
 </pre>
 
-## <a id='bind'></a>Bind a Service Instance ##
+## <a id='bind'></a>Bind a service instance
 
-Depending on the service, you can bind service instances to apps and/or routes.
+Depending on the service, you can bind service instances to apps and routes.
 
 Not all services support binding, as some services deliver value to users directly without integration with Cloud Foundry, such as SaaS apps.
 
-### <a id='app-binding'></a>Bind a Service Instance to an App ###
+### <a id='app-binding'></a>Bind a service instance to an app
 
-Depending on the service, binding a service instance to your app may deliver credentials for the service instance to the app. See the [Delivering Service Credentials to an App](application-binding.html) topic for more information. Binding a service instance to an app may also trigger app logs to be streamed to the service instance. For more information, see [Streaming App Logs to Log Management Services](log-management.html).
+Depending on the service, binding a service instance to your app might deliver credentials for the service instance to the app. See [Delivering service credentials to an app](application-binding.html) for more information.
+Binding a service instance to an app can trigger app logs to be streamed to the service instance. See [Streaming app logs to log management services](log-management.html).
+
+You must restart, or in some cases, re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.
 
 <pre class="terminal">
 $ cf bind-service my-app mydb
@@ -142,20 +162,18 @@ TIP: Use 'cf push' to ensure your env variable changes take effect
 $ cf restart my-app
 </pre>
 
-<p class='note'><strong>Note</strong>: You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
+#### <a id='bind-with-manifest'></a> Binding with app manifest
 
-#### <a id='bind-with-manifest'></a> Binding with App Manifest ####
+As an alternative to binding a service instance to an app after pushing an app, you can use the app manifest to bind the service instance during push. As of cf CLI v6.12.1, [Arbitrary parameters](#arbitrary-params-binding) are not supported in app manifests. Using the manifest to bind service instances to routes is also not supported.
 
-As an alternative to binding a service instance to an app after pushing an app, you can use the app manifest to bind the service instance during push. As of cf CLI v6.12.1, [Arbitrary Parameters](#arbitrary-params-binding) are not supported in app manifests. Using the manifest to bind service instances to routes is also not supported.
+This excerpt from an app manifest binds a service instance called `test-mysql-01` to the app on push.
 
-The following excerpt from an app manifest binds a service instance called `test-mysql-01` to the app on push.
-
-```
+```yaml
 services:
  - test-mysql-01
 ```
 
-The following excerpt from the `cf push` command and response demonstrates that the cf CLI reads the manifest and binds the service instance to an app called `test-msg-app`.
+This excerpt from the `cf push` command and response demonstrates that the cf CLI reads the manifest and binds the service instance to an app called `test-msg-app`.
 
 <pre class="terminal">
 $ cf push
@@ -167,11 +185,11 @@ Binding service test-mysql-01 to test-msg-app in org My-Org / space development 
 OK
 </pre>
 
-For more information about app manifests, see [Deploying with App Manifests](../deploy-apps/manifest.html#services-block).
+For more information about app manifests, see [Deploying with app manifests](../deploy-apps/manifest.html#services-block).
 
-### <a id='route-binding'></a>Bind a Service Instance to a Route ###
+### <a id='route-binding'></a>Bind a service instance to a route
 
-Binding a service instance to a route will cause app requests and responses to be proxied through the service instance, where it may be used to transform or intermediate requests. For more information, see [Managing App Requests with Route Services](./route-binding.html).
+Binding a service instance to a route causes app requests and responses to be proxied through the service instance, where it can be used to transform or intermediate requests. For more information, see [Managing app requests with route services](./route-binding.html).
 
 <pre class="terminal">
 $ cf bind-route-service <%=vars.app_domain%> --hostname my-app my-service-instance
@@ -181,7 +199,7 @@ OK
 
 Restaging your app is not required.
 
-### <a id='arbitrary-params-binding'></a> Arbitrary Parameters  ###
+### <a id='arbitrary-params-binding'></a> Arbitrary parameters
 
 _Arbitrary parameters require cf CLI v6.12.1+_
 
@@ -200,40 +218,41 @@ $ cf bind-service rails-sample my-db -c /tmp/config.json
 Binding service my-db to app rails-sample in org console / space development as user@example.com... OK
 </pre>
 
-## <a id='unbind'></a>Unbind a Service Instance ##
+## <a id='unbind'></a>Unbind a service instance
 
-### <a id='app-unbinding'></a>Unbind a Service Instance from an App ###
+### <a id='app-unbinding'></a>Unbind a service instance from an app
 
 Unbinding a service instance from an app removes the credentials created for your app from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
 
-<pre class="terminal">
-$ cf unbind-service my-app mydb
-Unbinding app my-app from service mydb in org my-org / space test as user@example.com...
-OK
-</pre>
+You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.
 
-<p class='note'><strong>Note</strong>: You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
+    <pre class="terminal">
+    $ cf unbind-service my-app mydb
+    Unbinding app my-app from service mydb in org my-org / space test as user@example.com...
+    OK
+    </pre>
 
-### <a id='route-unbinding'></a>Unbind a Service Instance from a Route ###
+### <a id='route-unbinding'></a>Unbind a service instance from a route
 
-Unbinding a service instance from a route will result in requests and responses no longer being proxied through the service instance. For more information, see [Managing App Requests with Route Services](./route-binding.html).
+Unbinding a service instance from a route causes requests and responses to no longer be proxied through the service instance. For more information, see [Managing app requests with route services](./route-binding.html).
 
-<p class='note'><strong>Note</strong>: If your bound service instance is providing security features, like authorization, unbinding the service instance may leave your app vulnerable.</p>
+It's important to note that if your bound service instance is providing security features, like authorization, unbinding the service instance might leave your app vulnerable.
 
-<pre class="terminal">
-$ cf unbind-route-service <%=vars.app_domain%> --hostname my-app my-service-instance
+You do not have to restage your app.
 
-Unbinding may leave apps mapped to route my-app.<%=vars.app_domain%> vulnerable; e.g. if service instance my-service-instance provides authentication. Do you want to proceed?> y
+    <pre class="terminal">
+    $ cf unbind-route-service <%=vars.app_domain%> --hostname my-app my-service-instance
 
-Unbinding route my-app.<%=vars.app_domain%> from service instance my-service-instance n org my-org / space test as user@example.com...
-OK
-</pre>
+    Unbinding leaves apps mapped to route my-app.<%=vars.app_domain%> vulnerable, e.g. if service instance my-service-instance provides authentication. Do you want to proceed?> y
 
-Restaging your app is not required.
+    Unbinding route my-app.<%=vars.app_domain%> from service instance my-service-instance n org my-org / space test as user@example.com...
+    OK
+    </pre>
 
-## <a id='rename_service'></a>Rename a Service Instance ##
 
-You can change the name given to a service instance. Keep in mind that upon restarting any bound apps, the name of the instance will change in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your app depends on the instance name for discovering credentials, changing the name could break your app's use of the service instance.
+## <a id='rename_service'></a>Rename a service instance
+
+You can change the name given to a service instance. Upon restarting any bound apps, the name of the instance changes in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your app depends on the instance name for discovering credentials, changing the name might break your app's use of the service instance.
 
 <pre class="terminal">
 $ cf rename-service mydb mydb1
@@ -241,12 +260,12 @@ Renaming service mydb to mydb1 in org my-org / space test as user@example.com...
 OK
 </pre>
 
-## <a id='update_service'></a>Update a Service Instance ##
+## <a id='update_service'></a>Update a service instance
 
-### Changing a Service Plan
-_Changing a plan requires cf CLI v6.7+ and cf-release v192+_
+### Changing a service plan
+_Changing a plan requires cf CLI v6.7+ and cf-release v192+. CLI v7 or v8 is recommended._
 
-By updating the service plan for an instance, users can change their service instance to other service plans. Though the platform and CLI now support this feature, services must expressly implement support for it so not all services will. Further, a service might support updating between some plans but not others. For instance, a service might support updating a plan where only a logical change is required, but not where data migration is necessary. In either case, users can expect to see a meaningful error when plan update is not supported.
+By updating the service plan for an instance, you can change the service instance to other service plans. Though the platform and CLI now support this feature, services must implement support for it. Further, a service might support updating between some plans but not others. For example, a service might support updating a plan where only a logical change is required, but not where data migration is necessary. In either case, users can expect to see a meaningful error when plan update is not supported.
 
 <pre class="terminal">
 $ cf update-service mydb -p new-plan
@@ -254,7 +273,7 @@ Updating service instance mydb as user@example.com...
 OK
 </pre>
 
-### <a id='arbitrary-params-update'></a> Arbitrary Parameters  ###
+### <a id='arbitrary-params-update'></a> Arbitrary parameters
 
 _Arbitrary parameters require cf CLI v6.12.1+_
 
@@ -272,10 +291,10 @@ $ cf update-service mydb -c /tmp/config.json
 Updating service instance mydb as user@example.com...
 </pre>
 
-### <a id='instance-tags-update'></a> Instance Tags  ###
+### <a id='instance-tags-update'></a> Instance tags
 _Instance tags require cf CLI v6.12.1+_
 
-Some services provide a list of tags that Cloud Foundry delivers in the [VCAP_SERVICES Environment Variable](../deploy-apps/environment-variable.html#VCAP-SERVICES). These tags provide developers with a more generic way for apps to parse `VCAP_SERVICES` for credentials. Developers may provide their own tags when creating a service instance by including a comma-separated list of tags with the `-t` flag.
+Some services provide a list of tags that Cloud Foundry delivers in the [VCAP_SERVICES environment variable](../deploy-apps/environment-variable.html#VCAP-SERVICES). These tags provide developers with a more generic way for apps to parse `VCAP_SERVICES` for credentials. Developers can provide their own tags when creating a service instance by including a comma-separated list of tags with the `-t` flag.
 
 <pre class="terminal">
 $ cf update-service my-db -t "staging, web"
@@ -284,37 +303,46 @@ Updating service my-db in org console / space development as user@example.com...
 OK
 </pre>
 
-## <a id='upgrade'></a> Upgrade a Service Instance
+## <a id='upgrade'></a> Upgrade a service instance
 
-_Upgrading a Service Instance requires cf CLI v6.46.0+ and CAPI release 1.83.0+_
+<p class="note important">
+<span class="note__title"><strong>Important</strong></span>
+Upgrading a Service instance requires at least cf CLI v6.46.0+ and CAPI release 1.83.0+.
+</p>
 
-Some service brokers support upgrading service instances to the latest version of a service plan. For example, a broker may want to provide a way for users of the service to upgrade the underlying operating system that their service instances run on.
+Some service brokers support upgrading service instances to the latest version of a service plan. For example, a broker might want to provide a way for users of the service to upgrade the underlying operating system that their service instances run on.
 
-To upgrade your service instances, do the following:
+To upgrade your service instances:
 
-1. Confirm that an upgrade is available by running `cf services` and reviewing the `upgrade available` column:
+1. Confirm that an upgrade is available by running `cf services` and reviewing the `upgrade available` column. For example:
 
-	```
-	$ cf services
-	Getting services in org acceptance / space dev as admin...
+    <pre class="terminal">
+    $ cf services
+    Getting services in org acceptance / space dev as admin...
 
-	name      service   plan     bound apps   last operation     broker         upgrade available
-	mydb      p-mysql   small                 create succeeded   mysql-broker   yes
-	otherdb   p-mysql   medium                create succeeded   mysql-broker   no
-	```
+    name      service   plan     bound apps   last operation     broker         upgrade available
+    mydb      p-mysql   small                 create succeeded   mysql-broker   yes
+    otherdb   p-mysql   medium                create succeeded   mysql-broker   no
+    </pre>
 
-1. Upgrade the service instance using the `--upgrade` flag:
+2. Upgrade the service instance using the `--upgrade` flag:
 
-	```
-	$ cf update-service mydb --upgrade
-	You are about to update mydb.
-	Warning: This operation may be long running and will block further operations on the service until complete.
-	Really update service mydb? [yN]: y
-	OK
-	```
+    ```console
+    cf update-service SERVICE-INSTANCE-NAME --upgrade
+    ```
+
+    For example:
+
+    <pre class="terminal">
+    $ cf update-service mydb --upgrade
+    You are about to update mydb.
+    Warning: This operation might run long and block further operations on the service until complete.
+    Really update service mydb? [yN]: y
+    OK
+    </pre>
 
 
-## <a id='delete'></a>Delete a Service Instance ##
+## <a id='delete'></a>Delete a service instance
 
 Deleting a service instance deprovisions the service instance and deletes all data associated with the service instance.
 

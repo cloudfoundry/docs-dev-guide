@@ -1,35 +1,36 @@
 ---
-title: Starting, Restarting, and Restaging Apps
+title: Starting, restarting, and restaging your apps
 owner: CLI
 ---
 
+You can start, restart, and restage apps in Cloud Foundry, using the cf CLI or the app manifest (attributes in a YAML file).
 
 
-This topic describes how to start, restart, and restage apps in Cloud Foundry.
-
-##<a id='start'></a>Start Your App
+##<a id='start'></a>Start your app
 
 To start your app, run the following command from your app root directory:
 
 <pre class="terminal">$ cf push YOUR-APP</pre>
 
-For more information about pushing apps, see the [Pushing an App](deploy-app.html) topic.
+For more information about pushing apps, see [Pushing an app](deploy-app.html).
 
-Cloud Foundry determines the start command for your app from one of the three following sources:
+Cloud Foundry determines the start command for your app from one of these three sources:
 
-* The `-c` command-line option in the Cloud Foundry Command Line Interface (cf CLI). See the following example:
+* The `-c` command-line option in the Cloud Foundry Command Line Interface (cf CLI). For example:
 
     <pre class="terminal">$ cf push YOUR-APP -c "node YOUR-APP.js"</pre>
 
-* The `command` attribute in the app manifest. See the following example:
+* The `command` attribute in the app manifest. For example:
 
-    `command: node YOUR-APP.js`
+    ```yaml
+    command: node YOUR-APP.js
+    ```
 
 * The buildpack, which provides a start command appropriate for a particular type of app.
 
-The source that Cloud Foundry uses depends on factors explained below.
+The source that Cloud Foundry uses depends on factors that are explained in the next section.
 
-###<a id='first-time'></a>How Cloud Foundry Determines its Default Start Command ##
+###<a id='first-time'></a>How Cloud Foundry determines its default start command
 
 The first time you deploy an app, `cf push` uses the buildpack start command by default.
 After that, `cf push` defaults to whatever start command was used for the previous push.
@@ -37,7 +38,7 @@ After that, `cf push` defaults to whatever start command was used for the previo
 To override these defaults, provide the `-c` option, or the command attribute in the manifest.
 When you provide start commands both at the command line and in the manifest, `cf push` ignores the command in the manifest.
 
-###<a id='revert'></a>Forcing Cloud Foundry To Use the Buildpack Start Command ##
+###<a id='revert'></a>Forcing Cloud Foundry to use the buildpack start command
 
 To force Cloud Foundry to use the buildpack start command, specify a start command of `null`.
 
@@ -49,19 +50,21 @@ You can specify a null start command in one of two ways.
 
 * Using the `command` attribute in the app manifest:
 
-    `command: null`
+    ```console
+    command: null
+    ```
 
 This can be helpful after you have deployed while providing a start command at the command line or the manifest.
-At this point, a command that you provided, rather than the buildpack start command, has become the default start command.
-In this situation, if you decide to deploy using the buildpack start command, the `null` command makes that easy.
+Now a command that you provided, rather than the buildpack start command, has become the default start command.
+In this situation, if you decide to deploy using the buildpack start command, the `null` command simplifies that.
 
-###<a id='databases'></a>Start Commands When Migrating a Database ##
+###<a id='databases'></a>Start commands when migrating a database
 
-Start commands are used in special ways when you migrate a database as part of an app deployment. For more information, see [Services Overview](../../devguide/services/index.html#migrating).
+Start commands are used in special ways when you migrate a database as part of an app deployment. For more information, see [Services overview](../../devguide/services/index.html#migrating).
 
-##<a id='restart'></a>Restart Your App
+##<a id='restart'></a>Restart your app
 
-To restart your app, run the following command:
+To restart your app, run:
 
 <pre class="terminal">$ cf restart YOUR-APP</pre>
 
@@ -75,14 +78,14 @@ The Diego [cell](../../concepts/architecture/index.html#diego-cell) unpacks, com
 
 Restart your app to refresh the app's environment after actions such as binding a new service to the app or setting an environment variable that only the app consumes. However, if your environment variable is consumed by the buildpack in addition to the app, then you must [restage](#restage) the app for the change to take effect.
 
-##<a id='restage'></a>Restage Your App
+##<a id='restage'></a>Restage your app
 
-To restage your app, run the following command:
+To restage your app, run:
 
 <pre class="terminal">$ cf restage YOUR-APP</pre>
 
 Restaging your app stops your app and restages it, by compiling a new droplet and starting it.
 
-Restage your app if you have changed the environment in a way that affects your staging process, such as setting an environment variable that the buildpack consumes. The staging process has access to environment variables, so the environment can affect the contents of the droplet. You should also restage your app whenever you edit any configuration settings, such as when you rename it, add metadata, or configure health checks. The new settings often do not take effect until you restage the app.
+Restage your app if you have changed the environment in a way that affects your staging process, such as setting an environment variable that the buildpack consumes. Staging has access to environment variables, so the environment can affect the contents of the droplet. You must also restage your app whenever you edit any configuration settings, such as when you rename it, add metadata, or configure health checks. The new settings often do not take effect until you restage the app.
 
-Restaging your app compiles a new droplet from your app without updating your app source. If you must update your app source, re-push your app by following the steps in the section [above](#start).
+Restaging your app compiles a new droplet from your app without updating your app source. If you must update your app source, re-push your app by following the steps in [Start your app](#start).

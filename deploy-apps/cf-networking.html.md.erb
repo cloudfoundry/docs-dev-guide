@@ -75,6 +75,17 @@ If you are a Cloud Foundry admin, you already have the `network.admin` scope. An
 
 To grant all Space Developers permissions to configure network policies, <%=  vars.grant_devs_c2c %>.
 
+By default, Space Developers can add a maximum of 150 network policies per
+source app.
+<% if vars.platform_code == "PCF" %>
+Operators can increase this limit by changing the **Maximum number of network
+policies per app source** property in the **App Developer Controls** tab.
+<% else if vars.platform_code == "CF" %>
+Operators can change this limit by changing the `max_policies_per_app_source` property in the policy-server job in
+the Cloud Foundry deployment manifest.
+<% end %>
+This limit does not apply to users with the network.admin scope.
+
 <% end %>
 
 ### <a name="add-policy"></a> Add a network policy

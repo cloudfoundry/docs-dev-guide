@@ -14,7 +14,6 @@ Container-to-container networking is not available for apps hosted on Microsoft 
 
 <% if vars.platform_code == "CF" %>
 <%= partial 'c2c_oss_enable' %>
-<% else %>
 <% end %>
 
 <% if vars.platform_code == "CF" %>
@@ -25,7 +24,6 @@ Container-to-container networking is not available for apps hosted on Microsoft 
 
 <% if vars.platform_code == "CF" %>
 <%= partial 'c2c_oss_logging' %>
-<% else %>
 <% end %>
 
 
@@ -77,13 +75,16 @@ To grant all Space Developers permissions to configure network policies, <%=  va
 
 By default, Space Developers can add a maximum of 150 network policies per
 source app.
+<% end %>
 <% if vars.platform_code == "PCF" %>
 Operators can increase this limit by changing the **Maximum number of network
 policies per app source** property in the **App Developer Controls** tab.
-<% else if vars.platform_code == "CF" %>
+<% end %>
+<% if vars.platform_code == "CF" %>
 Operators can change this limit by changing the `max_policies_per_app_source` property in the policy-server job in
 the Cloud Foundry deployment manifest.
 <% end %>
+<% if vars.platform_code == "CF" || vars.platform_code == "PCF" %>
 This limit does not apply to users with the network.admin scope.
 
 <% end %>
@@ -227,7 +228,5 @@ To use TLS developer adds a network policy for port 61443. After that the front 
 ### <a name="enable-discovery"></a> Activate app service discovery
 
 To activate app service discovery, <%= vars.enable_c2c_discovery %>.
-
-<% else %>
 
 <% end %>

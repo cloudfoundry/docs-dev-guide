@@ -44,7 +44,7 @@ The routing tier compares each request with a list of all the routes mapped to a
 
 The Gorouter does not use a route to match requests until the route is mapped to an app. In the example, `products.<%= vars.app_domain %>` might have been created as a route in <%= vars.app_runtime_abbr %>, but until it is mapped to an app, requests for the route receive a `404` error.
 
-The routing tier knows the location of instances for apps mapped to routes. After the routing tier calculates a route as the best match for a request, it makes a load-balancing calculation using a round-robin algorithm, and forwards the request to an instance of the mapped app.
+The routing tier knows the location of instances for apps mapped to routes. After the routing tier calculates a route as the best match for a request, it makes a load-balancing calculation using the configured balancing algorithm (by default, this is [round-robin](../../concepts/http-routing.html#round-robin)), and forwards the request to an instance of the mapped app.
 
 Developers can map many apps to a single route, resulting in load-balanced requests for the route across all instances of all mapped apps. This approach activates the blue/green rolling deployment strategy. Developers can also map an individual app to multiple routes, enabling access to the app from many URLs.
 The number of routes that can be mapped to each app is approximately 1000 (128&nbsp;KB).

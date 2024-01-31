@@ -5,6 +5,7 @@ or write to a reliable, persistent file system.
 <%= vars.external_vol_win_note %>
 
 
+
 ## <a id="pre"></a> Prerequisite
 
 Before you can use a volume service with your app, find out if any volume services are available for your app.
@@ -254,7 +255,8 @@ To create an NFS volume service using the `Existing` plan of the `nfs` service:
         Omit the <code>:</code> that usually follows the server name in the address.</p>
       </li>
       <li>
-        (Optional) <code>NFS-PROTOCOL</code> is the NFS protocol you want to use. For example, to use NFSv4, set the version to <code>4.1</code>. Valid values are <code>3.0</code>, <code>4.0</code>, <code>4.1</code> or <code>4.2</code>. If you do not specify a <code>version</code>, the protocol version used is negotiated between client and server at mount time. This usually causes the latest available version to be used.
+        (Optional) <code>NFS-PROTOCOL</code> is the NFS protocol you want to use. For example, to use NFSv4, set the version to <code>4.1</code>. Valid values are <code>3</code>, <code>4.0</code>, <code>4.1</code> or <code>4.2</code>. If you do not specify a <code>version</code>, the protocol version used is negotiated between client and server at mount time. This usually causes the latest available version to be used.
+        <%= vars.external_nfsv3_xenial_note %>
       </li>
     </ul>
 

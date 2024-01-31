@@ -256,9 +256,16 @@ To create an NFS volume service using the `Existing` plan of the `nfs` service:
       </li>
       <li>
         (Optional) <code>NFS-PROTOCOL</code> is the NFS protocol you want to use. For example, to use NFSv4, set the version to <code>4.1</code>. Valid values are <code>3</code>, <code>4.0</code>, <code>4.1</code> or <code>4.2</code>. If you do not specify a <code>version</code>, the protocol version used is negotiated between client and server at mount time. This usually causes the latest available version to be used.
-        <%= vars.external_nfsv3_xenial_note %>
       </li>
     </ul>
+    <% if vars.platform_code == "CF" %>
+    <p class="note important">
+    <span class="note__title"><strong>Important</strong></span>
+    Tanzu Application Service versions prior to 3.0.x supported specifying <code>version: 3.0</code>, newer versions of nfs-utils (a dependency of nfs-volume-service) prevent this from working. NFSv3 does not utilize a MINOR version, NFSv4 introduced MINOR versions that can be specified.</p>
+    <% else %>
+    <%= vars.external_nfsv3_xenial_note %>
+    <% end %>
+
 
 1. Confirm that the NFS volume service appears in your list of services. Run:
 

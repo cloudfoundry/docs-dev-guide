@@ -15,11 +15,12 @@ the cf CLI [cf map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) 
 
 The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the Gorouter makes the following matches for the two routes `example-app.<%= vars.app_domain %>` and `example-app.<%= vars.app_domain %>/products`:
 
-<tabl class="table">
+<table>
   <thead><tr>
     <th>Request</th>
     <th>Matched Route</th>
   </tr></thead>
+  <tbody>
   <tr>
     <td><code>http://example-app.<%= vars.app_domain %></code></td>
     <td><code>example-app.<%= vars.app_domain %></code></td>
@@ -40,6 +41,7 @@ The routing tier compares each request with a list of all the routes mapped to a
     <td><code>http://products.<%= vars.app_domain %></code></td>
     <td>No match; <code>404</code></td>
   </tr>
+  </tbody>
 </table>
 
 The Gorouter does not use a route to match requests until the route is mapped to an app. In the example, `products.<%= vars.app_domain %>` might have been created as a route in <%= vars.app_runtime_abbr %>, but until it is mapped to an app, requests for the route receive a `404` error.
@@ -282,21 +284,25 @@ A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitr
 
 * **cf CLI v6** - To get an arbitrary (random) port, you must use the `--random port` flag.
 
-<pre class="terminal">
-$ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
-Creating route <%= vars.tcp_app_domain %> for org example-org / space example-space as user@example.com...
-OK
-Route <%= vars.tcp_app_domain %>:60034 has been created
-</pre>
+  <pre class="terminal">
+  <code>
+  $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
+  Creating route <%= vars.tcp_app_domain %> for org example-org / space example-space as user@example.com...
+  OK
+  Route <%= vars.tcp_app_domain %>:60034 has been created
+  </code>
+  </pre>
 
 * **cf CLI v7** - An arbitrary (random) port is the default. The `--random port` flag is not supported.
 
-<pre class="terminal">
-$ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
-Creating route <%= vars.tcp_app_domain %> for org example-org / space example-space as user@example.com...
-OK
-Route <%= vars.tcp_app_domain %>:60034 has been created
-</pre>
+  <pre class="terminal">
+  <code>
+  $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
+  Creating route <%= vars.tcp_app_domain %> for org example-org / space example-space as user@example.com...
+  OK
+  Route <%= vars.tcp_app_domain %>:60034 has been created
+  </code>
+  </pre>
 
 In this example, <%= vars.app_runtime_abbr %> routes requests to `<%= vars.tcp_app_domain %>:60034` to apps mapped to this route.
 

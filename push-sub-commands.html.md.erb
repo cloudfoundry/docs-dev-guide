@@ -24,7 +24,7 @@ For information about using these commands, see [Example workflows](#example-wor
 <span class="note__title"><strong>Important</strong></span>
 The cf CLI v6 commands described in this topic are experimental and unsupported, but are supported in cf CLI v7. The latest supported cf CLI release is cf CLI v8. To upgrade to cf CLI v7, see <a href="https://docs.cloudfoundry.org/cf-cli/v7.html">Upgrading to cf CLI v7</a>. To upgrade to cf CLI v8, see <a href="https://docs.cloudfoundry.org/cf-cli/v8.html">Upgrading to cf CLI v8</a>.</p>
 
-<table class-"table">
+<table>
 	<thead><tr>
 		<th>Resource</th>
 		<th>Description</th>
@@ -225,14 +225,14 @@ This example workflow describes how to roll back to a previous droplet used by y
 
 1. In the output, locate and copy the second-to-last GUID.
 
-   In the following example, this is `66524145-5502-40e6-b782-47fe68e13c49`.
+    In the following example, this is `66524145-5502-40e6-b782-47fe68e13c49`.
 
     <pre class="terminal">
     Listing droplets of app APP-NAME in org test / space test as admin...
 
     guid state created
-    	66524145-5502-40e6-b782-47fe68e13c49 staged Mon 25 Sep 16:37:34 PDT 2018
-    	0677ad93-9f77-4aaa-9a6b-44da022dcd58 staged Mon 25 Sep 16:44:55 PDT 2018
+        66524145-5502-40e6-b782-47fe68e13c49 staged Mon 25 Sep 16:37:34 PDT 2018
+        0677ad93-9f77-4aaa-9a6b-44da022dcd58 staged Mon 25 Sep 16:44:55 PDT 2018
     </pre>
 
 2. Stop your app:

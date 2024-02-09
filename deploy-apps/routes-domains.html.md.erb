@@ -285,23 +285,19 @@ A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitr
 * **cf CLI v6** - To get an arbitrary (random) port, you must use the `--random port` flag.
 
   <pre class="terminal">
-  <code>
   $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
   Creating route <%= vars.tcp_app_domain %> for org example-org / space example-space as user@example.com...
   OK
   Route <%= vars.tcp_app_domain %>:60034 has been created
-  </code>
   </pre>
 
 * **cf CLI v7** - An arbitrary (random) port is the default. The `--random port` flag is not supported.
 
   <pre class="terminal">
-  <code>
   $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
   Creating route <%= vars.tcp_app_domain %> for org example-org / space example-space as user@example.com...
   OK
   Route <%= vars.tcp_app_domain %>:60034 has been created
-  </code>
   </pre>
 
 In this example, <%= vars.app_runtime_abbr %> routes requests to `<%= vars.tcp_app_domain %>:60034` to apps mapped to this route.
@@ -559,6 +555,7 @@ To share a route with another space:
     ```
 
     Where:
+
     <ul>
       <li><code>DOMAIN</code> is the domain in the route for your app.</li>
       <li><code>HOSTNAME</code> is the host name in the route for your app.</li>
@@ -579,7 +576,7 @@ To share a route with another space:
 <span class="note__title"><strong>Important</strong></span>
 To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
 
-After sharing a route with another space, you can transfer ownership of the route to that space using the `cf move-route` command. You can use this command if you are unable to maintain or delete a shared route within the space with which it was shared. For information about sharing routes across spaces, see [Share a route with another space](#share-route).
+<p>After sharing a route with another space, you can transfer ownership of the route to that space using the <code>cf move-route<code> command. You can use this command if you are unable to maintain or delete a shared route within the space with which it was shared. For information about sharing routes across spaces, see <a href="#share-route">Share a route with another space</a>.</p>
 
 To move a route:
 
@@ -590,6 +587,7 @@ To move a route:
     ```
 
     Where:
+
     <ul>
       <li><code>SPACE</code> is the space from which the route was originally shared.</li>
       <li><code>ORG</code> is the org containing space from which the route was originally shared. If the space from which the route was originally shared is within the same
@@ -603,6 +601,7 @@ To move a route:
     ```
 
     Where:
+
     <ul>
       <li><code>DOMAIN</code> is the domain in the route for your app.</li>
       <li><code>HOSTNAME</code> is the host name in the route for your app.</li>
@@ -694,7 +693,7 @@ These are the possible error responses:
 ## <a id='domains'></a> Domains
 
 The term <em>domain</em> here differs from its common use and is specific to <%= vars.app_runtime_abbr %>.
-Likewise, shared domain and private domain refer to resources with specific meaning in <%= vars.app_runtime_abbr %>. The use of <em>domain name</em>, <em>root domain</em>, and <em>subdomain</em> refers to DNS records.</p>
+Likewise, shared domain and private domain refer to resources with specific meaning in <%= vars.app_runtime_abbr %>. The use of <em>domain name</em>, <em>root domain</em>, and <em>subdomain</em> refers to DNS records.
 
 Domains indicate to a developer that requests for any route created from the domain are routed to <%= vars.app_runtime_abbr %>. This requires DNS to be configured out-of-band to resolve the domain name to the IP address of a load balancer configured to forward requests to the <%= vars.app_runtime_abbr %>routers. For more information about configuring DNS, see [DNS for domains](#domains-dns).
 
@@ -959,7 +958,9 @@ If your DNS provider does not support ANAME or ALIAS records, you can use subdom
 
 <p class="note important">
 <span class="note__title"><strong>Important</strong></span>
-If you use domain forwarding, SSL requests to the root domain might fail if the SSL certificate matches only the subdomain. For more information about SSL certificates, see the <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Cloud Foundry documentation</a>.</p>
+If you use domain forwarding, SSL requests to the root domain might fail if the SSL certificate matches only the subdomain.
+For more information about SSL certificates, see
+the <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Cloud Foundry documentation</a>.</p>
 
 Configure the root domain to point at a subdomain such as `www`, and configure the subdomain as a CNAME record pointing at a shared domain in
 <%= vars.app_runtime_abbr %>.

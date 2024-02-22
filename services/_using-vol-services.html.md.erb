@@ -73,15 +73,15 @@ To create and bind an instance for the volume service:
       <li><code>YOUR-APP</code> is the name of the app for which you want to use the volume service.</li>
       <li><code>SERVICE-NAME</code> is the name of the volume service instance you created in an earlier step.</li>
       <li>
-        (Optional) <code>UID</code> and <code>GID</code> are the UID and GID to use when mounting the share to the app.
+        <p>(Optional) <code>UID</code> and <code>GID</code> are the UID and GID to use when mounting the share to the app.
         The <code>GID</code> and <code>UID</code> must be positive integer values greater than <code>0</code>.
         Provide the UID and GID as a JSON string in-line or in a file.
         If you omit <code>uid</code> and <code>gid</code>, the driver skips <code>mapfs</code> mounting and performs
         only the normal kernel mount of the NFS file system without the performance overhead associated with FUSE mounts.
-
+        <br>
         The key advantage of specifying <code>UID</code> and <code>GID</code> is that you can specify different values for different apps, so
-        file permissions can be granted at the app level. If this is not needed, the you can eliminate the performance overhead of <code>mapfs</code> by managing permissions on the NFS server.
-        The user specified by <code>uid</code> must have access to the files on the share. When <code>uid</code> and <code>gid</code> are omitted, the app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.
+        file permissions can be granted at the app level. If this is not needed, the you can eliminate the performance overhead of <code>mapfs</code> by managing permissions on the NFS server.<br>
+        The user specified by <code>uid</code> must have access to the files on the share. When <code>uid</code> and <code>gid</code> are omitted, the app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.</p>
         <p class="note caution">
         <span class="note__title"><strong>Caution</strong></span>
         Specifying UID and GID values affects performance because the FUSE file system mapfs is used to translate UID and GID values.</p>

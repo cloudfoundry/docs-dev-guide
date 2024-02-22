@@ -81,7 +81,7 @@ To create and bind an instance for the volume service:
 
             The key advantage of specifying <code>UID</code> and <code>GID</code> is that you can specify different values for different apps, so
             file permissions can be granted at the app level. If this is not needed, the you can eliminate the performance overhead of <code>mapfs</code> by managing permissions on the NFS server.
-            The user specified by <code>uid</code> must have access to the files on the share. When <code>uid</code> and <code>gid</code> are omitted, the app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.</p>
+            The user specified by <code>uid</code> must have access to the files on the share. When <code>uid</code> and <code>gid</code> are omitted, the app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.
             <p class="note caution">
             <span class="note__title"><strong>Caution</strong></span>
             Specifying UID and GID values affects performance because the FUSE file system mapfs is used to translate UID and GID values.</p>

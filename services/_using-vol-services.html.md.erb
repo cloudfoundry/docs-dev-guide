@@ -258,7 +258,7 @@ To create an NFS volume service using the `Existing` plan of the `nfs` service:
         (Optional) <code>NFS-PROTOCOL</code> is the NFS protocol you want to use. For example, to use NFSv4, set the version to <code>4.1</code>. Valid values are <code>3</code>, <code>4.0</code>, <code>4.1</code> or <code>4.2</code>. If you do not specify a <code>version</code>, the protocol version used is negotiated between client and server at mount time. This usually causes the latest available version to be used.
       </li>
     </ul>
-    <% if vars.platform_code !== "CF" %>
+    <% if vars.platform_code != "CF" %>
     <p class="note important">
     <span class="note__title"><strong>Important</strong></span>
     Tanzu Application Service versions shipping with nfs-volume versions <code>v7.1.45 - v7.1.47 or v5.0.55 - 5.0.58 </code> (as of 22 Feb., 2024: 2.11.52 - 2.11.53, 2.13.34 - 2.13.35, 4.0.15 - 4.0.17, 5.0.6 - 5.0.7) do not support specifying NFS <code>version: 3.0</code>. These updated the contained nfs-utils (a dependency of nfs-volume-service) to a newer version that uses stricter option parsing. NFSv3 does not utilize a MINOR version, but NFSv4 introduced MINOR versions that can be specified. <br> This has been mitigated by adding auto-correction logic to the nfsdriver process available with nfs-volume <code> >= v7.1.48</code> and <code> >= v5.0.59 </code>.</p>

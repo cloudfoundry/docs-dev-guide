@@ -261,11 +261,15 @@ To create an NFS volume service using the `Existing` plan of the `nfs` service:
     <% if vars.platform_code !== "CF" %>
     <p class="note important">
     <span class="note__title"><strong>Important</strong></span>
-    Tanzu Application Service versions shipping with nfs-volume versions <code>v7.1.45 - v7.1.47 or v5.0.55 - 5.0.58 </code> (as of 22 Feb., 2024: 2.11.52 - 2.11.53, 2.13.34 - 2.13.35, 4.0.15 - 4.0.17, 5.0.6 - 5.0.7) do not support specifying NFS <code>version: 3.0</code>. These updated the contained nfs-utils (a dependency of nfs-volume-service) to a newer version that uses stricter option parsing. NFSv3 does not utilize a MINOR version, but NFSv4 introduced MINOR versions that can be specified. <br> This has been mitigated by adding auto-correction logic to the nfsdriver process available with nfs-volume <code> >= v7.1.48</code> and <code> >= v5.0.59 </code>.</p>
+    Tanzu Application Service versions shipping with nfs-volume versions <code>v7.1.45 - v7.1.47 or v5.0.55 - 5.0.58</code> (as of 22 Feb., 2024: 2.11.52 - 2.11.53, 2.13.34 - 2.13.35, 4.0.15 - 4.0.17, 5.0.6 - 5.0.7) do not support specifying NFS <code>version: 3.0</code>. These updated the contained nfs-utils (a dependency of nfs-volume-service) to a newer version that uses stricter option parsing.<br>
+    NFSv3 does not utilize a MINOR version, but NFSv4 introduced MINOR versions that can be specified.<br>
+    This has been mitigated by adding auto-correction logic to the nfsdriver process available with nfs-volume <code>>= v7.1.48</code> and <code>>= v5.0.59</code>.</p>
     <% else %>
     <p class="note important">
     <span class="note__title"><strong>Important</strong></span>
-    nfs-volume versions <code>v7.1.45 - v7.1.47</code> ship with a recent version of nfs-utils (a dependency of nfs-volume-service). Recent versions of nfs-utils have stricter option parsing. This leads to an issue with environments that configured the `vers=3.0` mount option. <br>NFSv3 does not utilize a MINOR version, but NFSv4 introduced MINOR versions that can be specified.<br> This has been mitigated by adding auto-correction logic to the nfsdriver process available with nfs-volume <code> >= v7.1.48</code>.</p>
+    nfs-volume versions <code>v7.1.45 - v7.1.47</code> ship with a recent version of nfs-utils (a dependency of nfs-volume-service). Recent versions of nfs-utils have stricter option parsing. This leads to an issue with environments that configured the `vers=3.0` mount option.<br>
+    NFSv3 does not utilize a MINOR version, but NFSv4 introduced MINOR versions that can be specified.<br> 
+    This has been mitigated by adding auto-correction logic to the nfsdriver process available with nfs-volume <code>>= v7.1.48</code>.</p>
     <% end %>
 
 

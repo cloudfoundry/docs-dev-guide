@@ -58,11 +58,11 @@ From your Papertrail account:
 
 1. Click **I use Cloud Foundry**, enter a name, and click **Save**.
 
-    ![alt-text=""](../images/third-party-logs/papertrail-04.png)
+    !["Choose your situation" pane.](../images/third-party-logs/papertrail-04.png)
 
 1. After the system is recorded, the URL, with the port, is displayed. Record the URL and port for later use.
 
-    ![alt-text=""](../images/third-party-logs/papertrail-05.png)
+    ![Message: CloudFoundry will log to "URL." Record the URL.](../images/third-party-logs/papertrail-05.png)
 
 1. Create the log drain service in Cloud Foundry.
 
@@ -86,7 +86,7 @@ From your Papertrail account:
 
 1. When Papertrail starts receiving log entries, the view changes to show the logs viewing page.
 
-    ![alt-text=""](../images/third-party-logs/papertrail-11.png)
+    ![Log viewer showing many log messages.](../images/third-party-logs/papertrail-11.png)
 
 ## <a id='splunk'></a>Splunk
 
@@ -98,19 +98,19 @@ From your Splunk Storm account:
 
 1. Click **Add project**. On the dialog box that appears, enter the **Project name** and select the **Project time zone**. Click **Continue**.
 
-    ![alt-text=""](../images/third-party-logs/splunkstorm-03.png)
+    ![Add project page, with fields for Project name and Project time zone.](../images/third-party-logs/splunkstorm-03.png)
 
 2. In **Network data**, create a new input. Under **Network data**, click **Select**. Data is sent directly from your servers, and accepted data types include syslog, syslog-ng, snare, and netcat.
 
-    ![alt-text=""](../images/third-party-logs/splunkstorm-04.png)
+    ![Network data dialog box.](../images/third-party-logs/splunkstorm-04.png)
 
 3. Under **Add network data**, click **Authorize your IP address** and select **Manually**. Next, enter the external IP addresses your Cloud Foundry administrator assigns to outbound traffic.
 
-    ![alt-text=""](../images/third-party-logs/splunkstorm-05.png)
+    ![Add network data pane. The options are Automatically or Manually.](../images/third-party-logs/splunkstorm-05.png)
 
 4. Record the host and port provided for TCP input for later use.
 
-    ![alt-text="The Authorized network inputs pane shows the ports that data is sent to for this project only."](../images/third-party-logs/splunkstorm-06.png)
+    ![The Authorized network inputs pane shows the ports that data is sent to for this project only.](../images/third-party-logs/splunkstorm-06.png)
 
 5. Using the cf CLI, create the log drain service in Cloud Foundry using the TCP host and port you recorded. Then you bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow.
 
@@ -122,11 +122,11 @@ From your Splunk Storm account:
 
 6. When events begin to appear, click **Data Summary**. The **Data Summary** button appears in the **What to Search** section.
 
-    ![alt-text=""](../images/third-party-logs/splunkstorm-09.png)
+    ![The What to Search section.](../images/third-party-logs/splunkstorm-09.png)
 
 7. In the **Data Summary** table, click the **loggregator** link to view all incoming log entries from Cloud Foundry.
 
-    ![alt-text=""](../images/third-party-logs/splunkstorm-10.png)
+    ![The Data Summary table has 3 tabs: Hosts, Sources, and Sourcetypes.](../images/third-party-logs/splunkstorm-10.png)
 
 ## <a id='sumologic'></a>SumoLogic
 
@@ -136,20 +136,21 @@ In your SumoLogic account:
 
 1. Beside **Manage Collectors and Sources**, click the **Add Collector** link.
 
-    ![alt-text=""](../images/third-party-logs/sumologic-02.png)
+    ![The available actions are Upgrade Collectors, Add Collector, and Access Keys.](../images/third-party-logs/sumologic-02.png)
 
 2. Under **Add Collector**, select **Hosted Collector** and fill in the details.
   1. In **Name**, enter `Cloud Foundry`.
   2. In **Description**, enter the purpose of the new collector.
   3. In **Category**, you can enter the source category, if you want. The collector sets the source category to this value unless it is overwritten by the source metadata.
 
-    ![alt-text=""](../images/third-party-logs/sumologic-03a.png)
+        ![Add Collector screen.](../images/third-party-logs/sumologic-03a.png)
 
-    ![alt-text=""](../images/third-party-logs/sumologic-03b.png)
+        ![Inputs are Name, Description (optional) and Category (optional).](../images/third-party-logs/sumologic-03b.png)
 
+1. Click **Save**.
 3. In the **Manage Collectors and Sources** table, in the row for the new collector, click the **Add Source** link.
 
-    ![alt-text=""](../images/third-party-logs/sumologic-04.png)
+    ![The Manage Collectors and Sources table, you can filter the Collectors shown: All Collectors, Running Collectors, and Stopped Collectors.](../images/third-party-logs/sumologic-04.png)
 
 4. Under **Select a type of Source**, select **HTTP** and fill in the details. An HTTPS URL is provided.
   1. In **Name**, leave the entry, `Cloud Foundry``.
@@ -157,11 +158,11 @@ In your SumoLogic account:
   3. In **Source Host**, enter the host name for the system from which the log files are being collected.
   4. In **Source Category**, enter the log category metadata. You can use this later in queries.
 
-    ![alt-text=""](../images/third-party-logs/sumologic-05.png)
+     ![Source typo options are: Amazon S3 and HTTP.](../images/third-party-logs/sumologic-05.png)
 
 5. When the source is created, a URL is displayed. You can also view the URL by clicking the **Show URL** link beside the newly created source in the **Manage Collectors and Sources** table. Record the URL for the next step.
 
-    ![alt-text=""](../images/third-party-logs/sumologic-06a.png)
+    ![Three options are available in the row: Show URL, Edit, Delete.](../images/third-party-logs/sumologic-06a.png)
 
 6. Using the cf CLI, create the log drain service in Cloud Foundry using the source URL you just recorded. Then you bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow.
 
@@ -173,11 +174,11 @@ In your SumoLogic account:
 
 7. In the SumoLogic dashboard, click **Manage**, then click **Status** to see a view of the log entries.
 
-    ![alt-text=""](../images/third-party-logs/sumologic-09.png)
+    ![Status shows Total Message Volume](../images/third-party-logs/sumologic-09.png)
 
 8. Click **Search**. Place the pointer in the search box, then click **Enter** to submit an empty search query.
 
-    ![alt-text=""](../images/third-party-logs/sumologic-10.png)
+    ![Search terms page.](../images/third-party-logs/sumologic-10.png)
 
 ## <a id='logsene'></a>Logsene
 

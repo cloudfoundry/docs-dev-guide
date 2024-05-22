@@ -25,66 +25,66 @@ For information about using these commands, see [Example workflows](#example-wor
 The cf CLI v6 commands described in this topic are experimental and unsupported, but are supported in cf CLI v7. The latest supported cf CLI release is cf CLI v8. To upgrade to cf CLI v7, see <a href="https://docs.cloudfoundry.org/cf-cli/v7.html">Upgrading to cf CLI v7</a>. To upgrade to cf CLI v8, see <a href="https://docs.cloudfoundry.org/cf-cli/v8.html">Upgrading to cf CLI v8</a>.</p>
 
 <table>
-	<thead><tr>
-		<th>Resource</th>
-		<th>Description</th>
-		<th style="width: 30%">Command</th>
-	</tr></thead>
-	<tr>
-		<td>App</td>
-		<td>The top-level resource that represents an app and its configuration.<br>
-		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#apps">Apps</a> in the CAPI documentation.</td>
-		<td>
-			<ul>
-				<li><strong>cf CLI v6:</strong> <br><code>cf v3-create-app</code></li>
-				<li><strong>cf CLI v7:</strong> <br><code>cf create-app</code></li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td>Package</td>
-		<td>The source code that makes up an app.<br>
-		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#packages">Packages</a> in the CAPI documentation.</td>
-		<td>
-			<ul>
-				<li><strong>cf CLI v6:</strong> <br><code>cf v3-create-package</code></li>
-				<li><strong>cf CLI v7:</strong> <br><code>cf create-package</code></li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td>Build</td>
-		<td>Staging the app. Creating a build combines a Package with a Buildpack and builds it into an executable resource.<br>
-		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#builds">Builds</a> in the CAPI documentation.</td>
-		<td>
-			<ul>
-				<li><strong>cf CLI v6:</strong> <br><code>cf v3-stage</code></li>
-				<li><strong>cf CLI v7:</strong> <br><code>cf stage-package</code></li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td>Droplet</td>
-		<td>An executable resource that results from a Build.<br>
-		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#droplets">Droplet</a> in the CAPI documentation.</td>
-		<td>
-			<ul>
-				<li><strong>cf CLI v6:</strong> <br><code>cf v3-set-droplet</code></li>
-				<li><strong>cf CLI v7:</strong> <br><code>cf set-droplet</code></li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td>Manifest</td>
-		<td>A file used when pushing your app to apply bulk configuration to an app and its underlying processes.<br>
-		For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#space-manifest"> Space Manifest</a> in the CAPI documentation.</td>
-		<td>
-			<ul>
-				<li><strong>cf CLI v6:</strong> <br><code>cf v3-apply-manifest</code></li>
-				<li><strong>cf CLI v7:</strong> <br><code>cf create-app-manifest</code>, <code>cf apply-manifest</code></li>
-			</ul>
-		</td>
-	</tr>
+    <thead><tr>
+        <th>Resource</th>
+        <th>Description</th>
+        <th style="width: 30%">Command</th>
+    </tr></thead>
+    <tr>
+        <td>App</td>
+        <td>The top-level resource that represents an app and its configuration.<br>
+        For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#apps">Apps</a> in the CAPI documentation.</td>
+        <td>
+            <ul>
+                <li><strong>cf CLI v6:</strong> <br><code>cf v3-create-app</code></li>
+                <li><strong>cf CLI v7:</strong> <br><code>cf create-app</code></li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Package</td>
+        <td>The source code that makes up an app.<br>
+        For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#packages">Packages</a> in the CAPI documentation.</td>
+        <td>
+            <ul>
+                <li><strong>cf CLI v6:</strong> <br><code>cf v3-create-package</code></li>
+                <li><strong>cf CLI v7:</strong> <br><code>cf create-package</code></li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Build</td>
+        <td>Staging the app. Creating a build combines a Package with a Buildpack and builds it into an executable resource.<br>
+        For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#builds">Builds</a> in the CAPI documentation.</td>
+        <td>
+            <ul>
+                <li><strong>cf CLI v6:</strong> <br><code>cf v3-stage</code></li>
+                <li><strong>cf CLI v7:</strong> <br><code>cf stage-package</code></li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Droplet</td>
+        <td>An executable resource that results from a Build.<br>
+        For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#droplets">Droplet</a> in the CAPI documentation.</td>
+        <td>
+            <ul>
+                <li><strong>cf CLI v6:</strong> <br><code>cf v3-set-droplet</code></li>
+                <li><strong>cf CLI v7:</strong> <br><code>cf set-droplet</code></li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Manifest</td>
+        <td>A file used when pushing your app to apply bulk configuration to an app and its underlying processes.<br>
+        For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#space-manifest"> Space Manifest</a> in the CAPI documentation.</td>
+        <td>
+            <ul>
+                <li><strong>cf CLI v6:</strong> <br><code>cf v3-apply-manifest</code></li>
+                <li><strong>cf CLI v7:</strong> <br><code>cf create-app-manifest</code>, <code>cf apply-manifest</code></li>
+            </ul>
+        </td>
+    </tr>
 </table>
 
 
@@ -132,13 +132,12 @@ This example workflow describes how to push an app using sub-step commands inste
      OK
     </pre>
 
-2. Stage the package you created:
+1. Stage the package you created:
     * If you are using cf CLI v7, run:
 
         ```
         cf stage-package APP-NAME --package-guid PACKAGE-GUID
         ```
-
         Where:
         <ul>
           <li><code>APP-NAME</code> is the name of your app.</li>
@@ -149,7 +148,6 @@ This example workflow describes how to push an app using sub-step commands inste
         ```
         cf v3-stage APP-NAME --package-guid PACKAGE-GUID
         ```
-
         Where:
         <ul>
           <li><code>APP-NAME</code> is the name of your app.</li>
@@ -173,7 +171,6 @@ This example workflow describes how to push an app using sub-step commands inste
         ```
         cf set-droplet APP-NAME -d DROPLET-GUID
         ```
-
         Where:
         <ul>
           <li><code>APP-NAME</code> is the name of your app.</li>
@@ -184,7 +181,6 @@ This example workflow describes how to push an app using sub-step commands inste
         ```
         cf v3-set-droplet APP-NAME -d DROPLET-GUID
         ```
-
         Where:
         <ul>
           <li><code>APP-NAME</code> is the name of your app.</li>
@@ -210,19 +206,19 @@ This example workflow describes how to push an app using sub-step commands inste
 This example workflow describes how to roll back to a previous droplet used by your app. You might want to use this, for example, if you update your app and it has a bug that causes it to fail.
 
 1. List the droplets for your app:
+    * If you are using cf CLI v7, run:
 
-  * If you are using cf CLI v7, run:
+        ```
+        cf droplets APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
 
-      ```
-      cf droplets APP-NAME
-      ```
-      Where `APP-NAME` is the name of your app.
-  * If you are using cf CLI v6, run:
+    * If you are using cf CLI v6, run:
 
-      ```
-      cf v3-droplets APP-NAME
-      ```
-      Where `APP-NAME` is the name of your app.
+        ```
+        cf v3-droplets APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
 
 1. In the output, locate and copy the second-to-last GUID.
 
@@ -238,61 +234,56 @@ This example workflow describes how to roll back to a previous droplet used by y
 
 1. Stop your app:
 
-  * If you are using cf CLI v7, run:
+    * If you are using cf CLI v7, run:
 
-      ```
-      cf stop APP-NAME
-      ```
+        ```
+        cf stop APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
 
-      Where `APP-NAME` is the name of your app.
-  * If you are using cf CLI v6, run:
+    * If you are using cf CLI v6, run:
 
-      ```
-      cf v3-stop APP-NAME
-      ```
-
-      Where `APP-NAME` is the name of your app.
+        ```
+        cf v3-stop APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
 
 1. Set the app to use the previous droplet:
 
-  * If you are using cf CLI v7, run:
+    * If you are using cf CLI v7, run:
 
-      ```
-      cf set-droplet APP-NAME -d PREVIOUS-DROPLET-GUID
-      ```
-
-      Where:
-      <ul>
+        ```
+        cf set-droplet APP-NAME -d PREVIOUS-DROPLET-GUID
+        ```
+        Where:
+        <ul>
         <li><code>APP-NAME</code> is the name of your app.</li>
         <li><code>PREVIOUS-DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
-      </ul>
+        </ul>
 
-  * If you are using cf CLI v6, run:
+    * If you are using cf CLI v6, run:
 
-      ```
-      cf v3-set-droplet APP-NAME -d PREVIOUS-DROPLET-GUID
-      ```
-
-      Where:
-      <ul>
+        ```
+        cf v3-set-droplet APP-NAME -d PREVIOUS-DROPLET-GUID
+        ```
+        Where:
+        <ul>
         <li><code>APP-NAME</code> is the name of your app.</li>
         <li><code>PREVIOUS-DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
-      </ul>
+        </ul>
 
 1. Start your app:
 
-  * If you are using cf CLI v7, run:
+    * If you are using cf CLI v7, run:
 
-      ```
-      cf start APP-NAME
-      ```
+        ```
+        cf start APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
 
-      Where `APP-NAME` is the name of your app.
+    * If you are using cf CLI v6, run:
 
-  * If you are using cf CLI v6, run:
-
-      ```
-      cf v3-start APP-NAME
-      ```
-
-      Where `APP-NAME` is the name of your app.
+        ```
+        cf v3-start APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.

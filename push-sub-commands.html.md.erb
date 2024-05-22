@@ -92,6 +92,93 @@ The cf CLI v6 commands described in this topic are experimental and unsupported,
 
 The following sections describe example workflows for working with the `cf push` sub-step commands.
 
+### <a id="update-system-example"></a> Roll back to a previous droplet
+
+This example workflow describes how to roll back to a previous droplet used by your app. You might want to use this, for example, if you update your app and it has a bug that causes it to fail.
+
+1. List the droplets for your app:
+    * If you are using cf CLI v7, run:
+
+        ```
+        cf droplets APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
+
+    * If you are using cf CLI v6, run:
+
+        ```
+        cf v3-droplets APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
+
+1. In the output, locate and copy the second-to-last GUID.
+
+    In the following example, this is `66524145-5502-40e6-b782-47fe68e13c49`.
+
+    <pre class="terminal">
+    Listing droplets of app APP-NAME in org test / space test as admin...
+
+    guid state created
+        66524145-5502-40e6-b782-47fe68e13c49 staged Mon 25 Sep 16:37:34 PDT 2018
+        0677ad93-9f77-4aaa-9a6b-44da022dcd58 staged Mon 25 Sep 16:44:55 PDT 2018
+    </pre>
+
+1. Stop your app:
+
+    * If you are using cf CLI v7, run:
+
+        ```
+        cf stop APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
+
+    * If you are using cf CLI v6, run:
+
+        ```
+        cf v3-stop APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
+
+1. Set the app to use the previous droplet:
+
+    * If you are using cf CLI v7, run:
+
+        ```
+        cf set-droplet APP-NAME -d PREVIOUS-DROPLET-GUID
+        ```
+        Where:
+        <ul>
+        <li><code>APP-NAME</code> is the name of your app.</li>
+        <li><code>PREVIOUS-DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
+        </ul>
+
+    * If you are using cf CLI v6, run:
+
+        ```
+        cf v3-set-droplet APP-NAME -d PREVIOUS-DROPLET-GUID
+        ```
+        Where:
+        <ul>
+        <li><code>APP-NAME</code> is the name of your app.</li>
+        <li><code>PREVIOUS-DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
+        </ul>
+
+1. Start your app:
+
+    * If you are using cf CLI v7, run:
+
+        ```
+        cf start APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
+
+    * If you are using cf CLI v6, run:
+
+        ```
+        cf v3-start APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
+
 ### <a id="update-system"></a> Push an app using sub-step commands
 
 This example workflow describes how to push an app using sub-step commands instead of `cf push`.

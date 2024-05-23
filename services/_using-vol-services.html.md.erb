@@ -50,57 +50,55 @@ You can also bind volume services using an app manifest. However, app manifests 
 To create and bind an instance for the volume service:
 
 1. Create a service instance:
+    * **NFS**: See [Create an NFS volume service](#create-nfs).
+    * **SMB**: See [Create an SMB volume service](#create-smb).
 
-  * **NFS**: See [Create an NFS volume service](#create-nfs).
-  * **SMB**: See [Create an SMB volume service](#create-smb).
+1. Bind your service instance to an app:
+    * **NFS-only**: Bind an NFS service instance to an app. Run:
 
-2. Bind your service instance to an app:
+      ```
+      cf bind-service YOUR-APP SERVICE-NAME -c '{"mount":"OPTIONAL-MOUNT-PATH","readonly":true}'
+      ```
+      The app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.
 
-  * **NFS-only**: Bind an NFS service instance to an app. Run:
+      Or to use UID/GID mapping:
+      ```
+      cf bind-service YOUR-APP SERVICE-NAME -c '{"uid":"UID","gid":"GID","mount":"OPTIONAL-MOUNT-PATH","readonly":true}'
+      ```
+      <br>
+      Where:
+      <ul>
+        <li><code>YOUR-APP</code> is the name of the app for which you want to use the volume service.</li>
+        <li><code>SERVICE-NAME</code> is the name of the volume service instance you created in an earlier step.</li>
+        <li>
+          <p>(Optional) <code>UID</code> and <code>GID</code> are the UID and GID to use when mounting the share to the app.
+          The <code>GID</code> and <code>UID</code> must be positive integer values greater than <code>0</code>.
+          Provide the UID and GID as a JSON string in-line or in a file.
+          If you omit <code>uid</code> and <code>gid</code>, the driver skips <code>mapfs</code> mounting and performs
+          only the normal kernel mount of the NFS file system without the performance overhead associated with FUSE mounts.
+          <br>
+          The key advantage of specifying <code>UID</code> and <code>GID</code> is that you can specify different values for different apps, so
+          file permissions can be granted at the app level. If this is not needed, the you can eliminate the performance overhead of <code>mapfs</code> by managing permissions on the NFS server.<br>
+          The user specified by <code>uid</code> must have access to the files on the share. When <code>uid</code> and <code>gid</code> are omitted, the app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.</p>
+          <p class="note caution">
+          <span class="note__title"><strong>Caution</strong></span>
+          Specifying UID and GID values affects performance because the FUSE file system mapfs is used to translate UID and GID values.</p>
+        </li>
+        <li>
+          (Optional) <code>OPTIONAL-MOUNT-PATH</code> is a JSON string that indicates that the volume must be mounted to a particular path in your app rather than the default path. Choose a path with a root-level directory that already exists in the container, such as <code>/home</code>, <code>/usr</code>, or <code>/var</code>.
+          <p class="note important">
+          <span class="note__title"><strong>Important</strong></span>
+          Do not specify a <code>MOUNT-PATH</code> in the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a shared volume in the /app directory</a>.</p>
+        </li>
+        <li>
+          (Optional) <code>"readonly":true</code> is a JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver activates attribute caching. This results in fewer attribute RPCs and better performance.
+        </li>
+      </ul>
 
-    ```
-    cf bind-service YOUR-APP SERVICE-NAME -c '{"mount":"OPTIONAL-MOUNT-PATH","readonly":true}'
-    ```
-    The app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.
-
-    Or to use UID/GID mapping:
-    ```
-    cf bind-service YOUR-APP SERVICE-NAME -c '{"uid":"UID","gid":"GID","mount":"OPTIONAL-MOUNT-PATH","readonly":true}'
-    ```
-    <br>
-    Where:
-    <ul>
-      <li><code>YOUR-APP</code> is the name of the app for which you want to use the volume service.</li>
-      <li><code>SERVICE-NAME</code> is the name of the volume service instance you created in an earlier step.</li>
-      <li>
-        <p>(Optional) <code>UID</code> and <code>GID</code> are the UID and GID to use when mounting the share to the app.
-        The <code>GID</code> and <code>UID</code> must be positive integer values greater than <code>0</code>.
-        Provide the UID and GID as a JSON string in-line or in a file.
-        If you omit <code>uid</code> and <code>gid</code>, the driver skips <code>mapfs</code> mounting and performs
-        only the normal kernel mount of the NFS file system without the performance overhead associated with FUSE mounts.
-        <br>
-        The key advantage of specifying <code>UID</code> and <code>GID</code> is that you can specify different values for different apps, so
-        file permissions can be granted at the app level. If this is not needed, the you can eliminate the performance overhead of <code>mapfs</code> by managing permissions on the NFS server.<br>
-        The user specified by <code>uid</code> must have access to the files on the share. When <code>uid</code> and <code>gid</code> are omitted, the app file operations use the UID of the running app process. For buildpack apps, this UID is always <code>2000</code>. For Docker apps, the effective UID is the same as the UID of the process inside the Docker container, except for <code>root</code>, which is mapped to <code>4294967294</code> outside the Docker container.</p>
-        <p class="note caution">
-        <span class="note__title"><strong>Caution</strong></span>
-        Specifying UID and GID values affects performance because the FUSE file system mapfs is used to translate UID and GID values.</p>
-      </li>
-      <li>
-        (Optional) <code>OPTIONAL-MOUNT-PATH</code> is a JSON string that indicates that the volume must be mounted to a particular path in your app rather than the default path. Choose a path with a root-level directory that already exists in the container, such as <code>/home</code>, <code>/usr</code>, or <code>/var</code>.
-        <p class="note important">
-        <span class="note__title"><strong>Important</strong></span>
-        Do not specify a <code>MOUNT-PATH</code> in the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a shared volume in the /app directory</a>.</p>
-      </li>
-      <li>
-        (Optional) <code>"readonly":true</code> is a JSON string that creates a read-only mount. By default, Volume Services mounts a read-write file system. For read-only mounts, the driver activates attribute caching. This results in fewer attribute RPCs and better performance.
-      </li>
-    </ul>
-
-    The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`, passing an in-line JSON string:
-    <pre class="terminal">
-    cf bind-service my-app nfs_service_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1","readonly":true}'
-    </pre>
+      The following example shows binding `my-app` to the `nfs_service_instance` and specifying a read-only volume to be mounted to `/var/volume1`, passing an in-line JSON string:
+      <pre class="terminal">
+      cf bind-service my-app nfs_service_instance -c '{"uid":"1000","gid":"1000","mount":"/var/volume1","readonly":true}'
+      </pre>
     * **LDAP-only**: Bind an LDAP service to an app. Run:
 
         ```

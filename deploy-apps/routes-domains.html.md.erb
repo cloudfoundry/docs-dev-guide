@@ -241,7 +241,6 @@ A developer can create three routes using the same host name and domain in the s
   <p class="note important">
   <span class="note__title"><strong>Important</strong></span>
   To create a route without a path using cf CLI v6, you must run the commands in this order: Create the route without a path, and then create any routes with a path. If you do not need a route without a path, then this sequence is not required.</p>
-
   <pre class="terminal">
   $ cf create-route example-space <%= vars.app_domain %> --hostname store
   Creating route store.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
@@ -283,7 +282,6 @@ If the developer maps the first route with path `products` to the `products` app
 A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. This is the default in the v7 version of the cf CLI.
 
 * **cf CLI v6** - To get an arbitrary (random) port, you must use the `--random port` flag.
-
   <pre class="terminal">
   $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
   Creating route <%= vars.tcp_app_domain %> for org example-org / space example-space as user@example.com...
@@ -292,7 +290,6 @@ A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitr
   </pre>
 
 * **cf CLI v7** - An arbitrary (random) port is the default. The `--random port` flag is not supported.
-
   <pre class="terminal">
   $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
   Creating route <%= vars.tcp_app_domain %> for org example-org / space example-space as user@example.com...
@@ -361,7 +358,6 @@ check-route](https://cli.cloudfoundry.org/en-US/cf/check-route.html) command.
 To find out if a route with the host name `store` and the domain `<%= vars.app_domain %>` and the path `products` exists, run:
 
 * **cf CLI v7**:
-
     <pre class="terminal">
     $ cf check-route <%= vars.app_domain %> --hostname store --path /products
     Checking for route...
@@ -370,7 +366,6 @@ To find out if a route with the host name `store` and the domain `<%= vars.app_d
     </pre>
 
 * **cf CLI v6**:
-
     <pre class="terminal">
     $ cf check-route store <%= vars.app_domain %> --path /products
     Checking for route...
@@ -553,9 +548,7 @@ To share a route with another space:
     ```
     cf share-route DOMAIN --hostname HOSTNAME --path PATH -s SPACE -o ORG
     ```
-
     Where:
-
     <ul>
       <li><code>DOMAIN</code> is the domain in the route for your app.</li>
       <li><code>HOSTNAME</code> is the host name in the route for your app.</li>
@@ -585,9 +578,7 @@ To move a route:
     ```
     cf target -s SPACE -o ORG
     ```
-
     Where:
-
     <ul>
       <li><code>SPACE</code> is the space from which the route was originally shared.</li>
       <li><code>ORG</code> is the org containing space from which the route was originally shared. If the space from which the route was originally shared is within the same
@@ -599,9 +590,7 @@ To move a route:
     ```
     cf move-route DOMAIN --hostname HOSTNAME --path PATH -s SPACE -o ORG
     ```
-
     Where:
-
     <ul>
       <li><code>DOMAIN</code> is the domain in the route for your app.</li>
       <li><code>HOSTNAME</code> is the host name in the route for your app.</li>

@@ -111,7 +111,7 @@ In <%= vars.app_runtime_abbr %>, a host name is the label that indicates a subdo
 `<%= vars.app_domain %>`, a developer can create the route `example-app.<%= vars.app_domain %>` by specifying the host name `example-app` with the
 [cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command as shown in this example:
 
-* **cf CLI v7**
+* **cf CLI v7+**
   <pre class="terminal">
   $ cf create-route <%= vars.app_domain %> --hostname example-app
   Creating route example-app.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
@@ -145,7 +145,7 @@ Domains](#private-domains) .
 A developer can create a route from the domain `<%= vars.private_app_domain %>` with no host name with the
 [cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command:
 
-* **cf CLI v7**
+* **cf CLI v7+**
   <pre class="terminal">
   $ cf create-route <%= vars.private_app_domain %>
   Creating route <%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
@@ -171,7 +171,7 @@ If there are no other routes for the domain, requests to any subdomain, such as 
 A developer can also create routes for subdomains with no host names. The following command creates a route from the subdomain
 `foo.<%= vars.private_app_domain %>`:
 
-* **cf CLI v7**
+* **cf CLI v7+**
   <pre class="terminal">
   $ cf create-route foo.<%= vars.private_app_domain %>
   Creating route foo.<%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
@@ -198,7 +198,7 @@ An app mapped to a wildcard route acts as a fallback app for route requests if t
 
 A developer can create a wildcard route from the domain `foo.<%= vars.app_domain %>` by running:
 
-* **cf CLI v7**
+* **cf CLI v7+**
   <pre class="terminal">
   $ cf create-route foo.<%= vars.app_domain %> --hostname '*'
   Creating route *.foo.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
@@ -220,7 +220,7 @@ Developers can use paths to route requests for the same host name and domain to 
 
 A developer can create three routes using the same host name and domain in the space `example-space` by running:
 
-* **cf CLI v7**
+* **cf CLI v7+**
   <pre class="terminal">
   $ cf create-route <%= vars.app_domain %> --hostname store --path products
   Creating route store.<%= vars.app_domain %>/products for org example-org / space example-space as username<span>@</span>example.com...
@@ -289,7 +289,8 @@ A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitr
   Route <%= vars.tcp_app_domain %>:60034 has been created
   </pre>
 
-* **cf CLI v7** - An arbitrary (random) port is the default. The `--random port` flag is not supported.
+* **cf CLI v7+** - An arbitrary (random) port is the default. The `--random port` flag is not supported.
+
   <pre class="terminal">
   $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
   Creating route <%= vars.tcp_app_domain %> for org example-org / space example-space as user@example.com...
@@ -357,7 +358,8 @@ check-route](https://cli.cloudfoundry.org/en-US/cf/check-route.html) command.
 
 To find out if a route with the host name `store` and the domain `<%= vars.app_domain %>` and the path `products` exists, run:
 
-* **cf CLI v7**:
+* **cf CLI v7+**:
+
     <pre class="terminal">
     $ cf check-route <%= vars.app_domain %> --hostname store --path /products
     Checking for route...
@@ -777,7 +779,7 @@ Private domains can be HTTP or HTTPS only. TCP routing is supported for shared d
 
 Org managers can create a private domain by running:
 
-* **cf CLI v7**
+* **cf CLI v7+**
   <pre class="terminal">
   $ cf create-private-domain example-org <%= vars.private_app_domain %>
   </pre>
@@ -788,7 +790,7 @@ Org managers can create a private domain by running:
 
 Org managers can create a private domain for a subdomain by running:
 
-* **cf CLI v7**
+* **cf CLI v7+**
   <pre class="terminal">
   $ cf create-private-domain example-org foo.<%= vars.private_app_domain %>
   </pre>
@@ -812,7 +814,7 @@ $ cf unshare-private-domain test-org <%= vars.private_app_domain %>
 
 Org managers can delete a domain from <%= vars.app_runtime_abbr %> with the `cf delete-domain` command:
 
-* **cf CLI v7**:
+* **cf CLI v7+**:
   <pre class="terminal">
   $ cf delete-private-domain <%= vars.private_app_domain %>
   </pre>

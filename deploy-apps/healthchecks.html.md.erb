@@ -92,7 +92,7 @@ Where:
 * `CUSTOM-HTTP-ENDPOINT` is the custom HTTP endpoint that you want to add to the health check. By default, an `http` health check uses `/` as its endpoint unless you specify a custom endpoint. For more information, see [Health check HTTP endpoints](#health_check_uri).
 
 You can also change the health check invocation timeout for
-an app. If you are using cf CLI v6, use <code>cf v3-set-health-check</code>. If you have cf CLI v7, use <code>cf set-health-check</code>. This option also requires restarting the app. For more information, see <a href="https://cli.cloudfoundry.org/en-US/v7/apps.html">Apps</a> in the Cloud Foundry CLI Reference Guide.
+an app. If you are using cf CLI v6, use <code>cf v3-set-health-check</code>. If you have cf CLI v7+, use <code>cf set-health-check</code>. This option also requires restarting the app. For more information, see <a href="https://cli.cloudfoundry.org/en-US/v7/apps.html">Apps</a> in the Cloud Foundry CLI Reference Guide.
 
 For more information about the `cf set-health-check` command, see
 [set-health-check](http://cli.cloudfoundry.org/en-US/cf/set-health-check.html) in

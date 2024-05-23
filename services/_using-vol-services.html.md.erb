@@ -101,28 +101,28 @@ To create and bind an instance for the volume service:
         </pre>
       * **LDAP-only**: Bind an LDAP service to an app. Run:
 
-          ```
-          cf bind-service YOUR-APP SERVICE-NAME -c '{"username":"USERNAME","password":"PASSWORD","mount":"OPTIONAL-MOUNT-PATH","readonly":true}'
-          ```
+        ```
+        cf bind-service YOUR-APP SERVICE-NAME -c '{"username":"USERNAME","password":"PASSWORD","mount":"OPTIONAL-MOUNT-PATH","readonly":true}'
+        ```
 
-          Where:
-          <ul>
-            <li><code>YOUR-APP</code> is the name of the app for which you want to use the volume service.</li>
-            <li><code>SERVICE-NAME</code> is the name of the volume service instance you created in an earlier step.</li>
-            <li>
-              <code>USERNAME</code> and <code>PASSWORD</code> are the user name and password for the LDAP server. If you omit <code>username</code> and <code>password</code>, the driver skips <code>mapfs</code> mounting and performs only the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
-            </li>
-            <li>
-              (Optional) <code>OPTIONAL-MOUNT-PATH</code> is a JSON string that indicates the volume must be mounted to a particular path within your app rather than the default path. Choose a path with a root-level directory that already exists in the container, such as <code>/home</code>, <code>/usr</code>, or <code>/var</code>.
-              <p class="note important">
-              <span class="note__title"><strong>Important</strong></span>
-              Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a shared volume in the /app directory</a>.
-              </p>
-            </li>
-            <li>
-              (Optional) <code>"readonly":true</code> is a JSON string that creates a read-only mount. By default, Volume Services mounts a read write file system. For read-only mounts, the driver activates attribute caching. This results in fewer attribute RPCs and better performance.
-            </li>
-          </ul>
+        Where:
+        <ul>
+          <li><code>YOUR-APP</code> is the name of the app for which you want to use the volume service.</li>
+          <li><code>SERVICE-NAME</code> is the name of the volume service instance you created in an earlier step.</li>
+          <li>
+            <code>USERNAME</code> and <code>PASSWORD</code> are the user name and password for the LDAP server. If you omit <code>username</code> and <code>password</code>, the driver skips <code>mapfs</code> mounting and performs only the normal kernel mount of the NFS file system without the overhead associated with FUSE mounts.
+          </li>
+          <li>
+            (Optional) <code>OPTIONAL-MOUNT-PATH</code> is a JSON string that indicates the volume must be mounted to a particular path within your app rather than the default path. Choose a path with a root-level directory that already exists in the container, such as <code>/home</code>, <code>/usr</code>, or <code>/var</code>.
+            <p class="note important">
+            <span class="note__title"><strong>Important</strong></span>
+            Do not specify a <code>MOUNT-PATH</code> within the <code>/app</code> directory, which is where <%= vars.app_runtime_abbr %> unpacks the droplet. For more information, see <a href="#mount-path">Mount a shared volume in the /app directory</a>.
+            </p>
+          </li>
+          <li>
+            (Optional) <code>"readonly":true</code> is a JSON string that creates a read-only mount. By default, Volume Services mounts a read write file system. For read-only mounts, the driver activates attribute caching. This results in fewer attribute RPCs and better performance.
+          </li>
+        </ul>
 
   1. Restage your app. Run:
 

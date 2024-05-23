@@ -97,7 +97,7 @@ The following sections describe example workflows for working with the `cf push`
 This example workflow describes how to push an app using sub-step commands instead of `cf push`.
 
 1. Create your app with cf CLI:
-    * If you are using cf CLI v7 or v8, run:
+    * If you are using cf CLI v7+, run:
 
         ```
         cf create-app APP-NAME
@@ -111,7 +111,7 @@ This example workflow describes how to push an app using sub-step commands inste
         Where `APP-NAME` is the name you give your app.
 
 1. From your app directory, create a package for your app.
-    * If you are using cf CLI v7 or v8, run:
+    * If you are using cf CLI v7+, run:
 
         ```
         cf create-package APP-NAME
@@ -133,7 +133,7 @@ This example workflow describes how to push an app using sub-step commands inste
     </pre>
 
 1. Stage the package you created:
-    * If you are using cf CLI v7 or v8, run:
+    * If you are using cf CLI v7+, run:
 
         ```
         cf stage-package APP-NAME --package-guid PACKAGE-GUID
@@ -166,7 +166,7 @@ This example workflow describes how to push an app using sub-step commands inste
     </pre>
 
 4. Assign the droplet to your app:
-    * If you are using cf CLI v7 or v8, run:
+    * If you are using cf CLI v7+, run:
 
         ```
         cf set-droplet APP-NAME -d DROPLET-GUID
@@ -188,7 +188,7 @@ This example workflow describes how to push an app using sub-step commands inste
         </ul>
 
 5. Start your app:
-    * If you are using cf CLI v7 or v8, run:
+    * If you are using cf CLI v7+, run:
 
         ```
         cf start APP-NAME
@@ -206,7 +206,7 @@ This example workflow describes how to push an app using sub-step commands inste
 This example workflow describes how to roll back to a previous droplet used by your app. You might want to use this, for example, if you update your app and it has a bug that causes it to fail.
 
 1. List the droplets for your app:
-    * If you are using cf CLI v7 or v8, run:
+    * If you are using cf CLI v7+, run:
 
         ```
         cf droplets APP-NAME
@@ -232,7 +232,7 @@ This example workflow describes how to roll back to a previous droplet used by y
     </pre>
 
 1. Stop your app:
-    * If you are using cf CLI v7 or v8, run:
+    * If you are using cf CLI v7+, run:
 
         ```
         cf stop APP-NAME
@@ -246,7 +246,7 @@ This example workflow describes how to roll back to a previous droplet used by y
         Where `APP-NAME` is the name of your app.
 
 1. Set the app to use the previous droplet:
-    * If you are using cf CLI v7 or v8, run:
+    * If you are using cf CLI v7+, run:
 
         ```
         cf set-droplet APP-NAME -d PREVIOUS-DROPLET-GUID
@@ -268,7 +268,7 @@ This example workflow describes how to roll back to a previous droplet used by y
         </ul>
 
 1. Start your app:
-    * If you are using cf CLI v7 or v8, run:
+    * If you are using cf CLI v7+, run:
 
         ```
         cf start APP-NAME

@@ -572,37 +572,37 @@ To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To
 
 To move a route:
 
-  1. In a terminal window, target the space from which the route was originally shared by running:
+   1. In a terminal window, target the space from which the route was originally shared by running:
 
-      ```
-      cf target -s SPACE -o ORG
-      ```
-      Where:
-      <ul>
-        <li><code>SPACE</code> is the space from which the route was originally shared.</li>
-        <li><code>ORG</code> is the org containing space from which the route was originally shared. If the space from which the route was originally shared is within the same
+       ```
+       cf target -s SPACE -o ORG
+       ```
+       Where:
+       <ul>
+         <li><code>SPACE</code> is the space from which the route was originally shared.</li>
+         <li><code>ORG</code> is the org containing space from which the route was originally shared. If the space from which the route was originally shared is within the same
         org as the space with which the route was shared, do not include the <code>-o</code> flag.</li>
-      </ul>
+       </ul>
 
-  1. Run:
+   1. Run:
 
-      ```
-      cf move-route DOMAIN --hostname HOSTNAME --path PATH -s SPACE -o ORG
-      ```
-      Where:
-      <ul>
-        <li><code>DOMAIN</code> is the domain in the route for your app.</li>
-        <li><code>HOSTNAME</code> is the host name in the route for your app.</li>
-        <li><code>PATH</code> is the path in the route for your app.</li>
-        <li><code>SPACE</code> is the space to which you want to move the route for your app.</li>
-        <li><code>ORG</code> is the org containing space to which you want to move the route for your app. If the space to which you want to move the route is within the same org as the space that contains the route, do not include the <code>-o</code> flag.</li>
-      </ul>
+       ```
+       cf move-route DOMAIN --hostname HOSTNAME --path PATH -s SPACE -o ORG
+       ```
+       Where:
+       <ul>
+         <li><code>DOMAIN</code> is the domain in the route for your app.</li>
+         <li><code>HOSTNAME</code> is the host name in the route for your app.</li>
+         <li><code>PATH</code> is the path in the route for your app.</li>
+         <li><code>SPACE</code> is the space to which you want to move the route for your app.</li>
+         <li><code>ORG</code> is the org containing space to which you want to move the route for your app. If the space to which you want to move the route is within the same org as the space that contains the route, do not include the <code>-o</code> flag.</li>
+       </ul>
 
-      The following example command moves the route `example-app.example.com/example-path` with the `other-space` space in the `other-org` org:
+       The following example command moves the route `example-app.example.com/example-path` with the `other-space` space in the `other-org` org:
 
-      <pre class="terminal">
-      cf move-route example.com --hostname example-app --path example-path -s other-space -o other-org
-      </pre>
+       <pre class="terminal">
+       cf move-route example.com --hostname example-app --path example-path -s other-space -o other-org
+       </pre>
 
 ### <a id='delete-route'></a> Delete a route
 

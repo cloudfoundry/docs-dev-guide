@@ -117,7 +117,7 @@ This section explains how to describe optional app attributes in manifests. You 
 <p class="note important">
 <span class="note__title"><strong>Important</strong></span>
 In cf CLI v6, the route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>,
-<code>hosts</code>, and <code>no-hostname</code> are deprecated in favor of the <code>routes</code> attribute. In cf CLI v7, these attributes are
+<code>hosts</code>, and <code>no-hostname</code> are deprecated in favor of the <code>routes</code> attribute. In cf CLI v7+, these attributes are
 removed. For more information, see <a href="#route-attribute">domain, domains, host, hosts, and no-hostname</a>.</p>
 
 ### <a id='buildpacks'></a> buildpacks
@@ -253,7 +253,7 @@ For example:
 
 The `-u` command-line flag overrides this attribute.
 
-In cf CLI v6, the value of `none` is deprecated in favor of `process`. In cf CLI v7, `none` is removed.
+In cf CLI v6, the value of `none` is deprecated in favor of `process`. In cf CLI v7+, `none` is removed.
 
 ### <a id='health-check-http-ep'></a> health-check-http-endpoint
 
@@ -564,7 +564,7 @@ If you use the `routes` attribute with the `host`, `hosts`, `domain`, `domains`,
 #### <a id='push-flag-options'></a> push flag options
 
 This attribute has unique interactions with different command-line options.
-This table is updated for cf CLI v7; several of the flags were removed (`--route-path`, `-d`, `--hostname`, `--no-hostname`)
+In cf CLI v7, several of the flags were removed (`--route-path`, `-d`, `--hostname`, `--no-hostname`)
 
 <table class="table">
   <thead><tr>
@@ -573,7 +573,7 @@ This table is updated for cf CLI v7; several of the flags were removed (`--route
   </tr></thead>
   <tr>
     <td><code>--no-route</code></td>
-    <td>All declared routes are ignored. In cf CLI v7, this flag no longer unbinds all existing routes associated with the app.</td>
+    <td>All declared routes are ignored. In cf CLI v7+, this flag does not unbind all existing routes associated with the app.</td>
   </tr>
   <tr>
     <td><code>--random-route</code></td>
@@ -804,7 +804,7 @@ aliases in each app declaration.
 
 ### <a id='route-attribute'></a> domain, domains, host, hosts, and no-hostname attributes
 
-These flags are removed in cf CLI v7.
+These flags are removed in cf CLI v7+.
 
 Previously, you could specify routes by listing them all at once using the `routes` attribute, or by using their hosts and domains.
 

@@ -39,7 +39,7 @@ To deploy an app without incurring downtime:
 Review the limitations of this feature before running the command. For more information, see
 <a href="#limitations">Limitations</a>.</p>
 
-* **For cf CLI v7, run:**
+* **For cf CLI v7+, run:**
 
     ```
     cf push APP-NAME --strategy rolling
@@ -177,7 +177,7 @@ For more information about this command, see [How it works](#how-it-works).
 
 To stop the deployment of an app that you pushed:
 
-* **For cf CLI v7, run:**
+* **For cf CLI v7+, run:**
 
     ```
     cf cancel-deployment APP-NAME
@@ -220,7 +220,7 @@ to environment variables and service bindings will not be reverted. </p>
 To restart your app without downtime, run the appropriate command. Restart an app to apply
 configuration updates that require a restart, such as environment variables or service bindings.
 
-* **For cf CLI v7, run:**
+* **For cf CLI v7+, run:**
 
     ```
     cf restart APP-NAME --strategy rolling

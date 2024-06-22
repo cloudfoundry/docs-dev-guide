@@ -1,5 +1,5 @@
 ---
-title: Deploying your app with docker
+title: Deploying an app based on a Docker image
 owner: Diego
 ---
 
@@ -10,7 +10,7 @@ You can use the [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/ins
 
 ## <a id='requirements'></a> Requirements
 
-To push apps with Docker, you need:
+To push an app based on a Docker image, you need:
 
 * A <%= vars.app_runtime_abbr %> deployment with Docker support activated. <%= vars.enable_docker_link %>
 
@@ -68,9 +68,7 @@ For more information about the `PORT` environment variable, see the [PORT](envir
 
 ## <a id='start_command'></a> Start command
 
-By default, Docker uses the start command specified in the Docker image. You can override the start command either by using a command-line parameter or by specifying it in a manifest file.
-
-For more information about command-line parameters for `docker start`, see [docker start](https://docs.docker.com/engine/reference/commandline/start/) in the Docker Documentation.
+By default, Docker uses the start command specified by the `CMD` and/or `ENTRYPOINT` directives in the Docker image. You can override the start command either by using the `-c` flag on `cf push` or by setting the `command` property in a manifest file.
 
 
 ## <a id='registry'></a> Push a Docker image from a registry

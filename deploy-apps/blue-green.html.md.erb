@@ -41,7 +41,9 @@ Use the Cloud Foundry Command Line Interface (cf CLI) to push the app.
 Name the app "Blue" with the subdomain "demo-time."
 
 <pre class="terminal">
-$ cf push Blue -n demo-time
+$ cf create-route example.com --hostname demo-time
+$ cf push Blue
+$ cf map-route Blue example.com --hostname demo-time
 </pre>
 
 As shown in the graphic:
@@ -58,7 +60,9 @@ Now make a change to the app.
 1. Run `cf push` again, but use the name "Green" for the app and provide a different subdomain to create a temporary route:
 
 <pre class="terminal">
-$ cf push Green -n demo-time-temp
+$ cf create-route example.com --hostname demo-time-temp
+$ cf push Green
+$ cf map-route Green example.com --hostname demo-time-temp
 </pre>
 
 After this push:

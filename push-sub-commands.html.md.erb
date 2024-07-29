@@ -36,8 +36,7 @@ The cf CLI v6 commands described in this topic are experimental and unsupported,
         For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#apps">Apps</a> in the CAPI documentation.</td>
         <td>
             <ul>
-                <li><strong>cf CLI v6:</strong> <br><code>cf v3-create-app</code></li>
-                <li><strong>cf CLI v7 or later:</strong> <br><code>cf create-app</code></li>
+                <li><code>cf create-app</code></li>
             </ul>
         </td>
     </tr>
@@ -47,8 +46,7 @@ The cf CLI v6 commands described in this topic are experimental and unsupported,
         For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#packages">Packages</a> in the CAPI documentation.</td>
         <td>
             <ul>
-                <li><strong>cf CLI v6:</strong> <br><code>cf v3-create-package</code></li>
-                <li><strong>cf CLI v7 or later:</strong> <br><code>cf create-package</code></li>
+                <li><code>cf create-package</code></li>
             </ul>
         </td>
     </tr>
@@ -58,8 +56,7 @@ The cf CLI v6 commands described in this topic are experimental and unsupported,
         For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#builds">Builds</a> in the CAPI documentation.</td>
         <td>
             <ul>
-                <li><strong>cf CLI v6:</strong> <br><code>cf v3-stage</code></li>
-                <li><strong>cf CLI v7 or later:</strong> <br><code>cf stage-package</code></li>
+                <li><code>cf stage-package</code></li>
             </ul>
         </td>
     </tr>
@@ -69,8 +66,7 @@ The cf CLI v6 commands described in this topic are experimental and unsupported,
         For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#droplets">Droplet</a> in the CAPI documentation.</td>
         <td>
             <ul>
-                <li><strong>cf CLI v6:</strong> <br><code>cf v3-set-droplet</code></li>
-                <li><strong>cf CLI v7 or later:</strong> <br><code>cf set-droplet</code></li>
+                <li><code>cf set-droplet</code></li>
             </ul>
         </td>
     </tr>
@@ -80,8 +76,7 @@ The cf CLI v6 commands described in this topic are experimental and unsupported,
         For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#space-manifest"> Space Manifest</a> in the CAPI documentation.</td>
         <td>
             <ul>
-                <li><strong>cf CLI v6:</strong> <br><code>cf v3-apply-manifest</code></li>
-                <li><strong>cf CLI v7 or later:</strong> <br><code>cf create-app-manifest</code>, <code>cf apply-manifest</code></li>
+                <li><code>cf create-app-manifest</code>, <code>cf apply-manifest</code></li>
             </ul>
         </td>
     </tr>
@@ -97,32 +92,18 @@ The following sections describe example workflows for working with the `cf push`
 This example workflow describes how to push an app using sub-step commands instead of `cf push`.
 
 1. Create your app with cf CLI:
-    * If you are using cf CLI v7+, run:
 
-        ```
-        cf create-app APP-NAME
-        ```
-        Where `APP-NAME` is the name you give your app.
-    * If you are using cf CLI v6, run:
-
-        ```
-        cf v3-create-app APP-NAME
-        ```
-        Where `APP-NAME` is the name you give your app.
+    ```
+    cf create-app APP-NAME
+    ```
+    Where `APP-NAME` is the name you give your app.
 
 1. From your app directory, create a package for your app.
-    * If you are using cf CLI v7+, run:
 
-        ```
-        cf create-package APP-NAME
-        ```
-        Where `APP-NAME` is the name of your app.
-    * If you are using cf CLI v6, run:
-
-        ```
-        cf v3-create-package APP-NAME
-        ```
-        Where `APP-NAME` is the name of your app.
+    ```
+    cf create-package APP-NAME
+    ```
+    Where `APP-NAME` is the name of your app.
 
 1. Locate and copy the `package guid` from the output of an earlier step. See the following example output:
 
@@ -133,26 +114,15 @@ This example workflow describes how to push an app using sub-step commands inste
     </pre>
 
 1. Stage the package you created:
-    * If you are using cf CLI v7+, run:
 
-        ```
-        cf stage-package APP-NAME --package-guid PACKAGE-GUID
-        ```
-        Where:
-        <ul>
-          <li><code>APP-NAME</code> is the name of your app.</li>
-          <li><code>PACKAGE-GUID</code> is the package GUID you recorded in an earlier step.</li>
-        </ul>
-    * If you are using cf CLI v6, run:
-
-        ```
-        cf v3-stage APP-NAME --package-guid PACKAGE-GUID
-        ```
-        Where:
-        <ul>
-          <li><code>APP-NAME</code> is the name of your app.</li>
-          <li><code>PACKAGE-GUID</code> is the package GUID you recorded in an earlier step.</li>
-        </ul>
+    ```
+    cf stage-package APP-NAME --package-guid PACKAGE-GUID
+    ```
+    Where:
+    <ul>
+        <li><code>APP-NAME</code> is the name of your app.</li>
+        <li><code>PACKAGE-GUID</code> is the package GUID you recorded in an earlier step.</li>
+    </ul>
 
 3. Locate and copy the `droplet guid` from the output of an earlier step. See the following example output:
 
@@ -166,58 +136,33 @@ This example workflow describes how to push an app using sub-step commands inste
     </pre>
 
 4. Assign the droplet to your app:
-    * If you are using cf CLI v7+, run:
 
-        ```
-        cf set-droplet APP-NAME -d DROPLET-GUID
-        ```
-        Where:
-        <ul>
-          <li><code>APP-NAME</code> is the name of your app.</li>
-          <li><code>DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
-        </ul>
-    * If you are using cf CLI v6, run:
-
-        ```
-        cf v3-set-droplet APP-NAME -d DROPLET-GUID
-        ```
-        Where:
-        <ul>
-          <li><code>APP-NAME</code> is the name of your app.</li>
-          <li><code>DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
-        </ul>
+    ```
+    cf set-droplet APP-NAME -d DROPLET-GUID
+    ```
+    Where:
+    <ul>
+        <li><code>APP-NAME</code> is the name of your app.</li>
+        <li><code>DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
+    </ul>
 
 5. Start your app:
-    * If you are using cf CLI v7+, run:
 
-        ```
-        cf start APP-NAME
-        ```
-        Where `APP-NAME` is the name of your app.
-    * If you are using cf CLI v6, run:
-
-        ```
-        cf v3-start APP-NAME
-        ```
-        Where `APP-NAME` is the name of your app.
+    ```
+    cf start APP-NAME
+    ```
+    Where `APP-NAME` is the name of your app.
 
 ### <a id="update-system-example"></a> Roll back to a previous droplet
 
 This example workflow describes how to roll back to a previous droplet used by your app. You might want to use this, for example, if you update your app and it has a bug that causes it to fail.
 
 1. List the droplets for your app:
-    * If you are using cf CLI v7+, run:
 
-        ```
-        cf droplets APP-NAME
-        ```
-        Where `APP-NAME` is the name of your app.
-    * If you are using cf CLI v6, run:
-
-        ```
-        cf v3-droplets APP-NAME
-        ```
-        Where `APP-NAME` is the name of your app.
+    ```
+    cf droplets APP-NAME
+    ```
+    Where `APP-NAME` is the name of your app.
 
 1. In the output, locate and copy the second-to-last GUID.
 
@@ -232,51 +177,25 @@ This example workflow describes how to roll back to a previous droplet used by y
     </pre>
 
 1. Stop your app:
-    * If you are using cf CLI v7+, run:
 
-        ```
-        cf stop APP-NAME
-        ```
-        Where `APP-NAME` is the name of your app.
-    * If you are using cf CLI v6, run:
-
-        ```
-        cf v3-stop APP-NAME
-        ```
-        Where `APP-NAME` is the name of your app.
+    ```
+    cf stop APP-NAME
+    ```
 
 1. Set the app to use the previous droplet:
-    * If you are using cf CLI v7+, run:
 
-        ```
-        cf set-droplet APP-NAME -d PREVIOUS-DROPLET-GUID
-        ```
-        Where:
-        <ul>
-        <li><code>APP-NAME</code> is the name of your app.</li>
-        <li><code>PREVIOUS-DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
-        </ul>
-    * If you are using cf CLI v6, run:
-
-        ```
-        cf v3-set-droplet APP-NAME -d PREVIOUS-DROPLET-GUID
-        ```
-        Where:
-        <ul>
-        <li><code>APP-NAME</code> is the name of your app.</li>
-        <li><code>PREVIOUS-DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
-        </ul>
+    ```
+    cf set-droplet APP-NAME -d PREVIOUS-DROPLET-GUID
+    ```
+    Where:
+    <ul>
+    <li><code>APP-NAME</code> is the name of your app.</li>
+    <li><code>PREVIOUS-DROPLET-GUID</code> is the droplet GUID you recorded in an earlier step.</li>
+    </ul>
 
 1. Start your app:
-    * If you are using cf CLI v7+, run:
 
-        ```
-        cf start APP-NAME
-        ```
-        Where `APP-NAME` is the name of your app.
-    * If you are using cf CLI v6, run:
-
-        ```
-        cf v3-start APP-NAME
-        ```
-        Where `APP-NAME` is the name of your app.
+    ```
+    cf start APP-NAME
+    ```
+    Where `APP-NAME` is the name of your app.

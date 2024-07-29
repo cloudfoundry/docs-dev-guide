@@ -158,10 +158,10 @@ For example, you can use the HTTP/2 test app from [Cloud Foundry Acceptance Test
 	cf push --no-route
 	```
 
-2. You can map a route with destination protocol `http2` by running:
+2. You can map a route by running:
 
 	```
-	cf map-route MY-APP EXAMPLE.COM --hostname host --destination-protocol http2
+	cf map-route MY-APP EXAMPLE.COM --hostname host
 	```
 	Where `MY-APP` is the name of your app and `EXAMPLE.COM` is the route you want to map to your app.
 

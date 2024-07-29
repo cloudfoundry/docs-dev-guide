@@ -79,8 +79,6 @@ Common reasons deploying an app fails include:
 
 <%= vars.app_runtime_abbr %> requires that each app that you deploy has a unique URL. Otherwise, the new app URL collides with an existing app URL and <%= vars.app_runtime_abbr %> cannot deploy the app. You can resolve this issue by running `cf push` with either of the following flags to create a unique URL:
 
-* `-n` to assign a different HOST name for the app.
-
 * `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
 
 ### <a id='start'></a> App fails to start

@@ -541,19 +541,7 @@ In cf CLI v7, these `cf push` flags are no longer supported:
   </tr>
   <tr>
     <td><code>--no-route</code></td>
-    <td>All declared routes are ignored.</td>
-  </tr>
-  <tr>
-    <td><code>-d</code></td>
-    <td>Overrides the <code>DOMAIN</code> in all declared HTTP and TCP routes.</td>
-  </tr>
-  <tr>
-    <td><code>--hostname, -n</code></td>
-    <td>Sets or overrides the <code>HOSTNAME</code> in all HTTP routes. Does not impact TCP routes.</td>
-  </tr>
-  <tr>
-    <td><code>--route-path</code></td>
-    <td>Sets or overrides the <code>PATH</code> in all HTTP routes. Does not impact TCP routes.</td>
+    <td>All declared routes are ignored. This flag does not unbind all existing routes associated with the app.</td>
   </tr>
   <tr>
     <td><code>--random-route</code></td>

@@ -128,18 +128,11 @@ Before you can push an app with a sidecar with an app manifest, you must have:
 To push an app with a sidecar:
 
 1. Create an app or use an existing app. To create an app:
-    * If you are using cf CLI v7, run:
 
-        ```
-        cf create-app APP-NAME
-        ```
-        Where `APP-NAME` is the name you give your app.
-    * If you are using cf CLI v6, run:
-
-        ```
-        cf v3-create-app APP-NAME
-        ```
-        Where `APP-NAME` is the name you give your app.
+    ```
+    cf create-app APP-NAME
+    ```
+    Where `APP-NAME` is the name you give your app.
 
         <p class="note caution">
         <span class="note__title">Caution</span>
@@ -179,36 +172,22 @@ To push an app with a sidecar:
     ```
 
 1. To apply the manifest file to your app:
-    * If you are using cf CLI v7, run:
 
-        ```
-        cf apply-manifest -f PATH-TO-MANIFEST
-        ```
-        Where `PATH-TO-MANIFEST` is the path to your manifest file. If no flags are passed, the command defaults to using the manifest located in your `pwd`.
-    * If you are using cf CLI v6, run:
-
-        ```
-        cf v3-apply-manifest -f PATH-TO-MANIFEST
-        ```
-        Where `PATH-TO-MANIFEST` is the path to your manifest file.
+    ```
+    cf apply-manifest -f PATH-TO-MANIFEST
+    ```
+    Where `PATH-TO-MANIFEST` is the path to your manifest file
 
         <p class="note caution">
         <span class="note__title">Caution</span>
         This command is experimental and unsupported. Upgrade to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
 1. To push your app:
-    * If you are using cf CLI v7, run:
 
-        ```
-        cf push APP-NAME
-        ```
-        Where `APP-NAME` is the name of your app.
-    * If you are using cf CLI v6, run:
-
-        ```
-        cf v3-push APP-NAME
-        ```
-        Where `APP-NAME` is the name of your app.
+    ```
+    cf push APP-NAME
+    ```
+    Where `APP-NAME` is the name of your app.
 
         <p class="note caution">
         <span class="note__title">Caution</span>
@@ -263,54 +242,27 @@ To push the app and sidecar:
     <span class="note__title">Important</span>
     If you do not have Go installed, download the <code>config-server_linux_x86-64</code> binary from <a href="https://github.com/cloudfoundry-samples/capi-sidecar-samples/releases">Releases</a> in the <code>capi-sidecar-samples</code> repository in GitHub.</p>
 
-1. To create the app:
-	* If you are using cf CLI v7, run:
+1. To create the app
 
-		```
-		cf create-app sidecar-dependent-app
-		```
-	* If you are using cf CLI v6, run:
-
-		```
-		cf v3-create-app sidecar-dependent-app
-		```
-        <p class="note caution">
-        <span class="note__title">Caution</span>
-        This command is experimental and unsupported. Upgrade to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
+    ```
+    cf create-app sidecar-dependent-app
+    ```
 
 1. Navigate to the `sidecar-dependent-app` directory.
 
 1. Open and review the `manifest.yml` file. Under `sidecars`, the sidecar is specified with a name, process type, and start command. Under `env`, there is an environment variable that defines the port on which the app and sidecar communicate.
 
 1. To apply the manifest to the app:
-	* If you are using cf CLI v7, run:
 
-		```
-		cf apply-manifest
-		```
-	* If you are using cf CLI v6, run:
-
-		```
-		cf v3-apply-manifest
-		```
-        <p class="note caution">
-        <span class="note__title">Caution</span>
-        This command is experimental and unsupported. Upgrade to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
+    ```
+    cf apply-manifest
+    ```
 
 1. To push the app:
-	* If you are using cf CLI v7, run:
 
-		```
-		cf push sidecar-dependent-app
-		```
-	* If you are using cf CLI v6, run:
-
-		```
-		cf v3-push sidecar-dependent-app
-		```
-        <p class="note caution">
-        <span class="note__title">Caution</span>
-        This command is experimental and unsupported. Upgrade to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
+    ```
+    cf push sidecar-dependent-app
+    ```
 
 After you push the app, you can further explore it in [View the Processes Running in the Container](#view-processes) and [View the Web URL and App Logs](#view-logs) below.
 

@@ -128,22 +128,15 @@ In <%= vars.app_runtime_abbr %>, a hostname is the label that indicates a subdom
 `<%= vars.app_domain %>`, a developer can create the route `example-app.<%= vars.app_domain %>` by specifying the hostname `example-app` with the
 [cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command as shown in this example:
 
-* **cf CLI v7**
-  <pre class="terminal">
-  $ cf create-route <%= vars.app_domain %> --hostname example-app
-  Creating route example-app.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
+<pre class="terminal">
+$ cf create-route <%= vars.app_domain %> --hostname example-app
+Creating route example-app.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
+OK
+</pre>
 
-  The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are
-  currently targeting.
-
-* **cf CLI v6**
-  <pre class="terminal">
-  $ cf create-route example-space <%= vars.app_domain %> --hostname example-app
-  Creating route example-app.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
+<p class="note important">
+<span class="note__title"><strong>Important</strong></span>
+The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</p>
 
 This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for the following URLs:
 
@@ -159,18 +152,11 @@ This approach creates a route with the same address as the domain itself and is 
 A developer can create a route from the domain `<%= vars.private_app_domain %>` with no hostname with the
 [cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command:
 
-* **cf CLI v7**
-  <pre class="terminal">
-  $ cf create-route <%= vars.private_app_domain %>
-  Creating route <%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
-* **cf CLI v6**
-  <pre class="terminal">
-  $ cf create-route example-space <%= vars.private_app_domain %>
-  Creating route <%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
+<pre class="terminal">
+$ cf create-route <%= vars.private_app_domain %>
+Creating route <%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
+OK
+</pre>
 
 If DNS has been configured correctly, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
 
@@ -185,18 +171,11 @@ If there are no other routes for the domain, requests to any subdomain, such as 
 A developer can also create routes for subdomains with no hostnames. The following command creates a route from the subdomain
 `foo.<%= vars.private_app_domain %>`:
 
-* **cf CLI v7**
-  <pre class="terminal">
-  $ cf create-route foo.<%= vars.private_app_domain %>
-  Creating route foo.<%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
-* **cf CLI v6**
-  <pre class="terminal">
-  $ cf create-route example-space foo.<%= vars.private_app_domain %>
-  Creating route foo.<%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
+<pre class="terminal">
+$ cf create-route foo.<%= vars.private_app_domain %>
+Creating route foo.<%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
+OK
+</pre>
 
 Assuming DNS has been configured for this subdomain, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from
 these URLs:
@@ -214,18 +193,11 @@ for the hostname.
 
 A developer can create a wildcard route from the domain `foo.<%= vars.app_domain %>` by running:
 
-* **cf CLI v7**
-  <pre class="terminal">
-  $ cf create-route foo.<%= vars.app_domain %> --hostname '*'
-  Creating route *.foo.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
-* **cf CLI v6**
-  <pre class="terminal">
-  $ cf create-route example-space foo.<%= vars.app_domain %> --hostname '*'
-  Creating route *.foo.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
+<pre class="terminal">
+$ cf create-route foo.<%= vars.app_domain %> --hostname '*'
+Creating route *.foo.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
+OK
+</pre>
 
 If a client sends a request to `http://app.foo.<%= vars.app_domain %>` by accident, attempting to reach `example-app.foo.<%= vars.app_domain %>`,
 <%= vars.app_runtime_abbr %> routes the request to the app mapped to the route `*.foo.<%= vars.app_domain %>`.
@@ -236,41 +208,21 @@ Developers can use paths to route requests for the same hostname and domain to d
 
 A developer can create three routes using the same hostname and domain in the space `example-space` by running:
 
-* **cf CLI v7**
-  <pre class="terminal">
-  $ cf create-route <%= vars.app_domain %> --hostname store --path products
-  Creating route store.<%= vars.app_domain %>/products for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
-  <pre class="terminal">
-  $ cf create-route <%= vars.app_domain %> --hostname store --path orders
-  Creating route store.<%= vars.app_domain %>/orders for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
-  <pre class="terminal">
-  $ cf create-route <%= vars.app_domain %> --hostname store
-  Creating route store.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
-
-* **cf CLI v6** - If you want to create a route without a path using cf CLI v6, you must run the commands in the order below. Create
-  the route without a path first, and then create any routes with a path. If you do not need a route without a path, then this order is not required.
-
-  <pre class="terminal">
-  $ cf create-route example-space <%= vars.app_domain %> --hostname store
-  Creating route store.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
-  <pre class="terminal">
-  $ cf create-route example-space <%= vars.app_domain %> --hostname store --path products
-  Creating route store.<%= vars.app_domain %>/products for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
-  <pre class="terminal">
-  $ cf create-route example-space <%= vars.app_domain %> --hostname store --path orders
-  Creating route store.<%= vars.app_domain %>/orders for org example-org / space example-space as username<span>@</span>example.com...
-  OK
-  </pre>
+<pre class="terminal">
+$ cf create-route <%= vars.app_domain %> --hostname store --path products
+Creating route store.<%= vars.app_domain %>/products for org example-org / space example-space as username<span>@</span>example.com...
+OK
+</pre>
+<pre class="terminal">
+$ cf create-route <%= vars.app_domain %> --hostname store --path orders
+Creating route store.<%= vars.app_domain %>/orders for org example-org / space example-space as username<span>@</span>example.com...
+OK
+</pre>
+<pre class="terminal">
+$ cf create-route <%= vars.app_domain %> --hostname store
+Creating route store.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
+OK
+</pre>
 
 The developer can then map the new routes to different apps by following the procedure in [Map a Route to Your App](#map-route) below.
 
@@ -292,18 +244,9 @@ to the `storefront` app. After this:
 
 #### <a id='create-route-with-port'></a> Create a TCP route with a port
 
-**cf CLI v7:**
-To create an arbitrary port when the `--port` is not used, run the command shown below. Note that the `--random-port` flag is no longer supported, and the behavior it provided is now the default.
+A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. This is the default in the v7 version of the cf CLI.
 
-<pre class="terminal">
-$ cf create-route my-space <%= vars.tcp_app_domain %>
-Creating route <%= vars.tcp_app_domain %> for org my-org / space my-space as user@example.com...
-OK
-Route <%= vars.tcp_app_domain %>:60034 has been created
-</pre>
-
-**cf CLI v6:**
-A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. If the clients of the app can accommodate addressing an arbitrary port, then developers should use the `--random-port` to instruct <%= vars.app_runtime_abbr %> to pick a port for your route. To create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port, run:
+* An arbitrary (random) port is the default. The `--random port` flag is not supported.
 
 <pre class="terminal">
 $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
@@ -376,22 +319,14 @@ The <code>cf route</code> command is available in cf CLI v8 only.</p>
 
 Developers cannot create a route that is already taken. To check whether a route is available, developers can use the [cf check-route](https://cli.cloudfoundry.org/en-US/cf/check-route.html) command.
 
-To check whether a route with the hostname `store` and the domain `<%= vars.app_domain %>` and the path `products` exists, run:
+To find out if a route with the host name `store` and the domain `<%= vars.app_domain %>` and the path `products` exists, run:
 
-* **cf CLI v7**:
-  <pre class="terminal">
-  $ cf check-route <%= vars.app_domain %> --hostname store --path /products
-  Checking for route...
-  OK
-  Route store.<%= vars.app_domain %>/products does exist
-  </pre>
-* **cf CLI v6**:
-  <pre class="terminal">
-  $ cf check-route store <%= vars.app_domain %> --path /products
-  Checking for route...
-  OK
-  Route store.<%= vars.app_domain %>/products does exist
-  </pre>
+<pre class="terminal">
+$ cf check-route <%= vars.app_domain %> --hostname store --path /products
+Checking for route...
+OK
+Route store.<%= vars.app_domain %>/products does exist
+</pre>
 
 ### <a id='map-route'></a> Map a route to your app
 
@@ -464,9 +399,7 @@ $ cf map-route h2app <%= vars.app_domain %> --hostname h2app --destination-proto
 
 Developers can map a route to their app with the `cf push` command.
 
-If a domain or hostname is not specified, then a route is be created using the app name and the default shared domain. For more information, see [Shared
-Domains](#shared-domains) below. The following command pushes the app `example-app`, creating the route `example-app.<%= vars.app_domain %>` from the default
-shared domain `<%= vars.app_domain %>`. If the route has not already been created in another space, this command also maps it to the app.
+As of cf CLI v7, the best way to do this is by using the `routes` property in the manifest.
 
 <pre class="terminal">
 $ cf push example-app
@@ -846,25 +779,15 @@ Private domains can be HTTP or HTTPS only. TCP routing is supported for shared d
 
 Org managers can create a private domain with the following command:
 
-* **cf CLI v7**
-  <pre class="terminal">
-  $ cf create-private-domain example-org <%= vars.private_app_domain %>
-  </pre>
-* **cf CLI v6**
-  <pre class="terminal">
-  $ cf create-domain example-org <%= vars.private_app_domain %>
-  </pre>
+<pre class="terminal">
+$ cf create-private-domain example-org <%= vars.private_app_domain %>
+</pre>
 
 Org managers can create a private domain for a subdomain with the following command:
 
-* **cf CLI v7**
-  <pre class="terminal">
-  $ cf create-private-domain example-org foo.<%= vars.private_app_domain %>
-  </pre>
-* **cf CLI v6**
-  <pre class="terminal">
-  $ cf create-domain example-org foo.<%= vars.private_app_domain %>
-  </pre>
+<pre class="terminal">
+$ cf create-private-domain example-org foo.<%= vars.private_app_domain %>
+</pre>
 
 #### <a id='sharing-private-domains'></a> Sharing a private domain with one or more orgs
 
@@ -882,19 +805,13 @@ Note that, as of cf CLI v7, `cf unshare-private-domain` provides a warning and r
 
 Org managers can delete a domain from <%= vars.app_runtime_abbr %> with the `cf delete-private-domain` command:
 
-* **cf CLI v7**:
-  <pre class="terminal">
-  $ cf delete-private-domain <%= vars.private_app_domain %>
-  </pre>
+<pre class="terminal">
+$ cf delete-private-domain <%= vars.private_app_domain %>
+</pre>
 
-  <p class="note important">
-  <span class="note__title">Important</span>
-  cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</p>
-
-* **cf CLI v6**:
-  <pre class="terminal">
-  $ cf delete-domain <%= vars.private_app_domain %>
-  </pre>
+<p class="note important">
+<span class="note__title"><strong>Important</strong></span>
+cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</p>
 
 ### <a id='parent-child-domains'></a> Requirements for parent and child domains
 

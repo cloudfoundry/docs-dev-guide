@@ -172,19 +172,6 @@ a single instance can simplify troubleshooting. For any production app, <%= vars
 * **Start command:** This is the command that <%= vars.app_runtime_abbr %> uses to start each instance of your app. This start command differs by app
 framework.
 
-### <a id='custom-route'></a> Customize the route (optional)
-
-To customize an app's route:
-
-1. (Optional) Customize the hostname by including the `-n` flag followed by a custom hostname in your `cf push` command.
-
-1. (Optional) ustomize the domain by including the `-d` flag followed by a custom domain in your `cf push` command. The custom domain must be registered,
-and mapped to the org that contains the app's target space.
-
-1. Ensure that the route is unique. The app's route must be globally unique, whether you customize its host or domain, or let it use the default route
-described in [Default Route](#default-route) above. To help ensure route uniqueness, include the `--random-route` flag in your `cf push` command. This creates
-a route that includes the app name and random words.
-
 ### <a id='exclude'></a> Limit the upload files (optional)
 
 By default, <%= vars.app_runtime_abbr %> uploads all app files except version control files and folders with names such as `.svn`, `.git`, and `_darcs`.

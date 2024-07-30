@@ -19,10 +19,6 @@ The procedures in this topic require one of the following:
 
 * **cf CLI v7 or later**
 
-* **cf CLI v6:** If you use cf CLI v6:
-  * You must install cf CLI v6.40 or later.
-  * The rolling deployment feature must be activated for your deployment. <%= vars.zdt_enable %>
-
 * **CAPI V3:** If you use CAPI V3, you must install the cf CLI.
 
 
@@ -56,18 +52,6 @@ Review the limitations of this feature before running the command. For more info
 
     If the deployment stops and doesn't restart, cancel it and run it again as described in an earlier step.
     To cancel, see [Cancel a deployment](#cancel).
-
-* **For cf CLI v6, run:**
-
-    ```
-    cf v3-zdt-push APP-NAME
-    ```
-    Where `APP-NAME` is the name that you want to give your app.
-
-    <p class="note important">
-    <span class="note__title"><strong>Important</strong></span>
-    This command is experimental and unsupported. Upgrade to cf CLI v7 (<a href="https://docs.cloudfoundry.org/cf-cli/v7.html">Upgrading to cf CLI v7</a>) or or cf CLI v8 (<a href="https://docs.cloudfoundry.org/cf-cli/v8.html">Upgrading to cf CLI v8</a>).
-    </p>
 
 * **For CAPI V3:**
     1. Log in to the cf CLI.
@@ -184,17 +168,6 @@ To stop the deployment of an app that you pushed:
     ```
     Where `APP-NAME` is the name of the app.
 
-* **For cf CLI v6, run:**
-
-    ```
-    cf v3-cancel-zdt-push APP-NAME
-    ```
-    Where `APP-NAME` is the name of the app.
-
-    <p class="note important">
-    <span class="note__title"><strong>Important</strong></span>
-    This command is experimental and unsupported. Upgrade to cf CLI v7 (<a href="https://docs.cloudfoundry.org/cf-cli/v7.html">Upgrading to cf CLI v7</a>) or or cf CLI v8 (<a href="https://docs.cloudfoundry.org/cf-cli/v8.html">Upgrading to cf CLI v8</a>).
-
 * **For CAPI V3, run:**
 
     ```
@@ -226,17 +199,6 @@ configuration updates that require a restart, such as environment variables or s
     cf restart APP-NAME --strategy rolling
     ```
     Where `APP-NAME` is the name of the app.
-
-* **For cf CLI v6, run:**
-
-    ```
-    cf v3-zdt-restart APP-NAME
-    ```
-    Where `APP-NAME` is the name of the app.
-
-    <p class="note important">
-    <span class="note__title"><strong>Important</strong></span>
-    This command is experimental and unsupported. Upgrade to cf CLI v7 (<a href="https://docs.cloudfoundry.org/cf-cli/v7.html">Upgrading to cf CLI v7</a>) or or cf CLI v8 (<a href="https://docs.cloudfoundry.org/cf-cli/v8.html">Upgrading to cf CLI v8</a>).
 
 * **For CAPI V3, run:**
 
@@ -297,18 +259,6 @@ The following table describes the limitations of when using rolling deployments.
     <th>Limitation</th>
     <th>Description</th>
   </tr></thead>
-  <tr>
-    <td>App manifests</td>
-    <td>The <code>cf v3-zdt-push</code> command does not support providing an app manifest with the
-    <code>-f</code> flag. If you have a <code>manifest.yml</code> file in your app directory, it is
-    ignored. This limitation only applies to cf CLI v6.</td>
-  </tr>
-  <tr>
-    <td>SSH to app instances</td>
-    <td>Pushing updates to your app with a <code>cf v3-zdt-push</code> command causes the new web process
-    and app GUID to mismatch. <code>cf ssh</code> does not handle this scenario. You must use the
-    <code>cf v3-ssh</code> command instead. This limitation only applies to cf CLI v6.</td>
-  </tr>
   <tr>
     <td>Multiple app versions</td>
     <td>During a deployment, <%= vars.app_runtime_abbr %> serves both the old and new version of your app at the

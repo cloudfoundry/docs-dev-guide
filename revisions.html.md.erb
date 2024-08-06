@@ -3,7 +3,8 @@ title: Cloud Foundry API app revisions
 owner: CAPI
 ---
 
-A revision represents code and configuration used by an app at a specific time. It is a Cloud Foundry API (CAPI) object that can contain references to a droplet, a custom start command, and environment variables. The most recent revision for a running app represents code and configuration running in <%= vars.platform_name %>. Revisions are not created for Tasks.
+A revision represents code and configuration used by an app at a specific time. It is a Cloud Foundry API (CAPI) object that can contain references to a droplet, a custom start command, and environment variables. The most recent revision for a running app represents code and configuration running in <%= vars.platform_name %>.
+Revisions of an app do not include any tasks run on the app.
 
 For additional information about app revisions, see [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation.
 
@@ -27,9 +28,9 @@ Some use cases for revisions include:
 
 Revisions are generated through these events:
 
-* A new droplet is deployed for an app
-* An app is deployed with new environment variables
-* The app is deployed with a new or changed custom start command
+* A new droplet is deployed for an app.
+* An app is deployed with new environment variables.
+* An app is deployed with a new or changed custom start command.
 * An app rolls back to a prior revision.
 
 By default, CAPI retains a maximum of 100 revisions per app.

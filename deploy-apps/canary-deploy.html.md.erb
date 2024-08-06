@@ -1,10 +1,10 @@
 ---
-title: Configuring rolling app deployments
+title: Configuring canary app deployments
 owner: CAPI
 ---
 
 You can use Cloud Foundry Command Line Interface (cf CLI) commands
-or the Cloud Foundry API (CAPI) to push your apps to <%= vars.app_runtime_first %> using a rolling deployment.
+or the Cloud Foundry API (CAPI) to push your apps to <%= vars.app_runtime_first %> using a canary deployment.
 
 For information about the traditional method for addressing app downtime while pushing app updates,
 see [Using blue-green deployment to reduce downtime and risk](./blue-green.html).
@@ -12,46 +12,51 @@ see [Using blue-green deployment to reduce downtime and risk](./blue-green.html)
 For more information about CAPI, see the
 [Cloud Foundry API (CAPI) documentation](https://v3-apidocs.cloudfoundry.org/).
 
+Canary deployments will allow users to deploy a single instance of a new version of an application and check if it is running as expected,
+before continuing the rolling deployment of the rest of the instances. If the new version of the application is not running as expected, the canary deployment can be cancelled.
+
+The expected workflow for this feature is:
+1. Deploy a single canary instance with the changed code
+1. Manually verify that canary instance with new code runs as expected
+1. Continue the rolling deployment for the remaining instances.
+
 
 ## <a id="prerequisites"></a> Prerequisites
 
 The procedures in this topic require one of the following:
 
-* **cf CLI v7 or later**
+* **cf CLI v8 or later**
 
-* **CAPI V3:** If you use CAPI V3, you must install the cf CLI.
+* **CAPI V3.173.0 or later:** If you use CAPI V3, you must install the cf CLI version 8+.
 
 
 ## <a id="commands"></a> Commands
 
-This section describes the commands for working with rolling app deployments.
+This section describes the commands for working with canary app deployments.
 
 ### <a id="deploy"></a> Deploy an app
 
-To deploy an app without incurring downtime:
+To deploy a canary version of an app:
 
 <p class="note caution">
 <span class="note__title"><strong>Caution</strong></span>
 Review the limitations of this feature before running the command. For more information, see
 <a href="#limitations">Limitations</a>.</p>
 
-* **For cf CLI v7+, run:**
-
+* **For CF CLI v8:**
     ```
-    cf push APP-NAME --strategy rolling
+    cf push APP-NAME --strategy canary
     ```
     Where `APP-NAME` is the name that you want to give your app.
 
     <p class="note">
     <span class="note__title"><strong>Note</strong></span>
-    cf CLI v7 exits when one instance of each process is healthy.
+    cf CLI will exit when the canary instance is healthy.
     It also includes a <code>--no-wait</code> flag on push for users who don't want to wait
     for the operation to complete.
-    <code>cf push</code> used with the <code>--no-wait</code> flag exits as soon as one instance is healthy.
     </p>
 
-    If the deployment stops and doesn't restart, cancel it and run it again as described in an earlier step.
-    To cancel, see [Cancel a deployment](#cancel).
+    To cancel, see [Cancel a canary deployment](#cancel).
 
 * **For CAPI V3:**
     1. Log in to the cf CLI.
@@ -143,7 +148,7 @@ Review the limitations of this feature before running the command. For more info
           "droplet": {
             "guid": "DROPLET-GUID"
           },
-          "strategy": "rolling",
+          "strategy": "canary",
           "relationships": {
             "app": {
               "data": {
@@ -157,11 +162,32 @@ Review the limitations of this feature before running the command. For more info
 
 For more information about this command, see [How it works](#how-it-works).
 
-### <a id="cancel"></a> Cancel a deployment
+### <a id="continue"></a> Continue the canary deployment
+
+To finish the deployment after validating the canary:
+
+* **For cf CLI v8+, run:**
+
+    ```
+    cf continue-deployment APP-NAME
+    ```
+    Where `APP-NAME` is the name of the app.
+
+* **For CAPI V3, run:**
+
+    ```
+    cf curl /v3/deployments/DEPLOYMENT-GUID/actions/continue" -X POST
+    ```
+    Where `DEPLOYMENT-GUID` is the GUID of the deployment that you recorded after following the
+    CAPI procedure in [Deploy an app](#deploy).
+
+This continues the rolling deployment of the app.
+
+## <a id="cancel"></a> Cancel a canary deployment
 
 To stop the deployment of an app that you pushed:
 
-* **For cf CLI v7+, run:**
+* **For cf CLI v8+, run:**
 
     ```
     cf cancel-deployment APP-NAME
@@ -177,61 +203,23 @@ To stop the deployment of an app that you pushed:
     CAPI procedure in [Deploy an app](#deploy).
 
 This reverts the app to its state from before the deployment started by:
-
-* Scaling up the original web process
 * Removing any deployment artifacts
 * Resetting the `current_droplet` on the app
 
 <p class="note">
 <span class="note__title"><strong>Note</strong></span>
-The cancel command is designed to revert the app to its
-original state as quickly as possible and does not guarantee zero downtime. Additionally, changes
-to environment variables and service bindings will not be reverted. </p>
-
-### <a id="restart"></a> Restart an app
-
-To restart your app without downtime, run the appropriate command. Restart an app to apply
-configuration updates that require a restart, such as environment variables or service bindings.
-
-* **For cf CLI v7+, run:**
-
-    ```
-    cf restart APP-NAME --strategy rolling
-    ```
-    Where `APP-NAME` is the name of the app.
-
-* **For CAPI V3, run:**
-
-    ```
-    cf curl /v3/deployments \
-    -X POST \
-    -H "Content-type: application/json" \
-    -d '{
-      "droplet": {
-        "guid": "DROPLET-GUID"
-      },
-      "strategy": "rolling",
-      "relationships": {
-        "app": {
-          "data": {
-            "guid": "APP-GUID"
-          }
-        }
-      }
-    }'
-    ```
-    Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in earlier steps.
-
+The cancel command is designed to remove the canary instance of the app. </p>
+If this command is used after continue-deployment it will behave like a cancelation of a rolling deployment.
 
 ## <a id="how-it-works"></a> How it works
 
-This section describes the rolling deployments and their limitations.
+This section describes the canary deployments and their limitations.
 
-### <a id="deployment-process"></a> Rolling deployment
+### <a id="deployment-process"></a> Canary deployment
 
-This section describes pushing an app with a rolling deployment strategy.
+This section describes pushing an app with a canary deployment strategy.
 
-1. The `cf push APP-NAME --strategy rolling` command:
+1. The `cf push APP-NAME --strategy canary` command:
   1. Stages the updated app package.
   2. Creates a droplet with the updated app package.
   3. Creates a deployment with the new droplet and any new configuration.
@@ -248,11 +236,24 @@ background, updating deployments as follows:
         This happens only if all instances of the new web process are running.</p>
     2. Removes the old web process. The new web process now fully replaces the old web process.
     3. Restarts all non-web processes of the app.
+    4. Sets the deployment to `PAUSED`.
+
+3. After validating that the canary instance is running as expected execute the command `cf continue-deployment APP-NAME`:
+    1. Changes the deployment reason to `DEPLOYING` and starts doing a rolling deployment
+
+4. After the command changes the status of the deployment, the `cc_deployment_updater` BOSH job runs in the
+background, updating deployments as follows:
+    1. Adds MaxInFlight number of instances (**by default it is 1**) of the new web process and removes MaxInFlight number of instance from the old web process. This step repeats until the new web process reaches the required number of instances.
+        <p class="note important">
+        <span class="note__title"><strong>Important</strong></span>
+        This happens only if all instances of the new web process are running.</p>
+    2. Removes the old web process. The new web process now fully replaces the old web process.
+    3. Restarts all non-web processes of the app.
     4. Sets the deployment to `DEPLOYED`.
 
 ### <a id="limitations"></a> Limitations
 
-The following table describes the limitations of when using rolling deployments.
+The following table describes the limitations of when using canary deployments.
 
 <table class="table">
   <thead><tr>
@@ -271,20 +272,13 @@ The following table describes the limitations of when using rolling deployments.
   </tr>
   <tr>
     <td>Non-web processes</td>
-    <td>Rolling deployments only run web processes through the rolling update sequence described
-    earlier. The commands restart worker and other non-web processes in bulk after updating all web
-    processes.<br><br>
-		The CAPI V3 API introduces the concept of processes as runnable units of an app. Each app has a
-    web process by default. You can specify additional processes with a Procfile, and in some cases
-    buildpacks create additional processes. For more information about processes, see
-    <a href="http://v3-apidocs.cloudfoundry.org/index.html#processes">Processes</a> in the CAPI V3
-    documentation.</td>
+    <td>Canary deployment will only create an instance of the web process.</td>
   </tr>
   <tr>
     <td>Quotas</td>
-    <td>Pushing updates to your app using a rolling deployment strategy creates an extra instance
+    <td>Pushing updates to your app using a canary deployment strategy creates an extra instance
     of your app. If you lack sufficient quota, the deployment fails. Administrators might need to increase
-    quotas to accommodate rolling deployments.</td>
+    quotas to accommodate canary deployments.</td>
   </tr>
   <tr>
     <td>Simultaneous apps when interrupting a push</td>
@@ -293,20 +287,24 @@ The following table describes the limitations of when using rolling deployments.
     of the app running at the same time. Eventually, the app runs the code from your most recent
     push.</td>
   </tr>
+  </tr>
   <tr>
-    <td>V3 APIs</td>
-    <td>During a rolling deploy for an app, requests to the V3 APIs for scaling or updating a process fail with an error message
-    like <code>Cannot scale this process while a deployment is in flight.</code>. For more information, see <a href="https://v3-apidocs.cloudfoundry.org/version/3.109.0/index.html#scale-a-process">Scale a process</a>
-    or <a href="https://v3-apidocs.cloudfoundry.org/version/3.109.0/index.html#update-a-process">Update a process</a> in the CAPI V3 documentation.</td>
+    <td>Evaluating the Canary Instance</td>
+    <td>
+      Given that the current processes share the same route the best way to validate that traffic is reaching the canary instance by looking at the logs.
+      The logs for all instance will be tagged with "process_id", and "revision_version".
+
+      Using CF CLI the logs can be retrieved using "cf logs APP_NAME" and search for "revision version"
+    </td>
   </tr>
 </table>
 
 
-## <a id="status"></a> View the status of rolling deployments
+## <a id="status"></a> View the status of canary deployments
 
-You can use CAPI to view the status of rolling deployments.
+You can use CAPI to view the status of canary deployment.
 
-To view the status of a rolling deployment:
+To view the status of a canary deployment:
 
 1. Log in to the cf CLI:
 
@@ -334,9 +332,9 @@ To view the status of a rolling deployment:
     ```
     cf curl GET /v3/deployments/DEPLOYMENT-GUID
     ```
-    Where `DEPLOYMENT-GUID` is the GUID of the rolling deployment.
+    Where `DEPLOYMENT-GUID` is the GUID of the canary deployment.
 
-`cf curl GET /v3/deployments/DEPLOYMENT-GUID` returns these status properties for rolling deployments:
+`cf curl GET /v3/deployments/DEPLOYMENT-GUID` returns these status properties for canary deployments:
 
 * `status.value`: Indicates if the deployment is `ACTIVE` or `FINALIZED`.
 
@@ -358,6 +356,11 @@ properties:
     <td><code>ACTIVE</code></td>
     <td><code>DEPLOYING</code></td>
     <td>The deployment is deploying.</td>
+  </tr>
+  <tr>
+    <td><code>ACTIVE</code></td>
+    <td><code>PAUSED</code></td>
+    <td>The deployment is paused waiting for the user to continue with the deployment.</td>
   </tr>
   <tr>
     <td><code>ACTIVE</code></td>

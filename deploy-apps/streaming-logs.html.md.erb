@@ -111,6 +111,19 @@ For example:
 2016-06-14T14:10:15.18-0700 [APP/0]      OUT Exit status 0
 </pre>
 
+The logs allow you to determine the particular revision and process of the application instance logging.
+
+For example, below shows the log line from two different revisions and web instances.
+<pre class="terminal">
+2022-09-15T01:59:33.99+0000 [APP/PROC/REV/2/WEB/0] OUT hello world from new
+2022-09-15T01:59:34.99+0000 [APP/PROC/REV/1/WEB/1] OUT hello world from old
+</pre>
+
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+Logs with revision id are only available if enabled in the platform installation</p>
+
+
 Each app might have a configured log rate limit. If the app logs exceed the configured log rate limit, you see a log entry indicating that the limit was exceeded.
 
 For example:

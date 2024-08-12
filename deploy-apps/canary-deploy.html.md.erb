@@ -297,6 +297,12 @@ The following table describes the limitations of when using canary deployments.
       Using CF CLI the logs can be retrieved using "cf logs APP_NAME" and search for "revision version"
     </td>
   </tr>
+  <tr>
+    <td>New or stopped applications</td>
+    <td>
+      When pushing an application for the first time, or if the app is stopped, no deployment strategy is used and all application instances are started immediately.
+    </td>
+  </tr>
 </table>
 
 

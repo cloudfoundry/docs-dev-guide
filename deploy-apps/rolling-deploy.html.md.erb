@@ -5,6 +5,7 @@ owner: CAPI
 
 You can use Cloud Foundry Command Line Interface (cf CLI) commands
 or the Cloud Foundry API (CAPI) to push your apps to <%= vars.app_runtime_first %> using a rolling deployment.
+When pushing an application for the first time, or if the app is stopped, no deployment strategy is used and all application instances are started immediately.
 
 For information about the traditional method for addressing app downtime while pushing app updates,
 see [Using blue-green deployment to reduce downtime and risk](./blue-green.html).

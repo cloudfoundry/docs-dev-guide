@@ -14,6 +14,7 @@ For more information about CAPI, see the
 
 Canary deployments will allow users to deploy a single instance of a new version of an application and check if it is running as expected,
 before continuing the rolling deployment of the rest of the instances. If the new version of the application is not running as expected, the canary deployment can be cancelled.
+When pushing an application for the first time no deployment strategy is used and all application instances are started immediately.
 
 The expected workflow for this feature is:
 1. Deploy a single canary instance with the changed code

@@ -38,9 +38,10 @@ Review the limitations of this feature before running the command. For more info
 * **For cf CLI v7+, run:**
 
     ```
-    cf push APP-NAME --strategy rolling
+    cf push APP-NAME --strategy rolling --max-in-flight MAX_IN_FLIGHT
     ```
     Where `APP-NAME` is the name that you want to give your app.
+    Where `MAX_IN_FLIGHT` specifies the maximum number of new instances to start up simultaneous until the deployment is complete. Optional and defaults to 1.
 
     <p class="note">
     <span class="note__title"><strong>Note</strong></span>
@@ -144,6 +145,9 @@ Review the limitations of this feature before running the command. For more info
             "guid": "DROPLET-GUID"
           },
           "strategy": "rolling",
+          "options": {
+            "max_in_flight": MAX_IN_FLIGHT
+          },
           "relationships": {
             "app": {
               "data": {
@@ -154,6 +158,7 @@ Review the limitations of this feature before running the command. For more info
         }'
         ```
         Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in earlier steps.
+        Where `MAX_IN_FLIGHT` is an integer that specifies the maximum number of new instances to start up simultaneous until the deployment is complete. Optional and defaults to 1.
 
 For more information about this command, see [How it works](#how-it-works).
 
@@ -211,6 +216,9 @@ configuration updates that require a restart, such as environment variables or s
         "guid": "DROPLET-GUID"
       },
       "strategy": "rolling",
+      "options": {
+        "max_in_flight": MAX_IN_FLIGHT
+      },
       "relationships": {
         "app": {
           "data": {
@@ -221,7 +229,7 @@ configuration updates that require a restart, such as environment variables or s
     }'
     ```
     Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in earlier steps.
-
+    Where `MAX_IN_FLIGHT` is an integer that specifies the maximum number of new instances to start up simultaneous until the deployment is complete. Optional and defaults to 1.
 
 ## <a id="how-it-works"></a> How it works
 
@@ -235,14 +243,14 @@ This section describes pushing an app with a rolling deployment strategy.
   1. Stages the updated app package.
   2. Creates a droplet with the updated app package.
   3. Creates a deployment with the new droplet and any new configuration.
-      * This starts a new process with one instance that shares the route with the old process.
+      * This starts up to `max_in_flight` processes that shares the route with the old process.
       * Now, if you run `cf app` on your app, you see multiple `web` processes.
     <br>
     For more information about the deployment object, see the [Deployments](http://v3-apidocs.cloudfoundry.org/index.html#deployments) section of the CAPI V3 documentation.
 
 2. After the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the
 background, updating deployments as follows:
-    1. Adds another instance of the new web process and removes an instance from the old web process. This step repeats until the new web process reaches the required number of instances.
+    1. Adds up to `max_in_flight` instances of the new web process and removes instances from the old web process. This step repeats until the new web process reaches the required number of instances.
         <p class="note important">
         <span class="note__title"><strong>Important</strong></span>
         This happens only if all instances of the new web process are running.</p>
@@ -282,9 +290,8 @@ The following table describes the limitations of when using rolling deployments.
   </tr>
   <tr>
     <td>Quotas</td>
-    <td>Pushing updates to your app using a rolling deployment strategy creates an extra instance
-    of your app. If you lack sufficient quota, the deployment fails. Administrators might need to increase
-    quotas to accommodate rolling deployments.</td>
+    <td>Pushing updates to your app using a deployment strategy creates up to `max_in_flight` new instances (defaults to 1).
+    If you lack sufficient quota, the deployment fails. Administrators might need to increase quotas to accommodate deployments.</td>
   </tr>
   <tr>
     <td>Simultaneous apps when interrupting a push</td>

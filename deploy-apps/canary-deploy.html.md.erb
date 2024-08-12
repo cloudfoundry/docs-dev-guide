@@ -45,9 +45,10 @@ Review the limitations of this feature before running the command. For more info
 
 * **For CF CLI v8:**
     ```
-    cf push APP-NAME --strategy canary
+    cf push APP-NAME --strategy canary --max-in-flight MAX_IN_FLIGHT
     ```
     Where `APP-NAME` is the name that you want to give your app.
+    Where `MAX_IN_FLIGHT` applies **after** the single canary instance is successful and specifies the maximum number of new instances to start simultaneous until the deployment is complete. Optional and defaults to 1.
 
     <p class="note">
     <span class="note__title"><strong>Note</strong></span>
@@ -148,6 +149,9 @@ Review the limitations of this feature before running the command. For more info
           "droplet": {
             "guid": "DROPLET-GUID"
           },
+          "options": {
+            "max_in_flight": MAX_IN_FLIGHT
+          },
           "strategy": "canary",
           "relationships": {
             "app": {
@@ -159,6 +163,7 @@ Review the limitations of this feature before running the command. For more info
         }'
         ```
         Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in earlier steps.
+        Where `MAX_IN_FLIGHT` is an integer that applies **after** the single canary instance is successful and specifies the maximum number of new instances to start simultaneous until the deployment is complete. Optional and defaults to 1.
 
 For more information about this command, see [How it works](#how-it-works).
 
@@ -276,9 +281,8 @@ The following table describes the limitations of when using canary deployments.
   </tr>
   <tr>
     <td>Quotas</td>
-    <td>Pushing updates to your app using a canary deployment strategy creates an extra instance
-    of your app. If you lack sufficient quota, the deployment fails. Administrators might need to increase
-    quotas to accommodate canary deployments.</td>
+    <td>Pushing updates to your app using a deployment strategy creates up to `max_in_flight` new instances (defaults to 1) . If you lack sufficient quota, the deployment fails. Administrators might need to increase
+    quotas to accommodate deployments.</td>
   </tr>
   <tr>
     <td>Simultaneous apps when interrupting a push</td>

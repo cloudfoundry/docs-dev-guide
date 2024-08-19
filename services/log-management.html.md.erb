@@ -101,7 +101,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
     If you are using the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use the `-p` flag to define the client certificate and key as credentials, filling in values as follows.</br>
 
     <pre class="terminal">
-    $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}
+    $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
     </pre>
 
     If your certs include the V3 extension `X509v3 Extended Key Usage`, ensure that you are using the right key policies. For TLS, you need server authentication, and for mTLS, you also need client authentication. For example, TLS Web Server Authentication for TLS with TLS Web Client Authentication for mTLS is defined as follows:
@@ -121,7 +121,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
     A combination of the approaches described earlier uses a certificate authority for a server certificate signed by your private ca and a client certificate and key.
 
     <pre class="terminal">
-    $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----", "cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}
+    $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----", "cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
     </pre>
 
     For more information, see [User-provided service instances](./user-provided.html).

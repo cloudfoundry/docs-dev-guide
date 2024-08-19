@@ -12,8 +12,6 @@ The <code>cf ssh</code> command in cf CLI v7+ include the <code>all_proxy</code>
 
 The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controller `/v2/info` endpoint, and uses this identifier to query the UAA server for an SSH authorization code. On the target VM side, the SSH proxy contacts the Cloud Controller through the `app_ssh_endpoint` listed in `/v2/info` to confirm permission for SSH access.
 
-<%= vars.mutual_tls_ssh %>
-
 
 ## <a id="ssh-commands"></a> App SSH commands
 

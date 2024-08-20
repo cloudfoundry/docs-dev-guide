@@ -291,14 +291,19 @@ The following table describes the limitations of when using canary deployments.
     of the app running at the same time. Eventually, the app runs the code from your most recent
     push.</td>
   </tr>
+  <tr>
+    <td>V3 APIs</td>
+    <td>During a canary deploy for an app, requests to the V3 APIs for scaling or updating a process fail with an error message
+    like <code>Cannot scale this process while a deployment is in flight.</code>. For more information, see <a href="https://v3-apidocs.cloudfoundry.org/version/3.109.0/index.html#scale-a-process">Scale a process</a>
+    or <a href="https://v3-apidocs.cloudfoundry.org/version/3.109.0/index.html#update-a-process">Update a process</a> in the CAPI V3 documentation.</td>
   </tr>
   <tr>
     <td>Evaluating the Canary Instance</td>
     <td>
       Given that the current processes share the same route the best way to validate that traffic is reaching the canary instance by looking at the logs.
-      The logs for all instance will be tagged with "process_id", and "revision_version".
+      If app revision logging is enabled, the logs for all instance will be tagged with "process_id", and "revision_version". e.g. `APP/REV/4/PROC/WEB/1`
 
-      Using CF CLI the logs can be retrieved using "cf logs APP_NAME" and search for "revision version"
+      Using CF CLI the logs can be retrieved using "cf logs APP_NAME".
     </td>
   </tr>
   <tr>

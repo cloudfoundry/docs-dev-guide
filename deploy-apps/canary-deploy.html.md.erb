@@ -300,10 +300,10 @@ The following table describes the limitations of when using canary deployments.
   <tr>
     <td>Evaluating the Canary Instance</td>
     <td>
-      Given that the current processes share the same route the best way to validate that traffic is reaching the canary instance by looking at the logs.
-      If app revision logging is enabled, the logs for all instance will be tagged with "process_id", and "revision_version". e.g. `APP/REV/4/PROC/WEB/1`
+      Because the current processes share the same route, the best way to validate that traffic is reaching the canary instance by looking at the logs.
+      If app revision logging is enabled, the logs for all instances will be tagged with `process_id` and `revision_version` values. e.g. `APP/REV/4/PROC/WEB/1`
 
-      Using CF CLI the logs can be retrieved using "cf logs APP_NAME".
+      Retrieve the logs by running the cf CLI command `cf logs APP_NAME`.
     </td>
   </tr>
   <tr>

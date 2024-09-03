@@ -298,13 +298,13 @@ To deploy and bind a sample app:
     cd ~/workspace
     ```
     ```console
-    git clone https://github.com/cloudfoundry/persi-acceptance-tests.git
+    git clone https://github.com/cloudfoundry/cf-acceptance-tests.git
     ```
 
-1. Change into the `persi-acceptance-tests/assets/pora/` directory:
+1. Change into the `cf-acceptance-tests/assets/pora/` directory:
 
     ```console
-    cd ~/workspace/persi-acceptance-tests/assets/pora
+    cd ~/workspace/cf-acceptance-tests/assets/pora
     ```
 
 1. Push the `pora` test app by running:
@@ -454,7 +454,7 @@ To create an SMB volume service:
       <li><code>SERVICE-INSTANCE-NAME</code> is a name you provide for this SMB volume service instance.</li>
       <li><code>//SERVER/SHARE</code> is the SMB address of your server and share.</li>
       <li>
-        (Optional) <code>SMB-VERSION</code> is the SMB protocol version you want to use. For example, to use SMB 2.1, set the version to <code>2.1</code>. Valid values are <code>1.0</code>, <code>2.0</code>, <code>2.1</code>, or <code>3.0</code>. If you do not specify a <code>version</code>, the client and server negotiate a protocol version at mount time. The client and server usually select the latest available version.
+        (Optional) <code>SMB-VERSION</code> is the SMB protocol version you want to use. For example, to use SMB 2.1, set the version to <code>2.1</code>. Valid values are <code>1.0</code>, <code>2.0</code>, <code>2.1</code>, or <code>3.0</code>, <code>3.1.1</code>. If you do not specify a <code>version</code>, the client and server negotiate a protocol version at mount time. The client and server usually select the latest available version. 3.1.1 is supported as of [v3.2.0 smb-volume-release](https://github.com/cloudfoundry/smb-volume-release/releases/tag/v3.2.0).
       </li>
     </ul>
 
@@ -476,13 +476,13 @@ To deploy and bind a sample app:
     cd ~/workspace
     ```
     ```console
-    git clone https://github.com/cloudfoundry/persi-acceptance-tests.git
+    git clone https://github.com/cloudfoundry/cf-acceptance-tests.git
     ```
 
-1. Change into the `persi-acceptance-tests/assets/pora/` directory:
+1. Change into the `cf-acceptance-tests/assets/pora/` directory:
 
     ```console
-    cd ~/workspace/persi-acceptance-tests/assets/pora
+    cd ~/workspace/cf-acceptance-tests/assets/pora
     ```
 
 1. Push the `pora` test app. Run:

@@ -338,3 +338,123 @@ To view the web URL and logs for the app:
 	"crash_count"=>1, "crash_timestamp"=>1555544935367052708,
 	"version"=>"50892dcb-274d-4cf6-b944-3eda1e000283"}
 	</pre>
+
+## <a id="debug-running-processes"></a>Sample Use Case: Debug Running Processes 
+
+Sidecars can be used to collect debug information (e.g. thread dumps) from
+another process running in the same container. This is especially useful if you
+want to debug a running process using an HTTP request, for instance if you do
+not have ssh access to the application container.
+
+This is an example of a simple routable debug sidecar for java applications,
+but the same concept can be adapted to more advanced debug tooling and other
+languages or frameworks.
+
+### <a id="debug-prerequisites"></a> Prerequisites
+
+Before you begin, you must have:
+- A java app with [a manifest](./deploy-apps/manifest.html) that is ready to be
+pushed. For example, the [java sample
+app](https://github.com/cloudfoundry/cf-acceptance-tests/tree/main/assets/java)
+from CF Acceptance Tests.
+- A route to map to the debug sidecar
+
+### <a id="debug-procedure"></a> Procedure
+
+To add a debug sidecar to the java app:
+
+1. Create a sidecar that responds to HTTP requests and calls `kill -3` on the
+java process. When a java process receives the resulting SIGQUIT signal, it
+will print a thread dump to STDOUT. For an example, see the
+[java_debug_sidecar](https://github.com/Gerg/java-debug-buildpack/blob/main/java_debug_sidecar.go)
+on GitHub.
+
+1. Place the sidecar binary in the root directory of your java app
+
+1. Add the following to your app manifest:
+
+  ```
+  sidecars:
+  - name: debug-sidecar
+    process_types: [ 'web' ]
+    command: START-COMMAND
+    memory: 256MB
+  ```
+
+  Where `START-COMMAND` is the command used to start the sidecar. For the above
+  example sidecar, `./java_debug_sidecar`.
+
+1. Push the java application. For example:
+
+  ```
+  cf push APP-NAME -f manifest.yml -m 1G
+  ```
+
+  Where `APP-NAME` is the name of your app.
+
+1. Map a route to the sidecar process's port. For detailed steps, see
+[Configuring Cloud Foundry to route traffic to apps on custom ports](./custom-ports.html).
+
+  ```
+  cf curl -X PATCH /v3/routes/ROUTE-GUID/destinations -d '{
+  "destinations": [
+      {
+        "app": {
+          "guid": "APP-GUID",
+          "process": {
+            "type": "web"
+          }
+        },
+        "port": PORT,
+        "protocol": "http1"
+      }
+    ]
+  }'
+  ```
+
+  Where:
+  <ul>
+    <li><code>APP-GUID</code> is the GUID of your app.</li>
+    <li><code>ROUTE-GUID</code> is the GUID of the route to map to the sidecar.</li>
+    <li><code>PORT</code> is a custom port on which your app is configured to
+    receive requests. This is <code>8081</code> for the above example.</li>
+  </ul>
+
+1. Restart the app to complete the port mapping
+
+  ```
+  cf restart APP_NAME
+  ```
+
+  Where `APP-NAME` is the name of your app.
+
+1. Tail the app logs:
+
+  ```
+  cf logs APP_NAME
+  ```
+
+  Where `APP-NAME` is the name of your app.
+
+
+1. In another terminal, make a HTTP request to the sidecar, to trigger the
+thread dump. For example:
+
+  ```
+  curl https://debug-sidecar.example.com/threaddump
+  ```
+
+1. Observe the thread dump in the app logs
+
+### <a id="debug-next-steps"></a> Next Steps
+
+Now that you have a simple debugging sidecar working, here are some ideas for
+next steps:
+
+- Use more sophisticated debugging tools
+- Return the debug information in the HTTP response, rather than logging to STDOUT
+- Inject the debug sidecar via a [Sidecar
+buildpacks](../buildpacks/sidecar-buildpacks.html). For example:
+[java-debug-buildpack](https://github.com/Gerg/java-debug-buildpack) on GitHub.
+- Add authentication for the debug sidecar's HTTP route, for instance using an
+authentication [Route Service](../services/route-services.html).

@@ -255,9 +255,13 @@ To push the app and sidecar:
     cf push sidecar-dependent-app
     ```
 
-After you push the app, you can further explore it in [View the processes running in the container](#view-processes) and [View the web URL and app logs](#view-logs).
+After you push the app, you can further explore it as described in the sections below:
 
-### <a id="view-processes"></a> View the processes running in the container
+- [View processes running in the app container via SSH](#view-processes-ssh)
+- [View the web URL and app logs via SSH](#view-logs)
+- [View and debug processes running in the app container via HTTP](#debug-processes-http)
+
+### <a id="view-processes-ssh"></a> View processes running in the app container via SSH
 
 To view the app and sidecar process running in the container:
 
@@ -300,7 +304,7 @@ To view the app and sidecar process running in the container:
     ruby       13 vcap 11u  IPv4 17274965    0t0 TCP localhost:42266->localhost:8082 (ESTABLISHED)
     </pre>
 
-### <a id="view-logs"></a> View the web URL and app logs
+### <a id="view-logs"></a> View the web URL and app logs via SSH
 
 To view the web URL and logs for the app:
 
@@ -339,7 +343,7 @@ To view the web URL and logs for the app:
 	"version"=>"50892dcb-274d-4cf6-b944-3eda1e000283"}
 	</pre>
 
-## <a id="debug-running-processes"></a>Sample Use Case: Debug Running Processes 
+### <a id="debug-processes-http"></a>View and debug processes running in the app container via HTTP 
 
 Sidecars can be used to collect debug information (e.g. thread dumps) from
 another process running in the same container. This is especially useful if you

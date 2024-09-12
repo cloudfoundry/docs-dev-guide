@@ -253,13 +253,21 @@ For apps that are not already set up for the services that they use:
 1. (Optional) Configure the app with the service URL and credentials, if needed. For more information, see [Configuring Service
 Connections](../../buildpacks/java/configuring-service-connections.html).
 
+### <a id='sub-steps'></a> Build custom push workflows (optional)
+
+The CF CLI includes [composible push sub-step
+commands](../push-sub-commands.html) that empower you to build your own push.
+These are useful if the default behavior of `cf push` does not match your
+needs, or if you want to implement more complicated app build, promotion, and
+run workflows.
+
 ## <a id='updates'></a> App updates and downtime
 
-When you push an app that is already running, <%= vars.app_runtime_abbr %> stops all existing instances of that app. Users who try to access the app see a `404 Not Found` message while `cf push` runs.
+By default, when you push an app that is already running, <%= vars.app_runtime_abbr %> stops all existing instances of that app. Users who try to access the app see a `404 Not Found` message while `cf push` runs.
+
+When old and new versions of your app can run simultaneously, you can avoid app downtime by using [Rolling deployments](./rolling-deploy.html). Alternatively, you can use the blue-green deployment method to swap routes between app versions running in parallel. For more information, see [Using blue-green deployment to reduce downtime and risk](blue-green.html).
 
 With some app updates, old and new versions of your code must never run at the same time. A worst-case example is if your app update migrates a database schema, causing old app instances to fail and lose user data. To prevent this, you must stop all running instances of your app before you push the new version.
-
-When old and new versions of your app can run simultaneously, you can avoid app downtime by using the blue-green deployment method to swap routes between app versions running in parallel. For more information, see [Using blue-green deployment to reduce downtime and risk](blue-green.html).
 
 ## <a id='troubleshoot-push'></a> Troubleshoot app push problems
 

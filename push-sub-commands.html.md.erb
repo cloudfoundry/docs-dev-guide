@@ -24,7 +24,7 @@ For information about using these commands, see [Example workflows](#example-wor
     <thead><tr>
         <th>Resource</th>
         <th>Description</th>
-        <th style="width: 30%">Command</th>
+        <th style="width: 30%">Commands</th>
     </tr></thead>
     <tr>
         <td>App</td>
@@ -32,6 +32,8 @@ For information about using these commands, see [Example workflows](#example-wor
         For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#apps">Apps</a> in the CAPI documentation.</td>
         <td>
             <ul>
+                <li><code>cf app</code></li>
+                <li><code>cf apps</code></li>
                 <li><code>cf create-app</code></li>
             </ul>
         </td>
@@ -43,12 +45,13 @@ For information about using these commands, see [Example workflows](#example-wor
         <td>
             <ul>
                 <li><code>cf create-package</code></li>
+                <li><code>cf packages</code></li>
             </ul>
         </td>
     </tr>
     <tr>
         <td>Build</td>
-        <td>Staging the app. Creating a build combines a Package with a Buildpack and builds it into an executable resource.<br>
+        <td>Staging the app. Creating a build combines a Package with a Buildpack and builds it into an executable resource, called a Droplet.<br>
         For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#builds">Builds</a> in the CAPI documentation.</td>
         <td>
             <ul>
@@ -62,6 +65,8 @@ For information about using these commands, see [Example workflows](#example-wor
         For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#droplets">Droplet</a> in the CAPI documentation.</td>
         <td>
             <ul>
+                <li><code>cf download-droplet</code></li>
+                <li><code>cf droplets</code></li>
                 <li><code>cf set-droplet</code></li>
             </ul>
         </td>
@@ -72,7 +77,8 @@ For information about using these commands, see [Example workflows](#example-wor
         For more information, see <a href="https://v3-apidocs.cloudfoundry.org/index.html#space-manifest"> Space Manifest</a> in the CAPI documentation.</td>
         <td>
             <ul>
-                <li><code>cf create-app-manifest</code>, <code>cf apply-manifest</code></li>
+                <li><code>cf apply-manifest</code></li>
+                <li><code>cf create-app-manifest</code></li>
             </ul>
         </td>
     </tr>
@@ -101,7 +107,7 @@ This example workflow describes how to push an app using sub-step commands inste
     ```
     Where `APP-NAME` is the name of your app.
 
-1. Locate and copy the `package guid` from the output of an earlier step. See the following example output:
+1. Locate and copy the `package guid` from the output of an earlier step or by using the `cf packages` command. See the following example output:
 
     <pre class="terminal">
     Uploading and creating bits package for app APP-NAME in org test / space test as admin...
@@ -120,7 +126,7 @@ This example workflow describes how to push an app using sub-step commands inste
         <li><code>PACKAGE-GUID</code> is the package GUID you recorded in an earlier step.</li>
     </ul>
 
-3. Locate and copy the `droplet guid` from the output of an earlier step. See the following example output:
+3. Locate and copy the `droplet guid` from the output of an earlier step or by using the `cf droplets` command. See the following example output:
 
     <pre class="terminal">
     Staging package for APP-NAME in org test / space test as admin...
@@ -134,7 +140,7 @@ This example workflow describes how to push an app using sub-step commands inste
 4. Assign the droplet to your app:
 
     ```
-    cf set-droplet APP-NAME -d DROPLET-GUID
+    cf set-droplet APP-NAME DROPLET-GUID
     ```
     Where:
     <ul>
@@ -178,10 +184,14 @@ This example workflow describes how to roll back to a previous droplet used by y
     cf stop APP-NAME
     ```
 
+    If you wish to avoid incurring downtime when changing your droplet,
+    consider using [Rolling deployemnts](./deploy-apps/rolling-deploy.html)
+    instead of stopping and starting your app.
+
 1. Set the app to use the previous droplet:
 
     ```
-    cf set-droplet APP-NAME -d PREVIOUS-DROPLET-GUID
+    cf set-droplet APP-NAME PREVIOUS-DROPLET-GUID
     ```
     Where:
     <ul>

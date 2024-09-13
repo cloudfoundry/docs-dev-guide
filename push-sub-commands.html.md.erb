@@ -13,6 +13,7 @@ Here are some example use cases for the sub-step commands:
 * Calling external services to report audit data during push
 * Scanning a droplet before deploy
 * Integrating with a change request system
+* Running droplets built on a different Cloud Foundry deployment
 
 To support these custom push workflows, Cloud Foundry divides apps into smaller building blocks.
 
@@ -205,3 +206,29 @@ This example workflow describes how to roll back to a previous droplet used by y
     cf start APP-NAME
     ```
     Where `APP-NAME` is the name of your app.
+
+### <a id="download-upload-example"></a> Downloading and uploading droplets
+
+This example workflow describes how to download a built droplet and then push
+it to an app. You might want to use this for building apps in one location and
+then deploying it elsewhere. For instance, you might use this to "promote"
+built apps from pre-production environments to production environments, without
+having to re-build the app.
+
+1. Download the current droplet for your app:
+
+    ```
+    cf download-droplet APP-NAME --path PATH
+    ```
+
+    Where `APP-NAME` is the name of your app and `PATH` is the file path to download the droplet to.
+
+1. Log in to the desired Cloud Foundry environment and target the organization and space where you want to run the droplet you downloaded.
+
+1. Push a new or existing app with the downloaded droplet:
+
+    ```
+    cf push APP-NAME --droplet PATH
+    ```
+
+    Where `APP-NAME` is the name of your app and `PATH` is the file path to the downloaded droplet.

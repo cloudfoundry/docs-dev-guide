@@ -156,7 +156,7 @@ You can refer to a buildpack by name in a manifest or a command-line option. The
 
 The `-b` command-line flag overrides this attribute.
 
-For more information, see [Pushing an app with multiple buildpacks](../../buildpacks/classical/use-multiple-buildpacks.html).
+For more information, see [Pushing an app with multiple buildpacks](../../buildpacks/use-multiple-buildpacks.html).
 
 ### <a id='start-commands'></a> command
 
@@ -367,6 +367,24 @@ For example:
 The default number of instances is 1.
 
 To ensure that platform maintenance does not interrupt your app, <%= vars.recommended_by %> recommends running at least two instances.
+
+### <a id='lifecycle'></a> lifecycle
+
+The `lifecycle` attribute specifies which application lifecycle to use for staging and running the application. Three variants are supported at the moment:
+
+- [`buildpack`](../../buildpacks/classic.html)
+- [`cnb`](../../buildpacks/cnb/index.html)
+- [`docker`](push-docker.html)
+
+For example:
+
+```
+---
+  ...
+  lifecycle: buildpack
+```
+
+The default is `buildpack` unless the [`docker`](#docker) attribute is specified.
 
 ### <a id='log-rate-limit-per-second'></a> log-rate-limit-per-second
 

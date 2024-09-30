@@ -24,7 +24,7 @@ single container on Diego. Both processes within the container undergo health ch
 You can push sidecar processes with your app by using one of two methods:
 
 * Using an app manifest. For instructions, see [Push an app with a sidecar Using an app manifest](#create).
-* With a custom buildpack. For instructions, see [Sidecar buildpacks](../buildpacks/classical/sidecar-buildpacks.html).
+* With a custom buildpack. For instructions, see [Sidecar buildpacks](../buildpacks/sidecar-buildpacks.html).
 
 For additional information about sidecars, see [Sidecars](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#sidecars) in the
 Cloud Foundry API (CAPI) documentation.
@@ -88,7 +88,7 @@ Where:
 * `START-COMMAND` is the command used to start the sidecar. For example, `./binary` or `java -jar java-file.jar`.
 
 You must also allocate memory to sidecars that you push with a custom buildpack.
-For more information, see [Sidecar buildpacks](../buildpacks/classical/sidecar-buildpacks.html).
+For more information, see [Sidecar buildpacks](../buildpacks/sidecar-buildpacks.html).
 
 ### <a id="java-sidecar-packaging"></a> Packaging binaries
 
@@ -459,7 +459,7 @@ next steps:
 * Use more sophisticated debugging tools
 * Return the debug information in the HTTP response, rather than logging to STDOUT
 * Inject the debug sidecar via a [Sidecar
-buildpacks](../buildpacks/classical/sidecar-buildpacks.html). For example:
+buildpacks](../buildpacks/sidecar-buildpacks.html). For example:
 [java-debug-buildpack](https://github.com/Gerg/java-debug-buildpack) on GitHub.
 * Add authentication for the debug sidecar's HTTP route, for instance using an
 authentication [Route Service](../services/route-services.html).

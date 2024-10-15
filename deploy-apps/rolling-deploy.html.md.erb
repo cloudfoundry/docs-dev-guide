@@ -38,10 +38,9 @@ Review the limitations of this feature before running the command. For more info
 * **For cf CLI v7+, run:**
 
     ```
-    cf push APP-NAME --strategy rolling --max-in-flight MAX_IN_FLIGHT
+    cf push APP-NAME --strategy rolling
     ```
     Where `APP-NAME` is the name that you want to give your app.
-    Where `MAX_IN_FLIGHT` specifies the maximum number of new instances to start up simultaneous until the deployment is complete. Optional and defaults to 1.
 
     <p class="note">
     <span class="note__title"><strong>Note</strong></span>
@@ -53,6 +52,15 @@ Review the limitations of this feature before running the command. For more info
 
     If the deployment stops and doesn't restart, cancel it and run it again as described in an earlier step.
     To cancel, see [Cancel a deployment](#cancel).
+
+
+* **For cf CLI v8.8.0+ and CAPI V3.173.0 or later**
+    Allows you to additionally specify the `--max-in-flight` property, run:
+    ```
+    cf push APP-NAME --strategy rolling --max-in-flight MAX_IN_FLIGHT
+    ```
+    Where `APP-NAME` is the name that you want to give your app.
+    Where `MAX_IN_FLIGHT` specifies the maximum number of new instances to start up simultaneous until the deployment is complete. Optional and defaults to 1.
 
 * **For CAPI V3:**
     1. Log in to the cf CLI.

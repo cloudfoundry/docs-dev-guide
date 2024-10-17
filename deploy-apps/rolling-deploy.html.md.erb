@@ -213,6 +213,14 @@ configuration updates that require a restart, such as environment variables or s
     ```
     Where `APP-NAME` is the name of the app.
 
+* **For cf CLI v8.8.0+ and CAPI V3.173.0 or later**
+    Allows you to additionally specify the `--max-in-flight` property, run:
+    ```
+    cf restart APP-NAME --strategy rolling --max-in-flight MAX_IN_FLIGHT
+    ```
+    Where `APP-NAME` is the name of the app.
+    Where `MAX_IN_FLIGHT` specifies the maximum number of new instances to restart simultaneous until the deployment is complete. Optional and defaults to 1.
+
 * **For CAPI V3, run:**
 
     ```

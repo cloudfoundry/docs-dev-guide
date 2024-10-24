@@ -368,6 +368,24 @@ The default number of instances is 1.
 
 To ensure that platform maintenance does not interrupt your app, <%= vars.recommended_by %> recommends running at least two instances.
 
+### <a id='lifecycle'></a> lifecycle
+
+The `lifecycle` attribute specifies which application lifecycle to use for staging and running the application. Three variants are supported at the moment:
+
+- [`buildpack`](../../buildpacks/classic.html)
+- [`cnb`](../../buildpacks/cnb/index.html)
+- [`docker`](push-docker.html)
+
+For example:
+
+```
+---
+  ...
+  lifecycle: buildpack
+```
+
+The default is `buildpack` unless the [`docker`](#docker) attribute is specified.
+
 ### <a id='log-rate-limit-per-second'></a> log-rate-limit-per-second
 
 The `log-rate-limit-per-second` attribute specifies the log rate limit for all instances of an app. This attribute requires a unit of measurement: `B`, `K`, `KB`, `M`, `MB`, `G`, or `GB`, in either uppercase or lowercase.

@@ -47,7 +47,6 @@ After creating the user-provided service instance, to deliver the credentials to
 User-provided service instances allow developers to stream app logs to a syslog compatible aggregation or analytics service that isn't available in the Marketplace. For more information about the syslog protocol see [RFC 5424](http://tools.ietf.org/html/rfc5424) and [RFC 6587](http://tools.ietf.org/html/rfc6587).
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 RFC-5424 is used to establish connections over HTTP/HTTPS. RFC-6587 is used for TCP based communication over syslog/syslog-tls drains.
 </p>
 
@@ -70,7 +69,6 @@ OK
 </pre>
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 When creating the user-provided service, the route service URL you specify must be "https."
 </p>
 
@@ -86,5 +84,4 @@ You can use rolling restarts to avoid any app downtime.
 For more information, see [Restart an app](../deploy-apps/rolling-deploy.html#restart) in _Rolling App Deployments_.
 
 <p class="note caution">
-<span class="note__title"><strong>Caution</strong></span>
 If you are rotating credentials, the old credentials must be active until the restart is finished.</p>

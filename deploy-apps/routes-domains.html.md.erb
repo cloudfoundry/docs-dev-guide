@@ -70,7 +70,6 @@ HTTP routes include a domain, an optional hostname, and an optional context path
 variable, which is `8080` on Diego. As an example, requests to `example-app.<%= vars.app_domain %>` would be routed to the app container at `localhost:8080`.
 
 <p class="note">
-<span class="note__title">Note</span>
 You can update the ports on which an app can receive requests through the Cloud Controller API. For more information, see <a href="../custom-ports.html">Configuring Apps to Listen on Custom Ports (Beta)</a>.</p>
 
 Requests to HTTP routes must be sent to ports `80` or `443`. Ports cannot be reserved for HTTP routes.
@@ -135,7 +134,6 @@ OK
 </pre>
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</p>
 
 This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for the following URLs:
@@ -287,7 +285,6 @@ example-space		              <%= vars.app_domain %>	60000 			       tcp    tcp-a
 Developers can only see routes in spaces where they are members.
 
 <p class="note">
-<span class="note__title">Note</span>
 cf CLI v7 removes the <code>port</code> and <code>path</code> columns from the output.</p>
 
 ### <a id='check-routes'></a> Check routes
@@ -312,7 +309,6 @@ Destinations:
 Developers can only view a route within a space where they are a member.
 
 <p class="note">
-<span class="note__title">Note</span>
 The <code>cf route</code> command is available in cf CLI v8 only.</p>
 
 ### <a id='check-routes'></a> Check routes
@@ -701,7 +697,6 @@ being associated with the TCP router group. The TCP router group defines the ran
 domains can use a TCP protocol.
 
 <p class="note">
-<span class="note__title">Note</span>
 By default, <%= vars.app_runtime_abbr %> only supports routing of HTTP requests to apps.</p>
 
 ### <a id='shared-domains'></a> Shared domains
@@ -727,7 +722,6 @@ $ cf create-shared-domain <%= vars.app_domain %>
 To create a TCP shared domain, first discover the name of the TCP router group.
 
 <p class="note important">
-<span class="note__title">Important</span>
 cf CLI v7 does not support TCP routing or creating shared domains with router groups.</p>
 
 <pre class="terminal">
@@ -810,7 +804,6 @@ $ cf delete-private-domain <%= vars.private_app_domain %>
 </pre>
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</p>
 
 ### <a id='parent-child-domains'></a> Requirements for parent and child domains
@@ -911,7 +904,6 @@ To use your root domain for apps on <%= vars.app_runtime_abbr %>, you can either
 them, or subdomain redirection.
 
 <p class="note">
-<span class="note__title">Note</span>
 Root domains are also called zone apex domains.</p>
 
 If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider to point at a shared domain in

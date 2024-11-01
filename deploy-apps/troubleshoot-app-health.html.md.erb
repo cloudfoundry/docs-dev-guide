@@ -232,7 +232,6 @@ To aggregate your app logs to view log history, bind your app to a syslog drain 
 Services](./../services/log-management.html).
 
 <p class="note important">
-<span class="note__title">Important</span>
 The Diego architecture does not support the <code>cf files</code> command, and as of cf CLI v7, the <code>cd files</code> command is deprecated for all uses.</p>
 
 ### <a id='trace'></a> Trace Cloud Controller REST API calls
@@ -262,7 +261,6 @@ export CF_TRACE=PATH-TO-TRACE.LOG
 ```
 
 <p class="note important">
-<span class="note__title">Important</span>
 <code>CF_TRACE</code> is a local environment variable that modifies the behavior of the cf CLI. Do not confuse
 <code>CF_TRACE</code> with the variables in the container environment where your apps run. For more information about these container variables, see
 <a href="#env">Examine Environment Variables.</a></p>
@@ -290,7 +288,6 @@ Some cf CLI commands may return connection credentials. Remove credentials and o
 * `cf app APP-NAME`: Returns the health and status of each instance of a specific app in the current space, including instance ID number, current state, and how long it has been running.
 
     <p class="note important">
-    <span class="note__title">Important</span>
     CPU values returned by <code>cf app</code> show the total usage of each app instance on all CPU cores on a host VM, where each core contributes 100%. For example, the CPU of a single-threaded app instance on a Diego cell with one core cannot exceed 100%, and four instances sharing the cell cannot exceed an average CPU of 25%. A multi-threaded app instance running alone on a cell with eight cores can draw up to 800% CPU.</p>
 
 * `cf env APP-NAME`: Returns environment variables set using `cf set-env` and variables existing in the container environment.
@@ -309,7 +306,6 @@ Commands available in cf CLI v6, but deprecated in cf CLI v7:
 * `cf files APP-NAME`: Lists the files in an app directory. Given a path to a file, outputs the contents of that file. Given a path to a subdirectory, lists the files within. Use this to [explore](#logs) individual logs.
 
 <p class="note important">
-<span class="note__title">Important</span>
 Your app should direct its logs to STDOUT and STDERR. The <code>cf logs</code> command also returns messages from any
 Log4j facility that you configure to send logs to STDOUT. For more information, see the <a href="http://logging.apache.org/log4j/">Log4j</a> website.</p>
 

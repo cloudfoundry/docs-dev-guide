@@ -9,7 +9,6 @@ are called sidecar processes, or sidecars. An example of a sidecar is an Applica
 Monitoring (APM) tool.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 The cf CLI v6 commands described in this topic are unsupported, but are supported in cf CLI v7. The latest supported cf CLI release is cf CLI v8. To upgrade to cf CLI v7, see <a href="https://docs.cloudfoundry.org/cf-cli/v7.html">Upgrading to cf CLI v7</a>. To upgrade to cf CLI v8, see <a href="https://docs.cloudfoundry.org/cf-cli/v8.html">Upgrading to cf CLI v8</a>.</p>
 
 <%= vars.capi_sidecar_req %>
@@ -188,7 +187,6 @@ To push an app with a sidecar:
 You can explore sidecars using the app in the [capi-sidecar-samples](https://github.com/cloudfoundry-samples/capi-sidecar-samples) repository on GitHub. The following sections describe the app, how to build and push the app, and some ways to observe the app and its processes after pushing.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 In this tutorial, you are pushing the Ruby sample app. You can also follow this tutorial for a Java app using the <code>sidecar-dependent-java-app</code> and <code>push_java_app_with_binary_sidecar.sh</code> in the samples repository. When pushing a Java app, follow the requirements listed in <a href="#java">Requirements for Java apps</a>.</p>
 
 ### <a id="about"></a> About the sample app
@@ -343,7 +341,7 @@ To view the web URL and logs for the app:
 	"version"=>"50892dcb-274d-4cf6-b944-3eda1e000283"}
 	</pre>
 
-### <a id="debug-processes-http"></a>View and debug processes running in the app container via HTTP 
+### <a id="debug-processes-http"></a>View and debug processes running in the app container via HTTP
 
 Sidecars can be used to collect debug information (e.g. thread dumps) from
 another process running in the same container. This is especially useful if you

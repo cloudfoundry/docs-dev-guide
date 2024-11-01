@@ -49,7 +49,6 @@ The life cycle of a task is as follows:
 The container also inherits environment variables, service bindings, and security groups bound to the app.
 
 <p class="note">
-<span class="note__title"><strong>Note</strong></span>
 You cannot SSH into the container running a task.</p>
 
 ### <a id='task-logging-execution'></a> Task logging and execution history
@@ -80,7 +79,6 @@ about the `cf run-task` command, see the [Cloud Foundry CLI reference guide](htt
 You can use the Cloud Foundry Command Line Interface (cf CLI) to run a task in the context of an app.
 
 <div class="note important">
-<span class="note__title"><strong>Important</strong></span>
   <ul>
     <li>To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later, or install cf CLI v7 or v8. To download, install, and uninstall the cf CLI, see <a href="../cf-cli/install-go-cli.html">Installing the Cloud Foundry Command Line Interface</a>.</li>
     <li>To run a task using cf CLI v6 without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</li>
@@ -125,7 +123,6 @@ To run a task on an app with cf CLI v6:
     </pre>
 
     <p class="note">
-    <span class="note__title"><strong>Note</strong></span>
     To run a task again, you must run it as a new task using the previous command.</p>
 
 1. To display the recent logs of the app and all its tasks, run:
@@ -187,7 +184,6 @@ To run a task on an app with cf CLI v7:
     </ul>
 
     <p class="note important">
-    <span class="note__title"><strong>Important</strong></span>
     <code>cf run-task</code> allows you to include the <code>--process</code> and <code>--command</code> flags. Including  the <code>--command</code> flag overrides the manifest property.</p>
 
     The following example command runs a task on the `example-app` app:

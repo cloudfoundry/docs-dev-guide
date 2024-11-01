@@ -29,7 +29,6 @@ Example:
 ## <a id="delete"></a> Delete an app
 
 <p class="note caution">
-<span class="note__title"><strong>Caution</strong></span>
 Deleting an app is irreversible. We recommend that you run <code>cf target</code> before you start to confirm you are deleting the app from the correct org and space.</p>
 
 Many apps use services and routes. Deleting an app does not delete the services used by the app, and you must explicitly remove routes between your app and the Internet.
@@ -55,7 +54,6 @@ Example:
 <pre class="terminal">$ cf delete -r my-example-app</pre>
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 In cf CLI v7+, <code>-r</code> no longer deletes routes when the route is mapped to more than one app.</p>
 
 If you delete an app without the `r` option, you can delete the route manually.

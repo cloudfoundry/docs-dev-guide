@@ -15,11 +15,9 @@ Environment variables are the means <%= vars.app_runtime_abbr %> uses to communi
 For information about setting your own app-specific environment variables, see the [Environment variable](./manifest.html#env-block) in _Deploying with app manifests_.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 Do not use user-provided environment variables for security-sensitive information such as credentials. They might unintentionally show up in cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided environment variable <a href="#VCAP_SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter and in Cloud Controller log files.</p>
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 The maximum size of an environment variable is 130&nbsp;KB. This limit applies also to <%= vars.app_runtime_abbr %> system environment variables such as <code>VCAP_SERVICES</code> and <code>VCAP_APPLICATION</code>.</p>
 </p>
 

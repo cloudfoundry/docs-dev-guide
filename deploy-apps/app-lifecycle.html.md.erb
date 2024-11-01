@@ -53,5 +53,4 @@ This might increase the time it takes to drain Diego Cells, which causes increas
 <%= vars.app_graceful_shutdown_config %>
 
 <p class="note">
-<span class="note__title"><strong>Note</strong></span>
 An exception to the cases previously mentioned is when monit restarts a Diego Cell replacement or Garden server that has failed. In this case, <%= vars.app_runtime_abbr %> immediately stops the apps that are still running using SIGKILL.</p>

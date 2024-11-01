@@ -42,7 +42,6 @@ Pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and Ru
 For more information about using the cf CLI to deploy apps, see [Push](../../cf-cli/getting-started.html#push) in _Getting Started with the cf CLI_.
 
 <p class="note important">
-<span class="note__title">Important</span>
 Changing the timeout setting for the cf CLI does not change the timeout limit for <%= vars.app_runtime_abbr %>
 server-side jobs such as staging or starting apps. You must change server-side timeouts in the manifest. Because of the differences between the
 <%= vars.app_runtime_abbr %> and cf CLI timeout values, your app might start successfully even though the cf CLI reports <code>App failed</code>. To review

@@ -118,7 +118,6 @@ OK
 </pre>
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</p>
 
 This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for these URLs:
@@ -220,7 +219,6 @@ If the developer maps the first route with path `products` to the `products` app
 <%= vars.app_runtime_abbr %> attempts to match routes with a path, and then attempts to match host and domain.
 
 <div class="note important">
-<span class="note__title"><strong>Important</strong></span>
   <ul>
     <li>Routes with the same domain and host name but different paths can only be created in the same space. Private domains do not have this limitation.</li>
     <li><%= vars.app_runtime_abbr %> does not route requests for context paths to the root context of an app. Apps must serve requests on the context path.</li>
@@ -499,7 +497,6 @@ To share a route with another space:
 ### <a id='move-route'></a> Transfer ownership of a route to another space
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
 
 After sharing a route with another space, you can transfer ownership of the route to that space using the `cf move-route` command. You can use this command if you are unable to maintain or delete a shared route within the space with which it was shared. For information about sharing routes across spaces, see [Share a route with another space](#share-route).
@@ -563,7 +560,6 @@ $ cf delete-route tcp.<%= vars.private_app_domain %> --port 60000
 Users can route HTTP requests to a specific app instance using the header `X-Cf-App-Instance`.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 Use of the <code>X-Cf-App-Instance</code> header is available only for users on the Diego architecture.
 </p>
 
@@ -666,7 +662,6 @@ $ cf create-shared-domain <%= vars.app_domain %>
 To create a TCP shared domain, first discover the name of the TCP router group.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 cf CLI v7 does not support TCP routing or creating shared domains with router groups.</p>
 
 <pre class="terminal">
@@ -744,7 +739,6 @@ $ cf delete-private-domain <%= vars.private_app_domain %>
 </pre>
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</p>
 
 ### <a id='parent-child-domains'></a> Requirements for parent and child domains
@@ -842,7 +836,6 @@ If you use a wildcard as the subdomain name, then your DNS provider can route fr
 To use your root domain for apps on <%= vars.app_runtime_abbr %>, you can use custom DNS record types like ALIAS and ANAME, if your DNS provider offers them, or you can use subdomain redirection.
 
 <p class="note">
-<span class="note__title"><strong>Note</strong></span>
 Root domains are also called zone apex domains.</p>
 
 If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider to point at a shared domain in
@@ -866,7 +859,6 @@ If your DNS provider supports using an ALIAS or ANAME record, configure your roo
 If your DNS provider does not support ANAME or ALIAS records, you can use subdomain redirection, also known as domain forwarding, to redirect requests for your root domain to a subdomain configured as a CNAME.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 If you use domain forwarding, SSL requests to the root domain might fail if the SSL certificate matches only the subdomain.
 For more information about SSL certificates, see
 the <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Cloud Foundry documentation</a>.</p>

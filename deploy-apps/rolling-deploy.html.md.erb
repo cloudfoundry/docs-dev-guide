@@ -30,7 +30,6 @@ This section describes the commands for working with rolling app deployments.
 To deploy an app without incurring downtime:
 
 <p class="note caution">
-<span class="note__title">Caution</span>
 Ensure that you understand the limitations of
 this feature before running the command. For more information, see
 <a href="#limitations">Limitations</a>.</p>
@@ -43,7 +42,6 @@ this feature before running the command. For more information, see
     Where `APP-NAME` is the name that you want to give your app.
 
     <p class="note important">
-    <span class="note__title">Important</span>
     cf CLI v7 exits when one instance of each process is healthy.
     It also includes a <code>--no-wait</code> flag on push for users who do not want to wait
     for the operation to complete.
@@ -264,7 +262,6 @@ This section describes the process of pushing an app with a rolling deployment s
 background, updating deployments as follows:
     1. Adds up to `max_in_flight` instances of the new web process and removes instances from the old web process. This step repeats until the new web process reaches the required number of instances.
         <p class="note important">
-        <span class="note__title"><strong>Important</strong></span>
         This happens only if all instances of the new web process are running.</p>
     2. Removes the old web process. The new web process now fully replaces the old web process.
     3. Restarts all non-web processes of the app.

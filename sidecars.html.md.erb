@@ -135,7 +135,6 @@ To push an app with a sidecar:
     Where `APP-NAME` is the name you give your app.
 
         <p class="note caution">
-        <span class="note__title">Caution</span>
         This command is experimental and unsupported. Upgrade to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
 1. Create a manifest file in the root directory of your app, such as `manifest.yml`. Otherwise, use an existing manifest file for your app. For more information, see [Deploying with App Manifests](./deploy-apps/manifest.html).
@@ -179,7 +178,6 @@ To push an app with a sidecar:
     Where `PATH-TO-MANIFEST` is the path to your manifest file
 
         <p class="note caution">
-        <span class="note__title">Caution</span>
         This command is experimental and unsupported. Upgrade to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
 1. To push your app:
@@ -190,7 +188,6 @@ To push an app with a sidecar:
     Where `APP-NAME` is the name of your app.
 
         <p class="note caution">
-        <span class="note__title">Caution</span>
         This command is experimental and unsupported. Upgrade to cf CLI v7 to use a supported version of this command. To upgrade to cf CLI v7, see <a href="../cf-cli/v7.html#install">Install cf CLI v7</a> in <em>Upgrading to cf CLI v7</em>.</p>
 
 ## <a id="tutorial"></a> Sidecar Tutorial
@@ -239,7 +236,6 @@ To push the app and sidecar:
 	```
 
 	<p class="note important">
-    <span class="note__title">Important</span>
     If you do not have Go installed, download the <code>config-server_linux_x86-64</code> binary from <a href="https://github.com/cloudfoundry-samples/capi-sidecar-samples/releases">Releases</a> in the <code>capi-sidecar-samples</code> repository in GitHub.</p>
 
 1. To create the app
@@ -353,7 +349,7 @@ To view the Web URL and logs for the app:
 	"version"=>"50892dcb-274d-4cf6-b944-3eda1e000283"}
 	</pre>
 
-### <a id="debug-processes-http"></a>View and debug processes running in the app container via HTTP 
+### <a id="debug-processes-http"></a>View and debug processes running in the app container via HTTP
 
 Sidecars can be used to collect debug information (e.g. thread dumps) from
 another process running in the same container. This is especially useful if you

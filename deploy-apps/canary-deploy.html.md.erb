@@ -228,20 +228,15 @@ This section describes pushing an app with a canary deployment strategy.
   1. Stages the updated app package.
   2. Creates a droplet with the updated app package.
   3. Creates a deployment with the new droplet and any new configuration.
-      * This starts a new process with one instance that shares the route with the old process.
-      * Now, if you run `cf app` on your app, you see multiple `web` processes.
     <br>
     For more information about the deployment object, see the [Deployments](http://v3-apidocs.cloudfoundry.org/index.html#deployments) section of the CAPI V3 documentation.
 
 2. After the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the
 background, updating deployments as follows:
-    1. Adds another instance of the new web process and removes an instance from the old web process. This step repeats until the new web process reaches the required number of instances.
-        <p class="note important">
-        <span class="note__title"><strong>Important</strong></span>
-        This happens only if all instances of the new web process are running.</p>
-    2. Removes the old web process. The new web process now fully replaces the old web process.
-    3. Restarts all non-web processes of the app.
-    4. Sets the deployment to `PAUSED`.
+    1. Adds one instance of the new web process (the 'canary' instance).
+         * This process shares routes with the old process.
+         * Now, if you run `cf app` on your app, you see multiple `web` processes.
+    1. Sets the deployment to `PAUSED`.
 
 3. After validating that the canary instance is running as expected execute the command `cf continue-deployment APP-NAME`:
     1. Changes the deployment reason to `DEPLOYING` and starts doing a rolling deployment

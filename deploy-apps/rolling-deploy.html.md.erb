@@ -1,10 +1,10 @@
 ---
-title: Configuring rolling app deployments
+title: Configuring app deployments
 owner: CAPI
 ---
 
 You can use Cloud Foundry Command Line Interface (cf CLI) commands
-or the Cloud Foundry API (CAPI) to push your apps to <%= vars.app_runtime_first %> using a rolling deployment.
+or the Cloud Foundry API (CAPI) to push your apps to <%= vars.app_runtime_first %> using a deployment.
 
 For information about the traditional method for addressing app downtime while pushing app updates,
 see [Using blue-green deployment to reduce downtime and risk](./blue-green.html).
@@ -19,7 +19,143 @@ The procedures in this topic require one of the following:
 
 * **cf CLI v7 or later**
 
-* **CAPI V3:** If you use CAPI V3, you must install the cf CLI.
+* **CAPI V3:** If you use CAPI V3 API, you must install the cf CLI.
+
+For Canary Deployments:
+
+* **cf CLI v8.8.0 or later**
+
+* **CAPI V3.173.0 or later:**
+
+## <a id="how-deployment-strategies-work"></a> How Deployment Strategies Work 
+
+Cloud Foundry provides two different strategies for deployments:
+
+1. `rolling` - Rolling Deployments bring up one or more web processes (as defined by `max-in-flight`) at a time.  Once those instances report healthy and routable, the deployment brings down an equivalent number instances of the old revision. The deployment repeats this process until all instances have been replaced, and finally replaces all old non-web processes with new processes before completing.
+2. `canary` - Canary Deployments bring up a single web process of the new revision, then pause indefinitely. This gives the chance for app operators or developers to evaluate the health of a new revision. Once evaluated, app operators can choose to either `cancel` or `continue` the deployment. Once continued, the Canary Deployment proceeds similarly to a Rolling Deployment.
+
+This section describes the different deployment strategies and their limitations in detail.
+
+### <a id="deployment-process"></a> Rolling Deployments
+
+This section describes pushing an app with a rolling deployment strategy.
+
+1. The `cf push APP-NAME --strategy rolling` command:
+  1. Stages the updated app package.
+  2. Creates a droplet with the updated app package.
+  3. Creates a deployment with the new droplet and any new configuration.
+      * This starts up to `max_in_flight` processes that shares the route with the old process.
+      * Now, if you run `cf app` on your app, you see multiple `web` processes.
+    <br>
+    For more information about the deployment object, see the [Deployments](http://v3-apidocs.cloudfoundry.org/index.html#deployments) section of the CAPI V3 documentation.
+
+2. After the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the
+background, updating deployments as follows:
+    1. Adds up to `max_in_flight` instances of the new web process and removes instances from the old web process. This step repeats until the new web process reaches the required number of instances.
+        <p class="note important">
+        This happens only if all instances of the new web process are running.</p>
+    2. Removes the old web process. The new web process now fully replaces the old web process.
+    3. Restarts all non-web processes of the app.
+    4. Sets the deployment to `DEPLOYED`.
+
+### <a id="canary-deployment-process"></a> Canary Deployments
+
+This section describes pushing an app with a canary deployment strategy.
+
+1. The `cf push APP-NAME --strategy canary` command:
+  1. Stages the updated app package.
+  2. Creates a droplet with the updated app package.
+  3. Creates a deployment with the new droplet and any new configuration.
+    <br>
+    For more information about the deployment object, see the [Deployments](http://v3-apidocs.cloudfoundry.org/index.html#deployments) section of the CAPI V3 documentation.
+
+2. After the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the
+background, updating deployments as follows:
+    1. Adds one instance of the new web process (the 'canary' instance).
+         * This process shares routes with the old process.
+         * Now, if you run `cf app` on your app, you see multiple `web` processes.
+    1. Sets the deployment to `PAUSED`.
+
+3. After validating that the canary instance is running as expected execute the command `cf continue-deployment APP-NAME`:
+    1. Changes the deployment reason to `DEPLOYING` and resumes similarly to a rolling deployment
+
+4. After the command changes the status of the deployment, the `cc_deployment_updater` BOSH job runs in the
+background, updating deployments as follows:
+    1. Adds MaxInFlight number of instances (**by default it is 1**) of the new web process and removes MaxInFlight number of instance from the old web process. This step repeats until the new web process reaches the required number of instances.
+        <p class="note important">
+        <span class="note__title"><strong>Important</strong></span>
+        This happens only if all instances of the new web process are running.</p>
+    2. Removes the old web process. The new web process now fully replaces the old web process.
+    3. Restarts all non-web processes of the app.
+    4. Sets the deployment to `DEPLOYED`.
+
+### <a id="limitations"></a> Limitations
+
+The following table describes the limitations when using deployments.
+
+<table class="table">
+  <thead><tr>
+    <th>Limitation</th>
+    <th>Description</th>
+  </tr></thead>
+  <tr>
+    <td>Multiple app versions</td>
+    <td>During a deployment, <%= vars.app_runtime_abbr %> serves both the old and new version of your app at the
+    same route. This can lead to user issues if you push backwards-incompatible API changes.</td>
+  </tr>
+  <tr>
+    <td>Database migrations</td>
+    <td>Deployments do not handle database migrations. Migrating an app database when the existing
+    app is not compatible with the migration can result in downtime.</td>
+  </tr>
+  <tr>
+    <td>Non-web processes</td>
+    <td>Deployments only run web processes through the update sequence described
+    earlier. The commands restart worker and other non-web processes in bulk after updating all web
+    processes.<br><br>
+		The CAPI V3 API introduces the concept of processes as runnable units of an app. Each app has a
+    web process by default. You can specify additional processes with a Procfile, and in some cases
+    buildpacks create additional processes. For more information about processes, see
+    <a href="http://v3-apidocs.cloudfoundry.org/index.html#processes">Processes</a> in the CAPI V3
+    documentation.</td>
+  </tr>
+  <tr>
+    <td>Quotas</td>
+    <td>Pushing updates to your app using a deployment strategy creates up to `max_in_flight` new instances (defaults to 1).
+    Additionally, Canary Deployments use an extra instance when pausing with the Canary Instance deployed.
+    If you lack sufficient quota, the deployment fails. Administrators might need to increase quotas to accommodate deployments.</td>
+    <td>
+  </tr>
+  <tr>
+    <td>Simultaneous apps when interrupting a push</td>
+    <td>If you push app before your previous push command for the same app has completed, your
+    first push gets interrupted. Until the last deployment completes, there might be many versions
+    of the app running at the same time. Eventually, the app runs the code from your most recent
+    push.</td>
+  </tr>
+  <tr>
+    <td>V3 APIs</td>
+    <td>During a rolling deploy for an app, requests to the V3 APIs for scaling or updating a process fail with an error message
+    like <code>Cannot scale this process while a deployment is in flight.</code>. For more information, see <a href="https://v3-apidocs.cloudfoundry.org/version/3.109.0/index.html#scale-a-process">Scale a process</a>
+    or <a href="https://v3-apidocs.cloudfoundry.org/version/3.109.0/index.html#update-a-process">Update a process</a> in the CAPI V3 documentation.</td>
+  </tr>
+  <tr>
+    <td>New or stopped applications</td>
+    <td>
+      When pushing an application for the first time, or if the app is stopped, no deployment strategy is used and all application instances are started immediately.
+    </td>
+  </tr>
+  <tr>
+    <td>Evaluating the Canary Instance</td>
+    <td>
+      Because the current processes share the same route, the best way to validate that traffic is reaching the canary instance by looking at the logs.
+      If app revision logging is enabled, the logs for all instances will be tagged with `process_id` and `revision_version` values. e.g. `APP/REV/4/PROC/WEB/1`
+      <br>
+      <br>
+      Retrieve the logs by running the cf CLI command `cf logs APP_NAME`.
+    </td>
+  </tr>
+</table>
 
 
 ## <a id="commands"></a> Commands
@@ -55,10 +191,11 @@ Review the limitations of this feature before running the command. For more info
 * **For cf CLI v8.8.0+ and CAPI V3.173.0 or later**
     Allows you to additionally specify the `--max-in-flight` property, run:
     ```
-    cf push APP-NAME --strategy rolling --max-in-flight MAX_IN_FLIGHT
+    cf push APP-NAME --strategy STRATEGY --max-in-flight MAX_IN_FLIGHT
     ```
     Where `APP-NAME` is the name that you want to give your app.
-    Where `MAX_IN_FLIGHT` specifies the maximum number of new instances to start up simultaneous until the deployment is complete. Optional and defaults to 1.
+    `MAX_IN_FLIGHT` specifies the maximum number of new instances to start up simultaneous until the deployment is complete. Optional and defaults to 1.
+    `STRATEGY` is the strategy you would like to use for the deployment.  Valid strategies are `rolling` and `canary`.
 
 * **For CAPI V3:**
     1. Log in to the cf CLI.
@@ -141,7 +278,7 @@ Review the limitations of this feature before running the command. For more info
     6. Deploy your app by running the following `curl` command with `POST /v3/deployments`. To verify
     the status of the deployment or take action on the deployment, record the deployment GUID from the
     output.
-
+    
         ```
         cf curl /v3/deployments \
         -X POST \
@@ -150,7 +287,7 @@ Review the limitations of this feature before running the command. For more info
           "droplet": {
             "guid": "DROPLET-GUID"
           },
-          "strategy": "rolling",
+          "strategy": STRATEGY,
           "options": {
             "max_in_flight": MAX_IN_FLIGHT
           },
@@ -164,11 +301,12 @@ Review the limitations of this feature before running the command. For more info
         }'
         ```
         Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in earlier steps.
-        Where `MAX_IN_FLIGHT` is an integer that specifies the maximum number of new instances to start up simultaneous until the deployment is complete. Optional and defaults to 1.
+        `MAX_IN_FLIGHT` is an integer that specifies the maximum number of new instances to start up simultaneous until the deployment is complete. Optional and defaults to 1.
+        `STRATEGY` is the strategy you would like to use for the deployment.  Valid strategies are `rolling` and `canary`.
 
-For more information about this command, see [How it works](#how-it-works).
+For more information about this command, see [How Deployment Strategies Work](#how-deployment-strategies-work).
 
-### <a id="cancel"></a> Cancel a deployment
+### <a id="cancel"></a> Cancel a Deployment
 
 To stop the deployment of an app that you pushed:
 
@@ -198,6 +336,28 @@ The cancel command is designed to revert the app to its
 original state as quickly as possible and does not guarantee zero downtime. Additionally, changes
 to environment variables and service bindings will not be reverted. </p>
 
+
+### <a id="continue"></a> Continue a Canary Deployment
+
+To finish a Canary Deployment after the deployment has paused and the Canary instance has been validated:
+
+* **For cf CLI v8+, run:**
+
+    ```
+    cf continue-deployment APP-NAME
+    ```
+    Where `APP-NAME` is the name of the app.
+
+* **For CAPI V3, run:**
+
+    ```
+    cf curl /v3/deployments/DEPLOYMENT-GUID/actions/continue" -X POST
+    ```
+    Where `DEPLOYMENT-GUID` is the GUID of the deployment that you recorded after following the
+    CAPI procedure in [Deploy an app](#deploy).
+
+This continues the rolling deployment of the app.
+
 ### <a id="restart"></a> Restart an app
 
 To restart your app without downtime, run the appropriate command. Restart an app to apply
@@ -206,17 +366,19 @@ configuration updates that require a restart, such as environment variables or s
 * **For cf CLI v7+, run:**
 
     ```
-    cf restart APP-NAME --strategy rolling
+    cf restart APP-NAME --strategy STRATEGY
     ```
     Where `APP-NAME` is the name of the app.
+    `STRATEGY` is the strategy you would like to use for the deployment.  Valid strategies are `rolling` and `canary`.
 
 * **For cf CLI v8.8.0+ and CAPI V3.173.0 or later**
     Allows you to additionally specify the `--max-in-flight` property, run:
     ```
-    cf restart APP-NAME --strategy rolling --max-in-flight MAX_IN_FLIGHT
+    cf restart APP-NAME --strategy STRATEGY --max-in-flight MAX_IN_FLIGHT
     ```
     Where `APP-NAME` is the name of the app.
-    Where `MAX_IN_FLIGHT` specifies the maximum number of new instances to restart simultaneous until the deployment is complete. Optional and defaults to 1.
+    `MAX_IN_FLIGHT` specifies the maximum number of new instances to restart simultaneous until the deployment is complete. Optional and defaults to 1.
+    `STRATEGY` is the strategy you would like to use for the deployment.  Valid strategies are `rolling` and `canary`.
 
 * **For CAPI V3, run:**
 
@@ -226,112 +388,31 @@ configuration updates that require a restart, such as environment variables or s
     -H "Content-type: application/json" \
     -d '{
       "droplet": {
-        "guid": "DROPLET-GUID"
+        "guid": DROPLET-GUID
       },
-      "strategy": "rolling",
+      "strategy": STRATEGY,
       "options": {
         "max_in_flight": MAX_IN_FLIGHT
       },
       "relationships": {
         "app": {
           "data": {
-            "guid": "APP-GUID"
+            "guid": APP-GUID
           }
         }
       }
     }'
     ```
     Where `DROPLET-GUID` and `APP-GUID` are the GUIDs that you recorded in earlier steps.
-    Where `MAX_IN_FLIGHT` is an integer that specifies the maximum number of new instances to start up simultaneous until the deployment is complete. Optional and defaults to 1.
-
-## <a id="how-it-works"></a> How it works
-
-This section describes the rolling deployments and their limitations.
-
-### <a id="deployment-process"></a> Rolling deployment
-
-This section describes pushing an app with a rolling deployment strategy.
-
-1. The `cf push APP-NAME --strategy rolling` command:
-  1. Stages the updated app package.
-  2. Creates a droplet with the updated app package.
-  3. Creates a deployment with the new droplet and any new configuration.
-      * This starts up to `max_in_flight` processes that shares the route with the old process.
-      * Now, if you run `cf app` on your app, you see multiple `web` processes.
-    <br>
-    For more information about the deployment object, see the [Deployments](http://v3-apidocs.cloudfoundry.org/index.html#deployments) section of the CAPI V3 documentation.
-
-2. After the command creates the deployment, the `cc_deployment_updater` BOSH job runs in the
-background, updating deployments as follows:
-    1. Adds up to `max_in_flight` instances of the new web process and removes instances from the old web process. This step repeats until the new web process reaches the required number of instances.
-        <p class="note important">
-        This happens only if all instances of the new web process are running.</p>
-    2. Removes the old web process. The new web process now fully replaces the old web process.
-    3. Restarts all non-web processes of the app.
-    4. Sets the deployment to `DEPLOYED`.
-
-### <a id="limitations"></a> Limitations
-
-The following table describes the limitations of when using rolling deployments.
-
-<table class="table">
-  <thead><tr>
-    <th>Limitation</th>
-    <th>Description</th>
-  </tr></thead>
-  <tr>
-    <td>Multiple app versions</td>
-    <td>During a deployment, <%= vars.app_runtime_abbr %> serves both the old and new version of your app at the
-    same route. This can lead to user issues if you push backwards-incompatible API changes.</td>
-  </tr>
-  <tr>
-    <td>Database migrations</td>
-    <td>Deployments do not handle database migrations. Migrating an app database when the existing
-    app is not compatible with the migration can result in downtime.</td>
-  </tr>
-  <tr>
-    <td>Non-web processes</td>
-    <td>Rolling deployments only run web processes through the rolling update sequence described
-    earlier. The commands restart worker and other non-web processes in bulk after updating all web
-    processes.<br><br>
-		The CAPI V3 API introduces the concept of processes as runnable units of an app. Each app has a
-    web process by default. You can specify additional processes with a Procfile, and in some cases
-    buildpacks create additional processes. For more information about processes, see
-    <a href="http://v3-apidocs.cloudfoundry.org/index.html#processes">Processes</a> in the CAPI V3
-    documentation.</td>
-  </tr>
-  <tr>
-    <td>Quotas</td>
-    <td>Pushing updates to your app using a deployment strategy creates up to `max_in_flight` new instances (defaults to 1).
-    If you lack sufficient quota, the deployment fails. Administrators might need to increase quotas to accommodate deployments.</td>
-  </tr>
-  <tr>
-    <td>Simultaneous apps when interrupting a push</td>
-    <td>If you push app before your previous push command for the same app has completed, your
-    first push gets interrupted. Until the last deployment completes, there might be many versions
-    of the app running at the same time. Eventually, the app runs the code from your most recent
-    push.</td>
-  </tr>
-  <tr>
-    <td>V3 APIs</td>
-    <td>During a rolling deploy for an app, requests to the V3 APIs for scaling or updating a process fail with an error message
-    like <code>Cannot scale this process while a deployment is in flight.</code>. For more information, see <a href="https://v3-apidocs.cloudfoundry.org/version/3.109.0/index.html#scale-a-process">Scale a process</a>
-    or <a href="https://v3-apidocs.cloudfoundry.org/version/3.109.0/index.html#update-a-process">Update a process</a> in the CAPI V3 documentation.</td>
-  </tr>
-  <tr>
-    <td>New or stopped applications</td>
-    <td>
-      When pushing an application for the first time, or if the app is stopped, no deployment strategy is used and all application instances are started immediately.
-    </td>
-  </tr>
-</table>
+    `MAX_IN_FLIGHT` is an integer that specifies the maximum number of new instances to start up simultaneous until the deployment is complete. Optional and defaults to 1.
+    `STRATEGY` is the strategy you would like to use for the deployment.  Valid strategies are `rolling` and `canary`.
 
 
-## <a id="status"></a> View the status of rolling deployments
+## <a id="status"></a> View the status of deployments
 
-You can use CAPI to view the status of rolling deployments.
+You can use CAPI to view the status of deployments.
 
-To view the status of a rolling deployment:
+To view the status of a deployment:
 
 1. Log in to the cf CLI:
 
@@ -383,6 +464,11 @@ properties:
     <td><code>ACTIVE</code></td>
     <td><code>DEPLOYING</code></td>
     <td>The deployment is deploying.</td>
+  </tr>
+  <tr>
+    <td><code>ACTIVE</code></td>
+    <td><code>PAUSED</code></td>
+    <td>The deployment is paused waiting for the user to continue with the deployment. Only used for Canary Deployments.</td>
   </tr>
   <tr>
     <td><code>ACTIVE</code></td>

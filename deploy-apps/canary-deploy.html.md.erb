@@ -39,7 +39,6 @@ This section describes the commands for working with canary app deployments.
 To deploy a canary version of an app:
 
 <p class="note caution">
-<span class="note__title"><strong>Caution</strong></span>
 Review the limitations of this feature before running the command. For more information, see
 <a href="#limitations">Limitations</a>.</p>
 
@@ -51,7 +50,6 @@ Review the limitations of this feature before running the command. For more info
     Where `MAX_IN_FLIGHT` applies **after** the single canary instance is successful and specifies the maximum number of new instances to start simultaneous until the deployment is complete. Optional and defaults to 1.
 
     <p class="note">
-    <span class="note__title"><strong>Note</strong></span>
     cf CLI will exit when the canary instance is healthy.
     It also includes a <code>--no-wait</code> flag on push for users who don't want to wait
     for the operation to complete.
@@ -212,7 +210,6 @@ This reverts the app to its state from before the deployment started by:
 * Resetting the `current_droplet` on the app
 
 <p class="note">
-<span class="note__title"><strong>Note</strong></span>
 The cancel command is designed to remove the canary instance of the app. </p>
 If this command is used after continue-deployment it will behave like a cancelation of a rolling deployment.
 
@@ -245,7 +242,6 @@ background, updating deployments as follows:
 background, updating deployments as follows:
     1. Adds MaxInFlight number of instances (**by default it is 1**) of the new web process and removes MaxInFlight number of instance from the old web process. This step repeats until the new web process reaches the required number of instances.
         <p class="note important">
-        <span class="note__title"><strong>Important</strong></span>
         This happens only if all instances of the new web process are running.</p>
     2. Removes the old web process. The new web process now fully replaces the old web process.
     3. Restarts all non-web processes of the app.

@@ -206,6 +206,42 @@ To run a task on an app with cf CLI v7:
     ```
     Where `APP-NAME` is the name of your app.
 
+## <a id='get-task'></a> Get a task for an app
+
+To get a task for a given app:
+
+1. In a terminal window, run:
+
+    ```
+    cf task APP-NAME TASK-ID
+    ```
+
+    Where `APP-NAME` is the name of your app and `TASK-ID` is the ID of the task you want to get.
+
+    The command returns output similar to the following example:
+
+    <pre class="terminal">
+    Getting task 4 for app static in org org-1 / space space-1 as admin...
+
+    id:               4
+    name:             125c884d
+    state:            FAILED
+    start time:       2024-11-22T17:41:19Z
+    command:          custom_command
+    memory in mb:     256
+    disk in mb:       1024
+    log rate limit:   -1
+    failure reason:   APP/TASK/125c884d: Exited with status 127
+    </pre>
+
+Tasks can be in the states shown in the following table:
+
+| State | Description |
+| ----- | ----------- |
+| `RUNNING` | The task is in progress. |
+| `FAILED` | The task did not complete. This state occurs when a task does not work correctly or a user cancels the task. |
+| `SUCCEEDED` | The task completed successfully. |
+
 
 ## <a id='list-tasks'></a> List tasks running on an app
 

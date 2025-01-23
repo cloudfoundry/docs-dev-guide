@@ -83,7 +83,6 @@ background, updating deployments as follows:
 background, updating deployments as follows:
     1. Adds MaxInFlight number of instances (**by default it is 1**) of the new web process and removes MaxInFlight number of instance from the old web process. This step repeats until the new web process reaches the required number of instances.
         <p class="note important">
-        <span class="note__title"><strong>Important</strong></span>
         This happens only if all instances of the new web process are running.</p>
     2. Removes the old web process. The new web process now fully replaces the old web process.
     3. Restarts all non-web processes of the app.
@@ -124,7 +123,6 @@ The following table describes the limitations when using these deployments.
     <td>Pushing updates to your app using a deployment strategy creates up to <code>max_in_flight</code> new instances (defaults to 1).
     Additionally, canary deployments use an extra instance when pausing with the canary instance deployed.
     If you lack sufficient quota, the deployment fails. Administrators might need to increase quotas to accommodate deployments.</td>
-    <td>
   </tr>
   <tr>
     <td>Simultaneous apps when interrupting a push</td>
@@ -226,10 +224,9 @@ Review the limitations of this feature before running the command. For more info
         ```
 
         Where:
-        <ul>
-          <li><code>APP-NAME</code> is the name that you want to give your app.</li>
-          <li><code>SPACE-GUID</code> is the space identifier that you want to associate with your app.</li>
-        </ul>
+
+        * <code>APP-NAME</code> is the name that you want to give your app.
+        * <code>SPACE-GUID</code> is the space identifier that you want to associate with your app.
 
     3. Create a package with the following `curl` command with `POST /v3/packages`. Record the package
     GUID from the output.
@@ -249,6 +246,7 @@ Review the limitations of this feature before running the command. For more info
             }
           }'
         ```
+
         Where `APP-GUID` is the app GUID that you recorded in an earlier step. This app GUID is a
         unique identifier for your app.
 

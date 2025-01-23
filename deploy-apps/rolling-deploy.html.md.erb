@@ -168,152 +168,163 @@ To deploy an app without incurring downtime:
 Review the limitations of this feature before running the command. For more information, see
 <a href="#limitations">Limitations</a>.</p>
 
-* **For cf CLI v7+, run:**
+#### For cf CLI v7+
+
+Run:
+
+```
+cf push APP-NAME --strategy rolling
+```
+
+Where `APP-NAME` is the name that you want to give your app.
+
+<p class="note">
+cf CLI v7 exits when one instance of each process is healthy.
+It also includes a <code>--no-wait</code> flag for users who don't want to wait
+for the operation to complete.
+When <code>cf push</code> is used with the <code>--no-wait</code> flag, the process exits as soon as one instance is healthy.
+</p>
+
+If the deployment stops and doesn't restart, cancel it and run it again as described in an earlier step.
+To cancel, see [Cancel a deployment](#cancel).
+
+
+#### For cf CLI v8.8.0+ and CAPI V3.173.0 or later
+
+Run:
+
+```
+cf push APP-NAME --strategy STRATEGY --max-in-flight MAX_IN_FLIGHT
+```
+
+Where:
+<ul>
+  <li><code>APP-NAME</code> is the name that you want to give your app.</li>
+  <li><code>MAX_IN_FLIGHT</code> specifies the maximum number of new instances to start up simultaneously until the deployment is complete. This parameter is optional and defaults to 1.</li>
+  <li><code>STRATEGY</code> is the strategy you want to use for the deployment. Valid strategies are <code>rolling</code> and <code>canary</code>.</li>
+</ul>
+
+#### For CAPI V3
+
+1. Log in to the cf CLI.
 
     ```
-    cf push APP-NAME --strategy rolling
+    cf login
     ```
-    Where `APP-NAME` is the name that you want to give your app.
 
-    <p class="note">
-    cf CLI v7 exits when one instance of each process is healthy.
-    It also includes a <code>--no-wait</code> flag for users who don't want to wait
-    for the operation to complete.
-    When <code>cf push</code> is used with the <code>--no-wait</code> flag, the process exits as soon as one instance is healthy.
-    </p>
-
-    If the deployment stops and doesn't restart, cancel it and run it again as described in an earlier step.
-    To cancel, see [Cancel a deployment](#cancel).
-
-
-* **For cf CLI v8.8.0+ and CAPI V3.173.0 or later, run:**<br>
+2. Create an empty app by running the following `curl` command  with `POST /v3/apps`. <br>Record the
+app GUID from the output.
 
     ```
-    cf push APP-NAME --strategy STRATEGY --max-in-flight MAX_IN_FLIGHT
-    ```
-    Where:
-    <ul>
-      <li><code>APP-NAME</code> is the name that you want to give your app.</li>
-      <li><code>MAX_IN_FLIGHT</code> specifies the maximum number of new instances to start up simultaneously until the deployment is complete. This parameter is optional and defaults to 1.</li>
-      <li><code>STRATEGY</code> is the strategy you want to use for the deployment. Valid strategies are <code>rolling</code> and <code>canary</code>.</li>
-    </ul>
-
-* **For CAPI V3:**
-    1. Log in to the cf CLI.
-
-        ```
-        cf login
-        ```
-    2. Create an empty app by running the following `curl` command  with `POST /v3/apps`. <br>Record the
-    app GUID from the output.
-
-        ```
-        cf curl /v3/apps \
-          -X POST \
-          -H "Content-type: application/json" \
-          -d '{
-            "name": "APP-NAME",
-            "relationships": {
-              "space": {
-                "data": {
-                  "guid": "SPACE-GUID"
-                }
-              }
-            }
-          }'
-        ```
-
-        Where:
-        <ul>
-          <li><code>APP-NAME</code> is the name that you want to give your app.</li>
-          <li><code>SPACE-GUID</code> is the space identifier that you want to associate with your app.</li>
-        </ul>
-
-<p></p>
-
-    3. Create a package with the following `curl` command with `POST /v3/packages`. Record the package
-    GUID from the output.
-
-        ```
-        cf curl /v3/packages \
-          -X POST \
-          -H "Content-type: application/json" \
-          -d '{
-            "type": "bits",
-            "relationships": {
-              "app": {
-                "data": {
-                  "guid": "APP-GUID"
-                }
-              }
-            }
-          }'
-        ```
-
-        Where `APP-GUID` is the app GUID that you recorded in an earlier step. This app GUID is a
-        unique identifier for your app.
-
-    4. Upload the package bits by running the following `curl` command with
-    `POST /v3/packages/PACKAGE-GUID/upload`.
-
-        ```
-        cf curl /v3/packages/PACKAGE-GUID/upload \
-        -X POST \
-        -F bits=@"PACKAGED-APP" \
-        ```
-
-        Where:
-        <ul>
-          <li><code>PACKAGE-GUID</code> is the package GUID that you recorded in an earlier step.</li>
-          <li><code>PACKAGED-APP</code> is your app packaged in a file such as <code>.zip</code>.</li>
-        </ul>
-    5. Create the build by running the following `curl` command with `POST /v3/builds`. Record the
-    droplet GUID from the output.
-
-        ```
-        cf curl /v3/builds \
-          -X POST \
-          -H "Content-type: application/json" \
-          -d '{
-            "package": {
-               "guid": PACKAGE-GUID"
-            }
-          }'
-        ```
-        Where `PACKAGE-GUID` is the package GUID that you recorded in an earlier step.
-
-    6. Deploy your app by running the following `curl` command with `POST /v3/deployments`. To verify
-    the status of the deployment or take action on the deployment, record the deployment GUID from the
-    output.
-
-        ```
-        cf curl /v3/deployments \
-        -X POST \
-        -H "Content-type: application/json" \
-        -d '{
-          "droplet": {
-            "guid": "DROPLET-GUID"
-          },
-          "strategy": STRATEGY,
-          "options": {
-            "max_in_flight": MAX_IN_FLIGHT
-          },
-          "relationships": {
-            "app": {
-              "data": {
-                "guid": "APP-GUID"
-              }
+    cf curl /v3/apps \
+      -X POST \
+      -H "Content-type: application/json" \
+      -d '{
+        "name": "APP-NAME",
+        "relationships": {
+          "space": {
+            "data": {
+              "guid": "SPACE-GUID"
             }
           }
-        }'
-        ```
+        }
+      }'
+    ```
 
-        Where:
-        <ul>
-          <li><code>DROPLET-GUID</code> and <code>APP-GUID</code> are the GUIDs that you recorded in earlier steps.</li>
-          <li><code>MAX_IN_FLIGHT</code> is an integer that specifies the maximum number of new instances to start up simultaneously until the deployment is complete. Optional and defaults to 1.</li>
-          <li><code>STRATEGY</code> is the strategy you would like to use for the deployment. Valid strategies are <code>rolling</code> and <code>canary</code>.</li>
-        </ul>
+    Where:
+
+    <ul>
+      <li><code>APP-NAME</code> is the name that you want to give your app.</li>
+      <li><code>SPACE-GUID</code> is the space identifier that you want to associate with your app.</li>
+    </ul>
+
+1. Create a package with the following `curl` command with `POST /v3/packages`. Record the package
+GUID from the output.
+
+    ```
+    cf curl /v3/packages \
+      -X POST \
+      -H "Content-type: application/json" \
+      -d '{
+        "type": "bits",
+        "relationships": {
+          "app": {
+            "data": {
+              "guid": "APP-GUID"
+            }
+          }
+        }
+      }'
+    ```
+
+    Where `APP-GUID` is the app GUID that you recorded in an earlier step. This app GUID is a
+    unique identifier for your app.
+
+1. Upload the package bits by running the following `curl` command with
+`POST /v3/packages/PACKAGE-GUID/upload`.
+
+    ```
+    cf curl /v3/packages/PACKAGE-GUID/upload \
+    -X POST \
+    -F bits=@"PACKAGED-APP" \
+    ```
+
+    Where:
+
+    <ul>
+      <li><code>PACKAGE-GUID</code> is the package GUID that you recorded in an earlier step.</li>
+      <li><code>PACKAGED-APP</code> is your app packaged in a file such as <code>.zip</code>.</li>
+    </ul>
+
+1. Create the build by running the following `curl` command with `POST /v3/builds`. Record the
+droplet GUID from the output.
+
+    ```
+    cf curl /v3/builds \
+      -X POST \
+      -H "Content-type: application/json" \
+      -d '{
+        "package": {
+          "guid": PACKAGE-GUID"
+        }
+      }'
+    ```
+
+    Where `PACKAGE-GUID` is the package GUID that you recorded in an earlier step.
+
+1. Deploy your app by running the following `curl` command with `POST /v3/deployments`. To verify
+the status of the deployment or take action on the deployment, record the deployment GUID from the
+output.
+
+    ```
+    cf curl /v3/deployments \
+    -X POST \
+    -H "Content-type: application/json" \
+    -d '{
+      "droplet": {
+        "guid": "DROPLET-GUID"
+      },
+      "strategy": STRATEGY,
+      "options": {
+        "max_in_flight": MAX_IN_FLIGHT
+      },
+      "relationships": {
+        "app": {
+          "data": {
+            "guid": "APP-GUID"
+          }
+        }
+      }
+    }'
+    ```
+
+    Where:
+
+    <ul>
+      <li><code>DROPLET-GUID</code> and <code>APP-GUID</code> are the GUIDs that you recorded in earlier steps.</li>
+      <li><code>MAX_IN_FLIGHT</code> is an integer that specifies the maximum number of new instances to start up simultaneously until the deployment is complete. Optional and defaults to 1.</li>
+      <li><code>STRATEGY</code> is the strategy you would like to use for the deployment. Valid strategies are <code>rolling</code> and <code>canary</code>.</li>
+    </ul>
 
 For more information about this command, see [How Deployment Strategies Work](#how-deployment-strategies-work).
 

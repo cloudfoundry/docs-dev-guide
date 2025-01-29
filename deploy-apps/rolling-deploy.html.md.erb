@@ -225,8 +225,6 @@ Run:
         * <code>APP-NAME</code> is the name that you want to give your app.
         * <code>SPACE-GUID</code> is the space identifier that you want to associate with your app.
 
-        <p></p>
-
     3. Create a package with the following `curl` command with `POST /v3/packages`. Record the package
     GUID from the output.
 
@@ -342,9 +340,8 @@ This reverts the app to its state from before the deployment started by:
 
 <p class="note important">
 The cancel command is designed to revert the app to its
-original state as quickly as possible and does not guarantee zero downtime.
-<br>It is important to note that changes
-to environment variables and service bindings are not reverted.</p>
+original state as quickly as possible and does not guarantee zero downtime. <br>It is important to note that changes
+to environment variables and service bindings are not reverted. </p>
 
 ### <a id="continue"></a> Continue a Canary Deployment
 

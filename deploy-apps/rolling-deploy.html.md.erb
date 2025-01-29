@@ -164,10 +164,6 @@ This section describes the commands for working with rolling app deployments.
 
 To deploy an app without incurring downtime:
 
-<p class="note caution">
-Review the limitations of this feature before running the command. For more information, see
-<a href="#limitations">Limitations</a>.</p>
-
 #### For cf CLI v7+
 
 Run:
@@ -177,6 +173,10 @@ cf push APP-NAME --strategy rolling
 ```
 
 Where `APP-NAME` is the name that you want to give your app.
+
+<p class="note caution">
+Review the limitations of this feature before running the command. For more information, see
+<a href="#limitations">Limitations</a>.</p>
 
 <p class="note">
 cf CLI v7 exits when one instance of each process is healthy.

@@ -1,89 +1,93 @@
 ---
-title: Configuring per-route options
+title: Configuring Per-Route Options
 owner: CF for VMs Networking
 ---
 
-By default, the communication between Gorouter and backends can only be configured at the platform level. This means that any settings affecting this communication apply universally across the entire platform.
-However, with the introduction of per-route features, developers now have the flexibility to customize this configuration on a more granular level.
+By default, communication between Gorouter and backends is configured via general settings at the platform level.
 
-The ability to customize properties on a per-route basis provides greater control and adaptability, ensuring that the route can be optimized for its unique requirements.
+This topic describes how to specify per-route Gorouter options scoped at the application level.
+This greater granularity lets developers tailor optimal routing behavior for applications' unique load profiles or other requirements.
 
-The following per-route options exist:
-- `loadbalancing`: Configures the load balancing algorithm used by Gorouter for this particular route. Possible options are: `round-robin` and `least-connections`.
+Gorouter supports the following per-route option, described in the section below:
 
-Available options are described in more detail in the following sections. Other options may follow in the future and will be documented here.
+- `loadbalancing`: Configures the load balancing algorithm used by Gorouter for this particular route.
+   - Settings: `round-robin`, `least-connections`.
 
-## <a id="loadbalancing"></a> `loadbalancing`: Configuring Gorouter's Load Balancing Algorithm
+## <a id="loadbalancing"></a> loadbalancing: Configure Gorouter's Load Balancing Algorithm
 
 The per-route option `loadbalancing` allows configuring the load balancing algorithm, which defines how the load is distributed between Gorouters and backends.
 
-This feature provides two options for load balancing:
+This option supports two settings for load balancing:
+
 - `round-robin` distributes the load evenly across all available backends
 - `least-connections` directs traffic to the backend with the fewest active connections at any given time, optimizing resource utilization
 
-Depending on your application's load profile, one or the other may be more beneficial. The per-route option allows tailoring the behavior independent of the platform's global settings.
 
-### <a id="set-loadbalancing-via-manifest"></a> Push an app configuring Load Balancing Algorithm via app manifest
+### <a id="lb-set-manifest"></a> Configure Load Balancing in an App Manifest
 
-1. To configure the desired load balancing algorithm, developers need to add the `loadbalancing` key to a route object in their application manifest.
-The value of this key should specify the chosen load balancing algorithm. Please note, the `route` attribute is required for the route object, and options can only be used as part of this object.
+To configure per-route load balancing for an application that has not yet been pushed:
 
-An example for manifest.yml:
+1. In the application manifest, include a `route` definition with an `options: loadbalancing` attribute set to `round-robin` or `least-connections`. For example:
 
-	```yaml
-	---
-	applications:
-	- name: MY-APP
-	  routes:
-	    - route: MY-APP.EXAMPLE.COM
-        options:
-          loadbalancing: least-connections
-	```
+   	```yaml
+   	---
+   	applications:
+   	- name: MY-APP
+   	  routes:
+   	    - route: MY-APP.EXAMPLE.COM
+           options:
+             loadbalancing: least-connections
+   	```
 
-   Where `MY-APP` is the name of your app and `MY-APP.EXAMPLE.COM` is the route you want to map to your app.
+      Where `MY-APP` is the name of your app and `MY-APP.EXAMPLE.COM` is the route you want to map to your app.
 
-1. Push the app with the manifest by running:
+1. Push the app with the manifest:
 
    ```
    cf push -f manifest.yml
    ```
 
-1. Execute a request to the targeted API endpoint by running:
+1. To confirm the setting, query the `routes` API endpoint for the app's route:
 
    ```
    cf curl /v3/routes/?hosts=MY-APP
    ```
-   Where `MY-APP` is the host attribute of the route. The response contains chosen load balancing algorithm as a custom option:
+
+   Where `MY-APP` is the host attribute of the route. The response lists the chosen `loadbalancing` algorithm setting:
+
+
    ```
        "options": {
          "loadbalancing": "least-connections"
        }
    ```
 
-### <a id="update-loadbalancing-via-cf-curl"></a> Update/Unset the Load Balancing Algorithm via cf curl
+### <a id="lb-update-curl"></a> Change Load Balancing of an Existing App
 
-When an app has been initially configured with a specific load balancing algorithm , e.g. `least-connections`, you can change the value to `round-robin` using the cf curl command.
+To change the per-route `loadbalancing` setting of an app that has already been pushed, `cf curl` the `/v3/routes` API.
+For example, to change an app route's algorithm from `least-connections` to `round-robin`:
 
-1. Execute a request to the targeted API endpoint by running:
+1. Execute a `PATCH` request to the targeted API endpoint:
 
-```
-cf curl /v3/routes/[guid] -X PATCH -H "Content-type: application/json" \
-   -d '{
-    "options": {
-      "loadbalancing": "round-robin"
-    }
-  }'
-```
-
-   Where `guid` is a unique identifier for the route.
-
-1. Validate by running:
 
    ```
-   cf curl /v3/routes/[guid]
+   cf curl /v3/routes/GUID -X PATCH -H "Content-type: application/json" \
+      -d '{
+       "options": {
+         "loadbalancing": "round-robin"
+       }
+     }'
    ```
 
-   Where `guid` is a unique identifier for the route. The response contains chosen load balancing algorithm as a custom option:
+   Where `GUID` is the unique identifier for the route.
+
+1. To confirm the setting, query the `routes` API endpoint for the route:
+
+   ```
+   cf curl /v3/routes/GUID
+   ```
+
+   Where `GUID` is the unique identifier for the route. The response lists the new `round-robin` setting:
 
    ```
    "options": {

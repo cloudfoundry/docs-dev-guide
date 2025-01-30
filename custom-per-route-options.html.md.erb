@@ -3,6 +3,7 @@ title: Configuring per-route options
 owner: CF for VMs Networking
 ---
 
+<<<<<<< HEAD
 By default, communication between Gorouter and backends is configured via general settings at the platform level.
 
 This topic describes how to specify per-route Gorouter options scoped at the application level.
@@ -88,6 +89,89 @@ For example, to change an app route's algorithm from `least-connections` to `rou
     ```
 
    Where `GUID` is the unique identifier for the route. The response lists the new `round-robin` setting:
+=======
+By default, the communication between Gorouter and backends can only be configured at the platform level. This means that any settings affecting this communication apply universally across the entire platform.
+However, with the introduction of per-route features, developers now have the flexibility to customize this configuration on a more granular level.
+
+The ability to customize properties on a per-route basis provides greater control and adaptability, ensuring that the route can be optimized for its unique requirements.
+
+The following per-route options exist:
+- `loadbalancing`: Configures the load balancing algorithm used by Gorouter for this particular route. Possible options are: `round-robin` and `least-connections`.
+
+Available options are described in more detail in the following sections. Other options may follow in the future and will be documented here.
+
+## <a id="loadbalancing"></a> `loadbalancing`: Configuring Gorouter's Load Balancing Algorithm
+
+The per-route option `loadbalancing` allows configuring the load balancing algorithm, which defines how the load is distributed between Gorouters and backends.
+
+This feature provides two options for load balancing:
+- `round-robin` distributes the load evenly across all available backends
+- `least-connections` directs traffic to the backend with the fewest active connections at any given time, optimizing resource utilization
+
+Depending on your application's load profile, one or the other may be more beneficial. The per-route option allows tailoring the behavior independent of the platform's global settings.
+
+### <a id="set-loadbalancing-via-manifest"></a> Push an app configuring Load Balancing Algorithm via app manifest
+
+1. To configure the desired load balancing algorithm, developers need to add the `loadbalancing` key to a route object in their application manifest.
+The value of this key should specify the chosen load balancing algorithm. Please note, the `route` attribute is required for the route object, and options can only be used as part of this object.
+
+An example for manifest.yml:
+
+	```yaml
+	---
+	applications:
+	- name: MY-APP
+	  routes:
+	    - route: MY-APP.EXAMPLE.COM
+        options:
+          loadbalancing: least-connections
+	```
+
+   Where `MY-APP` is the name of your app and `MY-APP.EXAMPLE.COM` is the route you want to map to your app.
+
+1. Push the app with the manifest by running:
+
+   ```
+   cf push -f manifest.yml
+   ```
+
+1. Execute a request to the targeted API endpoint by running:
+
+   ```
+   cf curl /v3/routes/?hosts=MY-APP
+   ```
+   Where `MY-APP` is the host attribute of the route. The response contains chosen load balancing algorithm as a custom option:
+   ```
+       "options": {
+         "loadbalancing": "least-connections"
+       }
+   ```
+
+### <a id="update-loadbalancing-via-cf-curl"></a> Update/Unset the Load Balancing Algorithm via cf curl
+
+When an app has been initially configured with a specific load balancing algorithm , e.g. `least-connections`, you can change the value to `round-robin` using the cf curl command.
+
+1. Execute a request to the targeted API endpoint by running:
+
+```
+cf curl /v3/routes/[guid] -X PATCH -H "Content-type: application/json" \
+   -d '{
+    "options": {
+      "loadbalancing": "round-robin"
+    }
+  }'
+```
+
+   Where `guid` is a unique identifier for the route.
+
+1. Validate by running:
+
+   ```
+   cf curl /v3/routes/[guid]
+   ```
+
+   Where `guid` is a unique identifier for the route. The response contains chosen load balancing algorithm as a custom option:
+>>>>>>> ca013d2a (Merge pull request #541 from sap-contributions/per-route-options-doc)
 
    ```
    "options": {

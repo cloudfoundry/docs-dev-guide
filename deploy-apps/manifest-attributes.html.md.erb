@@ -566,6 +566,23 @@ For example:
   - route: www.example.com/foo
   - route: tcp-example.com:1234
 ```
+You can specify the `options` attribute to configure per-route options, though this is optional.
+
+The available options:
+- `loadbalancing` which defines how Gorouter is distributing requests across the application backends. The valid values are `round-robin` or `least-connections`.
+
+For example:
+```
+---
+  ...
+  routes:
+  - route: example.com
+    options:
+      loadbalancing: round-robin
+  - route: example2.com
+    options:
+      loadbalancing: least-connections
+```
 
 #### <a id='manifest-attibutes-2'></a> Manifest attributes
 

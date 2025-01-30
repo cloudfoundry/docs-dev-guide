@@ -1,0 +1,85 @@
+---
+title: Configuring per-route options
+owner: CF for VMs Networking
+---
+
+By default, the communication between Gorouter and backends can only be configured at the platform level. This means that any settings affecting this communication apply universally across the entire platform.
+However, with the introduction of per-route features, developers now have the flexibility to customize this configuration on a more granular level.
+
+## <a id="loadbalancing"></a> Example: Configuring Load Balancing Algorithm
+
+One of the first per-route features implemented is the ability to configure the load balancing algorithm which defines how the load is distributed between Gorouters and backends.
+This feature provides two options for load balancing:
+- `round-robin` distributes the load evenly across all available backends
+- `least-connections` directs traffic to the backend with the fewest active connections at any given time, optimizing resource utilization
+
+### <a id="set-loadbalancing-via-manifest"></a> Push an app configuring Load Balancing Algorithm via app manifest
+
+1. To configure the desired load balancing algorithm, developers need to add the `loadbalancing` key to a route object in their application manifest.
+The value of this key should specify the chosen load balancing algorithm. Please note, the `route` attribute is required for the route object, and options can only be used as part of this object.
+
+An example for manifest.yml:
+
+	```yaml
+	---
+	applications:
+	- name: MY-APP
+	  routes:
+	    - route: MY-APP.EXAMPLE.COM
+        options:
+          loadbalancing: least-connections
+	```
+
+   Where `MY-APP` is the name of your app and `MY-APP.EXAMPLE.COM` is the route you want to map to your app.
+
+1. Push the app with the manifest by running:
+
+   ```
+   cf push -f manifest.yml
+   ```
+
+1. Execute a request to the targeted API endpoint by running:
+
+   ```
+   cf curl /v3/routes/?hosts=MY-APP
+   ```
+   Where `MY-APP` is the host attribute of the route. The response contains chosen load balancing algorithm as a custom option:
+   ```
+       "options": {
+        "loadbalancing": "least-connections"
+       }
+   ```
+
+### <a id="update-loadbalancing-via-cf-curl"></a> Update/Unset the Load Balancing Algorithm via cf curl
+
+For example, if the app has been initially configured with the load balancing algorithm set to `least-connections`, you can change the value to `round-robin` using the cf curl command.
+
+1. Execute a request to the targeted API endpoint by running:
+
+```
+cf curl /v3/routes/[guid] -X PATCH -H "Content-type: application/json" \
+   -d '{
+    "options": {
+      "loadbalancing": "round-robin"
+    }
+  }'
+```
+
+   Where `guid` is a unique identifier for the route.
+
+1. Validate by running:
+
+   ```
+   cf curl /v3/routes/[guid]
+   ```
+
+   Where `guid` is a unique identifier for the route. The response contains chosen load balancing algorithm as a custom option:
+
+   ```
+   "options": {
+     "loadbalancing": "round-robin"
+   }
+   ```
+
+The ability to customize properties on a per-route basis provides greater control and adaptability, ensuring that the route can be optimized for its unique requirements.
+

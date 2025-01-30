@@ -6,6 +6,8 @@ owner: CF for VMs Networking
 By default, the communication between Gorouter and backends can only be configured at the platform level. This means that any settings affecting this communication apply universally across the entire platform.
 However, with the introduction of per-route features, developers now have the flexibility to customize this configuration on a more granular level.
 
+The ability to customize properties on a per-route basis provides greater control and adaptability, ensuring that the route can be optimized for its unique requirements.
+
 The following per-route options exist:
 - `loadbalancing`: Configures the load balancing algorithm used by Gorouter for this particular route. Possible options are: `round-robin` and `least-connections`.
 
@@ -88,6 +90,3 @@ cf curl /v3/routes/[guid] -X PATCH -H "Content-type: application/json" \
      "loadbalancing": "round-robin"
    }
    ```
-
-The ability to customize properties on a per-route basis provides greater control and adaptability, ensuring that the route can be optimized for its unique requirements.
-

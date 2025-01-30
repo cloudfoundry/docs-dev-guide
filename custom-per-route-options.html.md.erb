@@ -6,12 +6,20 @@ owner: CF for VMs Networking
 By default, the communication between Gorouter and backends can only be configured at the platform level. This means that any settings affecting this communication apply universally across the entire platform.
 However, with the introduction of per-route features, developers now have the flexibility to customize this configuration on a more granular level.
 
-## <a id="loadbalancing"></a> Example: Configuring Load Balancing Algorithm
+The following per-route options exist:
+- `loadbalancing`: Configures the load balancing algorithm used by Gorouter for this particular route. Possible options are: `round-robin` and `least-connections`.
 
-One of the first per-route features implemented is the ability to configure the load balancing algorithm which defines how the load is distributed between Gorouters and backends.
+Available options are described in more detail in the following sections. Other options may follow in the future and will be documented here.
+
+## <a id="loadbalancing"></a> `loadbalancing`: Configuring Gorouter's Load Balancing Algorithm
+
+The per-route option `loadbalancing` allows configuring the load balancing algorithm, which defines how the load is distributed between Gorouters and backends.
+
 This feature provides two options for load balancing:
 - `round-robin` distributes the load evenly across all available backends
 - `least-connections` directs traffic to the backend with the fewest active connections at any given time, optimizing resource utilization
+
+Depending on your application's load profile, one or the other may be more beneficial. The per-route option allows tailoring the behavior independent of the platform's global settings.
 
 ### <a id="set-loadbalancing-via-manifest"></a> Push an app configuring Load Balancing Algorithm via app manifest
 
@@ -46,13 +54,13 @@ An example for manifest.yml:
    Where `MY-APP` is the host attribute of the route. The response contains chosen load balancing algorithm as a custom option:
    ```
        "options": {
-        "loadbalancing": "least-connections"
+         "loadbalancing": "least-connections"
        }
    ```
 
 ### <a id="update-loadbalancing-via-cf-curl"></a> Update/Unset the Load Balancing Algorithm via cf curl
 
-For example, if the app has been initially configured with the load balancing algorithm set to `least-connections`, you can change the value to `round-robin` using the cf curl command.
+When an app has been initially configured with a specific load balancing algorithm , e.g. `least-connections`, you can change the value to `round-robin` using the cf curl command.
 
 1. Execute a request to the targeted API endpoint by running:
 

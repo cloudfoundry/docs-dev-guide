@@ -1,5 +1,5 @@
 ---
-title: Configuring per-route options
+title: Configuring Per-Route Options
 owner: CF for VMs Networking
 ---
 
@@ -39,28 +39,28 @@ To configure per-route load balancing for an application that has not yet been p
              loadbalancing: least-connections
    	```
 
-    Where `MY-APP` is the name of your app and `MY-APP.EXAMPLE.COM` is the route you want to map to your app.
+      Where `MY-APP` is the name of your app and `MY-APP.EXAMPLE.COM` is the route you want to map to your app.
 
 1. Push the app with the manifest:
 
-    ```
-    cf push -f manifest.yml
-    ```
+   ```
+   cf push -f manifest.yml
+   ```
 
 1. To confirm the setting, query the `routes` API endpoint for the app's route:
 
-    ```
-    cf curl /v3/routes/?hosts=MY-APP
-    ```
+   ```
+   cf curl /v3/routes/?hosts=MY-APP
+   ```
 
-    Where `MY-APP` is the host attribute of the route. The response lists the chosen `loadbalancing` algorithm setting:
+   Where `MY-APP` is the host attribute of the route. The response lists the chosen `loadbalancing` algorithm setting:
 
 
-    ```
+   ```
        "options": {
          "loadbalancing": "least-connections"
        }
-    ```
+   ```
 
 ### <a id="lb-update-curl"></a> Change Load Balancing of an Existing App
 
@@ -70,22 +70,22 @@ For example, to change an app route's algorithm from `least-connections` to `rou
 1. Execute a `PATCH` request to the targeted API endpoint:
 
 
-    ```
-    cf curl /v3/routes/GUID -X PATCH -H "Content-type: application/json" \
+   ```
+   cf curl /v3/routes/GUID -X PATCH -H "Content-type: application/json" \
       -d '{
        "options": {
          "loadbalancing": "round-robin"
        }
      }'
-    ```
+   ```
 
-    Where `GUID` is the unique identifier for the route.
+   Where `GUID` is the unique identifier for the route.
 
 1. To confirm the setting, query the `routes` API endpoint for the route:
 
-    ```
-    cf curl /v3/routes/GUID
-    ```
+   ```
+   cf curl /v3/routes/GUID
+   ```
 
    Where `GUID` is the unique identifier for the route. The response lists the new `round-robin` setting:
 

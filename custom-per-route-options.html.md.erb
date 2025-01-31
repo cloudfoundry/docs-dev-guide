@@ -10,10 +10,12 @@ This greater granularity lets developers tailor optimal routing behavior for app
 
 Gorouter supports the following per-route option, described in the section below:
 
-- `loadbalancing`: Configures the load balancing algorithm used by Gorouter for this particular route.
+- `loadbalancing`: Configures the load balancing algorithm used by Gorouter for this particular route. <%= vars.per_route_lb_version %>
    - Settings: `round-robin`, `least-connections`.
 
 ## <a id="loadbalancing"></a> loadbalancing: Configure Gorouter's Load Balancing Algorithm
+
+<%= vars.per_route_lb_version %>
 
 The per-route option `loadbalancing` allows configuring the load balancing algorithm, which defines how the load is distributed between Gorouters and backends.
 
@@ -73,10 +75,10 @@ For example, to change an app route's algorithm from `least-connections` to `rou
     ```
     cf curl /v3/routes/GUID -X PATCH -H "Content-type: application/json" \
       -d '{
-       "options": {
-         "loadbalancing": "round-robin"
-       }
-     }'
+        "options": {
+          "loadbalancing": "round-robin"
+        }
+      }'
     ```
 
     Where `GUID` is the unique identifier for the route.
@@ -87,10 +89,10 @@ For example, to change an app route's algorithm from `least-connections` to `rou
     cf curl /v3/routes/GUID
     ```
 
-   Where `GUID` is the unique identifier for the route. The response lists the new `round-robin` setting:
+    Where `GUID` is the unique identifier for the route. The response lists the new `round-robin` setting:
 
-   ```
-   "options": {
-     "loadbalancing": "round-robin"
-   }
-   ```
+    ```
+    "options": {
+      "loadbalancing": "round-robin"
+    }
+    ```

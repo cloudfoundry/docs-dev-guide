@@ -87,10 +87,10 @@ For example, to change an app route's algorithm from `least-connections` to `rou
     cf curl /v3/routes/GUID
     ```
 
-   Where `GUID` is the unique identifier for the route. The response lists the new `round-robin` setting:
+    Where `GUID` is the unique identifier for the route. The response lists the new `round-robin` setting:
 
-   ```
-   "options": {
+    ```
+    "options": {
      "loadbalancing": "round-robin"
-   }
-   ```
+    }
+    ```

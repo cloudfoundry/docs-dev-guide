@@ -47,7 +47,15 @@ To configure per-route load balancing for an application that has not yet been p
     cf push -f manifest.yml
     ```
 
-1. To confirm the setting, query the `routes` API endpoint for the app's route:
+1. To verify the setting, one can query the route via the cli route command:
+    ```
+    cf route MY-APP.EXAMPLE.COM
+    ```
+The response lists the chosen `loadbalancing` algorithm option:
+    ```
+    options: { loadbalancing: least-connections }
+    ```
+Alternatively, one can query the `routes` API endpoint for the app's route:
 
     ```
     cf curl /v3/routes/?hosts=MY-APP
@@ -64,9 +72,24 @@ To configure per-route load balancing for an application that has not yet been p
 
 ### <a id="lb-update-curl"></a> Change Load Balancing of an Existing App
 
-To change the per-route `loadbalancing` setting of an app that has already been pushed, `cf curl` the `/v3/routes` API.
+To change the per-route `loadbalancing` setting of an app that has already been pushed, there is cli command update-route. 
 For example, to change an app route's algorithm from `least-connections` to `round-robin`:
 
+1. Execute an update-route command 
+    ```
+    cf update-route MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
+    ```
+1. To verify the setting, one can query the route via the cli route command:
+    ```
+    cf route MY-APP.EXAMPLE.COM
+    ```
+
+The response lists the changed `loadbalancing` algorithm option:
+    ```
+    options: { loadbalancing: round-robin }
+    ```
+
+Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
 1. Execute a `PATCH` request to the targeted API endpoint:
 
 

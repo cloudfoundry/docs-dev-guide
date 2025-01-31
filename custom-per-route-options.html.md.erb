@@ -117,3 +117,42 @@ Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
      "loadbalancing": "round-robin"
    }
    ```
+
+### <a id="lb-update-curl"></a> Creating a Route with a specified Load Balancing Algorithm
+To create a route with the per-route `loadbalancing` option, you can use the cli command `create-route`. 
+For example:
+
+1. Execute a create-route command 
+    ```
+    cf create-route MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
+    ```
+2. To verify the setting, one can query the route via the cli route command:
+    ```
+    cf route MY-APP.EXAMPLE.COM
+    ```
+
+The response lists the changed `loadbalancing` algorithm option:
+    ```
+    options: { loadbalancing: round-robin }
+    ```
+
+### <a id="lb-update-curl"></a> Mapping a New Route to an Existing App with a specified Load Balancing Algorithm
+To map a new route with the per-route `loadbalancing` option, you can use the cli command `map-route`. 
+If the route does not exist, it will be created with the specified load-balancing option. 
+If the route does exist, the cli command `update-route` should be used as described before.
+
+For example:
+
+1. Execute a map-route command 
+    ```
+    cf map-route MY-APP MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
+    ```
+2. To verify the setting, one can query the route via the cli route command:
+    ```
+    cf route MY-APP.EXAMPLE.COM
+    ```
+
+The response lists the changed `loadbalancing` algorithm option:
+    ```
+    options: { loadbalancing: round-robin }
+    ```

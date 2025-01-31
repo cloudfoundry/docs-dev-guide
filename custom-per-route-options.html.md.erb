@@ -47,7 +47,7 @@ To configure per-route load balancing for an application that has not yet been p
     cf push -f manifest.yml
     ```
 
-1. To verify the setting, one can query the route via the cli route command:
+2. To verify the setting, one can query the route via the cli route command:
     ```
     cf route MY-APP.EXAMPLE.COM
     ```
@@ -79,7 +79,7 @@ For example, to change an app route's algorithm from `least-connections` to `rou
     ```
     cf update-route MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
     ```
-1. To verify the setting, one can query the route via the cli route command:
+2. To verify the setting, one can query the route via the cli route command:
     ```
     cf route MY-APP.EXAMPLE.COM
     ```
@@ -104,7 +104,7 @@ Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
 
     Where `GUID` is the unique identifier for the route.
 
-1. To confirm the setting, query the `routes` API endpoint for the route:
+2. To confirm the setting, query the `routes` API endpoint for the route:
 
     ```
     cf curl /v3/routes/GUID

@@ -13,7 +13,7 @@ Gorouter supports the following per-route option, described in the section below
 - `loadbalancing`: Configures the load balancing algorithm used by Gorouter for this particular route. <%= vars.per_route_lb_version %>
    - Settings: `round-robin`, `least-connection`.
 
-## <a id="loadbalancing"></a> loadbalancing: Configure Gorouter's Load Balancing Algorithm
+## <a id="loadbalancing"></a> Configure Gorouter's Load Balancing Algorithm
 
 <%= vars.per_route_lb_version %>
 
@@ -75,6 +75,7 @@ To configure per-route load balancing for an application that has not yet been p
 ### <a id="lb-update-curl"></a> Change Load Balancing of an Existing App
 
 To change the per-route `loadbalancing` setting of an app that has already been pushed, you can use the cli command, `update-route`. 
+
 For example, to change an app route's algorithm from `least-connection` to `round-robin`:
 
 1. Run the update-route command:

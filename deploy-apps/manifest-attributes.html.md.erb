@@ -135,20 +135,21 @@ You can refer to a buildpack by name in a manifest or a command-line option. The
 
 * **Multiple buildpacks:** If you are using multiple buildpacks, you can provide an additional `-b` flag or add an additional value to your manifest:
 
-      ```
-      ---
-        ...
-        buildpacks:
-          - buildpack_URL
-          - buildpack_URL
-      ```
-      <div class="note important">
-        <ul>
-          <li>This feature does not work with the deprecated <code>buildpack</code> attribute. For more information, see
-            <a href="#buildpack-deprecated">buildpack</a>.</li>
-          <li>You must specify multiple buildpacks in the correct order: the buildpack uses the app start command given by the final buildpack. For more information, see the <a href=https://github.com/cloudfoundry/multi-buildpack#usageapp>multi-buildpack</a> repository on GitHub.</li>
-        </ul>
-      </div>
+    ```
+    ---
+      ...
+      buildpacks:
+        - buildpack_URL
+        - buildpack_URL
+    ```
+
+    <div class="note important">
+      <ul>
+        <li>This feature does not work with the deprecated <code>buildpack</code> attribute. For more information, see
+          <a href="#buildpack-deprecated">buildpack</a>.</li>
+        <li>You must specify multiple buildpacks in the correct order: the buildpack uses the app start command given by the final buildpack. For more information, see the <a href=https://github.com/cloudfoundry/multi-buildpack#usageapp>multi-buildpack</a> repository on GitHub.</li>
+      </ul>
+    </div>
 
 The `-b` command-line flag overrides this attribute.
 
@@ -367,9 +368,9 @@ To ensure that platform maintenance does not interrupt your app, <%= vars.recomm
 
 The `lifecycle` attribute specifies which application lifecycle to use for staging and running the application. Three variants are supported at the moment:
 
-- [`buildpack`](../../buildpacks/classic.html)
-- [`cnb`](../../buildpacks/cnb/index.html)
-- [`docker`](push-docker.html)
+- [buildpack](../../buildpacks/classic.html)
+- [cnb](../../buildpacks/cnb/index.html)
+- [docker](push-docker.html)
 
 For example:
 

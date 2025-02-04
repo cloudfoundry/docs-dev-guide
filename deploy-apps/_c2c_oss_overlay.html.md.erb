@@ -9,7 +9,7 @@ For more information about the overlay network, see [Overlay
 network](../../concepts/understand-cf-networking.html#overlay-network) in
 _Container-to-container networking_.
 
-### <a id="pie-metaphor-yum"></a> Understanding the Overlay Network Properties via a Pie Metaphor
+### <a id="pie-metaphor-yum"></a> Understanding the Overlay Network Properties using a Pie Metaphor
 
 There are two <%= vars.app_runtime_abbr %> properties concerning the overlay
 network. Before going into the details of the actual <%= vars.app_runtime_abbr
@@ -49,15 +49,15 @@ smaller number of possible Diego Cells (which are fed more each).
     network. The "subnet_prefix_length" property must be smaller than the
     smallest CIDR address block.
     </td>
-    <td>`["10.255.0.0/16"]`</td>
+    <td><code>["10.255.0.0/16"]</code></td>
   </tr>
   <tr>
     <td>Slice size for each Diego Cell</td>
     <td>"subnet_prefix_length" on the silk-controller job</td>
     <td>The CIDR mask for each Diego Cell's individual overlay network subnet.
-    For a `/24` subnet for each Diego Cell, enter `24`. This subnet must be
+    For a <code>/24</code> subnet for each Diego Cell, enter <code>/24</code>. This subnet must be
     smaller than all individual IP ranges provided in the "network" property.
-    <td>`24`</td>
+    <td><code>/24</code></td>
   </tr>
 </table>
 
@@ -104,7 +104,7 @@ Max supported number of Diego Cells = (6,144/256) - 2 = 22
 ```
 
 All CIDRs provided in the "network" must have a larger prefix length
-than the "subnet_prefix_length".
+than the "subnet_prefix_length."
 
 Here are some examples of invalid combinations of properties:
 <table>
@@ -114,15 +114,15 @@ Here are some examples of invalid combinations of properties:
     <th>Value</th>
   <tr>
     <td>network</td>
-    <td>`["10.255.0.0/20", "10.255.96.0/21", "10.255.200.0/23", "10.255.220.0/24"]`</td>
+    <td><code>["10.255.0.0/20", "10.255.96.0/21", "10.255.200.0/23", "10.255.220.0/24"]</code></td>
   </tr>
   <tr>
     <td>subnet_prefix_length</td>
-    <td>`24`</td>
+    <td><code>24</code></td>
   </tr>
   <tr>
     <td>Invalid reason</td>
-    <td>"subnet_prefix_length" must be smaller than all CIDRs in the "network". In this case it is the same size as `10.255.220.0/24`.</td>
+    <td>"subnet_prefix_length" must be smaller than all CIDRs in the "network." In this case it is the same size as <code>10.255.220.0/24</code>.</td>
   </tr>
   </tr>
 </table>
@@ -134,15 +134,15 @@ Here are some examples of invalid combinations of properties:
     <th>Value</th>
   <tr>
     <td>network</td>
-    <td>`["10.255.0.0/20", "10.255.96.0/21", "10.255.200.0/23", "10.255.220.0/32"]`</td>
+    <td><code>["10.255.0.0/20", "10.255.96.0/21", "10.255.200.0/23", "10.255.220.0/32"]</code></td>
   </tr>
   <tr>
     <td>subnet_prefix_length</td>
-    <td>`24`</td>
+    <td><code>24</code></td>
   </tr>
   <tr>
     <td>Invalid reason</td>
-    <td>"subnet_prefix_length" must be smaller than all CIDRs in the "network". In this case it is larger than `10.255.220.0/32`.</td>
+    <td>"subnet_prefix_length" must be smaller than all CIDRs in the "network." In this case it is larger than <code>10.255.220.0/32</code>.</td>
   </tr>
   </tr>
 </table>
@@ -154,15 +154,15 @@ Here are some examples of invalid combinations of properties:
     <th>Value</th>
   <tr>
     <td>network</td>
-    <td>`["10.255.0.0/20", "10.255.0.0/16"]`</td>
+    <td><code>["10.255.0.0/20", "10.255.0.0/16"]</code></td>
   </tr>
   <tr>
     <td>subnet_prefix_length</td>
-    <td>`24`</td>
+    <td><code>24</code></td>
   </tr>
   <tr>
     <td>Invalid reason</td>
-    <td>"network" must not have any overlapping IP ranges. In this case `10.255.0.0/20` is a subset of `10.255.0.0/16`.</td>
+    <td>"network" must not have any overlapping IP ranges. In this case <code>10.255.0.0/20</code> is a subset of <code>10.255.0.0/16</code>.</td>
   </tr>
   </tr>
 </table>

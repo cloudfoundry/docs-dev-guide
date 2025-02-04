@@ -573,7 +573,7 @@ Under each route, you can optionally include an `options` attribute to configure
 
 Available options are:
 
-- `loadbalancing` - defines how Gorouter distributes requests across the application backends. Valid values are `round-robin` and `least-connections`.
+- `loadbalancing` - defines how Gorouter distributes requests across the application backends. Valid values are `round-robin` and `least-connection`.
 
 For example:
 
@@ -586,7 +586,7 @@ For example:
       loadbalancing: round-robin
   - route: example2.com
     options:
-      loadbalancing: least-connections
+      loadbalancing: least-connection
 ```
 
 #### <a id='manifest-attibutes-2'></a> Manifest attributes

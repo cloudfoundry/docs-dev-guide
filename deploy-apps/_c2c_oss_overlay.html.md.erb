@@ -36,17 +36,17 @@ smaller number of possible Diego Cells (which are fed more each).
 <table>
   <thead>
   <tr>
-    <th>Metaphorical Property</th>
+    <th>Pie Metaphor Property</th>
     <th>Actual Bosh Property</th>
     <th>Description</th>
     <th>Default</th>
   </tr></thead>
   <tr>
     <td>Group of pies and their sizes</td>
-    <td>"network" on the silk-controller job</td>
+    <td><code>network</code> on the silk-controller job</td>
     <td>An list of CIDR address blocks for the overlay network provided as an
     array of strings. Subnets for each Diego Cell are allocated out of this
-    network. The "subnet_prefix_length" property must be smaller than the
+    network. The <code>subnet_prefix_length</code> property must be smaller than the
     smallest CIDR address block.
     </td>
     <td>`["10.255.0.0/16"]`</td>
@@ -55,9 +55,9 @@ smaller number of possible Diego Cells (which are fed more each).
     <td>Slice size for each Diego Cell</td>
     <td>"subnet_prefix_length" on the silk-controller job</td>
     <td>The CIDR mask for each Diego Cell's individual overlay network subnet.
-    For a `/24` subnet for each Diego Cell, enter `24`. This subnet must be
-    smaller than all individual IP ranges provided in the "network" property.
-    <td>`24`</td>
+    For a <code>/24</code> subnet for each Diego Cell, enter <code>24</code> This subnet must be
+    smaller than all individual IP ranges provided in the <code>network</code> property.
+    <td><code>24</code></td>
   </tr>
 </table>
 
@@ -122,7 +122,7 @@ Here are some examples of invalid combinations of properties:
   </tr>
   <tr>
     <td>Invalid reason</td>
-    <td>"subnet_prefix_length" must be smaller than all CIDRs in the "network". In this case it is the same size as `10.255.220.0/24`.</td>
+    <td><code>subnet_prefix_length</code> must be smaller than all CIDRs in the <code>network</code>. In this case it is the same size as <code>10.255.220.0/24</code>.</td>
   </tr>
   </tr>
 </table>
@@ -142,7 +142,7 @@ Here are some examples of invalid combinations of properties:
   </tr>
   <tr>
     <td>Invalid reason</td>
-    <td>"subnet_prefix_length" must be smaller than all CIDRs in the "network". In this case it is larger than `10.255.220.0/32`.</td>
+    <td><code>subnet_prefix_length</code> must be smaller than all CIDRs in the <code>network</code>. In this case it is larger than <code>10.255.220.0/32</code>.</td>
   </tr>
   </tr>
 </table>
@@ -162,12 +162,17 @@ Here are some examples of invalid combinations of properties:
   </tr>
   <tr>
     <td>Invalid reason</td>
-    <td>"network" must not have any overlapping IP ranges. In this case `10.255.0.0/20` is a subset of `10.255.0.0/16`.</td>
+<<<<<<< HEAD
+    <td>"network" must not have any overlapping IP ranges. In this case <code>10.255.0.0/20</code> is a subset of <code>10.255.0.0/16</code>.</td>
+=======
+    <td><code>network</code> must not have any overlapping IP ranges. In this case <code>10.255.0.0/20</code> is a subset of <code>10.255.0.0/16</code>.</td>
+>>>>>>> 6a513a0d (html format in tables)
   </tr>
   </tr>
 </table>
 
 ### <a id="changing-overlay-network"></a> Changing the Overlay Network
+
 Updating the "network" and "subnet_prefix_length" property is supported. However it will cause
 container-to-container networking downtime during the deploy while the network
 update is rolling out across Diego Cells.

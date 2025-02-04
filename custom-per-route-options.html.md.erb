@@ -11,7 +11,7 @@ This greater granularity lets developers tailor optimal routing behavior for app
 Gorouter supports the following per-route option, described in the section below:
 
 - `loadbalancing`: Configures the load balancing algorithm used by Gorouter for this particular route. <%= vars.per_route_lb_version %>
-   - Settings: `round-robin`, `least-connections`.
+   - Settings: `round-robin`, `least-connection`.
 
 ## <a id="loadbalancing"></a> loadbalancing: Configure Gorouter's Load Balancing Algorithm
 
@@ -22,14 +22,14 @@ The per-route option `loadbalancing` allows configuring the load balancing algor
 This option supports two settings for load balancing:
 
 - `round-robin` distributes the load evenly across all available backends
-- `least-connections` directs traffic to the backend with the fewest active connections at any given time, optimizing resource utilization
+- `least-connection` directs traffic to the backend with the fewest active connections at any given time, optimizing resource utilization
 
 
 ### <a id="lb-set-manifest"></a> Configure Load Balancing in an App Manifest
 
 To configure per-route load balancing for an application that has not yet been pushed:
 
-1. In the application manifest, include a `route` definition with an `options: loadbalancing` attribute set to `round-robin` or `least-connections`. For example:
+1. In the application manifest, include a `route` definition with an `options: loadbalancing` attribute set to `round-robin` or `least-connection`. For example:
 
    	```yaml
    	---
@@ -38,7 +38,7 @@ To configure per-route load balancing for an application that has not yet been p
    	  routes:
    	    - route: MY-APP.EXAMPLE.COM
            options:
-             loadbalancing: least-connections
+             loadbalancing: least-connection
    	```
 
     Where `MY-APP` is the name of your app and `MY-APP.EXAMPLE.COM` is the route you want to map to your app.
@@ -60,14 +60,14 @@ To configure per-route load balancing for an application that has not yet been p
 
     ```
        "options": {
-         "loadbalancing": "least-connections"
+         "loadbalancing": "least-connection"
        }
     ```
 
 ### <a id="lb-update-curl"></a> Change Load Balancing of an Existing App
 
 To change the per-route `loadbalancing` setting of an app that has already been pushed, `cf curl` the `/v3/routes` API.
-For example, to change an app route's algorithm from `least-connections` to `round-robin`:
+For example, to change an app route's algorithm from `least-connection` to `round-robin`:
 
 1. Execute a `PATCH` request to the targeted API endpoint:
 

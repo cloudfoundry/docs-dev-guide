@@ -3,7 +3,7 @@ title: Configuring per-route options
 owner: CF for VMs Networking
 ---
 
-By default, communication between Gorouter and backends is configured via general settings at the platform level.
+By default, communication between Gorouter and backends is configured through the general settings at the platform level.
 
 This topic describes how to specify per-route Gorouter options scoped at the application level.
 This greater granularity lets developers tailor optimal routing behavior for applications' unique load profiles or other requirements.
@@ -49,15 +49,15 @@ To configure per-route load balancing for an application that has not yet been p
     cf push -f manifest.yml
     ```
 
-2. To verify the setting, one can query the route via the cli route command:
+2. To verify the setting, you can query the route using the cli route command:
     ```
     cf route MY-APP.EXAMPLE.COM
     ```
-The response lists the chosen `loadbalancing` algorithm option:
+   The response lists the chosen `loadbalancing` algorithm option:
     ```
     options: { loadbalancing: least-connection }
     ```
-Alternatively, one can query the `routes` API endpoint for the app's route:
+   Alternatively, you can query the `routes` API endpoint for the app's route:
 
     ```
     cf curl /v3/routes/?hosts=MY-APP
@@ -74,26 +74,25 @@ Alternatively, one can query the `routes` API endpoint for the app's route:
 
 ### <a id="lb-update-curl"></a> Change Load Balancing of an Existing App
 
-To change the per-route `loadbalancing` setting of an app that has already been pushed, there is cli command update-route. 
+To change the per-route `loadbalancing` setting of an app that has already been pushed, you can use the cli command, `update-route`. 
 For example, to change an app route's algorithm from `least-connection` to `round-robin`:
 
-1. Execute an update-route command 
+1. Run the update-route command:
     ```
     cf update-route MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
     ```
-2. To verify the setting, one can query the route via the cli route command:
+2. To verify the setting, you can query the route using the cli route command:
     ```
     cf route MY-APP.EXAMPLE.COM
     ```
 
-The response lists the changed `loadbalancing` algorithm option:
+   The response lists the changed `loadbalancing` algorithm option:
     ```
     options: { loadbalancing: round-robin }
     ```
 
-Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
-1. Execute a `PATCH` request to the targeted API endpoint:
-
+   Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
+1. Run the `PATCH` request to the targeted API endpoint:
 
     ```
     cf curl /v3/routes/GUID -X PATCH -H "Content-type: application/json" \
@@ -112,7 +111,9 @@ Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
     cf curl /v3/routes/GUID
     ```
 
-    Where `GUID` is the unique identifier for the route. The response lists the new `round-robin` setting:
+    Where `GUID` is the unique identifier for the route. 
+
+   The response lists the new `round-robin` setting:
 
    ```
    "options": {
@@ -124,37 +125,38 @@ Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
 To create a route with the per-route `loadbalancing` option, you can use the cli command `create-route`. 
 For example:
 
-1. Execute a create-route command 
+1. Run the create-route command:
     ```
     cf create-route MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
     ```
-2. To verify the setting, one can query the route via the cli route command:
+2. To verify the setting, you can query the route using the cli route command:
     ```
     cf route MY-APP.EXAMPLE.COM
     ```
 
-The response lists the changed `loadbalancing` algorithm option:
+   The response lists the changed `loadbalancing` algorithm option:
     ```
     options: { loadbalancing: round-robin }
     ```
 
 ### <a id="lb-update-curl"></a> Mapping a New Route to an Existing App with a specified Load Balancing Algorithm
+
 To map a new route with the per-route `loadbalancing` option, you can use the cli command `map-route`. 
 If the route does not exist, it will be created with the specified load-balancing option. 
 If the route does exist, the cli command `update-route` should be used as described before.
 
 For example:
 
-1. Execute a map-route command 
+1. Run a map-route command:
     ```
     cf map-route MY-APP MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
     ```
-2. To verify the setting, one can query the route via the cli route command:
+2. To verify the setting, you can query the route using the cli route command:
     ```
     cf route MY-APP.EXAMPLE.COM
     ```
 
-The response lists the changed `loadbalancing` algorithm option:
+   The response lists the changed `loadbalancing` algorithm option:
     ```
     options: { loadbalancing: round-robin }
     ```

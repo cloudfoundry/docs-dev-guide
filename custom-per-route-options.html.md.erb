@@ -36,7 +36,7 @@ To configure per-route load balancing for an application that has not yet been p
    	applications:
    	- name: MY-APP
    	  routes:
-   	    - route: MY-APP.EXAMPLE.COM
+   	    - route: MY-HOST.EXAMPLE.COM
            options:
              loadbalancing: least-connection
    	```
@@ -58,10 +58,10 @@ To configure per-route load balancing for an application that has not yet been p
    Alternatively, you can query the `routes` API endpoint for the app's route:
 
     ```
-    cf curl /v3/routes/?hosts=MY-APP
+    cf curl /v3/routes/?hosts=MY-HOST
     ```
 
-    Where `MY-APP` is the host attribute of the route. The response lists the chosen `loadbalancing` algorithm setting:
+    Where `MY-HOST` is the host attribute of the route. The response lists the chosen `loadbalancing` algorithm setting:
 
     ```
        "options": {"loadbalancing": "least-connection"}
@@ -75,7 +75,7 @@ For example, to change an app route's algorithm from `least-connection` to `roun
 
 1. Run the update-route command:
     ```
-    cf update-route MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
+    cf update-route EXAMPLE.COM --host MY-HOST--option=loadbalancing=round-robin
     ```
 2. To verify the option value, you can query the route using the cli route command `route` (see Chapter `Retrieve Route Options`).
 
@@ -120,7 +120,7 @@ For example:
 
 1. Run the create-route command:
     ```
-    cf create-route MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
+    cf create-route EXAMPLE.COM --host MY-HOST --option=loadbalancing=round-robin
     ```
 2. To verify the option value, you can query the route using the cli route command `route` (see Chapter `Retrieve Route Options`).
 
@@ -154,7 +154,7 @@ For example:
 
 To verify route options, you can query the route using the `route` command:
     ```
-    cf route EXAMPLE.COM --hostname MY-APP
+    cf route EXAMPLE.COM --hostname MY-HOST
     ```
    The response lists the chosen `loadbalancing` algorithm option, e.g. `loadbalancing`:
     ```

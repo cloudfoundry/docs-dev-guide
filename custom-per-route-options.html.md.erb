@@ -49,10 +49,8 @@ To configure per-route load balancing for an application that has not yet been p
     cf push -f manifest.yml
     ```
 
-2. To verify the option, you can query the route using the `route` command:
-    ```
-    cf route EXAMPLE.COM --hostname MY-APP
-    ```
+2. To verify the option value, you can query the route using the cli route command `route` (see Chapter `Retrieve Route Options`).
+
    The response lists the chosen `loadbalancing` algorithm option:
     ```
     options:    {loadbalancing=least-connection}
@@ -65,16 +63,13 @@ To configure per-route load balancing for an application that has not yet been p
 
     Where `MY-APP` is the host attribute of the route. The response lists the chosen `loadbalancing` algorithm setting:
 
-
     ```
-       "options": {
-         "loadbalancing": "least-connection"
-       }
+       "options": {"loadbalancing": "least-connection"}
     ```
 
 ### <a id="lb-update-curl"></a> Change Load Balancing of an Existing App
 
-To change the per-route `loadbalancing` option of an app that has already been pushed, you can use the cli command, `update-route`. 
+To change the per-route `loadbalancing` option of an existing route, you can use the cli command, `update-route`. 
 
 For example, to change an app route's algorithm from `least-connection` to `round-robin`:
 
@@ -82,14 +77,11 @@ For example, to change an app route's algorithm from `least-connection` to `roun
     ```
     cf update-route MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
     ```
-2. To verify the setting, you can query the route using the cli route command:
-    ```
-    cf route MY-APP.EXAMPLE.COM
-    ```
+2. To verify the option value, you can query the route using the cli route command `route` (see Chapter `Retrieve Route Options`).
 
    The response lists the changed `loadbalancing` algorithm option:
     ```
-    options: { loadbalancing: round-robin }
+    options: {loadbalancing: round-robin}
     ```
 
    Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
@@ -130,10 +122,7 @@ For example:
     ```
     cf create-route MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
     ```
-2. To verify the setting, you can query the route using the cli route command:
-    ```
-    cf route MY-APP.EXAMPLE.COM
-    ```
+2. To verify the option value, you can query the route using the cli route command `route` (see Chapter `Retrieve Route Options`).
 
    The response lists the changed `loadbalancing` algorithm option:
     ```
@@ -142,9 +131,9 @@ For example:
 
 ### <a id="lb-update-curl"></a> Mapping a New Route to an Existing App with a specified Load Balancing Algorithm
 
-To map a new route with the per-route `loadbalancing` option, you can use the cli command `map-route`. 
-If the route does not exist, it will be created with the specified load-balancing option. 
-If the route does exist, the cli command `update-route` should be used as described before.
+To create and map a new route to an existing application with the per-route `loadbalancing` option, you can use the cli command `map-route`. 
+Note: The command `map-route` supports the `--option` flag only for new routes. 
+To update an existing route, the command `update-route` must be used as described before.
 
 For example:
 
@@ -152,12 +141,20 @@ For example:
     ```
     cf map-route MY-APP MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
     ```
-2. To verify the setting, you can query the route using the cli route command:
-    ```
-    cf route MY-APP.EXAMPLE.COM
-    ```
-
+2. To verify the option value, you can query the route using the cli route command `route` (see Chapter `Retrieve Route Options`).
+    
    The response lists the changed `loadbalancing` algorithm option:
     ```
     options: { loadbalancing: round-robin }
+    ```
+
+### <a id="lb-update-curl"></a> Retrieve Route Options
+
+To verify route options, you can query the route using the `route` command:
+    ```
+    cf route EXAMPLE.COM --hostname MY-APP
+    ```
+   The response lists the chosen `loadbalancing` algorithm option, e.g. `loadbalancing`:
+    ```
+    options:    {loadbalancing=least-connection}
     ```

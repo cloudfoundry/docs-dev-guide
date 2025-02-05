@@ -75,7 +75,7 @@ For example, to change an app route's algorithm from `least-connection` to `roun
 
 1. Run the update-route command:
     ```
-    cf update-route EXAMPLE.COM --host MY-HOST--option=loadbalancing=round-robin
+    cf update-route EXAMPLE.COM --host MY-HOST --option=loadbalancing=round-robin
     ```
 2. To verify the option value, you can query the route using the cli route command `route` (see Chapter `Retrieve Route Options`).
 
@@ -114,7 +114,7 @@ For example, to change an app route's algorithm from `least-connection` to `roun
    }
    ```
 
-### <a id="lb-update-curl"></a> Creating a Route with a specified Load Balancing Algorithm
+### <a id="lb-create-curl"></a> Creating a Route with a specified Load Balancing Algorithm
 To create a route with the per-route `loadbalancing` option, you can use the cli command `create-route`. 
 For example:
 

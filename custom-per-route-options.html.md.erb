@@ -139,7 +139,7 @@ For example:
 
 1. Run a map-route command:
     ```
-    cf map-route MY-APP MY-APP.EXAMPLE.COM --option=loadbalancing=round-robin
+    cf map-route MY-APP EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-robin
     ```
 2. To verify the option value, you can query the route using the cli route command `route` (see Chapter `Retrieve Route Options`).
     

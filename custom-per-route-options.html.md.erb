@@ -51,7 +51,7 @@ To configure per-route load balancing for an application that has not yet been p
 
 2. To verify the setting, you can query the route using the cli route command:
     ```
-    cf route MY-APP.EXAMPLE.COM
+    cf route EXAMPLE.COM --hostname MY-APP
     ```
    The response lists the chosen `loadbalancing` algorithm option:
     ```

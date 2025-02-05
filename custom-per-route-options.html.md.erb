@@ -49,7 +49,7 @@ To configure per-route load balancing for an application that has not yet been p
     cf push -f manifest.yml
     ```
 
-### <a id="lb-update-curl"></a> Change Load Balancing of an Existing App
+### <a id="lb-update-curl"></a> Change Load Balancing of an Existing Route
 
 To change the per-route `loadbalancing` option of an existing route, you can use the cli command, `update-route`. 
 
@@ -74,7 +74,7 @@ Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
 
     Where `GUID` is the unique identifier for the route.
 
-1. To confirm the setting, query the `routes` API endpoint for the route:
+1. To confirm the option, query the `routes` API endpoint for the route:
 
     ```
     cf curl /v3/routes/GUID
@@ -82,7 +82,7 @@ Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
 
     Where `GUID` is the unique identifier for the route. 
 
-   The response lists the new `round-robin` setting:
+   The response lists the new `round-robin` option:
 
    ```
    "options": {
@@ -90,7 +90,7 @@ Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
    }
    ```
 
-### <a id="lb-create-curl"></a> Creating a Route with a specified Load Balancing Algorithm
+### <a id="lb-create-route"></a> Creating a Route with a specified Load Balancing Algorithm
 
 To create a route with a per-route `loadbalancing` option, you can use the cli command `create-route`. 
 For example:
@@ -127,7 +127,7 @@ To verify route options, you can query the route using the `route` command:
     options: {loadbalancing=least-connection}
     ```
 
-   Alternatively, you can query the `routes` API endpoint for the app's route:
+   Alternatively, you can query the `routes` API endpoint for a route:
 
     ```
     cf curl /v3/routes/?hosts=MY-HOST

@@ -41,7 +41,7 @@ To configure per-route load balancing for an application that has not yet been p
              loadbalancing: least-connection
    	```
 
-    Where `MY-APP` is the name of your app and `MY-APP.EXAMPLE.COM` is the route you want to map to your app.
+    Where `MY-APP` is the name of your app and `MY-HOST.EXAMPLE.COM` is the route you want to map to your app.
 
 1. Push the app with the manifest:
 
@@ -49,11 +49,11 @@ To configure per-route load balancing for an application that has not yet been p
     cf push -f manifest.yml
     ```
 
-2. To verify the option value, you can query the route using the cli route command `route` (see Chapter `Retrieve Route Options`).
+2. To verify the option value, you can query the route using the cli route command `route` (see chapter `Retrieve Route Options`).
 
    The response lists the chosen `loadbalancing` algorithm option:
     ```
-    options:    {loadbalancing=least-connection}
+    options: {loadbalancing=least-connection}
     ```
    Alternatively, you can query the `routes` API endpoint for the app's route:
 
@@ -81,7 +81,7 @@ For example, to change an app route's algorithm from `least-connection` to `roun
 
    The response lists the changed `loadbalancing` algorithm option:
     ```
-    options: {loadbalancing: round-robin}
+    options: {loadbalancing=round-robin}
     ```
 
    Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
@@ -122,11 +122,11 @@ For example:
     ```
     cf create-route EXAMPLE.COM --host MY-HOST --option=loadbalancing=round-robin
     ```
-2. To verify the option value, you can query the route using the cli route command `route` (see Chapter `Retrieve Route Options`).
+2. To verify the option value, you can query the route using the cli route command `route` (see chapter `Retrieve Route Options`).
 
    The response lists the changed `loadbalancing` algorithm option:
     ```
-    options: { loadbalancing: round-robin }
+    options: {loadbalancing=round-robin}
     ```
 
 ### <a id="lb-update-curl"></a> Mapping a New Route to an Existing App with a specified Load Balancing Algorithm
@@ -143,11 +143,11 @@ For example:
     ```
     cf map-route MY-APP EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-robin
     ```
-2. To verify the option value, you can query the route using the cli route command `route` (see Chapter `Retrieve Route Options`).
+2. To verify the option value, you can query the route using the cli route command `route` (see chapter `Retrieve Route Options`).
     
    The response lists the changed `loadbalancing` algorithm option:
     ```
-    options: { loadbalancing: round-robin }
+    options: { loadbalancing=round-robin }
     ```
 
 ### <a id="lb-update-curl"></a> Retrieve Route Options
@@ -158,5 +158,5 @@ To verify route options, you can query the route using the `route` command:
     ```
    The response lists the chosen `loadbalancing` algorithm option, e.g. `loadbalancing`:
     ```
-    options:    {loadbalancing=least-connection}
+    options: {loadbalancing=least-connection}
     ```

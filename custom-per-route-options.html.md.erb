@@ -59,7 +59,7 @@ For example, to change an app route's algorithm from `least-connection` to `roun
     cf update-route EXAMPLE.COM --host MY-HOST --option loadbalancing=round-robin
     ```
 
-Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
+Alternatively, it is also possible to update the per-route load balancing option via the `/v3/routes` API.
 
 1. Run the `PATCH` request to the targeted API endpoint:
 
@@ -90,7 +90,7 @@ Alternatively, it is also possible to `cf curl` the `/v3/routes` API.
    }
    ```
 
-### <a id="lb-create-route"></a> Creating a Route with a specified Load Balancing Algorithm
+### <a id="lb-create-route"></a> Create a Route with a specific Load Balancing Algorithm
 
 To create a route with a per-route `loadbalancing` option, you can use the cli command `create-route`. 
 For example:
@@ -99,7 +99,7 @@ For example:
     cf create-route EXAMPLE.COM --host MY-HOST --option loadbalancing=round-robin
     ```
 
-### <a id="lb-map-route"></a> Mapping a New Route to an Existing App with a specified Load Balancing Algorithm
+### <a id="lb-map-route"></a> Map a Route to an Existing App with specific Load Balancing Algorithm
 
 To create and map a new route to an existing application with the per-route `loadbalancing` option, you can use the cli command `map-route`. 
 

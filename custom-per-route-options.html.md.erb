@@ -3,7 +3,7 @@ title: Configuring per-route options
 owner: CF for VMs Networking
 ---
 
-By default, communication between Gorouter and backends is configured via general settings at the platform level.
+By default, communication between Gorouter and backends is configured through the general settings at the platform level.
 
 This topic describes how to specify per-route Gorouter options scoped at the application level.
 This greater granularity lets developers tailor optimal routing behavior for applications' unique load profiles or other requirements.
@@ -36,12 +36,12 @@ To configure per-route load balancing for an application that has not yet been p
    	applications:
    	- name: MY-APP
    	  routes:
-   	    - route: MY-APP.EXAMPLE.COM
+   	    - route: MY-HOST.EXAMPLE.COM
            options:
              loadbalancing: least-connection
    	```
 
-    Where `MY-APP` is the name of your app and `MY-APP.EXAMPLE.COM` is the route you want to map to your app.
+    Where `MY-APP` is the name of your app and `MY-HOST.EXAMPLE.COM` is the route you want to map to your app.
 
 1. Push the app with the manifest:
 
@@ -49,28 +49,19 @@ To configure per-route load balancing for an application that has not yet been p
     cf push -f manifest.yml
     ```
 
-1. To confirm the setting, query the `routes` API endpoint for the app's route:
+### <a id="lb-update-route"></a> Change Load Balancing Algorithm of an Existing Route
+
+To change the per-route `loadbalancing` option of an existing route, you can use the cli command, `update-route`. 
+
+For example, to change an app route's algorithm from `least-connection` to `round-robin`, you can run the `update-route` command:
 
     ```
-    cf curl /v3/routes/?hosts=MY-APP
+    cf update-route EXAMPLE.COM --host MY-HOST --option loadbalancing=round-robin
     ```
 
-    Where `MY-APP` is the host attribute of the route. The response lists the chosen `loadbalancing` algorithm setting:
+Alternatively, it is also possible to update the per-route load balancing option via the `/v3/routes` API.
 
-
-    ```
-       "options": {
-         "loadbalancing": "least-connection"
-       }
-    ```
-
-### <a id="lb-update-curl"></a> Change Load Balancing of an Existing App
-
-To change the per-route `loadbalancing` setting of an app that has already been pushed, `cf curl` the `/v3/routes` API.
-For example, to change an app route's algorithm from `least-connection` to `round-robin`:
-
-1. Execute a `PATCH` request to the targeted API endpoint:
-
+Run the `PATCH` request to the targeted API endpoint:
 
     ```
     cf curl /v3/routes/GUID -X PATCH -H "Content-type: application/json" \
@@ -83,16 +74,67 @@ For example, to change an app route's algorithm from `least-connection` to `roun
 
     Where `GUID` is the unique identifier for the route.
 
-1. To confirm the setting, query the `routes` API endpoint for the route:
+### <a id="lb-create-route"></a> Create a Route with a specific Load Balancing Algorithm
+
+To create a route with a per-route `loadbalancing` option, you can use the cli command `create-route`. 
+For example:
 
     ```
-    cf curl /v3/routes/GUID
+    cf create-route EXAMPLE.COM --host MY-HOST --option loadbalancing=round-robin
     ```
 
-    Where `GUID` is the unique identifier for the route. The response lists the new `round-robin` setting:
+Alternatively, it is also possible to create a route with a per-route load balancing option via the `/v3/routes` API:
 
     ```
-    "options": {
-      "loadbalancing": "round-robin"
-    }
+    cf curl /v3/routes -X POST -H "Content-type: application/json" \
+      -d '{
+        "host": "MY-HOST",
+        "path": "MY-PATH",
+        ...
+        "options": {
+          "loadbalancing": "round-robin"
+        }
+      }'
     ```
+
+### <a id="lb-map-route"></a> Map a Route to an Existing App with specific Load Balancing Algorithm
+
+To create and map a new route to an existing application with the per-route `loadbalancing` option, you can use the cli command `map-route`. 
+
+For example:
+
+    ```
+    cf map-route MY-APP EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-robin
+    ```
+
+<p class="note">
+The command <code>map-route</code> supports the <code>--option</code> flag only for new routes. 
+To update an existing route, the command <code>update-route</code> must be used as described before.</p>
+
+### <a id="lb-retrieve-route-options"></a> Retrieve Route Options
+
+To read route options, you can query the route using the `route` command:
+
+    ```
+    cf route EXAMPLE.COM --hostname MY-HOST
+    ```
+
+   The response lists the chosen `loadbalancing` algorithm option, e.g. `least-connection`:
+
+    ```
+    options: {loadbalancing=least-connection}
+    ```
+
+   Alternatively, you can query the `routes` API endpoint for a route:
+
+    ```
+    cf curl /v3/routes/?hosts=MY-HOST
+    ```
+
+    Where `MY-HOST` is the host attribute of the route. The response lists the chosen `loadbalancing` algorithm option as well:
+
+    ```
+       "options": {"loadbalancing": "least-connection"}
+    ```
+
+To retrieve all the routes with the corresponding options in a space of an organization, you can use `routes` command.

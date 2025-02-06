@@ -1,178 +1,67 @@
 ## <a id="overlay"></a> Configure the overlay network
 
-Container-to-container networking uses an overlay network to manage
-communication between app instances. By default, each Diego Cell in the overlay
-network is allocated a /24 range that supports 254 containers per cell, one
-container for each of the usable IP addresses, `.1` through `.254`.
+Container-to-container networking uses an overlay network to manage communication between app instances.
+By default, each Diego Cell in the overlay network is allocated a /24 range that supports 254 containers per cell, one container for each of the usable IP addresses, `.1` through `.254`.
 
-For more information about the overlay network, see [Overlay
-network](../../concepts/understand-cf-networking.html#overlay-network) in
-_Container-to-container networking_.
+For more information about the overlay network, see [Overlay network](../../concepts/understand-cf-networking.html#overlay-network) in _Container-to-container networking_.
 
-### <a id="pie-metaphor-yum"></a> Understanding the Overlay Network Properties via a Pie Metaphor
+### <a id="cells"></a> Configure the number of Diego Cells
 
-There are two <%= vars.app_runtime_abbr %> properties concerning the overlay
-network. Before going into the details of the actual <%= vars.app_runtime_abbr
-%> properties, let's talk about them metaphorically.
+To change the number of Diego Cells supported by the overlay network in your Cloud Foundry deployment, edit the `cf_networking.network` property in your `cf-networking-release` manifest, and then re-deploy Cloud Foundry. See the following examples:
 
-Imagine the entire overlay network is a group of pies. One <%= vars.app_runtime_abbr %>
-property defines these pies and their sizes.
-
-The purpose of these pies are to serve the hungry, hungry Diego Cells. Each Diego
-Cell is hungry and needs a slice of pie. Without a slice of pie the Diego Cell
-cannot start because it has no energy. This is an egalitarian kitchen, so each
-Diego Cell must get the same size pie slice.
-
-The second <%= vars.app_runtime_abbr %> property determines the size of the pie
-slice that each Diego Cell is given. The smaller the slice of pie that each Diego
-Cell gets, the less “energy” each Diego Cell has, and thus fewer apps can run on each
-Diego Cell. The larger the slice of pie is that each Diego Cell gets, the more
-“energy” the Diego Cell has, and thus more apps can run on each Diego Cell.
-
-If the pies and their sizes stay constant, smaller slices of pie means there can be
-more Diego Cells (which are fed less each) and larger slices means there is a
-smaller number of possible Diego Cells (which are fed more each).
-
-<table>
-  <thead>
-  <tr>
-    <th>Pie Metaphor Property</th>
-    <th>Actual Bosh Property</th>
-    <th>Description</th>
-    <th>Default</th>
+<table class="table">
+  <thead><tr>
+    <th>Overlay subnet mask</th>
+    <th>Number of cells</th>
+    <th>Containers per cell </th>
   </tr></thead>
   <tr>
-    <td>Group of pies and their sizes</td>
-    <td><code>network</code> on the silk-controller job</td>
-    <td>An list of CIDR address blocks for the overlay network provided as an
-    array of strings. Subnets for each Diego Cell are allocated out of this
-    network. The <code>subnet_prefix_length</code> property must be smaller than the
-    smallest CIDR address block.
-    </td>
-    <td>`["10.255.0.0/16"]`</td>
+    <td>/20</td>
+    <td>15</td>
+    <td>254</td>
   </tr>
   <tr>
-    <td>Slice size for each Diego Cell</td>
-    <td>"subnet_prefix_length" on the silk-controller job</td>
-    <td>The CIDR mask for each Diego Cell's individual overlay network subnet.
-    For a <code>/24</code> subnet for each Diego Cell, enter <code>24</code> This subnet must be
-    smaller than all individual IP ranges provided in the <code>network</code> property.
-    <td><code>24</code></td>
+    <td>/16</td>
+    <td>255</td>
+    <td>254</td>
+  </tr>
+  <tr>
+    <td>/12</td>
+    <td>4,095</td>
+    <td>254</td>
   </tr>
 </table>
 
+<p class="note caution">
+The overlay network IP address range must not conflict with any other IP addresses in the network. If a conflict exists, Diego Cells cannot reach any endpoint that has a conflicting IP address.</p>
 
-### <a id="cells"></a> Configuring Overlay Networking Properties
+### <a id="containers"></a> Configure the number of containers per cell
 
-Changing the two overlay network properties "network" and
-"subnet_prefix_length" affect how many Diego Cells can run in one deployment
-and how many apps can be run on each Diego Cell.
+To change the number of containers per Diego Cell in your Cloud Foundry deployment, edit the `cf_networking.subnet_prefix_length` property in your `cf-networking-release` manifest, and then re-deploy Cloud Foundry. See the following examples:
 
-Use the following algorithm to determine how many Diego Cells can run with a
-given configuration.
-
-```
-A = the total number of IPs in the "network"
-B = number of IPs per Diego Cell as defined by the "subnet_prefix_length"
-C = number of CIDRs in the "network"
-
-Max supported number of Diego Cells = (A/B) - C
-```
-
-Here is an example using the default values:
-```
-network = ["10.255.0.0/16"]
-subnet_prefix_length = 24
-
-A = /16 CIDR = 65,536 IPs
-B = /24 CIDR = 256 IPs
-C = 1
-
-Max supported number of Diego Cells = (65,536/256) - 1 = 255
-```
-
-Here is an example using other values:
-```
-network = ["10.255.0.0/20", "10.255.96.0/21"]
-subnet_prefix_length = 24
-
-A = /20 CIDR + /21 CIDR = 4,096 IPs + 2,048 IPs = 6,144 IPs
-B = /24 CIDR = 256 IPs
-C = 2
-
-Max supported number of Diego Cells = (6,144/256) - 2 = 22
-```
-
-All CIDRs provided in the "network" must have a larger prefix length
-than the "subnet_prefix_length".
-
-Here are some examples of invalid combinations of properties:
-<table>
-  <thead>
+<table class="table">
   <tr>
-    <th>Property</th>
-    <th>Value</th>
-  <tr>
-    <td>network</td>
-    <td>`["10.255.0.0/20", "10.255.96.0/21", "10.255.200.0/23", "10.255.220.0/24"]`</td>
+    <th>Overlay subnet mask</th>
+    <th>Number of cells</th>
+    <th>Cell prefix length</th>
+    <th>Containers per cell </th>
   </tr>
   <tr>
-    <td>subnet_prefix_length</td>
-    <td>`24`</td>
+    <td>/16</td>
+    <td>255</td>
+    <td>/24</td>
+    <td>254</td>
   </tr>
   <tr>
-    <td>Invalid reason</td>
-    <td><code>subnet_prefix_length</code> must be smaller than all CIDRs in the <code>network</code>. In this case it is the same size as <code>10.255.220.0/24</code>.</td>
+    <td>/16</td>
+    <td>255</td>
+    <td>/26</td>
+    <td>62</td>
   </tr>
+  <tr>
+    <td>/16</td>
+    <td>255</td>
+    <td>/28</td>
+    <td>14</td>
   </tr>
 </table>
-
-<table>
-  <thead>
-  <tr>
-    <th>Property</th>
-    <th>Value</th>
-  <tr>
-    <td>network</td>
-    <td>`["10.255.0.0/20", "10.255.96.0/21", "10.255.200.0/23", "10.255.220.0/32"]`</td>
-  </tr>
-  <tr>
-    <td>subnet_prefix_length</td>
-    <td>`24`</td>
-  </tr>
-  <tr>
-    <td>Invalid reason</td>
-    <td><code>subnet_prefix_length</code> must be smaller than all CIDRs in the <code>network</code>. In this case it is larger than <code>10.255.220.0/32</code>.</td>
-  </tr>
-  </tr>
-</table>
-
-<table>
-  <thead>
-  <tr>
-    <th>Property</th>
-    <th>Value</th>
-  <tr>
-    <td>network</td>
-    <td>`["10.255.0.0/20", "10.255.0.0/16"]`</td>
-  </tr>
-  <tr>
-    <td>subnet_prefix_length</td>
-    <td>`24`</td>
-  </tr>
-  <tr>
-    <td>Invalid reason</td>
-    <td><code>network</code> must not have any overlapping IP ranges. In this case <code>10.255.0.0/20</code> is a subset of <code>10.255.0.0/16</code>.</td>
-  </tr>
-  </tr>
-</table>
-
-### <a id="changing-overlay-network"></a> Changing the Overlay Network
-
-Updating the "network" and "subnet_prefix_length" property is supported. However it will cause
-container-to-container networking downtime during the deploy while the network
-update is rolling out across Diego Cells.
-
-<p> The overlay network IP address ranges must not conflict with any other IP
-addresses in the network. If a conflict exists, Diego Cells cannot reach any
-endpoint that has a conflicting IP address.</p>

@@ -65,14 +65,14 @@ This section describes how to use CAPI endpoints for viewing revisions.
 
 To list revisions for an app:
 
-* Using the `revisions` command:
+1. Using the `revisions` command:
 	 
 	```
 	cf revisions APP-NAME
 	```
 	Where `APP-NAME` is the name of your app.
 
-* Using the `curl` command
+1. Using the `curl` command
 	
 	1. Retrieve the GUID of the app by running:
 
@@ -92,15 +92,13 @@ To list revisions for an app:
 
 Deployed revisions are revisions linked to started processes in an app. To list deployed revisions:
 
-* Using the `revision` command:
-
+1. Using the `revision` command:
 	```
 	cf revision APP-NAME
 	```
 	Where `APP-NAME` is the name of your app.
 
-* Using the `curl` command
-
+1. Using the `curl` command
 	1. Retrieve the GUID of the app by running:
 
 		```
@@ -119,15 +117,13 @@ Deployed revisions are revisions linked to started processes in an app. To list 
 
 To retrieve a revision:
 
-* Using the `revision` command:
-
+1. Using the `revision` command:
 	```
 	cf revision APP-NAME --version VERSION
 	```
 	Where `APP-NAME` is the name of your APP and `VERSION` is the revision version.
 
-* Using the `curl` command:
-
+1. Using the `curl` command
 	1. Run:
 
 	```
@@ -140,7 +136,14 @@ To retrieve a revision:
 
 To roll back to a previous revision:
 
-* Using the `rollback` command:
+1. Using the `rollback` command:
+	```
+	cf rollback APP-NAME --version VERSION
+	```
+	Where `APP-NAME` is the name of your APP and `VERSION` is the revision version you want to rollback to.
+
+
+1. Retrieve the GUID of the app by running:
 
 	```
 	cf rollback APP-NAME --version VERSION

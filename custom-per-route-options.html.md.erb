@@ -51,90 +51,90 @@ To configure per-route load balancing for an application that has not yet been p
 
 ### <a id="lb-update-route"></a> Change Load Balancing Algorithm of an Existing Route
 
-To change the per-route `loadbalancing` option of an existing route, you can use the cli command, `update-route`. 
+To change the per-route `loadbalancing` option of an existing route, you can use the cli command, `update-route`.
 
 For example, to change an app route's algorithm from `least-connection` to `round-robin`, you can run the `update-route` command:
 
-    ```console
-    cf update-route EXAMPLE.COM --host MY-HOST --option loadbalancing=round-robin
-    ```
+  ```console
+  cf update-route EXAMPLE.COM --host MY-HOST --option loadbalancing=round-robin
+  ```
 
 Alternatively, it is also possible to update the per-route load balancing option via the `/v3/routes` API.
 
 Run the `PATCH` request to the targeted API endpoint:
 
-    ```console
-    cf curl /v3/routes/GUID -X PATCH -H "Content-type: application/json" \
-      -d '{
-        "options": {
-          "loadbalancing": "round-robin"
-        }
-      }'
-    ```
+  ```console
+  cf curl /v3/routes/GUID -X PATCH -H "Content-type: application/json" \
+    -d '{
+      "options": {
+        "loadbalancing": "round-robin"
+      }
+    }'
+  ```
 
-    Where `GUID` is the unique identifier for the route.
+  Where `GUID` is the unique identifier for the route.
 
 ### <a id="lb-create-route"></a> Create a Route with a specific Load Balancing Algorithm
 
-To create a route with a per-route `loadbalancing` option, you can use the cli command `create-route`. 
+To create a route with a per-route `loadbalancing` option, you can use the cli command `create-route`.
 For example:
 
-    ```console
-    cf create-route EXAMPLE.COM --host MY-HOST --option loadbalancing=round-robin
-    ```
+  ```console
+  cf create-route EXAMPLE.COM --host MY-HOST --option loadbalancing=round-robin
+  ```
 
 Alternatively, it is also possible to create a route with a per-route load balancing option via the `/v3/routes` API:
 
-    ```console
-    cf curl /v3/routes -X POST -H "Content-type: application/json" \
-      -d '{
-        "host": "MY-HOST",
-        "path": "MY-PATH",
-        ...
-        "options": {
-          "loadbalancing": "round-robin"
-        }
-      }'
-    ```
+  ```console
+  cf curl /v3/routes -X POST -H "Content-type: application/json" \
+    -d '{
+      "host": "MY-HOST",
+      "path": "MY-PATH",
+      ...
+      "options": {
+        "loadbalancing": "round-robin"
+      }
+    }'
+  ```
 
 ### <a id="lb-map-route"></a> Map a Route to an Existing App with specific Load Balancing Algorithm
 
-To create and map a new route to an existing application with the per-route `loadbalancing` option, you can use the cli command `map-route`. 
+To create and map a new route to an existing application with the per-route `loadbalancing` option, you can use the cli command `map-route`.
 
 For example:
 
-    ```console
-    cf map-route MY-APP EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-robin
-    ```
+  ```console
+  cf map-route MY-APP EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-robin
+  ```
 
 <p class="note">
-The command <code>map-route</code> supports the <code>--option</code> flag only for new routes. 
+The command <code>map-route</code> supports the <code>--option</code> flag only for new routes.
 To update an existing route, the command <code>update-route</code> must be used as described before.</p>
 
 ### <a id="lb-retrieve-route-options"></a> Retrieve Route Options
 
 To read route options, you can query the route using the `route` command:
 
-    ```console
-    cf route EXAMPLE.COM --hostname MY-HOST
-    ```
+  ```console
+  cf route EXAMPLE.COM --hostname MY-HOST
+  ```
 
    The response lists the chosen `loadbalancing` algorithm option, e.g. `least-connection`:
 
-    ```console
-    options: {loadbalancing=least-connection}
-    ```
+  ```console
+  options: {loadbalancing=least-connection}
+  ```
 
    Alternatively, you can query the `routes` API endpoint for a route:
 
-    ```console
-    cf curl /v3/routes/?hosts=MY-HOST
-    ```
+  ```console
+  cf curl /v3/routes/?hosts=MY-HOST
+  ```
 
-    Where `MY-HOST` is the host attribute of the route. The response lists the chosen `loadbalancing` algorithm option as well:
+  Where `MY-HOST` is the host attribute of the route. The response lists the chosen `loadbalancing` algorithm option as well:
 
-    ```console
-       "options": {"loadbalancing": "least-connection"}
-    ```
+  ```console
+      "options": {"loadbalancing": "least-connection"}
+  ```
 
 To retrieve all the routes with the corresponding options in a space of an organization, you can use the `routes` command.

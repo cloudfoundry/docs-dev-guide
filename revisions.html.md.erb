@@ -63,43 +63,66 @@ This section describes how to use CAPI endpoints for viewing revisions.
 
 To list revisions for an app:
 
-1. Retrieve the GUID of the app by running:
-
+1. Using the `revisions` command:
+	 
 	```
-	cf app APP-NAME --guid
+	cf revisions APP-NAME
 	```
 	Where `APP-NAME` is the name of your app.
 
-1. Run:
+1. Using the `curl` command
+	
+	1. Retrieve the GUID of the app by running:
 
-	```
-	cf curl /v3/apps/GUID/revisions
-	```
-	Where `GUID` is the GUID you retrieved in an earlier step.
+		```
+		cf app APP-NAME --guid
+		```
+		Where `APP-NAME` is the name of your app.
+
+	1. Run:
+
+		```
+		cf curl /v3/apps/GUID/revisions
+		```
+		Where `GUID` is the GUID you retrieved in an earlier step.
 
 ### <a id="list-deployed"></a> List deployed revisions for an app
 
 Deployed revisions are revisions linked to started processes in an app. To list deployed revisions:
 
-1. Retrieve the GUID of the app by running:
-
+1. Using the `revision` command:
 	```
-	cf app APP-NAME --guid
+	cf revision APP-NAME
 	```
 	Where `APP-NAME` is the name of your app.
 
-1. Run:
+1. Using the `curl` command
+	1. Retrieve the GUID of the app by running:
 
-	```
-	cf curl /v3/apps/GUID/revisions/deployed
-	```
-	Where `GUID` is the GUID you retrieved in an earlier step.
+		```
+		cf app APP-NAME --guid
+		```
+		Where `APP-NAME` is the name of your app.
+
+	1. Run:
+
+		```
+		cf curl /v3/apps/GUID/revisions/deployed
+		```
+		Where `GUID` is the GUID you retrieved in an earlier step.
 
 ### <a id="get"></a> Retrieve a revision
 
 To retrieve a revision:
 
-1. Run:
+1. Using the `revision` command:
+	```
+	cf revision APP-NAME --version VERSION
+	```
+	Where `APP-NAME` is the name of your APP and `VERSION` is the revision version.
+
+1. Using the `curl` command
+	1. Run:
 
 	```
 	cf curl /v3/revisions/GUID
@@ -110,6 +133,13 @@ To retrieve a revision:
 ## <a id="push-app"></a> Roll back to a previous revision
 
 To roll back to a previous revision:
+
+1. Using the `rollback` command:
+	```
+	cf rollback APP-NAME --version VERSION
+	```
+	Where `APP-NAME` is the name of your APP and `VERSION` is the revision version you want to rollback to.
+
 
 1. Retrieve the GUID of the app by running:
 

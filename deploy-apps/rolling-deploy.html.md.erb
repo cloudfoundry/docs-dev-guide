@@ -3,10 +3,9 @@ title: Configuring app deployments
 owner: CAPI
 ---
 
-You can use Cloud Foundry Command Line Interface (cf CLI) commands
-or the Cloud Foundry API (CAPI) to push your apps to <%= vars.app_runtime_first %> using a deployment.
+This page describes how to use the Cloud Foundry Command Line Interface (cf CLI) or API (CAPI) to push apps to <%= vars.app_runtime_first %> using rolling deployment or canary deployment strategies, which update apps safely and avoid downtime.
 
-For information about the traditional method for addressing app downtime while pushing app updates,
+For information about the older method for avoiding app downtime while pushing app updates,
 see [Using blue-green deployment to reduce downtime and risk](./blue-green.html).
 
 For more information about CAPI, see the
@@ -31,10 +30,11 @@ Or for canary deployments:
 
 Cloud Foundry provides two different strategies for deployments:
 
-1. Rolling deployments bring up one or more web processes (as defined by `max-in-flight`) at a time. After those instances report healthy and routable, the deployment brings down an equivalent number instances of the old revision. The deployment repeats this process until all instances have been replaced, and finally replaces all old non-web processes with new processes before finishing.
-2. Canary deployments bring up a single web process of the new revision, then pause indefinitely. This gives time for app operators or developers to evaluate the health of a new revision. After evaluating the effects, app operators can choose to either `cancel` or `continue` the deployment. When the deployment is continued, the canary deployment proceeds in a way similar to a rolling deployment.
+* A **Rolling** deployment brings up one or more web processes for the new app version, with the number set by `max-in-flight`. After those instances report as healthy and routable, it brings down the same number of instances of the old version. The deployment repeats this process to replace all web process instances and then updates all old non-web processes.
+* A **Canary** deployment brings up a limited number of web processes for the new app version, defaulting to 1, then pauses indefinitely to let app operators or developers evaluate the health of a new version. After evaluating the effects, app operators can choose to either `cancel` or `continue` the deployment. When the deployment is continued, the canary deployment proceeds in a way similar to a rolling deployment.
+  * To gradually increase instance counts and check app health in multiple steps, the latest cf CLI v8 supports an `--instance-steps` option that sets a series of increasing instance counts for canary deployments.
 
-The following sections describe these deployment strategies and their limitations in detail.
+The following sections describe these deployment strategies and their limitations, and how `cf revisions` and `cf revision` commands track deployments.
 
 ### <a id="deployment-process"></a> Rolling Deployments
 
@@ -329,7 +329,7 @@ output.
 
 For more information about this command, see [How Deployment Strategies Work](#how-deployment-strategies-work).
 
-### <a id="cancel"></a> Cancel a Deployment
+### <a id="cancel"></a> Cancel a deployment
 
 To stop the deployment of an app that you pushed:
 
@@ -362,7 +362,7 @@ original state as quickly as possible and does not guarantee zero downtime.
 <br>It is important to note that changes
 to environment variables and service bindings are not reverted.</p>
 
-### <a id="continue"></a> Continue a Canary Deployment
+### <a id="continue"></a> Continue a canary deployment
 
 To finish a canary deployment after the deployment has paused and the canary instance has been validated:
 

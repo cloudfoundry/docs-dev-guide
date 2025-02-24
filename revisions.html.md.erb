@@ -6,7 +6,10 @@ owner: CAPI
 A revision represents code and configuration used by an app at a specific time. It is a Cloud Foundry API (CAPI) object that can contain references to a droplet, a custom start command, and environment variables. The most recent revision for a running app represents code and configuration running in <%= vars.platform_name %>.
 App revisions do not include any tasks run on the app.
 
-For additional information about app revisions, see [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation.
+For additional information about app revisions, see:
+
+* []
+* [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation.
 
 <p class="note important">
 <span class="note__title"><strong>Important</strong></span>
@@ -66,27 +69,27 @@ This section describes how to use CAPI endpoints for viewing revisions.
 To list revisions for an app:
 
 * Using the `revisions` command:
-	 
-	```
-	cf revisions APP-NAME
-	```
-	Where `APP-NAME` is the name of your app.
 
-* Using the `curl` command
-	
-	1. Retrieve the GUID of the app by running:
+  ```
+  cf revisions APP-NAME
+  ```
+  Where `APP-NAME` is the name of your app.
 
-		```
-		cf app APP-NAME --guid
-		```
-		Where `APP-NAME` is the name of your app.
+* Using the `curl` command:
 
-	1. Run:
+  1. Retrieve the GUID of the app by running:
 
-		```
-		cf curl /v3/apps/GUID/revisions
-		```
-		Where `GUID` is the GUID you retrieved in an earlier step.
+    ```
+    cf app APP-NAME --guid
+    ```
+    Where `APP-NAME` is the name of your app.
+
+  1. Run:
+
+    ```
+    cf curl /v3/apps/GUID/revisions
+    ```
+    Where `GUID` is the GUID you retrieved in an earlier step.
 
 ### <a id="list-deployed"></a> List deployed revisions for an app
 
@@ -94,26 +97,26 @@ Deployed revisions are revisions linked to started processes in an app. To list 
 
 * Using the `revision` command:
 
-	```
-	cf revision APP-NAME
-	```
-	Where `APP-NAME` is the name of your app.
+  ```
+  cf revision APP-NAME
+  ```
+  Where `APP-NAME` is the name of your app.
 
 * Using the `curl` command
 
-	1. Retrieve the GUID of the app by running:
+  1. Retrieve the GUID of the app by running:
 
-		```
-		cf app APP-NAME --guid
-		```
-		Where `APP-NAME` is the name of your app.
+    ```
+    cf app APP-NAME --guid
+    ```
+    Where `APP-NAME` is the name of your app.
 
-	1. Run:
+  1. Run:
 
-		```
-		cf curl /v3/apps/GUID/revisions/deployed
-		```
-		Where `GUID` is the GUID you retrieved in an earlier step.
+    ```
+    cf curl /v3/apps/GUID/revisions/deployed
+    ```
+    Where `GUID` is the GUID you retrieved in an earlier step.
 
 ### <a id="get"></a> Retrieve a revision
 
@@ -121,19 +124,19 @@ To retrieve a revision:
 
 * Using the `revision` command:
 
-	```
-	cf revision APP-NAME --version VERSION
-	```
-	Where `APP-NAME` is the name of your APP and `VERSION` is the revision version.
+  ```
+  cf revision APP-NAME --version VERSION
+  ```
+  Where `APP-NAME` is the name of your APP and `VERSION` is the revision version.
 
 * Using the `curl` command:
 
-	1. Run:
+  1. Run:
 
-	```
-	cf curl /v3/revisions/GUID
-	```
-	Where `GUID` is the GUID of the revision.
+  ```
+  cf curl /v3/revisions/GUID
+  ```
+  Where `GUID` is the GUID of the revision.
 
 
 ## <a id="push-app"></a> Roll back to a previous revision
@@ -142,23 +145,23 @@ To roll back to a previous revision:
 
 * Using the `rollback` command:
 
-	```
-	cf rollback APP-NAME --version VERSION
-	```
-	Where `APP-NAME` is the name of your APP and `VERSION` is the revision version you want to rollback to.
+  ```
+  cf rollback APP-NAME --version VERSION
+  ```
+  Where `APP-NAME` is the name of your APP and `VERSION` is the revision version you want to rollback to.
 
 * Using `curl` command:
 
-	1. Retrieve the GUID of the app:
+  1. Retrieve the GUID of the app:
 
-		```
-		cf app APP-NAME --guid
-		```
-		Where `APP-NAME` is the name of your app.
+    ```
+    cf app APP-NAME --guid
+    ```
+    Where `APP-NAME` is the name of your app.
 
-	1. Retrieve the GUID of the revision. See [Retrieve a revision](#get).
+  1. Retrieve the GUID of the revision. See [Retrieve a revision](#get).
 
-	1. Create a deployment using CAPI by running:
+  1. Create a deployment using CAPI by running:
 
     ```
     cf curl v3/deployments \
@@ -200,14 +203,14 @@ To deactivate revisions for an app:
 
 1. Retrieve the GUID of the app by running:
 
-	```
-	cf app APP-NAME --guid
-	```
-	Where `APP-NAME` is the name of your app.
+  ```
+  cf app APP-NAME --guid
+  ```
+  Where `APP-NAME` is the name of your app.
 
 1. Run:
 
-	```
-	cf curl /v3/apps/GUID/features/revisions -X PATCH -d '{ "enabled": false }'
-	```
-	Where `GUID` is the GUID you retrieved in an earlier step.
+  ```
+  cf curl /v3/apps/GUID/features/revisions -X PATCH -d '{ "enabled": false }'
+  ```
+  Where `GUID` is the GUID you retrieved in an earlier step.

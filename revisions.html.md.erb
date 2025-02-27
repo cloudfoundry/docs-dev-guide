@@ -6,33 +6,36 @@ owner: CAPI
 A revision represents code and configuration used by an app at a specific time. It is a Cloud Foundry API (CAPI) object that can contain references to a droplet, a custom start command, and environment variables. The most recent revision for a running app represents code and configuration running in <%= vars.platform_name %>.
 App revisions do not include any tasks run on the app.
 
-For additional information about app revisions, see:
-
-* []
-* [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation.
+For additional information about app revisions, see [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation.
 
 <p class="note important">
 CAPI v3 is the recommended API version for revisions. While revisions work with CAPI v2, there are several inconsistencies. For example, revision descriptions for apps with multiple processes can be inaccurate because CAPI v2 does not support apps with multiple processes. Additionally, pushing an app for the first time with revisions in CAPI v2 creates two revisions.</p>
 
-<p class="note caution">
-The app revisions API is experimental, and future releases might have breaking changes.</p>
 
-## <a id="overview"></a> Revisions use cases
+## <a id="overview"></a> Overview
 
-Some use cases for revisions include:
+Every <%= vars.platform_name %> app has a name.
+When you first deploy an app, <%= vars.platform_name %> gives it the revision version number `1`.
+When you re-deploy the app under the same name, for example as an update, <%= vars.platform_name %> increments its version number and saves the old version.
 
-* **Viewing revisions for an app:** This can help you understand how your app has changed over time.
+This saved application history is used by the `revisions` and `revision` CAPI endpoints and cf CLI commands to let you:
 
-* **Rolling back to a previous revision:** This allows you to deploy a version of the app that you had running previously without needing to track that previous state yourself or have multiple apps running. When you create a deployment and reference a revision, the revision deploys as the current version of your app.
+* **View revisions for an app:** To help you understand how your app has changed over time.
 
-### <a id="events"></a> Events that trigger revisions
+* **Roll back to a previous revision:** To deploy a version of the app that you had running previously without needing to track that previous state yourself or have multiple apps running. When roll back an app, the specified revision deploys as the new current version of your app.
 
-Revisions are generated through these events:
+> **Note** The `cf revision` command takes a `--version` flag to specify a version number, but the command's output lists the same number as its `revision`.
+
+### <a id="events"></a> When current app revision changes
+
+The app's revision version number increments when:
 
 * A new droplet is deployed for an app.
-* An app is deployed with new environment variables.
+* An app is deployed with `--strategy rolling` or `--strategy canary` as described in [Configuring app deployments](deploy-apps.html).
+* An app is deployed with a new environment variables.
 * An app is deployed with a new or changed custom start command.
 * An app rolls back to a prior revision.
+  - In this case, the newly-running version is identical to the specified old version.
 
 By default, CAPI retains a maximum of 100 revisions per app.
 
@@ -89,9 +92,9 @@ To list revisions for an app:
     ```
     Where `GUID` is the GUID you retrieved in an earlier step.
 
-### <a id="list-deployed"></a> List deployed revisions for an app
+### <a id="list-deployed"></a> List current revision for an app
 
-Deployed revisions are revisions linked to started processes in an app. To list deployed revisions:
+The current revision of an app is its currently-deployed revision, linked to started processes. To list an app's current revision:
 
 * Using the `revision` command:
 
@@ -115,6 +118,9 @@ Deployed revisions are revisions linked to started processes in an app. To list 
     cf curl /v3/apps/GUID/revisions/deployed
     ```
     Where `GUID` is the GUID you retrieved in an earlier step.
+
+  When the current app is still deploying or is in a `stopped` state, the command output states, `It is not possible to show which revision is currently deployed.`
+
 
 ### <a id="get"></a> Retrieve a revision
 

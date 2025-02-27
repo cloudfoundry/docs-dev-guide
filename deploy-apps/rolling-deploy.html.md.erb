@@ -30,13 +30,15 @@ Or for canary deployments:
 
 Cloud Foundry provides two different strategies for deployments:
 
-* A **Rolling** deployment brings up one or more web processes for the new app version, with the number set by `max-in-flight`. After those instances report as healthy and routable, it brings down the same number of instances of the old version. The deployment repeats this process to replace all web process instances and then updates all old non-web processes.
-* A **Canary** deployment brings up a limited number of web processes for the new app version, defaulting to 1, then pauses indefinitely to let app operators or developers evaluate the health of a new version. After evaluating the effects, app operators can choose to either `cancel` or `continue` the deployment. When the deployment is continued, the canary deployment proceeds in a way similar to a rolling deployment.
-  * To gradually increase instance counts and check app health in multiple steps, the latest cf CLI v8 supports an `--instance-steps` option that sets a series of increasing instance counts for canary deployments.
+* A **Rolling** deployment brings up one or more web processes for the new app version, with the number set by `max-in-flight`, which defaults to 1. After those instances report as healthy and routable, it brings down the same number of instances of the old version. The deployment repeats this process to replace all web process instances and then updates all old non-web processes.
+* A **Canary** deployment brings up one or more web processes for the new app version, defaulting to one. It then pauses to let app operators or developers evaluate the health of a new version instances. App operators can then choose to either `cancel` or `continue` the deployment. When the deployment is continued, the canary deployment proceeds in the same way as a rolling deployment.
+  * To gradually increase instance counts and check app health in multiple steps, the latest cf CLI v8 supports an `--instance-steps` option that sets a series of increasing instance counts.
 
-The following sections describe these deployment strategies and their limitations, and how `cf revisions` and `cf revision` commands track deployments.
+Each rolling or canary deployment increments the `revision` count for the new app deployment, as listed by the `cf revisions` command described in [] described in xxyx
 
-### <a id="deployment-process"></a> Rolling Deployments
+The following sections describe the rolling and canary deployment strategies and their limitations.
+
+### <a id="rolling"></a> Rolling Deployments
 
 This section describes pushing an app with the rolling deployment strategy.
 
@@ -58,9 +60,9 @@ background, updating deployments as follows:
     3. Restarts all non-web processes of the app.
     4. Sets the deployment to `DEPLOYED`.
 
-### <a id="canary-deployment-process"></a> Canary Deployments
+### <a id="canary"></a> Canary Deployments
 
-This section describes pushing an app with the canary deployment strategy.
+This section describes pushing an app with the default canary deployment strategy, without specifying specific step weights as described in [Canary Deployments with Step Weights](#canary-step).
 
 1. The `cf push APP-NAME --strategy canary` command:
     1. Stages the updated app package.
@@ -77,7 +79,7 @@ background, updating deployments as follows:
     2. Sets the deployment to `PAUSED`.
 
 1. After validating that the canary instance is running as expected, execute the command `cf continue-deployment APP-NAME`:
-    * Changes the deployment reason to `DEPLOYING` and resumes in a way similar to a that of a rolling deployment.
+    * Changes the deployment reason to `DEPLOYING` and resumes following the same process as a rolling deployment.
 
 2. After the command changes the status of the deployment, the `cc_deployment_updater` BOSH job runs in the
 background, updating deployments as follows:
@@ -87,6 +89,23 @@ background, updating deployments as follows:
     2. Removes the old web process. The new web process now fully replaces the old web process.
     3. Restarts all non-web processes of the app.
     4. Sets the deployment to `DEPLOYED`.
+
+### <a id="canary-step"></a> Canary Deployments with Step Weights
+
+By default, as described in [Canary Deployments](#canary), when you push an app with the canary deployment strategy, the process pauses after it deploys one canary instance, and you manually continue as described in [Continue a canary deployment](#continue) to update the remaining instances to the full-scale deployment.
+
+To run a canary deployment more gradually, you can pass a series of step weights to the `--instance-steps` option of `cf push`.
+  - The series specifies increasing numbers of canary instances to deploy, to let you manually continue after each step.
+  - Separate step weights with commas and without spaces, for example `5,10,20`.
+  - Continuing after the last canary step proceeds to the full-scale deployment.
+  - As with the default canary deployment process, a rolling deployment strategy updates instances to the new instance count at each step.
+
+For example, to update gradually in four steps, running 5, 10, and 20 canary instances before replacing all running instances of an app:
+
+  ```
+  cf push APP-NAME --strategy canary --instance-steps 5,10,20
+  ```
+
 
 ### <a id="limitations"></a> Limitations
 
@@ -380,7 +399,7 @@ To finish a canary deployment after the deployment has paused and the canary ins
     Where `DEPLOYMENT-GUID` is the GUID of the deployment that you recorded after following the
     CAPI procedure in [Deploy an app](#deploy).
 
-This continues the rolling deployment of the app.
+This continues the deployment of the app, following the same process as a rolling deployment.
 
 ### <a id="restart"></a> Restart an app
 

@@ -95,6 +95,7 @@ background, updating deployments as follows:
 By default, as described in [Canary Deployments](#canary), when you push an app with the canary deployment strategy, the process pauses after it deploys one canary instance, and you manually continue as described in [Continue a canary deployment](#continue) to update the remaining instances to the full-scale deployment.
 
 To run a canary deployment more gradually, you can pass a series of step weights to the `--instance-steps` option of `cf push`.
+
   - The series specifies increasing numbers of canary instances to deploy, to let you manually continue after each step.
   - Separate step weights with commas and without spaces, for example `5,10,20`.
   - Continuing after the last canary step proceeds to the full-scale deployment.

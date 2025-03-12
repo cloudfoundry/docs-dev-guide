@@ -37,8 +37,8 @@ To configure per-route load balancing for an application that has not yet been p
    	- name: MY-APP
    	  routes:
    	    - route: MY-HOST.EXAMPLE.COM
-           options:
-             loadbalancing: least-connection
+   	      options:
+   	        loadbalancing: least-connection
    	```
 
     Where `MY-APP` is the name of your app and `MY-HOST.EXAMPLE.COM` is the route you want to map to your app.

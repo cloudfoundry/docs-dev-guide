@@ -68,7 +68,7 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
       <li><code>SYSLOG-DRAIN-URL</code> is the syslog URL from <a href="#step1">Step 1: Configure the Log Management Service</a>.</li>
     </ul>
 
-    By default, the syslog agent forwards only application logs to a syslog server. To have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, use the `drain-data` parameter to specify if only logs (default), only container metrics, only traces ([timers](https://github.com/cloudfoundry/loggregator-api/blob/master/README.md#timer) from the Loggregator v2 API specification), or all of them are  forwarded by the syslog drain. Add the `drain-data` parameter to the `SYSLOG-DRAIN-URL`.
+    By default, the Syslog Agent forwards only application logs to a syslog server. To have the application [container metrics](../../loggregator/container-metrics.html) like CPU, memory, or disk usage forwarded as well, use the `drain-data` parameter to specify if only logs (default), only container metrics, only traces ([timers](https://github.com/cloudfoundry/loggregator-api/blob/master/README.md#timer) from the Loggregator v2 API specification), or all of them are  forwarded by the syslog drain. Add the `drain-data` parameter to the `SYSLOG-DRAIN-URL`.
 
     <pre class="terminal">
     $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL?drain-data=DRAIN-DATA-VALUE
@@ -123,6 +123,22 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
     <pre class="terminal">
     $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----", "cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
     </pre>
+
+    When setting up your syslog drain, it is important to choose the correct scheme for your SYSLOG-URL:
+
+    * Use the syslog-tls scheme for endpoints that require TLS or mTLS.
+    * Use the syslog scheme for endpoints that do not require TLS.
+    * Use the https scheme when shipping logs to an HTTPS endpoint.
+
+    If you need to use TLS or mTLS, ensure that you provide the necessary CA certificate. Additionally to the CA certificate for mTLS configuration, both the client certificate and the key must be provided.
+
+    Ensure that certificates and keys are PEM-encoded as specified in RFC-1422. They should be provided as string values, with new lines represented by the `\n` character, and must not have trailing new lines. You can convert a PEM-encoded certificate string to a processable format using the following command:
+    
+    <pre class="terminal">
+    $ awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' cert.pem | sed 's/\\n$//' | tr -d '\n'
+    </pre>
+
+    The `cf create-user-provided-service` command accepts any JSON payload without validating the certificates or credentials while creating the syslog drain. There is no error message for wrong certificates or credentials in the cf CLI; you can only validate in your target log service if your syslog drain was configured correctly. To troubleshoot your certificates, you can use the openssl command line tool.
 
     For more information, see [User-provided service instances](./user-provided.html).
 

@@ -124,6 +124,20 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
     $ cf create-user-provided-service DRAIN-NAME -l SYSLOG-URL -p '{"ca":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----", "cert":"-----BEGIN CERTIFICATE-----\nMIIH...-----END CERTIFICATE-----","key":"-----BEGIN PRIVATE KEY-----\nMIIE...-----END PRIVATE KEY-----"}'
     </pre>
 
+    When setting up your syslog drain, it's important to choose the correct scheme for your SYSLOG-URL:
+
+    * Use the syslog-tls scheme for endpoints that require TLS or mTLS.
+    * Use the syslog scheme for endpoints that do not require TLS.
+    * Use the https scheme when shipping logs to an HTTPS endpoint.
+
+    If you need to use TLS with a custom Certificate Authority (CA), ensure that you provide the necessary CA certificate. For mTLS configuration, both the client certificate and key must be provided. Moreover, when utilizing mTLS with a custom CA, include both the client certificate and key along with the CA certificate.
+
+    Please ensure that certificates and keys are PEM-encoded as specified in RFC-1422. They should be provided as string values, with new lines represented by the \n character, and must not have trailing new lines. You can convert a PEM-encoded certificate string to a format accepted by the cf create-user-provided-service command using the following command:
+    
+    <pre class="terminal">
+    $ awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' cert.pem | sed 's/\\n$//' | tr -d '\n'
+    </pre>
+
     For more information, see [User-provided service instances](./user-provided.html).
 
 2. To bind an app to the service instance, do one of these:

@@ -553,10 +553,6 @@ $ cf delete-route tcp.<%= vars.private_app_domain %> --port 60000
 
 Users can route HTTP requests to a specific app instance using the header `X-Cf-App-Instance`.
 
-<p class="note important">
-Use of the <code>X-Cf-App-Instance</code> header is available only for users on the Diego architecture.
-</p>
-
 The format of the header is `X-Cf-App-Instance: APP_GUID:APP_INDEX`.
 
 `APP_GUID` is an internal identifier for your app.
@@ -601,6 +597,69 @@ These are the possible error responses:
     <td>The value provided for <code>X-Cf-App-Instance</code> is a correctly formatted GUID, but no instance is found with that GUID for the route
       requested.</td>
     <td><code>400 Bad Request: Requested instance ('1') with guid ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route
+      ('example-route.cf.com')</code></td>
+  </tr>
+</table>
+
+### <a id='surgical-routing-process'></a> Routing requests to a specific process instance
+
+Since routing-release version XYZ, users can route HTTP requests to a specific
+process instance using the header `X-Cf-Process-Instance`.
+
+The format of the header is `X-Cf-Process-Instance: PROCESS_GUID:PROCESS_INDEX` or `X-Cf-Process-Instance: PROCESS_GUID`.
+
+`PROCESS_GUID` is an internal identifier for a specific app process.
+Use `cf curl /v3/apps/$(cf APP-NAME --guid)/processes` command to discover the `PROCESS_GUID`s related to your app.
+
+`PROCESS_INDEX`, for example, `0`,`1`, `2`, or `3`, is an identifier for a particular process instance. Use the CLI command `cf app APP-NAME` to get statistics on each
+instance of a particular app process.
+
+<pre class="terminal">
+$ cf app example-app
+</pre>
+
+The following example shows a request made to instance `9` of an process with GUID `5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e` and mapped to route
+`example-app.<%= vars.private_app_domain %>`.
+
+<pre class="terminal">
+$ curl example-app.<%= vars.private_app_domain %> -H "X-Cf-Process-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e:9"
+</pre>
+
+The following example shows a request made a process with GUID `5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e` and mapped to route
+`example-app.<%= vars.private_app_domain %>`.
+
+<pre class="terminal">
+$ curl example-app.<%= vars.private_app_domain %> -H "X-Cf-Process-Instance: 5cdc7595-2e9b-4f62-8d5a-a86b92f2df0e"
+</pre>
+
+If the `X-Cf-Process-Instance` header is set to an invalid value, Gorouter returns a `400` status code and the response from Gorouter contains a
+`X-Cf-Routererror` header with more information about the error.
+
+These are the possible error responses:
+
+<table class="table">
+  <thead><tr>
+    <th width="30%">X-Cf-Routererror value</th>
+    <th width="30%">Reason for error</xth>
+    <th width="40%">Response body</th>
+  </tr></thead>
+  <tr>
+    <td><code>invalid_cf_process_instance_header</code></td>
+    <td>The value provided for <code>X-Cf-Process-Instance</code> was an incorrectly formatted GUID.</td>
+    <td>None</td>
+  </tr>
+  <tr>
+    <td><code>unknown_route</code></td>
+    <td>The value provided for <code>X-Cf-Process-Instance</code> is a correctly formatted GUID, but no backend is found with that GUID and index for the route
+      requested.</td>
+    <td><code>400 Bad Request: Requested process instance ('1') with guid ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route
+      ('example-route.cf.com')</code></td>
+  </tr>
+  <tr>
+    <td><code>unknown_route</code></td>
+    <td>The value provided for <code>X-Cf-Process-Instance</code> is a correctly formatted GUID but no backend is found with that GUID for the route
+      requested.</td>
+    <td><code>400 Bad Request: Requested process instance with guid ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa') does not exist for route
       ('example-route.cf.com')</code></td>
   </tr>
 </table>

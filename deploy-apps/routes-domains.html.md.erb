@@ -665,6 +665,9 @@ These are the possible error responses:
 </table>
 
 
+If the `X-Cf-App-Instance` header and the `X-Cf-Process-Instance` header are
+present on the same request, then the `X-Cf-App-Instance` takes presidence.
+
 ## <a id='domains'></a> Domains
 
 The term <em>domain</em> here differs from its common use and is specific to <%= vars.app_runtime_abbr %>.

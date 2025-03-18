@@ -179,7 +179,7 @@ The following table describes the limitations when using these deployments.
       This method only works with routing-release XYZ or higher.
       <br>
       <br>
-      Get the canary process guid via <code>cf curl /v3/deployments?status_values=ACTIVE?app_guid=$(cf app APP_NAME --guid)</code>.
+      Get the canary process guid via <code>cf curl /v3/deployments?status_values=ACTIVE&app_guid=$(cf app APP_NAME --guid)</code>.
       Add the <code>X-CF-PROCESS-INSTANCE:<CANARY_PROCESS_GUID></code> header to traffic
       to the app. Optionally, to send traffic to one specific canary instance,
       add an index:

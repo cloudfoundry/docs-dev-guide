@@ -9,7 +9,9 @@ You can bind your apps to service instances for the purpose of generating creden
 
 ## <a id='bind'></a>Bind a service instance
 
-Binding a service instance to your app triggers credentials to be provisioned for the service instance and delivered to the app runtime in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. For details about consuming these credentials with your app, see [Using bound service instances](#use).
+Binding a service instance to your app triggers credentials to be provisioned for the service instance and delivered to the app runtime. CloudFoundry offers 3 different methods to deliver those credentials to the app.
+
+For details about the different delivery methods and consumption of these credentials with your app, see [Credential Delivery Methods](#credential-delivery-methods).
 
 Not all services support binding, as some services deliver value to users directly without integration with an app. In many cases, binding credentials are unique to an app, and another app bound to the same service instance receives different credentials, but this depends on the service.
 
@@ -24,6 +26,140 @@ $ cf restart my-app
 
 <p class="note important">
 You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
+
+### <a id='credential-delivery-methods'></a> Credential Delivery Methods
+
+After your service instance is created and bound to your app, the credentials together with some metadata are available in the app container and can be consumed by your app.
+There are the following three delivery methods, which are mutually exclusive. The developer can choose which one to use and needs to adjust the consumption in the app accordingly.
+For details about consuming credentials specific to your development framework, see the Service Binding section in the documentation for your framework's [buildpack](../../buildpacks/index.html).
+
+#### <a id='vcap-services'></a> Default VCAP_SERVICES environment variable
+
+By default credentials and additional metadata for all bound service instances are stored in the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable.
+
+There are two methods developers can use to have their apps consume binding credentials.
+
+* **Parse the JSON yourself:** See the documentation for [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES). Helper libraries are available for some frameworks.
+* **Auto-configuration:** Some buildpacks create a service connection for you by creating additional environment variables, updating config files, or passing system parameters to the JVM.
+
+For checking the binding data manually app devlopers can use `cf env`. See [View Env](../deploy-apps/environment-variable.html#view-env).
+
+<p class="note important">
+The maximum size of content of the VCAP_SERVICES environment variable is 130 KB. If you want to bind more services to the app or the services you want to bind provide lots of data, you can use one of the other methods.</p>
+
+#### <a id='file-based-vcap-services'></a> File-based VCAP services (experimental)
+
+This delivery method is used when the app feature [file-based-vcap-services](https://v3-apidocs.cloudfoundry.org/index.html#app-features) is enabled.
+The environment variable [VCAP_SERVICES_FILE_PATH](../deploy-apps/environment-variable.html#VCAP-SERVICES-FILE-PATH) will be made available in the app container and contains the path to a file containing the same content as the VCAP_SERVICES environment variable above.
+
+The binding data can be viewed like this:
+
+~~~
+cf ssh <app_name> -c 'cat $VCAP_SERVICES_FILE_PATH'
+~~~
+
+<p class="note important">
+The vcap_services file content cannot exceed 1 MB, otherwise an `IncompatibleBindings` error is raised.</p>
+
+#### <a id='service-binding-k8s'></a> Service Binding K8s (experimental)
+
+This delivery method is used when the app feature [service-binding-k8s](https://v3-apidocs.cloudfoundry.org/index.html#app-features) is enabled.
+The environment variable [SERVICE_BINDING_ROOT](../deploy-apps/environment-variable.html#SERVICE-BINDING-ROOT) will be made available in the app container and contains the path to the root folder of a file structure containing binding information.
+This method is fully compatible with the specification on [servicebinding.io](https://servicebinding.io/), which is used by Kubernetes as well.
+
+The binding data can be viewed like this:
+
+~~~
+cf ssh <app_name> -c 'find $SERVICE_BINDING_ROOT -type f -exec bash -c "echo {}: \$(cat {})" \;'
+~~~
+
+<p class="note important">
+The bytesize of all files and their content combined cannot exceed 1 MB, otherwise an `IncompatibleBindings` error is raised.</p>
+
+Here are some examples outlining the transformation of VCAP_SERVICES to the file structure:
+
+Nested structures inside their value will be serialized as JSON objects. The same applies if the value is a list.
+
+~~~
+VCAP_SERVICES= {
+  "foo": [
+    {
+      "name": "foo",
+      "credentials": {
+        "simple": "value",
+        "deeply": {
+          "nested": "value"
+        },
+        "list": ["v", "a", "l", "u", "e"]
+      }
+    }
+  ]
+}
+
+Service Binding Files:
+  foo/name: foo
+  foo/simple: value
+  foo/deeply: {"nested":"value"}
+  foo/list: ["v","a","l","u","e"]
+~~~
+
+Existing credential keys can be overwritten by other attributes, that are [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) attributes plus type and provider. The full list of reserved file names is: binding-guid, binding-name, instance-guid, instance-name, name, label, tags, plan, syslog-drain-url, volume-mounts, type, and provider. Overwriting an existing key does not result in an error. 
+
+~~~
+VCAP_SERVICES= {
+  "foo": [
+    {
+      "name": "foo",
+      "credentials": {
+        "name": "user",
+        "secret": "password"
+      }
+    }
+  ]
+}
+
+Service Binding Files:
+  foo/name: foo
+  foo/secret: password
+~~~
+
+Empty lists or null values are omitted, i.e. no file will be created.
+
+~~~
+VCAP_SERVICES= {
+  "foo": [
+    {
+      "name": "foo",
+      "binding_guid": "45436ca8-0a7c-45e3-9439-ca1b44db7a2b",
+      "syslog_drain_url": null,
+      "volume_mounts": []
+    }
+  ]
+}
+
+Service Binding Files:
+  foo/name: foo
+  foo/binding-guid: 45436ca8-0a7c-45e3-9439-ca1b44db7a2b
+~~~
+
+Binding names and keys resulting in filenames must match [a-z0-9\-.]{1,253}. Invalid binding names and keys will result in IncompatibleBindings error. VCAP_SERVICES attributes are transformed to comply to this schema, i.e. underscores are replaced by hyphens, so that e.g. VCAP_SERVICES attribute binding_guid becomes file name binding-guid.
+
+~~~
+VCAP_SERVICES= {
+  "foo": [
+    {
+      "name": "foo",
+      "binding_guid": "45436ca8-0a7c-45e3-9439-ca1b44db7a2b",
+      "instance_guid": "83745ca8-0a7c-45e3-9439-ca1b44db7a2b"
+    }
+  ]
+}
+
+Service Binding Files:
+  foo/name: foo
+  foo/binding-guid: 45436ca8-0a7c-45e3-9439-ca1b44db7a2b
+  foo/instance-guid: 83745ca8-0a7c-45e3-9439-ca1b44db7a2b
+~~~
 
 ### <a id='arbitrary-params-binding'></a> Arbitrary parameters
 
@@ -101,15 +237,6 @@ The provided name is available in the `name` and `binding_name` properties in th
   ]
 }
 ~~~
-
-### <a id='use'></a>Using bound service instances
-
-After your service instance is created and bound to your app, you must configure the app to dynamically fetch the credentials for your service instance. The [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable contains credentials and additional metadata for all bound service instances. There are two methods developers can use to have their apps consume binding credentials.
-
-* **Parse the JSON yourself:** See the documentation for [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES). Helper libraries are available for some frameworks.
-* **Auto-configuration:** Some buildpacks create a service connection for you by creating additional environment variables, updating config files, or passing system parameters to the JVM.
-
-For details about consuming credentials specific to your development framework, see the Service Binding section in the documentation for your framework's [buildpack](../../buildpacks/index.html).
 
 ## <a id='update-credentials'></a>Update service credentials
 

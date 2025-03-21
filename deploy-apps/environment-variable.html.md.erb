@@ -15,7 +15,7 @@ Environment variables are the means <%= vars.app_runtime_abbr %> uses to communi
 For information about setting your own app-specific environment variables, see the [Environment variable](./manifest.html#env-block) in _Deploying with app manifests_.
 
 <p class="note important">
-Do not use user-provided environment variables for security-sensitive information such as credentials. They might unintentionally show up in cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided environment variable <a href="#VCAP_SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter and in Cloud Controller log files.</p>
+Do not use user-provided environment variables for security-sensitive information such as credentials. They might unintentionally show up in cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. Credentials which are provided to the app via service bindings are redacted for user roles such as Space Supporter and in Cloud Controller log files.</p>
 
 <p class="note important">
 The maximum size of an environment variable is 130&nbsp;KB. This limit applies also to <%= vars.app_runtime_abbr %> system environment variables such as <code>VCAP_SERVICES</code> and <code>VCAP_APPLICATION</code>.</p>
@@ -25,9 +25,14 @@ The maximum size of an environment variable is 130&nbsp;KB. This limit applies a
 
 Using the Cloud Foundry Command Line Interface (cf CLI), you can run the `cf env` command to view the <%= vars.app_runtime_abbr %> environment variables for your app. The `cf env` command displays the following environment variables:
 
-* The `VCAP_APPLICATION` and `VCAP_SERVICES` variables provided in the container environment
-
+* The `VCAP_APPLICATION` variable, which contains app metadata
 * The user-provided variables set using the `cf set-env` command
+
+There are 3 possible ways of providing service binding data to apps, see [Credential Delivery Methods](../services/application-binding.html#credential-delivery-methods). Depending on the chosen method there will be one of the following environment variables:
+
+* [VCAP_SERVICES](#VCAP-SERVICES)
+* [SERVICE_BINDING_ROOT](#SERVICE-BINDING-ROOT) (experimental)
+* [VCAP_SERVICES_FILE_PATH](#VCAP-SERVICES-FILE-PATH) (experimental)
 
 For more information about the `cf env` command, see [env](http://cli.cloudfoundry.org/en-US/cf/env.html) in the cf CLI documentation. For more information about the `cf set-env` command, see [set-env](http://cli.cloudfoundry.org/en-US/cf/set-env.html) in the cf CLI documentation.
 
@@ -100,12 +105,14 @@ The following table lists the system variables available to your application con
 | `PATH` | x | x | x |
 | `PORT` | x |  |  |
 | `PWD` | x | x | x |
+| `SERVICE_BINDING_ROOT` | x | x | x |
 | `TMPDIR` | x |  | x |
 | `USER` | x | x | x |
 | `VCAP_APP_HOST` | x |  |  |
 | `VCAP_APP_PORT` | x |  |  |
 | `VCAP_APPLICATION` | x | x | x |
 | `VCAP_SERVICES` | x | x | x |
+| `VCAP_SERVICES_FILE_PATH` | x | x | x |
 
 ### <a id='CF-INSTANCE-ADDR'></a> CF_INSTANCE_ADDR
 
@@ -222,6 +229,12 @@ The present working directory where the buildpack that processed the app ran.
 
 For example: `PWD=/home/vcap/app`
 
+### <a id='SERVICE-BINDING-ROOT'></a> SERVICE_BINDING_ROOT (experimental)
+
+The root directory location, which contains the service binding information. This needs to be enabled by an app feature flag. See [Service Binding K8s](../services/application-binding.html#service-binding-k8s) for information on how to enable and how service binding data is stored in this directory.
+
+For example: `SERVICE_BINDING_ROOT=/etc/cf-service-bindings`
+
 ### <a id='TMPDIR'></a> TMPDIR
 
 The directory location where temporary and staging files are stored.
@@ -269,6 +282,8 @@ This environment variable contains the associated attributes for a deployed app.
 ### <a id='VCAP-SERVICES'></a> VCAP_SERVICES
 
 For bindable services, <%= vars.app_runtime_abbr %> adds connection details to the `VCAP_SERVICES` environment variable when you restart your app, after binding a service instance to your app. For more information about bindable services, see [Services overview](../services/index.html).
+
+This is the default [Credential Delivery Method](../services/application-binding.html#credential-delivery-methods).
 
 <%= vars.app_runtime_abbr %> returns the results as a JSON document that contains an object for each service for which one or more instances are bound to the app. The service object contains a child object for each instance of the service that is bound to the app.
 
@@ -341,6 +356,11 @@ VCAP_SERVICES=
 }
 ~~~
 
+### <a id='VCAP-SERVICES-FILE-PATH'></a> VCAP_SERVICES_FILE_PATH (experimental)
+
+The path to the file containing the service binding information in JSON format. This needs to be enabled by an app feature flag. See [File-based VCAP services](../services/application-binding.html#file-based-vcap-services) for more information.
+
+For example: `VCAP_SERVICES_FILE_PATH=/etc/cf-service-bindings/vcap_services`
 
 ## <a id='evgroups'></a> Environment variable groups
 

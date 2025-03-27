@@ -125,10 +125,11 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
     </pre>
 
     When setting up your syslog drain, it is important to choose the correct scheme for your SYSLOG-URL:
-
-    * Use the syslog-tls scheme for endpoints that require TLS or mTLS.
-    * Use the syslog scheme for endpoints that do not require TLS.
-    * Use the https scheme when shipping logs to an HTTPS endpoint.
+    <ul>
+        <li>Use the syslog-tls scheme for endpoints that require TLS or mTLS.</li>
+        <li>Use the syslog scheme for endpoints that do not require TLS.</li>
+        <li>Use the https scheme when shipping logs to an HTTPS endpoint.</li>
+    </ul>
 
     If you need to use TLS or mTLS, ensure that you provide the necessary CA certificate. Additionally to the CA certificate for mTLS configuration, both the client certificate and the key must be provided.
 

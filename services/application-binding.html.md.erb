@@ -42,7 +42,7 @@ There are two methods developers can use to have their apps consume binding cred
 * **Parse the JSON yourself:** See the documentation for [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES). Helper libraries are available for some frameworks.
 * **Auto-configuration:** Some buildpacks create a service connection for you by creating additional environment variables, updating config files, or passing system parameters to the JVM.
 
-For checking the binding data manually app devlopers can use `cf env`. See [View Env](../deploy-apps/environment-variable.html#view-env).
+For checking the binding data manually app developers can use `cf env`. See [View Env](../deploy-apps/environment-variable.html#view-env).
 
 <p class="note important">
 The maximum size of content of the VCAP_SERVICES environment variable is 130 KB. If you want to bind more services to the app or the services you want to bind provide lots of data, you can use one of the other methods.</p>
@@ -54,12 +54,12 @@ The environment variable [VCAP_SERVICES_FILE_PATH](../deploy-apps/environment-va
 
 The binding data can be viewed like this:
 
-~~~
+```
 cf ssh <app_name> -c 'cat $VCAP_SERVICES_FILE_PATH'
-~~~
+```
 
 <p class="note important">
-The vcap_services file content cannot exceed 1 MB, otherwise an `IncompatibleBindings` error is raised.</p>
+The vcap_services file content cannot exceed 1 MB, otherwise an <code>IncompatibleBindings</code> error is raised.</p>
 
 #### <a id='service-binding-k8s'></a> Service Binding K8s (experimental)
 
@@ -69,18 +69,18 @@ This method is fully compatible with the specification on [servicebinding.io](ht
 
 The binding data can be viewed like this:
 
-~~~
+```
 cf ssh <app_name> -c 'find $SERVICE_BINDING_ROOT -type f -exec bash -c "echo {}: \$(cat {})" \;'
-~~~
+```
 
 <p class="note important">
-The bytesize of all files and their content combined cannot exceed 1 MB, otherwise an `IncompatibleBindings` error is raised.</p>
+The bytesize of all files and their content combined cannot exceed 1 MB, otherwise an <code>IncompatibleBindings</code> error is raised.</p>
 
 Here are some examples outlining the transformation of VCAP_SERVICES to the file structure:
 
 Nested structures inside their value will be serialized as JSON objects. The same applies if the value is a list.
 
-~~~
+```
 VCAP_SERVICES= {
   "foo": [
     {
@@ -101,11 +101,11 @@ Service Binding Files:
   foo/simple: value
   foo/deeply: {"nested":"value"}
   foo/list: ["v","a","l","u","e"]
-~~~
+```
 
 Existing credential keys can be overwritten by other attributes, that are [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) attributes plus type and provider. The full list of reserved file names is: binding-guid, binding-name, instance-guid, instance-name, name, label, tags, plan, syslog-drain-url, volume-mounts, type, and provider. Overwriting an existing key does not result in an error. 
 
-~~~
+```
 VCAP_SERVICES= {
   "foo": [
     {
@@ -121,11 +121,11 @@ VCAP_SERVICES= {
 Service Binding Files:
   foo/name: foo
   foo/secret: password
-~~~
+```
 
 Empty lists or null values are omitted, i.e. no file will be created.
 
-~~~
+```
 VCAP_SERVICES= {
   "foo": [
     {
@@ -140,11 +140,11 @@ VCAP_SERVICES= {
 Service Binding Files:
   foo/name: foo
   foo/binding-guid: 45436ca8-0a7c-45e3-9439-ca1b44db7a2b
-~~~
+```
 
 Binding names and keys resulting in filenames must match [a-z0-9\-.]{1,253}. Invalid binding names and keys will result in IncompatibleBindings error. VCAP_SERVICES attributes are transformed to comply to this schema, i.e. underscores are replaced by hyphens, so that e.g. VCAP_SERVICES attribute binding_guid becomes file name binding-guid.
 
-~~~
+```
 VCAP_SERVICES= {
   "foo": [
     {
@@ -159,7 +159,7 @@ Service Binding Files:
   foo/name: foo
   foo/binding-guid: 45436ca8-0a7c-45e3-9439-ca1b44db7a2b
   foo/instance-guid: 83745ca8-0a7c-45e3-9439-ca1b44db7a2b
-~~~
+```
 
 ### <a id='arbitrary-params-binding'></a> Arbitrary parameters
 
@@ -226,7 +226,7 @@ OK
 
 The provided name is available in the `name` and `binding_name` properties in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable:
 
-~~~
+```
 "VCAP_SERVICES": {
   "service-name": [
     {
@@ -236,7 +236,7 @@ The provided name is available in the `name` and `binding_name` properties in th
     }
   ]
 }
-~~~
+```
 
 ## <a id='update-credentials'></a>Update service credentials
 

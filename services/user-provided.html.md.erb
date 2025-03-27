@@ -21,7 +21,7 @@ The alias for [cf create-user-provided-service](http://cli.cloudfoundry.org/en-U
 
 Suppose a developer obtains a URL, port, user name, and password for communicating with an Oracle database managed outside of Cloud Foundry. The developer can manually create custom environment variables to configure their app with these credentials (of course you never hard code these credentials in your app!).
 
-User-provided service instances allow developers to configure their apps with these using the familiar [App binding](application-binding.html) operation and the same app runtime environment variable used by Cloud Foundry to deliver credentials for Marketplace services ([VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES)).
+User-provided service instances allow developers to inject credentials into the app container using the familiar [App binding](application-binding.html) operation and the same [Credential Delivery Methods](./application-binding.html#credential-delivery-methods) used by Cloud Foundry to deliver credentials for Marketplace services.
 
 <pre class="terminal">
 cf cups SERVICE_INSTANCE -p '{"username":"admin","password":"pa55woRD"}'

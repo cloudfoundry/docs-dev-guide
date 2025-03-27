@@ -82,7 +82,7 @@ OK
 ### <a id='instance-tags-create'></a> Instance tags
 _Instance tags require cf CLI v6.12.1+_
 
-Some services provide a list of tags that Cloud Foundry delivers in the [VCAP_SERVICES environment variable](../deploy-apps/environment-variable.html#VCAP-SERVICES). These tags provide developers with a more generic way for apps to parse `VCAP_SERVICES` for credentials. Developers might provide their own tags when creating a service instance by including the `-t` flag followed by a comma-separated list of tags.
+Some services provide a list of tags that Cloud Foundry delivers to the app when the service is bound. These are included in the [VCAP_SERVICES environment variable](../deploy-apps/environment-variable.html#VCAP-SERVICES) or the file system depending on the chosen [Credential Delivery Method](./application-binding.html#credential-delivery-methods). These tags provide developers with a more generic way for apps to parse the service binding data for credentials. Developers might provide their own tags when creating a service instance by including the `-t` flag followed by a comma-separated list of tags.
 
 Example providing a comma-separated list of tags:
 
@@ -151,7 +151,7 @@ Not all services support binding, as some services deliver value to users direct
 Depending on the service, binding a service instance to your app might deliver credentials for the service instance to the app. See [Delivering service credentials to an app](application-binding.html) for more information.
 Binding a service instance to an app can trigger app logs to be streamed to the service instance. See [Streaming app logs to log management services](log-management.html).
 
-You must restart, or in some cases, re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.
+You must restart, or in some cases, re-push your app, so that new or changed binding data is delivered in the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable or the file system depending on the chosen [Credential Delivery Method](./application-binding.html#credential-delivery-methods).
 
 <pre class="terminal">
 $ cf bind-service my-app mydb
@@ -222,9 +222,9 @@ Binding service my-db to app rails-sample in org console / space development as 
 
 ### <a id='app-unbinding'></a>Unbind a service instance from an app
 
-Unbinding a service instance from an app removes the credentials created for your app from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
+Unbinding a service instance from an app removes the credentials from the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable or the file system depending on the chosen [Credential Delivery Method](./application-binding.html#credential-delivery-methods).
 
-You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.
+You must restart or in some cases re-push your app for changes to be applied.
 
 <pre class="terminal">
 $ cf unbind-service my-app mydb
@@ -252,7 +252,7 @@ OK
 
 ## <a id='rename_service'></a>Rename a service instance
 
-You can change the name given to a service instance. Upon restarting any bound apps, the name of the instance changes in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable. If your app depends on the instance name for discovering credentials, changing the name might break your app's use of the service instance.
+You can change the name given to a service instance. Upon restarting any bound apps, the name of the instance changes in the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable or the file system depending on the chosen [Credential Delivery Method](./application-binding.html#credential-delivery-methods). If your app depends on the instance name for discovering credentials, changing the name might break your app's use of the service instance.
 
 <pre class="terminal">
 $ cf rename-service mydb mydb1
@@ -293,8 +293,6 @@ Updating service instance mydb as user@example.com...
 
 ### <a id='instance-tags-update'></a> Instance tags
 _Instance tags require cf CLI v6.12.1+_
-
-Some services provide a list of tags that Cloud Foundry delivers in the [VCAP_SERVICES environment variable](../deploy-apps/environment-variable.html#VCAP-SERVICES). These tags provide developers with a more generic way for apps to parse `VCAP_SERVICES` for credentials. Developers can provide their own tags when creating a service instance by including a comma-separated list of tags with the `-t` flag.
 
 <pre class="terminal">
 $ cf update-service my-db -t "staging, web"

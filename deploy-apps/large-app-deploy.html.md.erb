@@ -26,7 +26,7 @@ To deploy large apps to <%= vars.app_runtime_abbr %>, ensure that:
 
 * The size of each environment variable for your app does not exceed 130&nbsp;KB. This includes <%= vars.app_runtime_abbr %> system environment variables such as `VCAP_SERVICES` and `VCAP_APPLICATION`. For more information, see [<%= vars.app_runtime_abbr %> environment variables](environment-variable.html).
 
-* If VCAP_SERVICES does get too large either because of too many service bindings or too much data provided by the services, check out the other two [Credential Delivery Methods](../services/application-binding.html#credential-delivery-methods) which have a limit of 1 MB.
+* If VCAP_SERVICES gets too large, either because of too many service bindings or too much data provided by the services, review the other two [Credential Delivery Methods](../services/application-binding.html#credential-delivery-methods); both of these have a limit of 1 MB.
 
 * You push only the files that are necessary for your app. To meet this requirement, push only the directory for your app, and remove unneeded files or use the `.cfignore` file to specify excluded files. For more information about specifying excluded files, see [Ignore unnecessary files when pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and Running an App in the Cloud_.
 

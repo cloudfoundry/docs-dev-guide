@@ -15,7 +15,7 @@ Environment variables are the means <%= vars.app_runtime_abbr %> uses to communi
 For information about setting your own app-specific environment variables, see the [Environment variable](./manifest.html#env-block) in _Deploying with app manifests_.
 
 <p class="note important">
-Do not use user-provided environment variables for security-sensitive information such as credentials. They might unintentionally show up in cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. Credentials which are provided to the app via service bindings are redacted for user roles such as Space Supporter and in Cloud Controller log files.</p>
+Do not use user-provided environment variables for security-sensitive information such as credentials. They might unintentionally show up in cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. Credentials that are provided to the app through service bindings are redacted for user roles such as Space Supporter and in Cloud Controller log files.</p>
 
 <p class="note important">
 The maximum size of an environment variable is 130&nbsp;KB. This limit applies also to <%= vars.app_runtime_abbr %> system environment variables such as <code>VCAP_SERVICES</code> and <code>VCAP_APPLICATION</code>.</p>
@@ -231,7 +231,7 @@ For example: `PWD=/home/vcap/app`
 
 ### <a id='SERVICE-BINDING-ROOT'></a> SERVICE_BINDING_ROOT (experimental)
 
-The root directory location, which contains the service binding information. This needs to be enabled by an app feature flag. See [Service Binding K8s](../services/application-binding.html#service-binding-k8s) for information on how to enable and how service binding data is stored in this directory.
+The root directory location, which contains the service binding information. This must be enabled by an app feature flag. See [Service Binding K8s](../services/application-binding.html#service-binding-k8s) for information about how to enable this, and how service binding data is stored in this directory.
 
 For example: `SERVICE_BINDING_ROOT=/etc/cf-service-bindings`
 
@@ -358,7 +358,7 @@ VCAP_SERVICES=
 
 ### <a id='VCAP-SERVICES-FILE-PATH'></a> VCAP_SERVICES_FILE_PATH (experimental)
 
-The path to the file containing the service binding information in JSON format. This needs to be enabled by an app feature flag. See [File-based VCAP services](../services/application-binding.html#file-based-vcap-services) for more information.
+This is the path to the file containing the service binding information in JSON format. It must be enabled by an app feature flag. See [File-based VCAP services](../services/application-binding.html#file-based-vcap-services) for more information.
 
 For example: `VCAP_SERVICES_FILE_PATH=/etc/cf-service-bindings/vcap_services`
 

@@ -29,13 +29,13 @@ You must restart or in some cases re-push your app for changes to be applied to 
 
 ### <a id='credential-delivery-methods'></a> Credential Delivery Methods
 
-After your service instance is created and bound to your app, the credentials together with some metadata are available in the app container and can be consumed by your app.
-There are the following three delivery methods, which are mutually exclusive. The developer can choose which one to use and needs to adjust the consumption in the app accordingly.
+After your service instance is created and bound to your app, the credentials, along with some metadata, are available in the app container and can be consumed by your app.
+There are three delivery methods, which are mutually exclusive. The developer can choose which one to use and then must adjust the consumption in the app accordingly.
 For details about consuming credentials specific to your development framework, see the Service Binding section in the documentation for your framework's [buildpack](../../buildpacks/index.html).
 
 #### <a id='vcap-services'></a> Default VCAP_SERVICES environment variable
 
-By default credentials and additional metadata for all bound service instances are stored in the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable.
+By default, credentials and additional metadata for all bound service instances are stored in the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable.
 
 There are two methods developers can use to have their apps consume binding credentials.
 
@@ -64,7 +64,7 @@ The vcap_services file content cannot exceed 1 MB, otherwise an <code>Incompatib
 #### <a id='service-binding-k8s'></a> Service Binding K8s (experimental)
 
 This delivery method is used when the app feature [service-binding-k8s](https://v3-apidocs.cloudfoundry.org/index.html#app-features) is enabled.
-The environment variable [SERVICE_BINDING_ROOT](../deploy-apps/environment-variable.html#SERVICE-BINDING-ROOT) will be made available in the app container and contains the path to the root folder of a file structure containing binding information.
+The environment variable [SERVICE_BINDING_ROOT](../deploy-apps/environment-variable.html#SERVICE-BINDING-ROOT) is made available in the app container. It contains the path to the root folder of a file structure containing binding information.
 This method is fully compatible with the specification on [servicebinding.io](https://servicebinding.io/), which is used by Kubernetes as well.
 
 The binding data can be viewed like this:
@@ -103,7 +103,7 @@ Service Binding Files:
   foo/list: ["v","a","l","u","e"]
 ```
 
-Existing credential keys can be overwritten by other attributes, that are [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) attributes plus type and provider. The full list of reserved file names is: binding-guid, binding-name, instance-guid, instance-name, name, label, tags, plan, syslog-drain-url, volume-mounts, type, and provider. Overwriting an existing key does not result in an error. 
+Existing credential keys can be overwritten by other attributes -- [VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP-SERVICES) attributes plus type and provider. The full list of reserved file names is: binding-guid, binding-name, instance-guid, instance-name, name, label, tags, plan, syslog-drain-url, volume-mounts, type, and provider. Overwriting an existing key does not result in an error.
 
 ```
 VCAP_SERVICES= {
@@ -123,7 +123,7 @@ Service Binding Files:
   foo/secret: password
 ```
 
-Empty lists or null values are omitted, i.e. no file will be created.
+Empty lists or null values are omitted; that is, no file will be created.
 
 ```
 VCAP_SERVICES= {
@@ -142,7 +142,7 @@ Service Binding Files:
   foo/binding-guid: 45436ca8-0a7c-45e3-9439-ca1b44db7a2b
 ```
 
-Binding names and keys resulting in filenames must match [a-z0-9\-.]{1,253}. Invalid binding names and keys will result in IncompatibleBindings error. VCAP_SERVICES attributes are transformed to comply to this schema, i.e. underscores are replaced by hyphens, so that e.g. VCAP_SERVICES attribute binding_guid becomes file name binding-guid.
+Binding names and keys resulting in filenames must match [a-z0-9\-.]{1,253}. Invalid binding names and keys result in IncompatibleBindings error. VCAP_SERVICES attributes are transformed to comply with this schema; that is, underscores are replaced by hyphens, so that, for example, `VCAP_SERVICES attribute binding_guid` becomes file name `binding-guid`.
 
 ```
 VCAP_SERVICES= {

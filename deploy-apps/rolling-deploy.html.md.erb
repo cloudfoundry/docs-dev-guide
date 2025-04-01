@@ -34,7 +34,7 @@ Cloud Foundry provides two different strategies for deployments:
 * A **Canary** deployment brings up one or more web processes for the new app version, defaulting to one. It then pauses to let app operators or developers evaluate the health of a new version instances. App operators can then choose to either `cancel` or `continue` the deployment. When the deployment is continued, the canary deployment proceeds in the same way as a rolling deployment.
   * To gradually increase instance counts and check app health in multiple steps, the latest cf CLI v8 supports an `--instance-steps` option that sets a series of increasing instance counts.
 
-Each rolling or canary deployment increments the `revision` count for the new app deployment, as listed by the `cf revisions` command described in [] described in xxyx.
+Each rolling or canary deployment increments the `revision` count for the new app deployment, as listed by the `cf revisions` command described in [App Revisions Overview](../revisions.html).
 
 The following sections describe the rolling and canary deployment strategies and their limitations.
 

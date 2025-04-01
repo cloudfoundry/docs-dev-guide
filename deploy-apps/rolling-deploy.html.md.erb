@@ -30,11 +30,11 @@ Or for canary deployments:
 
 Cloud Foundry provides two different strategies for deployments:
 
-* A **Rolling** deployment brings up one or more web processes for the new app version, with the number set by `max-in-flight`, which defaults to 1. After those instances report as healthy and routable, it brings down the same number of instances of the old version. The deployment repeats this process to replace all web process instances and then updates all old non-web processes.
+* A **Rolling** deployment brings up one or more web processes for the new app version, with the number set by `max-in-flight`, which defaults to 1. After those instances report as healthy and routable, it brings down the same number of instances of the old version. The deployment repeats this process to replace all web process instances, and then updates all old non-web processes.
 * A **Canary** deployment brings up one or more web processes for the new app version, defaulting to one. It then pauses to let app operators or developers evaluate the health of a new version instances. App operators can then choose to either `cancel` or `continue` the deployment. When the deployment is continued, the canary deployment proceeds in the same way as a rolling deployment.
   * To gradually increase instance counts and check app health in multiple steps, the latest cf CLI v8 supports an `--instance-steps` option that sets a series of increasing instance counts.
 
-Each rolling or canary deployment increments the `revision` count for the new app deployment, as listed by the `cf revisions` command described in [] described in xxyx
+Each rolling or canary deployment increments the `revision` count for the new app deployment, as listed by the `cf revisions` command described in [App Revisions Overview](../revisions.html).
 
 The following sections describe the rolling and canary deployment strategies and their limitations.
 
@@ -97,16 +97,93 @@ By default, as described in [Canary Deployments](#canary), when you push an app 
 To run a canary deployment more gradually, you can pass a series of step weights to the `--instance-steps` option of `cf push`.
 
   - The series specifies increasing numbers of canary instances to deploy, to let you manually continue after each step.
+    - Each value represents a **percentage** or **weight** of the web process's instances of the web process to be rolled out as canary instances.
   - Separate step weights with commas and without spaces, for example `5,10,20`.
+  - For each canary instance created after the first, a pre-deployment instance is torn down.
+  - Canary deployments use one extra instance than is normally allocated throughout the deployment process, until the target number of instances has been reached.
   - Continuing after the last canary step proceeds to the full-scale deployment.
   - As with the default canary deployment process, a rolling deployment strategy updates instances to the new instance count at each step.
 
-For example, to update gradually in four steps, running 5, 10, and 20 canary instances before replacing all running instances of an app:
+For example, to update gradually in four steps, running 5, 10, and 20 percent of an app's instances as canary instances before replacing all running instances of an app:
 
   ```
   cf push APP-NAME --strategy canary --instance-steps 5,10,20
   ```
 
+#### <a id="canary-step-detail"></a> Detailed Example
+
+Steps are configured as a percentage of instances rather than as an explicit instance value. This allows the deployment definition to be independent of the number of instances used by a process.
+
+**Cloud Controller matches a step weight to the nearest non-zero instance number, rounding down.**
+
+For example, take an application with 10 instances and the following step configuration:
+
+```
+cf push APP-NAME --strategy canary --instance-steps 1,20,45,80,100
+```
+
+This results in the following deployment plan:
+
+<table class="table">
+  <thead><tr>
+    <th>Step</th>
+    <th>Step Weight</th>
+    <th>Original Instances</th>
+    <th>Canary Instances</th>
+    <th>Actual Weighting</th>
+  </tr></thead>
+  <tr>
+    <td>Pre-deploy</td>
+    <td>n/a</td>
+    <td>10</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>1%</td>
+    <td>10</td>
+    <td>1</td>
+    <td>9%</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>20%</td>
+    <td>9</td>
+    <td>2</td>
+    <td>18%</td>
+  </tr>
+   <tr>
+    <td>3</td>
+    <td>45%</td>
+    <td>6</td>
+    <td>5</td>
+    <td>45%</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>80%</td>
+    <td>3</td>
+    <td>8</td>
+    <td>72%</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>100%</td>
+    <td>0</td>
+    <td>10</td>
+    <td>100%</td>
+  </tr>
+  <tr>
+    <td>Post-deploy</td>
+    <td>n/a</td>
+    <td>0</td>
+    <td>10</td>
+    <td>100%</td>
+  </tr>
+</table>
+
+A **Step Weight** of `100` allows app operators to use the `cancel-deployment` command even after all instances have been replaced.
 
 ### <a id="limitations"></a> Limitations
 

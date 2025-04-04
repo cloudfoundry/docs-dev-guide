@@ -56,7 +56,7 @@ To change the per-route `loadbalancing` option of an existing route, you can use
 For example, to change an app route's algorithm from `least-connection` to `round-robin`, you can run the `update-route` command:
 
 ```console
-cf update-route EXAMPLE.COM --host MY-HOST --option loadbalancing=round-robin
+cf update-route EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-robin
 ```
 
 Alternatively, it is also possible to update the per-route load balancing option via the `/v3/routes` API.
@@ -79,7 +79,7 @@ To create a route with a per-route `loadbalancing` option, you can use the cli c
 For example:
 
 ```console
-cf create-route EXAMPLE.COM --host MY-HOST --option loadbalancing=round-robin
+cf create-route EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-robin
 ```
 
 Alternatively, it is also possible to create a route with a per-route load balancing option via the `/v3/routes` API:

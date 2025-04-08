@@ -123,7 +123,9 @@ You can refer to a buildpack by name in a manifest or a command-line option. The
 
 * **Custom buildpacks:** If your app requires a custom buildpack, you can use the `buildpacks` attribute to specify it in a number of ways:
   * By name: `BUILDPACK`.
-  * By GitHub URL: `https://github.com/cloudfoundry/java-buildpack.git`.
+  * By GitHub URL: 
+    * For the source code repo: `https://github.com/cloudfoundry/java-buildpack.git` or 
+    * For a fully-packaged asset: `https://github.com/cloudfoundry/java-buildpack/releases/download/v4.76.0/java-buildpack-v4.76.0.zip`
   * By GitHub URL with a branch or tag: `https://github.com/cloudfoundry/java-buildpack.git#v3.3.0` for the `v3.3.0` tag.
 
       ```

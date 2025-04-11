@@ -113,15 +113,15 @@ In <%= vars.app_runtime_abbr %>, a host name is the label that indicates a subdo
 [cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command as shown in this example:
 
 <pre class="terminal">
-$ cf create-route <%= vars.app_domain %> --hostname example-app
-Creating route example-app.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
+$ cf create-route shared-domain.example.com --hostname example-app
+Creating route example-app.shared-domain.example.com for org example-org / space example-space as username<span>@</span>example.com...
 OK
 </pre>
 
 <p class="note important">
 The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</p>
 
-This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for these URLs:
+<p>This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for these URLs:</p>
 
    * `http://example-app.<%= vars.app_domain %>`
    * `https://example-app.<%= vars.app_domain %>`

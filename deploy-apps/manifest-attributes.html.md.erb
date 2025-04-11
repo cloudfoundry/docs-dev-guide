@@ -71,8 +71,8 @@ To add variables to an app manifest:
         GOPACKAGENAME: go_calls_ruby
       command: go_calls_ruby
     ```
+
     <p class="note">
-    <span class="note__title"><strong>Note</strong></span>
     You can also use variables for partial values. For example, you can specify <code>host</code> in your variables file and <code>- route: ((host)).env.com</code> in your manifest file.</p>
 
 1. Run:
@@ -114,7 +114,6 @@ memory for `bigapp`.
 This section explains how to describe optional app attributes in manifests. You can also specify each of these attributes using a command line option. Command-line options override the manifest.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 In cf CLI v6, the route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>,
 <code>hosts</code>, and <code>no-hostname</code> are deprecated in favor of the <code>routes</code> attribute. In cf CLI v7+, these attributes are
 removed. For more information, see <a href="#route-attribute">domain, domains, host, hosts, and no-hostname</a>.</p>
@@ -144,8 +143,8 @@ You can refer to a buildpack by name in a manifest or a command-line option. The
           - buildpack_URL
           - buildpack_URL
       ```
+
       <div class="note important">
-      <span class="note__title"><strong>Important</strong></span>
         <ul>
           <li>This feature does not work with the deprecated <code>buildpack</code> attribute. For more information, see
             <a href="#buildpack-deprecated">buildpack</a>.</li>
@@ -153,7 +152,7 @@ You can refer to a buildpack by name in a manifest or a command-line option. The
         </ul>
       </div>
 
-The `-b` command-line flag overrides this attribute.
+  The `-b` command-line flag overrides this attribute.
 
 For more information, see [Pushing an app with multiple buildpacks](../../buildpacks/use-multiple-buildpacks.html).
 
@@ -235,7 +234,6 @@ The `--docker-image` or `-o` command-line flag overrides `docker.image`.  The `-
 The manifest attribute `docker.username` is optional. If it is used, the password must be provided in the environment variable `CF_DOCKER_PASSWORD`. If a Docker user name is specified, then a Docker image must also be specified.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 Using the <code>docker</code> attribute with the <code>buildpacks</code> or <code>path</code> attributes causes an error.</p>
 
 ### <a id='health-check-type'></a> health-check-type
@@ -440,7 +438,6 @@ For more information about metadata, see [Using metadata](../../adminguide/metad
 ### <a id='no-route'></a> no-route
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 If you use the <code>no-route</code> flag attribute in the manifest or the flag option, it overrides all route-related attributes.</p>
 
 By default, `cf push` assigns a route to every app. But, some apps process data while running in the background and must not be assigned routes.
@@ -553,13 +550,11 @@ The `--random-route` command-line flag overrides this attribute.
 The `routes` attribute in the manifest provides multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 This attribute is a combination of <code>push</code> options that include <code>--hostname</code>, <code>-d</code>, and <code>--route-path</code> flags in v6. These flags are not supported in cf CLI v7, so the <code>routes</code> flag must be used.</p>
 
 You can specify the `protocol` attribute to configure which network protocol the route uses for app ingress traffic. This is optional. The available protocols are `http2`, `http1`, and `tcp`.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 The <code>protocol</code> route attribute is available only for <%= vars.app_runtime_abbr %> deployments that use HTTP/2 routing. <%= vars.http2_admin_link %> </p>
 
 For example:
@@ -678,7 +673,6 @@ You can increase the timeout length for very large apps that require more time t
 The `-t` command-line flag overrides this attribute.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 If you configure <code>timeout</code> with a value greater than
 <code>cc.maximum_health_check_timeout</code>, the Cloud Controller reports a validation error with the maximum limit.</p>
 
@@ -700,7 +694,6 @@ For example:
 `cf push` deploys the app to a container on the server. The variables belong to the container environment.
 
 <div class="note important">
-<span class="note__title"><strong>Important</strong></span>
   <ul>
     <li>You must name variables with alphanumeric characters and underscores. Non-conforming variable names might cause unpredictable behavior.</li>
     <li>Do not use user-provided environment variables for security sensitive information such as credentials, because they might unintentionally show up in cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided environment variable <a href="./environment-variable.html#VCAP-SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter and in Cloud Controller log files.</li>
@@ -793,7 +786,6 @@ service](../services/application-binding.html#bind) in _Delivering Service Crede
 This section describes app manifest features that are deprecated in favor of other features.
 
 <p class="note caution">
-<span class="note__title"><strong><strong>Caution</strong></strong></span>
 Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated features with the feature that replaces it.</p>
 
 ### <a id='top-level-attributes'></a> Top-level attributes

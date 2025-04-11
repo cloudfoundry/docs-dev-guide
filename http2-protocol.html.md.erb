@@ -91,8 +91,8 @@ To push an HTTP/1.1 app that can serve HTTP/2 traffic:
 	```
 	Where `MY-APP.EXAMPLE.COM` is the route mapped to your app.<br><br>
 	The request and response are both issued over HTTP/2.
+
 	<p class="note important">
-	<span class="note__title"><strong>Important</strong></span>
 	To issue this request, you must use a version of <code>curl</code> that supports HTTP/2.</p>
 
 1. Review the app logs by running:
@@ -144,8 +144,7 @@ For example, you can use the HTTP/2 test app from [Cloud Foundry Acceptance Test
 The recommended way to do this is using the `routes` attribute in the manifest YAML file.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
-The following procedure is supported only for cf CLI v6. The `--hostname` flag is deprecated in cf CLI v7, and must be specified in the manifest.</p>
+The following procedure is supported only for cf CLI v6. The <code>--hostname</code> flag is deprecated in cf CLI v7, and must be specified in the manifest.</p>
 
 To push an app that serves HTTP/2 traffic using the cf CLI (v6 only):
 

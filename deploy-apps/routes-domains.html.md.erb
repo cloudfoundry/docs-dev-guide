@@ -77,6 +77,7 @@ Apps running on Windows cells cannot use internal, container-to-container routes
 To create an internal route:
 
 1. Use the [cf map-route](#map-internal-route) command with an [internal domain](#internal-domains). For example:
+2.
   <pre class="terminal">
     $ cf map-route app apps.internal --hostname app
   </pre>
@@ -118,21 +119,17 @@ OK
 </pre>
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</p>
 
 This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for these URLs:
 
-* `http://example-app.<%= vars.app_domain %>`
-
-* `https://example-app.<%= vars.app_domain %>`
-
-* Any path under either of the these URLs, such as `http://example-app.<%= vars.app_domain %>/bar`
+   * `http://example-app.<%= vars.app_domain %>`
+   * `https://example-app.<%= vars.app_domain %>`
+   * Any path under either of the these URLs, such as `http://example-app.<%= vars.app_domain %>/bar`
 
 #### <a id='create-route-wo-hostname'></a> Create an HTTP route without host name
 
-This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see [Private
-Domains](#private-domains) .
+This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see [Private Domains](#private-domains).
 
 A developer can create a route from the domain `<%= vars.private_app_domain %>` with no host name with the
 [cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command:
@@ -145,11 +142,9 @@ OK
 
 If DNS is configured correctly, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
 
-* `http://<%= vars.private_app_domain %>`
-
-* `https://<%= vars.private_app_domain %>`
-
-* Any path under either of these URLs, such as `http://<%= vars.private_app_domain %>/foo`
+   * `http://<%= vars.private_app_domain %>`
+   * `https://<%= vars.private_app_domain %>`
+   * Any path under either of these URLs, such as `http://<%= vars.private_app_domain %>/foo`
 
 If there are no other routes for the domain, requests to any subdomain, such as `http://foo.<%= vars.private_app_domain %>`, fail.
 
@@ -164,11 +159,9 @@ OK
 
 If DNS is configured for this subdomain, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
 
-* `http://foo.<%= vars.private_app_domain %>`
-
-* `https://foo.<%= vars.private_app_domain %>`
-
-* Any path under either of these URLs, such as `http://foo.<%= vars.private_app_domain %>/foo`
+   * `http://foo.<%= vars.private_app_domain %>`
+   * `https://foo.<%= vars.private_app_domain %>`
+   * Any path under either of these URLs, such as `http://foo.<%= vars.private_app_domain %>/foo`
 
 #### <a id='create-route-w-wildcard-hostname'></a> Create an HTTP route with wildcard host name
 
@@ -196,11 +189,13 @@ $ cf create-route <%= vars.app_domain %> --hostname store --path products
 Creating route store.<%= vars.app_domain %>/products for org example-org / space example-space as username<span>@</span>example.com...
 OK
 </pre>
+
 <pre class="terminal">
 $ cf create-route <%= vars.app_domain %> --hostname store --path orders
 Creating route store.<%= vars.app_domain %>/orders for org example-org / space example-space as username<span>@</span>example.com...
 OK
 </pre>
+
 <pre class="terminal">
 $ cf create-route <%= vars.app_domain %> --hostname store
 Creating route store.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
@@ -211,16 +206,13 @@ The developer can then map the new routes to different apps by following the pro
 
 If the developer maps the first route with path `products` to the `products` app, the second route with path `orders` to the `orders` app, and the last route to the `storefront` app. After this:
 
-* <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/products` to the `products` app.
-
-* <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/orders` to the `orders` app.
-
-* <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>` to the `storefront` app.
+   * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/products` to the `products` app.
+   * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/orders` to the `orders` app.
+   * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>` to the `storefront` app.
 
 <%= vars.app_runtime_abbr %> attempts to match routes with a path, and then attempts to match host and domain.
 
 <div class="note important">
-<span class="note__title"><strong>Important</strong></span>
   <ul>
     <li>Routes with the same domain and host name but different paths can only be created in the same space. Private domains do not have this limitation.</li>
     <li><%= vars.app_runtime_abbr %> does not route requests for context paths to the root context of an app. Apps must serve requests on the context path.</li>
@@ -231,7 +223,7 @@ If the developer maps the first route with path `products` to the `products` app
 
 A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. This is the default in the v7 version of the cf CLI.
 
-* An arbitrary (random) port is the default. The `--random port` flag is not supported.
+   * An arbitrary (random) port is the default. The `--random port` flag is not supported.
 
   <pre class="terminal">
   $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
@@ -499,7 +491,6 @@ To share a route with another space:
 ### <a id='move-route'></a> Transfer ownership of a route to another space
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
 
 After sharing a route with another space, you can transfer ownership of the route to that space using the `cf move-route` command. You can use this command if you are unable to maintain or delete a shared route within the space with which it was shared. For information about sharing routes across spaces, see [Share a route with another space](#share-route).
@@ -563,7 +554,6 @@ $ cf delete-route tcp.<%= vars.private_app_domain %> --port 60000
 Users can route HTTP requests to a specific app instance using the header `X-Cf-App-Instance`.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 Use of the <code>X-Cf-App-Instance</code> header is available only for users on the Diego architecture.
 </p>
 
@@ -666,7 +656,6 @@ $ cf create-shared-domain <%= vars.app_domain %>
 To create a TCP shared domain, first discover the name of the TCP router group.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 cf CLI v7 does not support TCP routing or creating shared domains with router groups.</p>
 
 <pre class="terminal">
@@ -744,7 +733,6 @@ $ cf delete-private-domain <%= vars.private_app_domain %>
 </pre>
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</p>
 
 ### <a id='parent-child-domains'></a> Requirements for parent and child domains
@@ -842,7 +830,6 @@ If you use a wildcard as the subdomain name, then your DNS provider can route fr
 To use your root domain for apps on <%= vars.app_runtime_abbr %>, you can use custom DNS record types like ALIAS and ANAME, if your DNS provider offers them, or you can use subdomain redirection.
 
 <p class="note">
-<span class="note__title"><strong>Note</strong></span>
 Root domains are also called zone apex domains.</p>
 
 If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider to point at a shared domain in
@@ -866,7 +853,6 @@ If your DNS provider supports using an ALIAS or ANAME record, configure your roo
 If your DNS provider does not support ANAME or ALIAS records, you can use subdomain redirection, also known as domain forwarding, to redirect requests for your root domain to a subdomain configured as a CNAME.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 If you use domain forwarding, SSL requests to the root domain might fail if the SSL certificate matches only the subdomain.
 For more information about SSL certificates, see
 the <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Cloud Foundry documentation</a>.</p>

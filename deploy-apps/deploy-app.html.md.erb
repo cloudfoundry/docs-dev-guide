@@ -188,7 +188,6 @@ You can configure the  `cf push` command to run custom initialization tasks for 
 These tasks run after <%= vars.app_runtime_abbr %> loads the app droplet but before it starts the app to allow the initialization script to access the app language runtime environment. For example, your script can map values from `$VCAP_SERVICES` into other environment variables or a config file that the app uses.
 
 <div class="note important">
-<span class="note__title"><strong>Important</strong></span>
 The following notes include important information about configuring app initialization when you use certain buildpacks:
   <ul>
     <li><strong>Java:</strong> Initialization scripts for the Java buildpack require additional configuration.

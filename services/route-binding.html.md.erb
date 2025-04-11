@@ -22,7 +22,6 @@ To view an example demonstrating the use of a sample route service, see [Route S
 You must install the Cloud Foundry Command Line Interface (cf CLI) to bind a route to a service instance. For more information, see [Installing the cf CLI](../../cf-cli/install-go-cli.html).
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 Gorouter rejects WebSocket requests for routes that are bound to route services. These requests return a 503 error and a <code>X-Cf-Routererror route_service_unsupported header</code>.</p>
 
 Run [cf bind-route-service](http://cli.cloudfoundry.org/en-US/cf/bind-route-service.html) to bind a route from an app to a service instance.
@@ -37,7 +36,6 @@ OK
 </pre>
 
 <p class="note caution">
-<span class="note__title"><strong>Caution</strong></span>
 When binding a service instance to a route, Cloud Foundry might have proxy requests for the route to the service instance, or configure a network component already in the request path.</p>
 
 ### <a id='bind-arbitrary-parameters'></a> Bind with parameters

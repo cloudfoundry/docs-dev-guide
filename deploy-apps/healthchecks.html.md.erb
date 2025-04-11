@@ -70,7 +70,6 @@ For more information about the `cf push` command, see
 [push](http://cli.cloudfoundry.org/en-US/cf/push.html) in the Cloud Foundry CLI Reference Guide.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 The health check configuration that you provide with
 <code>cf push</code> overrides any configuration in the app manifest.</p>
 
@@ -99,7 +98,6 @@ For more information about the `cf set-health-check` command, see
 the Cloud Foundry CLI Reference Guide.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 After you set the health check configuration of a deployed
 app with the <code>cf set-health-check</code> command, you must restart the app for the change to
 take effect.</p>
@@ -144,8 +142,8 @@ circumstances in which to use them:
     <code>http</code> health check type whenever possible. A healthy HTTP response ensures that the
     web app is ready to serve HTTP requests. The configured endpoint must respond within one second
     to be considered healthy.<br>
+
     <p class="note important">
-    <span class="note__title"><strong>Important</strong></span>
     To prevent false
     negatives, use a dedicated endpoint for health checks where response time and result do not
     depend on business logic.</p>
@@ -184,5 +182,4 @@ path portion of a URI that must be served by the app and return `HTTP 200` when 
 This command only checks the health of the default port of the app.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 For HTTP apps, <%= vars.company_name %> recommends setting the health check type to <code>http</code> instead of a simple port check.</p>

@@ -121,11 +121,13 @@ OK
 <p class="note important">
 The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</p>
 
-<p>This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for these URLs:</p>
+This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for these URLs:
 
-   * `http://example-app.<%= vars.app_domain %>`
-   * `https://example-app.<%= vars.app_domain %>`
-   * Any path under either of the these URLs, such as `http://example-app.<%= vars.app_domain %>/bar`
+<ul>
+  <li><code>http://example-app.<%= vars.app_domain %></code></li>
+  <li><code>https://example-app.<%= vars.app_domain %></code></li>
+  <li>Any path under either of the these URLs, such as <code>http://example-app.<%= vars.app_domain %>/bar</code></li>
+</ul>
 
 #### <a id='create-route-wo-hostname'></a> Create an HTTP route without host name
 

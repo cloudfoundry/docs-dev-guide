@@ -84,20 +84,20 @@ To create an internal route:
 
     * After an internal route is mapped to an app, the route resolves to IP addresses of the app instances. The IP addresses are visible in the application container:
 
-      ```console
-        $ cf ssh app
-        vcap@1234:~$ host app.apps.internal
-        app.apps.internal has address 10.255.169.200
-        app.apps.internal has address 10.255.49.7
-        app.apps.internal has address 10.255.49.77
-       ```
+        ```console
+          $ cf ssh app
+          vcap@1234:~$ host app.apps.internal
+          app.apps.internal has address 10.255.169.200
+          app.apps.internal has address 10.255.49.7
+          app.apps.internal has address 10.255.49.77
+        ```
 
     * To resolve individual instances, prepend the index to the internal route.
 
-      ```console
-      vcap@1234:~$ host 1.app.apps.internal
-      1.app.apps.internal has address 10.255.49.7
-      ```
+        ```console
+        vcap@1234:~$ host 1.app.apps.internal
+        1.app.apps.internal has address 10.255.49.7
+        ```
 
 2. Create a network policy that allows your apps to communicate with each other. By default, apps cannot communicate over the container network. For more
 information, see [Configuring container-to-container networking](cf-networking.html) and the [Cloud Foundry CLI reference guide](https://cli.cloudfoundry.org/en-US/cf/add-network-policy.html).
@@ -133,9 +133,8 @@ This command instructs <%= vars.app_runtime_abbr %> to only route requests to ap
   <li>Any path under either of the these URLs, such as <code>http://example-app.<%= vars.app_domain %>/bar</code></li>
 </ul>
 
-<p></p>
 
-#### <a id='create-route-wo-hostname'></a> Create an HTTP route without host name
+<h4><a id='create-route-wo-hostname'></a>Create an HTTP route without host name</h4>
 
 This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see [Private
 Domains](#private-domains) .
@@ -172,7 +171,7 @@ If DNS is configured for this subdomain, this command instructs <%= vars.app_run
    * `https://foo.<%= vars.private_app_domain %>`
    * Any path under either of these URLs, such as `http://foo.<%= vars.private_app_domain %>/foo`
 
-#### <a id='create-route-w-wildcard-hostname'></a> Create an HTTP route with wildcard host name
+<h4><a id='create-route-w-wildcard-hostname'></a> Create an HTTP route with wildcard host name</h4>
 
 An app mapped to a wildcard route acts as a fallback app for route requests if the requested route does not exist. To create a wildcard route, use an asterisk for the host name.
 
@@ -187,7 +186,7 @@ OK
 If a client sends a request to `http://app.foo.<%= vars.app_domain %>` by accident, attempting to reach `example-app.foo.<%= vars.app_domain %>`,
 <%= vars.app_runtime_abbr %> routes the request to the app mapped to the route `*.foo.<%= vars.app_domain %>`.
 
-#### <a id='create-route-w-path'></a> Create an HTTP route with a path
+<h4><a id='create-route-w-path'></a> Create an HTTP route with a path</h4>
 
 Developers can use paths to route requests for the same host name and domain to different apps.
 
@@ -226,7 +225,7 @@ If the developer maps the first route with path `products` to the `products` app
   </ul>
 </div>
 
-#### <a id='create-route-with-port'></a> Create a TCP route with a port
+<h4><a id='create-route-with-port'></a> Create a TCP route with a port</h4>
 
 A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. This is the default in the v7 version of the cf CLI.
 
@@ -316,7 +315,7 @@ You can create and reserve routes for later use by following the procedure in [M
 
 Changes to route mappings are run asynchronously. On startup, an app becomes accessible at its route within a few seconds. Similarly, upon mapping a new route to a running app, the app becomes accessible at this route within a few seconds of the CLI exiting.
 
-#### <a id='map-route-manually'></a> Manually map a route
+<h4><a id='map-route-manually'></a>Manually map a route</h4>
 
 For these routes and apps:
 
@@ -364,7 +363,7 @@ In cf CLI v8, the following command maps the route `h2app.<%= vars.app_domain %>
 $ cf map-route h2app <%= vars.app_domain %> --hostname h2app --destination-protocol http2
 ```
 
-#### <a id='map-route-on-push'></a> Map a route with app push
+<h4><a id='map-route-on-push'></a>Map a route with app push</h4>
 
 Developers can map a route to their app with the `cf push` command.
 As of cf CLI v7, the best way to do this is by using the `routes` property in the manifest.
@@ -385,17 +384,17 @@ To map a TCP route during `push`, specify a TCP domain and request a random port
 $ cf push tcp-app -d <%= vars.tcp_app_domain %> --random-route
 ```
 
-#### <a id='map-route-w-manifest'></a> Map a route using app manifest
+<h4><a id='map-route-w-manifest'></a>Map a route using app manifest</h4>
 
 Developers can map a route to their app with a manifest by editing the `route` attribute to specify the host, domain, port, and path components of the route. For more information, see [Deploying with app manifests](../deploy-apps/manifest.html#routes).
 
-#### <a id='map-route-to-mult-apps'></a> Map a route to multiple apps
+<h4><a id='map-route-to-mult-apps'></a>Map a route to multiple apps</h4>
 
 <%= partial 'routing_conflict' %>
 
 For more information about troubleshooting this problem, see [Routing conflict](troubleshoot-app-health.html#routing-conflict) in _Troubleshooting app deployment and health_.
 
-#### <a id='map-multiple-routes'></a> Map multiple routes to one app
+<h4><a id='map-multiple-routes'></a>Map multiple routes to one app</h4>
 
 You can have multiple routes to an app, but those routes cannot have different context paths.
 
@@ -433,7 +432,7 @@ These routes are _not_ valid for a single app:
   </tr>
 </table>
 
-#### <a id='map-internal-route'></a> Map an internal route to an app
+<h4><a id='map-internal-route'></a>Map an internal route to an app</h4>
 
 You can map an internal route to any app. This internal route allows your app to communicate with other apps without leaving the platform. After it is mapped, this route becomes available to all other apps on the platform.
 
@@ -710,7 +709,7 @@ When using shared domains, you cannot have routes with the same host name and do
 
 Shared domains are HTTP by default, but can be configured to be TCP when associated with the TCP router group.
 
-#### <a id='create-shared-domain'></a> Create a shared domain
+<h4><a id='create-shared-domain'></a> Create a shared domain</h4>
 
 Admins can create an HTTP shared domain with the `cf create-shared-domain` command:
 ```console
@@ -733,7 +732,7 @@ Then create the shared domain using the `--router-group` option to associate the
 $ cf create-shared-domain <%= vars.tcp_app_domain %> --router-group default-tcp
 ```
 
-#### <a id='delete-shared-domain'></a> Delete a shared domain
+<h4><a id='delete-shared-domain'></a>Delete a shared domain</h4>
 
 Admins can delete a shared domain from <%= vars.app_runtime_abbr %> with the `cf delete-shared-domain` command:
 
@@ -741,7 +740,7 @@ Admins can delete a shared domain from <%= vars.app_runtime_abbr %> with the `cf
 $ cf delete-shared-domain example.com
 ```
 
-#### <a id='internal-domains'></a> Internal domain
+<h4><a id='internal-domains'></a>Internal domain</h4>
 
 The internal domain is a special type of shared domain used for app communication internal to the platform. When you activate service discovery, the internal domain `apps.internal` becomes available for route mapping.
 
@@ -763,7 +762,7 @@ When using private domains, you can have routes with the same host name and doma
 
 Private domains can be HTTP or HTTPS only. TCP routing is supported for shared domains only.
 
-#### <a id='create-private-domain'></a> Create a private domain
+<h4><a id='create-private-domain'></a>Create a private domain</h4>
 
 Org managers can create a private domain by running:
 
@@ -777,7 +776,7 @@ Org managers can create a private domain for a subdomain by running:
 $ cf create-private-domain example-org foo.<%= vars.private_app_domain %>
 ```
 
-#### <a id='sharing-private-domains'></a> Sharing a private domain with one or more orgs
+<h4><a id='sharing-private-domains'></a>Sharing a private domain with one or more orgs</h4>
 
 Org managers can grant or revoke access to a private domain to other orgs if they have permissions for these orgs.
 As of cf CLI v7, `cf unshare-private-domain` command provides a warning and requires confirmation before it proceeds.

@@ -77,10 +77,13 @@ Apps running on Windows cells cannot use internal, container-to-container routes
 To create an internal route:
 
 1. Use the [cf map-route](#map-internal-route) command with an [internal domain](#internal-domains). For example:
-  <pre class="terminal">
-    $ cf map-route app apps.internal --hostname app
-  </pre>
+
+    <pre class="terminal">
+      $ cf map-route app apps.internal --hostname app
+    </pre>
+
     * After an internal route is mapped to an app, the route resolves to IP addresses of the app instances. The IP addresses are visible in the application container:
+
       <pre class="terminal">
         $ cf ssh app
         vcap@1234:~$ host app.apps.internal
@@ -88,13 +91,15 @@ To create an internal route:
         app.apps.internal has address 10.255.49.7
         app.apps.internal has address 10.255.49.77
        </pre>
+
     * To resolve individual instances, prepend the index to the internal route.
+
       <pre class="terminal">
       vcap@1234:~$ host 1.app.apps.internal
       1.app.apps.internal has address 10.255.49.7
       </pre>
 
-1. Create a network policy that allows your apps to communicate with each other. By default, apps cannot communicate over the container network. For more
+2. Create a network policy that allows your apps to communicate with each other. By default, apps cannot communicate over the container network. For more
 information, see [Configuring container-to-container networking](cf-networking.html) and the [Cloud Foundry CLI reference guide](https://cli.cloudfoundry.org/en-US/cf/add-network-policy.html).
 
 ### <a id='create-route'></a> Create a route
@@ -146,11 +151,9 @@ OK
 
 If DNS is configured correctly, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
 
-* `http://<%= vars.private_app_domain %>`
-
-* `https://<%= vars.private_app_domain %>`
-
-* Any path under either of these URLs, such as `http://<%= vars.private_app_domain %>/foo`
+   * `http://<%= vars.private_app_domain %>`
+   * `https://<%= vars.private_app_domain %>`
+   * Any path under either of these URLs, such as `http://<%= vars.private_app_domain %>/foo`
 
 If there are no other routes for the domain, requests to any subdomain, such as `http://foo.<%= vars.private_app_domain %>`, fail.
 
@@ -165,11 +168,9 @@ OK
 
 If DNS is configured for this subdomain, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
 
-* `http://foo.<%= vars.private_app_domain %>`
-
-* `https://foo.<%= vars.private_app_domain %>`
-
-* Any path under either of these URLs, such as `http://foo.<%= vars.private_app_domain %>/foo`
+   * `http://foo.<%= vars.private_app_domain %>`
+   * `https://foo.<%= vars.private_app_domain %>`
+   * Any path under either of these URLs, such as `http://foo.<%= vars.private_app_domain %>/foo`
 
 #### <a id='create-route-w-wildcard-hostname'></a> Create an HTTP route with wildcard host name
 
@@ -212,11 +213,9 @@ The developer can then map the new routes to different apps by following the pro
 
 If the developer maps the first route with path `products` to the `products` app, the second route with path `orders` to the `orders` app, and the last route to the `storefront` app. After this:
 
-* <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/products` to the `products` app.
-
-* <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/orders` to the `orders` app.
-
-* <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>` to the `storefront` app.
+   * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/products` to the `products` app.
+   * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/orders` to the `orders` app.
+   * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>` to the `storefront` app.
 
 <%= vars.app_runtime_abbr %> attempts to match routes with a path, and then attempts to match host and domain.
 
@@ -462,7 +461,8 @@ $ cf unmap-route tcp-app <%= vars.tcp_app_domain %> --port 60000
 
 ### <a id='share-route'></a> Share a route with another space
 
-To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.
+<p class="note important">
+To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
 
 You can share a route with another space using the `cf share-route` command. To move an app to another space, you can share routes with that space to prevent downtime during the transition. Rather than deleting the route in the original space and re-creating the route in the new space, you can share the route with the new space and map it to the app running in that space.
 
@@ -492,6 +492,8 @@ To share a route with another space:
       <pre class="terminal">
       cf share-route example.com --hostname example-app --path example-path -s other-space -o other-org
       </pre>
+
+<p></p>
 
 ### <a id='move-route'></a> Transfer ownership of a route to another space
 

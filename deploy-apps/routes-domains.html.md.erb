@@ -82,22 +82,22 @@ To create an internal route:
       $ cf map-route app apps.internal --hostname app
     ```
 
-    * After an internal route is mapped to an app, the route resolves to IP addresses of the app instances. The IP addresses are visible in the application container:
+      * After an internal route is mapped to an app, the route resolves to IP addresses of the app instances. The IP addresses are visible in the application container:
 
-        ```console
-          $ cf ssh app
-          vcap@1234:~$ host app.apps.internal
-          app.apps.internal has address 10.255.169.200
-          app.apps.internal has address 10.255.49.7
-          app.apps.internal has address 10.255.49.77
-        ```
+          ```console
+            $ cf ssh app
+            vcap@1234:~$ host app.apps.internal
+            app.apps.internal has address 10.255.169.200
+            app.apps.internal has address 10.255.49.7
+            app.apps.internal has address 10.255.49.77
+          ```
 
-    * To resolve individual instances, prepend the index to the internal route.
+      * To resolve individual instances, prepend the index to the internal route.
 
-        ```console
-        vcap@1234:~$ host 1.app.apps.internal
-        1.app.apps.internal has address 10.255.49.7
-        ```
+          ```console
+          vcap@1234:~$ host 1.app.apps.internal
+          1.app.apps.internal has address 10.255.49.7
+          ```
 
 2. Create a network policy that allows your apps to communicate with each other. By default, apps cannot communicate over the container network. For more
 information, see [Configuring container-to-container networking](cf-networking.html) and the [Cloud Foundry CLI reference guide](https://cli.cloudfoundry.org/en-US/cf/add-network-policy.html).
@@ -136,8 +136,8 @@ This command instructs <%= vars.app_runtime_abbr %> to only route requests to ap
 
 <h4><a id='create-route-wo-hostname'></a>Create an HTTP route without host name</h4>
 
-This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see [Private
-Domains](#private-domains) .
+<p>This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see
+<a href="#private-domains">Private Domains</a>.</p>
 
 A developer can create a route from the domain `<%= vars.private_app_domain %>` with no host name with the
 [cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command:

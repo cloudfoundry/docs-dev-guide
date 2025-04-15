@@ -138,40 +138,44 @@ This command instructs <%= vars.app_runtime_abbr %> to only route requests to ap
 
 <h4><a id='create-route-wo-hostname'></a>Create an HTTP route without host name</h4>
 
-<p>This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see
-<a href="#private-domains">Private Domains</a>.</p>
+This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see
+<a href="#private-domains">Private Domains</a>.
 
-A developer can create a route from the domain `<%= vars.private_app_domain %>` with no host name with the
-[cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command:
+A developer can create a route from the domain <code><%= vars.private_app_domain %></code> with no host name with the
+<a href="https://cli.cloudfoundry.org/en-US/cf/create-route.html">cf create-route</a> command:
 
-```console
+<pre class="terminal">
+<code>
 $ cf create-route <%= vars.private_app_domain %>
 Creating route <%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
 OK
-```
+</code></pre>
 
 If DNS is configured correctly, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
+<ul>
+  <li><code>http://<%= vars.private_app_domain %></code></li>
+  <li><code>https://<%= vars.private_app_domain %></code></li>
+  <li><code>Any path under either of these URLs, such as `http://<%= vars.private_app_domain %>/foo</code></li>
+</ul>
 
-   * `http://<%= vars.private_app_domain %>`
-   * `https://<%= vars.private_app_domain %>`
-   * Any path under either of these URLs, such as `http://<%= vars.private_app_domain %>/foo`
-
-If there are no other routes for the domain, requests to any subdomain, such as `http://foo.<%= vars.private_app_domain %>`, fail.
+If there are no other routes for the domain, requests to any subdomain, such as <code>http://foo.<%= vars.private_app_domain %></code>, fail.
 
 A developer can also create routes for subdomains with no host names. The following command creates a route from the subdomain
-`foo.<%= vars.private_app_domain %>`:
+<code>foo.<%= vars.private_app_domain %></code>:
 
-```console
+<pre class="terminal">
+<code>
 $ cf create-route foo.<%= vars.private_app_domain %>
 Creating route foo.<%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
 OK
-```
+</code></pre>
 
-If DNS is configured for this subdomain, this command instructs <%= vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
-
-   * `http://foo.<%= vars.private_app_domain %>`
-   * `https://foo.<%= vars.private_app_domain %>`
-   * Any path under either of these URLs, such as `http://foo.<%= vars.private_app_domain %>/foo`
+If DNS is configured for this subdomain, this command instructs <%=vars.app_runtime_abbr %> to route requests to apps mapped to this route from these URLs:
+<ul>
+   <li><code>http://foo.<%= vars.private_app_domain %></code></li>
+   <li><code>https://foo.<%= vars.private_app_domain %></code></li>
+   <li>Any path under either of these URLs, such as <code>http://foo.<%= vars.private_app_domain %>/foo</code></li>
+</ul>
 
 <h4><a id='create-route-w-wildcard-hostname'></a> Create an HTTP route with wildcard host name</h4>
 
@@ -221,6 +225,7 @@ If the developer maps the first route with path `products` to the `products` app
 <%= vars.app_runtime_abbr %> attempts to match routes with a path, and then attempts to match host and domain.
 
 <div class="note important">
+Notes:
   <ul>
     <li>Routes with the same domain and host name but different paths can only be created in the same space. Private domains do not have this limitation.</li>
     <li><%= vars.app_runtime_abbr %> does not route requests for context paths to the root context of an app. Apps must serve requests on the context path.</li>

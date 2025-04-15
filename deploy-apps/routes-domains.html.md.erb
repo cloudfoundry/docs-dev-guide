@@ -140,11 +140,11 @@ This command instructs <%= vars.app_runtime_abbr %> to only route requests to ap
 
 This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see
 <a href="#private-domains">Private Domains</a>.
-
+<br>
 A developer can create a route from the domain <code><%= vars.private_app_domain %></code> with no host name with the
 <a href="https://cli.cloudfoundry.org/en-US/cf/create-route.html">cf create-route</a> command:
 
-<pre class="terminal">
+<pre>
 <code>
 $ cf create-route <%= vars.private_app_domain %>
 Creating route <%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
@@ -163,7 +163,7 @@ If there are no other routes for the domain, requests to any subdomain, such as 
 A developer can also create routes for subdomains with no host names. The following command creates a route from the subdomain
 <code>foo.<%= vars.private_app_domain %></code>:
 
-<pre class="terminal">
+<pre>
 <code>
 $ cf create-route foo.<%= vars.private_app_domain %>
 Creating route foo.<%= vars.private_app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
@@ -180,7 +180,7 @@ If DNS is configured for this subdomain, this command instructs <%=vars.app_runt
 <h4><a id='create-route-w-wildcard-hostname'></a> Create an HTTP route with wildcard host name</h4>
 
 An app mapped to a wildcard route acts as a fallback app for route requests if the requested route does not exist. To create a wildcard route, use an asterisk for the host name.
-
+<br>
 A developer can create a wildcard route from the domain `foo.<%= vars.app_domain %>` by running:
 
 ```console

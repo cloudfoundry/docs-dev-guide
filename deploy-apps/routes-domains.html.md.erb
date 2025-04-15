@@ -183,44 +183,50 @@ An app mapped to a wildcard route acts as a fallback app for route requests if t
 <br>
 A developer can create a wildcard route from the domain `foo.<%= vars.app_domain %>` by running:
 
-```console
+<pre><code>
 $ cf create-route foo.<%= vars.app_domain %> --hostname '*'
 Creating route *.foo.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
 OK
-```
+</code></pre>
 
-If a client sends a request to `http://app.foo.<%= vars.app_domain %>` by accident, attempting to reach `example-app.foo.<%= vars.app_domain %>`,
-<%= vars.app_runtime_abbr %> routes the request to the app mapped to the route `*.foo.<%= vars.app_domain %>`.
+If a client sends a request to <code>http://app.foo.<%= vars.app_domain %></code> by accident, attempting to reach <code>example-app.foo.<%= vars.app_domain %></code>,
+<%= vars.app_runtime_abbr %> routes the request to the app mapped to the route <code>*.foo.<%= vars.app_domain %></code>.
 
 <h4><a id='create-route-w-path'></a> Create an HTTP route with a path</h4>
 
 Developers can use paths to route requests for the same host name and domain to different apps.
-
+<br>
 A developer can create three routes using the same host name and domain in the space `example-space` by running:
+<br>
 
-```console
+<pre><code>
 $ cf create-route <%= vars.app_domain %> --hostname store --path products
 Creating route store.<%= vars.app_domain %>/products for org example-org / space example-space as username<span>@</span>example.com...
 OK
-```
-```console
+</code></pre>
+
+<pre><code>
 $ cf create-route <%= vars.app_domain %> --hostname store --path orders
 Creating route store.<%= vars.app_domain %>/orders for org example-org / space example-space as username<span>@</span>example.com...
 OK
-```
-```console
+</code></pre>
+
+<pre><code>
 $ cf create-route <%= vars.app_domain %> --hostname store
 Creating route store.<%= vars.app_domain %> for org example-org / space example-space as username<span>@</span>example.com...
 OK
-```
+</code></pre>
 
-The developer can then map the new routes to different apps by following the procedure in [Map a route to your app](#map-route).
+The developer can then map the new routes to different apps by following the procedure in
+<a href="#map-route">Map a route to your app</a>.
 
-If the developer maps the first route with path `products` to the `products` app, the second route with path `orders` to the `orders` app, and the last route to the `storefront` app. After this:
+If the developer maps the first route with path <code>products</code> to the <code>products</code> app, the second route with path <code>orders</code> to the <code>orders</code> app, and the last route to the <code>storefront</code> app. After this:
 
-   * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/products` to the `products` app.
-   * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>/orders` to the `orders` app.
-   * <%= vars.app_runtime_abbr %> routes requests to `http://store.<%= vars.app_domain %>` to the `storefront` app.
+<ul>
+  <li><%= vars.app_runtime_abbr %> routes requests to <code>http://store.<%= vars.app_domain %>/products</code> to the <code>products</code> app.</li>
+  <li><%= vars.app_runtime_abbr %> routes requests to <code>http://store.<%= vars.app_domain %>/orders</code> to the <code>orders</code> app.</li>
+  <li><%= vars.app_runtime_abbr %> routes requests to <code>http://store.<%= vars.app_domain %></code> to the <code>storefront</code> app.</li>
+</ul>
 
 <%= vars.app_runtime_abbr %> attempts to match routes with a path, and then attempts to match host and domain.
 

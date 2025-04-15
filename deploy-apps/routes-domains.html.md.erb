@@ -82,24 +82,26 @@ To create an internal route:
       $ cf map-route app apps.internal --hostname app
     ```
 
-      * After an internal route is mapped to an app, the route resolves to IP addresses of the app instances. The IP addresses are visible in the application container:
+    <ul><li>After an internal route is mapped to an app, the route resolves to IP addresses of the app instances. The IP addresses are visible in the application container:
 
-          ```console
-            $ cf ssh app
-            vcap@1234:~$ host app.apps.internal
-            app.apps.internal has address 10.255.169.200
-            app.apps.internal has address 10.255.49.7
-            app.apps.internal has address 10.255.49.77
-          ```
+      <pre><code>
+    $ cf ssh app
+    vcap@1234:~$ host app.apps.internal
+    app.apps.internal has address 10.255.169.200
+    app.apps.internal has address 10.255.49.7
+    app.apps.internal has address 10.255.49.77
+      </code></pre></li>
 
-      * To resolve individual instances, prepend the index to the internal route.
+    <li>To resolve individual instances, prepend the index to the internal route.
 
-          ```console
-          vcap@1234:~$ host 1.app.apps.internal
-          1.app.apps.internal has address 10.255.49.7
-          ```
+      <pre><code>
+    vcap@1234:~$ host 1.app.apps.internal
+    1.app.apps.internal has address 10.255.49.7
+      </code></pre></li>
+    </ul>
 
-2. Create a network policy that allows your apps to communicate with each other. By default, apps cannot communicate over the container network. For more
+
+1. Create a network policy that allows your apps to communicate with each other. By default, apps cannot communicate over the container network. For more
 information, see [Configuring container-to-container networking](cf-networking.html) and the [Cloud Foundry CLI reference guide](https://cli.cloudfoundry.org/en-US/cf/add-network-policy.html).
 
 ### <a id='create-route'></a> Create a route
@@ -122,8 +124,8 @@ Creating route example-app.shared-domain.example.com for org example-org / space
 OK
 ```
 
-<p class="note important">
-The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</p>
+<div class="note important">
+The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</div>
 
 This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for these URLs:
 
@@ -415,7 +417,7 @@ These routes are valid for a single app:
   </tr>
 </table>
 
-These routes are _not_ valid for a single app:
+These routes are not valid for a single app:
 
 <table class="table">
   <thead><tr>
@@ -460,8 +462,8 @@ $ cf unmap-route tcp-app <%= vars.tcp_app_domain %> --port 60000
 
 ### <a id='share-route'></a> Share a route with another space
 
-<p class="note important">
-To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</p>
+<div class="note important">
+To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</div>
 
 You can share a route with another space using the `cf share-route` command. To move an app to another space, you can share routes with that space to prevent downtime during the transition. Rather than deleting the route in the original space and re-creating the route in the new space, you can share the route with the new space and map it to the app running in that space.
 
@@ -494,9 +496,8 @@ To share a route with another space:
 
 ### <a id='move-route'></a> Transfer ownership of a route to another space
 
-<p class="note important">
-To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.
-</p>
+<div class="note important">
+To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</div>
 
 After sharing a route with another space, you can transfer ownership of the route to that space using the <code>cf move-route</code> command. You can use this command if you are unable to maintain or delete a shared route within the space with which it was shared. For information about sharing routes across spaces, see [Share a route with another space](#share-route).
 
@@ -718,8 +719,8 @@ $ cf create-shared-domain <%= vars.app_domain %>
 
 To create a TCP shared domain, first discover the name of the TCP router group.
 
-<p class="note important">
-cf CLI v7 does not support TCP routing or creating shared domains with router groups.</p>
+<div class="note important">
+cf CLI v7 does not support TCP routing or creating shared domains with router groups.</div>
 
 ```console
 $ cf router-groups
@@ -795,8 +796,8 @@ Org managers can delete a domain from <%= vars.app_runtime_abbr %> with the `cf 
 $ cf delete-private-domain <%= vars.private_app_domain %>
 ```
 
-<p class="note important">
-cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</p>
+<div class="note important">
+cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</div>
 
 ### <a id='parent-child-domains'></a> Requirements for parent and child domains
 
@@ -892,8 +893,8 @@ If you use a wildcard as the subdomain name, then your DNS provider can route fr
 
 To use your root domain for apps on <%= vars.app_runtime_abbr %>, you can use custom DNS record types like ALIAS and ANAME, if your DNS provider offers them, or you can use subdomain redirection.
 
-<p class="note">
-Root domains are also called zone apex domains.</p>
+<div class="note">
+Root domains are also called zone apex domains.</div>
 
 If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider to point at a shared domain in
 <%= vars.app_runtime_abbr %>.
@@ -915,10 +916,10 @@ If your DNS provider supports using an ALIAS or ANAME record, configure your roo
 
 If your DNS provider does not support ANAME or ALIAS records, you can use subdomain redirection, also known as domain forwarding, to redirect requests for your root domain to a subdomain configured as a CNAME.
 
-<p class="note important">
+<div class="note important">
 If you use domain forwarding, SSL requests to the root domain might fail if the SSL certificate matches only the subdomain.
 For more information about SSL certificates, see
-the <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Cloud Foundry documentation</a>.</p>
+the <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Cloud Foundry documentation</a>.</div>
 
 Configure the root domain to point at a subdomain such as `www`, and configure the subdomain as a CNAME record pointing at a shared domain in
 <%= vars.app_runtime_abbr %>.

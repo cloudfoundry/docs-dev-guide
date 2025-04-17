@@ -68,7 +68,7 @@ If <%= vars.app_runtime_abbr %> cannot identify an appropriate buildpack for you
 
 You can view what buildpacks are available with the `cf buildpacks` command.
 
-If you see a buildpack that you believe should support your app, see the [buildpack documentation](../../buildpacks/index.html) for details about how that buildpack
+If you see a buildpack that you believe supports your app, see [Using Classic Buildpacks in Cloud Foundry](../../buildpacks/using-buildpacks.html) for details about how that buildpack
 detects apps it supports.
 
 If you do not see a buildpack for your app, you may still be able to push your app with a [custom buildpack](../../buildpacks/custom.html) using `cf push -b`
@@ -127,7 +127,7 @@ the port on which your app listens, use the `PORT` environment variable. For exa
     ```
     listen_here = ENV['PORT']
     ```
-    For more examples specific to your app framework, see the appropriate [buildpack documentation](../../buildpacks/index.html) for your app's language.
+    For more examples specific to your app framework, see [Using Classic Buildpacks in Cloud Foundry](../../buildpacks/using-buildpacks.html) for your app's language.
 
 * **Make sure your app adheres to the principles described in [Twelve-Factor App](http://12factor.net) and [Prepare to Deploy an
 App](prepare-to-deploy.html).** These texts explain how to prevent situations where your app builds locally but fails to build in the cloud.

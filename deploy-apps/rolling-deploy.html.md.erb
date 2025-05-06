@@ -96,7 +96,8 @@ By default, as described in [Canary Deployments](#canary), when you push an app 
 
 To run a canary deployment more gradually, you can pass a series of step weights to the `--instance-steps` option of `cf push`.
 
-  - The series specifies increasing numbers of canary instances to deploy, to let you manually continue after each step.
+  - The series specifies increasing numbers of canary instances to deploy. 
+    - The deployment will pause after each step, allowing you to manually [continue](#continue) the deployment and proceed to the next step, or [cancel](#cancel) the deployment.
     - Each value represents a **percentage** or **weight** of the web process's instances of the web process to be rolled out as canary instances.
   - Separate step weights with commas and without spaces, for example `5,10,20`.
   - For each canary instance created after the first, a pre-deployment instance is torn down.
@@ -184,6 +185,12 @@ This results in the following deployment plan:
 </table>
 
 A **Step Weight** of `100` allows app operators to use the `cancel-deployment` command even after all instances have been replaced.
+
+### <a id="canary-testing"></a> Testing Canary Deployments 
+
+To test an in-progress canary deployment, you can route HTTP requests to the canary process, or to an individual canary instance using the [`X-Cf-Process-Instance` header](https://docs.cloudfoundry.org/concepts/http-routing.html#-http-headers-for-process-instance-routing). 
+
+Alternatively, you can use [session affinity](https://docs.cloudfoundry.org/concepts/http-routing.html#sessions) force a particular client to persistently make requests to a canary instance.  
 
 ### <a id="limitations"></a> Limitations
 

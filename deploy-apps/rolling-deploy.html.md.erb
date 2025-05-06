@@ -112,9 +112,9 @@ For example, to update gradually in four steps, running 5, 10, and 20 canary ins
 
 ### <a id="canary-testing"></a> Testing Canary Deployments 
 
-To test an in-progress canary deployment, you can route HTTP requests to the canary process, or to an individual canary instance using the [`X-Cf-Process-Instance` header](https://docs.cloudfoundry.org/concepts/http-routing.html#-http-headers-for-process-instance-routing). 
+To test an in-progress canary deployment, you can route HTTP requests to the canary process, or to an individual canary instance using the `X-Cf-Process-Instance` header, as described in [HTTP headers for process instance routing](../../concepts/http-routing.html#process-instance-routing). 
 
-Alternatively, you can use [session affinity](https://docs.cloudfoundry.org/concepts/http-routing.html#sessions) force a particular client to persistently make requests to a canary instance.  
+Alternatively, you can use session affinity to force a particular client to persistently make requests to a canary instance as described in [Session affinity](../../concepts/http-routing.html#sessions).
 
 ### <a id="limitations"></a> Limitations
 

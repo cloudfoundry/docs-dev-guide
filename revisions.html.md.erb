@@ -59,16 +59,43 @@ Operators can configure <%= vars.platform_name %> to retain more droplets if nec
 
 This section describes how to use CAPI endpoints for viewing revisions.
 
-### <a id="list"></a> List revisions for an app
+### <a id="list"></a> List revision history for an app
 
-To list revisions for an app:
+To list both current and stopped revisions for an app:
 
 * Using the `revisions` command:
 
-	```
-	cf revisions APP-NAME
-	```
-	Where `APP-NAME` is the name of your app.
+  ```
+  cf revisions APP-NAME
+  ```
+  Where `APP-NAME` is the name of your app.
+
+* Using the `curl` command:
+
+  1. Retrieve the GUID of the app by running:
+
+    ```
+    cf app APP-NAME --guid
+    ```
+    Where `APP-NAME` is the name of your app.
+
+  1. Run:
+
+    ```
+    cf curl /v3/apps/GUID/revisions
+    ```
+    Where `GUID` is the GUID you retrieved in an earlier step.
+
+### <a id="list-deployed"></a> Get an app's current revision(s)
+
+The current revision of an app is its currently-deployed, running revision, linked to started processes. There may be multiple currently running revisions during an active canary or rolling deployment. To list an app's current revision(s):
+
+* Using the `revision` command:
+
+  ```
+  cf revision APP-NAME
+  ```
+  Where `APP-NAME` is the name of your app.
 
 * Using the `curl` command
 

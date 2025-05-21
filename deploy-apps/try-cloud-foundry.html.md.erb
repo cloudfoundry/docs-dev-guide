@@ -1,0 +1,39 @@
+---
+title: Trying out Cloud Foundry without setup
+owner: core
+---
+
+This page lists publicly accessible platforms where you can try out Cloud Foundry without installing it yourself.
+
+Cloud Foundry can be deployed on various infrastructures, but to make it easy to get started, several providers offer hosted Cloud Foundry environments with free or trial access.
+
+## Anynines Public PaaS
+
+**🌐 Website:** [https://paas.anynines.com](https://paas.anynines.com)
+
+Anynines offers a production-grade, fully managed Cloud Foundry Platform-as-a-Service (PaaS) that is publicly accessible to developers, teams, and organizations. It provides a zero-maintenance entry point to Cloud Foundry, ideal for learning, testing, or running real workloads.
+
+### Key Features
+
+- ✅ Free trial accounts available
+- 🧰 Pre-integrated services such as PostgreSQL, Redis, and S3-compatible object storage
+- ⚙️ Supports buildpacks, autoscaling, rolling deployments, and app metrics
+- 🛡️ Fully managed and operated by Cloud Foundry experts
+- 🇪🇺 Hosted in Europe with full GDPR compliance
+- 🤝 Commercial support available for production workloads
+
+### How to Get Started
+
+1. Visit [https://paas.anynines.com](https://paas.anynines.com)
+2. Register for a free developer account
+3. Download and install the [Cloud Foundry CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
+4. Log in and push your first app:
+   ```bash
+   cf login -a https://api.paas.anynines.com
+   cf push my-app
+   ```
+
+### Additional Resources
+
+- 📘 [Anynines Documentation](https://docs.anynines.com)
+- 📩 [Support & Contact](https://www.anynines.com/platform-operations/support)

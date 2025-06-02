@@ -237,6 +237,22 @@ The manifest attribute `docker.username` is optional. If it is used, the passwor
 <p class="note important">
 Using the <code>docker</code> attribute with the <code>buildpacks</code> or <code>path</code> attributes causes an error.</p>
 
+### <a id='features'></a> features
+
+App features can be set via the manifest attribute `features`. The attribute value is a key-value mapping of app feature names to boolean values indicating whether the feature is enabled or not. If omitted, a feature is enabled or disabled based on its default value (e.g. `revisions` are enabled by default, the `ssh` status depends on the foundation's configuration).
+
+For example:
+
+```
+---
+  ...
+  features:
+    ssh: true
+    revisions: true
+    service-binding-k8s: false
+    file-based-vcap-services: false
+```
+
 ### <a id='health-check-type'></a> health-check-type
 
 The `health-check-type` attribute sets the `health_check_type` flag to either `port`, `process` or `http`. If you do not provide a `health-check-type` attribute, the default is `port`.

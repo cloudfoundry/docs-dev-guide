@@ -123,8 +123,8 @@ You can refer to a buildpack by name in a manifest or a command-line option. The
 
 * **Custom buildpacks:** If your app requires a custom buildpack, you can use the `buildpacks` attribute to specify it in a number of ways:
   * By name: `BUILDPACK`.
-  * By GitHub URL: 
-    * For the source code repo: `https://github.com/cloudfoundry/java-buildpack.git` or 
+  * By GitHub URL:
+    * For the source code repo: `https://github.com/cloudfoundry/java-buildpack.git` or
     * For a fully-packaged asset: `https://github.com/cloudfoundry/java-buildpack/releases/download/v4.76.0/java-buildpack-v4.76.0.zip`
   * By GitHub URL with a branch or tag: `https://github.com/cloudfoundry/java-buildpack.git#v3.3.0` for the `v3.3.0` tag.
 
@@ -239,7 +239,7 @@ Using the <code>docker</code> attribute with the <code>buildpacks</code> or <cod
 
 ### <a id='features'></a> features
 
-App features can be set via the manifest attribute `features`. The attribute value is a key-value mapping of app feature names to boolean values indicating whether the feature is enabled or not. If omitted, a feature is enabled or disabled based on its default value (e.g. `revisions` are enabled by default, the `ssh` status depends on the foundation's configuration).
+App features can be set using the manifest attribute `features`. The attribute value is a key-value mapping of app feature names to Boolean values indicating whether the feature is enabled or not. If omitted, a feature is enabled or disabled based on its default value (e.g. `revisions` is enabled by default, and the `ssh` status depends on the configuration of the foundation).
 
 For example:
 

@@ -20,7 +20,6 @@ To push an app based on a Docker image, you need:
 
   * The total size of the Docker image file system layers must not exceed the disk quota for the app. The maximum disk allocation for apps is set by the Cloud Controller. The default maximum disk quota is 2048&nbsp;MB per app.
     <p class="note important">
-    <span class="note__title"><strong>Important</strong></span>
     If the total size of the Docker image file system layers exceeds the disk quota, the app instances do not start.</p>
 
 * The location of the Docker image on Docker Hub or another Docker registry. <%= vars.docker_auth1 %>
@@ -276,7 +275,6 @@ Where:
 * The <code>key.json</code> file must point to the file you created earlier.
 
 <p class="note">
-<span class="note__title"><strong>Note</strong></span>
 For information about specifying <code>YOUR-REGISTRY-URL</code>, see <a href="https://cloud.google.com/container-registry/docs/pushing-and-pulling">Pushing and Pulling Images</a> in the Google Cloud documentation.</p>
 
 

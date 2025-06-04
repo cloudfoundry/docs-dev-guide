@@ -58,7 +58,6 @@ To set up Fluentd for Cloud Foundry, configure the syslog input of Fluentd as fo
 2. Restart the Fluentd service.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 The Fluentd syslog input plug-in supports <code>tls</code> and <code>tcp</code> options. You must use the same transport that Cloud Foundry is using.</p>
 
 Fluentd starts listening for syslog message on port 8080 and tagging the messages with `cf.app`, which can be used later for data routing. For more details about the full setup for the service, see [Config File](https://docs.fluentd.org/configuration/config-file).

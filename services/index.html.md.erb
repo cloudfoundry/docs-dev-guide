@@ -13,7 +13,6 @@ Cloud Foundry offers a Marketplace of services, from which users can provision r
 For more information about provisioning service instances and other life cycle operations, see [Managing service instances](./managing-services.html).
 
 <p class="note">
-<span class="note__title"><strong>Note</strong></span>
 For a service to be available in the Marketplace, it must be integrated with Cloud Foundry by way of APIs. <%= vars.custom_services %></p>
 
 ### <a id='user-provided-services'></a> User-provided service instances
@@ -38,7 +37,6 @@ Credentials managed manually are known as service keys. Use service keys when yo
 For more information about creating a user-provided service instance with service keys, see [User-provided service instances](./user-provided.html). For more information about service keys, see [Managing service keys](./service-keys.html).
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 Not all services support service keys. Some services support credentials through app binding only.</p>
 
 
@@ -71,7 +69,6 @@ If your app relies on a relational database, you must apply schema changes perio
 For more information about running cf CLI tasks, see [Running tasks in your apps](../using-tasks.html).
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. The current supported version is cf CLI v8. For information about downloading, installing, and uninstalling the cf CLI, see the <a href="../../cf-cli/install-go-cli.html">Installing the cf CLI</a>.</p>
 
 To do a database schema migration with cf CLI:
@@ -82,7 +79,6 @@ To do a database schema migration with cf CLI:
 	Where `APP-NAME` is the name of the app.
 
 	<p class="note">
-	<span class="note__title"><strong>Note</strong></span>
 	To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
 
 1. Do a database schema migration as a task on the app:

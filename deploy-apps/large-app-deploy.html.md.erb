@@ -34,7 +34,7 @@ To deploy large apps to <%= vars.app_runtime_abbr %>, ensure that:
   	* `CF_STARTUP_TIMEOUT`: The maximum time in minutes that the cf CLI waits for an app to start
   	* `cf push -t TIMEOUT`: The maximum time in seconds that <%= vars.app_runtime_abbr %> allows to elapse between starting an app and the first healthy response from the app. When you use this flag, the cf CLI ignores any app start timeout value set in the manifest.
 
-For more information about using the cf CLI to deploy apps, see [Push](../../cf-cli/getting-started.html#push) in _Getting Started with the cf CLI_.
+For more information about using the cf CLI to deploy apps, see [Push](../../operating/cf-cli/getting-started.html#push) in _Getting Started with the cf CLI_.
 
 <p class="note important">
 Changing the timeout setting for the cf CLI does not change the timeout limit for <%= vars.app_runtime_abbr %>

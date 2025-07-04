@@ -112,7 +112,7 @@ From your Splunk Storm account:
 
     ![The Authorized network inputs pane shows the ports that data is sent to for this project only.](../images/third-party-logs/splunkstorm-06.png)
 
-5. Using the cf CLI, create the log drain service in Cloud Foundry using the TCP host and port you recorded. Then you bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow.
+5. Using the Tanzu cf CLI, create the log drain service in Cloud Foundry using the TCP host and port you recorded. Then you bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow.
 
     <pre class="terminal">
     $ cf cups my-logs -l syslog://HOST:PORT
@@ -164,7 +164,7 @@ In your SumoLogic account:
 
     ![Three options are available in the row: Show URL, Edit, Delete.](../images/third-party-logs/sumologic-06a.png)
 
-6. Using the cf CLI, create the log drain service in Cloud Foundry using the source URL you just recorded. Then you bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow.
+6. Using the Tanzu cf CLI, create the log drain service in Cloud Foundry using the source URL you just recorded. Then you bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow.
 
     <pre class="terminal">
     $ cf cups my-logs -l HTTPS-SOURCE-URL
@@ -188,7 +188,7 @@ In your Sematext account:
 
 1. Click the [Create App / Logsene App](https://apps.sematext.com/logsene-reports/registerApplication.do) menu item. Enter a name and click **Add Application** to create the Logsene App.
 
-2. Using the cf CLI, create the log drain service using the source URL displayed. Then you bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow. The logs appear in the [Logsene UI](https://apps.sematext.com/users-web/services.do#logsene).
+2. Using the Tanzu cf CLI, create the log drain service using the source URL displayed. Then you bind the service to an app and restage the app using the syntax shown here. After a short delay, the logs begin to flow. The logs appear in the [Logsene UI](https://apps.sematext.com/users-web/services.do#logsene).
 
     <pre class="terminal">
     $ cf cups logsene-log-drain -l https://logsene-cf-receiver.sematext.com/YOUR_LOGSENE_TOKEN

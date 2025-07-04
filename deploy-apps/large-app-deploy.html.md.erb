@@ -28,7 +28,7 @@ To deploy large apps to <%= vars.app_runtime_abbr %>, ensure that:
 
 * You push only the files that are necessary for your app. To meet this requirement, push only the directory for your app, and remove unneeded files or use the `.cfignore` file to specify excluded files. For more information about specifying excluded files, see [Ignore unnecessary files when pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and Running an App in the Cloud_.
 
-* You configure Cloud Foundry Command Line Interface (cf CLI) staging, startup, and timeout settings to override settings in the manifest, as necessary:
+* You configure Tanzu cf CLI staging, startup, and timeout settings to override settings in the manifest, as necessary:
   	* `CF_STAGING_TIMEOUT`: The maximum time in minutes that the cf CLI waits for an app to stage after <%= vars.app_runtime_abbr %> uploads and
     packages the app.
   	* `CF_STARTUP_TIMEOUT`: The maximum time in minutes that the cf CLI waits for an app to start

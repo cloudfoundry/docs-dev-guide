@@ -1,14 +1,7 @@
 ---
-title: Cloud Foundry environment variables
+title: Environment Variables
 owner: CAPI
 ---
-
-<%# Reset page title based on platform type %>
-<% if vars.platform_code != 'CF' %>
-
-<% set_title(vars.app_runtime_abbr, "Environment Variables") %>
-
-<% end %>
 
 Environment variables are the means <%= vars.app_runtime_abbr %> uses to communicate with a deployed app about its environment.
 

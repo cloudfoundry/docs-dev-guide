@@ -1,8 +1,7 @@
 ---
-title: Scaling an app using Cloud Foundry CLI (cf scale)
+title: Scaling an app using Tanzu cf CLI (cf scale)
 owner: CAPI
 ---
-
 
 
 Factors such as user load, or the number and nature of tasks performed by an app, can change the disk space and memory the app uses.
@@ -27,7 +26,7 @@ Adding more instances allows your app to handle increased traffic and
 demand.
 
 Use `cf scale APP -i INSTANCES` to horizontally scale your app.
-Cloud Foundry increases or decreases the number of instances of your app to match `INSTANCES`.
+The number of instances of your app increases or decreases to match `INSTANCES`.
 
 <pre class="terminal">
 $ cf scale myApp -i 5
@@ -39,7 +38,7 @@ In Tanzu cf CLI v10+, you can also use <code>--process</code> with <code>cf scal
 ## <a id="vertical"></a>Scaling vertically
 
 Vertically scaling an app changes the disk space limit or memory limit
-that Cloud Foundry applies to all instances of the app.
+that is applied to all instances of the app.
 
 Use `cf scale APP -k DISK` to change the disk space limit applied to all
 instances of your app.

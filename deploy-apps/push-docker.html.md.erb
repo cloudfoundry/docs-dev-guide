@@ -256,7 +256,7 @@ To create a JSON key file and associate it with your project:
 
 #### <a id='deploy'></a> Step 2: Deploy the GCP image
 
-To deploy your GCR image using the cf CLI, run:
+To deploy your GCR image using the Tanzu cf CLI, run:
 
 ```
 CF_DOCKER_PASSWORD="$(cat key.json)" cf push APP-NAME --docker-image docker://YOUR-REGISTRY-URL/YOUR-PROJECT/YOUR-IMAGE-NAME --docker-username _json_key`

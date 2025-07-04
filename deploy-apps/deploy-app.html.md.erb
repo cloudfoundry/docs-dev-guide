@@ -1,10 +1,10 @@
 ---
-title: Pushing your app with Cloud Foundry CLI (cf push)
+title: Pushing your app with Tanzu cf CLI (cf push)
 owner: CAPI
 ---
 
 
-The cf CLI command `cf push` pushes apps to <%= vars.app_runtime_abbr %>. There are two main ways to run the `cf push` command:
+The Tanzu cf CLI command `cf push` pushes apps to <%= vars.app_runtime_abbr %>. There are two main ways to run the `cf push` command:
 
 * Run `cf push APP-NAME` to push an app using default settings. For more information, see [Push with defaults](#default-push).
 
@@ -254,8 +254,7 @@ Connections](../../buildpacks/java/configuring-service-connections.html).
 
 ### <a id='sub-steps'></a> Build custom push workflows (optional)
 
-The CF CLI includes [composible push sub-step
-commands](../push-sub-commands.html) that empower you to build your own push.
+The Tanzu cf CLI includes [composable push sub-step commands](../push-sub-commands.html) that empower you to build your own push.
 These are useful if the default behavior of `cf push` does not match your
 needs, or if you want to implement more complicated app build, promotion, and
 run workflows.
@@ -272,4 +271,4 @@ With some app updates, old and new versions of your code must never run at the s
 
 If your app does not start on <%= vars.app_runtime_abbr %>, first ensure that the app can run locally.
 
-To troubleshoot your app in the cloud using the cf CLI, see [Troubleshoot app deployment and health](troubleshoot-app-health.html).
+To troubleshoot your app in the cloud using the Tanzu cf CLI, see [Troubleshoot app deployment and health](troubleshoot-app-health.html).

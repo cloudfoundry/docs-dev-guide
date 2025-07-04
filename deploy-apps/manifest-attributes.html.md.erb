@@ -3,7 +3,7 @@ title: App manifest attribute reference
 owner: CLI
 ---
 
-You can manage app properties and behavior using cf CLI commands or the app manifest (a YAML properties file). This topic describes manifest formatting and provides a list of attributes available for app manifests. You can use it with [Deploying with app manifests](manifest.html), which provides basic procedures and guidance for deploying apps with manifests.
+You can manage app properties and behavior using Tanzu cf CLI commands or the app manifest (a YAML properties file). This topic describes manifest formatting and provides a list of attributes available for app manifests. You can use it with [Deploying with app manifests](manifest.html), which provides basic procedures and guidance for deploying apps with manifests.
 
 For more information about V3 manifest properties, see the [Cloud Foundry API (CAPI) V3 documentation](http://v3-apidocs.cloudfoundry.org/index.html#space-manifest).
 
@@ -32,7 +32,7 @@ applications:
 ```
 
 <p class="note important">
-If your app name begins with the dash character (<code>-</code>), you cannot interact with the app using the cf CLI. This is because the cf CLI interprets the dash as a flag.</p>
+If your app name begins with the dash character (<code>-</code>), you cannot interact with the app using the Tanzu cf CLI. This is because the Tanzu cf CLI interprets the dash as a flag.</p>
 
 ### <a id='manifest-schema-version'></a> Add schema version to a manifest
 
@@ -111,11 +111,6 @@ memory for `bigapp`.
 ## <a id='optional-attributes'></a> App attributes
 
 This section explains how to describe optional app attributes in manifests. You can also specify each of these attributes using a command line option. Command-line options override the manifest.
-
-<p class="note important">
-In cf CLI v6, the route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>,
-<code>hosts</code>, and <code>no-hostname</code> are deprecated in favor of the <code>routes</code> attribute. In cf CLI v7+, these attributes are
-removed. For more information, see <a href="#route-attribute">domain, domains, host, hosts, and no-hostname</a>.</p>
 
 ### <a id='buildpacks'></a> buildpacks
 
@@ -247,8 +242,6 @@ For example:
 ```
 
 The `-u` command-line flag overrides this attribute.
-
-In cf CLI v6, the value of `none` is deprecated in favor of `process`. In cf CLI v7+, `none` is removed.
 
 ### <a id='health-check-http-ep'></a> health-check-http-endpoint
 
@@ -481,7 +474,7 @@ For example:
 
 The `-p` command-line flag overrides this attribute.
 
-For more information, see [How cf push finds the app](../../operating/cf-cli/getting-started.html#find-app) in _Getting Started with the cf CLI_.
+For more information, see [How cf push finds the app](../../operating/cf-cli/getting-started.html#find-app) in _Getting Started with the Tanzu cf CLI_.
 
 ### <a id='processes'></a> processes
 
@@ -518,9 +511,9 @@ For more information about pushing an app with multiple processes, see [Pushing 
 
 ### <a id='random-route'></a> random-route
 
-If you push your app without specifying any route-related CLI options or app manifest flags, the cf CLI attempts to generate a route based on the app name, which can cause collisions.
+If you push your app without specifying any route-related CLI options or app manifest flags, the Tanzu cf CLI attempts to generate a route based on the app name, which can cause collisions.
 
-You can use the `random-route` attribute to generate a unique route and avoid name collisions. When you use `random-route`, the cf CLI generates one of the following:
+You can use the `random-route` attribute to generate a unique route and avoid name collisions. When you use `random-route`, the Tanzu cf CLI generates one of the following:
 
 * An HTTP route with a random host, if no value is specified for `host`
 
@@ -546,16 +539,12 @@ The `--random-route` command-line flag overrides this attribute.
 
 The `routes` attribute in the manifest provides multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
 
-<p class="note important">
-This attribute is a combination of <code>push</code> options that include <code>--hostname</code>, <code>-d</code>, and <code>--route-path</code> flags in v6. These flags are not supported in cf CLI v7, so the <code>routes</code> flag must be used.</p>
-
 You can specify the `protocol` attribute to configure which network protocol the route uses for app ingress traffic. This is optional. The available protocols are `http2`, `http1`, and `tcp`.
 
 <p class="note important">
 The <code>protocol</code> route attribute is available only for <%= vars.app_runtime_abbr %> deployments that use HTTP/2 routing. <%= vars.http2_admin_link %> </p>
 
 For example:
-
 
 ```
 ---
@@ -594,7 +583,6 @@ If you use the `routes` attribute with the `host`, `hosts`, `domain`, `domains`,
 #### <a id='push-flag-options'></a> push flag options
 
 This attribute has unique interactions with different command-line options.
-In cf CLI v7, several of the flags were removed (`--route-path`, `-d`, `--hostname`, `--no-hostname`)
 
 <table class="table">
   <thead><tr>
@@ -693,7 +681,7 @@ For example:
 <div class="note important">
   <ul>
     <li>You must name variables with alphanumeric characters and underscores. Non-conforming variable names might cause unpredictable behavior.</li>
-    <li>Do not use user-provided environment variables for security sensitive information such as credentials, because they might unintentionally show up in cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided environment variable <a href="./environment-variable.html#VCAP-SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter and in Cloud Controller log files.</li>
+    <li>Do not use user-provided environment variables for security sensitive information such as credentials, because they might unintentionally show up in Tanzu cf CLI output and Cloud Controller logs. Use <a href="../services/user-provided.html">user-provided service instances</a> instead. The system-provided environment variable <a href="./environment-variable.html#VCAP-SERVICES">VCAP_SERVICES</a> is properly redacted for user roles such as Space Supporter and in Cloud Controller log files.</li>
   </ul>
 </div>
 
@@ -828,47 +816,6 @@ applications:
 
 When pushing the app, make explicit the attributes in each app's declaration. To do this, assign the anchors and include the app-level attributes with YAML
 aliases in each app declaration.
-
-### <a id='route-attribute'></a> domain, domains, host, hosts, and no-hostname attributes
-
-These flags are removed in cf CLI v7+.
-
-Previously, you could specify routes by listing them all at once using the `routes` attribute, or by using their hosts and domains.
-
-For example:
-
-```
----
-applications:
-- name: webapp
-  host: www
-  domains:
-  - example.com
-  - example.io
-```
-
-The following route component attributes are deprecated:
-
-* `domain`
-
-* `domains`
-
-* `host`
-
-* `hosts`
-
-* `no-hostname`
-
-You can only specify routes using the `routes` attribute:
-
-```
----
-applications:
-- name: webapp
-  routes:
-  - route: www.example.com/foo
-  - route: tcp.example.com:1234
-```
 
 ### <a id='inheritance-deprecated'></a> Inheritance
 

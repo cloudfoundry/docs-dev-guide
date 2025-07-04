@@ -13,8 +13,7 @@ restarted. Readiness health checks are performed to validate that app instances 
 ready to serve requests. When readiness health checks fail, the app instance is
 marked as not ready and removed from the route pool for the app.
 
-You can configure a liveness health check for an app using the Cloud Foundry
-Command Line Interface (cf CLI) or by specifying a combination of the
+You can configure a liveness health check for an app using the Tanzu cf CLI or by specifying a combination of the
 `health-check-http-endpoint`, `health-check-type`,
 `health-check-invocation-timeout`, and `health-check-interval` fields in an
 [app manifest](manifest.html).
@@ -26,7 +25,7 @@ To use readiness health checks, you must have:
 * diego-release 2.81.0
 * capi-release 1.158.0
 
-To configure a health check using the cf CLI, see:
+To configure a health check using the Tanzu cf CLI, see:
 
 * [Configure health checks when creating or updating](#setting-health-checks)
 

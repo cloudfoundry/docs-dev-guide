@@ -29,15 +29,16 @@ To deploy large apps to <%= vars.app_runtime_abbr %>, ensure that:
 * You push only the files that are necessary for your app. To meet this requirement, push only the directory for your app, and remove unneeded files or use the `.cfignore` file to specify excluded files. For more information about specifying excluded files, see [Ignore unnecessary files when pushing](prepare-to-deploy.html#exclude) in _Considerations for Designing and Running an App in the Cloud_.
 
 * You configure Tanzu cf CLI staging, startup, and timeout settings to override settings in the manifest, as necessary:
+
   	* `CF_STAGING_TIMEOUT`: The maximum time in minutes that the cf CLI waits for an app to stage after <%= vars.app_runtime_abbr %> uploads and
     packages the app.
   	* `CF_STARTUP_TIMEOUT`: The maximum time in minutes that the cf CLI waits for an app to start
   	* `cf push -t TIMEOUT`: The maximum time in seconds that <%= vars.app_runtime_abbr %> allows to elapse between starting an app and the first healthy response from the app. When you use this flag, the cf CLI ignores any app start timeout value set in the manifest.
 
-For more information about using the cf CLI to deploy apps, see [Push](../../operating/cf-cli/getting-started.html#push) in _Getting Started with the cf CLI_.
+For more information about using the Tanzu cf CLI to deploy apps, see [Push](../../operating/cf-cli/getting-started.html#push) in _Getting Started with the cf CLI_.
 
 <p class="note important">
-Changing the timeout setting for the cf CLI does not change the timeout limit for <%= vars.app_runtime_abbr %>
+Changing the timeout setting for the Tanzu cf CLI does not change the timeout limit for <%= vars.app_runtime_abbr %>
 server-side jobs such as staging or starting apps. You must change server-side timeouts in the manifest. Because of the differences between the
 <%= vars.app_runtime_abbr %> and cf CLI timeout values, your app might start even though the cf CLI reports <code>App failed</code>. To review the status of your app, run <code>cf apps APP-NAME</code>, where <code>APP-NAME</code> is the name of your app.</p>
 
@@ -61,13 +62,13 @@ The following table provides a summary of the constraints and default settings t
   </tr>
   <tr>
     <td><code>CF_STAGING_TIMEOUT</code></td>
-    <td>cf CLI environment variable
+    <td>Tanzu cf CLI environment variable
       <br>
       Default: 15 minutes</td>
   </tr>
   <tr>
     <td><code>CF_STARTUP_TIMEOUT</code></td>
-    <td>cf CLI environment variable
+    <td>Tanzu cf CLI environment variable
       <br>
       Default: 5 minutes</td>
   </tr>

@@ -70,7 +70,7 @@ You can also use either method to push an app that serves gRPC traffic.
 To push an app with end-to-end HTTP/2, see:
 
 - [Push an app with end-to-end HTTP/2 using the app manifest](#e2e-manifest)
-- [Push an app with end-to-end HTTP/2 using the cf CLI](#e2e-cli)
+- [Push an app with end-to-end HTTP/2 using the Tanzu cf CLI](#e2e-cli)
 - [Push a gRPC app](#grpc-app)
 
 ### <a id="http1-app"></a> Push an HTTP/1.1 app that serves HTTP/2
@@ -138,14 +138,14 @@ For example, you can use the HTTP/2 test app from [Cloud Foundry Acceptance Test
 	```
 	The response shows that the request was received over HTTP/2.
 
-### <a id="e2e-cli"></a> Push an app with end-to-end HTTP/2 using the cf CLI
+### <a id="e2e-cli"></a> Push an app with end-to-end HTTP/2 using the Tanzu cf CLI
 
 The recommended way to do this is using the `routes` attribute in the manifest YAML file.
 
 <p class="note important">
-The following procedure is supported only for cf CLI v6. The `--hostname` flag is deprecated in cf CLI v7, and must be specified in the manifest.</p>
+The hostname and must be specified in the manifest.</p>
 
-To push an app that serves HTTP/2 traffic using the cf CLI (v6 only):
+To push an app that serves HTTP/2 traffic using the Tanzu cf CLI:
 
 1. Use an app that supports serving HTTP/2 traffic with prior knowledge.
 For example, you can use the HTTP/2 test app from [Cloud Foundry Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests/tree/main/assets/http2) on GitHub.
@@ -159,7 +159,7 @@ For example, you can use the HTTP/2 test app from [Cloud Foundry Acceptance Test
 2. You can map a route by running:
 
 	```
-	cf map-route MY-APP EXAMPLE.COM --hostname host
+	cf map-route MY-APP EXAMPLE.COM
 	```
 	Where `MY-APP` is the name of your app and `EXAMPLE.COM` is the route you want to map to your app.
 
@@ -182,8 +182,8 @@ To push an app that serves gRPC traffic:
 1. Use an app that supports serving gRPC traffic.
 For example, you can use the gRPC test app from [Cloud Foundry Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests/tree/main/assets/grpc) on GitHub.
 
-1. Push the app with HTTP/2 activated using either the app manifest or the cf CLI.
-See [Push an app with end-to-end HTTP/2 using the app manifest](#e2e-manifest) or [Push an app with end-to-end HTTP/2 using the cf CLI](#e2e-cli).
+1. Push the app with HTTP/2 activated using either the app manifest or the Tanzu cf CLI.
+See [Push an app with end-to-end HTTP/2 using the app manifest](#e2e-manifest) or [Push an app with end-to-end HTTP/2 using the Tanzu cf CLI](#e2e-cli).
 
 1. Send a gRPC request to the app using `grpcurl` by running the following command. For more information, see [grpcurl](https://github.com/fullstorydev/grpcurl).
 

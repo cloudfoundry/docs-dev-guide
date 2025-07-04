@@ -48,13 +48,13 @@ Example:
 
 ## <a id="delete-no-service"></a> Delete an app with no services
 
-To delete an app with no services, run `cf delete -r APP-NAME`. Replace `APP-NAME` with the name of the app. The `-r` option instructs the cf CLI to removes routes associated with the app.
+To delete an app with no services, run `cf delete -r APP-NAME`. Replace `APP-NAME` with the name of the app. The `-r` option instructs the Tanzu cf CLI to removes routes associated with the app.
 
 Example:
 <pre class="terminal">$ cf delete -r my-example-app</pre>
 
 <p class="note important">
-In cf CLI v7+, <code>-r</code> no longer deletes routes when the route is mapped to more than one app.</p>
+Note that the <code>-r</code> option no longer deletes routes when the route is mapped to more than one app.</p>
 
 If you delete an app without the `r` option, you can delete the route manually.
 

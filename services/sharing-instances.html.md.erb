@@ -48,8 +48,7 @@ $ cf enable-feature-flag service_instance_sharing
 
 You can share a service instance from one space to another if you have the Space Developer role in both spaces.
 
-To share a service instance to another space, run the following Cloud
-Foundry Command Line Interface (cf CLI) command:
+To share a service instance to another space, run the following Tanzu cf CLI command:
 
 <pre class="terminal">
 $ cf share-service SERVICE-INSTANCE -s OTHER-SPACE [-o OTHER-ORG]
@@ -66,7 +65,7 @@ you cannot share that service instance.
 
 ## <a id="info-sharing"></a> Get information about service instance sharing
 
-To get information about service instance sharing on the originating space, run the following cf CLI command from that originating space:
+To get information about service instance sharing on the originating space, run the following Tanzu cf CLI command from that originating space:
 
 ```
 cf service SERVICE-INSTANCE-NAME
@@ -154,7 +153,7 @@ space where this service instance was shared from.
 Developers cannot delete or rename a service instance until it is unshared from all
 spaces.
 
-To unshare a service instance, run the following cf CLI command:
+To unshare a service instance, run the following Tanzu cf CLI command:
 
 <pre class="terminal">
 $ cf unshare-service SERVICE-INSTANCE -s OTHER-SPACE [-o OTHER-ORG] [-f]

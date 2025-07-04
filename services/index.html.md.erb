@@ -69,9 +69,9 @@ If your app relies on a relational database, you must apply schema changes perio
 For more information about running cf CLI tasks, see [Running tasks in your apps](../using-tasks.html).
 
 <p class="note important">
-To run tasks with the cf CLI, you must install cf CLI v6.23.0 or later. The current supported version is cf CLI v8. For information about downloading, installing, and uninstalling the cf CLI, see the <a href="../../operating/cf-cli/install-cf-cli.html">Installing the cf CLI</a>.</p>
+For information about downloading, installing, and uninstalling the Tanzu cf CLI, see <a href="../../operating/cf-cli/install-cf-cli.html">Installing the Tanzu cf CLI</a>.</p>
 
-To do a database schema migration with cf CLI:
+To do a database schema migration with Tanzu cf CLI:
 
 1. Push the app:
 	<pre class="terminal">$ cf push APP-NAME</pre>
@@ -81,7 +81,7 @@ To do a database schema migration with cf CLI:
 	<p class="note">
 	To run a task without starting the app, push the app with <code>cf push -i 0</code> and then run the task. You can run the app later by scaling up its instance count.</p>
 
-1. Do a database schema migration as a task on the app:
+2. Do a database schema migration as a task on the app:
 	<pre class="terminal">
 	$ cf run-task APP-NAME --command "bin/rails db:migrate" --name TASK-NAME
 	Creating task for app APP-NAME in org jdoe-org / space development as jdoe@pivotal.io...

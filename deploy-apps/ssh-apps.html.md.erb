@@ -9,14 +9,14 @@ The Tanzu cf CLI lets you securely log in to remote host virtual machines (VMs) 
 <p class="note important">
 The <code>cf ssh</code> command in Tanzu cf CLI includes the <code>all_proxy</code> environment variable, which allows you to specify a proxy server to activate proxying for all requests. For more information, see <a href="http://cli.cloudfoundry.org/en-US/v8/ssh.html">ssh</a> in the Cloud Foundry CLI Reference Guide and <a href="../../cf-cli/http-proxy.html#v3-ssh-socks5">Use SOCKS5 with cf v3-ssh</a> in <em>Using the cf CLI with a proxy server</em>.</p>
 
-The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controller `/v2/info` endpoint, and uses this identifier to query the UAA server for an SSH authorization code. On the target VM side, the SSH proxy contacts the Cloud Controller through the `app_ssh_endpoint` listed in `/v2/info` to confirm permission for SSH access.
+The Tanzu cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controller `/v2/info` endpoint, and uses this identifier to query the UAA server for an SSH authorization code. On the target VM side, the SSH proxy contacts the Cloud Controller through the `app_ssh_endpoint` listed in `/v2/info` to confirm permission for SSH access.
 
 
 ## <a id="ssh-commands"></a> App SSH commands
 
 <table id='ssh-commands' class="table">
   <thead><tr>
-    <th>cf CLI command</th>
+    <th>Tanzu cf CLI command</th>
     <th>Purpose</th>
   </tr></thead>
   <tr>
@@ -41,7 +41,7 @@ The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controlle
   </tr>
   <tr>
     <td><code>cf ssh-code</code></td>
-    <td><a href="#other-ssh-access">App SSH access without cf CLI</a> using non-<code>cf SSH</code> tools like <code>ssh</code>, <code>scp</code>, and <code>sftp</code></td>
+    <td><a href="#other-ssh-access">App SSH access without Tanzu cf CLI</a> using non-<code>cf SSH</code> tools like <code>ssh</code>, <code>scp</code>, and <code>sftp</code></td>
   </tr>
 </table>
 
@@ -120,7 +120,7 @@ You can tailor [cf ssh](http://cli.cloudfoundry.org/en-US/cf/ssh.html) commands 
 
 * The `-N` flag skips returning a command prompt on the remote machine. This sets up local port forwarding if you do not need to run commands on the host VM.
 
-* The `--process` flag in cf CLI v7+ allows you to SSH into the container for a specific process running as part of your app.
+* The `--process` flag allows you to SSH into the container for a specific process running as part of your app.
 
 * The `--request-pseudo-tty` and `--force-pseudo-tty ` flags allow you run an SSH session in pseudo-tty mode rather than generate terminal line output.
 
@@ -143,7 +143,7 @@ environment variables, as described in
 _<%= vars.app_runtime_abbr %> Environment Variables_.
 
 
-## <a id="other-ssh-access"></a> App SSH access without cf CLI
+## <a id="other-ssh-access"></a> App SSH access without Tanzu cf CLI
 
 In addition to `cf ssh`, you can use other SSH clients such as `ssh`, `scp`, or `sftp` to access
 your app, if you have SSH permissions.
@@ -346,7 +346,7 @@ The SSH proxy has these SSH security configuration by default:
   </tr>
 </table>
 
-The `cf ssh` command is compatible with this security configuration. If you use a different SSH client to access apps over SSH, you can ensure that you configure your client to be compatible with these ciphers, MACs, and key exchanges. For more information about other SSH clients, see [App SSH access without cf CLI](#other-ssh-access).
+The `cf ssh` command is compatible with this security configuration. If you use a different SSH client to access apps over SSH, you can ensure that you configure your client to be compatible with these ciphers, MACs, and key exchanges. For more information about other SSH clients, see [App SSH access without Tanzu cf CLI](#other-ssh-access).
 
 <% if vars.platform_code == 'CF' %>
 Cloud Foundry deployment operators can also change these default values in the SSH proxy configuration. Changing these default values might require a change to the SSH client configuration.

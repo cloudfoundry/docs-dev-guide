@@ -14,17 +14,8 @@ For more information about CAPI, see the
 
 ## <a id="prerequisites"></a> Prerequisites
 
-The procedures in this topic require one of the following:
-
-* **cf CLI v7 or later**
-
-* **CAPI V3:** If you use CAPI V3 API, you must install the cf CLI.
-
-Or for canary deployments:
-
-* **cf CLI v8.8.0 or later**
-
-* **CAPI V3.173.0 or later**
+The procedures in this topic require Tanzu cf CLI v10 or later.
+<br>If you are preparing a canary deployment, you need CAPI V3.173.0 or later.
 
 ## <a id="how-deployment-strategies-work"></a> How Deployment Strategies Work
 
@@ -32,9 +23,9 @@ Cloud Foundry provides two different strategies for deployments:
 
 * A **Rolling** deployment brings up one or more web processes for the new app version, with the number set by `max-in-flight`, which defaults to 1. After those instances report as healthy and routable, it brings down the same number of instances of the old version. The deployment repeats this process to replace all web process instances and then updates all old non-web processes.
 * A **Canary** deployment brings up one or more web processes for the new app version, defaulting to one. It then pauses to let app operators or developers evaluate the health of a new version instances. App operators can then choose to either `cancel` or `continue` the deployment. When the deployment is continued, the canary deployment proceeds in the same way as a rolling deployment.
-  * To gradually increase instance counts and check app health in multiple steps, the latest cf CLI v8 supports an `--instance-steps` option that sets a series of increasing instance counts.
+  * To gradually increase instance counts and check app health in multiple steps, the Tanzu cf CLI supports an `--instance-steps` option that sets a series of increasing instance counts.
 
-Each rolling or canary deployment increments the `revision` count for the new app deployment, as listed by the `cf revisions` command described in [] described in xxyx
+Each rolling or canary deployment increments the `revision` count for the new app deployment, as listed by the `cf revisions` command.
 
 The following sections describe the rolling and canary deployment strategies and their limitations.
 
@@ -178,7 +169,7 @@ The following table describes the limitations when using these deployments.
       If app revision logging is enabled, the logs for all instances will be tagged with <code>process_id</code> and <code>revision_version</code> values. e.g. <code>APP/REV/4/PROC/WEB/1</code>
       <br>
       <br>
-      Retrieve the logs by running the cf CLI command <code>cf logs APP_NAME</code>.
+      Retrieve the logs by running the Tanzu cf CLI command <code>cf logs APP_NAME</code>.
     </td>
   </tr>
 </table>
@@ -190,13 +181,11 @@ This section describes the commands for working with rolling app deployments.
 
 ### <a id="deploy"></a> Deploy an app
 
-To deploy an app without incurring downtime:
-
 <p class="note caution">
 Review the limitations of this feature before running the command. For more information, see
 <a href="#limitations">Limitations</a>.</p>
 
-#### For cf CLI v7+
+To deploy an app without incurring downtime:
 
 Run:
 
@@ -207,7 +196,7 @@ cf push APP-NAME --strategy rolling
 Where `APP-NAME` is the name that you want to give your app.
 
 <p class="note">
-cf CLI v7 exits when one instance of each process is healthy.
+Tanzu cf CLI exits when one instance of each process is healthy.
 It also includes a <code>--no-wait</code> flag for users who don't want to wait
 for the operation to complete.
 When <code>cf push</code> is used with the <code>--no-wait</code> flag, the process exits as soon as one instance is healthy.
@@ -216,8 +205,7 @@ When <code>cf push</code> is used with the <code>--no-wait</code> flag, the proc
 If the deployment stops and doesn't restart, cancel it and run it again as described in an earlier step.
 To cancel, see [Cancel a deployment](#cancel).
 
-
-#### For cf CLI v8.8.0+ and CAPI V3.173.0 or later
+#### For CAPI V3.173.0 or later
 
 Run:
 
@@ -234,7 +222,7 @@ Where:
 
 #### For CAPI V3
 
-1. Log in to the cf CLI.
+1. Log in to the Tanzu cf CLI.
 
     ```
     cf login
@@ -358,9 +346,7 @@ For more information about this command, see [How Deployment Strategies Work](#h
 
 ### <a id="cancel"></a> Cancel a deployment
 
-To stop the deployment of an app that you pushed:
-
-* **For cf CLI v7+, run:**
+To stop the deployment of an app that you pushed, run:
 
     ```
     cf cancel-deployment APP-NAME
@@ -393,8 +379,6 @@ to environment variables and service bindings are not reverted.</p>
 
 To finish a canary deployment after the deployment has paused and the canary instance has been validated:
 
-* **For cf CLI v8+, run:**
-
     ```
     cf continue-deployment APP-NAME
     ```
@@ -414,9 +398,7 @@ This continues the deployment of the app, following the same process as a rollin
 
 Restart your app to apply configuration updates that require a restart, such as environment variables or service bindings.
 
-To restart your app without downtime, run the appropriate command as shown here.
-
-* **For cf CLI v7+, run:**
+To restart your app without downtime, run the appropriate command as shown here. Run:
 
     ```
     cf restart APP-NAME --strategy STRATEGY
@@ -428,7 +410,7 @@ To restart your app without downtime, run the appropriate command as shown here.
       <li><code>STRATEGY</code> is the strategy you would like to use for the deployment. Valid strategies are <code>rolling</code> and <code>canary</code>.</li>
     </ul>
 
-* **For cf CLI v8.8.0+ and CAPI V3.173.0 or later, run:**
+* **For CAPI V3.173.0 or later, run:**
 
     ```
     cf restart APP-NAME --strategy STRATEGY --max-in-flight MAX_IN_FLIGHT
@@ -479,7 +461,7 @@ You can use CAPI to view the status of deployments.
 
 To view the status of a deployment:
 
-1. Log in to the cf CLI:
+1. Log in to the Tanzu cf CLI:
 
     ```
     cf login

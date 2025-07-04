@@ -55,7 +55,7 @@ services:
  - test-mysql-01
 ```
 
-The following excerpt from an app manifest binds a service instance called `db-test` with arbitrary parameters to the app on push. Arbitrary parameters used in this example are available in cf CLI 7.0 and later.
+The following excerpt from an app manifest binds a service instance called `db-test` with arbitrary parameters to the app on push.
 
 ```
 services:
@@ -64,7 +64,7 @@ services:
       schema: customschema
 ```
 
-The following excerpt from the `cf push` command and response demonstrates that the cf CLI reads the manifest and binds the service instance to an app called `test-msg-app`.
+The following excerpt from the `cf push` command and response demonstrates that the Tanzu cf CLI reads the manifest and binds the service instance to an app called `test-msg-app`.
 
 <pre class="terminal">
 $ cf push

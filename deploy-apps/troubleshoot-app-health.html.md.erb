@@ -210,9 +210,6 @@ To view app logs streamed in real time, run `cf logs APP-NAME`.
 
 To aggregate your app logs to view log history, bind your app to a syslog drain service. For more information, see [Streaming app logs to log management services](./../services/log-management.html).
 
-<p class="note important">
-The Diego architecture does not support the <code>cf files</code> command, and <code>cf files</code> was removed as of cf CLI v7.</p>
-
 ### <a id='trace'></a> Trace Cloud Controller REST API calls
 
 If a command fails or produces unexpected results, re-run it with HTTP tracing activated to view requests and responses between the Tanzu cf CLI and the Cloud Controller REST API.
@@ -239,7 +236,7 @@ export CF_TRACE=PATH-TO-TRACE.LOG
 ```
 
 <p class="note caution">
-<code>CF_TRACE</code> is a local environment variable that modifies the behavior of the cf CLI. Do not confuse <code>CF_TRACE</code> with the variables in the container environment where your apps run. For more information about these container variables, see <a href="#env">Examine environment variables</a>.</p>
+<code>CF_TRACE</code> is a local environment variable that modifies the behavior of the Tanzu cf CLI. Do not confuse <code>CF_TRACE</code> with the variables in the container environment where your apps run. For more information about these container variables, see <a href="#env">Examine environment variables</a>.</p>
 
 ### <a id='zipkin_trace'></a> Analyze Zipkin trace IDs
 
@@ -250,9 +247,9 @@ After adding Zipkin HTTP headers to app logs, developers can run `cf logs APP-NA
 
 ## <a id='cf-commands'></a> Use troubleshooting commands
 
-You can investigate app deployment and health using the cf CLI.
+You can investigate app deployment and health using the Tanzu cf CLI.
 
-Some cf CLI commands return connection credentials. Remove credentials and other sensitive information from command output before you post the output a public forum.
+Some Tanzu cf CLI commands return connection credentials. Remove credentials and other sensitive information from command output before you post the output a public forum.
 
 * `cf apps`: Returns a list of the apps deployed to the current space with deployment options, including the name, current state, number of instances, and URLs of each app.
 

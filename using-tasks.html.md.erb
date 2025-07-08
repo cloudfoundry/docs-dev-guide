@@ -64,8 +64,8 @@ more information, see the [Cloud Foundry API documentation](http://v3-apidocs.cl
 
 Admins can set the default memory, disk usage and log rate quotas for tasks on a global level.
 
-Tasks use the same memory, disk usage, and log rate limit defaults as apps, unless you customize them using the `cf run-task` command. For more information
-about the `cf run-task` command, see the [Cloud Foundry CLI reference guide](https://cli.cloudfoundry.org/en-US/v8/run-task.html).
+Tasks use the same memory, disk usage, and log rate limit defaults as apps, unless you customize them using the `cf run-task` command.
+For more information about the `cf run-task` command, enter `cf run-task --help`.
 
 <% if vars.platform_code == 'PCF' %>
 <%= partial "/pcf/core/tasks_rec_alloc_pcf" %>

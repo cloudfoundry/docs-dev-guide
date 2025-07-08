@@ -15,7 +15,7 @@ After creation, user-provided service instances behave like service instances cr
 
 ## <a id='create'></a>Create a user-provided service instance
 
-The alias for [cf create-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/create-user-provided-service.html) is `cf cups`.
+The alias for the `cf create-user-provided-service` command is `cf cups`.
 
 ### <a id='credentials'></a>Deliver service credentials to an app
 
@@ -77,7 +77,7 @@ For more information, see [Managing app requests with route services](./route-bi
 
 ## <a id='update'></a> Update a user-provided service instance
 
-You can use [cf update-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/update-user-provided-service.html) to update the attributes of an instance of a user-provided service. New credentials overwrite old credentials, and parameters that are not provided are deleted.
+You can use `cf update-user-provided-service` to update the attributes of an instance of a user-provided service. New credentials overwrite old credentials, and parameters that are not provided are deleted.
 
 The alias for `update-user-provided-service` is `uups`. Bound apps can access the new configuration after restart.
 You can use rolling restarts to avoid any app downtime.

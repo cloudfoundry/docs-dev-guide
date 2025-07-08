@@ -78,7 +78,7 @@ The router now also sends any traffic for `demo-time-temp.example.com` to Green.
 Now that both apps are up and running, switch the router so all incoming
 requests go to the Green app _and_ the Blue app.
 Do this by mapping the original URL route (`demo-time.example.com`) to the Green
-app using the [cf map-route](http://cli.cloudfoundry.org/en-US/cf/map-route.html) command.
+app using the `cf map-route` command.
 
 <pre class="terminal">
 $ cf map-route Green example.com -n demo-time
@@ -96,7 +96,7 @@ After the `cf map-route` command :
 ### <a id='unmap-blue'></a>Step 4: Unmap Route to Blue ###
 
 After you verify Green is running as expected, stop routing requests to Blue
-using the [cf unmap-route](http://cli.cloudfoundry.org/en-US/cf/unmap-route.html) command:
+using the `cf unmap-route` command:
 
 <pre class="terminal">
 $ cf unmap-route Blue example.com -n demo-time

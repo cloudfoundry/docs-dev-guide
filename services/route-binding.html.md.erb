@@ -24,7 +24,7 @@ You must install the Cloud Foundry Command Line Interface (cf CLI) to bind a rou
 
 Gorouter rejects WebSockets requests for routes that are bound to route services. These requests return a 503 error and a `X-Cf-Routererror route_service_unsupported header`.
 
-Run the [cf bind-route-service](http://cli.cloudfoundry.org/en-US/cf/bind-route-service.html) command to bind a route from an app to a service instance.
+Run `cf bind-route-service` to bind a route from an app to a service instance.
 
 The following example binds the route from `my-app.<%=vars.app_domain%>` to the service instance `my-route-service`.
 
@@ -64,7 +64,7 @@ OK
 
 You must install the Cloud Foundry Command Line Interface (cf CLI) to bind a route to a service instance. For more information, see the [Installing the cf CLI](../../cf-cli/install-go-cli.html) topic.
 
-Run the [cf unbind-route-service](http://cli.cloudfoundry.org/en-US/cf/unbind-route-service.html) command to unbind a route from an app to a service instance.
+Run the `cf unbind-route-service` command to unbind a route from an app to a service instance.
 
 The following example removes the route from `my-app.<%=vars.app_domain%>` to the service instance `my-route-service`.
 

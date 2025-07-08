@@ -25,7 +25,14 @@ Using the Cloud Foundry Command Line Interface (cf CLI), you can run the `cf env
 
 * The user-provided variables set using the `cf set-env` command
 
-For more information about the `cf env` command, see [env](http://cli.cloudfoundry.org/en-US/cf/env.html) in the cf CLI documentation. For more information about the `cf set-env` command, see [set-env](http://cli.cloudfoundry.org/en-US/cf/set-env.html) in the cf CLI documentation.
+There are three possible ways of providing service binding data to apps, see [Credential Delivery Methods](../services/application-binding.html#credential-delivery-methods). Depending on the chosen method there will be one of the following environment variables:
+
+* [VCAP_SERVICES](#VCAP-SERVICES)
+* [SERVICE_BINDING_ROOT](#SERVICE-BINDING-ROOT) (experimental)
+* [VCAP_SERVICES_FILE_PATH](#VCAP-SERVICES-FILE-PATH) (experimental)
+
+For more information about the `cf env` command, enter `cf env --help`.<br>
+For more information about the `cf set-env` command, enter `cf set-env --help`.
 
 The following example demonstrates the environment variables `cf env` displays:
 

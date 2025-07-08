@@ -10,8 +10,8 @@ For more information about routing capabilities in <%= vars.app_runtime_abbr %>,
 
 ## <a id='routes'></a> Routes
 
-The <%= vars.app_runtime_abbr %> Gorouter routes requests to apps by associating an app with an address, known as a route. This is known as a _mapping_. Use
-the cf CLI [cf map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) command to associate an app and route.
+The <%= vars.app_runtime_abbr %> Gorouter routes requests to apps by associating an app with an address, known as a route. This is known as a _mapping_.
+Use the `cf CLI cf map-route` command to associate an app and route.
 
 The routing tier compares each request with a list of all the routes mapped to apps and attempts to find the best match. For example, the Gorouter makes the following matches for the two routes `example-app.<%= vars.app_domain %>` and `example-app.<%= vars.app_domain %>/products`:
 
@@ -101,22 +101,22 @@ To create an internal route:
     </ul>
 
 
-1. Create a network policy that allows your apps to communicate with each other. By default, apps cannot communicate over the container network. For more
-information, see [Configuring container-to-container networking](cf-networking.html) and the [Cloud Foundry CLI reference guide](https://cli.cloudfoundry.org/en-US/cf/add-network-policy.html).
+2. Create a network policy that allows your apps to communicate with each other. By default, apps cannot communicate over the container network. For more information, see [Configuring container-to-container networking](cf-networking.html), or enter `cf add-network-policy --help`.
 
 ### <a id='create-route'></a> Create a route
 
 When a developer creates a route using the cf CLI, <%= vars.app_runtime_abbr %> determines whether the route is an HTTP or a TCP route based on the domain. To create a HTTP route, a developer must choose an HTTP domain. To create a TCP route, a developer must choose a TCP domain.
 
-Domains in <%= vars.app_runtime_abbr %> provide a namespace from which to create routes. To list available domains for a targeted organization, use the [cf domains](https://cli.cloudfoundry.org/en-US/cf/domains.html) command. For more information about domains, see [Domains](#domains).
+Domains in <%= vars.app_runtime_abbr %> provide a namespace from which to create routes. To list available domains for a targeted organization, use the `cf domains` command. For more information about domains, see [Domains](#domains).
 
 The following sections describe how developers can create HTTP and TCP routes for different use cases.
 
 #### <a id='create-route-w-hostname'></a> Create an HTTP route with host name
 
-In <%= vars.app_runtime_abbr %>, a host name is the label that indicates a subdomain of the domain associated with the route. Given a domain
+In <%= vars.app_runtime_abbr %>, a host name is the label that indicates a subdomain of the domain associated with the route.
+Given a domain
 `<%= vars.app_domain %>`, a developer can create the route `example-app.<%= vars.app_domain %>` by specifying the host name `example-app` with the
-[cf create-route](https://cli.cloudfoundry.org/en-US/cf/create-route.html) command as shown in this example:
+`cf create-route` command as shown in this example:
 
 ```console
 $ cf create-route shared-domain.example.com --hostname example-app
@@ -141,8 +141,7 @@ This command instructs <%= vars.app_runtime_abbr %> to only route requests to ap
 This approach creates a route with the same address as the domain itself and is permitted for private domains only. For more information, see
 <a href="#private-domains">Private Domains</a>.
 <br>
-A developer can create a route from the domain <code><%= vars.private_app_domain %></code> with no host name with the
-<a href="https://cli.cloudfoundry.org/en-US/cf/create-route.html">cf create-route</a> command:
+A developer can create a route from the domain <code><%= vars.private_app_domain %></code> with no host name with the <code>cf create-route</code> command:
 
 <pre>
 <code>
@@ -264,7 +263,7 @@ OK
 
 ### <a id='list-routes'></a> List routes
 
-Developers can list routes for the current space with the [cf routes](https://cli.cloudfoundry.org/en-US/cf/routes.html) command. A route is uniquely identified by the combination of host name, domain, port, and path.
+Developers can list routes for the current space with the `cf routes` command. A route is uniquely identified by the combination of host name, domain, port, and path.
 
 ```console
 $ cf routes
@@ -306,8 +305,8 @@ Developers can only view a route within a space where they are a member.
 
 ### <a id='check-routes'></a> Check routes
 
-Developers cannot create a route that is already taken. To find out if a route is available, developers can use the [cf
-check-route](https://cli.cloudfoundry.org/en-US/cf/check-route.html) command.
+Developers cannot create a route that is already taken. To find out if a route is available, developers can use the
+`cf check-route` command.
 
 To find out if a route with the host name `store` and the domain `<%= vars.app_domain %>` and the path `products` exists, run:
 
@@ -320,7 +319,7 @@ Route store.<%= vars.app_domain %>/products does exist
 
 ### <a id='map-route'></a> Map a route to your app
 
-For an app to receive requests to a route, developers must map the route to the app with the [cf map-route](https://cli.cloudfoundry.org/en-US/cf/map-route.html) command. If the route does not already exist, this command creates it.
+For an app to receive requests to a route, developers must map the route to the app with the `cf map-route` command. If the route does not already exist, this command creates it.
 
 Any app that is not routed to port <code>80</code> or port <code>443</code> must be explicitly mapped using the <code>cf map-route</code> command. Otherwise, the route is mapped to port <code>443</code>.
 

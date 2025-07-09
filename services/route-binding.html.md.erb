@@ -24,7 +24,7 @@ You must install the Tanzu cf CLI to bind a route to a service instance. For mor
 <p class="note important">
 Gorouter rejects WebSocket requests for routes that are bound to route services. These requests return a 503 error and a <code>X-Cf-Routererror route_service_unsupported header</code>.</p>
 
-Run [cf bind-route-service](http://cli.cloudfoundry.org/en-US/cf/bind-route-service.html) to bind a route from an app to a service instance.
+Run `cf bind-route-service` to bind a route from an app to a service instance.
 
 The following example binds the route from `my-app.<%=vars.app_domain%>` to the service instance `my-route-service`.
 
@@ -64,7 +64,7 @@ OK
 
 You must install the Tanzu cf CLI to bind a route to a service instance. For more information, see [Installing the Tanzu cf CLI](../../operating/cf-cli/install-cf-cli.html).
 
-Run the [cf unbind-route-service](http://cli.cloudfoundry.org/en-US/cf/unbind-route-service.html) command to unbind a route from an app to a service instance.
+Run the `cf unbind-route-service` command to unbind a route from an app to a service instance.
 
 This example removes the route from `my-app.<%=vars.app_domain%>` to the service instance `my-route-service`.
 

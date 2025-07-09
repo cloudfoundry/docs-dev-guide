@@ -24,7 +24,7 @@ The procedure in this topic requires use of a service key, and not all services 
     <%=vars.ssh_marketplace_output %>
     </pre>
 
-1. Create your service instance. As part of the [create-service](http://cli.cloudfoundry.org/en-US/cf/create-service.html) command, indicate the service name, the service plan, and the name you choose for your service instance.
+2. Create your service instance. As part of the `cf create-service` command, indicate the service name, the service plan, and the name you choose for your service instance.
 
     <pre class="terminal">
     $ cf create-service <%=vars.ssh_service %> <%=vars.ssh_service_plan %> MY-DB
@@ -53,13 +53,13 @@ To activate SSH access to your app, SSH access must also be activated for both t
 
 To establish SSH access to your service instance, you must create a service key that contains critical information for configuring your SSH tunnel.
 
-1. Create a service key for your service instance using the [cf create-service-key](http://cli.cloudfoundry.org/en-US/cf/create-service-key.html) command.
+1. Create a service key for your service instance using the `cf create-service-key` command.
 
     ```console
     cf create-service-key MY-DB EXTERNAL-ACCESS-KEY
     ```
 
-1. Retrieve your new service key using the [cf service-key](http://cli.cloudfoundry.org/en-US/cf/service-key.html) command.
+2. Retrieve your new service key using the `cf service-key` command.
 
     ```console
     cf service-key MY-DB EXTERNAL-ACCESS-KEY
@@ -76,7 +76,7 @@ To establish SSH access to your service instance, you must create a service key 
 
 ## <a id="ssh-tunnel"></a> Configure your SSH tunnel
 
-Configure an SSH tunnel to your service instance using [cf ssh](http://cli.cloudfoundry.org/en-US/cf/ssh.html). Tailor the following example command with information from your service key.
+Configure an SSH tunnel to your service instance using `cf ssh`. Tailor the following example command with information from your service key.
 <pre class="terminal">$ cf ssh -L 63306:<%= vars.ssh_service_host %>:3306 YOUR-HOST-APP</pre>
 
    * You can use any available local port for port forwarding; for example, `63306`.

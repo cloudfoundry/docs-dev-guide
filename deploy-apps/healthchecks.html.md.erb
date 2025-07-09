@@ -66,8 +66,7 @@ types are `port`, `process`, and `http`. For more information, see [Health check
 * `LIVENESS-HEALTH-CHECK-TIMEOUT` is the amount of time allowed to elapse between starting an app and the
 first healthy response. For more information, see [Health check timeouts](#health_check_timeout).
 
-For more information about the `cf push` command, see
-[push](http://cli.cloudfoundry.org/en-US/cf/push.html) in the Cloud Foundry CLI Reference Guide.
+For more information about the `cf push` command, enter `cf push --help`.
 
 <p class="note important">
 The health check configuration that you provide with
@@ -91,11 +90,9 @@ Where:
 * `CUSTOM-HTTP-ENDPOINT` is the custom HTTP endpoint that you want to add to the health check. By default, an `http` health check uses `/` as its endpoint unless you specify a custom endpoint. For more information, see [Health check HTTP endpoints](#health_check_uri).
 
 You can also change the health check invocation timeout for
-an app, use <code>cf set-health-check</code>. This option also requires restarting the app. For more information, see <a href="https://cli.cloudfoundry.org/en-US/v7/apps.html">Apps</a> in the Cloud Foundry CLI Reference Guide.
+an app, use <code>cf set-health-check</code>. This option also requires restarting the app.
 
-For more information about the `cf set-health-check` command, see
-[set-health-check](http://cli.cloudfoundry.org/en-US/cf/set-health-check.html) in
-the Cloud Foundry CLI Reference Guide.
+For more information about the `cf set-health-check` command, enter `cf set-health-check`.
 
 <p class="note important">
 After you set the health check configuration of a deployed

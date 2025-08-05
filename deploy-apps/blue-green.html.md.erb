@@ -13,8 +13,8 @@ serving all production traffic.
 For the example discussed here, Blue is live and Green is idle.
 As you prepare a new version of your software, deployment and the final stage of
 testing takes place in the environment that is not live: in this example, Green.
-After deploy and fully tested the software in Green, you switch the
-router so that all incoming requests now go to Green instead of Blue.
+After deploying and fully testing the software in Green, you switch the router
+so that all incoming requests now go to Green instead of Blue.
 Green is now live, and Blue is idle.
 
 This technique can eliminate downtime due to app deployment.
@@ -25,7 +25,7 @@ version by switching back to Blue.
 You can adjust the route mapping pattern to display a static maintenance page during a maintenance window for time-consuming tasks such as migrating a database. In this scenario, the router switches all incoming requests from Blue to Maintenance to Green.
 
 <p class="note important">
-If your app uses a relational database, blue-green deployment can lead to discrepancies between your green and glue databases during an update. To maximize data integrity, configure a single database for backward and forward compatibility.</p>
+If your app uses a relational database, blue-green deployment can lead to discrepancies between your green and blue databases during an update. To maximize data integrity, configure a single database for backward and forward compatibility.</p>
 
 
 ## <a id='blue-green-deployment'></a>Blue-green deployment with Cloud Foundry example
@@ -56,7 +56,7 @@ As shown in the graphic:
 
 Now make a change to the app.
 1. Replace the word "Blue" on the webpage with "Green," then rebuild the source file for the app.
-1. Run `cf push` again, but use the name "Green" for the app and provide a different subdomain to create a temporary route:
+2. Run `cf push` again, but use the name "Green" for the app and provide a different subdomain to create a temporary route:
 
 <pre class="terminal">
 $ cf create-route example.com --hostname demo-time-temp
@@ -68,7 +68,7 @@ After this push:
 
 * Two instances of the app are now running on Cloud Foundry: the original Blue and the updated Green.
 * The Cloud Foundry Router continues sending all traffic for `demo-time.example.com` to Blue.
-The router now also sends any traffic for `demo-time-temp.example.com` to Green.
+The router also sends any traffic for `demo-time-temp.example.com` to Green.
 
 ![The CF Router directs traffic to both Blue and Green sides.](../images/blue-green/blue-green.png)
 
@@ -110,7 +110,7 @@ Now all traffic for `demo-time.example.com` is sent to Green.
 
 ### <a id='remove-temp-route'></a>Step 5: Remove temporary route to Green
 
-You can now use `cf unmap-route` to remove the route `demo-time-temp.example.com` from Green. You can delete the route using `cf delete-route` or reserved it for later use. You can also decommission Blue, or keep it in case you need to roll back your changes.
+You can now use `cf unmap-route` to remove the route `demo-time-temp.example.com` from Green. You can delete the route using `cf delete-route` or reserve it for later use. You can also decommission Blue, or keep it in case you need to roll back your changes.
 
 ![After all traffic is routed to Green, the Blue side can be removed or replaced.](./images/../../images/blue-green/green.png)
 

@@ -32,4 +32,4 @@ This branch is published through the [docs-book-application-service](https://git
 | tcf-10  | TPCF 10.0     | [TPCF v10.0](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-platform-for-cloud-foundry/10-0/tpcf/concepts-overview.html) |
 | TAS-6.0 | TAS 6.0       | [TAS v6.0](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-platform-for-cloud-foundry/6-0/tpcf/concepts-overview.html) |
 | TAS-5.0 | TAS 5.0       | archived PDF  |
-| 22.0    | TAS v4.0      | [TAS v4.0](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-platform-for-cloud-foundry/4-0/tpcf/concepts-overview.html) |
+| 22.0    | TAS 4.0       | archived PDF  |

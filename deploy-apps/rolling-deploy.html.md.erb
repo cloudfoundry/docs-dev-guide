@@ -100,6 +100,86 @@ For example, to update gradually in four steps, running 5, 10, and 20 canary ins
   cf push APP-NAME --strategy canary --instance-steps 5,10,20
   ```
 
+#### <a id="canary-step-detail"></a> Detailed Example
+
+Steps are configured as a percentage of instances rather than as an explicit instance value. This allows the deployment definition to be independent of the number of instances used by a process.
+
+**Cloud Controller matches a step weight to the nearest non-zero instance number, rounding down.**
+
+For example, take an application with 10 instances and the following step configuration:
+
+```
+cf push APP-NAME --strategy canary --instance-steps 1,20,45,80,100
+```
+
+This results in the following deployment plan:
+
+<table class="table">
+  <thead><tr>
+    <th>Step</th>
+    <th>Step Weight</th>
+    <th>Original Instances</th>
+    <th>Canary Instances</th>
+    <th>Actual Weighting</th>
+  </tr></thead>
+  <tr>
+    <td>Pre-deploy</td>
+    <td>n/a</td>
+    <td>10</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>1%</td>
+    <td>10</td>
+    <td>1</td>
+    <td>9%</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>20%</td>
+    <td>9</td>
+    <td>2</td>
+    <td>18%</td>
+  </tr>
+   <tr>
+    <td>3</td>
+    <td>45%</td>
+    <td>6</td>
+    <td>5</td>
+    <td>45%</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>80%</td>
+    <td>3</td>
+    <td>8</td>
+    <td>72%</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>100%</td>
+    <td>0</td>
+    <td>10</td>
+    <td>100%</td>
+  </tr>
+  <tr>
+    <td>Post-deploy</td>
+    <td>n/a</td>
+    <td>0</td>
+    <td>10</td>
+    <td>100%</td>
+  </tr>
+</table>
+
+A **Step Weight** of `100` allows app operators to use the `cancel-deployment` command even after all instances have been replaced.
+
+<p class="note important">
+The cancel command is designed to revert the app to its
+original state as quickly as possible and does not guarantee zero downtime.
+<br>It is important to note that changes
+to environment variables and service bindings are not reverted.</p>
 
 ### <a id="canary-testing"></a> Testing Canary Deployments
 

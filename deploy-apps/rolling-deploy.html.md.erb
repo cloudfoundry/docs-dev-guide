@@ -186,6 +186,12 @@ This results in the following deployment plan:
 
 A **Step Weight** of `100` allows app operators to use the `cancel-deployment` command even after all instances have been replaced.
 
+<p class="note important">
+The cancel command is designed to revert the app to its
+original state as quickly as possible and does not guarantee zero downtime.
+<br>It is important to note that changes
+to environment variables and service bindings are not reverted.</p>
+
 ### <a id="canary-testing"></a> Testing Canary Deployments 
 
 To test an in-progress canary deployment, you can route HTTP requests to the canary process, or to an individual canary instance using the `X-Cf-Process-Instance` header, as described in [HTTP headers for process instance routing](../../concepts/http-routing.html#process-instance-routing). 

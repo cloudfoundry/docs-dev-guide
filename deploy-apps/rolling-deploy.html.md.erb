@@ -660,4 +660,4 @@ With CAPI 1.205.0 and CF CLI v8.15.0, Deployments can optionally take scaling pa
 cf push myapp --strategy=rolling -i 5 -m 256M -k 500M
 ```
 
-Scaling changes will no longer affect the current instances--they will only apply to new instances created by the deployment, leaving your current application instances unaltered until all instances are replaced by the new instances with the new scaling parameters.
+Scaling changes will no longer affect the current instances; they will apply only to new instances created by the deployment, leaving your current application instances unaltered until all instances are replaced by the new instances with the new scaling parameters.

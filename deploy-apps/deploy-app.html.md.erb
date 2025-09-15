@@ -188,13 +188,8 @@ You can configure the  `cf push` command to run custom initialization tasks for 
 These tasks run after <%= vars.app_runtime_abbr %> loads the app droplet but before it starts the app to allow the initialization script to access the app language runtime environment. For example, your script can map values from `$VCAP_SERVICES` into other environment variables or a config file that the app uses.
 
 <div class="note important">
-The following notes include important information about configuring app initialization when you use certain buildpacks:
+See the following important information about configuring app initialization when you use certain buildpacks:
   <ul>
-    <li><strong>Java:</strong> Initialization scripts for the Java buildpack require additional configuration.
-    <% if vars.platform_code != 'CF' %> For more information, see
-      <a href="https://broadcomcms-software.wolkenservicedesk.com/external/article?articleNumber=297534">How to Modify the Application Container Environment prior to Application Execution</a> in the VMware Tanzu Knowledge Base.
-      <% end %>
-      </li>
     <li><strong>PHP:</strong> <%= vars.app_runtime_abbr %> does not support initialization scripts for the PHP buildpack versions prior to v4.3.18. If you use
       one of these buildpack versions, your app hosts the <code>.profile</code> script's contents. This means that any app staged using the affected buildpack
       versions can leak credentials placed in the <code>.profile</code> script.
@@ -206,7 +201,7 @@ To run initialization tasks:
 
 1. Create a `.profile` script that contains the initialization tasks.
 
-1. Save the `.profile` script to the directory where you run the `cf push` command.
+2. Save the `.profile` script to the directory where you run the `cf push` command.
 
 The following example `.profile` file uses `bash` to set a value for the environment variable `LANG`:
 

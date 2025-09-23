@@ -164,6 +164,14 @@ Apps require access to the container registry when starting.
 If you do not update the app with the new credentials, <%= vars.app_runtime_abbr %> fails to start the app.
 When you rotate container credentials, <%= vars.recommended_by %> recommends using a set of two credentials, where the <code>old</code> credentials can be deactivated after all apps are pushed with the <code>new</code> credentials.
 
+### <a id='registry-credentials'></a> Basic Authentication with stored Registry Credentials
+
+Admins, Org Manager, and Space Developers can store Docker registry credentials for reuse among developers using Registry Credentials.
+
+When using Registry Credentials, apps can use the stored credentials instead of requiring credentials on each push.
+
+Please see [Using stored Registry Credentials to push Docker apps](registry-credentials.html) for more information.
+
 ### <a id='ecr'></a> Amazon Elastic Container Registry (ECR)
 
 <%= vars.app_runtime_abbr %> supports pushing apps from images hosted on Amazon Web Services ECR, which authenticates with temporary password tokens.

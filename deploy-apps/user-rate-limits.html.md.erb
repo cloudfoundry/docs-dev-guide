@@ -1,0 +1,87 @@
+---
+title: Using User Rate Limits to override general rate limits
+owner: CAPI
+---
+
+Platform operators will be able to set the rate limit for users which would override the general rate limit. This user specific rate limiting is only enabled if the general rate limiting and user rate limiting are enabled. The existing rate limit logic would make use of the user specific rate limit value when specified.
+
+Users can set rate limits even when the general rate limiting feature or user limiting is disabled, they will receive a warning that rate limiting is currently disabled. The limits will come into force when the feature is turned on. This allows the customization of rate limiting on users to happen before rate limiting is enforced. 
+
+## <a id='setting'></a> Setting User Rate Limits
+
+Admin can override the general rate limit for a User, the user rate limit would be immediately applied 
+
+```
+cf set-rate-limit Alice --request-limit 1000
+```
+
+Admin can override the general limit for a User by providing origin flag
+
+```
+cf set-rate-limit tom@broadcom.com --request-limit 2000 --origin ldap
+```
+
+Admin can override the general limit for a client
+
+```
+cf set-rate-limit 9037f189-2309-4bf6-a81d-7e981c34d2c7 --client  --request-limit=10000
+```
+
+If general rate limiting or user rate limiting is disabled, a warning is displayed while trying to set the rate limit but the user rate limit will still be applied
+
+```
+cf set-rate-limit Alice --request-limit 1000
+WARNING: Rate limiting is currently disabled. It must be enabled before rate limiting is applied.
+```
+
+## <a id='unset'></a> Unset existing user rate limits
+
+Admin can unset an existing user rate limit
+
+```
+cf unset-rate-limit Alice
+cf unset-rate-limit 9037f189-2309-4bf6-a81d-7e981c34d2c7 --client-id
+cf unset-rate-limit tom@broadcom.com --origin ldap
+```
+
+## <a id='show'></a> Showing rate limits
+
+Users can retrieve the general and their user limit. Admins can retrieve the rate limits for any user
+
+```
+cf user Alice
+
+Showing information of user Alice as admin...
+
+username:   Alice
+request rate limit:
+  enabled:                        true
+  general limit:                  2000
+  user custom limiting enabled:   true
+  user custom limit:              10000000
+  reset interval:                 60
+origin:   uaa
+
+```
+
+## <a id='API'></a> API Changes
+
+The /v3/users API call has been updated with a rate limits section. This is available on Create/Update/Get and List to set/unset and view the user rate limits.
+The rate limits section is below
+
+```
+{
+    "guid": "3a5d3d89-3f89-4f05-8188-8a2b298c79d5",
+    "rate_limits": {
+       "custom_request_limit": 2000
+     }
+  }
+```
+
+/v3/info has been updated to return the general and user rate limits
+
+```
+cf curl 'v3/info'
+{"build":"10.2.0-build.7","cli_version":{"minimum":"6.23.0","recommended":"6.23.0"},"custom":{},"description":"https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-platform-for-cloud-foundry/10-2/tpcf/runtime-rn.html","name":"Small Footprint Tanzu Platform for Cloud Foundry","version":0,"osbapi_version":"2.15","rate_limits":{"enabled":true,"user_enabled":true,"general_limit":2000,"reset_interval_in_minutes":60},"links":{"self":{"href":"https://api.sys.tas.2b31299f.shepherd.tanzu.broadcom.net/v3/info"},"support":{"href":"https://tanzu.vmware.com/support"}}}
+```  
+

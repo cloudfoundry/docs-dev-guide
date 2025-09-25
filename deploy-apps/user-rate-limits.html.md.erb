@@ -3,40 +3,40 @@ title: Using User Rate Limits to override general rate limits
 owner: CAPI
 ---
 
-Platform operators will be able to set the rate limit for users which would override the general rate limit. This user specific rate limiting is only enabled if the general rate limiting and user rate limiting are enabled. The existing rate limit logic would make use of the user specific rate limit value when specified.
+Platform operators can set the rate limit for specific users, and it overrides the general rate limit. This user-specific rate limiting is enabled only if general rate limiting and user rate limiting are both enabled. The existing rate limit logic uses the user-specific rate limit value when it is specified.
 
-Users can set rate limits even when the general rate limiting feature or user limiting is disabled, they will receive a warning that rate limiting is currently disabled. The limits will come into force when the feature is turned on. This allows the customization of rate limiting on users to happen before rate limiting is enforced. 
+Users can set rate limits even when the general rate limiting feature or user rate limiting are disabled; they will see a warning that rate limiting is currently disabled. The limits come into force when the feature is turned on. This allows the customization of rate limiting for users to be set up before rate limiting is enforced. 
 
 ## <a id='setting'></a> Setting User Rate Limits
 
-Admin can override the general rate limit for a User, the user rate limit would be immediately applied 
+An operator can override the general rate limit for a user, and the user rate limit is applied immediately. For example: 
 
 ```
 cf set-rate-limit Alice --request-limit 1000
 ```
 
-Admin can override the general limit for a User by providing origin flag
+An operator can override the general limit for a user by providing an origin flag. For example:
 
 ```
 cf set-rate-limit tom@broadcom.com --request-limit 2000 --origin ldap
 ```
 
-Admin can override the general limit for a client
+An operator can override the general limit for a client. For example:
 
 ```
 cf set-rate-limit 9037f189-2309-4bf6-a81d-7e981c34d2c7 --client  --request-limit=10000
 ```
 
-If general rate limiting or user rate limiting is disabled, a warning is displayed while trying to set the rate limit but the user rate limit will still be applied
+If general rate limiting or user rate limiting is disabled, a warning is displayed when trying to set the rate limit, but the user rate limit is still applied. See the following example output:
 
-```
+```console
 cf set-rate-limit Alice --request-limit 1000
 WARNING: Rate limiting is currently disabled. It must be enabled before rate limiting is applied.
 ```
 
-## <a id='unset'></a> Unset existing user rate limits
+## <a id='unset'></a> Remove (unset) existing user rate limits
 
-Admin can unset an existing user rate limit
+An operator can remove an existing user rate limit. For example:
 
 ```
 cf unset-rate-limit Alice
@@ -44,11 +44,11 @@ cf unset-rate-limit 9037f189-2309-4bf6-a81d-7e981c34d2c7 --client-id
 cf unset-rate-limit tom@broadcom.com --origin ldap
 ```
 
-## <a id='show'></a> Showing rate limits
+## <a id='show'></a> Show rate limits
 
-Users can retrieve the general and their user limit. Admins can retrieve the rate limits for any user
+Users can retrieve the general rate limit and their user rate limit. Operators can retrieve the rate limits for any user. For example:
 
-```
+```console
 cf user Alice
 
 Showing information of user Alice as admin...
@@ -66,8 +66,8 @@ origin:   uaa
 
 ## <a id='API'></a> API Changes
 
-The /v3/users API call has been updated with a rate limits section. This is available on Create/Update/Get and List to set/unset and view the user rate limits.
-The rate limits section is below
+The /v3/users API call has been updated with a rate limits section. This is available on Create, Update, Get, and List to set, unset, and view the user rate limits.
+The rate limits section is shown in the following example:
 
 ```
 {
@@ -78,7 +78,7 @@ The rate limits section is below
   }
 ```
 
-/v3/info has been updated to return the general and user rate limits
+In the following example, /v3/info has been updated to return the general and user rate limits.
 
 ```
 cf curl 'v3/info'

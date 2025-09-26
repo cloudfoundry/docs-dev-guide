@@ -627,3 +627,15 @@ properties:
     <td>The deployment was created incorrectly by the system.</td>
   </tr>
 </table>
+
+## <a id="scaling"></a> Scaling with Deployments
+
+Traditionally, all scaling actions are taken at once among all instances. This meant that all instances are restarted at once to enact changes to memory, disk, or other scaling configurations *before* the Deployment starts rolling out new instances.
+
+With CAPI 1.205.0 and cf CLI v8.16.0, Deployments can optionally take scaling parameters when using `cf push`.  For example:
+
+```
+cf push myapp --strategy=rolling -i 5 -m 256M -k 500M
+```
+
+Scaling changes will no longer affect the current instances; they will apply only to new instances created by the deployment, leaving your current application instances unaltered until all instances are replaced by the new instances with the new scaling parameters.

@@ -64,24 +64,5 @@ origin:   uaa
 
 ```
 
-## <a id='API'></a> API Changes
-
-The /v3/users API call has been updated with a rate limits section. This is available on Create, Update, Get, and List to set, unset, and view the user rate limits.
-The rate limits section is shown in the following example:
-
-```
-{
-    "guid": "3a5d3d89-3f89-4f05-8188-8a2b298c79d5",
-    "rate_limits": {
-       "custom_request_limit": 2000
-     }
-  }
-```
-
-In the following example, /v3/info has been updated to return the general and user rate limits.
-
-```
-cf curl 'v3/info'
-{"build":"10.2.0-build.7","cli_version":{"minimum":"6.23.0","recommended":"6.23.0"},"custom":{},"description":"https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-platform-for-cloud-foundry/10-2/tpcf/runtime-rn.html","name":"Small Footprint Tanzu Platform for Cloud Foundry","version":0,"osbapi_version":"2.15","rate_limits":{"enabled":true,"user_enabled":true,"general_limit":2000,"reset_interval_in_minutes":60},"links":{"self":{"href":"https://api.sys.tas.2b31299f.shepherd.tanzu.broadcom.net/v3/info"},"support":{"href":"https://tanzu.vmware.com/support"}}}
-```  
+ 
 

@@ -1,15 +1,35 @@
 ---
-title: Using User Rate Limits to override general rate limits
+title: Setting User Rate Limits to override general rate limits
 owner: CAPI
 ---
 
 Platform operators can set the rate limit for specific users, and it overrides the general rate limit. This user-specific rate limiting is enabled only if general rate limiting and user rate limiting are both enabled. The existing rate limit logic uses the user-specific rate limit value when it is specified.
 
-Users can set rate limits even when the general rate limiting feature or user rate limiting are disabled; they will see a warning that rate limiting is currently disabled. The limits come into force when the feature is turned on. This allows the customization of rate limiting for users to be set up before rate limiting is enforced. 
+Users can set rate limits even when the general rate limiting feature or user rate limiting are disabled; they will see a warning that rate limiting is currently disabled. The limits come into force when the feature is turned on. This allows the customization of rate limiting for users to be set up before rate limiting is enforced.
+
+## <a id="prerequisites"></a> Prerequisites
+
+- Use Tanzu cf CLI v10 or later
+- Log in using `cf login`
+- `cloud_controller.admin` scope is required to set rate limits on users and clients
+- Rate limiting feature must be configured on the platform (limits can be set even when disabled)
+
+## <a id="rate-limiting-overview"></a> Rate Limiting Overview
+
+Rate limiting controls the number of Cloud controller API requests that users and clients can make within a reset interval period. The platform supports:
+
+- **General rate limiting:** Platform-wide default rate limits for all users and clients
+- **User-specific rate limiting:** Custom rate limits for individual users that override the general limit
+- **Client-specific rate limiting:** Custom rate limits for client-id of a (non-user) service account
+
+<p class="note">
+User-specific rate limiting is only enforced when both general rate limiting and user rate limiting features are enabled on the platform.
+</p>
+
 
 ## <a id='setting'></a> Setting User Rate Limits
 
-An operator can override the general rate limit for a user, and the user rate limit is applied immediately. For example: 
+An operator can override the general rate limit for a user, and the user rate limit is applied immediately. For example:
 
 ```
 cf set-rate-limit Alice --request-limit 1000
@@ -64,5 +84,110 @@ origin:   uaa
 
 ```
 
- 
+## <a id="rate-limit-commands"></a>Command reference
 
+### <a id="set-rate-limit"></a> set-rate-limit
+
+Sets a custom rate limit for the Cloud Foundry API for a specific user or client, overriding the general platform rate limit.
+
+**Usage:**
+```
+cf set-rate-limit USERNAME --request-limit LIMIT [OPTIONS]
+```
+
+**Parameters:**
+- `USERNAME`: Username, email address, or client GUID
+
+**Options:**
+- `--request-limit`: Rate limit for API requests
+- `--origin`: Indicates the identity provider to be used for authentication
+- `--client`: Set rate limit for a client-id of a (non-user) service account
+
+**Examples:**
+
+Set a rate limit for a user:
+```
+cf set-rate-limit Alice --request-limit 1000
+```
+
+Set a rate limit for a user with specific origin:
+```
+cf set-rate-limit tom@broadcom.com --request-limit 2000 --origin ldap
+```
+
+Set a rate limit for a client:
+```
+cf set-rate-limit 9037f189-2309-4bf6-a81d-7e981c34d2c7 --client --request-limit 10000
+```
+
+### <a id="unset-rate-limit"></a> unset-rate-limit
+
+Removes any custom rate limit for a user or client, reverting them to the general platform rate limit.
+
+**Usage:**
+```
+cf unset-rate-limit USERNAME [OPTIONS]
+```
+
+**Parameters:**
+- `USERNAME`: Username, email address, or client GUID
+
+**Options:**
+- `--origin`: Indicates the identity provider to be used for authentication
+- `--client`: Unset rate limit for a client-id of a (non-user) service account
+
+**Examples:**
+
+Unset custom rate limit for a user:
+```
+cf unset-rate-limit Alice
+```
+
+Unset custom rate limit for a client:
+```
+cf unset-rate-limit 9037f189-2309-4bf6-a81d-7e981c34d2c7 --client
+```
+
+Unset custom rate limit for a user with specific origin:
+```
+cf unset-rate-limit tom@broadcom.com --origin ldap
+```
+
+<p class="note">
+After unsetting a custom rate limit, the user or client will use the general platform rate limit if rate limiting is enabled.
+</p>
+
+### <a id="user"></a> user
+
+Displays user information, including their rate limit settings.
+
+**Usage:**
+```
+cf user USERNAME [OPTIONS]
+```
+
+**Parameters:**
+- `USERNAME`: Username, email address, or client GUID
+
+**Options:**
+- `--origin`: Indicates the identity provider to be used for authentication
+- `--client`: Interpret USERNAME as a client-id for a (non-user) service account
+
+**Examples:**
+
+Show user information including rate limits:
+```
+cf user Alice
+```
+
+Show client information including rate limits:
+```
+cf user 9e8f3a67-71bd-4068-a907-8ee00185679c --client
+```
+
+## <a id="related-topics"></a> Related Topics
+
+- [Getting Started with the Tanzu cf CLI](./getting-started.html) - Basic CF CLI usage
+- [App Developer Controls](../config-app-dev-controls.html) - Platform-wide rate limiting configuration
+
+For more information about any command, use `cf <command> --help` to see detailed flags and behavior in your local CLI.

@@ -27,11 +27,12 @@ $ cf restart my-app
 <p class="note important">
 You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
 
-### <a id='credential-delivery-methods'></a> Credential Delivery Methods
+<h3> <a id='credential-delivery-methods'></a> Credential Delivery Methods</h3>
 
 After your service instance is created and bound to your app, the credentials, along with some metadata, are available in the app container and can be consumed by your app.
 There are three delivery methods, which are mutually exclusive. The developer can choose which one to use and then must adjust the consumption in the app accordingly.
-For details about consuming credentials specific to your development framework, see the Service Binding section in the documentation for your framework's [buildpack](../../buildpacks/index.html).
+For details about consuming credentials specific to your development framework, see the Service Binding section in the documentation for your framework's
+<a href="../../buildpacks/index.html">buildpack</a>.
 
 <p class="note important">
 If the application is unable to consume the credentials through the selected delivery method, it may cause downtime for the application. This is because the application won't be able to connect to the services it is bound to.

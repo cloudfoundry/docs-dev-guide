@@ -8,10 +8,12 @@ By default, communication between Gorouter and backends is configured through th
 This topic describes how to specify per-route Gorouter options scoped at the application level.
 This greater granularity lets developers tailor optimal routing behavior for applications' unique load profiles or other requirements.
 
-Gorouter supports the following per-route option, described in the section below:
+Gorouter supports the following per-route options, described in the sections below:
 
 - `loadbalancing`: Configures the load balancing algorithm used by Gorouter for this particular route. <%= vars.per_route_lb_version %>
-   - Settings: `round-robin`, `least-connection`.
+   - Settings: `round-robin`, `least-connection`, `hash`.
+- `hash_header`: Defines the header Gorouter uses for routing decisions on this route. Required when `loadbalancing` is set to `hash`. Cannot be used with other load balancing algorithms. <%= vars.hash_routing_version %>
+- `hash_balance`: Sets the float number for the balance factor used by Gorouter to manage load imbalance applying the hash-based routing for this route. Optional when `loadbalancing` is `hash`. Cannot be used with other algorithms. <%= vars.hash_routing_version %>
 
 ## <a id="loadbalancing"></a> Configure Gorouter's Load Balancing Algorithm
 
@@ -19,13 +21,13 @@ Gorouter supports the following per-route option, described in the section below
 
 The per-route option `loadbalancing` allows configuring the load balancing algorithm, which defines how the load is distributed between Gorouters and backends.
 
-This option supports two settings for load balancing:
+This option supports three settings for load balancing:
 
 - `round-robin` distributes the load evenly across all available backends
 - `least-connection` directs traffic to the backend with the fewest active connections at any given time, optimizing resource utilization
+- `hash` distributes requests based on a hash of a specific HTTP header, ensuring requests with the same header are consistently directed to the same backend. <%= vars.hash_routing_version %>
 
-
-### <a id="lb-set-manifest"></a> Configure Load Balancing in an App Manifest
+### <a id="lb-set-manifest"></a> Configure Load Balancing using an App Manifest
 
 To configure per-route load balancing for an application that has not yet been pushed:
 
@@ -49,56 +51,18 @@ To configure per-route load balancing for an application that has not yet been p
     cf push -f manifest.yml
     ```
 
-### <a id="lb-update-route"></a> Change Load Balancing Algorithm of an Existing Route
+### <a id="lb-create-route"></a> Create a Route with a Specific Load Balancing Algorithm Using the CF CLI
 
-To change the per-route `loadbalancing` option of an existing route, you can use the cli command, `update-route`.
-
-For example, to change an app route's algorithm from `least-connection` to `round-robin`, you can run the `update-route` command:
-
-```console
-cf update-route EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-robin
-```
-
-Alternatively, it is also possible to update the per-route load balancing option via the `/v3/routes` API.
-
-Run the `PATCH` request to the targeted API endpoint:
-
-```console
-cf curl /v3/routes/GUID -X PATCH -H "Content-type: application/json" \
-  -d '{
-    "options": {
-      "loadbalancing": "round-robin"
-    }
-  }'
-```
-Where `GUID` is the unique identifier for the route.
-
-### <a id="lb-create-route"></a> Create a Route with a specific Load Balancing Algorithm
-
-To create a route with a per-route `loadbalancing` option, you can use the cli command `create-route`.
+To create a route with a per-route `loadbalancing` option, you can use the CLI command `create-route`.
 For example:
 
 ```console
 cf create-route EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-robin
 ```
 
-Alternatively, it is also possible to create a route with a per-route load balancing option via the `/v3/routes` API:
+### <a id="lb-map-route"></a> Map a Route to an Existing App with a Specific Load Balancing Algorithm Using the CF CLI
 
-```console
-cf curl /v3/routes -X POST -H "Content-type: application/json" \
-  -d '{
-    "host": "MY-HOST",
-    "path": "MY-PATH",
-    ...
-    "options": {
-      "loadbalancing": "round-robin"
-    }
-  }'
-```
-
-### <a id="lb-map-route"></a> Map a Route to an Existing App with specific Load Balancing Algorithm
-
-To create and map a new route to an existing application with the per-route `loadbalancing` option, you can use the cli command `map-route`.
+To create and map a new route to an existing application with the per-route `loadbalancing` option, you can use the CLI command `map-route`.
 
 For example:
 
@@ -108,32 +72,134 @@ cf map-route MY-APP EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-
 
 <p class="note">
 The command <code>map-route</code> supports the <code>--option</code> flag only for new routes.
-To update an existing route, the command <code>update-route</code> must be used as described before.</p>
+To update an existing route, use the command <code>update-route</code> described below.</p>
 
-### <a id="lb-retrieve-route-options"></a> Retrieve Route Options
 
-To read route options, you can query the route using the `route` command:
+### <a id="lb-update-route"></a> Update the Load Balancing Algorithm of an Existing Route Using the CF CLI
+
+To change the per-route `loadbalancing` option of an existing route, you can use the CLI command `update-route`.
+
+For example, to change an app route's algorithm from `least-connection` to `round-robin`, you can run the `update-route` command:
+
+```console
+cf update-route EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-robin
+```
+### <a id="lb-update-route"></a> Remove the Specific Load Balancing Algorithm Using the CF CLI
+
+To remove the `loadbalancing` option from an existing route, run:
+
+```console
+cf update-route EXAMPLE.COM --hostname MY-HOST -r loadbalancing
+```
+
+## <a id="hash-based-routing"></a> Configure Hash-Based Routing
+
+<%= vars.hash_routing_version %>
+
+Hash-Based Routing is a load-balancing method that routes incoming requests to application instances using a hash of a specific HTTP header value. This ensures consistent routing, so requests with the same header value always go to the same instance. The per-route hash options offer detailed control over hash-based load balancing for individual routes.
+
+### <a id="options-hash-set-manifest"></a> Configure Hash-Based Routing with an App Manifest
+1. In the application manifest, include a `route` definition with the following `options` attributes:
+   - `loadbalancing` set to `hash`
+   - `hash_header` set to the HTTP header name used for routing decisions
+   - optionally, `hash_balance` set to a float number for the balance factor used by Gorouter to [manage load imbalance](hash-based-routing.html#handling-imbalance-loads) for this particular route.
+
+   	```yaml
+   	---
+   	applications:
+   	- name: MY-APP
+   	  routes:
+   	    - route: MY-HOST.EXAMPLE.COM
+   	      options:
+   	        loadbalancing: hash
+   	        hash_header: HASH-HEADER-NAME
+            hash_balance: 1.2
+   	```
+
+    Where `MY-APP` is the name of your app, `MY-HOST.EXAMPLE.COM` is the route you want to map to your app and `HASH-HEADER-NAME` is the HTTP header name.
+
+1. Push the app with the manifest:
+
+    ```console
+    cf push -f manifest.yml
+    ```
+
+### <a id="options-hash-create-route"></a> Create a Route with Hash-Based Options Using the CF CLI
+
+To create a route with hash-specific options, you can use the CLI command `create-route`. For example:
+
+```console
+cf create-route EXAMPLE.COM --hostname MY-HOST --option loadbalancing=hash --option hash_header=HASH-HEADER-NAME --option hash_balance=1.2
+```
+
+Alternatively, you can use the shorthand `-o` for `--option`. Since `hash_balance` is optional, you can omit it:
+
+```console
+cf create-route EXAMPLE.COM --hostname MY-HOST -o loadbalancing=hash -o hash_header=HASH-HEADER-NAME
+```
+
+### <a id="options-hash-map-route"></a> Map a Route with Hash Options to an Existing App Using the CF CLI
+
+To create a new route suitable for hash-based routing and map it to an existing application, you can use the CLI command `map-route`.
+
+For example:
+
+```console
+cf map-route MY-APP EXAMPLE.COM --hostname MY-HOST -o loadbalancing=hash -o hash_header=HASH-HEADER-NAME -o hash_balance=1.2
+```
+
+<p class="note">
+The command <code>map-route</code> supports the <code>--option</code> flag only for new routes.
+To update an existing route, see the instructions for <code>update-route</code> below.
+
+### <a id="options-hash-update-route"></a> Update an Existing Route with Hash Options Using the CF CLI
+
+You can change an existing route that uses the default load balancing algorithm to the hash load balancing algorithm.
+
+For example, to change an app route's algorithm from default `round-robin` to `hash` and set `hash_header` to HASH-HEADER-NAME without a balance factor, you can run the `update-route` command:
+
+```console
+cf update-route EXAMPLE.COM --hostname MY-HOST -o loadbalancing=hash -o hash_header=HASH-HEADER-NAME
+```
+
+To add a balance factor along with the previous settings, you can later run the `update-route` command, for example, with the `hash_balance` option set to `1.5`:
+
+```console
+cf update-route EXAMPLE.COM --hostname MY-HOST -o hash_balance=1.5
+```
+
+To unset the balance factor, run the `update-route` command with `hash_balance` set to 0.
+
+```console
+cf update-route EXAMPLE.COM --hostname MY-HOST -o hash_balance=0
+```
+
+Setting the balance factor to 0 indicates to Gorouter that load imbalance is accepted and all requests for a particular hash should be routed to the same instance as long as it's healthy, without redirecting to other predetermined instances.
+
+### <a id="options-hash-revert"></a> Revert Hash Options Using the CF CLI
+
+Running the `update-route` command with the `-r` flag for the option `loadbalancing` removes all hash options from the route, returning to the default load balancing algorithm:
+
+```console
+cf update-route EXAMPLE.COM --hostname MY-HOST -r loadbalancing
+```
+
+## <a id="lb-retrieve-route-options"></a> Retrieve Route Options
+
+To view route options, you can query the route using the `route` command:
 
 ```console
 cf route EXAMPLE.COM --hostname MY-HOST
 ```
 
-  The response lists the chosen `loadbalancing` algorithm option, e.g. `least-connection`:
+The response lists the chosen `loadbalancing` algorithm option, e.g. `least-connection`:
 
 ```console
 options: {loadbalancing=least-connection}
 ```
 
-  Alternatively, you can query the `routes` API endpoint for a route:
+Or `hash` with its related options:
 
 ```console
-cf curl /v3/routes/?hosts=MY-HOST
+options:    {hash_balance=1.2, hash_header=HASH-HEADER-NAME, loadbalancing=hash}
 ```
-
-Where `MY-HOST` is the host attribute of the route. The response lists the chosen `loadbalancing` algorithm option as well:
-
-```console
-    "options": {"loadbalancing": "least-connection"}
-```
-
-To retrieve all the routes with the corresponding options in a space of an organization, you can use the `routes` command.

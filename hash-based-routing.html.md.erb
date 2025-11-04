@@ -14,7 +14,7 @@ Hash-Based Routing is a load-balancing algorithm that distributes incoming reque
 - **Minimal Rehashing**: Uses the Maglev lookup table to map application instances by hash, minimizing the need to recalculate the entire table when instances are added or removed
 - **Configurable Hash Header**: Allows specifying which HTTP header to use for hashing via the `hash_header` property (e.g., `X-Resource-ID`)
 - **Sticky Session Precedence**: Prioritizes sticky sessions over hash-based routing when available
-- **Handling imbalanced loads**: Implements balance factor-based overload detection and mitigation
+- **Handling imbalanced loads**: Implements detection and mitigation of higher request loads on single instances due to different usage patterns for specific hashes. This avoids overloading a single instance while keeping instances for a particular hash at a minimum.
 - **No availability zones preference**: The global properties `locallyOptimistic` and `localAvailabilityZone` will be ignored when using Hash-Based Routing
 
 Hash-Based Routing implements a clear precedence hierarchy:
@@ -44,4 +44,4 @@ When an application instance is being considered for selection, it will be check
 
 ## <a id="retries-in-hash-based"></a> Retries in Hash-Based Routing
 
-For the idempotent requests, the retry mechanism is supported in Hash-Based Routing. When a request fails due to a network error or a 5xx response from the application instance, the router retries the request with a different predetermined application instance. The next entry in the predefined Maglev lookup table determines this instance. This is the same approach used in handling imbalanced loads. This ensures that the retry mechanism adheres to the principles of Hash-Based Routing while providing resilience against transient failures.
+For idempotent requests, the retry mechanism is supported in Hash-Based Routing. When a request fails due to a network error or a 5xx response from the application instance, the router retries the request with a different predetermined application instance. The next entry in the predefined Maglev lookup table determines this instance. This is the same approach used in handling imbalanced loads. This ensures that the retry mechanism adheres to the principles of Hash-Based Routing while providing resilience against transient failures.

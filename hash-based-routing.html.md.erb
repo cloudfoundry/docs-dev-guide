@@ -12,16 +12,16 @@ Hash-Based Routing is a load-balancing algorithm that distributes incoming reque
 - **Configurable via Per-Route Options**: Easily set up Hash-Based Routing using application route options
 - **Consistent Hashing**: Implements the Maglev consistent hashing algorithm as outlined in the paper "Maglev: A Fast and Reliable Software Network Load Balancer" (https://storage.googleapis.com/gweb-research2023-media/pubtools/2904.pdf)
 - **Minimal Rehashing**: Uses the Maglev lookup table to map application instances by hash, minimizing changes to hash assignments when application instances are added or removed
-- **Configurable Hash Header**: Allows specifying which HTTP header to use for hashing via the `hash_header` property
-- **Session Affinity Precedence**: Prioritizes session affinity, or sticky sessions, over hash-based routing when available
+- **Configurable Hash Header**: The HTTP Header to consider for Hash-Based Routing is configurable for each route
+- **Session Affinity Precedence**: Session affinity (sticky sessions) is prioritized over Hash-Based Routing.
 - **Handling imbalanced loads**: Implements detection and mitigation of higher request loads on single instances due to different usage patterns for specific hashes. This avoids overloading a single instance while keeping instances for a particular hash at a minimum.
-- **No availability zones preference**: The global properties `locallyOptimistic` and `localAvailabilityZone` will be ignored when using Hash-Based Routing
+- **No availability zones preference**: The global properties `locallyOptimistic` and `localAvailabilityZone` are ignored when using Hash-Based Routing
 
 Hash-Based Routing implements a clear precedence hierarchy:
 
 1. **Sticky Sessions**: First checks if a sticky session is used and the sticky session endpoint is available
 2. **Hash-Based Routing**: Calculates the hash of the specified HTTP header value and routes the requests to a pre-determined application instance
-3. **Default Load Balancing**: Falls back to default load balancing if the header configured in the application route for hash-based routing is absent in the request
+3. **Default Load Balancing**: Falls back to default load balancing if the header configured in the application route for Hash-Based Routing is absent in the request
 
 
 ## <a id="hash-based-vs-session-affinity"></a> Hash-Based Routing vs. Session Affinity
@@ -30,17 +30,17 @@ Using Session Affinity, requests from a particular client are always routed to t
 
 While Session Affinity offers a solution for maintaining session consistency, it poses scalability challenges, as Session Affinity is confined to a single instance. It increases the risk that large customers could be routed to the same instance by chance. On the other hand, enabling Session Affinity requires additional implementation effort on the application side to return a sticky session cookie in responses.
 
-In contrast, Hash-Based Routing provides a more scalable and balanced approach by consistently distributing requests based on a hash of a specific HTTP header value. This hash value determines the appropriate application instance for each request, ensuring that requests with the same hash are consistently routed to the same instance, but might be routed to another predetermined instance when the current one is saturated (find more about Handling imbalanced loads below).
+In contrast, Hash-Based Routing provides a more scalable and balanced approach by consistently distributing requests based on a hash of a specific HTTP header value. This hash value determines the appropriate application instance for each request, ensuring that requests with the same hash are consistently routed to the same instance, but might be routed to another predetermined instance when the current one is saturated (find more about Handling imbalanced loads below). In contrast to Session Affinity, no code change is required.
 
 This makes it especially suitable for applications requiring high scalability and performance, such as microservices architectures or multi-tenant applications, when dealing with limited or memory-intensive resources in backend services.
 
 
 ## <a id="handling-imbalance-loads"></a> Handling imbalanced loads
 
-The implementation of the hash-based routing includes mechanisms to detect imbalanced loads across application instances. Imbalanced loads can occur when certain hashes receive more traffic, such as when a particular tenant generates a large number of requests, resulting in heavier use of their mapped instances compared to others. Moreover, multiple high-traffic targets could be assigned to the same instance.
+The implementation of Hash-Based Routing includes mechanisms to detect imbalanced load across application instances. Imbalanced load can occur when certain hashes receive more traffic, such as when a particular tenant generates a large number of requests, resulting in heavier use of their mapped instances compared to others. Moreover, multiple high-traffic targets could be assigned to the same instance.
 
 To prevent overloading specific instances while others remain under-utilized, the acceptable threshold for load imbalance can be configured using the `hash_balance_factor` property.
-This factor determines whether an instance is handling more traffic than its fair share compared to the average load across all application instances, measured by the number of in-flight requests. For instance, with a balance factor of 1.25, no single instance should exceed 125% of the average number of in-flight requests across all instances managed by the current router. Consequently, the router redirected the next requests to other predetermined instances that are not overloaded.
+This factor determines whether an instance is handling more traffic than its fair share compared to the average load across all application instances, measured by the number of in-flight requests. For instance, with a balance factor of 1.25, no single instance should exceed 125% of the average number of in-flight requests across all instances managed by the current router. Consequently, the router redirects the next requests to other predetermined instances that are not overloaded.
 
 This ensures that a minimum number of instances process requests for a particular hash while preventing any single instance from becoming overloaded.
 

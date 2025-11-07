@@ -9,13 +9,13 @@ Hash-Based Routing is a load-balancing algorithm that distributes incoming reque
 
 ## <a id="key-features"></a> Key Features
 
-- **Configurable via Per-Route Options**: Easily set up Hash-Based Routing using application route options
-- **Consistent Hashing**: Implements the Maglev consistent hashing algorithm as outlined in the paper "Maglev: A Fast and Reliable Software Network Load Balancer" (https://storage.googleapis.com/gweb-research2023-media/pubtools/2904.pdf)
-- **Minimal Rehashing**: Uses the Maglev lookup table to map application instances by hash, minimizing changes to hash assignments when application instances are added or removed
-- **Configurable Hash Header**: The HTTP Header to consider for Hash-Based Routing is configurable for each route
-- **Session Affinity Precedence**: Session affinity (sticky sessions) is prioritized over Hash-Based Routing.
-- **Handling imbalanced loads**: Implements detection and mitigation of higher request loads on single instances due to different usage patterns for specific hashes. This avoids overloading a single instance while keeping instances for a particular hash at a minimum.
+- **Configurable via Per-Route Options**: Hash-Based load-balancing setup through application route options
+- **Configurable Hash Header**: The HTTP header to consider for Hash-Based Routing is configurable for each route
+- **Session Affinity Precedence**: Session affinity (sticky sessions) is prioritized over Hash-Based Routing
 - **No availability zones preference**: The global properties `locallyOptimistic` and `localAvailabilityZone` are ignored when using Hash-Based Routing
+- **Consistent Hashing**: Implementation of the Maglev Algorithm (see [Maglev: A Fast and Reliable Software Network Load Balancer](https://storage.googleapis.com/gweb-research2023-media/pubtools/2904.pdf) for details)
+- **Minimal Rehashing**: Usage of the Maglev lookup table to map application instances by hash ensures that hash positions are shifted to other instances as little as possible when application instances are added or removed
+- **Handling imbalanced loads**: Detection and mitigation of higher request loads on individual instances prevents overloading while keeping instances for a particular hash at a minimum.
 
 Hash-Based Routing implements a clear precedence hierarchy:
 

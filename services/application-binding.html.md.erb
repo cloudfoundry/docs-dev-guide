@@ -148,24 +148,7 @@ Service Binding Files:
   foo/binding-guid: 45436ca8-0a7c-45e3-9439-ca1b44db7a2b
 ```
 
-Binding names and keys resulting in filenames must match [a-z0-9\-.]{1,253}. Invalid binding names and keys result in IncompatibleBindings error. VCAP_SERVICES attributes are transformed to comply with this schema; that is, underscores are replaced by hyphens, so that, for example, `VCAP_SERVICES attribute binding_guid` becomes file name `binding-guid`.
-
-```
-VCAP_SERVICES= {
-  "foo": [
-    {
-      "name": "foo",
-      "binding_guid": "45436ca8-0a7c-45e3-9439-ca1b44db7a2b",
-      "instance_guid": "83745ca8-0a7c-45e3-9439-ca1b44db7a2b"
-    }
-  ]
-}
-
-Service Binding Files:
-  foo/name: foo
-  foo/binding-guid: 45436ca8-0a7c-45e3-9439-ca1b44db7a2b
-  foo/instance-guid: 83745ca8-0a7c-45e3-9439-ca1b44db7a2b
-```
+Binding names must match [a-z0-9\-.]{1,253}. Keys resulting in filenames must match [a-z0-9\-._]{1,253}. Invalid binding names and keys result in an <code>IncompatibleBindings<code> error.
 
 ### <a id='arbitrary-params-binding'></a> Arbitrary parameters
 

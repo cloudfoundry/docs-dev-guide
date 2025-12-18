@@ -195,6 +195,8 @@ Running `cf push` with an ECR registry triggers <%= vars.app_runtime_abbr %> to:
 
 1. Use the temporary tokens to retrieve the image.
 
+<%= vars.app_runtime_abbr %> will retrieve new tokens when the app is scaled, restarted, rescheduled, etc. so that the app will continue to run without interruption after the token's 12 hour expiration mark.
+
 ### <a id='gcr'></a> Google Container Registry (GCR)
 
 <%= vars.app_runtime %> supports pushing apps from images hosted on Google Container Registry (GCR) service.

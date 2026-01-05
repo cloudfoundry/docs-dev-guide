@@ -19,10 +19,6 @@ By default, Loggregator streams logs to your terminal. To persist more than the 
 
 <%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log entries quickly enough, the Loggregator buffer might need to overwrite some lines before the client has consumed them. A syslog drain or a command-line interface (CLI) tail can usually keep up with the flow of app logs.
 
-<%= vars.app_runtime_abbr %> gathers and stores logs in a best-effort manner. If a client cannot consume log entries
-quickly enough, the Loggregator buffer might need to overwrite some lines before the client has consumed them. A syslog
-drain or a CLI tail can usually keep up with the flow of app logs.
-
 ## <a id='types'></a> Contents of a log entry
 
 Every log entry contains four fields:

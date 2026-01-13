@@ -354,7 +354,7 @@ $ cf map-route myfallbackapp foo.<%= vars.app_domain %> --hostname '*'
 The following command maps the route `h2app.<%= vars.app_domain %>` as an HTTP/2 route to the HTTP/2 app `h2app`.
 
 <pre class="terminal">
-$ cf map-route h2app <%= vars.app_domain %> --hostname h2app --destination-protocol http2
+$ cf map-route h2app <%= vars.app_domain %> --hostname h2app --app-protocol http2
 </pre>
 
 #### <a id='map-route-on-push'></a> Map a route with app push

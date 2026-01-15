@@ -7,7 +7,7 @@ owner: Diego
 The Cloud Foundry Command Line Interface (cf CLI) lets you securely log in to remote host virtual machines (VMs) running <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) app instances. The commands that activate SSH access to apps, and activate, deactivate, and verify permissions for such access are described here.
 
 <p class="note important">
-The <code>cf ssh</code> command in cf CLI v7+ includes the <code>all_proxy</code> environment variable, which allows you to specify a proxy server to activate proxying for all requests. For more information, see <a href="../../cf-cli/http-proxy.html#v3-ssh-socks5">Use SOCKS5 with cf v3-ssh</a> in <em>Using the cf CLI with a proxy server</em>.
+The <code>cf ssh</code> command in cf CLI includes the <code>all_proxy</code> environment variable, which allows you to specify a proxy server to activate proxying for all requests. For more information, see <a href="../../cf-cli/http-proxy.html#v3-ssh-socks5">Use SOCKS5 with cf v3-ssh</a> in <em>Using the cf CLI with a proxy server</em>.
 For command details, enter <code>cf ssh --help</code></p>
 
 The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controller `/v2/info` endpoint, and uses this identifier to query the UAA server for an SSH authorization code. On the target VM side, the SSH proxy contacts the Cloud Controller through the `app_ssh_endpoint` listed in `/v2/info` to confirm permission for SSH access.
@@ -123,7 +123,7 @@ You can tailor `cf ssh` commands with the following flags, most of which mimic f
 
 * The `-N` flag skips returning a command prompt on the remote machine. This sets up local port forwarding if you do not need to run commands on the host VM.
 
-* The `--process` flag in cf CLI v7+ allows you to SSH into the container for a specific process running as part of your app.
+* The `--process` flag in cf CLI allows you to SSH into the container for a specific process running as part of your app.
 
 * The `--request-pseudo-tty` and `--force-pseudo-tty ` flags allow you run an SSH session in pseudo-tty mode rather than generate terminal line output.
 

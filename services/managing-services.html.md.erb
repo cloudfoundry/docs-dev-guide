@@ -57,8 +57,6 @@ When multiple brokers provide two or more services with the same name, you must 
 
 ### <a id='arbitrary-params-create'></a> Arbitrary parameters
 
-Arbitrary parameters require cf CLI v6.12.1+ or higher.
-
 Some services support providing additional configuration parameters with the provision request. Pass these parameters in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see the documentation for the particular service offering.
 
 Example providing service-specific configuration parameters in-line:
@@ -80,7 +78,6 @@ OK
 </pre>
 
 ### <a id='instance-tags-create'></a> Instance tags
-_Instance tags require cf CLI v6.12.1+_
 
 Some services provide a list of tags that Cloud Foundry delivers in the [VCAP_SERVICES environment variable](../deploy-apps/environment-variable.html#VCAP-SERVICES). These tags provide developers with a more generic way for apps to parse `VCAP_SERVICES` for credentials. Developers might provide their own tags when creating a service instance by including the `-t` flag followed by a comma-separated list of tags.
 
@@ -164,7 +161,7 @@ $ cf restart my-app
 
 #### <a id='bind-with-manifest'></a> Binding with app manifest
 
-As an alternative to binding a service instance to an app after pushing an app, you can use the app manifest to bind the service instance during push. As of cf CLI v6.12.1, [Arbitrary parameters](#arbitrary-params-binding) are not supported in app manifests. Using the manifest to bind service instances to routes is also not supported.
+As an alternative to binding a service instance to an app after pushing an app, you can use the app manifest to bind the service instance during push. [Arbitrary parameters](#arbitrary-params-binding) are not supported in app manifests. Using the manifest to bind service instances to routes is also not supported.
 
 This excerpt from an app manifest binds a service instance called `test-mysql-01` to the app on push.
 
@@ -200,8 +197,6 @@ OK
 Restaging your app is not required.
 
 ### <a id='arbitrary-params-binding'></a> Arbitrary parameters
-
-_Arbitrary parameters require cf CLI v6.12.1+_
 
 Some services support additional configuration parameters with the bind request. These parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
 
@@ -263,7 +258,6 @@ OK
 ## <a id='update_service'></a>Update a service instance
 
 ### Changing a service plan
-_Changing a plan requires cf CLI v6.7+ and cf-release v192+. CLI v7 or v8 is recommended._
 
 By updating the service plan for an instance, you can change the service instance to other service plans. Though the platform and CLI now support this feature, services must implement support for it. Further, a service might support updating between some plans but not others. For example, a service might support updating a plan where only a logical change is required, but not where data migration is necessary. In either case, users can expect to see a meaningful error when plan update is not supported.
 
@@ -274,8 +268,6 @@ OK
 </pre>
 
 ### <a id='arbitrary-params-update'></a> Arbitrary parameters
-
-_Arbitrary parameters require cf CLI v6.12.1+_
 
 Some services support additional configuration parameters with the update request. These parameters are passed in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see documentation for the particular service offering.
 
@@ -292,7 +284,6 @@ Updating service instance mydb as user@example.com...
 </pre>
 
 ### <a id='instance-tags-update'></a> Instance tags
-_Instance tags require cf CLI v6.12.1+_
 
 Some services provide a list of tags that Cloud Foundry delivers in the [VCAP_SERVICES environment variable](../deploy-apps/environment-variable.html#VCAP-SERVICES). These tags provide developers with a more generic way for apps to parse `VCAP_SERVICES` for credentials. Developers can provide their own tags when creating a service instance by including a comma-separated list of tags with the `-t` flag.
 
@@ -304,10 +295,6 @@ OK
 </pre>
 
 ## <a id='upgrade'></a> Upgrade a service instance
-
-<p class="note important">
-Upgrading a Service instance requires at least cf CLI v6.46.0+ and CAPI release 1.83.0+.
-</p>
 
 Some service brokers support upgrading service instances to the latest version of a service plan. For example, a broker might want to provide a way for users of the service to upgrade the underlying operating system that their service instances run on.
 

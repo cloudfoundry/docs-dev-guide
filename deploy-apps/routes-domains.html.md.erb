@@ -118,7 +118,7 @@ OK
 </pre>
 
 <p class="note important">
-The cf CLI v7 <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</p>
+The cf CLI <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</p>
 
 This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for these URLs:
 
@@ -227,7 +227,7 @@ If the developer maps the first route with path `products` to the `products` app
 
 #### <a id='create-route-with-port'></a> Create a TCP route with a port
 
-A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. This is the default in the v7 version of the cf CLI.
+A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port. This is the default in the cf CLI.
 
 * An arbitrary (random) port is the default. The `--random port` flag is not supported.
 
@@ -258,17 +258,16 @@ Note that, as of cf CLI v7, `port` no longer appears in the table.
 $ cf routes
 Getting routes as user@<%= vars.private_app_domain %> ...
 
-space           host          domain              		port   path        type   apps
-example-space   example-app   <%= vars.app_domain %>						                example-app
-example-space   example-app   <%= vars.private_app_domain %>						        example-app
-example-space   store         <%= vars.app_domain %>		     /products   	      products
-example-space   store         <%= vars.app_domain %>		     /orders     	      orders
-example-space   store         <%= vars.app_domain %>                	          storefront
-example-space		              <%= vars.app_domain %>	60000 			       tcp    tcp-app
-</pre>
+space           host          domain              		type   apps
+example-space   example-app   <%= vars.app_domain %>				 example-app
+example-space   example-app   <%= vars.private_app_domain %> example-app
+example-space   store         <%= vars.app_domain %>		     products
+example-space   store         <%= vars.app_domain %>		     orders
+example-space   store         <%= vars.app_domain %>         storefront
+example-space		              <%= vars.app_domain %>	tcp    tcp-app
+```
 
 Developers can only see routes in spaces where they are a member.
-Note that cf CLI v7 removes the <code>port</code> and <code>path</code> columns from the output.
 
 ### <a id='view-route'></a> View a route
 
@@ -367,7 +366,7 @@ $ cf map-route h2app <%= vars.app_domain %> --hostname h2app --app-protocol http
 #### <a id='map-route-on-push'></a> Map a route with app push
 
 Developers can map a route to their app with the `cf push` command.
-As of cf CLI v7, the best way to do this is by using the `routes` property in the manifest.
+The best way to do this is by using the `routes` property in the manifest.
 
 <pre class="terminal">
 $ cf push example-app
@@ -656,25 +655,13 @@ Shared domains are HTTP by default, but can be configured to be TCP when associa
 #### <a id='create-shared-domain'></a> Create a shared domain
 
 Admins can create an HTTP shared domain with the `cf create-shared-domain` command:
-<pre class="terminal">
+
+```console
 $ cf create-shared-domain <%= vars.app_domain %>
 </pre>
 
-To create a TCP shared domain, first discover the name of the TCP router group.
-
 <p class="note important">
-cf CLI v7 does not support TCP routing or creating shared domains with router groups.</p>
-
-<pre class="terminal">
-$ cf router-groups
-Getting router groups as admin ...
-name          type
-default-tcp   tcp
-</pre>
-Then create the shared domain using the `--router-group` option to associate the domain with the TCP router group.
-<pre class="terminal">
-$ cf create-shared-domain <%= vars.tcp_app_domain %> --router-group default-tcp
-</pre>
+cf CLI v7+ does not support TCP routing or creating shared domains with router groups.</p>
 
 #### <a id='delete-shared-domain'></a> Delete a shared domain
 
@@ -723,7 +710,7 @@ $ cf create-private-domain example-org foo.<%= vars.private_app_domain %>
 #### <a id='sharing-private-domains'></a> Sharing a private domain with one or more orgs
 
 Org managers can grant or revoke access to a private domain to other orgs if they have permissions for these orgs.
-As of cf CLI v7, `cf unshare-private-domain` command provides a warning and requires confirmation before it proceeds.
+The `cf unshare-private-domain` command provides a warning and requires confirmation before it proceeds.
 
 <pre class="terminal">
 $ cf share-private-domain test-org <%= vars.private_app_domain %>
@@ -737,10 +724,7 @@ Org managers can delete a domain from <%= vars.app_runtime_abbr %> with the `cf 
 
 <pre class="terminal">
 $ cf delete-private-domain <%= vars.private_app_domain %>
-</pre>
-
-<p class="note important">
-cf CLI v7 renames the <code>delete-domain</code> command to <code>delete-private-domain</code>.</p>
+```
 
 ### <a id='parent-child-domains'></a> Requirements for parent and child domains
 

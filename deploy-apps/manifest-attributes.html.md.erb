@@ -112,11 +112,6 @@ memory for `bigapp`.
 
 This section explains how to describe optional app attributes in manifests. You can also specify each of these attributes using a command line option. Command-line options override the manifest.
 
-<p class="note important">
-In cf CLI v6, the route component attributes <code>domain</code>, <code>domains</code>, <code>host</code>,
-<code>hosts</code>, and <code>no-hostname</code> are deprecated in favor of the <code>routes</code> attribute. In cf CLI v7+, these attributes are
-removed. For more information, see <a href="#route-attribute">domain, domains, host, hosts, and no-hostname</a>.</p>
-
 ### <a id='buildpacks'></a> buildpacks
 
 You can refer to a buildpack by name in a manifest or a command-line option. The `cf buildpacks` command lists the buildpacks that you can use.
@@ -247,8 +242,6 @@ For example:
 ```
 
 The `-u` command-line flag overrides this attribute.
-
-In cf CLI v6, the value of `none` is deprecated in favor of `process`. In cf CLI v7+, `none` is removed.
 
 ### <a id='health-check-http-ep'></a> health-check-http-endpoint
 
@@ -546,8 +539,7 @@ The `--random-route` command-line flag overrides this attribute.
 
 The `routes` attribute in the manifest provides multiple HTTP and TCP routes. Each route for this app is created if it does not already exist.
 
-<p class="note important">
-This attribute is a combination of <code>push</code> options that include <code>--hostname</code>, <code>-d</code>, and <code>--route-path</code> flags in v6. These flags are not supported in cf CLI v7, so the <code>routes</code> flag must be used.</p>
+In cf CLI v8+, the `routes` flag can be used.
 
 You can specify the `protocol` attribute to configure which network protocol the route uses for app ingress traffic. This is optional. The available protocols are `http2`, `http1`, and `tcp`.
 
@@ -594,7 +586,6 @@ If you use the `routes` attribute with the `host`, `hosts`, `domain`, `domains`,
 #### <a id='push-flag-options'></a> push flag options
 
 This attribute has unique interactions with different command-line options.
-In cf CLI v7, several of the flags were removed (`--route-path`, `-d`, `--hostname`, `--no-hostname`)
 
 <table class="table">
   <thead><tr>
@@ -831,35 +822,15 @@ aliases in each app declaration.
 
 ### <a id='route-attribute'></a> domain, domains, host, hosts, and no-hostname attributes
 
-These flags are removed in cf CLI v7+.
-
-Previously, you could specify routes by listing them all at once using the `routes` attribute, or by using their hosts and domains.
-
-For example:
-
-```
----
-applications:
-- name: webapp
-  host: www
-  domains:
-  - example.com
-  - example.io
-```
-
-The following route component attributes are deprecated:
+The following route component attributes are deprecated in cf CLI v7+:
 
 * `domain`
-
 * `domains`
-
 * `host`
-
 * `hosts`
-
 * `no-hostname`
 
-You can only specify routes using the `routes` attribute:
+You must specify routes using the `routes` attribute:
 
 ```
 ---

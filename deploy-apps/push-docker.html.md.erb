@@ -60,7 +60,7 @@ If you do not specify a port in the `EXPOSE` directive, then the app listens on 
 
 If you set the `PORT` environment variable via an `ENV` directive in a Dockerfile, <%= vars.app_runtime_abbr %> overrides the value with the system-determined value.
 
-<%= vars.app_runtime_abbr %> supports only one exposed port on the image.
+<%= vars.app_runtime_abbr %> supports multiple exposed ports on an container. By default, routes will be mapped to the first exposed port. Additional ports can be routed to with the `port` property on [Route Destinations](https://v3-apidocs.cloudfoundry.org#the-destination-object)
 
 For more information about the `PORT` environment variable, see the [PORT](environment-variable.html#PORT) section of _<%= vars.app_runtime_abbr %> Environment variables_. For more information about the `EXPOSE` directive, see the [EXPOSE](https://docs.docker.com/engine/reference/builder/#expose) in the Docker documentation.
 

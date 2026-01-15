@@ -210,9 +210,6 @@ To view app logs streamed in real time, run `cf logs APP-NAME`.
 
 To aggregate your app logs to view log history, bind your app to a syslog drain service. For more information, see [Streaming app logs to log management services](./../services/log-management.html).
 
-<p class="note important">
-The Diego architecture does not support the <code>cf files</code> command, and <code>cf files</code> was removed as of cf CLI v7.</p>
-
 ### <a id='trace'></a> Trace Cloud Controller REST API calls
 
 If a command fails or produces unexpected results, re-run it with HTTP tracing activated to view requests and responses between the Cloud Foundry Command Line Interface (cf CLI) and the Cloud Controller REST API.

@@ -141,40 +141,8 @@ For example, you can use the HTTP/2 test app from [Cloud Foundry Acceptance Test
 
 ### <a id="e2e-cli"></a> Push an app with end-to-end HTTP/2 using the cf CLI
 
-The recommended way to do this is using the `routes` attribute in the manifest YAML file.
+To do this in cf CLI v8, use the `routes` attribute in the manifest YAML file.
 
-<p class="note important">
-The following procedure is supported only for cf CLI v6. The <code>--hostname</code> flag is deprecated in cf CLI v7, and must be specified in the manifest.</p>
-
-To push an app that serves HTTP/2 traffic using the cf CLI (v6 only):
-
-1. Use an app that supports serving HTTP/2 traffic with prior knowledge.
-For example, you can use the HTTP/2 test app from [Cloud Foundry Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests/tree/main/assets/http2) on GitHub.
-
-1. Push the app without a default route by running with the `--no-route` flag. Note that this flag is no longer unbinds all existing routes associated with the app.
-
-	```console
-	cf push --no-route
-	```
-
-2. You can map a route by running:
-
-	```
-	cf map-route MY-APP EXAMPLE.COM --hostname host
-	```
-	Where `MY-APP` is the name of your app and `EXAMPLE.COM` is the route you want to map to your app.
-
-3. Send an HTTP/2 request to the app by running:
-
-	```
-	curl HOST.EXAMPLE.COM --http2 -v
-	```
-	The request and response are both sent over HTTP/2. The response from the test app includes the protocol.<br><br>For example:
-
-	```
-	Hello, /, TLS: false, Protocol: HTTP/2.0
-	```
-	The response shows that the request was received over HTTP/2.
 
 ### <a id="grpc-app"></a> Push a gRPC app
 

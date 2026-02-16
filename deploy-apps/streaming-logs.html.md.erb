@@ -97,6 +97,10 @@ For more information about Zipkin tracing, see [Zipkin tracking in HTTP headers]
 
 Loggregator emits `LGR` logs to indicate problems with logging. Examples include `can't reach syslog drain url` and `dropped log messages due to high rate`.
 
+### <a id='sys'></a> SYS
+
+The Syslog Agent emits `SYS` logs to indicate problems with syslog drain delivery. This log type is emitted alongside `LGR` logs when messages are dropped due to slow drain consumption or connectivity issues. The `SYS` source type includes the source index of the Syslog Agent instance.
+
 ### <a id='app'></a> APP
 
 Every app emits `APP` logs to Loggregator.

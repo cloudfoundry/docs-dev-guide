@@ -252,17 +252,12 @@ To create an NFS volume service using the `Existing` plan of the `nfs` service:
         (Optional) <code>NFS-PROTOCOL</code> is the NFS protocol you want to use. For example, to use NFSv4, set the version to <code>4.1</code>. Valid values are <code>3</code>, <code>4.0</code>, <code>4.1</code> or <code>4.2</code>. If you do not specify a <code>version</code>, the protocol version used is negotiated between client and server at mount time. This usually causes the latest available version to be used.
       </li>
     </ul>
-    <% if vars.platform_code != "CF" %>
+
     <p class="note important">
-    <%= vars.app_runtime_abbr %> versions shipping with nfs-volume versions <code>v7.1.45 - v7.1.47 or v5.0.55 - 5.0.58</code> as listed in the <a href="https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-platform-for-cloud-foundry/10-0/tpcf/runtime-rn.html"><%= vars.app_runtime_abbr %> Release notes</a> or  <a href="https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-platform-for-cloud-foundry/10-2/tpcf/segment-rn.html"><%= vars.segment_runtime_full %> Release notes</a> do not support specifying NFS <code>version: 3.0</code>. These updated the contained nfs-utils (a dependency of nfs-volume-service) to a newer version that uses stricter option parsing.<br>
+    <%= vars.app_runtime_abbr %> versions shipping with nfs-volume versions <code>v7.1.45 - v7.1.47 or v5.0.55 - 5.0.58</code> as listed in the <a href="../../release-notes/segment-rn.html"><%= vars.segment_runtime_full %> Release notes</a> do not support specifying NFS <code>version: 3.0</code>. These updated the contained nfs-utils (a dependency of nfs-volume-service) to a newer version that uses stricter option parsing.<br>
     NFSv3 does not utilize a MINOR version, but NFSv4 introduced MINOR versions that can be specified.<br>
     This has been mitigated by adding auto-correction logic to the nfsdriver process available with nfs-volume <code>>= v7.1.48</code> and <code>>= v5.0.59</code>.</p>
-    <% else %>
-    <p class="note important">
-    nfs-volume versions <code>v7.1.45 - v7.1.47</code> ship with a recent version of nfs-utils (a dependency of nfs-volume-service). Recent versions of nfs-utils have stricter option parsing. This leads to an issue with environments that configured the `vers=3.0` mount option.<br>
-    NFSv3 does not utilize a MINOR version, but NFSv4 introduced MINOR versions that can be specified.<br>
-    This has been mitigated by adding auto-correction logic to the nfsdriver process available with nfs-volume <code>>= v7.1.48</code>.</p>
-    <% end %>
+
 
 
 2. Confirm that the NFS volume service appears in your list of services. Run:

@@ -846,7 +846,7 @@ If your DNS provider does not support ANAME or ALIAS records, you can use subdom
 <p class="note important">
 If you use domain forwarding, SSL requests to the root domain might fail if the SSL certificate matches only the subdomain.
 For more information about SSL certificates, see
-the <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Cloud Foundry documentation</a>.</p>
+the <a href="./trusted-system-certificates.html">Cloud Foundry documentation</a>.</p>
 
 Configure the root domain to point at a subdomain such as `www`, and configure the subdomain as a CNAME record pointing at a shared domain in
 <%= vars.app_runtime_abbr %>.

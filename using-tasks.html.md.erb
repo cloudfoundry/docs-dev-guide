@@ -67,11 +67,7 @@ Admins can set the default memory, disk usage and log rate quotas for tasks on a
 Tasks use the same memory, disk usage, and log rate limit defaults as apps, unless you customize them using the `cf run-task` command. For more information
 about the `cf run-task` command, enter `cf run-task --help`.
 
-<% if vars.platform_code == 'PCF' %>
 <%= partial "/pcf/core/tasks_rec_alloc_pcf" %>
-<% else %>
-<%= partial 'tasks_rec_alloc_oss' %>
-<% end %>
 
 
 ## <a id='run-tasks'></a> Run a task on an app

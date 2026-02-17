@@ -348,10 +348,6 @@ The SSH proxy has these SSH security configuration by default:
 
 The `cf ssh` command is compatible with this security configuration. If you use a different SSH client to access apps over SSH, you can ensure that you configure your client to be compatible with these ciphers, MACs, and key exchanges. For more information about other SSH clients, see [App SSH access without Tanzu cf CLI](#other-ssh-access).
 
-<% if vars.platform_code == 'CF' %>
-Cloud Foundry deployment operators can also change these default values in the SSH proxy configuration. Changing these default values might require a change to the SSH client configuration.
-<% end %>
-
 
 ## <a id="proxy-to-container-auth"></a> Proxy to container authentication
 

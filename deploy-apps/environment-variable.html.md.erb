@@ -31,8 +31,8 @@ Using the Cloud Foundry Command Line Interface (cf CLI), you can run the `cf env
 There are 3 possible ways of providing service binding data to apps, see [Credential Delivery Methods](../services/application-binding.html#credential-delivery-methods). Depending on the chosen method there will be one of the following environment variables:
 
 * [VCAP_SERVICES](#VCAP-SERVICES)
-* [SERVICE_BINDING_ROOT](#SERVICE-BINDING-ROOT) (experimental)
-* [VCAP_SERVICES_FILE_PATH](#VCAP-SERVICES-FILE-PATH) (experimental)
+* [SERVICE_BINDING_ROOT](#SERVICE-BINDING-ROOT)
+* [VCAP_SERVICES_FILE_PATH](#VCAP-SERVICES-FILE-PATH)
 
 For more information about the `cf env` command, enter `cf env --help`.<br>
 For more information about the `cf set-env` command, enter `cf set-env --help`.
@@ -230,7 +230,7 @@ The present working directory where the buildpack that processed the app ran.
 
 For example: `PWD=/home/vcap/app`
 
-### <a id='SERVICE-BINDING-ROOT'></a> SERVICE_BINDING_ROOT (experimental)
+### <a id='SERVICE-BINDING-ROOT'></a> SERVICE_BINDING_ROOT
 
 The root directory location, which contains the service binding information. This must be enabled by an app feature flag. See [Service Binding K8s](../services/application-binding.html#service-binding-k8s) for information about how to enable this, and how service binding data is stored in this directory.
 
@@ -357,7 +357,7 @@ VCAP_SERVICES=
 }
 ~~~
 
-### <a id='VCAP-SERVICES-FILE-PATH'></a> VCAP_SERVICES_FILE_PATH (experimental)
+### <a id='VCAP-SERVICES-FILE-PATH'></a> VCAP_SERVICES_FILE_PATH
 
 This is the path to the file containing the service binding information in JSON format. It must be enabled by an app feature flag. See [File-based VCAP services](../services/application-binding.html#file-based-vcap-services) for more information.
 

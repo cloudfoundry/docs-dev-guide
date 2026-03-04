@@ -53,7 +53,7 @@ For checking the binding data manually app developers can use `cf env`. See [Vie
 <p class="note important">
 The maximum size of content of the VCAP_SERVICES environment variable is 130 KB. If you want to bind more services to the app or the services you want to bind provide lots of data, you can use one of the other methods.</p>
 
-#### <a id='file-based-vcap-services'></a> File-based VCAP services (experimental)
+#### <a id='file-based-vcap-services'></a> File-based VCAP services
 
 This delivery method is used when the app feature [file-based-vcap-services](https://v3-apidocs.cloudfoundry.org/index.html#app-features) is enabled.
 The environment variable [VCAP_SERVICES_FILE_PATH](../deploy-apps/environment-variable.html#VCAP-SERVICES-FILE-PATH) will be made available in the app container and contains the path to a file containing the same content as the VCAP_SERVICES environment variable above.
@@ -67,7 +67,7 @@ cf ssh <app_name> -c 'cat $VCAP_SERVICES_FILE_PATH'
 <p class="note important">
 The vcap_services file content cannot exceed 1 MB, otherwise an <code>IncompatibleBindings</code> error is raised.</p>
 
-#### <a id='service-binding-k8s'></a> Service Binding K8s (experimental)
+#### <a id='service-binding-k8s'></a> Service Binding K8s
 
 This delivery method is used when the app feature [service-binding-k8s](https://v3-apidocs.cloudfoundry.org/index.html#app-features) is enabled.
 The environment variable [SERVICE_BINDING_ROOT](../deploy-apps/environment-variable.html#SERVICE-BINDING-ROOT) is made available in the app container. It contains the path to the root folder of a file structure containing binding information.

@@ -25,14 +25,26 @@ Docker apps do not use stacks.</p>
 
 ## <a id='available-stacks'></a> Available stacks
 
-<%= vars.product_short %> <%= vars.current_major_version ? "v#{vars.current_major_version}" : "" %> includes support for `cflinuxfs3`. The Linux `cflinuxfs3` stack is derived from Ubuntu Bionic 18.04. For more information about supported libraries, see the [GitHub stacks page](https://github.com/cloudfoundry/cflinuxfs3/blob/main/receipt.cflinuxfs3.x86_64).
+<%= vars.product_short %> <%= vars.current_major_version ? "v#{vars.current_major_version}" : "" %> includes support for `cflinuxfs4`, which is derived from Ubuntu 22.04 LTS (Jammy Jellyfish). For more information, see [GitHub cflinuxfs4 stack receipt](https://github.com/cloudfoundry/cflinuxfs4/blob/main/receipt.cflinuxfs4.x86_64).
 
-The latest versions of <%= vars.product_short %> include support for `cflinuxfs4` which is derived from Ubuntu 22.04 LTS (Jammy Jellyfish). For more information, see [GitHub cflinuxfs4 stack receipt](https://github.com/cloudfoundry/cflinuxfs4/blob/main/receipt.cflinuxfs4.x86_64).
+You can also build your own custom stack. For more information, see [Adding a Custom Stack](../../running/custom-stack.html).
 
-<%= vars.custom_stack %>
+## <a id='stack-states'></a> Stack states
 
+Operators can assign a lifecycle state to each stack. The state affects what operations you can perform with that stack:
 
-## <a id='cli-commands'></a> Restaging apps on a new stack
+| State        | What it means for developers |
+|--------------|------------------------------|
+| `ACTIVE`     | The stack is fully available. You can push new apps and restage existing apps. |
+| `DEPRECATED` | The stack is still usable, but a warning is shown during `cf push` and `cf restage`. Plan to migrate your apps soon. |
+| `RESTRICTED` | You cannot push new apps using this stack. Existing apps can still be restarted and scaled. |
+| `DISABLED`   | You cannot stage or restage any app using this stack. Existing apps continue to run and can be restarted and scaled. |
+
+When a stack has a state other than `ACTIVE`, operators typically provide a **reason** message with migration guidance. This reason is shown in `cf stacks`, `cf stack STACK_NAME`, and in any warning or error messages during `cf push` or `cf restage`.
+
+If you encounter a restricted or disabled stack, contact your CF operator for migration instructions, or see the reason message provided in the stack details.
+
+## <a id='restage-apps'></a> Restaging apps on a new stack
 
 For security, stacks receive regular updates to address Common Vulnerabilities and Exposures ([CVEs](http://www.ubuntu.com/usn/)). Apps pick up on these stack changes through new releases of <%= vars.product_short %>. However, if your app links statically to a library provided in the rootfs, you might have to manually restage it to pick up the changes.
 
@@ -44,41 +56,64 @@ To restage an app on a new stack:
 
     <pre class="terminal">
     $ cf stacks
-    Getting stacks in org MY-ORG / space development as developer@example<span>.</span>com...
-    OK
+    Getting stacks in org MY-ORG / space development as developer@example.com...
 
-    name         description
-    cflinuxfs3   Cloud Foundry Linux-based filesystem (Ubuntu 18.04)
-    cflinuxfs4   Cloud Foundry Linux-based filesystem (Ubuntu 22.04)
+    name        description                                                    state
+    cflinuxfs4  Cloud Foundry Linux-based filesystem (Ubuntu 22.04)            ACTIVE
+    cflinuxfs3  Cloud Foundry Linux-based filesystem (Ubuntu 18.04)            DEPRECATED
     </pre>
 
-2. To change your stack and restage your app, run:
+    The `state` column shows the current lifecycle state of each stack. For stacks in a `DEPRECATED`, `RESTRICTED`, or `DISABLED` state, contact your operator or run `cf stack STACK_NAME` to view the reason and migration instructions.
 
-    ```
+1. To view details and any operator-provided reason for a specific stack, run:
+
+    <pre class="terminal">
+    cf stack STACK_NAME
+    </pre>
+
+    Example output for a deprecated stack:
+
+    <pre class="terminal">
+    $ cf stack cflinuxfs3
+    Getting info for stack cflinuxfs3 as developer@example.com...
+
+    name:        cflinuxfs3
+    description: Cloud Foundry Linux-based filesystem (Ubuntu 18.04)
+    state:       DEPRECATED
+    reason:      This stack is based on Ubuntu 18.04, which is no longer supported.
+                 Please migrate your applications to 'cflinuxfs4'.
+                 For more information, see: https://docs.example.com/migrate-stacks.
+    </pre>
+
+    The `reason` field is shown only when the state is not `ACTIVE`.
+
+1. To change your stack and restage your app, run:
+
+    <pre class="terminal">
     cf push MY-APP -s STACK-NAME
-    ```
+    </pre>
 
     Where:
-    - MY-APP is the name of the app.
-    - STACK-NAME is the name of the new stack.
+    - `MY-APP` is the name of the app.
+    - `STACK-NAME` is the name of the new stack.
 
     For example, to restage your app on the stack `cflinuxfs4`, run `cf push MY-APP -s cflinuxfs4`:
-        <pre class="terminal">
-        $ cf push MY-APP -s cflinuxfs4
-        Using stack cflinuxfs4...
-        OK
-        Creating app MY-APP in org MY-ORG / space development as developer@example<span>.</span>com...
-        OK
-        ...
-        requested state: started
-        instances: 1/1
-        usage: 1G x 1 instances
-        urls: MY-APP.cfapps.io
-        last uploaded: Wed 17 Jul 22:57:04 UTC 2024
-            state     since                  cpu    memory        disk           logging         cpu entitlement   details
-        \#0  running   2024-07-17T22:57:22Z   0.3%   49.5M of 1G   130.2M of 1G   0B/s of 16K/s   2.4%
-        </pre>
 
+    <pre class="terminal">
+    $ cf push MY-APP -s cflinuxfs4
+    Using stack cflinuxfs4...
+    OK
+    Creating app MY-APP in org MY-ORG / space development as developer@example.com...
+    OK
+    ...
+    requested state: started
+    instances: 1/1
+    usage: 1G x 1 instances
+    urls: MY-APP.cfapps.io
+    last uploaded: Wed 17 Jul 22:57:04 UTC 2024
+        state     since                  cpu    memory        disk           logging         cpu entitlement   details
+    #0  running   2024-07-17T22:57:22Z   0.3%   49.5M of 1G   130.2M of 1G   0B/s of 16K/s   2.4%
+    </pre>
 
 ## <a id='stacks-api'></a> Stacks API
 

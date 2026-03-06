@@ -39,7 +39,7 @@ Operators can assign a lifecycle state to each stack. The state affects what ope
 |--------------|------------------------------|
 | `ACTIVE`     | The stack is fully available. You can push new apps and restage existing apps. |
 | `DEPRECATED` | The stack is still usable, but a warning is shown during `cf push` and `cf restage`. Plan to migrate your apps soon. |
-| `RESTRICTED` | You cannot push new apps using this stack. Existing apps can still be restarted and scaled. |
+| `RESTRICTED` | You cannot push new apps using this stack. Existing apps can still be restaged, restarted, and scaled. |
 | `DISABLED`   | You cannot stage or restage any app using this stack. Existing apps continue to run and can be restarted and scaled. |
 
 When a stack has a state other than `ACTIVE`, operators typically provide a **reason** message with migration guidance. This reason is shown in `cf stacks`, `cf stack STACK_NAME`, and in any warning or error messages during `cf push` or `cf restage`.

@@ -98,16 +98,16 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
 
     It's important to note that the `drain-data` parameter has precedence over `drain-type`parameter. If the `include-metrics-deprecated` parameter is present in the Syslog URL, the drain forwards logs, application container metrics, and traces.
 
-    You can filter which log sources are forwarded to your syslog drain using the `include-source-types` or `exclude-source-types` URL query parameters. The `include-source-types` parameter forwards only logs from the specified source types, while `exclude-source-types` forwards all logs except those from the specified source types. Both parameters accept a comma-separated list of source types, and you can only use one parameter at a time. For a list of valid source types, see [App logging in Cloud Foundry](../deploy-apps/streaming-logs.html).
+    You can filter which log sources are forwarded to your syslog drain using the `include-log-source-types` or `exclude-log-source-types` URL query parameters. The `include-log-source-types` parameter forwards only logs from the specified source types, while `exclude-log-source-types` forwards all logs except those from the specified source types. Both parameters accept a comma-separated list of source types, and you can only use one parameter at a time. For a list of valid source types, see [App logging in Cloud Foundry](../deploy-apps/streaming-logs.html).
 
     Example: Forward only application and router logs:
     <pre class="terminal">
-    $ cf create-user-provided-service my_app_drain -l syslog://logs.example.com:1234?include-source-types=app,rtr
+    $ cf create-user-provided-service my_app_drain -l syslog://logs.example.com:1234?include-log-source-types=app,rtr
     </pre>
 
     Example: Forward all logs except staging logs:
     <pre class="terminal">
-    $ cf create-user-provided-service my_app_drain -l syslog://logs.example.com:1234?exclude-source-types=stg
+    $ cf create-user-provided-service my_app_drain -l syslog://logs.example.com:1234?exclude-log-source-types=stg
     </pre>
 
     If you are using the mTLS feature delivered in [CAPI release 1.143.0](https://github.com/cloudfoundry/capi-release/releases/tag/1.143.0), you can use the `-p` flag to define the client certificate and key as credentials, filling in values as follows.</br>

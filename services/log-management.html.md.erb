@@ -100,6 +100,8 @@ You can create a syslog drain service and bind apps to it using Cloud Foundry Co
 
     You can filter which log sources are forwarded to your syslog drain using the `include-log-source-types` or `exclude-log-source-types` URL query parameters. The `include-log-source-types` parameter forwards only logs from the specified source types, while `exclude-log-source-types` forwards all logs except those from the specified source types. Both parameters accept a comma-separated list of source types, and you can only use one parameter at a time. For a list of valid source types, see [App logging in Cloud Foundry](../deploy-apps/streaming-logs.html).
 
+    When using `include-log-source-types`, logs with a missing or unrecognized source type are dropped. When using `exclude-log-source-types`, logs with a missing or unrecognized source type are forwarded.
+
     Example: Forward only application and router logs:
     <pre class="terminal">
     $ cf create-user-provided-service my_app_drain -l syslog://logs.example.com:1234?include-log-source-types=app,rtr

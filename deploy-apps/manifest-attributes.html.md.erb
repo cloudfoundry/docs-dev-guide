@@ -147,11 +147,11 @@ You can refer to a buildpack by name in a manifest or a command-line option. The
 
 The `-b` command-line flag overrides this attribute.
 
-For more information, see [Pushing an app with multiple buildpacks](../../buildpacks/use-multiple-buildpacks.html).
+For more information, see [Pushing an app with multiple buildpacks](../../commercial-buildpacks/use-multiple-buildpacks.html).
 
 ### <a id='start-commands'></a> command
 
-Some languages and frameworks require that you provide a custom command to start an app. To find out if you need to provide a custom start command, see [Using Classic Buildpacks in Cloud Foundry](../../buildpacks/using-buildpacks.html).
+Some languages and frameworks require that you provide a custom command to start an app. To find out if you need to provide a custom start command, see [Using Classic Buildpacks in Cloud Foundry](../../commercial-buildpacks/using-buildpacks.html).
 
 You can provide the custom start command in your app manifest or on the command line. For more information about how <%= vars.app_runtime_abbr %> determines its default start command, see [Starting, restarting, and restaging apps](start-restart-restage.html).
 
@@ -360,7 +360,7 @@ To ensure that platform maintenance does not interrupt your app, <%= vars.recomm
 
 The `lifecycle` attribute specifies which application lifecycle to use for staging and running the application. Three variants are supported at the moment:
 
-- [`buildpack`](../../buildpacks/classic.html)
+- [`buildpack`](../../commercial-buildpacks/classic.html)
 - [`docker`](push-docker.html)
 
 For example:

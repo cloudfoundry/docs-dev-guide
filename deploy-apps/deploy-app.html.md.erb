@@ -25,7 +25,7 @@ Before you push your app to <%= vars.app_runtime_abbr %>, ensure that:
 
 * Your app is "cloud-ready." <%= vars.app_runtime_abbr %> behaviors related to file storage, HTTP sessions, and port usage might require modifications to your app. To prepare an app to be pushed to <%= vars.app_runtime_abbr %>, see:
   * [Considerations for designing and running an app in the cloud](prepare-to-deploy.html)
-  * Any [Buildpacks](../../buildpacks/using-buildpacks.html) guides specific to your app language or framework, such as [Getting started deploying Ruby on Rails apps](../../buildpacks/ruby/gsg-ror.html)
+  * Any [Buildpacks](../../commercial-buildpacks/using-buildpacks.html) guides specific to your app language or framework, such as [Getting started deploying Ruby on Rails apps](../../commercial-buildpacks/ruby/gsg-ror.html)
 
 * Your <%= vars.app_runtime_abbr %> deployment supports the type of app you are going to push, or you have the URL of an externally-available buildpack that can stage the app.
 
@@ -214,7 +214,7 @@ Setting this value at the operating system level allows the app to find out whic
 
 Your app root directory might also include a `.profile.d` directory that contains bash scripts that perform initialization tasks for the buildpack. Developers
 must not edit these scripts unless they are using a custom buildpack. For more information about custom buildpacks, see [Custom
-Buildpacks](../../buildpacks/custom.html).
+Buildpacks](../../commercial-buildpacks/custom.html).
 
 Initialization tasks as described here are also called *pre-runtime hooks* and _`.profile` tasks_.
 
@@ -245,7 +245,7 @@ For apps that are not already set up for the services that they use:
 1. Bind the services to the app. For more information about services, see [Services overview](../services/index.html).
 
 1. (Optional) Configure the app with the service URL and credentials, if needed. For more information, see [Configuring Service
-Connections](../../buildpacks/java/configuring-service-connections.html).
+Connections](../../commercial-buildpacks/java/configuring-service-connections.html).
 
 ### <a id='sub-steps'></a> Build custom push workflows (optional)
 

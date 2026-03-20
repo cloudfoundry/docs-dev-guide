@@ -255,7 +255,7 @@ To update your service credentials:
 
 ### <a id='update-credentials-without-downtime'></a>Without downtime
 
-To update your service credentials without experiencing app downtime you can either employ a blue-green update scheme or use the new service credential binding rotation feature.
+To update your service credentials without experiencing app downtime you can either employ a blue-green update scheme or use the new service credential binding rotation feature in combination with `--strategy rolling`.
 
 #### <a id='blue-green-update'></a>Blue-green update
 
@@ -285,11 +285,12 @@ To update your service credentials without experiencing app downtime you can eit
 
 #### <a id='service-credential-binding-rotation'></a>Service credential binding rotation
 
-The service credential binding rotation feature allows you to rotate credentials for a service instance without unbinding and rebinding the service instance. This feature requires the following prerequisites:
+The service credential binding rotation feature allows you to rotate credentials for a service instance using a rolling re-binding. This feature requires the following prerequisites:
 
 - The Cloud Foundry platform must support at least 2 bindings per service instance. This is configured by the platform operator with the `cc.max_service_credential_bindings_per_app_service_instance` property in the Cloud Controller configuration.
 - The service broker must support multiple bindings per service instance and application.
 - You must use at least CF CLI v8.18.0.
+- You must use the `--strategy rolling` update feature.
 
 To rotate credentials for an already bound service instance with no downtime:
 

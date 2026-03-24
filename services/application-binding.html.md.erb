@@ -289,7 +289,7 @@ The service credential binding rotation feature allows you to rotate credentials
 
 - The Cloud Foundry platform must support at least 2 bindings per service instance. This is configured by the platform operator with the `cc.max_service_credential_bindings_per_app_service_instance` property in the Cloud Controller configuration.
 - The service broker must support multiple bindings per service instance and application.
-- You must use at least CF CLI v8.18.0.
+- You must use at least cf CLI v8.18.0.
 - You must use the `--strategy rolling` update feature.
 
 To rotate credentials for an already bound service instance with no downtime:
@@ -327,4 +327,4 @@ OK
 You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
 
 <p class="note important">
-If there are multiple service bindings as described in [Service credential binding rotation](#service-credential-binding-rotation), make sure to use CF CLI v8.18.0 or later to unbind all service bindings.</p>
+If there are multiple service bindings as described in <a href="#service-credential-binding-rotation">Service credential binding rotation</a>, make sure to use cf CLI v8.18.0 or later to unbind all service bindings.</p>

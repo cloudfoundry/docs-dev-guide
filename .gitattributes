@@ -1,0 +1,6 @@
+﻿# Normalise all text files to LF in the repo and working directory.
+* text=auto eol=lf
+
+# Bash scripts must use LF so they run correctly in Git Bash/WSL.
+*.sh text eol=lf
+*.inc.sh text eol=lf

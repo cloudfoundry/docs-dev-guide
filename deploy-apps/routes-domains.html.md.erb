@@ -265,7 +265,7 @@ example-space   store         <%= vars.app_domain %>		     products
 example-space   store         <%= vars.app_domain %>		     orders
 example-space   store         <%= vars.app_domain %>         storefront
 example-space		              <%= vars.app_domain %>	tcp    tcp-app
-```
+</pre>
 
 Developers can only see routes in spaces where they are a member.
 
@@ -594,7 +594,7 @@ These are the possible error responses:
 <table class="table">
   <thead><tr>
     <th width="30%">X-Cf-Routererror value</th>
-    <th width="30%">Reason for error</xth>
+    <th width="30%">Reason for error</th>
     <th width="40%">Response body</th>
   </tr></thead>
   <tr>
@@ -656,7 +656,7 @@ Shared domains are HTTP by default, but can be configured to be TCP when associa
 
 Admins can create an HTTP shared domain with the `cf create-shared-domain` command:
 
-```console
+<pre class="terminal">
 $ cf create-shared-domain <%= vars.app_domain %>
 </pre>
 
@@ -724,7 +724,7 @@ Org managers can delete a domain from <%= vars.app_runtime_abbr %> with the `cf 
 
 <pre class="terminal">
 $ cf delete-private-domain <%= vars.private_app_domain %>
-```
+</pre>
 
 ### <a id='parent-child-domains'></a> Requirements for parent and child domains
 

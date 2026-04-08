@@ -583,7 +583,9 @@ Under each route, you can optionally include an `options` attribute to configure
 
 Available options are:
 
-- `loadbalancing` - defines how Gorouter distributes requests across the application backends. Valid values are `round-robin` and `least-connection`.
+- `loadbalancing` - defines how Gorouter distributes requests across the application backends. Valid values are `round-robin`, `least-connection` and `hash`.
+- `hash_header` - defines the HTTP header used for hash-based routing decisions. Required when `loadbalancing` is set to `hash`.
+- `hash_balance` - defines the balance factor used to manage load imbalance for hash-based routing. Optional when `loadbalancing` is set to `hash`. Values in the 1.1-2.0 range provide the best balance of even distribution and performance. Omitting `hash_balance` or setting it explicitly to 0 indicates that the load situation will not be considered.
 
 For example:
 
@@ -597,6 +599,11 @@ For example:
   - route: example2.com
     options:
       loadbalancing: least-connection
+  - route: example3.com
+    options:
+      loadbalancing: hash
+      hash_header: Hash-Relevant-Header
+      hash_balance: 1.25
 ```
 
 #### <a id='manifest-attibutes-2'></a> Manifest attributes

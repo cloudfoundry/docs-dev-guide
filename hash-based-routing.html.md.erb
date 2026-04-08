@@ -5,49 +5,151 @@ owner: CF for VMs Networking
 
 ## <a id="purpose"></a> Purpose
 
-Hash-Based Routing is a load-balancing algorithm that distributes incoming requests to application instances based on a hash of a specific HTTP header value,  e.g., `X-Resource-ID` or `Tenant-ID`. This ensures consistent routing behavior where requests containing the same header value are always directed to the same instance.
+Hash-Based Routing is a load-balancing algorithm that distributes incoming requests to application instances based on the value of a configured HTTP header. Typically, this is a header that identifies a user, resource, or tenant, such as `X-Resource-ID` or `Tenant-ID`. This ensures consistent routing behavior where requests containing the same header value are always directed to the same instance.
 
 ## <a id="prerequisites"></a> Prerequisites
 
 To use Hash-Based Routing, ensure that
 
-- your <%= vars.app_runtime_abbr %> deployment is running version <%= vars.hash_routing_version %> or later.
+- your <%= vars.app_runtime_abbr %> deployment meets the minimum version requirements. <%= vars.hash_routing_version %>
 - platform operators activate the feature so that the CF feature flag `hash_based_routing` is set to `true`. See [Feature Flags](https://docs.cloudfoundry.org/adminguide/listing-feature-flags.html#flags) for more details.
 
 ## <a id="key-features"></a> Key Features
 
-- **Configurable via Per-Route Options**: Hash-Based load-balancing setup through application route options
-- **Configurable Hash Header**: The HTTP header to consider for Hash-Based Routing is configurable for each route
-- **Session Affinity Precedence**: Session affinity (sticky sessions) is prioritized over Hash-Based Routing
-- **No availability zones preference**: The global properties `locallyOptimistic` and `localAvailabilityZone` are ignored when using Hash-Based Routing
-- **Consistent Hashing**: Implementation of the Maglev Algorithm (see [Maglev: A Fast and Reliable Software Network Load Balancer](https://storage.googleapis.com/gweb-research2023-media/pubtools/2904.pdf) for details)
-- **Minimal Rehashing**: Usage of the Maglev Algorithm to map application instances by hash ensures that hash positions are shifted to other instances as little as possible when application instances are added or removed
-- **Handling imbalanced loads**: Detection and mitigation of imbalanced load on single instances prevents overloading while keeping instances for a particular hash at a minimum
+- **Consistent Hashing**: Uses the Maglev Algorithm to determine instance assignments (see [Maglev: A Fast and Reliable Software Network Load Balancer](https://storage.googleapis.com/gweb-research2023-media/pubtools/2904.pdf) for details)
+- **Minimal Rehashing**: The Maglev Algorithm ensures that the mapping of header values to application instances remains as consistent as possible when instances are added or removed
+- **Configurable Hash Header**: The HTTP header used for Hash-Based Routing is configurable for each route
+- **Configurable via Per-Route Options**: Hash-Based load balancing is set up through [per-route options](custom-per-route-options.html)
+- **Handling imbalanced loads**: Detection and mitigation of imbalanced load on single instances prevents overloading while keeping the number of instances for a particular hash at a minimum
+- **Session Affinity Precedence**: Session Affinity (sticky sessions) is prioritized over Hash-Based Routing
+- **No availability zone preference**: The global properties `locallyOptimistic` and `localAvailabilityZone` are ignored when using Hash-Based Routing
 
-Hash-Based Routing implements a clear precedence hierarchy:
+Hash-Based Routing implements the following precedence hierarchy:
 
-1. **Sticky Sessions**: First checks if a sticky session is used and the sticky session endpoint is available
-2. **Hash-Based Routing**: Calculates the hash of the specified HTTP header value and routes the requests to a pre-determined application instance
-3. **Default Load Balancing**: Falls back to default load balancing if the header configured in the application route for Hash-Based Routing is absent in the request
+1. **Session Affinity**: If a sticky session cookie is present and the target instance is available, the request is routed to that instance
+2. **Hash-Based Routing**: If a hash header is configured for the route and present in the request, Gorouter routes to the instance determined by the header value's hash
+3. **Default Load Balancing**: If the hash header is absent from the request, Gorouter falls back to the platform's default load balancing algorithm
 
+## <a id="configure"></a> Configure Hash-Based Routing
+
+<%= vars.hash_routing_version %>
+
+The per-route hash options offer detailed control over hash-based load balancing for individual routes. For a full list of per-route options, see [Configuring per-route options](custom-per-route-options.html).
+
+### <a id="options-hash-set-manifest"></a> Configure Hash-Based Routing with an App Manifest
+
+1. In the application manifest, include a `route` definition with the following `options` attributes:
+   - `loadbalancing` set to `hash`
+   - `hash_header` set to the HTTP header name used for routing decisions
+   - optionally, `hash_balance` set to a float number for the balance factor used by Gorouter to [manage load imbalance](#handling-imbalance-loads) for this particular route.
+
+   	```yaml
+   	---
+   	applications:
+   	- name: MY-APP
+   	  routes:
+   	    - route: MY-HOST.EXAMPLE.COM
+   	      options:
+   	        loadbalancing: hash
+   	        hash_header: HASH-HEADER-NAME
+   	        hash_balance: 1.2
+   	```
+
+    Where `MY-APP` is the name of your app, `MY-HOST.EXAMPLE.COM` is the route you want to map to your app and `HASH-HEADER-NAME` is the HTTP header name.
+
+1. Push the app with the manifest:
+
+    ```console
+    cf push -f manifest.yml
+    ```
+
+### <a id="options-hash-create-route"></a> Create a Route with Hash-Based Options Using the CF CLI
+
+To create a route with hash-specific options, you can use the CLI command `create-route`. For example:
+
+```console
+cf create-route EXAMPLE.COM --hostname MY-HOST --option loadbalancing=hash --option hash_header=HASH-HEADER-NAME --option hash_balance=1.2
+```
+
+Alternatively, you can use the shorthand `-o` for `--option`. Since `hash_balance` is optional, you can omit it:
+
+```console
+cf create-route EXAMPLE.COM --hostname MY-HOST -o loadbalancing=hash -o hash_header=HASH-HEADER-NAME
+```
+
+### <a id="options-hash-map-route"></a> Map a Route with Hash Options to an Existing App Using the CF CLI
+
+To create a new route suitable for hash-based routing and map it to an existing application, you can use the CLI command `map-route`.
+
+For example:
+
+```console
+cf map-route MY-APP EXAMPLE.COM --hostname MY-HOST -o loadbalancing=hash -o hash_header=HASH-HEADER-NAME -o hash_balance=1.2
+```
+
+<p class="note">
+The command <code>map-route</code> supports the <code>--option</code> flag only for new routes.
+To update an existing route, see the instructions for <code>update-route</code> below.</p>
+
+### <a id="options-hash-update-route"></a> Update an Existing Route with Hash Options Using the CF CLI
+
+You can change an existing route that uses the default load balancing algorithm to the hash load balancing algorithm.
+
+For example, to change an app route's algorithm from default `round-robin` to `hash` and set `hash_header` to HASH-HEADER-NAME without a balance factor, you can run the `update-route` command:
+
+```console
+cf update-route EXAMPLE.COM --hostname MY-HOST -o loadbalancing=hash -o hash_header=HASH-HEADER-NAME
+```
+
+To add a balance factor along with the previous settings, you can later run the `update-route` command, for example, with the `hash_balance` option set to `1.5`:
+
+```console
+cf update-route EXAMPLE.COM --hostname MY-HOST -o hash_balance=1.5
+```
+
+To remove the balance factor, run the `update-route` command with the `-r` flag:
+
+```console
+cf update-route EXAMPLE.COM --hostname MY-HOST -r hash_balance
+```
+
+Removing the balance factor indicates to Gorouter that load imbalance is accepted and all requests for a particular hash should be routed to the same instance as long as it is healthy, without redirecting to other predetermined instances.
+
+### <a id="options-hash-revert"></a> Revert Hash Options Using the CF CLI
+
+Running the `update-route` command with the `-r` flag for the option `loadbalancing` removes all hash options from the route, returning to the default load balancing algorithm:
+
+```console
+cf update-route EXAMPLE.COM --hostname MY-HOST -r loadbalancing
+```
+
+### <a id="options-hash-retrieve"></a> Retrieve Hash-Based Route Options
+
+To view route options, you can query the route using the `route` command:
+
+```console
+cf route EXAMPLE.COM --hostname MY-HOST
+```
+
+The response lists the chosen options, for example:
+
+```console
+options:    {hash_balance=1.2, hash_header=HASH-HEADER-NAME, loadbalancing=hash}
+```
 
 ## <a id="hash-based-vs-session-affinity"></a> Hash-Based Routing vs. Session Affinity
 
-While Session Affinity provides a way to keep session consistency, it works at the session level and can cause scalability issues. Heavy users might be routed to the same instance and stay pinned to it through session affinity, which could lead to overload. Session Affinity usually depends on session cookies (see more details in the [Session Affinity](https://docs.cloudfoundry.org/concepts/http-routing.html#-session-affinity) documentation), which requires implementation effort for web applications.
+Session Affinity works at the session level and relies on session cookies (see [Session Affinity](https://docs.cloudfoundry.org/concepts/http-routing.html#-session-affinity) for details). Heavy users can be pinned to a single instance, leading to uneven load distribution. Implementing Session Affinity in web applications requires handling session cookies.
 
-In contrast, Hash-Based Routing offers a more scalable and flexible approach by consistently distributing requests based on a hash of any configurable HTTP header value, not just session identifiers. This allows for load distribution based on tenant IDs, resource IDs, or other business-relevant identifiers. Configurable load imbalance handling enables spillover to other instances (see [Handling imbalanced loads](#handling-imbalance-loads)).
-
-Unlike Session Affinity, Hash-Based Routing requires no code changes to the application.
+Hash-Based Routing provides a more scalable approach by consistently routing requests based on any configurable HTTP header value, not just session identifiers. This allows distribution based on tenant IDs, resource IDs, or other business-relevant identifiers. When a single instance receives disproportionate load, requests can spill over to other predetermined instances (see [Handling imbalanced loads](#handling-imbalance-loads)). Unlike Session Affinity, Hash-Based Routing requires no code changes to the application.
 
 ## <a id="handling-imbalance-loads"></a> Handling imbalanced loads
 
-Hash-Based Routing includes mechanisms to detect imbalanced load across application instances. An imbalanced load occurs when certain hashes receive more traffic, such as when a specific tenant generates many requests, resulting in heavier use of their mapped instances than others’. Additionally, multiple high-traffic targets might be assigned to the same instance.
+Imbalanced load can occur when certain header values receive disproportionately more traffic. For example, a particular tenant may generate a large number of requests, resulting in heavier use of the instance assigned to that tenant's hash. Additionally, multiple high-traffic header values might map to the same instance.
 
-To prevent overloading specific instances while others remain underutilized, the acceptable threshold for load imbalance can be configured using the `hash_balance` property.
-This setting determines whether an instance is handling more traffic than its fair share based on the average load across all instances, measured by the number of in-flight requests. For example, with a balance factor of 1.25, no single instance should handle more than 125% of the average number of in-flight requests across all instances managed by the current router. When this threshold is exceeded, the router redirects subsequent requests to other, less-loaded instances.
-Values of the balance factor in the 1.1-2.0 range offer a good balance between even distribution and performance. However, optimal values depend on the application's traffic patterns and load characteristics.
+To prevent overloading specific instances while others remain underutilized, the acceptable threshold for load imbalance can be configured using the `hash_balance` route option. This factor determines whether an instance is handling more traffic than its fair share compared to the average load across all instances, measured by the number of in-flight requests. For example, with a balance factor of 1.25, no single instance should handle more than 125% of the average number of in-flight requests across all instances managed by the current Gorouter. When this threshold is exceeded, the router redirects subsequent requests to other predetermined, less-loaded instances.
 
-This approach ensures that a minimum number of instances process requests for a particular hash while preventing any single instance from becoming overloaded.
+Values in the 1.1–2.0 range offer a good balance between even distribution and performance. Optimal values depend on the application's traffic patterns. Omitting `hash_balance` or setting it to 0 means load imbalance is accepted and all requests for a particular hash are routed to the same instance as long as it is healthy.
 
 ## <a id="minimal-rehashing"></a> Minimal Rehashing
 
@@ -55,4 +157,4 @@ The Maglev algorithm used in Hash-Based Routing minimizes rehashing when applica
 
 ## <a id="retries-in-hash-based"></a> Retries in Hash-Based Routing
 
-For idempotent requests, Hash-Based Routing supports a retry mechanism. If a request fails due to a network error or a 5xx response from the application instance, the router retries the request with a different, predetermined application instance. The next entry in the Maglev lookup table determines this instance. This approach aligns with the approach to handling imbalances. It ensures that the retry mechanism adhere to the principles of Hash-Based Routing while providing resilience against transient failures.
+For idempotent requests, Hash-Based Routing supports a retry mechanism. When a request fails due to a network error or a 5xx response from the application instance, the router retries the request with a different, predetermined application instance. The next entry in the Maglev lookup table determines this instance — the same approach used for handling imbalanced loads. This ensures that retries adhere to the principles of Hash-Based Routing while providing resilience against temporary failures such as instance restarts or network interruptions.

@@ -12,7 +12,7 @@ Gorouter supports the following per-route options, described in the sections bel
 
 - `loadbalancing`: Configures the load balancing algorithm used by Gorouter for this particular route. <%= vars.per_route_lb_version %>
    - Settings: `round-robin`, `least-connection`, `hash`.
-- `hash_header`: Defines the header Gorouter uses for routing decisions on this route. Required when `loadbalancing` is set to `hash`. Cannot be used with other load balancing algorithms. <%= vars.hash_routing_version %>
+- `hash_header`: Defines the HTTP header used for hash-based routing decisions. Required when `loadbalancing` is set to `hash`. Cannot be used with other load balancing algorithms. <%= vars.hash_routing_version %>
 - `hash_balance`: Sets the float number for the balance factor used by Gorouter to manage load imbalance applying the hash-based routing for this route. Optional when `loadbalancing` is `hash`. Cannot be used with other algorithms. <%= vars.hash_routing_version %>
 
 ## <a id="loadbalancing"></a> Configure Gorouter's Load Balancing Algorithm
@@ -21,11 +21,11 @@ Gorouter supports the following per-route options, described in the sections bel
 
 The per-route option `loadbalancing` allows configuring the load balancing algorithm, which defines how the load is distributed between Gorouters and backends.
 
-This option supports three settings for load balancing:
+This option supports the following settings for load balancing:
 
 - `round-robin` distributes the load evenly across all available backends
 - `least-connection` directs traffic to the backend with the fewest active connections at any given time, optimizing resource utilization
-- `hash` distributes requests based on a hash of a specific HTTP header, ensuring requests with the same header are consistently directed to the same backend. <%= vars.hash_routing_version %>
+- `hash` distributes requests based on a specific HTTP header value, ensuring requests with the same header value are consistently directed to the same backend. See [Hash-Based Routing](hash-based-routing.html) for details. <%= vars.hash_routing_version %>
 
 ### <a id="lb-set-manifest"></a> Configure Load Balancing using an App Manifest
 
@@ -84,7 +84,8 @@ For example, to change an app route's algorithm from `least-connection` to `roun
 ```console
 cf update-route EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-robin
 ```
-### <a id="lb-update-route"></a> Remove the Specific Load Balancing Algorithm Using the CF CLI
+
+### <a id="lb-remove-route-option"></a> Remove the Specific Load Balancing Algorithm Using the CF CLI
 
 To remove the `loadbalancing` option from an existing route, run:
 
@@ -96,93 +97,11 @@ cf update-route EXAMPLE.COM --hostname MY-HOST -r loadbalancing
 
 <%= vars.hash_routing_version %>
 
-Hash-Based Routing is a load-balancing method that routes incoming requests to application instances using a hash of a specific HTTP header value. This ensures consistent routing, so requests with the same header value always go to the same instance. The per-route hash options offer detailed control over hash-based load balancing for individual routes.
+Hash-Based Routing is a load-balancing method that routes incoming requests to application instances based on a specific HTTP header value. This ensures consistent routing, so requests with the same header value are always routed to the same instance.
 
-### <a id="options-hash-set-manifest"></a> Configure Hash-Based Routing with an App Manifest
-1. In the application manifest, include a `route` definition with the following `options` attributes:
-   - `loadbalancing` set to `hash`
-   - `hash_header` set to the HTTP header name used for routing decisions
-   - optionally, `hash_balance` set to a float number for the balance factor used by Gorouter to [manage load imbalance](hash-based-routing.html#handling-imbalance-loads) for this particular route.
+For details on Hash-Based Routing concepts, features, and how it compares to Session Affinity, see [Hash-Based Routing](hash-based-routing.html).
 
-   	```yaml
-   	---
-   	applications:
-   	- name: MY-APP
-   	  routes:
-   	    - route: MY-HOST.EXAMPLE.COM
-   	      options:
-   	        loadbalancing: hash
-   	        hash_header: HASH-HEADER-NAME
-            hash_balance: 1.2
-   	```
-
-    Where `MY-APP` is the name of your app, `MY-HOST.EXAMPLE.COM` is the route you want to map to your app and `HASH-HEADER-NAME` is the HTTP header name.
-
-1. Push the app with the manifest:
-
-    ```console
-    cf push -f manifest.yml
-    ```
-
-### <a id="options-hash-create-route"></a> Create a Route with Hash-Based Options Using the CF CLI
-
-To create a route with hash-specific options, you can use the CLI command `create-route`. For example:
-
-```console
-cf create-route EXAMPLE.COM --hostname MY-HOST --option loadbalancing=hash --option hash_header=HASH-HEADER-NAME --option hash_balance=1.2
-```
-
-Alternatively, you can use the shorthand `-o` for `--option`. Since `hash_balance` is optional, you can omit it:
-
-```console
-cf create-route EXAMPLE.COM --hostname MY-HOST -o loadbalancing=hash -o hash_header=HASH-HEADER-NAME
-```
-
-### <a id="options-hash-map-route"></a> Map a Route with Hash Options to an Existing App Using the CF CLI
-
-To create a new route suitable for hash-based routing and map it to an existing application, you can use the CLI command `map-route`.
-
-For example:
-
-```console
-cf map-route MY-APP EXAMPLE.COM --hostname MY-HOST -o loadbalancing=hash -o hash_header=HASH-HEADER-NAME -o hash_balance=1.2
-```
-
-<p class="note">
-The command <code>map-route</code> supports the <code>--option</code> flag only for new routes.
-To update an existing route, see the instructions for <code>update-route</code> below.
-
-### <a id="options-hash-update-route"></a> Update an Existing Route with Hash Options Using the CF CLI
-
-You can change an existing route that uses the default load balancing algorithm to the hash load balancing algorithm.
-
-For example, to change an app route's algorithm from default `round-robin` to `hash` and set `hash_header` to HASH-HEADER-NAME without a balance factor, you can run the `update-route` command:
-
-```console
-cf update-route EXAMPLE.COM --hostname MY-HOST -o loadbalancing=hash -o hash_header=HASH-HEADER-NAME
-```
-
-To add a balance factor along with the previous settings, you can later run the `update-route` command, for example, with the `hash_balance` option set to `1.5`:
-
-```console
-cf update-route EXAMPLE.COM --hostname MY-HOST -o hash_balance=1.5
-```
-
-To unset the balance factor, run the `update-route` command with `hash_balance` set to 0.
-
-```console
-cf update-route EXAMPLE.COM --hostname MY-HOST -o hash_balance=0
-```
-
-Setting the balance factor to 0 indicates to Gorouter that load imbalance is accepted and all requests for a particular hash should be routed to the same instance as long as it's healthy, without redirecting to other predetermined instances.
-
-### <a id="options-hash-revert"></a> Revert Hash Options Using the CF CLI
-
-Running the `update-route` command with the `-r` flag for the option `loadbalancing` removes all hash options from the route, returning to the default load balancing algorithm:
-
-```console
-cf update-route EXAMPLE.COM --hostname MY-HOST -r loadbalancing
-```
+For instructions on configuring hash-based routing using the app manifest or the CF CLI, see [Configure Hash-Based Routing](hash-based-routing.html#configure).
 
 ## <a id="lb-retrieve-route-options"></a> Retrieve Route Options
 

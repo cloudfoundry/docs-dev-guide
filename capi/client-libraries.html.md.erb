@@ -13,6 +13,11 @@ platform. You can use it to manage orgs, spaces, and apps, which includes user r
 
 <%= vars.capi_link %>
 
+<p class="note important">CAPI v2 Deprecation and End of Life
+<br>CAPI v2 endpoints are deprecated in both Open Source Cloud Foundry since 2021 and <%= vars.app_runtime_abbr %> in version 6.0 and forward. Given that these endpoints are deprecated, new development should use the v3 endpoints. 
+Open Source Cloud Foundry has plans to end of life the v2 endpoints following this RFC: https://github.com/cloudfoundry/community/blob/main/toc/rfc/rfc-0032-cfapiv2-eol.md
+<%= vars.app_runtime_abbr %> does not have plans to end support for the V2 endpoints in the current LTS releases.</p>
+
 ## <a id='client-libraries'></a>Client libraries
 
 While you can develop apps that use CAPI by calling it directly as in the API documentation, you might want to use an existing client library. See the following available client libraries.

@@ -225,7 +225,7 @@ If the developer maps the first route with path `products` to the `products` app
 #### <a id='create-route-with-port'></a> Create a TCP route with a port
 
 A developer can create a TCP route for `<%= vars.tcp_app_domain %>` on an arbitrary port.
-An arbitrary (random) port is the default. The `--random port` flag is not supported in Tanzu cf CLI v10+.
+An arbitrary (random) port is the default. The `--random-port` flag is not supported in Tanzu cf CLI v10+.
 
   <pre class="terminal">
   $ cf create-route example-space <%= vars.tcp_app_domain %> --random-port
@@ -464,7 +464,7 @@ To share a route with another space:
     cf enable-feature-flag route_sharing
     ```
 
-2. Run:
+1. Run:
 
     ```
     cf share-route DOMAIN --hostname HOSTNAME --path PATH -s SPACE -o ORG
@@ -644,6 +644,7 @@ Shared domains are HTTP by default, but can be configured to be TCP when associa
 #### <a id='create-shared-domain'></a> Create a shared domain
 
 Admins can create an HTTP shared domain with the `cf create-shared-domain` command:
+
 <pre class="terminal">
 $ cf create-shared-domain <%= vars.app_domain %>
 </pre>
@@ -656,7 +657,9 @@ Getting router groups as admin ...
 name          type
 default-tcp   tcp
 </pre>
+
 Then create the shared domain using the `--router-group` option to associate the domain with the TCP router group.
+
 <pre class="terminal">
 $ cf create-shared-domain <%= vars.tcp_app_domain %> --router-group default-tcp
 </pre>
@@ -844,7 +847,7 @@ If your DNS provider does not support ANAME or ALIAS records, you can use subdom
 <p class="note important">
 If you use domain forwarding, SSL requests to the root domain might fail if the SSL certificate matches only the subdomain.
 For more information about SSL certificates, see
-the <a href="https://docs.cloudfoundry.org/running/trusted-system-certificates.html">Cloud Foundry documentation</a>.</p>
+the <a href="./trusted-system-certificates.html">Trusted system certificates</a>.</p>
 
 Configure the root domain to point at a subdomain such as `www`, and configure the subdomain as a CNAME record pointing at a shared domain in
 <%= vars.app_runtime_abbr %>.

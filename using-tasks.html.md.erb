@@ -64,8 +64,8 @@ more information, see the [Cloud Foundry API documentation](http://v3-apidocs.cl
 
 Admins can set the default memory, disk usage and log rate quotas for tasks on a global level.
 
-Tasks use the same memory, disk usage, and log rate limit defaults as apps, unless you customize them using the `cf run-task` command. For more information
-about the `cf run-task` command, enter `cf run-task --help`.
+Tasks use the same memory, disk usage, and log rate limit defaults as apps, unless you customize them using the `cf run-task` command.
+For more information about the `cf run-task` command, enter `cf run-task --help`.
 
 <% if vars.platform_code == 'PCF' %>
 <%= partial "/pcf/core/tasks_rec_alloc_pcf" %>
@@ -80,14 +80,14 @@ You can use the Tanzu cf CLI to run a task in the context of an app.
 
 1. Configure your v3 API manifest with a task as a process type. For more information, see the [Cloud Foundry API documentation](https://v3-apidocs.cloudfoundry.org/version/3.78.0/index.html#the-app-manifest-specification).
 
-2. In a terminal, push your app by running:
+1. In a terminal, push your app by running:
 
     ```
     cf push APP-NAME --task
     ```
     Where `APP-NAME` is the name of your app.
 
-3. Run your task on the deployed app by running:
+1. Run your task on the deployed app by running:
 
     ```
     cf run-task APP-NAME --name TASK-NAME
@@ -115,7 +115,7 @@ You can use the Tanzu cf CLI to run a task in the context of an app.
     Task 1 has been submitted successfully for execution.
     </pre>
 
-4. To display the recent logs of the app and all its tasks, run:
+1. To display the recent logs of the app and all its tasks, run:
 
     ```
     cf logs APP-NAME --recent

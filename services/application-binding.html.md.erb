@@ -294,19 +294,19 @@ The service credential binding rotation feature allows you to rotate credentials
 
 To rotate credentials for an already bound service instance with no downtime:
 
-  1. Create an additional service binding to your service instance by running:
+1. Create an additional service binding to your service instance by running:
 
     <pre class="terminal">
     $ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE --strategy multiple
     </pre>
 
-  1. Trigger a rolling update of your application. The updated application instances will only see the new credentials:
+1. Trigger a rolling update of your application. The updated application instances will only see the new credentials:
 
     <pre class="terminal">
     $ cf restage YOUR-APP --strategy rolling
     </pre>
 
-  1. Once the update has been completed, you can delete the old service bindings with the `cleanup-outdated-service-bindings` command. It only keeps the newest binding and deletes the old bindings:
+1. After the update has been completed, you can delete the old service bindings with the `cleanup-outdated-service-bindings` command. It only keeps the newest binding and deletes the old bindings:
 
     <pre class="terminal">
     $ cf cleanup-outdated-service-bindings YOUR-APP

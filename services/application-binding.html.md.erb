@@ -255,7 +255,9 @@ To update your service credentials:
 
 ### <a id='update-credentials-without-downtime'></a>Without downtime
 
-To update your service credentials without experiencing app downtime:
+To update your service credentials without experiencing app downtime you can either employ a blue-green update scheme or use the new service credential binding rotation feature in combination with `--strategy rolling`.
+
+#### <a id='blue-green-update'></a>Blue-green update
 
   1. Start a blue-green update of the app. For more information, see [Using blue-green deployment to reduce downtime and risk](../deploy-apps/blue-green.html). Push the "Green" version of the app with the `--no-start` parameter to prevent the app from starting right away:
 
@@ -281,6 +283,36 @@ To update your service credentials without experiencing app downtime:
     $ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
     </pre>
 
+#### <a id='service-credential-binding-rotation'></a>Service credential binding rotation (experimental)
+
+The service credential binding rotation feature allows you to rotate credentials for a service instance using a rolling re-binding. This feature requires the following prerequisites:
+
+- The Cloud Foundry platform must support at least 2 bindings per service instance. This is configured by the platform operator with the `cc.max_service_credential_bindings_per_app_service_instance` property in the Cloud Controller configuration.
+- The service broker must support multiple bindings per service instance and application.
+- You must use at least cf CLI v8.18.0.
+- You must use the `--strategy rolling` update feature.
+
+To rotate credentials for an already bound service instance with no downtime:
+
+  1. Create an additional service binding to your service instance by running:
+
+    <pre class="terminal">
+    $ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE --strategy multiple
+    </pre>
+
+  1. Trigger a rolling update of your application. The updated application instances will only see the new credentials:
+
+    <pre class="terminal">
+    $ cf restage YOUR-APP --strategy rolling
+    </pre>
+
+  1. Once the update has been completed, you can delete the old service bindings with the `cleanup-outdated-service-bindings` command. It only keeps the newest binding and deletes the old bindings:
+
+    <pre class="terminal">
+    $ cf cleanup-outdated-service-bindings YOUR-APP
+    </pre>
+
+
 ## <a id='unbind'></a>Unbind a service instance
 
 Unbinding a service removes the credentials created for your app from the [VCAP_SERVICES](../deploy-apps/environment-variable.html) environment variable.
@@ -293,3 +325,6 @@ OK
 
 <p class="note important">
 You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
+
+<p class="note important">
+If there are multiple service bindings as described in <a href="#service-credential-binding-rotation">Service credential binding rotation</a>, make sure to use cf CLI v8.18.0 or later to unbind all service bindings.</p>

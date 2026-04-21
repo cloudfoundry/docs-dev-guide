@@ -259,29 +259,29 @@ To update your service credentials without experiencing app downtime you can eit
 
 #### <a id='blue-green-update'></a>Blue-green update
 
-  1. Start a blue-green update of the app. For more information, see [Using blue-green deployment to reduce downtime and risk](../deploy-apps/blue-green.html). Push the "Green" version of the app with the `--no-start` parameter to prevent the app from starting right away:
+1. Start a blue-green update of the app. For more information, see [Using blue-green deployment to reduce downtime and risk](../deploy-apps/blue-green.html). Push the "Green" version of the app with the `--no-start` parameter to prevent the app from starting right away:
 
-    <pre class="terminal">
-    $ cf push YOUR-APP --no-start
-    </pre>
+  <pre class="terminal">
+  $ cf push YOUR-APP --no-start
+  </pre>
 
-  1. Bind the service instances to the newly-deployed "Green" app by running:
+1. Bind the service instances to the newly-deployed "Green" app by running:
 
-    <pre class="terminal">
-    $ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
-    </pre>
+  <pre class="terminal">
+  $ cf bind-service YOUR-APP YOUR-SERVICE-INSTANCE
+  </pre>
 
-  1. Start the "Green" app with `cf start`:
+1. Start the "Green" app with `cf start`:
 
-    <pre class="terminal">
-    $ cf start YOUR-APP
-    </pre>
+  <pre class="terminal">
+  $ cf start YOUR-APP
+  </pre>
 
-  1. Unbind the service instances from the `Blue` app:
+1. Unbind the service instances from the `Blue` app:
 
-    <pre class="terminal">
-    $ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
-    </pre>
+  <pre class="terminal">
+  $ cf unbind-service YOUR-APP YOUR-SERVICE-INSTANCE
+  </pre>
 
 #### <a id='service-credential-binding-rotation'></a>Service credential binding rotation (experimental)
 

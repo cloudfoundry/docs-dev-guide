@@ -24,6 +24,7 @@ The docs is published through the [docs-book-application-service](https://github
 
 | Branch  | EART version  | Doc Link      |
 |---------|---------------|---------------|
+| 10.5    | EART 10.5     | TBD |
 | tcf-104 | EART 10.4     | [EART v10.4 staging](https://author-techdocs2-prod.adobecqms.net/us/en/vmware-tanzu/platform/elastic-application-runtime/10-4/eart/runtime-rn.html)
 | tcf-103 | EART 10.3     | [EART v10.3](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/elastic-application-runtime/10-3/eart/concepts-overview.html) |
 | tcf-102 | TPCF 10.2     | [TPCF v10.2](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/elastic-application-runtime/10-2/eart/concepts-overview.html) |

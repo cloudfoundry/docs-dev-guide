@@ -2,25 +2,32 @@
 
 This is a guide for developers on deploying and troubleshooting apps running in Cloud Foundry.
 
-This is one of several repositories that go into a complete documentation set.
+This is a content repository in the [Cloud Foundry documentation set](https://github.com/cloudfoundry/docs-book-cloudfoundry).
 
-The contents here are structured as a topic repository intended to be compiled
-into a larger document with
-[Bookbinder](http://github.com/cloudfoundry-incubator/bookbinder).
+## Subdirectory overview
 
-See the [docs-book-cloudfoundry](http://github.com/cloudfoundry/docs-book-cloudfoundry)
-repository for the complete list of open source documentation repositories, as well as information about the publishing process.
+* `deploy-apps/` — Develop and manage apps; deploy and run apps in the cloud
+* `capi/` — Manage resources via the Cloud Foundry API
+* `services/` — Create and publish free or metered services for Cloud Foundry apps
 
-docs-dev-guide/deploy-apps subdirectory:
-Develop and Manage Apps
-Develop and run apps in the cloud.
+## Published location
 
-docs-dev-guide/capi subdirectory:
-Manage resources via the Cloud Foundry API
+This content is published at https://docs.cloudfoundry.org/devguide/.
 
-docs-dev-guide/services subdirectory:
-Custom Services
-Create and publish free or metered services for Cloud Foundry apps.
+## Branch
 
+This repository uses only the `master` branch for the Cloud Foundry OSS documentation.
 
-This repository used to contain the subdirectory docs-dev-guide/cf-cli, documenting the Cloud Foundry Command Line Interface (cf CLI). The content from this subdirectory has been moved to its own repository, [docs-cf-cli](http://github.com/cloudfoundry/docs-cf-cli).
+## Template variables
+
+Template variables for this content are defined in the `docs-book-cloudfoundry` repository at [`config/template_variables.yml`](https://github.com/cloudfoundry/docs-book-cloudfoundry/blob/master/config/template_variables.yml). Update that file to change variables that appear across this content.
+
+## Contributing
+
+1. Fork this repository.
+2. Create a branch from `master`, make your changes, and submit a pull request to `master`.
+
+Only the CFF Docs WG lead can merge pull requests, build to staging, and publish the documentation.
+
+* **Staging site:** https://docs-staging.cloudfoundry.org/
+* **Published site:** https://docs.cloudfoundry.org/

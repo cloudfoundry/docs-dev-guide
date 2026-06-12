@@ -27,7 +27,12 @@ Docker apps do not use stacks.</p>
 
 ## <a id='available-stacks'></a> Available stacks
 
-Cloud Foundry includes support for `cflinuxfs4`, which is derived from Ubuntu 22.04 LTS (Jammy Jellyfish). For more information, see [GitHub cflinuxfs4 stack receipt](https://github.com/cloudfoundry/cflinuxfs4/blob/main/receipt.cflinuxfs4.x86_64).
+Cloud Foundry supports the following Linux stacks:
+
+- `cflinuxfs4` (default), derived from Ubuntu 22.04 LTS (Jammy Jellyfish). For more information, see [GitHub cflinuxfs4 stack receipt](https://github.com/cloudfoundry/cflinuxfs4/blob/main/receipt.cflinuxfs4.x86_64).
+- `cflinuxfs5`, derived from Ubuntu 24.04 LTS (Noble Numbat). Operators can enable this stack alongside `cflinuxfs4` by applying the [add-cflinuxfs5.yml](https://github.com/cloudfoundry/cf-deployment/blob/main/operations/experimental/add-cflinuxfs5.yml) experimental ops file from `cf-deployment`. For more information, see [GitHub cflinuxfs5 stack receipt](https://github.com/cloudfoundry/cflinuxfs5/blob/main/receipt.cflinuxfs5.x86_64).
+
+To list the stacks available in your foundation, run `cf stacks`.
 
 You can also build your own custom stack. For more information, see [Adding a Custom Stack](../../running/custom-stack.html).
 
@@ -61,6 +66,7 @@ To restage an app on a new stack:
     Getting stacks in org MY-ORG / space development as developer@example.com...
 
     name        description                                                    state
+    cflinuxfs5  Cloud Foundry Linux-based filesystem (Ubuntu 24.04)            ACTIVE
     cflinuxfs4  Cloud Foundry Linux-based filesystem (Ubuntu 22.04)            ACTIVE
     cflinuxfs3  Cloud Foundry Linux-based filesystem (Ubuntu 18.04)            DEPRECATED
     </pre>

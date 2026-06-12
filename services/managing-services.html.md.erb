@@ -53,6 +53,8 @@ OK
 
 User-provided service instances provide a way for developers to bind apps with services that are not available in their Cloud Foundry Marketplace. For more information, see <a href="./user-provided.html">User-provided service instances</a>.
 
+<p class="note">The <code>cf create-service</code> command uses CAPI V3 and creates asynchronous jobs. To wait for the create operation to complete before continuing, use the <code>--wait</code> flag. For more information, see the <a href="https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-cf-cli/<%= vars.tanzu_cf_cli_version %>/t-cf-cli/cmds/create-service.html">cf create-service</a> reference.</p>
+
 When multiple brokers provide two or more services with the same name, you must specify the broker by including the <code>-b BROKER</code> flag in the <code>cf create-service</code> command.
 
 ### <a id='arbitrary-params-create'></a> Arbitrary parameters
@@ -100,6 +102,8 @@ cf services
 
 The output from running this command includes any bound apps and the state of the last requested operation for the service instance.
 
+<p class="note">To improve performance when you have many service instances, use <code>--no-apps</code> to skip retrieving bound app information. Use <code>--wait</code> to wait for any in-progress operation to complete. For more information, see the <a href="https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-cf-cli/<%= vars.tanzu_cf_cli_version %>/t-cf-cli/cmds/services.html">cf services</a> reference.</p>
+
 <pre class="terminal">
 $ cf services
 Getting services in org my-org / space test as user@example.com...
@@ -117,13 +121,16 @@ Details include dashboard urls, if applicable, and operation start and last upda
 <pre class="terminal">
 $ cf service mydb
 
-service instance:       mydb
-service:                p-mysql
+name:                   mydb
+guid:                   abcd1234-ef56-7890-abcd-ef1234567890
+type:                   managed
+broker tags:
+offering:               p-mysql
 plan:                   100mb
 description:            mysql databases on demand
-documentation url:
-dashboard:              https://p-mysql.example.com/manage/instances/abcd-ef12-3456
-service broker:         mysql-broker
+documentation:
+dashboard url:          https://p-mysql.example.com/manage/instances/abcd-ef12-3456
+broker:                 mysql-broker
 
 This service is not shared.
 
@@ -311,21 +318,27 @@ To upgrade your service instances:
     otherdb   p-mysql   medium                create succeeded   mysql-broker   no
     </pre>
 
-2. Upgrade the service instance using the `--upgrade` flag:
+2. Upgrade the service instance by running:
 
     ```console
-    cf update-service SERVICE-INSTANCE-NAME --upgrade
+    cf upgrade-service SERVICE-INSTANCE-NAME
     ```
 
     For example:
 
     <pre class="terminal">
-    $ cf update-service mydb --upgrade
-    You are about to update mydb.
+    $ cf upgrade-service mydb
+    You are about to upgrade mydb.
     Warning: This operation might run long and block further operations on the service until complete.
-    Really update service mydb? [yN]: y
+    Really upgrade service mydb? [yN]: y
     OK
     </pre>
+
+    To skip the confirmation prompt, use the `--force` flag:
+
+    ```console
+    cf upgrade-service mydb --force
+    ```
 
 
 ## <a id='delete'></a>Delete a service instance

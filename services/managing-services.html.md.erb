@@ -51,6 +51,8 @@ Creating service my-rabbitmq in org console / space development as user@example.
 OK
 </pre>
 
+<p class="note"><strong>Note:</strong> Service create operations are asynchronous by default. To wait for the operation to complete, use the <code>--wait</code> flag. For more information, see <a href="/operating/cf-cli/cf-cli-v10.html">Command differences: cf CLI v7 vs. Tanzu cf CLI v10</a>.</p>
+
 User-provided service instances provide a way for developers to bind apps with services that are not available in their Cloud Foundry Marketplace. For more information, see <a href="./user-provided.html">User-provided service instances</a>.
 
 When multiple brokers provide two or more services with the same name, you must specify the broker by including the <code>-b BROKER</code> flag in the <code>cf create-service</code> command.
@@ -110,6 +112,8 @@ mybucket   p-riakcs      developer   myapp        create succeeded    object-sto
 mydb       p-mysql       100mb                    create succeeded    mysql-broker          yes
 </pre>
 
+<p class="note"><strong>Note:</strong> Use <code>--no-apps</code> to skip retrieving bound app information (improves performance for spaces with many service instances). Use <code>--wait</code> to poll until all in-progress operations complete before displaying output. For more information, see <a href="/operating/cf-cli/cf-cli-v10.html">Command differences: cf CLI v7 vs. Tanzu cf CLI v10</a>.</p>
+
 ### <a id='get-details'></a>Get details for a particular service instance
 
 Details include dashboard urls, if applicable, and operation start and last updated timestamps.
@@ -117,13 +121,16 @@ Details include dashboard urls, if applicable, and operation start and last upda
 <pre class="terminal">
 $ cf service mydb
 
-service instance:       mydb
-service:                p-mysql
+name:                   mydb
+guid:                   abcd1234-ab12-ab12-ab12-abcd1234ef56
+type:                   managed
+offering:               p-mysql
 plan:                   100mb
 description:            mysql databases on demand
 documentation url:
-dashboard:              https://p-mysql.example.com/manage/instances/abcd-ef12-3456
-service broker:         mysql-broker
+dashboard url:          https://p-mysql.example.com/manage/instances/abcd-ef12-3456
+broker:                 mysql-broker
+broker tags:
 
 This service is not shared.
 
@@ -311,21 +318,29 @@ To upgrade your service instances:
     otherdb   p-mysql   medium                create succeeded   mysql-broker   no
     </pre>
 
-2. Upgrade the service instance using the `--upgrade` flag:
+2. Upgrade the service instance by running `cf upgrade-service`:
 
     ```console
-    cf update-service SERVICE-INSTANCE-NAME --upgrade
+    cf upgrade-service SERVICE-INSTANCE-NAME
+    ```
+
+    Use the `--force` flag to skip the confirmation prompt:
+
+    ```console
+    cf upgrade-service SERVICE-INSTANCE-NAME --force
     ```
 
     For example:
 
     <pre class="terminal">
-    $ cf update-service mydb --upgrade
-    You are about to update mydb.
+    $ cf upgrade-service mydb
+    You are about to upgrade mydb.
     Warning: This operation might run long and block further operations on the service until complete.
-    Really update service mydb? [yN]: y
+    Really upgrade service mydb? [yN]: y
     OK
     </pre>
+
+    For more information, see [Command differences: cf CLI v7 vs. Tanzu cf CLI v10](/operating/cf-cli/cf-cli-v10.html).
 
 
 ## <a id='delete'></a>Delete a service instance

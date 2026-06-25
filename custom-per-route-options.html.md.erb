@@ -15,6 +15,10 @@ Gorouter supports the following per-route options, described in the sections bel
 - `hash_header`: Defines the HTTP header used for hash-based routing decisions. Required when `loadbalancing` is set to `hash`. Cannot be used with other load balancing algorithms. <%= vars.hash_routing_version %>
 - `hash_balance`: Sets the float number for the balance factor used by Gorouter to manage load imbalance applying the hash-based routing for this route. Optional when `loadbalancing` is `hash`. Cannot be used with other algorithms. <%= vars.hash_routing_version %>
 
+<p class="note">
+Identity-aware routing is configured with the dedicated <code>cf add-route-policy</code> / <code>cf route-policies</code> / <code>cf remove-route-policy</code> commands rather than the <code>--option</code> flag described here. The Gorouter applies route policies through internal route options (<code>route_policy_scope</code>, <code>route_policy_sources</code>) that are managed by the platform and are not returned in route API responses. See <a href="deploy-apps/identity-aware-routing.html">Configuring identity-aware routing</a>.
+</p>
+
 ## <a id="loadbalancing"></a> Configure Gorouter's Load Balancing Algorithm
 
 <%= vars.per_route_lb_version %>

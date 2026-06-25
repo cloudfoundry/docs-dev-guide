@@ -79,7 +79,7 @@ requests go to both the Green app and the Blue app.
 Use the `cf map-route` command to map the original URL route (`demo-time.example.com`) to the Green app.
 
 <pre class="terminal">
-$ cf map-route Green example.com -n demo-time
+$ cf map-route Green example.com --hostname demo-time
 Binding demo-time.example.com to Green... OK
 </pre>
 
@@ -96,7 +96,7 @@ After you verify that Green is running as expected, stop routing requests to Blu
 using the `cf unmap-route` command:
 
 <pre class="terminal">
-$ cf unmap-route Blue example.com -n demo-time
+$ cf unmap-route Blue example.com --hostname demo-time
 Unbinding demo-time.example.com from blue... OK
 </pre>
 

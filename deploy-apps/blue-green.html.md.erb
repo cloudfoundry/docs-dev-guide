@@ -115,8 +115,6 @@ You can now use `cf unmap-route` to remove the route `demo-time-temp.example.com
 
 ![After all traffic is routed to Green, the Blue side can be removed or replaced.](./images/../../images/blue-green/green.png)
 
-## <a id='implementations'></a>Implementation
+## <a id='alternative'></a>Alternative
 
-Cloud Foundry community members have written a plug-in to automate blue-green deployment:
-
-* [BlueGreenDeploy](https://github.com/bluemixgaragelondon/cf-blue-green-deploy): cf-blue-green-deploy is a plug-in, written in Go, for the Cloud Foundry Command Line Interface (cf CLI) that automates a few steps involved in zero-downtime deployments.
+Cloud Foundry offers an alternative way to deploy new versions of an app with zero downtime using the `cf push` command with the rolling deployment strategy. For more information, see [Deploying apps with zero downtime](./rolling-deploy.html#rolling).

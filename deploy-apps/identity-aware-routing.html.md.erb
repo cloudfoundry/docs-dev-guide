@@ -1,0 +1,259 @@
+---
+title: Configuring identity-aware routing
+owner: CF for VMs Networking
+---
+
+Identity-aware routing lets you route app-to-app traffic through the Gorouter over mutual TLS (mTLS), where the Gorouter validates the caller's verified <%= vars.app_runtime_abbr %> identity and enforces route policies before forwarding the request to your app. For an overview of how identity-aware routing works, see [Identity-aware routing](../../concepts/identity-aware-routing.html).
+
+On this page you:
+
+* Create an **identity-aware domain**, or use one your operator created.
+* Map a route on that domain to a destination app.
+* Add **route policies** that allow specific callers to reach the route. Identity-aware routes are default-deny: until a policy allows a caller, the Gorouter rejects it.
+* Make app-to-app requests and consume the caller's identity from the client-certificate header in the backend app.
+
+<p class="note">
+Identity-aware routing requires an operator to have enabled an identity-aware (mTLS) domain in the deployment. See <a href="../../deploying/cf-deployment/enable-identity-aware-routing.html">Enabling identity-aware routing</a>.
+</p>
+
+
+## <a id='prerequisites'></a> Prerequisites
+
+Before you configure identity-aware routing, ensure that:
+
+* You are using a version of the cf CLI that includes the route-policy commands (cf CLI v8 or later). To check your version, run:
+
+    <pre class="terminal">
+    $ cf version
+    </pre>
+
+    For more information about updating the cf CLI, see [Installing the cf CLI](../../cf-cli/install-go-cli.html).
+
+* An operator has enabled an identity-aware (mTLS) domain in the deployment. See [Enabling identity-aware routing](../../deploying/cf-deployment/enable-identity-aware-routing.html).
+
+* You have the **Space Developer** role in the route's space. Route policies are destination-controlled: they are managed by a Space Developer in the _route's_ space. Creating the domain itself requires **admin** (shared domain) or the **OrgManager** role (private domain), as described in the next section.
+
+
+## <a id='create-domain'></a> Create an identity-aware domain
+
+Identity-aware routing is enabled on a **domain** when the domain is created, by adding the `--enforce-route-policies` flag. This setting is **immutable**: you cannot turn enforcement on or off for an existing domain.
+
+An admin creates a shared identity-aware domain:
+
+<pre class="terminal">
+$ cf create-shared-domain apps.identity --enforce-route-policies
+</pre>
+
+An OrgManager creates a private identity-aware domain:
+
+<pre class="terminal">
+$ cf create-private-domain my-org apps.identity --enforce-route-policies
+</pre>
+
+You can optionally restrict which callers may be named as a policy source with `--scope`. The `--scope` flag is only valid together with `--enforce-route-policies`:
+
+<pre class="terminal">
+$ cf create-shared-domain apps.identity --enforce-route-policies --scope space
+</pre>
+
+<table class="table">
+<thead>
+  <tr>
+    <th>Scope</th>
+    <th>Meaning</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><code>any</code></td>
+    <td>Policy sources may be in any org or space.</td>
+  </tr>
+  <tr>
+    <td><code>org</code></td>
+    <td>Policy sources must be in the same org as the route.</td>
+  </tr>
+  <tr>
+    <td><code>space</code></td>
+    <td>Policy sources must be in the same space as the route.</td>
+  </tr>
+</tbody>
+</table>
+
+Once a route is created on an identity-aware domain, all callers are denied until a route policy allows them. The next sections cover mapping a route and adding policies.
+
+For more about shared and private domains, see [Configuring routes and domains](routes-domains.html).
+
+
+## <a id='map-route'></a> Map a route on the identity-aware domain
+
+Map a route on the identity-aware domain to your **destination** app — the app that receives identity-checked traffic — using the standard `cf map-route` command:
+
+<pre class="terminal">
+$ cf map-route backend apps.identity --hostname backend
+</pre>
+
+This gives the `backend` app the route `backend.apps.identity`.
+
+Nothing about the mapping command is special: the route is identity-aware because the **domain enforces route policies**. Until you add a policy (next section), the Gorouter denies all callers to this route. You can also declare the route in the app manifest's `routes:` block, the same as any other route.
+
+
+## <a id='add-policy'></a> Add a route policy
+
+Route policies are **destination-controlled**: a Space Developer in the route's space adds them to allow named callers to reach the route. Without a matching policy, callers are denied by default.
+
+Add a policy with `cf add-route-policy`:
+
+<pre class="terminal">
+cf add-route-policy DOMAIN --hostname HOSTNAME [SOURCE] [--path PATH]
+</pre>
+
+Identify the caller with one of the following mutually exclusive source selectors:
+
+<table class="table">
+<thead>
+  <tr>
+    <th>Flag</th>
+    <th>Allows callers that are&hellip;</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><code>--source-app APP</code></td>
+    <td>A specific app. Optionally narrow an ambiguous app name with <code>--source-space</code> and <code>--source-org</code>.</td>
+  </tr>
+  <tr>
+    <td><code>--source-space SPACE</code></td>
+    <td>Any app in a space. Optionally add <code>--source-org</code>.</td>
+  </tr>
+  <tr>
+    <td><code>--source-org ORG</code></td>
+    <td>Any app in an org.</td>
+  </tr>
+  <tr>
+    <td><code>--source-any</code></td>
+    <td>Any authenticated <%= vars.app_runtime_abbr %> caller, subject to the domain's <code>--scope</code>.</td>
+  </tr>
+  <tr>
+    <td><code>--source SOURCE</code></td>
+    <td>The raw source form: <code>cf:app:&lt;app-guid&gt;</code>, <code>cf:space:&lt;space-guid&gt;</code>, <code>cf:org:&lt;org-guid&gt;</code>, or <code>cf:any</code>.</td>
+  </tr>
+</tbody>
+</table>
+
+For example, to allow `frontend-app` to reach `backend.apps.identity`:
+
+<pre class="terminal">
+$ cf add-route-policy apps.identity --hostname backend --source-app frontend-app
+</pre>
+
+You can express the same caller with the raw `--source` form, for example to allow every app in an org:
+
+<pre class="terminal">
+$ cf add-route-policy apps.identity --hostname backend --source cf:org:&lt;org-guid&gt;
+</pre>
+
+If the route was created with a path, add `--path` to scope the policy to that path.
+
+
+## <a id='list-policies'></a> List route policies
+
+List policies with `cf route-policies`, optionally filtered:
+
+<pre class="terminal">
+$ cf route-policies --domain apps.identity
+</pre>
+
+Filter the output with:
+
+* `--domain` — filter by domain name.
+* `--hostname` — filter by hostname.
+* `--path` — filter by path.
+* `--labels` — filter by a label selector, when policies are labeled for auditing.
+
+The command lists each policy with its route and source. For example:
+
+<pre class="terminal">
+host      domain          path   source                                    scope   name
+backend   apps.identity          cf:app:a1b2c3d4-1111-2222-3333-444455556666   app     frontend-app
+</pre>
+
+
+## <a id='remove-policy'></a> Remove a route policy
+
+To remove a policy, run `cf remove-route-policy` with the same domain, hostname, and source you used to add it:
+
+<pre class="terminal">
+$ cf remove-route-policy apps.identity --hostname backend --source-app frontend-app
+</pre>
+
+Add `-f` to skip the confirmation prompt. Removing the last policy that allowed a caller returns that caller to denied-by-default.
+
+
+## <a id='make-request'></a> Make an app-to-app request
+
+From the **source** app, make an HTTPS request to the destination's identity-aware route, presenting the app's Diego instance identity certificate as the client certificate. The platform mounts the certificate and private key in every app container at the paths given by the `CF_INSTANCE_CERT` and `CF_INSTANCE_KEY` environment variables.
+
+The following illustrative `curl` call uses those credentials to reach `backend.apps.identity`:
+
+<pre class="terminal">
+$ curl --cert "$CF_INSTANCE_CERT" --key "$CF_INSTANCE_KEY" https://backend.apps.identity/
+</pre>
+
+The Gorouter validates the certificate against the domain's CA, checks the route's policies, and forwards the request to the backend on success. If no policy allows the caller, the Gorouter returns an HTTP `403 Forbidden` response (default-deny).
+
+<p class="note">
+This is the same Diego instance identity issued to every app instance. The caller needs no extra credentials to make an identity-aware request.
+</p>
+
+
+## <a id='consume-xfcc'></a> Consume the client certificate in your app
+
+When the Gorouter forwards an identity-aware request, it passes the caller's verified certificate to the **backend** app in the `X-Forwarded-Client-Cert` (XFCC) header. The backend reads this header to learn the caller's identity. The operator chooses the header format per domain with `xfcc_format`:
+
+<table class="table">
+<thead>
+  <tr>
+    <th>Format</th>
+    <th>Header contents</th>
+    <th>Approximate size</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><code>raw</code></td>
+    <td>The full client certificate, base64-encoded PEM.</td>
+    <td>~1.5 KB</td>
+  </tr>
+  <tr>
+    <td><code>envoy</code></td>
+    <td>A compact representation, <code>Hash=&lt;sha256&gt;;Subject="&lt;DN&gt;"</code>.</td>
+    <td>~300 B</td>
+  </tr>
+</tbody>
+</table>
+
+Your backend parses the certificate Subject organizational units to learn the caller's app, space, and org: `OU=app:<app-guid>`, `OU=space:<space-guid>`, and `OU=organization:<org-guid>`. These are the same OUs described in [The client certificate header and identity](../../concepts/identity-aware-routing.html#xfcc). For more about how <%= vars.app_runtime_abbr %> forwards client certificates in general, see [Forwarding client certificate to apps](../../concepts/http-routing.html#forward-client-cert).
+
+<p class="note">
+Consuming the <code>envoy</code> (hashed) XFCC value in Java apps relies on the <code>java-buildpack-client-certificate-mapper</code> (cloudfoundry/java-buildpack-client-certificate-mapper#11). If that support is not yet released in your buildpack, prefer the <code>raw</code> format for Java backends.
+</p>
+
+
+## <a id='external-mtls'></a> External client certificates
+
+Not every caller is a <%= vars.app_runtime_abbr %> app. Partner systems, IoT devices, and other external clients present their own certificates, which do not carry a Diego instance identity. For these callers, the operator configures an mTLS domain **without** `--enforce-route-policies`. The Gorouter validates the certificate against the domain's CA and sets the XFCC header, and **your app authorizes** the request based on the header contents.
+
+<p class="note warning">
+Do not add route policies for non-<%= vars.app_runtime_abbr %> callers. Route policies key off the <%= vars.app_runtime_abbr %> identity organizational units (app, space, org) that external certificates do not carry.
+</p>
+
+For more about this variant, see [External client certificates](../../concepts/identity-aware-routing.html#external-mtls).
+
+
+## <a id='related-reading'></a> Related reading
+
+* [Identity-aware routing](../../concepts/identity-aware-routing.html)
+* [Configuring routes and domains](routes-domains.html)
+* [Configuring per-route options](../custom-per-route-options.html)
+* [Enabling identity-aware routing](../../deploying/cf-deployment/enable-identity-aware-routing.html)
+* [RFC-0055: Identity-Aware Routing for Gorouter](https://github.com/cloudfoundry/community/blob/main/toc/rfc/rfc-0055-identity-aware-routing-for-gorouter.md)

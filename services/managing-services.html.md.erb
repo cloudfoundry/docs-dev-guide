@@ -55,6 +55,8 @@ User-provided service instances provide a way for developers to bind apps with s
 
 When multiple brokers provide two or more services with the same name, you must specify the broker by including the <code>-b BROKER</code> flag in the <code>cf create-service</code> command.
 
+> **Note** In Tanzu cf CLI v10, `cf create-service` runs asynchronously by default for brokers that support async provisioning. Use the `--wait` flag to block until the operation completes. For more information, see [`cf create-service`](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-cf-cli/<%= vars.tanzu_cf_cli_version %>/t-cf-cli/cmds/create-service.html) in the Tanzu cf CLI documentation.
+
 ### <a id='arbitrary-params-create'></a> Arbitrary parameters
 
 Some services support providing additional configuration parameters with the provision request. Pass these parameters in a valid JSON object containing service-specific configuration parameters, provided either in-line or in a file. For a list of supported configuration parameters, see the documentation for the particular service offering.
@@ -110,6 +112,8 @@ mybucket   p-riakcs      developer   myapp        create succeeded    object-sto
 mydb       p-mysql       100mb                    create succeeded    mysql-broker          yes
 </pre>
 
+> **Note** In Tanzu cf CLI v10, `cf services` supports `--no-apps` (omit the bound apps column for faster output) and `--wait` (poll until any pending operation completes). For more information, see [`cf services`](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-cf-cli/<%= vars.tanzu_cf_cli_version %>/t-cf-cli/cmds/services.html) in the Tanzu cf CLI documentation.
+
 ### <a id='get-details'></a>Get details for a particular service instance
 
 Details include dashboard urls, if applicable, and operation start and last updated timestamps.
@@ -117,13 +121,16 @@ Details include dashboard urls, if applicable, and operation start and last upda
 <pre class="terminal">
 $ cf service mydb
 
-service instance:       mydb
-service:                p-mysql
+name:                   mydb
+guid:                   abcd1234-ab12-ab12-ab12-abcd1234ef56
+type:                   managed
+offering:               p-mysql
 plan:                   100mb
 description:            mysql databases on demand
 documentation url:
-dashboard:              https://p-mysql.example.com/manage/instances/abcd-ef12-3456
-service broker:         mysql-broker
+dashboard url:          https://p-mysql.example.com/manage/instances/abcd-ef12-3456
+broker:                 mysql-broker
+broker tags:
 
 This service is not shared.
 
@@ -311,21 +318,23 @@ To upgrade your service instances:
     otherdb   p-mysql   medium                create succeeded   mysql-broker   no
     </pre>
 
-2. Upgrade the service instance using the `--upgrade` flag:
+2. Upgrade the service instance by running:
 
     ```console
-    cf update-service SERVICE-INSTANCE-NAME --upgrade
+    cf upgrade-service SERVICE-INSTANCE-NAME
     ```
 
-    For example:
+    Use the `--force` flag to skip the confirmation prompt. For example:
 
     <pre class="terminal">
-    $ cf update-service mydb --upgrade
-    You are about to update mydb.
+    $ cf upgrade-service mydb
+    You are about to upgrade mydb.
     Warning: This operation might run long and block further operations on the service until complete.
-    Really update service mydb? [yN]: y
+    Really upgrade service mydb? [yN]: y
     OK
     </pre>
+
+    For more information, see [`cf upgrade-service`](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-cf-cli/<%= vars.tanzu_cf_cli_version %>/t-cf-cli/cmds/upgrade-service.html) in the Tanzu cf CLI documentation.
 
 
 ## <a id='delete'></a>Delete a service instance

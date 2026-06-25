@@ -51,6 +51,12 @@ Creating service my-rabbitmq in org console / space development as user@example.
 OK
 </pre>
 
+Service creation is asynchronous by default. To wait for the operation to complete before the command returns, use the `--wait` flag:
+
+```console
+cf create-service SERVICE PLAN SERVICE-INSTANCE-NAME --wait
+```
+
 User-provided service instances provide a way for developers to bind apps with services that are not available in their Cloud Foundry Marketplace. For more information, see <a href="./user-provided.html">User-provided service instances</a>.
 
 When multiple brokers provide two or more services with the same name, you must specify the broker by including the <code>-b BROKER</code> flag in the <code>cf create-service</code> command.
@@ -100,6 +106,18 @@ cf services
 
 The output from running this command includes any bound apps and the state of the last requested operation for the service instance.
 
+To skip retrieving bound app information (which can be slow in large spaces), use the `--no-apps` flag:
+
+```console
+cf services --no-apps
+```
+
+To wait for any in-progress asynchronous operations to complete before the command returns, use the `--wait` flag:
+
+```console
+cf services --wait
+```
+
 <pre class="terminal">
 $ cf services
 Getting services in org my-org / space test as user@example.com...
@@ -118,12 +136,16 @@ Details include dashboard urls, if applicable, and operation start and last upda
 $ cf service mydb
 
 service instance:       mydb
-service:                p-mysql
+guid:                   abcd-ef12-3456
+type:                   managed
+offering:               p-mysql
 plan:                   100mb
 description:            mysql databases on demand
 documentation url:
-dashboard:              https://p-mysql.example.com/manage/instances/abcd-ef12-3456
-service broker:         mysql-broker
+dashboard url:          https://p-mysql.example.com/manage/instances/abcd-ef12-3456
+broker:                 mysql-broker
+tags:
+broker tags:
 
 This service is not shared.
 
@@ -158,6 +180,12 @@ TIP: Use 'cf push' to ensure your env variable changes take effect
 
 $ cf restart my-app
 </pre>
+
+To wait for the bind operation to complete before the command returns, use the `--wait` flag:
+
+```console
+cf bind-service APP-NAME SERVICE-INSTANCE-NAME --wait
+```
 
 #### <a id='bind-with-manifest'></a> Binding with app manifest
 
@@ -226,6 +254,12 @@ $ cf unbind-service my-app mydb
 Unbinding app my-app from service mydb in org my-org / space test as user@example.com...
 OK
 </pre>
+
+To wait for the unbind operation to complete before the command returns, use the `--wait` flag:
+
+```console
+cf unbind-service APP-NAME SERVICE-INSTANCE-NAME --wait
+```
 
 ### <a id='route-unbinding'></a>Unbind a service instance from a route
 
@@ -309,21 +343,27 @@ To upgrade your service instances:
     otherdb   p-mysql   medium                create succeeded   mysql-broker   no
     </pre>
 
-2. Upgrade the service instance using the `--upgrade` flag:
+2. Upgrade the service instance by running:
 
     ```console
-    cf update-service SERVICE-INSTANCE-NAME --upgrade
+    cf upgrade-service SERVICE-INSTANCE-NAME
     ```
 
     For example:
 
     <pre class="terminal">
-    $ cf update-service mydb --upgrade
-    You are about to update mydb.
+    $ cf upgrade-service mydb
+    You are about to upgrade mydb.
     Warning: This operation might run long and block further operations on the service until complete.
-    Really update service mydb? [yN]: y
+    Really upgrade service mydb? [yN]: y
     OK
     </pre>
+
+    To skip the confirmation prompt, use the `--force` flag:
+
+    ```console
+    cf upgrade-service SERVICE-INSTANCE-NAME --force
+    ```
 
 
 ## <a id='delete'></a>Delete a service instance
@@ -337,3 +377,19 @@ Are you sure you want to delete the service mydb ? y
 Deleting service mydb in org my-org / space test as user@example.com...
 OK
 </pre>
+
+To wait for the delete operation to complete before the command returns, use the `--wait` flag:
+
+```console
+cf delete-service SERVICE-INSTANCE-NAME --wait
+```
+
+## <a id='cleanup-bindings'></a>Clean up outdated service bindings
+
+If service instances are deleted outside of Cloud Foundry (for example, directly through a broker or infrastructure), their associated service bindings can become orphaned. To remove these stale bindings, run:
+
+```console
+cf cleanup-outdated-service-bindings
+```
+
+This command identifies and removes service bindings that no longer have a corresponding service instance. It is a safe operation and will not affect active bindings.

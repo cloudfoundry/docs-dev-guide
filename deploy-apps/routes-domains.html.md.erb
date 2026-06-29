@@ -472,7 +472,8 @@ $ cf unmap-route tcp-app <%= vars.tcp_app_domain %> --port 60000
 ### <a id='share-route'></a> Share a route with another space
 
 <div class="note important">
-To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</div>
+To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.
+</div>
 
 You can share a route with another space using the `cf share-route` command. To move an app to another space, you can share routes with that space to prevent downtime during the transition. Rather than deleting the route in the original space and re-creating the route in the new space, you can share the route with the new space and map it to the app running in that space.
 
@@ -506,7 +507,8 @@ To share a route with another space:
 ### <a id='move-route'></a> Transfer ownership of a route to another space
 
 <div class="note important">
-To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.</div>
+To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.
+</div>
 
 After sharing a route with another space, you can transfer ownership of the route to that space using the <code>cf move-route</code> command. You can use this command if you are unable to maintain or delete a shared route within the space with which it was shared. For information about sharing routes across spaces, see [Share a route with another space](#share-route).
 
@@ -888,7 +890,8 @@ If you use a wildcard as the subdomain name, then your DNS provider can route fr
 To use your root domain for apps on <%= vars.app_runtime_abbr %>, you can use custom DNS record types like ALIAS and ANAME, if your DNS provider offers them, or you can use subdomain redirection.
 
 <div class="note">
-Root domains are also called zone apex domains.</div>
+Root domains are also called zone apex domains.
+</div>
 
 If your DNS provider supports using an ALIAS or ANAME record, configure your root domain with your DNS provider to point at a shared domain in
 <%= vars.app_runtime_abbr %>.
@@ -913,7 +916,8 @@ If your DNS provider does not support ANAME or ALIAS records, you can use subdom
 <div class="note important">
 If you use domain forwarding, SSL requests to the root domain might fail if the SSL certificate matches only the subdomain.
 For more information about SSL certificates, see
-the <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/trusted-system-certificates.html">Cloud Foundry documentation</a>.</div>
+the <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/trusted-system-certificates.html">Cloud Foundry documentation</a>.
+</div>
 
 Configure the root domain to point at a subdomain such as `www`, and configure the subdomain as a CNAME record pointing at a shared domain in
 <%= vars.app_runtime_abbr %>.

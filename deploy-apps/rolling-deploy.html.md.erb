@@ -98,7 +98,7 @@ To run a canary deployment more gradually, you can pass a series of step weights
 
   - The series specifies increasing numbers of canary instances to deploy.
     - The deployment will pause after each step, allowing you to manually [continue](#continue) the deployment and proceed to the next step, or [cancel](#cancel) the deployment.
-    - Each value represents a **percentage** or **weight** of the web process's instances of the web process to be rolled out as canary instances.
+    - Each value represents a **percentage** or **weight** of the web process's instances to be rolled out as canary instances.
   - Separate step weights with commas and without spaces, for example `5,10,20`.
   - For each canary instance created after the first, a pre-deployment instance is torn down.
   - Canary deployments use one extra instance than is normally allocated throughout the deployment process, until the target number of instances has been reached.
@@ -190,7 +190,8 @@ A **Step Weight** of `100` allows app operators to use the `cancel-deployment` c
 The cancel command is designed to revert the app to its
 original state as quickly as possible and does not guarantee zero downtime.
 <br>It is important to note that changes
-to environment variables and service bindings are not reverted.</p>
+to environment variables and service bindings are not reverted.
+</p>
 
 ### <a id="canary-testing"></a> Testing Canary Deployments
 
@@ -425,7 +426,7 @@ output.
       "droplet": {
         "guid": "DROPLET-GUID"
       },
-      "strategy": STRATEGY,
+      "strategy": "STRATEGY",
       "options": {
         "max_in_flight": MAX_IN_FLIGHT
       },
@@ -480,7 +481,8 @@ This reverts the app to its state from before the deployment started by:
 The cancel command is designed to revert the app to its
 original state as quickly as possible and does not guarantee zero downtime.
 <br>It is important to note that changes
-to environment variables and service bindings are not reverted.</p>
+to environment variables and service bindings are not reverted.
+</p>
 
 ### <a id="continue"></a> Continue a canary deployment
 
@@ -542,16 +544,16 @@ To restart your app without downtime, run the appropriate command as shown here.
     -H "Content-type: application/json" \
     -d '{
       "droplet": {
-        "guid": DROPLET-GUID
+        "guid": "DROPLET-GUID"
       },
-      "strategy": STRATEGY,
+      "strategy": "STRATEGY",
       "options": {
         "max_in_flight": MAX_IN_FLIGHT
       },
       "relationships": {
         "app": {
           "data": {
-            "guid": APP-GUID
+            "guid": "APP-GUID"
           }
         }
       }

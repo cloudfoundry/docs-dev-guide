@@ -729,6 +729,10 @@ Admins can create an HTTP shared domain with the `cf create-shared-domain` comma
 $ cf create-shared-domain <%= vars.app_domain %>
 ```
 
+<p class="note">
+To create a domain that requires mutual TLS and enforces identity-based route policies, add the <code>--enforce-route-policies</code> flag (optionally with <code>--scope</code>). This setting is fixed when the domain is created and cannot be changed afterward. See <a href="identity-aware-routing.html">Configuring identity-aware routing</a>.
+</p>
+
 <p class="note important">
 cf CLI v7+ does not support TCP routing or creating shared domains with router groups.</p>
 
@@ -769,6 +773,10 @@ Org managers can create a private domain by running:
 ```console
 $ cf create-private-domain example-org <%= vars.private_app_domain %>
 ```
+
+<p class="note">
+Org managers can create an identity-aware private domain by adding <code>--enforce-route-policies</code> (optionally with <code>--scope</code>). This setting is fixed at creation. See <a href="identity-aware-routing.html">Configuring identity-aware routing</a>.
+</p>
 
 Org managers can create a private domain for a subdomain by running:
 

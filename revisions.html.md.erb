@@ -3,7 +3,7 @@ title: Cloud Foundry API app revisions
 owner: CAPI
 ---
 
-A revision represents code and configuration used by an app at a specific time. It is a Cloud Foundry API (CAPI) object that can contain references to a droplet, a custom start command, and environment variables. The most recent revision for a running app represents code and configuration running in <%= vars.platform_name %>.
+A revision represents code and configuration used by an app at a specific time. It is a Cloud Foundry API (CAPI) object that can contain references to a droplet, a custom start command, and environment variables. The most recent revision for a running app represents code and configuration running in <%= vars.app_runtime_abbr %>.
 App revisions do not include any tasks run on the app.
 
 For additional information about app revisions, see [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation.
@@ -14,9 +14,9 @@ CAPI v3 is the recommended API version for revisions. While revisions work with 
 
 ## <a id="overview"></a> Overview
 
-Every <%= vars.platform_name %> app has a name.
-When you first deploy an app, <%= vars.platform_name %> gives it the revision version number `1`.
-When you re-deploy the app under the same name, for example as an update, <%= vars.platform_name %> increments its version number and saves the old version.
+Every <%= vars.app_runtime_abbr %> app has a name.
+When you first deploy an app, <%= vars.app_runtime_abbr %> gives it the revision version number `1`.
+When you re-deploy the app under the same name, for example as an update, <%= vars.app_runtime_abbr %> increments its version number and saves the old version.
 
 This saved application history is used by the `revisions` and `revision` CAPI endpoints and Tanzu cf CLI commands to let you:
 
@@ -54,9 +54,9 @@ Each revision includes a description of what changed in your app at the time the
 
 ### <a id="droplets"></a> Droplet storage considerations
 
-By default, <%= vars.platform_name %> retains the five most recent staged droplets in its droplets bucket. This means that you can roll back to revisions as long as they are using one of those five droplets. Not all revisions include a change in droplet.
+By default, <%= vars.app_runtime_abbr %> retains the five most recent staged droplets in its droplets bucket. This means that you can roll back to revisions as long as they are using one of those five droplets. Not all revisions include a change in droplet.
 
-Operators can configure <%= vars.platform_name %> to retain more droplets if necessary using the <%= vars.droplet_config %>
+Operators can configure <%= vars.app_runtime_abbr %> to retain more droplets if necessary using the <%= vars.droplet_config %>
 
 
 ## <a id="view"></a> View revisions

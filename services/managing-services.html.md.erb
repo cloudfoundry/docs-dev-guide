@@ -7,7 +7,7 @@ owner: Core Services
 
 You can manage life cycle operations for service instances using the Tanzu cf CLI. This includes creating, updating, and deleting service instances. For information about other service management operations, see [Services overview](./index.html). <%= vars.custom_services %>
 
-To run the commands in this topic, you must first install the Tanzu cf CLI. See the [Using the Tanzu cf CLI](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/elastic-application-runtime/<%= vars.app_runtime_full %>/eart/toc-cf-cli-index.html) topics for more information.
+To run the commands in this topic, you must first install the Tanzu cf CLI. See the [Using the Tanzu cf CLI](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-cf-cli/<%= vars.tanzu_cf_cli_version %>/t-cf-cli/index.html) topics for more information.
 
 ## <a id='marketplace'></a> List Marketplace services
 
@@ -53,7 +53,7 @@ OK
 
 User-provided service instances provide a way for developers to bind apps with services that are not available in their Cloud Foundry Marketplace. For more information, see <a href="./user-provided.html">User-provided service instances</a>.
 
-<p class="note">The <code>cf create-service</code> command uses CAPI V3 and creates asynchronous jobs. To wait for the create operation to complete before continuing, use the <code>--wait</code> flag. For more information, see the <a href="https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-cf-cli/<%= vars.tanzu_cf_cli_version %>/t-cf-cli/cmds/create-service.html">cf create-service</a> reference.</p>
+<p class="note">The <code>cf create-service</code> command uses CAPI V3 and creates asynchronous jobs. To wait for the create operation to complete before continuing, use the <code>--wait</code> flag. For more information, see the <a href="https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-cf-cli/<%= vars.tanzu_cf_cli_version %>/t-cf-cli/cmds-create-service.html">cf create-service</a> reference.</p>
 
 When multiple brokers provide two or more services with the same name, you must specify the broker by including the <code>-b BROKER</code> flag in the <code>cf create-service</code> command.
 
@@ -102,7 +102,7 @@ cf services
 
 The output from running this command includes any bound apps and the state of the last requested operation for the service instance.
 
-<p class="note">To improve performance when you have many service instances, use <code>--no-apps</code> to skip retrieving bound app information. Use <code>--wait</code> to wait for any in-progress operation to complete. For more information, see the <a href="https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-cf-cli/<%= vars.tanzu_cf_cli_version %>/t-cf-cli/cmds/services.html">cf services</a> reference.</p>
+<p class="note">To improve performance when you have many service instances, use <code>--no-apps</code> to skip retrieving bound app information. Use <code>--wait</code> to wait for any in-progress operation to complete. For more information, see the <a href="https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-cf-cli/<%= vars.tanzu_cf_cli_version %>/t-cf-cli/cmds-services.html">cf services</a> reference.</p>
 
 <pre class="terminal">
 $ cf services

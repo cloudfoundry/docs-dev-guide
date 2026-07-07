@@ -25,7 +25,7 @@ Docker apps do not use stacks.</p>
 
 ## <a id='available-stacks'></a> Available stacks
 
-<%= vars.product_short %> <%= vars.current_major_version ? "v#{vars.current_major_version}" : "" %> includes support for `cflinuxfs4`, which is derived from Ubuntu 22.04 LTS (Jammy Jellyfish). For more information, see [GitHub cflinuxfs4 stack receipt](https://github.com/cloudfoundry/cflinuxfs4/blob/main/receipt.cflinuxfs4.x86_64).
+<%= vars.app_runtime_abbr %> <%= vars.current_major_version ? "v#{vars.current_major_version}" : "" %> includes support for `cflinuxfs4`, which is derived from Ubuntu 22.04 LTS (Jammy Jellyfish). For more information, see [GitHub cflinuxfs4 stack receipt](https://github.com/cloudfoundry/cflinuxfs4/blob/main/receipt.cflinuxfs4.x86_64).
 
 You can also build your own custom stack. For more information, see [Adding a Custom Stack](../../running/custom-stack.html).
 
@@ -46,7 +46,7 @@ If you encounter a restricted or disabled stack, contact your CF operator for mi
 
 ## <a id='restage-apps'></a> Restaging apps on a new stack
 
-For security, stacks receive regular updates to address Common Vulnerabilities and Exposures ([CVEs](http://www.ubuntu.com/usn/)). Apps pick up on these stack changes through new releases of <%= vars.product_short %>. However, if your app links statically to a library provided in the rootfs, you might have to manually restage it to pick up the changes.
+For security, stacks receive regular updates to address Common Vulnerabilities and Exposures ([CVEs](http://www.ubuntu.com/usn/)). Apps pick up on these stack changes through new releases of <%= vars.app_runtime_abbr %>. However, if your app links statically to a library provided in the rootfs, you might have to manually restage it to pick up the changes.
 
 It can be difficult to know what libraries an app statically links to, and it depends on the languages you are using. One example is an app that uses a Ruby or Python binary, and links out to part of the C standard library. If the C library requires an update, you might need to recompile the app and restage it.
 

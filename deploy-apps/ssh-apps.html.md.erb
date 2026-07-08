@@ -8,7 +8,8 @@ The Cloud Foundry Command Line Interface (cf CLI) lets you securely log in to re
 
 <p class="note important">
 The <code>cf ssh</code> command in cf CLI includes the <code>all_proxy</code> environment variable, which allows you to specify a proxy server to activate proxying for all requests. For more information, see <a href="../../cf-cli/http-proxy.html#v3-ssh-socks5">Use SOCKS5 with cf v3-ssh</a> in <em>Using the cf CLI with a proxy server</em>.
-For command details, enter <code>cf ssh --help</code></p>
+For command details, enter <code>cf ssh --help</code>
+</p>
 
 The cf CLI looks up the `app_ssh_oauth_client` identifier in the Cloud Controller `/v2/info` endpoint, and uses this identifier to query the UAA server for an SSH authorization code. On the target VM side, the SSH proxy contacts the Cloud Controller through the `app_ssh_endpoint` listed in `/v2/info` to confirm permission for SSH access.
 

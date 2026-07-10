@@ -55,6 +55,7 @@ This section describes pushing an app with the rolling deployment strategy.
 background, updating deployments as follows:
     1. Adds up to `max_in_flight` instances of the new web process and removes instances from the old web process. This step repeats until the new web process reaches the required number of instances.
         <p class="note important">
+        <span class="note__title"><strong>Important</strong></span>
         This happens only if all instances of the new web process are running.</p>
     2. Removes the old web process. The new web process now fully replaces the old web process.
     3. Restarts all non-web processes of the app.
@@ -85,6 +86,7 @@ background, updating deployments as follows:
 background, updating deployments as follows:
     1. Adds MaxInFlight number of instances (**by default it is 1**) of the new web process and removes MaxInFlight number of instances from the old web process. This step repeats until the new web process reaches the required number of instances.
         <p class="note important">
+        <span class="note__title"><strong>Important</strong></span>
         This happens only if all instances of the new web process are running.</p>
     2. Removes the old web process. The new web process now fully replaces the old web process.
     3. Restarts all non-web processes of the app.
@@ -187,6 +189,7 @@ This results in the following deployment plan:
 A **Step Weight** of `100` allows app operators to use the `cancel-deployment` command even after all instances have been replaced.
 
 <p class="note important">
+<span class="note__title"><strong>Important</strong></span>
 The cancel command is designed to revert the app to its
 original state as quickly as possible and does not guarantee zero downtime.
 <br>It is important to note that changes
@@ -297,11 +300,13 @@ cf push APP-NAME --strategy rolling
 Where `APP-NAME` is the name that you want to give your app.
 
 <p class="note caution">
+<span class="note__title"><strong>Caution</strong></span>
 Review the limitations of this feature before running the command. For more information, see
 <a href="#limitations">Limitations</a>.
 </p>
 
 <p class="note">
+<span class="note__title"><strong>Note</strong></span>
 cf CLI v7 exits when one instance of each process is healthy.
 It also includes a <code>--no-wait</code> flag for users who don't want to wait
 for the operation to complete.
@@ -479,6 +484,7 @@ This reverts the app to its state from before the deployment started by:
 * Resetting the `current_droplet` on the app
 
 <p class="note important">
+<span class="note__title"><strong>Important</strong></span>
 The cancel command is designed to revert the app to its
 original state as quickly as possible and does not guarantee zero downtime.
 <br>It is important to note that changes

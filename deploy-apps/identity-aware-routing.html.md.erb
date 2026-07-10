@@ -13,6 +13,7 @@ On this page you:
 * Make app-to-app requests and consume the caller's identity from the client-certificate header in the backend app.
 
 <p class="note">
+<span class="note__title"><strong>Note</strong></span>
 Identity-aware routing requires an operator to have enabled an identity-aware (mTLS) domain in the deployment. See <a href="../../deploying/cf-deployment/enable-identity-aware-routing.html">Enabling identity-aware routing</a>.
 </p>
 
@@ -202,6 +203,7 @@ $ curl --cert "$CF_INSTANCE_CERT" --key "$CF_INSTANCE_KEY" https://backend.apps.
 The Gorouter validates the certificate against the domain's CA, checks the route's policies, and forwards the request to the backend on success. If no policy allows the caller, the Gorouter returns an HTTP `403 Forbidden` response (default-deny).
 
 <p class="note">
+<span class="note__title"><strong>Note</strong></span>
 This is the same Diego instance identity issued to every app instance. The caller needs no extra credentials to make an identity-aware request.
 </p>
 
@@ -235,6 +237,7 @@ When the Gorouter forwards an identity-aware request, it passes the caller's ver
 Your backend parses the certificate Subject organizational units to learn the caller's app, space, and org: `OU=app:<app-guid>`, `OU=space:<space-guid>`, and `OU=organization:<org-guid>`. These are the same OUs described in [The client certificate header and identity](../../concepts/identity-aware-routing.html#xfcc). For more about how <%= vars.app_runtime_abbr %> forwards client certificates in general, see [Forwarding client certificate to apps](../../concepts/http-routing.html#forward-client-cert).
 
 <p class="note">
+<span class="note__title"><strong>Note</strong></span>
 Consuming the <code>envoy</code> (hashed) XFCC value in Java apps relies on the <code>java-buildpack-client-certificate-mapper</code> (cloudfoundry/java-buildpack-client-certificate-mapper#11). If that support is not yet released in your buildpack, prefer the <code>raw</code> format for Java backends.
 </p>
 
@@ -244,6 +247,7 @@ Consuming the <code>envoy</code> (hashed) XFCC value in Java apps relies on the 
 Not every caller is a <%= vars.app_runtime_abbr %> app. Partner systems, IoT devices, and other external clients present their own certificates, which do not carry a Diego instance identity. For these callers, the operator configures an mTLS domain **without** `--enforce-route-policies`. The Gorouter validates the certificate against the domain's CA and sets the XFCC header, and **your app authorizes** the request based on the header contents.
 
 <p class="note caution">
+<span class="note__title"><strong>Caution</strong></span>
 Do not add route policies for non-<%= vars.app_runtime_abbr %> callers. Route policies key off the <%= vars.app_runtime_abbr %> identity organizational units (app, space, org) that external certificates do not carry.
 </p>
 

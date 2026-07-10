@@ -9,6 +9,7 @@ App revisions do not include any tasks run on the app.
 For additional information about app revisions, see [Revisions](http://v3-apidocs.cloudfoundry.org/version/release-candidate/#revisions) in the Cloud Foundry API (CAPI) documentation.
 
 <p class="note important">
+<span class="note__title"><strong>Important</strong></span>
 CAPI v3 is the recommended API version for revisions. While revisions work with CAPI v2, there are several inconsistencies. For example, revision descriptions for apps with multiple processes can be inaccurate because CAPI v2 does not support apps with multiple processes. Additionally, pushing an app for the first time with revisions in CAPI v2 creates two revisions.
 </p>
 
@@ -25,7 +26,9 @@ This saved application history is used by the `revisions` and `revision` CAPI en
 
 * **Roll back to a previous revision:** To deploy a version of the app that you had running previously without needing to track that previous state yourself or have multiple apps running. When roll back an app, the specified revision deploys as the new current version of your app.
 
-<p class="note">The <code>cf revision</code> command takes a <code>--version</code> flag to specify a version number, but the command's output lists the same number as its <code>revision</code>.
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+The <code>cf revision</code> command takes a <code>--version</code> flag to specify a version number, but the command's output lists the same number as its <code>revision</code>.
 </p>
 
 ### <a id="events"></a> When current app revision changes

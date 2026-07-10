@@ -16,6 +16,7 @@ Gorouter supports the following per-route options, described in the sections bel
 - `hash_balance`: Sets the float number for the balance factor used by Gorouter to manage load imbalance applying the hash-based routing for this route. Optional when `loadbalancing` is `hash`. Cannot be used with other algorithms. <%= vars.hash_routing_version %>
 
 <p class="note">
+<span class="note__title"><strong>Note</strong></span>
 Identity-aware routing is configured with the dedicated <code>cf add-route-policy</code> / <code>cf route-policies</code> / <code>cf remove-route-policy</code> commands rather than the <code>--option</code> flag described here. The Gorouter applies route policies through internal route options (<code>route_policy_scope</code>, <code>route_policy_sources</code>) that are managed by the platform and are not returned in route API responses. See <a href="deploy-apps/identity-aware-routing.html">Configuring identity-aware routing</a>.
 </p>
 
@@ -75,6 +76,7 @@ cf map-route MY-APP EXAMPLE.COM --hostname MY-HOST --option loadbalancing=round-
 ```
 
 <p class="note">
+<span class="note__title"><strong>Note</strong></span>
 The command <code>map-route</code> supports the <code>--option</code> flag only for new routes.
 To update an existing route, use the command <code>update-route</code> described below.
 </p>

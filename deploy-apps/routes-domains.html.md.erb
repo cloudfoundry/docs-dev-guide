@@ -125,6 +125,7 @@ OK
 ```
 
 <p class="note important">
+<span class="note__title"><strong>Important</strong></span>
 The cf CLI <code>create-route</code> command does not require the space as an argument. It uses the space you are targeting.</p>
 
 This command instructs <%= vars.app_runtime_abbr %> to only route requests to apps mapped to this route for these URLs:
@@ -230,6 +231,7 @@ If the developer maps the first route with path <code>products</code> to the <co
 <%= vars.app_runtime_abbr %> attempts to match routes with a path, and then attempts to match host and domain.
 
 <div class="note important">
+<span class="note__title"><strong>Important</strong></span>
 Notes:
   <ul>
     <li>Routes with the same domain and host name but different paths can only be created in the same space. Private domains do not have this limitation.</li>
@@ -472,6 +474,7 @@ $ cf unmap-route tcp-app <%= vars.tcp_app_domain %> --port 60000
 ### <a id='share-route'></a> Share a route with another space
 
 <div class="note important">
+<span class="note__title"><strong>Important</strong></span>
 To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.
 </div>
 
@@ -507,6 +510,7 @@ To share a route with another space:
 ### <a id='move-route'></a> Transfer ownership of a route to another space
 
 <div class="note important">
+<span class="note__title"><strong>Important</strong></span>
 To follow the procedure in this section, you must use cf CLI v8.5.0 or later. To download cf CLI v8.5.0 or later, see the <a href="https://github.com/cloudfoundry/cli/releases/tag/v8.5.0">Cloud Foundry CLI repository</a> on GitHub.
 </div>
 
@@ -730,10 +734,12 @@ $ cf create-shared-domain <%= vars.app_domain %>
 ```
 
 <p class="note">
+<span class="note__title"><strong>Note</strong></span>
 To create a domain that requires mutual TLS and enforces identity-based route policies, add the <code>--enforce-route-policies</code> flag (optionally with <code>--scope</code>). This setting is fixed when the domain is created and cannot be changed afterward. See <a href="identity-aware-routing.html">Configuring identity-aware routing</a>.
 </p>
 
 <p class="note important">
+<span class="note__title"><strong>Important</strong></span>
 cf CLI v7+ does not support TCP routing or creating shared domains with router groups.</p>
 
 <h4><a id='delete-shared-domain'></a>Delete a shared domain</h4>
@@ -775,6 +781,7 @@ $ cf create-private-domain example-org <%= vars.private_app_domain %>
 ```
 
 <p class="note">
+<span class="note__title"><strong>Note</strong></span>
 Org managers can create an identity-aware private domain by adding <code>--enforce-route-policies</code> (optionally with <code>--scope</code>). This setting is fixed at creation. See <a href="identity-aware-routing.html">Configuring identity-aware routing</a>.
 </p>
 
@@ -898,6 +905,7 @@ If you use a wildcard as the subdomain name, then your DNS provider can route fr
 To use your root domain for apps on <%= vars.app_runtime_abbr %>, you can use custom DNS record types like ALIAS and ANAME, if your DNS provider offers them, or you can use subdomain redirection.
 
 <div class="note">
+<span class="note__title"><strong>Note</strong></span>
 Root domains are also called zone apex domains.
 </div>
 
@@ -922,6 +930,7 @@ If your DNS provider supports using an ALIAS or ANAME record, configure your roo
 If your DNS provider does not support ANAME or ALIAS records, you can use subdomain redirection, also known as domain forwarding, to redirect requests for your root domain to a subdomain configured as a CNAME.
 
 <div class="note important">
+<span class="note__title"><strong>Important</strong></span>
 If you use domain forwarding, SSL requests to the root domain might fail if the SSL certificate matches only the subdomain.
 For more information about SSL certificates, see
 the <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/trusted-system-certificates.html">Cloud Foundry documentation</a>.

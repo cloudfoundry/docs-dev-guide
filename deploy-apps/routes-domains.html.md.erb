@@ -233,11 +233,10 @@ If the developer maps the first route with path <code>products</code> to the <co
 
 <div class="note important">
 <span class="note__title"><strong>Important</strong></span>
-Notes:
-  <ul>
-    <li>Routes with the same domain and host name but different paths can only be created in the same space. Private domains do not have this limitation.</li>
-    <li><%= vars.app_runtime_abbr %> does not route requests for context paths to the root context of an app. Apps must serve requests on the context path.</li>
-  </ul>
+<ul>
+  <li>Routes with the same domain and host name but different paths can only be created in the same space. Private domains do not have this limitation.</li>
+  <li><%= vars.app_runtime_abbr %> does not route requests for context paths to the root context of an app. Apps must serve requests on the context path.</li>
+</ul>
 </div>
 
 <h4><a id='create-route-with-port'></a> Create a TCP route with a port</h4>

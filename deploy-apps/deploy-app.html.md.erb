@@ -188,6 +188,7 @@ You can configure the  `cf push` command to run custom initialization tasks for 
 These tasks run after <%= vars.app_runtime_abbr %> loads the app droplet but before it starts the app to allow the initialization script to access the app language runtime environment. For example, your script can map values from `$VCAP_SERVICES` into other environment variables or a config file that the app uses.
 
 <div class="note important">
+<span class="note__title"><strong>Important</strong></span>
 See the following important information about configuring app initialization when you use certain buildpacks:
   <ul>
     <li><strong>PHP:</strong> <%= vars.app_runtime_abbr %> does not support initialization scripts for the PHP buildpack versions prior to v4.3.18. If you use

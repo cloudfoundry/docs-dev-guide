@@ -7,6 +7,7 @@ owner: Diego
 The Cloud Foundry Command Line Interface (cf CLI) lets you securely log in to remote host virtual machines (VMs) running <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) app instances. The commands that activate SSH access to apps, and activate, deactivate, and verify permissions for such access are described here.
 
 <p class="note important">
+<span class="note__title"><strong>Important</strong></span>
 The <code>cf ssh</code> command in cf CLI includes the <code>all_proxy</code> environment variable, which allows you to specify a proxy server to activate proxying for all requests. For more information, see <a href="../../cf-cli/http-proxy.html#v3-ssh-socks5">Use SOCKS5 with cf v3-ssh</a> in <em>Using the cf CLI with a proxy server</em>.
 For command details, enter <code>cf ssh --help</code>
 </p>
@@ -152,7 +153,9 @@ _<%= vars.app_runtime_abbr %> Environment Variables_.
 In addition to `cf ssh`, you can use other SSH clients such as `ssh`, `scp`, or `sftp` to access
 your app via its process GUID, if you have SSH permissions.
 
-<p class="note">Previous versions of <%= vars.app_runtime_abbr %> supported SSH access to apps via the app GUID, as archived at <a href="https://web.archive.org/web/20241224221352/https://docs.cloudfoundry.org/devguide/deploy-apps/ssh-apps.html#app-guid">Access app SSH using app GUID</a>.
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+Previous versions of <%= vars.app_runtime_abbr %> supported SSH access to apps via the app GUID, as archived at <a href="https://web.archive.org/web/20241224221352/https://docs.cloudfoundry.org/devguide/deploy-apps/ssh-apps.html#app-guid">Access app SSH using app GUID</a>.
 </p>
 
 To securely connect to an app instance using its process GUID:
@@ -326,7 +329,9 @@ When present, `host_fingerprint` declares the expected fingerprint of the SSH da
 ```
 
 <p class="note important">
-To avoid security exposure, migrate your apps and custom buildpacks to use the <code>cflinuxfs4</code> stack based on Ubuntu 22.04 LTS (Jammy Jellyfish). The <code>cflinuxfs3</code> stack is based on Ubuntu 18.04 (Bionic Beaver), which reaches end of standard support in April 2023.</p>
+<span class="note__title"><strong>Important</strong></span>
+To avoid security exposure, migrate your apps and custom buildpacks to use the <code>cflinuxfs4</code> stack based on Ubuntu 22.04 LTS (Jammy Jellyfish). The <code>cflinuxfs3</code> stack is based on Ubuntu 18.04 (Bionic Beaver), which reaches end of standard support in April 2023.
+</p>
 
 ### Daemon discovery
 

@@ -25,7 +25,9 @@ $ cf restart my-app
 </pre>
 
 <p class="note important">
-You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
+<span class="note__title"><strong>Important</strong></span>
+You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.
+</p>
 
 <h3> <a id='credential-delivery-methods'></a> Credential Delivery Methods</h3>
 
@@ -35,6 +37,7 @@ For details about consuming credentials specific to your development framework, 
 <a href="../../buildpacks/index.html">buildpack</a>.
 
 <p class="note important">
+<span class="note__title"><strong>Important</strong></span>
 If the application is unable to consume the credentials through the selected delivery method, it may cause downtime for the application. This is because the application won't be able to connect to the services it is bound to.
 </p>
 
@@ -51,7 +54,9 @@ There are two methods developers can use to have their apps consume binding cred
 For checking the binding data manually app developers can use `cf env`. See [View Env](../deploy-apps/environment-variable.html#view-env).
 
 <p class="note important">
-The maximum size of content of the VCAP_SERVICES environment variable is 130 KB. If you want to bind more services to the app or the services you want to bind provide lots of data, you can use one of the other methods.</p>
+<span class="note__title"><strong>Important</strong></span>
+The maximum size of content of the VCAP_SERVICES environment variable is 130 KB. If you want to bind more services to the app or the services you want to bind provide lots of data, you can use one of the other methods.
+</p>
 
 #### <a id='file-based-vcap-services'></a> File-based VCAP services
 
@@ -65,7 +70,9 @@ cf ssh <app_name> -c 'cat $VCAP_SERVICES_FILE_PATH'
 ```
 
 <p class="note important">
-The vcap_services file content cannot exceed 1 MB, otherwise an <code>IncompatibleBindings</code> error is raised.</p>
+<span class="note__title"><strong>Important</strong></span>
+The vcap_services file content cannot exceed 1 MB, otherwise an <code>IncompatibleBindings</code> error is raised.
+</p>
 
 #### <a id='service-binding-k8s'></a> Service Binding K8s
 
@@ -80,7 +87,9 @@ cf ssh <app_name> -c 'find $SERVICE_BINDING_ROOT -type f -exec bash -c "echo {}:
 ```
 
 <p class="note important">
-The bytesize of all files and their content combined cannot exceed 1 MB, otherwise an <code>IncompatibleBindings</code> error is raised.</p>
+<span class="note__title"><strong>Important</strong></span>
+The bytesize of all files and their content combined cannot exceed 1 MB, otherwise an <code>IncompatibleBindings</code> error is raised.
+</p>
 
 Here are some examples outlining the transformation of VCAP_SERVICES to the file structure:
 
@@ -324,7 +333,11 @@ OK
 </pre>
 
 <p class="note important">
-You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.</p>
+<span class="note__title"><strong>Important</strong></span>
+You must restart or in some cases re-push your app for changes to be applied to the <a href="../deploy-apps/environment-variable.html">VCAP_SERVICES</a> environment variable and for the app to recognize these changes.
+</p>
 
 <p class="note important">
-If there are multiple service bindings as described in <a href="#service-credential-binding-rotation">Service credential binding rotation</a>, make sure to use cf CLI v8.18.0 or later to unbind all service bindings.</p>
+<span class="note__title"><strong>Important</strong></span>
+If there are multiple service bindings as described in <a href="#service-credential-binding-rotation">Service credential binding rotation</a>, make sure to use cf CLI v8.18.0 or later to unbind all service bindings.
+</p>

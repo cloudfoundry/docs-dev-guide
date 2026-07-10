@@ -159,7 +159,7 @@ If DNS is configured correctly, this command instructs <%= vars.app_runtime_abbr
   <li>Any path under either of these URLs, such as <code>http://<%= vars.private_app_domain %>/foo</code></li>
 </ul>
 
-If there are no other routes for the domain, requests to any subdomain, such as <code>http://foo.<%= vars.private_app_domain %></code>, fail.
+If there are no other routes for the domain, requests to any subdomain, such as `http://foo.<%= vars.private_app_domain %>`, fail.
 
 A developer can also create routes for subdomains with no host names. The following command creates a route from the subdomain
 <code>foo.<%= vars.private_app_domain %></code>:
@@ -190,8 +190,8 @@ Creating route *.foo.<%= vars.app_domain %> for org example-org / space example-
 OK
 </code></pre>
 
-If a client sends a request to <code>http://app.foo.<%= vars.app_domain %></code> by accident, attempting to reach <code>example-app.foo.<%= vars.app_domain %></code>,
-<%= vars.app_runtime_abbr %> routes the request to the app mapped to the route <code>*.foo.<%= vars.app_domain %></code>.
+If a client sends a request to `http://app.foo.<%= vars.app_domain %>` by accident, attempting to reach `example-app.foo.<%= vars.app_domain %>`,
+<%= vars.app_runtime_abbr %> routes the request to the app mapped to the route `*.foo.<%= vars.app_domain %>`.
 
 <h4><a id='create-route-w-path'></a> Create an HTTP route with a path</h4>
 

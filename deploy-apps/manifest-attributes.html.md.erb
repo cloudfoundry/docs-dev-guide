@@ -33,7 +33,8 @@ applications:
 
 <p class="note important">
 <span class="note__title"><strong>Important</strong></span>
-If your app name begins with the dash character (<code>-</code>), you cannot interact with the app using the cf CLI. This is because the cf CLI interprets the dash as a flag.</p>
+If your app name begins with the dash character (<code>-</code>), you cannot interact with the app using the cf CLI. This is because the cf CLI interprets the dash as a flag.
+</p>
 
 ### <a id='manifest-schema-version'></a> Add schema version to a manifest
 
@@ -74,7 +75,8 @@ To add variables to an app manifest:
     ```
     <p class="note">
     <span class="note__title"><strong>Note</strong></span>
-    You can also use variables for partial values. For example, you can specify <code>host</code> in your variables file and <code>- route: ((host)).env.com</code> in your manifest file.</p>
+    You can also use variables for partial values. For example, you can specify <code>host</code> in your variables file and <code>- route: ((host)).env.com</code> in your manifest file.
+    </p>
 
 1. Run:
 
@@ -234,7 +236,8 @@ The manifest attribute `docker.username` is optional. If it is used, the passwor
 
 <p class="note important">
 <span class="note__title"><strong>Important</strong></span>
-Using the <code>docker</code> attribute with the <code>buildpacks</code> or <code>path</code> attributes causes an error.</p>
+Using the <code>docker</code> attribute with the <code>buildpacks</code> or <code>path</code> attributes causes an error.
+</p>
 
 ### <a id='features'></a> features
 
@@ -453,7 +456,8 @@ For more information about metadata, see [Using metadata](../../adminguide/metad
 
 <p class="note important">
 <span class="note__title"><strong>Important</strong></span>
-If you use the <code>no-route</code> flag attribute in the manifest or the flag option, it overrides all route-related attributes.</p>
+If you use the <code>no-route</code> flag attribute in the manifest or the flag option, it overrides all route-related attributes.
+</p>
 
 By default, `cf push` assigns a route to every app. But, some apps process data while running in the background and must not be assigned routes.
 
@@ -570,7 +574,8 @@ You can specify the `protocol` attribute to configure which network protocol the
 
 <p class="note important">
 <span class="note__title"><strong>Important</strong></span>
-The <code>protocol</code> route attribute is available only for <%= vars.app_runtime_abbr %> deployments that use HTTP/2 routing. <%= vars.http2_admin_link %> </p>
+The <code>protocol</code> route attribute is available only for <%= vars.app_runtime_abbr %> deployments that use HTTP/2 routing. <%= vars.http2_admin_link %> 
+</p>
 
 For example:
 
@@ -696,7 +701,8 @@ The `-t` command-line flag overrides this attribute.
 <p class="note important">
 <span class="note__title"><strong>Important</strong></span>
 If you configure <code>timeout</code> with a value greater than
-<code>cc.maximum_health_check_timeout</code>, the Cloud Controller reports a validation error with the maximum limit.</p>
+<code>cc.maximum_health_check_timeout</code>, the Cloud Controller reports a validation error with the maximum limit.
+</p>
 
 
 ## <a id='env-block'></a> Environment variables
@@ -809,7 +815,8 @@ This section describes app manifest features that are deprecated in favor of oth
 
 <p class="note caution">
 <span class="note__title"><strong>Caution</strong></span>
-Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated features with the feature that replaces it.</p>
+Running <code>cf push app -f manifest.yml</code> fails if your manifest uses any of these deprecated features with the feature that replaces it.
+</p>
 
 ### <a id='top-level-attributes'></a> Top-level attributes
 

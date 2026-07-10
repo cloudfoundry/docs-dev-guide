@@ -71,7 +71,8 @@ For more information about the `cf push` command, enter `cf push --help`.
 <p class="note important">
 <span class="note__title"><strong>Important</strong></span>
 The health check configuration that you provide with
-<code>cf push</code> overrides any configuration in the app manifest.</p>
+<code>cf push</code> overrides any configuration in the app manifest.
+</p>
 
 
 ## <a id="set-health-checks-exist"></a> Configure liveness health checks for an existing app
@@ -99,7 +100,8 @@ For more information about the `cf set-health-check` command, enter `cf set-heal
 <span class="note__title"><strong>Important</strong></span>
 After you set the health check configuration of a deployed
 app with the <code>cf set-health-check</code> command, you must restart the app for the change to
-take effect.</p>
+take effect.
+</p>
 
 
 ## <a id='understand-healthchecks'></a> Understanding health checks
@@ -145,7 +147,8 @@ circumstances in which to use them:
     <span class="note__title"><strong>Important</strong></span>
     To prevent false
     negatives, use a dedicated endpoint for health checks where response time and result do not
-    depend on business logic.</p>
+    depend on business logic.
+    </p>
     </td>
   </tr>
   <tr>
@@ -182,4 +185,5 @@ This command only checks the health of the default port of the app.
 
 <p class="note important">
 <span class="note__title"><strong>Important</strong></span>
-For HTTP apps, <%= vars.company_name %> recommends setting the health check type to <code>http</code> instead of a simple port check.</p>
+For HTTP apps, <%= vars.company_name %> recommends setting the health check type to <code>http</code> instead of a simple port check.
+</p>

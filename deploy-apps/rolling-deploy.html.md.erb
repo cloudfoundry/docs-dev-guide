@@ -56,7 +56,8 @@ background, updating deployments as follows:
     1. Adds up to `max_in_flight` instances of the new web process and removes instances from the old web process. This step repeats until the new web process reaches the required number of instances.
         <p class="note important">
         <span class="note__title"><strong>Important</strong></span>
-        This happens only if all instances of the new web process are running.</p>
+        This happens only if all instances of the new web process are running.
+        </p>
     2. Removes the old web process. The new web process now fully replaces the old web process.
     3. Restarts all non-web processes of the app.
     4. Sets the deployment to `DEPLOYED`.
@@ -87,7 +88,8 @@ background, updating deployments as follows:
     1. Adds MaxInFlight number of instances (**by default it is 1**) of the new web process and removes MaxInFlight number of instances from the old web process. This step repeats until the new web process reaches the required number of instances.
         <p class="note important">
         <span class="note__title"><strong>Important</strong></span>
-        This happens only if all instances of the new web process are running.</p>
+        This happens only if all instances of the new web process are running.
+        </p>
     2. Removes the old web process. The new web process now fully replaces the old web process.
     3. Restarts all non-web processes of the app.
     4. Sets the deployment to `DEPLOYED`.

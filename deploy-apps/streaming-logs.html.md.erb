@@ -164,6 +164,11 @@ For example:
 2026-01-26T13:49:18.72+0000 [PROXY/0]     OUT Exit status 137
 </pre>
 
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+You might also see <code>STATS</code> entries in a syslog drain. These are container metrics, not a log type, and only appear when the drain is configured with <code>drain-data=metrics</code> or <code>drain-data=all</code>. Because they are metrics, <code>STATS</code> entries cannot be filtered by source type.
+</p>
+
 
 ## <a id='writing'></a> Writing to the log from your app
 

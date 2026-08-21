@@ -156,7 +156,7 @@ For example:
 
 ### <a id='proxy'></a> PROXY
 
-Every app container includes an Envoy sidecar proxy that handles the mTLS handshake with the Gorouter and proxies traffic to the app process. The Envoy sidecar emits `PROXY` logs. By default, Envoy runs with a critical log level, so you rarely see `PROXY` logs. They mainly appear when Envoy exits or is killed, such as when the container runs out of memory.
+Every app container includes an Envoy sidecar proxy that handles the mTLS handshake with the Gorouter and proxies traffic to the app process. The Envoy sidecar emits `PROXY` logs. By default, Envoy runs with a critical log level, so you rarely see `PROXY` logs. They mainly appear when Envoy encounters a critical error or is killed, such as when the container runs out of memory.
 
 For example:
 

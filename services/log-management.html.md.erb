@@ -169,6 +169,10 @@ After a short delay, logs start to flow.
 
 For more information, see [Managing service instances with the CLI](./managing-services.html).
 
+<p class="note">
+<strong>Note:</strong> Drained syslog messages identify their source in the RFC5424 <code>PROCID</code> field, which is limited to 128 bytes. Because task names are free text and can be long, a source that exceeds this limit is truncated to fit rather than dropped. The full, untruncated source is always preserved in the <code>source_type</code> structured-data field. To keep <code>PROCID</code> stable and unambiguous in your log management service, keep task names short.
+</p>
+
 ### <a id='cups-step3'></a> Step 3: Verify that logs are draining
 
 To verify that logs are draining correctly to a third-party log management service:
